@@ -78,7 +78,7 @@ class DashboardPanel extends Component {
 			open={openDashboard}
 			onClose={handleCloseDashboard}
 			TransitionComponent={this.transition}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+			<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
 						<ItemG container alignItems={'center'}>
@@ -168,6 +168,8 @@ class DashboardPanel extends Component {
 									{this.renderPos(l)}
 									<DoubleChartFakeData
 										title={g.name}
+										g={g}
+										period={{ ...g.period }}
 										gId={g.id}
 										dId={d.id}
 										color={d.color}

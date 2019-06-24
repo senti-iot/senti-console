@@ -31,7 +31,7 @@ const styles = theme => ({
 	},
 	appBar: {
 		padding: "0 !important",
-		position: "fixed",
+		position: "sticky",
 		top: 70,
 		[theme.breakpoints.down('xs')]: {
 			top: 48
@@ -113,7 +113,7 @@ class CDToolbar extends PureComponent {
 					})
 				}}>
 					<ItemG xs={1} container alignItems="center" justify={'center'}>
-						<IconButton onClick={this.expandToolbar}>
+						<IconButton onClick={this.expandToolbar} style={{ color: '#fff' }}>
 							<Menu />
 						</IconButton>
 					</ItemG>

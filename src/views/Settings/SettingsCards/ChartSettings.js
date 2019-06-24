@@ -113,7 +113,6 @@ class ChartSettings extends Component {
 			{ value: 2, icon: <BarChart />, label: t('charts.type.bar'), func: this.changePeriodChartType(p, 2) },
 			{ value: 3, icon: <ShowChart />, label: t('charts.type.line'), func: this.changePeriodChartType(p, 3) },
 		]
-
 	}
 	chartDataTypes = () => {
 		const { t } = this.props

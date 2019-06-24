@@ -175,10 +175,14 @@ export const setGE = (payload) => {
 		})
 	}
 }
-export const editGraph = (payload) => {
-	 return dispatch => {
+export const editGraph = (newG) => {
+	 return (dispatch, getState) => {
+		let gs = []
+		gs = getState().dsSystem.cGraphs
+		gs[gs.findIndex(f => f.id === newG.i)] = newG
 		
-		dispatch({ type: eGraph, payload })
+		dispatch({ type: cGraph, payload: gs })
+		dispatch({ type: setGraphE, payload: newG })
 	}
 }
 export const createDash = () => {

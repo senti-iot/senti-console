@@ -25,7 +25,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { handleSetDate, getGraph, getPeriod } from 'redux/dsSystem';
+import { handleSetDate, /* getGraph, getPeriod */ } from 'redux/dsSystem';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { setDailyData } from 'components/Charts/DataModel';
 
@@ -78,19 +78,28 @@ class DoubleChartData extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period, title, color } = this.props
-		console.log(g)
-		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type)
-		let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
-		this.setState({
-			...newState, loading: false
-		})
+		if (g.dataSource.dataKey) {
+			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type)
+			let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			this.setState({
+				...newState, loading: false
+			})
+		}
+		else {
+			this.setState({
+				loading: false
+			})
+		}
 	}
-
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType) {
+		if (this.props.create) {
 			this.setState({ loading: true }, async () => {
 				this.getData()
 			})
+		}
+		// console.log('CDUP',  prevProps.g.dataSource.dataKey, this.props.g.dataSource.dataKey)
+		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
+
 		}
 	}
 
@@ -659,9 +668,8 @@ class DoubleChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state, ownProps) => ({
-	// dashboards: state.dsSystem.dashboards
-	g: getGraph(state, ownProps.gId, ownProps.create),
-	period: getPeriod(state, ownProps.gId, ownProps.create)
+	// g: getGraph(state, ownProps.gId, ownProps.create),
+	// period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({

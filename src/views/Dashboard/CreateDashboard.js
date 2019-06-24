@@ -101,8 +101,7 @@ class CreateDashboard extends React.Component {
 		this.props.createDash()
 	}
 	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.gs.length !== this.props.gs.length) {
-			console.log('changing layout')
+		if (prevProps.gs !== this.props.gs) {
 			this.setState({
 				layout: {
 					lg: this.props.gs.map((g) => ({
@@ -162,6 +161,8 @@ class CreateDashboard extends React.Component {
 					<DoubleChartFakeData
 						create
 						title={g.name}
+						g={g}
+						period ={{ ...g.period, menuId: g.periodType  }}
 						gId={g.id}
 						dId={d.id}
 						color={d.color}
@@ -239,7 +240,7 @@ class CreateDashboard extends React.Component {
 					open={openAddDash}
 					onClose={handleCloseDT}
 					TransitionComponent={this.transition}>
-					<AppBar className={classes.appBar + ' ' + appBarClasses}>
+					<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 						<Toolbar>
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
@@ -281,8 +282,8 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
-					<EditGraph d={this.props.d} handleCloseEG={() => {this.setState({ openEditGraph: false })}} openEditGraph={this.state.openEditGraph}/>
-					<div style={{ width: '100%', height: 'calc(100% - 118px)', marginTop: '118px' }}>
+					<EditGraph d={this.props.d} handleCloseEG={() => {this.setState({ openEditGraph: false }); this.forceUpdate()}} openEditGraph={this.state.openEditGraph}/>
+					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
 						<Dustbin onDrop={item => this.props.createGraph(item.type)}>
 							<ResponsiveReactGridLayout
 								{...this.props}
@@ -291,7 +292,7 @@ class CreateDashboard extends React.Component {
 								onResizeStop={this.editGraphPos}
 								measureBeforeMount={false}
 								useCSSTransforms={true}
-								compactType={this.state.compactType}
+								// compactType={'none'}v
 							>
 								{this.generateDOM()}
 							</ResponsiveReactGridLayout>

@@ -86,13 +86,11 @@ export const updateSensor = async (sensor) => {
 	return response
 }
 export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chartType) => {
-	if (nId === undefined) {
-		console.trace()
-	}
 	// console.log(moment(from, 'YYYY-MM-DD+HH:mm'))
 	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
 	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
 	let url;
+	console.log(deviceType)
 	if (deviceType) {
 		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}/${deviceType}/${chartType}`
 	}

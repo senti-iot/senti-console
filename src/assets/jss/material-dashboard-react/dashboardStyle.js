@@ -7,6 +7,14 @@ import { bgColors } from './backgroundColors';
 
 const dashboardStyle = theme => ({
 	...bgColors,
+	icon: {
+		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
+		marginRight: 4
+	},
+	expansionPanel: {
+		border: 'none',
+		width: '100%'
+	},
 	drawerPaper: {
 		color: '#fff',
 		backgroundColor: "#434351",
@@ -128,6 +136,25 @@ const dashboardStyle = theme => ({
 	// 	minHeight: "50px",
 	// 	display: "block"
 	// },
+	cAppBar: {
+		position: 'sticky',
+		backgroundColor: headerColor,
+		boxShadow: "none",
+		borderBottom: "0",
+		marginBottom: "0",
+		width: "100%",
+		paddingTop: "10px",
+		zIndex: "1029",
+		color: "#ffffff",
+		border: "0",
+		// borderRadius: "3px",
+		padding: "10px 0",
+		transition: "all 150ms ease 0s",
+		display: "flex",
+		justifyContent: 'center',
+		height: 70,
+	
+	},
 	appBar: {
 		WebkitOverflowScrolling: "touch",
 		backgroundColor: headerColor,
@@ -179,6 +206,7 @@ const dashboardStyle = theme => ({
 		transform: 'translate(-50%, -50%)',
 		"&:hover": {
 			background: '#eeeeeeaa',
+			cursor: 'move',
 			opacity: 1
 		}
 	},

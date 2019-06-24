@@ -7,7 +7,7 @@ import { ItemG } from 'components';
 
 const styles = theme => ({
 	label: {
-		color: theme.palette.type === 'dark' ? "#fff" : undefined
+		color: theme.palette.type === 'dark' ? "#fff" : undefined,		
 	},
 	formControl: {
 		marginTop: 16,
