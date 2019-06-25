@@ -163,7 +163,7 @@ export const getAllData = async (reload, orgId, su) => {
 		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
 		dispatch(await getFunctions(true, orgId, su))
-		dispatch(await getMessages(orgId, true))
+		// dispatch(await getMessages(orgId, true))
 	}
 }
 

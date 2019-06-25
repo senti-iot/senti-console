@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 
 import { useDrop, useDrag } from 'react-dnd'
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
-import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
+import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
@@ -135,7 +135,7 @@ class CreateDashboard extends React.Component {
 			</ItemG>
 		</div>
 	}
-	typeChildren = (g) => {
+	typeChildren = (g, i) => {
 		const { t } = this.props
 		// const { d } = this.state
 		let d = this.props.d
@@ -158,7 +158,7 @@ class CreateDashboard extends React.Component {
 			case 0:
 				return <Paper key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
-					<DoubleChartFakeData
+					<DoubleChart
 						create
 						title={g.name}
 						gId={g.id}
@@ -210,7 +210,7 @@ class CreateDashboard extends React.Component {
 	}
 	generateDOM = () => {
 		const gs = this.props.gs
-		return gs.map((g, i) => this.typeChildren(g))
+		return gs.map((g, i) => this.typeChildren(g, i))
 	}
 	editGraphPos = (layout, oldItem, ng, placeholder, e, element) => {
 		this.setState({ updated: true })
@@ -280,11 +280,11 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
-					{this.state.openEditGraph ? 
+					{this.state.openEditGraph ?
 						<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }); this.forceUpdate() }} openEditGraph={this.state.openEditGraph} />
 						: null}
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
-						<Dustbin onDrop={item => this.props.createGraph(item.type)}>
+						<Dustbin onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
 								onBreakpointChange={(n) => this.setState({ n })}

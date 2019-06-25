@@ -195,10 +195,10 @@ class Messages extends Component {
 		await this.getData(true)
 	}
 	getData = async (reload) => {
-		const { getMessages, /* setMessages, */ accessLevel, user } = this.props
+		const { getMessages, /* setMessages, */ accessLevel, user, messages } = this.props
 		// setMessages()
 		if (accessLevel || user) {
-			if (reload)
+			if (reload || messages.length === 0)
 				getMessages(user.org.id, true, accessLevel.apisuperuser ? true : false)
 		}
 	}

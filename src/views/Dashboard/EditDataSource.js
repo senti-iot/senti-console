@@ -22,10 +22,7 @@ export class EditDataSource extends Component {
 			selectDevice: false,
 			selectFunction: false,
 			filters: {
-				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				keyword: ''
 			}
 		}
 	}
@@ -55,6 +52,17 @@ export class EditDataSource extends Component {
 		this.props.editGraph(newG)
 		// this.forceUpdate()
 	}
+	handleEditCF = d => () => {
+		let newG = { ...this.props.g }
+		newG.dataSource.cf = d
+		this.props.editGraph(newG)
+		this.setState({
+			filters: {
+				keyword: ''
+			}
+		})
+		this.handleCloseF()
+	}
 	handleEditDevice = d => () => {
 		let newG = { ...this.props.g }
 		// Object.assign(newG, this.props.g)
@@ -63,10 +71,7 @@ export class EditDataSource extends Component {
 		this.props.editGraph(newG)
 		this.setState({
 			filters: {
-				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				keyword: ''
 			}
 		})
 		this.handleCloseD()
@@ -171,7 +176,7 @@ export class EditDataSource extends Component {
 			<List>
 				{cfs ? filterItems(cfs, filters).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={() => { }} value={p.id}>
+						<ListItem button onClick={this.handleEditCF(p.id)} value={p.id}>
 							<ListItemText
 								primary={p.name} />
 						</ListItem>
@@ -253,9 +258,8 @@ export class EditDataSource extends Component {
 	}
 
 	render() {
-		const { t, classes, sensor, g } = this.props
+		const { t, classes, sensor, g, cfs } = this.props
 		const { dataSourceExp, generalExp } = this.state
-		console.log(g.dataSource.dataKey)
 		switch (g.type) {
 			case 0:
 				return <Fragment>
@@ -345,13 +349,14 @@ export class EditDataSource extends Component {
 													<TextF
 														id={'cfSelect'}
 														label={t('dashboard.fields.cf')}
-														value={""}
+														value={cfs[cfs.findIndex(f => f.id === g.dataSource.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSource.cf)].name : t('no.function')}
 														handleClick={this.handleOpenF}
 														handleChange={() => { }}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
+														handleChange={this.handleEditG('unit')}
 														autoFocus
 														id={'unit'}
 														label={t('dashboard.fields.unit')}
@@ -389,10 +394,10 @@ export class EditDataSource extends Component {
 		}
 	}
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, props) => ({
 	g: state.dsSystem.eGraph,
 	sensor: state.data.sensor,
-	cfs: state.data.functions,
+	cfs: [...state.data.functions, { id: -1, name: props.t('no.cloudfunction') }],
 	sensors: state.data.sensors
 })
 
@@ -401,4 +406,4 @@ const mapDispatchToProps = dispatch => ({
 	getSensor: async id => dispatch(await getSensorLS(id))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(withLocalization()(EditDataSource)))
+export default withLocalization()(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDataSource)))

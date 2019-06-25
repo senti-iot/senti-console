@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
@@ -654,24 +654,22 @@ class DoubleChartData extends PureComponent {
 		const { t, period } = this.props
 		const { loading } = this.state
 		return (
-			<Fragment>
-				<InfoCard
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
-					avatar={this.renderIcon()}
-					noExpand
-					dashboard
-					topAction={this.renderMenu()}
-					content={
-						<Grid container style={{ height: '100%', width: '100%' }}>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-								// <ItemG xs={12}>
-								this.renderType()
-								// </ItemG>
-							}
-						</Grid>}
-				/>
-			</Fragment >
+			<InfoCard
+				title={this.renderTitle()}
+				subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+				avatar={this.renderIcon()}
+				noExpand
+				dashboard
+				topAction={this.renderMenu()}
+				content={
+					<Grid container style={{ height: '100%', width: '100%' }}>
+						{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
+						// <ItemG xs={12}>
+							this.renderType()
+							// </ItemG>
+						}
+					</Grid>}
+			/>
 		);
 	}
 }

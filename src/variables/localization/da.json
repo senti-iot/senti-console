@@ -622,7 +622,7 @@
         "metadata": "Ingen metadata",
         "org": "Ingen organisation",
         "project": "Ingen projekt",
-        "projects": "Ingen projekter"
+		"projects": "Ingen projekter"
     },
     "orgs": {
         "create": "Opret",

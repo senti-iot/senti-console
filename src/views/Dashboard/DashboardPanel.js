@@ -8,7 +8,7 @@ import { Close } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
-import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
+import DoubleChart from 'views/Charts/DoubleChart';
 import logo from '../../logo.svg'
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import Scorecard from 'views/Charts/Scorecard';
@@ -166,7 +166,7 @@ class DashboardPanel extends Component {
 							case 0:
 								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
-									<DoubleChartFakeData
+									<DoubleChart
 										title={g.name}
 										g={g}
 										period={{ ...g.period }}
