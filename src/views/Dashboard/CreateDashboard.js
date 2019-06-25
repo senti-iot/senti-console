@@ -60,7 +60,7 @@ const Box = ({ name, type }) => {
 			isDragging: monitor.isDragging(),
 		}),
 	})
-	
+
 	return (
 		<div ref={drag} style={{ margin: '0px 4px', opacity: isDragging ? 0.4 : 1, transition: 'all 300ms ease', cursor: 'move' }}>
 			<Paper style={{ padding: '8px' }}>
@@ -115,7 +115,7 @@ class CreateDashboard extends React.Component {
 	}
 	editGraphOpen = l => e => {
 		this.props.setGE(l)
-		 this.setState({ openEditGraph: true })
+		this.setState({ openEditGraph: true })
 	}
 	removeGraph = l => e => {
 		this.props.removeGE(l)
@@ -125,12 +125,12 @@ class CreateDashboard extends React.Component {
 		return <div className={classes.editGraph}>
 			<ItemG>
 				<Button style={{ margin: 4 }} variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
-					<Edit style={{ marginRight: 8 }}/>Edit
+					<Edit style={{ marginRight: 8 }} />Edit
 				</Button>
 			</ItemG>
 			<ItemG>
 				<Button variant={'contained'} style={{ margin: 4, background: red[600], color: '#fff' }} onClick={this.removeGraph(l)}>
-					<Clear style={{ marginRight: 8 }}/> Remove
+					<Clear style={{ marginRight: 8 }} /> Remove
 				</Button>
 			</ItemG>
 		</div>
@@ -147,7 +147,7 @@ class CreateDashboard extends React.Component {
 					<GaugeFakeData
 						create
 						title={g.name}
-						period={{ ...g.period, menuId: g.periodType }}
+						period={g.period}
 						t={t}
 						color={d.color}
 						gId={g.id}
@@ -161,8 +161,6 @@ class CreateDashboard extends React.Component {
 					<DoubleChartFakeData
 						create
 						title={g.name}
-						g={g}
-						period ={{ ...g.period, menuId: g.periodType  }}
 						gId={g.id}
 						dId={d.id}
 						color={d.color}
@@ -217,13 +215,13 @@ class CreateDashboard extends React.Component {
 	editGraphPos = (layout, oldItem, ng, placeholder, e, element) => {
 		this.setState({ updated: true })
 		this.props.editGraphPos({
-			h: ng.h, 
-			i: ng.i, 
+			h: ng.h,
+			i: ng.i,
 			minH: ng.minH,
 			minW: ng.minW,
-			w: ng.w, 
-			x: ng.x, 
-			y: ng.y, 
+			w: ng.w,
+			x: ng.x,
+			y: ng.y,
 		})
 		this.setState({ updated: false })
 	}
@@ -282,7 +280,9 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
-					<EditGraph d={this.props.d} handleCloseEG={() => {this.setState({ openEditGraph: false }); this.forceUpdate()}} openEditGraph={this.state.openEditGraph}/>
+					{this.state.openEditGraph ? 
+						<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }); this.forceUpdate() }} openEditGraph={this.state.openEditGraph} />
+						: null}
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
 						<Dustbin onDrop={item => this.props.createGraph(item.type)}>
 							<ResponsiveReactGridLayout
@@ -292,7 +292,7 @@ class CreateDashboard extends React.Component {
 								onResizeStop={this.editGraphPos}
 								measureBeforeMount={false}
 								useCSSTransforms={true}
-								// compactType={'none'}v
+							// compactType={'none'}v
 							>
 								{this.generateDOM()}
 							</ResponsiveReactGridLayout>
@@ -310,6 +310,7 @@ CreateDashboard.propTypes = {
 const mapStateToProps = (state) => ({
 	d: state.dsSystem.cDash,
 	gs: state.dsSystem.cGraphs,
+	eGraph: state.dsSystem.eGraph,
 	cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
 	className: "layout",
 	rowHeight: 25,

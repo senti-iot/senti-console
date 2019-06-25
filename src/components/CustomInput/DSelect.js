@@ -30,7 +30,7 @@ class DSelect extends Component {
 		}
 	}
 	render() {
-	  const { classes, error, helperText, value, onKeyPress, margin, onChange, menuItems, label, theme, fullWidth, leftIcon } = this.props
+	  const { classes, error, helperText, value, onKeyPress, margin, onChange, simple, menuItems, label, theme, fullWidth, leftIcon } = this.props
 	  let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	 
 		return (
@@ -50,7 +50,7 @@ class DSelect extends Component {
 					input={<OutlinedInput labelWidth={this.labelWidth()} variant={'outlined'} classes={{ root: classes.label }} />}
 					onKeyPress={onKeyPress}
 				>
-					{menuItems.map((m, i) => {
+					{!simple && menuItems.map((m, i) => {
 						return <MenuItem key={i} value={m.value}>
 							<ItemG container justify={'space-between'} alignItems={'center'}>
 								{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
@@ -59,6 +59,15 @@ class DSelect extends Component {
 							</ItemG>
 						</MenuItem>
 					})}
+					{simple && menuItems.map((m, i) => {
+						return <MenuItem key={i} value={m}>
+							<ItemG container justify={'space-between'} alignItems={'center'}>
+								{/* {leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null} */}
+								<ItemG xs>{m}</ItemG>
+								{/* {!leftIcon ? <ItemG>{m.icon ? m.icon : null}</ItemG> : null} */}
+							</ItemG>
+						</MenuItem>
+					}) }
 					})}
 				</Select>
 				{helperText ? <FormHelperText>{helperText}</FormHelperText> : null}

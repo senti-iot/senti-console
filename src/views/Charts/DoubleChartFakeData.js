@@ -25,7 +25,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { handleSetDate, /* getGraph, getPeriod */ } from 'redux/dsSystem';
+import { handleSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { setDailyData } from 'components/Charts/DataModel';
 
@@ -69,9 +69,13 @@ class DoubleChartData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
+	// g = setInterval(() => {
+	// 	console.log(this.props.g.dataSource)
+	// }, 3000);
 	componentDidMount = async () => {
 		const { period } = this.props
 		const { loading } = this.state
+		console.log('Mounted')
 		if (period && loading) {
 			await this.getData()
 		}
@@ -92,14 +96,16 @@ class DoubleChartData extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (this.props.create) {
+		// if (this.props.create) {
+		// 	this.setState({ loading: true }, async () => {
+		// 		this.getData()
+		// 	})
+		// }
+		console.log('CDUP',  prevProps.g.dataSource.dataKey, this.props.g.dataSource.dataKey)
+		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
 			this.setState({ loading: true }, async () => {
 				this.getData()
 			})
-		}
-		// console.log('CDUP',  prevProps.g.dataSource.dataKey, this.props.g.dataSource.dataKey)
-		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
-
 		}
 	}
 
@@ -371,8 +377,10 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG style={{ flex: '1',
-				textAlign: 'center' }}>
+			<ItemG style={{
+				flex: '1',
+				textAlign: 'center'
+			}}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>
@@ -390,7 +398,7 @@ class DoubleChartData extends PureComponent {
 								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md/* md={roundDataSets.length >= 2 ? period.length > 2 ? 12 : 6 : 12} */ direction={'column'} container justify={'center'}>
 									<div style={{ maxHeight: 200 }}>
 										<PieChart
-											height={200}
+											// height={200}
 											title={title}
 											single
 											unit={this.timeTypes[period.timeType]}
@@ -411,7 +419,7 @@ class DoubleChartData extends PureComponent {
 								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md direction={'column'} container justify={'center'}>
 									<div style={{ maxHeight: 200 }}>
 										<DoughnutChart
-											height={200}
+											// height={200}
 											title={title}
 											single
 											unit={this.timeTypes[period.timeType]}
@@ -667,9 +675,10 @@ class DoubleChartData extends PureComponent {
 		);
 	}
 }
+
 const mapStateToProps = (state, ownProps) => ({
-	// g: getGraph(state, ownProps.gId, ownProps.create),
-	// period: getPeriod(state, ownProps.gId, ownProps.create)
+	g: getGraph(state, ownProps.gId, ownProps.create ),
+	period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({

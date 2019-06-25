@@ -100,11 +100,13 @@ export const handleSetDate = (dId, gId, p) => {
 	return async (dispatch, getState) => {
 		let gs = getState().dsSystem.graphs
 		let graph = gs[gs.findIndex(g => g.id === gId)]
-		graph.period = p
-		graph.periodType = p.menuId
-		gs[gs.findIndex(g => g.id === gId)] = graph 
-		// ds[ds.findIndex(d => d.id === dId)] = dash
-		dispatch({ type: setGraphs, payload: gs })
+		if (graph) {
+			graph.period = p
+			graph.periodType = p.menuId
+			gs[gs.findIndex(g => g.id === gId)] = graph 
+			// ds[ds.findIndex(d => d.id === dId)] = dash
+			dispatch({ type: setGraphs, payload: gs })
+		}
 
 	}
 }
@@ -178,11 +180,15 @@ export const setGE = (payload) => {
 export const editGraph = (newG) => {
 	 return (dispatch, getState) => {
 		let gs = []
+		let nG = {}
+		nG = newG
 		gs = getState().dsSystem.cGraphs
-		gs[gs.findIndex(f => f.id === newG.i)] = newG
-		
+		console.log('Before', gs)
+		console.log(nG, newG)
+		gs[gs.findIndex(f => f.id === nG.id)] = nG
+		console.log(gs)
 		dispatch({ type: cGraph, payload: gs })
-		dispatch({ type: setGraphE, payload: newG })
+		dispatch({ type: setGraphE, payload: nG })
 	}
 }
 export const createDash = () => {

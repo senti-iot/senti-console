@@ -2,6 +2,22 @@ import { createSelector } from 'reselect'
 import { setMinutelyData, setHourlyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
 
 export const getCompares = state => state.dateTime.compares
+export const getDGraph = (state, props) => {
+	if (props.create) {
+		let gs = state.dsSystem.cGraphs
+		let g = gs[gs.findIndex(r => r.id === props.id)]
+		return g
+	}
+	let gs = state.dsSystem.graphs
+	let g = gs[gs.findIndex(r => r.id === props.id)]
+	return g
+}
+// export const getEditGraph = state => state.dsSystem.eGraph
+
+
+export const getSGraph = createSelector(
+	[getDGraph], (g) => g
+)
 
 export const getAllCompares = createSelector(
 	[getCompares], (compares) => { 

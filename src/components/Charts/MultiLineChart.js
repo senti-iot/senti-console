@@ -448,8 +448,8 @@ class LineChart extends PureComponent {
 							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
 							data={data}
-							height={'100%'}
-							width={'100%'}
+							// height={'100%'}
+							// width={'100%'}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
