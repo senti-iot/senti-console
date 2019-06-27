@@ -131,20 +131,14 @@ class DashboardPanel extends Component {
 				</Toolbar>
 			</AppBar>
 			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-				{/* <GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
-				> */}
 				<ResponsiveReactGridLayout
 					{...this.props}
 					layouts={this.state.initialLayout}
 					onBreakpointChange={this.onBreakpointChange}
 					onLayoutChange={this.onLayoutChange}
-					// WidthProvider option
 					measureBeforeMount={false}
-					// I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
-					// and set `measureBeforeMount={true}`.
 					useCSSTransforms={this.state.mounted}
 					compactType={this.state.compactType}
-				// preventCollision={!this.state.compactType}
 				>
 					{d.graphs.map((g, i) => {
 						let l = this.state.initialLayout.lg[i]
@@ -161,7 +155,6 @@ class DashboardPanel extends Component {
 										dId={d.id}
 										single
 									/>
-									{/* </ItemG> */}
 								</Paper>
 							case 0:
 								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
@@ -176,7 +169,6 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/>
-									{/* </ItemG> */}
 								</Paper>
 							case 2:
 								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
@@ -188,13 +180,10 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/>
-									{/* // </ItemG> */}
 								</Paper>
 							case 3:
 								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
-
-									{/* <ItemG key={g.id} xs={12} md={6} container justify={'center'}> */}
 									<Scorecard
 										title={g.name}
 										gId={g.id}
@@ -202,7 +191,6 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/>
-									{/* </ItemG> */}
 								</Paper>
 							case 4:
 								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
@@ -218,11 +206,9 @@ class DashboardPanel extends Component {
 							default:
 								return null;
 						}
-
-
+		
 					})}
 				</ResponsiveReactGridLayout>
-				{/* </GridContainer> */}
 			</div>}
 		</Dialog>
 	}
