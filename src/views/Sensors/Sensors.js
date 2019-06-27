@@ -22,6 +22,7 @@ class Sensors extends Component {
 		super(props)
 
 		this.state = {
+			openDelete: false,
 			selected: [],
 			route: 0,
 			order: 'asc',
