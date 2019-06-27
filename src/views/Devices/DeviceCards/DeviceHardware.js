@@ -41,7 +41,7 @@ class DeviceHardware extends PureComponent {
 					} />
 				}
 				content={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG>
 							<Caption>{t('devices.fields.RPImodel')}:</Caption>
 							<Info>{device.RPImodel}</Info>
@@ -66,7 +66,7 @@ class DeviceHardware extends PureComponent {
 					
 					</ItemG>
 				}
-				hiddenContent={<ItemG container spacing={16}>
+				hiddenContent={<ItemG container spacing={3}>
 					<ItemG>
 						<Caption>{t('devices.fields.cellNumber')}:</Caption>
 						<Info>{device.cellNumber}</Info>

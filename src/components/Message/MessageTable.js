@@ -133,17 +133,17 @@ class MessageTable extends React.Component {
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.name}
+															{n.deviceName}
 														</Info>
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${this.renderProtocol(n.protocol)}`}
+															{n.registryName}
 														</Caption>
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.customer_name ? n.customer_name : t('users.fields.noOrg')}`}
+															{`${n.customerName ? n.customerName : t('users.fields.noOrg')}`}
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>

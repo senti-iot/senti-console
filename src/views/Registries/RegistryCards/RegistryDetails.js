@@ -76,7 +76,7 @@ class RegistryDetails extends Component {
 					</ItemG>
 				}
 				hiddenContent={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 					</ItemG>} />
 		)
 	}

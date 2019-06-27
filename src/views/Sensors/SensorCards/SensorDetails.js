@@ -73,7 +73,7 @@ class SensorDetails extends Component {
 					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{sensor.id}
 				</ItemG>}
 				content={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG>
 							<Caption>{t('registries.fields.protocol')}</Caption>
 							<Info>{this.renderProtocol(sensor.protocol)}</Info>

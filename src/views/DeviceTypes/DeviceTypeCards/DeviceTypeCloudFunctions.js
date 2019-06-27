@@ -36,7 +36,7 @@ class DeviceTypeCloudFunctions extends Component {
 				avatar={<DataUsage />}
 				noExpand
 				content={
-					loading ? <CircularLoader /> : <ItemG container spacing={16}>
+					loading ? <CircularLoader /> : <ItemG container spacing={3}>
 						<ItemG xs={12}>
 							<Info>{t('cloudfunctions.fields.inboundfunc')}</Info>
 							{cfi ? 	<Table>

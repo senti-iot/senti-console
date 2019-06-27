@@ -30,7 +30,7 @@ class DeviceTypeDetails extends Component {
 				</ItemG>}
 
 				content={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG xs={12}>
 							<Caption>{t('devices.fields.description')}</Caption>
 							<Info>{deviceType.description}</Info>

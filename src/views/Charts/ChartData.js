@@ -25,6 +25,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import * as ReactIs from 'react-is'
 
 class ChartData extends PureComponent {
 	constructor(props) {
@@ -604,6 +605,7 @@ class ChartData extends PureComponent {
 		const { openDownload, loading, exportData } = this.state
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
+		console.log(ReactIs.isValidElementType(DateFilterMenu))
 		return (
 			<Fragment>
 				<InfoCard

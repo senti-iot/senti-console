@@ -66,7 +66,7 @@ class Sidebar extends Component {
 						return <Fragment>
 							<Tooltip key={index}
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
-								<ListItem /* component={Button */
+								<ListItem
 									button
 									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
@@ -78,8 +78,10 @@ class Sidebar extends Component {
 											[classes.button]: true
 										})
 									}}>
-									<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
-									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+									<div>
+										<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+										<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+									</div>
 								</ListItem>
 							</Tooltip>
 							<Collapse in={this.state[route.menuRoute]} >

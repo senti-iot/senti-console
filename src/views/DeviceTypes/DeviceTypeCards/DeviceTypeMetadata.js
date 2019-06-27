@@ -23,7 +23,7 @@ class DeviceTypeMetadata extends Component {
 				avatar={<DataUsage />}
 				noExpand
 				content={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG xs={12}>
 							{mtd ? <Table>
 								<TableHead>

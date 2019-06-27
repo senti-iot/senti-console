@@ -49,7 +49,7 @@ class DeviceDetails extends Component {
 					<Caption>{t('collections.fields.id')}:</Caption>&nbsp;{collection.id}
 				</ItemG>}
 				hiddenContent={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG xs={12} sm={1} md={1} lg={1} xl={1}>
 							<Caption>{t('collections.fields.status')}:</Caption>
 							<Info>{this.collectionState()}</Info>

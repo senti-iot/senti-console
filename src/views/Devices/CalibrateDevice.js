@@ -192,7 +192,7 @@ class CalibrateDevice extends Component {
 
 	renderDeviceNameDescriptionForms = () => {
 		const { classes, t } = this.props
-		return <Grid container spacing={8}>
+		return <Grid container spacing={2}>
 			<ItemG xs={12}>
 				<TextF
 					id={'name'}
@@ -267,7 +267,7 @@ class CalibrateDevice extends Component {
 	renderDeviceLocation = () => {
 		const { t } = this.props
 		const { lat, long } = this.state
-		return <Grid container spacing={8}>
+		return <Grid container spacing={2}>
 			<ItemG xs={12} container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
 				<Button
 					variant='outlined'

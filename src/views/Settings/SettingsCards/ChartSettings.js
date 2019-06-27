@@ -179,7 +179,7 @@ class ChartSettings extends Component {
 										<Typography>{`${t('settings.chart.period')}: ${this.options()[p.menuId].label}`}</Typography>
 									</ExpansionPanelSummary>
 									<ExpansionPanelDetails>
-										<ItemG container spacing={16} alignItems={'center'}>
+										<ItemG container spacing={3} alignItems={'center'}>
 											<ItemG>
 												<Caption>{t('filters.startDate')}</Caption>
 												<Info>{dateTimeFormatter(p.from)}</Info>

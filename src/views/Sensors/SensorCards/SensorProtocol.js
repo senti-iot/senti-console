@@ -74,7 +74,7 @@ class SensorDetails extends Component {
 					<Caption>{this.renderProtocol(sensor.protocol)}</Caption>
 				</ItemG>}
 				content={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG xs={12}>
 							<Caption>{t('sensors.fields.protocols.publishData')}</Caption>
 							{sensor.protocol === 1 || sensor.protocol === 3 ? <ItemG xs={12}>

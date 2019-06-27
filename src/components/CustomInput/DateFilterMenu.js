@@ -9,6 +9,7 @@ import teal from '@material-ui/core/colors/teal'
 import { connect } from 'react-redux'
 import { changeDate, changeHeatMapDate } from 'redux/dateTime';
 import { changeSettingsDate } from 'redux/settings';
+import { compose } from 'recompose';
 
 const styles = theme => ({
 	selected: {
@@ -246,4 +247,7 @@ const mapDispatchToProps = (dispatch) => ({
 	handleSetHeatmapDate: (id, to, from, timeType) => dispatch(changeHeatMapDate(id, to, from, timeType))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))
+let DFMenu = compose(connect(mapStateToProps, mapDispatchToProps, undefined, { forwardRef: true }), withStyles(styles))(DateFilterMenu)
+// export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))
+const DFMenuRef = React.forwardRef((props, ref) => <DFMenu {...props} ref={ref}/>)
+export default DFMenuRef
