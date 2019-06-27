@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import cx from 'classnames'
 const styles = theme => ({
 	leftIcon: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	underlineRev: {
 		background: '#fff'

@@ -71,7 +71,7 @@ const regularCardStyle = theme => ({
 		whiteSpace: "nowrap",
 		textOverflow: "ellipsis",
 		overflow: "hidden",
-		marginTop: theme.spacing.unit
+		marginTop: theme.spacing(1)
 	},
 	leftIcon: {
 		marginRight: 8

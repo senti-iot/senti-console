@@ -15,7 +15,7 @@ const loginPageStyles = theme => ({
 		marginLeft: 12
 	},
 	p: {
-		marginBottom: theme.spacing.unit
+		marginBottom: theme.spacing(1)
 	},
 	wrapper: {
 		display: 'flex',

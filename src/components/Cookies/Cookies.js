@@ -10,7 +10,7 @@ import { finishedSaving } from 'redux/settings';
 
 const styles = theme => ({
 	p: {
-		marginBottom: theme.spacing.unit
+		marginBottom: theme.spacing(1)
 	},
 	title: {
 		fontWeight: 500

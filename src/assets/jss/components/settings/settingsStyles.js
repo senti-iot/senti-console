@@ -14,7 +14,7 @@ export const settingsStyles = theme => ({
 		cursor: "pointer"
 	},
 	p: {
-		marginBottom: theme.spacing.unit
+		marginBottom: theme.spacing(1)
 	},
 	title: {
 		fontWeight: 500

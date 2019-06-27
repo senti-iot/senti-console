@@ -76,10 +76,10 @@ const createprojectStyles = theme => ({
 		color: "#FFF"
 	},
 	leftIcon: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	wrapper: {
-		marginRight: theme.spacing.unit,
+		marginRight: theme.spacing(1),
 		position: 'relative',
 	},
 	buttonSuccess: {
@@ -114,22 +114,22 @@ const createprojectStyles = theme => ({
 		flexWrap: 'wrap',
 	},
 	chip: {
-		margin: theme.spacing.unit / 8,
+		margin: theme.spacing(0.125),
 		background: teal[500],
 		color: "#fff"
 	},
 	datepicker: {
 		// background: 
 		color: teal[500],
-		margin: theme.spacing.unit,
-		padding: theme.spacing.unit
+		margin: theme.spacing(1),
+		padding: theme.spacing(1)
 	},
 	textField: {
 		// margin: theme.spacing.unit * 2
 	},
 	form: {
-		margin: theme.spacing.unit,
-		padding: theme.spacing.unit,
+		margin: theme.spacing(1),
+		padding: theme.spacing(1),
 		display: 'flex',
 		flexWrap: 'wrap',
 	},
@@ -152,7 +152,7 @@ const createprojectStyles = theme => ({
 	// 	},
 	// },
 	button: {
-		margin: theme.spacing.unit * 2
+		margin: theme.spacing(2)
 	}
 })
 

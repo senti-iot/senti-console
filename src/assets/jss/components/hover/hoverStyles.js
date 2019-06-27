@@ -44,7 +44,7 @@ const hoverStyles = theme => ({
 	paper: {
 		width: 400,
 		maxWidth: 450,
-		padding: theme.spacing.unit,
+		padding: theme.spacing(1),
 		// background: "#fff",
 	},
 	smallText: {

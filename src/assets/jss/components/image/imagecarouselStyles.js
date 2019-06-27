@@ -13,7 +13,7 @@ const imagecarouselStyles = theme => ({
 		display: 'flex',
 		alignItems: 'center',
 		height: 50,
-		paddingLeft: theme.spacing.unit * 4,
+		paddingLeft: theme.spacing(4),
 		marginTop: 20,
 		backgroundColor: theme.palette.background.default,
 	},
