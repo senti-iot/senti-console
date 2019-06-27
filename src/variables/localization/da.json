@@ -202,6 +202,15 @@
         "title": "Senti Cookie Politik"
     },
     "dashboard": {
+		"fields": {
+			"general": "General",
+			"label": "Overskrift",
+			"chartType": "Diagramtype",
+			"dataSource": "Datakilde",
+			"defaultPeriod": "Standard periode",
+			"device": "Enhed",
+			"unit": "Måleenhed"
+		},
         "cardContent": {
             "alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
             "api": "SentiAPI giver dig mulighed for at opbygge dine egne IoT Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine datasamlinger eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede datasamlinger.",

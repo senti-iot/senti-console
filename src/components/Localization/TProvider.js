@@ -58,7 +58,7 @@ class TProvider extends Component {
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
-			// console.log('Missing translation for key: "' + key + '"')
+			console.log('Missing key: "' + key + '"')
 			result = key
 		}
 		if (typeof phrase === 'string') {

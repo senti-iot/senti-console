@@ -291,8 +291,8 @@ class CreateDashboard extends React.Component {
 								onDragStop={this.editGraphPos}
 								onResizeStop={this.editGraphPos}
 								measureBeforeMount={false}
+								onLayoutChange={() => {}}
 								useCSSTransforms={true}
-							// compactType={'none'}v
 							>
 								{this.generateDOM()}
 							</ResponsiveReactGridLayout>
