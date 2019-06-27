@@ -766,7 +766,7 @@
                 "europe": "Europa"
             },
             "registry": "Register",
-            "uuid": "Universelt Unik Identifikator (UUID)"
+            "uuid": "Unik ID"
         },
         "pageTitle": "Registre"
     },
@@ -784,7 +784,7 @@
                 "state": "Enhedstilstand"
             },
             "registry": "Register",
-            "uuid": "UUID"
+            "uuid": "Unik ID"
         },
         "metadata": {
             "humidity": "Fugtighed",
