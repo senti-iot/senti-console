@@ -772,7 +772,7 @@
     },
     "sensors": {
         "fields": {
-            "communication": "Enhedskommunikation",
+            "communication": "Kommunikation",
             "communications": {
                 "allowed": "Tilladt",
                 "blocked": "Blokeret"
