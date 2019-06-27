@@ -793,7 +793,8 @@
             "minFlow": "Mindste vandgennemstrømning",
             "minWTemp": "Mindste vandtemperatur",
             "temperature": "Temperatur",
-            "value": "Vand"
+            "value": "Vand",
+			"co2": "CO2"
         }
     },
     "settings": {
