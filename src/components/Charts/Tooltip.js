@@ -81,28 +81,28 @@ class Tooltip extends Component {
 				if (moment(date).diff(moment(), 'days') === 0) {
 					if (unit.chart === 'day') {
 						let plusOne = moment(date).startOf(unit.chart)
-						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+						let finalStr = `${moment().format(unit.tooltipFormat)} - ${moment(plusOne).format(unit.tooltipFormat)} `
 						return finalStr
 					}
 				}
 				if (unit.chart === 'hour') {
 					if (moment().diff(moment(date), 'minutes') <= 60) {
 						let plusOne = moment(date).startOf(unit.chart)
-						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+						let finalStr = `${moment().format(unit.tooltipFormat)} - ${moment(plusOne).format(unit.tooltipFormat)} `
 						return finalStr
 					}
 				}
 				if (unit.chart === 'minute') {
 					if (moment().diff(moment(date), 'minutes') <= 60) {
 						let plusOne = moment(date).startOf('hour')
-						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+						let finalStr = `${moment().format(unit.tooltipFormat)} - ${moment(plusOne).format(unit.tooltipFormat)} `
 						return finalStr
 					}
 				}
 			}
 		}
-		let plusOne = moment(date).subtract(1, unit.chart)
-		let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `
+		let plusOne = moment(date).add(1, unit.chart)
+		let finalStr = `${moment(date).format(unit.tooltipFormat)} - ${moment(plusOne).format(unit.tooltipFormat)}`
 		return finalStr
 	}
 	handleDate = () => {
@@ -134,7 +134,8 @@ class Tooltip extends Component {
 						<ItemG xs={8} container direction='column'>
 							<Typography variant={'h5'}>{`${this.handleDayTime()}`}</Typography>
 							<Typography variant={'body1'}> {`${t('charts.fields.date')}: ${this.handleDate()}`}</Typography>
-							<Typography variant={'body1'}> {`${t('charts.fields.range')}: ${this.handleRange()}`}</Typography>
+							<Typography variant={'body1'}> {`${t('charts.fields.range')}`}</Typography>
+							<Typography variant={'body1'}> {`${this.handleRange()}`}</Typography>
 						</ItemG>
 						<ItemG container xs={4}>
 							{tooltip.data.map((d, i) => {

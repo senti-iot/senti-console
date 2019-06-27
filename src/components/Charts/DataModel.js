@@ -25,7 +25,7 @@ const linecolors = (data, defaultColor, id, color) => {
 	return colors
 }
 
-const regenerateData = (d, unit) => {
+const regenerateData = (d, unit, type) => {
 	if (d) {
 		let data = {}
 		Object.keys(d).map((dt, i) => {
@@ -50,7 +50,11 @@ const regenerateData = (d, unit) => {
 			}
 			else {
 				//Normal ones
-				data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+				// if (type === 'chart')
+				// data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+				// else {
+				data[moment(dt)] = d[dt]
+				// }
 				return true
 			}
 		})
