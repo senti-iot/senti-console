@@ -774,7 +774,7 @@
 				"europe": "Europe"
 			},
 			"registry": "Registry",
-			"uuid": "Universal Unique Identifier (UUID)"
+			"uuid": "Unique ID"
 		},
 		"pageTitle": "Registries"
 	},
@@ -792,7 +792,7 @@
 				"state": "Device state"
 			},
 			"registry": "Registry",
-			"uuid": "UUID"
+			"uuid": "Unique ID"
 		},
 		"metadata": {
 			"humidity": "Humidity",
@@ -801,7 +801,8 @@
 			"minFlow": "Minimum water flow",
 			"minWTemp": "Minimum water temperature",
 			"temperature": "Temperature",
-			"value": "Water consumption / reading"
+			"value": "Water consumption / reading",
+			"co2": "CO2"
 		}
 	},
 	"settings": {
