@@ -8,7 +8,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear, KeyboardArrowLeft, KeyboardArrowRight,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, KeyboardArrowLeft, KeyboardArrowRight,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -349,11 +349,11 @@ class DoubleChartData extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
-		const { period, t, title } = this.props
+		const { period, /* t, */ title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container style={{ alignItems: 'center' }}>
-			<Hidden mdDown>
+			{/* <Hidden mdDown>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
@@ -361,12 +361,12 @@ class DoubleChartData extends PureComponent {
 						</IconButton>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG>
+			</Hidden> */}
+			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
-			<Hidden mdDown>
+			{/* <Hidden mdDown>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
@@ -376,7 +376,7 @@ class DoubleChartData extends PureComponent {
 						</div>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
+			</Hidden> */}
 			<ItemG style={{
 				flex: '1',
 				textAlign: 'center'
@@ -480,29 +480,29 @@ class DoubleChartData extends PureComponent {
 		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
 	}
 	renderMenu = () => {
-		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
+		const { actionAnchor, resetZoom } = this.state
 		const { classes, t, period } = this.props
 		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
+			{/* <Hidden lgUp> */}
+			<ItemG container>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
 				</ItemG>
-			</Hidden>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
+					</Tooltip>
+				</ItemG>
+			</ItemG>
+			{/* </Hidden> */}
 			<ItemG container>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
@@ -520,34 +520,33 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 					}
 				</Collapse>
-				<ItemG>
-					<Hidden smDown>
-						<Tooltip title={t('tooltips.chart.type')}>
-							<IconButton variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
-								{this.renderIcon()}
-							</IconButton>
-						</Tooltip>
-						<Menu
-							marginThreshold={24}
-							id='long-menu'
-							anchorEl={actionAnchorVisibility}
-							open={Boolean(actionAnchorVisibility)}
-							onClose={() => this.setState({ actionAnchorVisibility: null })}
-							PaperProps={{ style: { minWidth: 250 } }}>
-							<List component='div' disablePadding>
-								{this.visibilityOptions.map(op => {
-									return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-										<ListItemIcon>
-											{op.icon}
-										</ListItemIcon>
-										<ListItemText inset primary={op.label} />
-									</ListItem>
-								})}
-							</List>
-						</Menu>
+				{/* <ItemG>
+					 <Hidden smDown> 
+					<Tooltip title={t('tooltips.chart.type')}>
+						<IconButton variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+							{this.renderIcon()}
+						</IconButton>
+					</Tooltip>
+					<Menu
+						marginThreshold={24}
+						id='long-menu'
+						anchorEl={actionAnchorVisibility}
+						open={Boolean(actionAnchorVisibility)}
+						onClose={() => this.setState({ actionAnchorVisibility: null })}
+						PaperProps={{ style: { minWidth: 250 } }}>
+						<List component='div' disablePadding>
+							{this.visibilityOptions.map(op => {
+								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+									<ListItemIcon>
+										{op.icon}
+									</ListItemIcon>
+									<ListItemText inset primary={op.label} />
+								</ListItem>
+							})}
+						</List>
+					</Menu>
 					</Hidden>
-				</ItemG>
-
+				</ItemG> */}
 				<ItemG>
 					<Tooltip title={t('menus.menu')}>
 						<IconButton
@@ -615,14 +614,14 @@ class DoubleChartData extends PureComponent {
 							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 						</ListItemText>
 					</ListItem>
-					<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
+					{/* <ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
 						<ListItemIcon>
 							<Clear />
 						</ListItemIcon>
 						<ListItemText>
 							{t('menus.charts.deleteThisPeriod')}
 						</ListItemText>
-					</ListItem>
+					</ListItem> */}
 
 				</Menu>
 			</ItemG>

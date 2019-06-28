@@ -69,6 +69,7 @@ class InfoCard extends PureComponent {
 					action={this.renderTopAction()}
 					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar + ' ' + (whiteAvatar ? classes.whiteAvatar : "")}>{avatar}</Avatar>}
 					title={title}
+					disableTypography
 					subheader={this.hasSubheader(subheader)}
 					classes={{
 						title: classes.title,
