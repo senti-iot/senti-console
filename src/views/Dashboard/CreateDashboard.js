@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-// import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
 import { T, ItemG, CircularLoader } from 'components';
@@ -303,9 +301,6 @@ class CreateDashboard extends React.Component {
 	}
 }
 
-CreateDashboard.propTypes = {
-	onLayoutChange: PropTypes.func.isRequired
-};
 
 const mapStateToProps = (state) => ({
 	d: state.dsSystem.cDash,

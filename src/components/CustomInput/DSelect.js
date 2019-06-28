@@ -38,7 +38,8 @@ class DSelect extends Component {
 			 <InputLabel ref={ref => {
 					this.InputRef = ref;
 				}}
-				 FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+				classes={{ asterisk: classes.label }}
+				 /* FormLabelClasses={{ root: classes.label }} */ color={'primary'} htmlFor='select-multiple-chip'>
 					{label}
 				</InputLabel>
 				<Select

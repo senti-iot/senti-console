@@ -165,7 +165,7 @@ class DisplaySettings extends Component {
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.drawer.callback')}</ListItemText>
 										<Switch 
-											checked={drawerCloseOnNav}
+											checked={Boolean(drawerCloseOnNav)}
 											onChange={this.changeDrawerCloseOnNav}
 										/>
 									</ItemGrid>
