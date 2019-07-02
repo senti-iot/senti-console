@@ -10,7 +10,7 @@ import {
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	ExportModal,
+	// ExportModal,
 	DateFilterMenu,
 	T,
 } from 'components';
@@ -21,7 +21,7 @@ import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 // import { getSensorDataClean } from 'variables/dataRegistry';
-import Gauge from 'components/Charts/Gauge';
+import RGauge from 'components/Charts/RGauge';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 
@@ -345,7 +345,7 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG>
+			<ItemG container style={{ width: 'auto', flexFlow: 'column' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
@@ -370,7 +370,7 @@ class GaugeComponent extends PureComponent {
 		const { period, color } = this.props
 		const { loading, data } = this.state
 		if (!loading) {
-			return <Gauge
+			return <RGauge
 				color={color}
 				title={this.props.title}
 				period={period}
@@ -483,9 +483,9 @@ class GaugeComponent extends PureComponent {
 
 	render() {
 		const { t, period } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { /* openDownload, */ loading, /* exportData */ } = this.state
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
@@ -497,7 +497,7 @@ class GaugeComponent extends PureComponent {
 					// background={this.props.color}
 					content={
 						<Grid container>
-							<ExportModal
+							{/* <ExportModal
 								raw={period.raw}
 								to={displayTo}
 								from={displayFrom}
@@ -505,7 +505,7 @@ class GaugeComponent extends PureComponent {
 								open={openDownload}
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
-							/>
+							/> */}
 							{loading ? <div style={{ height: 211, width: '100%' }}><CircularLoader notCentered /></div> :
 
 								<ItemG xs={12}>

@@ -100,6 +100,7 @@ class Dashboard extends React.Component {
 							style={{ position: 'absolute', top: 0, right: 0, background: teal[500], color: '#fff', borderRadius: 4, marginRight: 8, padding: '8px' }}>
 							<Add />
 						</IconButton>
+					
 					</div>
 				</Fade>
 			</Fragment>

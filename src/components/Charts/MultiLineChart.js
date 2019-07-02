@@ -12,6 +12,7 @@ import MultiTooltip from './MultiTooltip';
 
 Chart.defaults.global.elements.line.tension = 0;
 Chart.defaults.multicolorLine = Chart.defaults.line;
+Chart.defaults.global.elements.point.radius = 1;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 	draw: function (ease) {
 		var startIndex = 0,
@@ -71,6 +72,7 @@ class LineChart extends PureComponent {
 				long: 0
 			},
 			lineOptions: {
+				pointRadius: 1,
 				lineTension: 0,
 				responsive: true,
 				animation: {
