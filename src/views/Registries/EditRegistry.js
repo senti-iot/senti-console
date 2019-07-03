@@ -13,7 +13,8 @@ class UpdateRegistry extends Component {
 
 		this.state = {
 			loading: true,
-			registry: null
+			registry: null,
+			org: null
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
@@ -33,8 +34,11 @@ class UpdateRegistry extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		const { location, setHeader, registry } = this.props
 		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
+			let orgs = this.props.orgs
+			console.log(registry, orgs)
 			this.setState({
 				registry: registry,
+				org: orgs[orgs.findIndex(o => o.id === registry.orgId)],
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
@@ -50,7 +54,14 @@ class UpdateRegistry extends Component {
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.keyHandler, false)
 	}
-
+	handleOrgChange = org => {
+		this.setState({ org, 
+			registry: {
+				...this.state.registry,
+				orgId: org.id
+			}
+	 })
+	}
 	handleChange = (what) => e => {
 		this.setState({
 			registry: {
@@ -87,10 +98,12 @@ class UpdateRegistry extends Component {
 	goToRegistries = () => this.props.history.push('/registries')
 	render() {
 		const { t } = this.props
-		const { loading, registry } = this.state
+		const { loading, registry, org } = this.state
 		return ( loading ? <CircularLoader/> :
 
 			<UpdateRegistryForm
+				org={org}
+				handleOrgChange={this.handleOrgChange}
 				registry={registry}
 				handleChange={this.handleChange}
 				handleCreate={this.handleUpdate}
@@ -104,6 +117,7 @@ class UpdateRegistry extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
+	orgs: state.data.orgs,
 	registry: state.data.registry
 })
 
