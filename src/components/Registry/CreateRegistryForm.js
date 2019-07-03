@@ -7,6 +7,7 @@ import { Grid, Paper } from '@material-ui/core'
 import { GridContainer, ItemGrid, TextF, ItemG, DSelect } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
@@ -17,7 +18,8 @@ class CreateRegistryForm extends Component {
 		this.state = {
 			filters: {
 				keyword: ''
-			}
+			},
+			openOrg: false
 		}
 	}
 
@@ -145,7 +147,7 @@ class CreateRegistryForm extends Component {
 		/>
 	}
 	render() {
-		const { t, handleChange, registry, classes, handleCreate, goToRegistries } = this.props
+		const { t, org, handleOrgChange, handleChange, registry, classes, handleCreate, goToRegistries } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -167,7 +169,19 @@ class CreateRegistryForm extends Component {
 							<ItemGrid xs={12}>
 								{this.renderProtocol()}
 							</ItemGrid>
-
+							<ItemGrid xs={12}>
+								<TextF 
+									value={org.name}
+									handleClick={() => this.setState({ openOrg: true })}
+									readonly
+								/>
+								<AssignOrgDialog 
+									t={t}
+									open={this.state.openOrg}
+									handleClose={() => this.setState({ openOrg: false })}
+									callBack={org => {this.setState({ openOrg: false }); handleOrgChange(org)}}
+								/>
+							</ItemGrid>
 						
 							<ItemGrid container style={{ margin: 16 }}>
 								<div className={classes.wrapper}>

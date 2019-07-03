@@ -102,7 +102,8 @@ CreateCollection.propTypes = {
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	org: state.settings.user.org
+	org: state.settings.user.org,
+	orgId: state.settings.user.org
 })
 
 const mapDispatchToProps = dispatch => ({

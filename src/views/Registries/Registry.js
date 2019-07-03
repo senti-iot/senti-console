@@ -29,7 +29,7 @@ class Registry extends Component {
 			openDelete: false,
 			//Map
 			loadingMap: true,
-			heatData: null,
+			heatData: null
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
