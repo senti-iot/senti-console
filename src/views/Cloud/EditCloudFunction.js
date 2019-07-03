@@ -13,7 +13,8 @@ class EditCloudFunction extends Component {
 
 		this.state = {
 			loading: true,
-			cloudfunction: null
+			cloudfunction: null,
+			org: null
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
@@ -33,8 +34,10 @@ class EditCloudFunction extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		const { location, setHeader, cloudfunction } = this.props
 		if ((!prevProps.cloudfunction && cloudfunction !== prevProps.cloudfunction && cloudfunction) || (this.state.cloudfunction === null && cloudfunction)) {
+			let orgs = this.props.orgs
 			this.setState({
 				cloudfunction: cloudfunction,
+				org: orgs[orgs.findIndex(o => o.id === cloudfunction.orgId)],
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/function/${this.id}`
@@ -49,6 +52,15 @@ class EditCloudFunction extends Component {
 	}
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.keyHandler, false)
+	}
+	handleOrgChange = org => {
+		this.setState({
+			org: org,
+			cloudfunction: {
+				...this.state.cloudfunction,
+				orgId: org.id
+			}
+		})
 	}
 	handleCodeChange = what => value => {
 		this.setState({
@@ -94,14 +106,16 @@ class EditCloudFunction extends Component {
 	goToRegistries = () => this.props.history.push('/functions')
 	render() {
 		const { t } = this.props
-		const { loading, cloudfunction } = this.state
+		const { loading, cloudfunction, org } = this.state
 		return ( loading ? <CircularLoader/> :
 
 			<CreateFunctionForm
 				cloudfunction={cloudfunction}
+				org={org}
 				handleChange={this.handleChange}
 				handleCreate={this.handleUpdate}
 				handleCodeChange={this.handleCodeChange}
+				handleOrgChange={this.handleOrgChange}
 				goToRegistries={this.goToRegistries}
 				t={t}
 			/>
@@ -112,6 +126,7 @@ class EditCloudFunction extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
+	orgs: state.data.orgs,
 	cloudfunction: state.data.cloudfunction
 })
 

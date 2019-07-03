@@ -17,8 +17,9 @@ class CreateCollection extends Component {
 	return args;
 }`,
 				type: 0,
-				description: ""
-			}
+				description: "",
+			},
+			org: props.org
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
@@ -45,6 +46,9 @@ class CreateCollection extends Component {
 			}
 		})
 	}
+	handleOrgChange = org => {
+		this.setState({ org })
+	}
 	handleChange = (what) => e => {
 		this.setState({
 			cloudfunction: {
@@ -55,7 +59,7 @@ class CreateCollection extends Component {
 	}
 	createFunction = async () => { 
 
-		let res = await createFunction({ ...this.state.cloudfunction, orgId: this.props.orgId })
+		let res = await createFunction({ ...this.state.cloudfunction, orgId: this.state.org.id })
 		await this.props.getFunctions(true, this.props.orgId, this.props.accessLevel.apisuperuser ? true : false)
 		return res
 	}
@@ -75,14 +79,16 @@ class CreateCollection extends Component {
 	goToRegistries = () => this.props.history.push('/functions')
 	render() {
 		const { t } = this.props
-		const { cloudfunction } = this.state
+		const { cloudfunction, org } = this.state
 		return (
 		
 			<CreateFunctionForm
 				cloudfunction={cloudfunction}
+				org={org}
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
 				handleCodeChange={this.handleCodeChange}
+				handleOrgChange={this.handleOrgChange}
 				goToRegistries={this.goToRegistries}
 				t={t}
 			/>
@@ -96,7 +102,7 @@ CreateCollection.propTypes = {
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	orgId: state.settings.user.org.id
+	org: state.settings.user.org
 })
 
 const mapDispatchToProps = dispatch => ({

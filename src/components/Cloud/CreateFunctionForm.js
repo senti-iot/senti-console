@@ -8,6 +8,7 @@ import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 import 'brace/theme/monokai';
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
@@ -18,7 +19,8 @@ class CreateFunctionForm extends Component {
 		this.state = {
 			filters: {
 				keyword: ''
-			}
+			},
+			openOrg: false
 		}
 	}
 
@@ -48,7 +50,7 @@ class CreateFunctionForm extends Component {
 	}
 	
 	render() {
-		const { t, handleChange, cloudfunction, classes, handleCreate, handleCodeChange, goToRegistries } = this.props
+		const { t, handleChange, org, cloudfunction, handleOrgChange, classes, handleCreate, handleCodeChange, goToRegistries } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -76,6 +78,19 @@ class CreateFunctionForm extends Component {
 								{this.renderType()}
 							</ItemGrid>
 							<ItemGrid xs={12}>
+								<TextF 
+									value={org.name}
+									handleClick={() => this.setState({ openOrg: true })}
+									readonly
+								/>
+								<AssignOrgDialog 
+									t={t}
+									open={this.state.openOrg}
+									handleClose={() => this.setState({ openOrg: false })}
+									callBack={org => {this.setState({ openOrg: false }); handleOrgChange(org)}}
+								/>
+							</ItemGrid>
+							<ItemGrid xs={12}>
 								{cloudfunction.type === 0 ? 
 									<div className={classes.editor}>
 										<AceEditor 
@@ -91,7 +106,6 @@ class CreateFunctionForm extends Component {
 									</div> : null
 								}
 							</ItemGrid>
-					
 							<ItemGrid container style={{ margin: 16 }}>
 								<div className={classes.wrapper}>
 									<Button
