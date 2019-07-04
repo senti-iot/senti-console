@@ -85,8 +85,6 @@ class GaugeComponent extends PureComponent {
 		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
 			this.setState({ loading: true }, async () => {
 				await this.getData()
-				// let newState = await this.getData(this.props.period)
-				// this.setState({ ...newState, loading: false })
 			})
 		}
 	}
