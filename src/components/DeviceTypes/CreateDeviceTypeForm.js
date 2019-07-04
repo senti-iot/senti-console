@@ -6,6 +6,7 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, DSelect, T } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
@@ -16,7 +17,8 @@ class CreateDeviceTypeForm extends Component {
 		this.state = {
 			filters: {
 				keyword: ''
-			}
+			},
+			openOrg: false
 		}
 	}
 
@@ -298,7 +300,7 @@ class CreateDeviceTypeForm extends Component {
 	}
 	
 	render() {
-		const { t, handleChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
+		const { t, handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
@@ -320,6 +322,20 @@ class CreateDeviceTypeForm extends Component {
 							{this.renderMetadata()}
 							<Divider style={{ margin: "16px" }} />
 							{this.renderMetadataInbound()}
+							<Divider style={{ margin: "16px" }} />
+							<ItemGrid xs={12}>
+								<TextF 
+									value={org.name}
+									handleClick={() => this.setState({ openOrg: true })}
+									readonly
+								/>
+								<AssignOrgDialog 
+									t={t}
+									open={this.state.openOrg}
+									handleClose={() => this.setState({ openOrg: false })}
+									callBack={org => {this.setState({ openOrg: false }); handleOrgChange(org)}}
+								/>
+							</ItemGrid>
 							<Divider style={{ margin: "16px" }} />
 							<ItemGrid container>
 								<div className={classes.wrapper}>

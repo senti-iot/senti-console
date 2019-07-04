@@ -83,7 +83,7 @@ class DoubleChartData extends PureComponent {
 	getData = async () => {
 		const { g, period, title, color } = this.props
 		if (g.dataSource.dataKey) {
-			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type)
+			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 			let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 			this.setState({
 				...newState, loading: false

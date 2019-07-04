@@ -27,6 +27,7 @@ class CreateDeviceType extends Component {
 				open: false,
 				where: null
 			},
+			org: props.org
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
@@ -236,10 +237,14 @@ class CreateDeviceType extends Component {
 			inbound: this.state.sensorMetadata.inbound,
 			outbound: this.state.sensorMetadata.outbound,
 			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
-			customer_id: this.props.orgId
+			// customer_id: this.props.orgId
+			orgId: this.state.org.id
 		}
 
 		return await createDeviceType(newDeviceType)
+	}
+	handleOrgChange = org => {
+		this.setState({ org })
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
@@ -260,9 +265,11 @@ class CreateDeviceType extends Component {
 
 	render() {
 		const { t, cloudfunctions } = this.props
-		const { deviceType, keyName, value, sensorMetadata  } = this.state
+		const { deviceType, keyName, value, sensorMetadata, org  } = this.state
 		return (
 			<CreateDeviceTypeForm
+				org={org}
+				handleOrgChange={this.handleOrgChange}
 				deviceType={deviceType}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
@@ -300,7 +307,8 @@ class CreateDeviceType extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
-	cloudfunctions: state.data.functions
+	org: state.settings.user.org,
+	cloudfunctions: state.data.functions,
 })
 
 const mapDispatchToProps = dispatch => ({

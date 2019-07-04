@@ -74,8 +74,8 @@ class GaugeComponent extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period } = this.props
-		// console.log(period.from)
-		let data = await getSensorDataClean(g.dataSource.deviceId, moment(period.from).subtract(1, 'day'), period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type)
+		// console.log(g.dataSource)
+		let data = await getSensorDataClean(g.dataSource.deviceId, moment(period.from).subtract(1, 'day'), period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 		// let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
 		this.setState({
 			data, loading: false
@@ -506,10 +506,12 @@ class GaugeComponent extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/> */}
-							{loading ? <div style={{ height: 211, width: '100%' }}><CircularLoader notCentered /></div> :
-
+							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
 								<ItemG xs={12}>
-									{this.renderType()}
+									<div style={{ height: 300 }}>
+
+										{this.renderType()}
+									</div>
 								</ItemG>
 							}
 						</Grid>}

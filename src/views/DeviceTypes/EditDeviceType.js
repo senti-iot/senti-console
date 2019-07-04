@@ -20,6 +20,7 @@ class CreateDeviceType extends Component {
 			deviceType: null,
 			keyName: '',
 			value: '',
+			org: null
 		}
 		this.id = props.match.params.id
 		// let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
@@ -36,7 +37,7 @@ class CreateDeviceType extends Component {
 		await getDeviceType(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, setBC, devicetype } = this.props
+		const { location, setHeader, setBC, devicetype, orgs } = this.props
 		if (!this.state.deviceType && devicetype !== prevProps.devicetype && devicetype) {
 			this.setState({
 				devicetype: devicetype,
@@ -45,6 +46,7 @@ class CreateDeviceType extends Component {
 					outbound: devicetype.outbound ? devicetype.outbound : [],
 					inbound: devicetype.inbound ? devicetype.inbound : []
 				},
+				org: orgs[orgs.findIndex(o => o.id === devicetype.orgId)],
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${this.id}`
@@ -75,6 +77,7 @@ class CreateDeviceType extends Component {
 			outbound: this.state.sensorMetadata.outbound,
 			inbound: this.state.sensorMetadata.inbound,
 			metadata: this.state.sensorMetadata.metadata,
+			orgId: this.state.org.id
 		}
 		return await updateDeviceType(deviceType)
 	}
@@ -265,18 +268,24 @@ class CreateDeviceType extends Component {
 			}
 		})
 	}
-
+	handleOrgChange = org => {
+		this.setState({
+			org: org
+		})
+	}
 	//#endregion
 
 	goToDeviceTypes = () => this.props.history.push('/devicetypes')
 
 	render() {
 		const { t, cloudfunctions } = this.props
-		const { devicetype, sensorMetadata, loading  } = this.state
+		const { devicetype, sensorMetadata, loading, org } = this.state
 
 		return ( loading ? <CircularLoader/> :
 
 			<CreateDeviceTypeForm
+				org={org}
+				handleOrgChange={this.handleOrgChange}
 				deviceType={devicetype}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
@@ -314,7 +323,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
 	cloudfunctions: state.data.functions,
-	devicetype: state.data.deviceType
+	devicetype: state.data.deviceType,
+	orgs: state.data.orgs
 })
 
 const mapDispatchToProps = dispatch => ({
