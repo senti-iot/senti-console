@@ -24,6 +24,7 @@ import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 import TC from 'components/Table/TC'
+import withLocalization from 'components/Localization/T';
 
 class ScoreCard extends PureComponent {
 	constructor(props) {
@@ -380,6 +381,7 @@ class ScoreCard extends PureComponent {
 	}
 	renderType = () => {
 		const { loading, a, b } = this.state
+		const { t } = this.props
 		if (!loading) {
 			return <Table>
 				<TableBody>
@@ -400,7 +402,7 @@ class ScoreCard extends PureComponent {
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={'Difference'}/>
+						<TC label={t('dashboard.fields.difference')}/>
 						<TC content={
 							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
 								{a.data > b.data ? (a.data - b.data).toFixed(3) : (b.data - a.data).toFixed(3)}
@@ -408,7 +410,7 @@ class ScoreCard extends PureComponent {
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={'Percentage Difference:'}/>
+						<TC label={t('dashboard.fields.percDifference')}/>
 						<TC content={
 							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
 								{a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)}% 
@@ -530,4 +532,4 @@ const mapDispatchToProps = dispatch => ({
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ScoreCard))
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(deviceStyles, { withTheme: true })(ScoreCard)))

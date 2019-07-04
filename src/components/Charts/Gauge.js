@@ -27,7 +27,6 @@ class Gauge extends Component {
 	}
 	render() {
 		const { title, color, theme  } = this.props
-		console.log(theme)
 		return (
 			<ItemG container justify={'center'} alignItems={'center'} style={{ width: '100%', height: '100%' }}>
 				<ItemG container justify={'center'} alignItems={'center'}>

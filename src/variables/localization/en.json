@@ -201,6 +201,10 @@
 		"title": "Senti Cookie Policy"
 	},
 	"dashboard": {
+		"fields": {
+			"percDifference": "Percentage Difference:",
+			"difference": "Difference"
+		},
 		"cardContent": {
 			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
 			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
