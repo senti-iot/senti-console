@@ -365,7 +365,7 @@ class GaugeComponent extends PureComponent {
 		</ItemG>
 	}
 	renderType = () => {
-		const { period, color } = this.props
+		const { period, color, g } = this.props
 		const { loading, data } = this.state
 		if (!loading) {
 			return <RGauge
@@ -373,6 +373,7 @@ class GaugeComponent extends PureComponent {
 				title={this.props.title}
 				period={period}
 				value={data}
+				chartId={g.id}
 			/>
 		}
 		else return this.renderNoData()
@@ -506,10 +507,10 @@ class GaugeComponent extends PureComponent {
 							/> */}
 							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
 								<ItemG xs={12}>
-									<div style={{ height: 300 }}>
+									{/* <div style={{ height: 300 }}> */}
 
-										{this.renderType()}
-									</div>
+									{this.renderType()}
+									{/* </div> */}
 								</ItemG>
 							}
 						</Grid>}
