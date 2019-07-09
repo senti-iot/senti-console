@@ -171,7 +171,7 @@ class SensorDetails extends Component {
 									fullWidth
 									label={''}
 									readOnly
-									value={`{{API_TOKEN_HERE}}/devicedata/${sensor.uuid}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_KEY}}/?{{CLOUD_FUNCTION_ID}}`}
+									value={`{{API_TOKEN_HERE}}/devicedata/${sensor.uuid}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_KEY}}/{{CLOUD_FUNCTION_ID}}`}
 									InputProps = {{ endAdornment:
 										<ItemG>
 											<IconButton onClick={() => { 
