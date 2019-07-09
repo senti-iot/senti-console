@@ -9,6 +9,9 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
+		"close": "Close",
+		"create":"Create",
+		"delete": "Delete",
 		"accept": "Accept",
 		"addFilter": "Add filter",
 		"addInboundFunc": "Add function on receiving data",
@@ -337,6 +340,13 @@
 		"pageTitle": "Device Type"
 	},
 	"dialogs": {
+		"tokens": {
+			"createToken": {
+				"title": "Confirm that you have saved the token",
+				"closeWarning": "ONCE YOU CLOSE THIS WINDOW YOU WILL NOT BE ABLE TO SEE THE TOKEN AGAIN !!!",
+				"closeConfirm": "Insert the token in the empty field as confirmation!"
+			}
+		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
@@ -352,9 +362,11 @@
 				"project": "Are you sure you want to delete this project?",
 				"projects": "Are you sure you want to delete these projects:",
 				"user": "Are you sure you want to delete this user ( %{user} ) ?",
-				"users": "Are you sure you want to delete these users:"
+				"users": "Are you sure you want to delete these users:",
+				"tokens": "Are you sure you want to delete these API tokens:"
 			},
 			"title": {
+				"tokens": "Delete API tokens?",
 				"collection": "Delete data collection?",
 				"collections": "Delete data collections?",
 				"deviceImage": "Delete this picture?",
@@ -545,6 +557,7 @@
 		},
 		"copyEmails": "Copy E-mail addresses",
 		"create": {
+			"token": "Create API Token",
 			"cloudfunction": "Create cloud function",
 			"collection": "Create data collection",
 			"device": "Create device",
@@ -940,6 +953,7 @@
 		}
 	},
 	"sidebar": {
+		"api": "API",
 		"cloudfunction": "Cloud function",
 		"cloudfunctions": "Cloud functions",
 		"collection": "Data Collection",
@@ -1139,6 +1153,20 @@
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
 			"userAlreadyExists": "E-mail is already assigned to a user account!"
+		}
+	},
+	"tokens": {
+		"fields": {
+			"id": "ID",
+			"name": "Label",
+			"created": "Created",
+			"type": "Type",
+			"types": {
+				"device": "Device",
+				"devicetype": "Device type",
+				"registry": "Registry"
+			},
+			"reference": "Reference"
 		}
 	}
 }

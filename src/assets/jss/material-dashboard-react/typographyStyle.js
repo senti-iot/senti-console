@@ -56,8 +56,8 @@ const typographyStyle = {
 		color: warningColor,
 		backgroundColor: "#ff980020",
 		borderRadius: "4px",
-		padding: "4px"
-
+		padding: "4px",
+		fontSize: 16
 	},
 	dangerText: {
 		color: dangerColor

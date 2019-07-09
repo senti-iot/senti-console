@@ -106,7 +106,7 @@ class MessageTable extends React.Component {
 								{
 									id: 'name',
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										{t('registries.fields.name')}
+										{t('tokens.fields.name')}
 									</Typography>
 								}
 							]}
@@ -116,6 +116,8 @@ class MessageTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
+										// onMouseEnter={e => { this.setHover(e, n) }}
+										// onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n)}
 										role='checkbox'
@@ -136,12 +138,7 @@ class MessageTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${this.renderProtocol(n.protocol)}`}
-														</Caption>
-													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-														<Caption noWrap className={classes.noMargin}>
-															{`${n.customer_name ? n.customer_name : t('users.fields.noOrg')}`}
+															{n.created}
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
@@ -151,14 +148,13 @@ class MessageTable extends React.Component {
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC 
+												checkbox
 												label={n.id}/>
 											<TC
 												FirstC
-												label={n.deviceName} 
+												label={n.name} 
 											/>
-											<TC label={n.registryName}/>
 											<TC label={dateTimeFormatter(n.created, true)} />
-											<TC label={n.customerName} />
 										</Hidden>
 									</TableRow>
 								)

@@ -1,4 +1,4 @@
-import { servicesAPI } from './data';
+import { servicesAPI, externalAPI } from './data';
 import moment from 'moment';
 
 export const getAllRegistries = async (customerID, su) => {
@@ -114,5 +114,15 @@ export const getSensorData = async (id) => {
 }
 export const getAllMessages = async cId => {
 	let response = await servicesAPI.get(`/v1/messages/${cId}`).then(rs => rs.ok ? rs.data : rs.ok)
+	return response
+}
+
+export const getAllTokens = async userId => { 
+	let response = await externalAPI.get(`/tokens/${userId}`).then(rs => rs.ok ? rs.data : [])
+	return response
+}
+
+export const generateToken = async token => { 
+	let response = await externalAPI.post(`/generateToken`, token).then(rs => rs.ok ? rs.data  : null) 
 	return response
 }
