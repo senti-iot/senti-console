@@ -108,7 +108,10 @@ import CellWifi from '@material-ui/icons/CellWifi'
 import LocalOffer from '@material-ui/icons/LocalOffer'
 import Airplay from '@material-ui/icons/Airplay'
 import GaugeIcon from 'assets/icons/Gauge'
+import Https from '@material-ui/icons/Https'
+
 export {
+	Https,
 	GaugeIcon,
 	InsertChart,
 	Airplay,
