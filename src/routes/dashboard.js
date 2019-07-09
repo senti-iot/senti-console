@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import DashboardPage from 'views/Dashboard/Dashboard';
-import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload, InsertChart } from 'variables/icons';
+import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload, InsertChart, Https } from 'variables/icons';
 import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
@@ -288,7 +288,7 @@ const dashboardRoutes = [
 			},
 			{
 				path: '/api',
-				icon: CloudUpload,
+				icon: Https,
 				component: AsyncTokens,
 				sidebarName: 'sidebar.api',
 				menuRoute: 'manage.api'

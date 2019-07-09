@@ -33,7 +33,7 @@ class Tokens extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('sidebar.api', false, '', 'api')
+		props.setHeader('sidebar.api', false, '', 'manage.api')
 		props.setBC('api')
 		props.setTabs({
 			id: 'api',
