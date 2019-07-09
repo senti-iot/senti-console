@@ -8,6 +8,15 @@ import { red, green } from '@material-ui/core/colors'
 
 const projectStyles = theme => ({
 	...deviceStatus,
+	redButton: {
+		color: red[700],
+		border: '1px solid rgb(211,47,47, 0.5)',
+		"&:hover": {
+			borderColor: red[700],
+			color: red[800],
+			background: 'rgb(211,47,47, 0.2)'
+		}
+	},
 	closeButton: {
 		marginLeft: 'auto',
 		color: theme.palette.grey[500],

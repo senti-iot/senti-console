@@ -162,6 +162,29 @@ class SensorDetails extends Component {
 								/>
 							</ItemG> : null}
 						</ItemG>
+						<ItemG xs={12}>
+							<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
+							<ItemG xs={12}>
+								<Caption>{t('registries.fields.protocols.http')}</Caption>
+								<TextF
+									id={'mqtt-state'}
+									fullWidth
+									label={''}
+									readOnly
+									value={`{{API_TOKEN_HERE}}/devicedata/${sensor.uuid}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_KEY}}/?{{CLOUD_FUNCTION_ID}}`}
+									InputProps = {{ endAdornment:
+										<ItemG>
+											<IconButton onClick={() => { 
+												this.props.s('snackbars.urlCopied')
+												copyToClipboard(`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)}
+											}>
+												<ContentCopy/>
+											</IconButton>
+										</ItemG> }
+									}
+								/>
+							</ItemG>
+						</ItemG>
 					</ItemG>
 				}
 			/>

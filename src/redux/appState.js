@@ -137,6 +137,7 @@ const initialState = {
 	smallMenu: true,
 	trp: null,
 	filters: {
+		tokens: [],
 		favorites: [],
 		projects: [],
 		devices: [],

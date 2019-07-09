@@ -11,6 +11,10 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncTokens = Loadable({
+	loader: () => import('routes/tokens'),
+	loading: AsyncLoader
+})
 const AsyncMessages = Loadable({
 	loader: () => import('routes/messages'),
 	loading: AsyncLoader
@@ -281,6 +285,13 @@ const dashboardRoutes = [
 				component: AsyncCloudFunctions,
 				sidebarName: 'sidebar.cloudfunctions',
 				menuRoute: 'manage.cloudfunctions'
+			},
+			{
+				path: '/api',
+				icon: CloudUpload,
+				component: AsyncTokens,
+				sidebarName: 'sidebar.api',
+				menuRoute: 'manage.api'
 			}
 		]
 	},

@@ -183,3 +183,13 @@ export const cloudAPI = create({
 		'Content-Type': 'application/json'
 	}
 })
+
+export const externalAPI = create({
+	baseURL: 'https://services.senti.cloud/api',
+	timeout: 30000,
+	headers: {
+		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
