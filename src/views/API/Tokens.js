@@ -14,6 +14,7 @@ import { customFilterItems } from 'variables/Filters';
 import { getTokens, setTokens, sortData } from 'redux/data';
 import { Link } from 'react-router-dom'
 import CreateToken from './CreateToken';
+import { deleteTokens } from 'variables/dataRegistry';
 
 class Tokens extends Component {
 	constructor(props) {
@@ -245,7 +246,17 @@ class Tokens extends Component {
 		this.setState({ route: value })
 	}
 	handleDeleteTokens = async () => {
-		// const { selected } = this.state
+		const { selected } = this.state
+		let r = await deleteTokens(selected)
+		if (r) {
+			this.setState({
+				selected: [],
+				openDelete: false, 
+				anchorElMenu: null
+			})
+			this.getData(true)
+			this.snackBarTokens(1)
+		}
 		// Promise.all([selected.map(u => {
 		// 	return deleteToken(u)
 		// })]).then(async () => {
