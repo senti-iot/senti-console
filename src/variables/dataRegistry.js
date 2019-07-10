@@ -117,7 +117,7 @@ export const getAllMessages = async cId => {
 	return response
 }
 
-export const getAllTokens = async userId => { 
+export const getAllTokens = async userId => {
 	let response = await externalAPI.get(`/tokens/${userId}`).then(rs => rs.ok ? rs.data : [])
 	return response
 }
