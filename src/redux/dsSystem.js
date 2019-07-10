@@ -228,6 +228,7 @@ export const dsSystem = (state = initialState, { type, payload }) => {
 			return setState('eGraph', payload, state)
 		case cGraph: 
 			return setState('cGraphs', payload, state)
+		case eDash:
 		case cDash: 
 			return setState('cDash', payload, state)
 		case setGraphs:

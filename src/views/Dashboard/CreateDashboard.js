@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
@@ -170,19 +170,28 @@ class CreateDashboard extends React.Component {
 		})
 		this.setState({ updated: false })
 	}
-	changeWeekendColor = (value) => {
-		console.log(value)
+	changeColor = (value) => {
+		const { d } = this.props
+		let newD = Object.assign({}, d)
+		newD.color = value
+		this.props.editDashboard(newD)
+	}
+	changeName = (e) => {
+		const { d } = this.props
+		let newD = Object.assign({}, d)
+		newD.name = e.target.value
+		this.props.editDashboard(newD)
 	}
 	renderColorPicker = () => {
 		const { t } = this.props
 		return <Dropdown 
 			icon={<Palette style={{ color: "#FFF" }}/>}
 			menuItems={weekendColorsDropdown(t)}
-			onChange={this.changeWeekendColor}
+			onChange={this.changeColor}
 		/>
 	}
 	render() {
-		const { openAddDash, handleCloseDT, classes, d, t } = this.props
+		const { openAddDash, handleCloseDT, classes, d } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -215,8 +224,9 @@ class CreateDashboard extends React.Component {
 													color: '#fff'
 												}
 											}}
+											value={d.name}
+											handleChange={this.changeName}
 											reversed
-											label={t('dashboards.fields.name')}
 										/>
 										{this.renderColorPicker()}
 										
@@ -287,6 +297,7 @@ const mapDispatchToProps = dispatch => ({
 	createDash: () => dispatch(createDash()),
 	createGraph: (type) => dispatch(createGraph(type)),
 	editGraphPos: (g) => dispatch(editGraphPos(g)),
+	editDashboard: (d) => dispatch(editDash(d)),
 	setGE: g => dispatch(setGE(g)),
 	removeGE: g => dispatch(removeGE(g))
 })
