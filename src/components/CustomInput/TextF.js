@@ -12,7 +12,10 @@ const styles = theme => ({
 		background: '#fff'
 	},
 	reversed: {
-		color: '#fff',
+		color: 'rgba(255, 255, 255, 0.23)',
+	},
+	reversedBorder: {
+		borderColor: 'rgba(255, 255, 255, 0.23)'
 	}
 })
 
@@ -25,6 +28,9 @@ const TextF = (props) => {
 		[props.className]: props.className ? true : false,
 		[props.classes.reversed]: props.reversed,
 		[props.classes.textField]: props.classes.textField ? true : false
+	})
+	let notchedCX = cx({
+		[props.classes.reversedBorder]: props.reversed,
 	})
 	return (		
 		<TextField
@@ -47,9 +53,21 @@ const TextF = (props) => {
 			disabled={props.disabled ? props.disabled : false}
 			margin='normal'
 			helperText={props.helperText}
-			InputProps={props.InputProps ? { ...props.InputProps, style: { ...props.InputProps.style, boxSizing: 'border-box' } } : null}
+			InputProps={props.InputProps ? { 
+				...props.InputProps, 
+				style: { ...props.InputProps.style, boxSizing: 'border-box' },
+				classes: {
+					notchedOutline: notchedCX
+				}
+			} : null}
 			onKeyPress={props.onKeyPress}
 			onKeyDown={props.onKeyDown}
+			FormHelperTextProps={{
+				className: classNames
+			}}
+			InputLabelProps={{
+				className: classNames
+			}}
 		/>
 
 	)

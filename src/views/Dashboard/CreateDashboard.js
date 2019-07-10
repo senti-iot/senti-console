@@ -1,13 +1,12 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
-import { T, ItemG, CircularLoader } from 'components';
+import { T, ItemG, CircularLoader, Dropdown, TextF } from 'components';
 import cx from 'classnames'
-import { Close, Edit, Clear } from 'variables/icons';
+import { Close, Edit, Clear, Palette } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
-import { useDrop, useDrag } from 'react-dnd'
 import GaugeSData from 'views/Charts/GaugeSData';
 import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
@@ -17,62 +16,10 @@ import { createDash, createGraph, editGraphPos, setGE, removeGE } from 'redux/ds
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
+import ToolbarItem from './ToolbarItem';
+import DropZone from './DropZone';
+import { weekendColorsDropdown } from 'variables/functions';
 
-const style = {
-	height: '100%',
-	width: '100%',
-	transition: 'background 100ms ease'
-}
-const Dustbin = ({ i, children, onDrop }) => {
-	const [{ canDrop, isOver }, drop] = useDrop({
-		accept: ItemTypes,
-		drop: (item) => onDrop(item),
-		collect: monitor => ({
-			isOver: monitor.isOver(),
-			canDrop: monitor.canDrop(),
-		}),
-	})
-	const isActive = canDrop && isOver
-	// let background = 'linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%)'
-	let background = 'inherit'
-	if (isActive) {
-		background = '#eee'
-	} else if (canDrop) {
-		// background = 'darkkhaki'
-	}
-	return (
-		<div ref={drop} style={Object.assign({}, style, { background, width: '100%', height: '100%', overflow: 'auto' })}>
-			{children}
-		</div>
-	)
-}
-
-const Box = ({ name, type }) => {
-	const [{ isDragging }, drag] = useDrag({
-		item: { name, type: type },
-		end: dropResult => {
-			if (dropResult) {
-			}
-		},
-		collect: monitor => ({
-			isDragging: monitor.isDragging(),
-		}),
-	})
-
-	return (
-		<div ref={drag} style={{ margin: '0px 4px', opacity: isDragging ? 0.4 : 1, transition: 'all 300ms ease', cursor: 'move' }}>
-			<Paper style={{ padding: '8px' }}>
-				<T style={{ textAlign: 'center' }}>
-					{name}
-				</T>
-			</Paper>
-		</div>
-	)
-}
-
-const ItemTypes = [
-	"chart", "gauge", "scorecardAB", "scorecard", "windcard"
-]
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 //ignore
@@ -223,8 +170,19 @@ class CreateDashboard extends React.Component {
 		})
 		this.setState({ updated: false })
 	}
+	changeWeekendColor = (value) => {
+		console.log(value)
+	}
+	renderColorPicker = () => {
+		const { t } = this.props
+		return <Dropdown 
+			icon={<Palette style={{ color: "#FFF" }}/>}
+			menuItems={weekendColorsDropdown(t)}
+			onChange={this.changeWeekendColor}
+		/>
+	}
 	render() {
-		const { openAddDash, handleCloseDT, classes, /* t,  */d } = this.props
+		const { openAddDash, handleCloseDT, classes, d, t } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -235,7 +193,11 @@ class CreateDashboard extends React.Component {
 					fullScreen
 					open={openAddDash}
 					onClose={handleCloseDT}
-					TransitionComponent={this.transition}>
+					TransitionComponent={this.transition}
+					PaperProps={{
+						className: classes[d.color]
+					}}
+				>
 					<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 						<Toolbar>
 							<Hidden mdDown>
@@ -245,10 +207,19 @@ class CreateDashboard extends React.Component {
 											<Close />
 										</IconButton>
 									</ItemG>
-									<ItemG xs={10}>
-										<T variant='h6' color='inherit' className={classes.flex}>
-											{this.state.n}
-										</T>
+									<ItemG container xs={10} justify={'center'} alignItems={'center'}>
+									
+										<TextF 
+											InputProps={{
+												style: {
+													color: '#fff'
+												}
+											}}
+											reversed
+											label={t('dashboards.fields.name')}
+										/>
+										{this.renderColorPicker()}
+										
 									</ItemG>
 								</ItemG>
 							</Hidden>
@@ -269,11 +240,11 @@ class CreateDashboard extends React.Component {
 					<CreateDashboardToolbar
 						content={
 							<ItemG container style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }}>
-								<Box type={"chart"} name={'Chart'} />
-								<Box type={"gauge"} name={'Gauge'} />
-								<Box type={"scorecard"} name={'Scorecard'} />
-								<Box type={"scorecardAB"} name={'Difference Scorecard'} />
-								<Box type={"windcard"} name={'Windcard'} />
+								<ToolbarItem type={"chart"} name={'Chart'} />
+								<ToolbarItem type={"gauge"} name={'Gauge'} />
+								<ToolbarItem type={"scorecard"} name={'Scorecard'} />
+								<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />
+								<ToolbarItem type={"windcard"} name={'Windcard'} />
 							</ItemG>
 
 						}>
@@ -282,7 +253,7 @@ class CreateDashboard extends React.Component {
 						<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }); this.forceUpdate() }} openEditGraph={this.state.openEditGraph} />
 						: null}
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
-						<Dustbin onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
+						<DropZone color={d.color} onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
 								onBreakpointChange={(n) => this.setState({ n })}
@@ -294,7 +265,7 @@ class CreateDashboard extends React.Component {
 							>
 								{this.generateDOM()}
 							</ResponsiveReactGridLayout>
-						</Dustbin>
+						</DropZone>
 					</div>
 				</Dialog>
 		);

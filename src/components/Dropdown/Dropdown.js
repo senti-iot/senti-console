@@ -20,7 +20,15 @@ class Dropdown extends Component {
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
 	}
-
+	handleMenuItemClick = (m) => e => {
+		if (m.func) {
+			m.func()
+		}
+		else {
+			this.props.onChange(m.value)
+		}
+		this.handleCloseActionsDetails()
+	}
 	render() {
 		const { actionAnchor } = this.state
 		const { menuItems, icon, button, divider, tooltip, t } = this.props
@@ -52,7 +60,8 @@ class Dropdown extends Component {
 					{menuItems.map((m, i) => {
 						if (m.dontShow)
 							return null
-						return <MenuItem divider={divider ? i === menuItems.length - 1 ? false : true : false} selected={m.selected} key={i} onClick={() => { m.func(); this.handleCloseActionsDetails() }}>
+						return <MenuItem divider={divider ? i === menuItems.length - 1 ? false : true : false} selected={m.selected} key={i}
+							onClick={this.handleMenuItemClick(m)}>
 							<ItemG container justify={'space-between'} alignItems={'center'}>
 								{m.icon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon}</ItemG> : null}
 								<ItemG xs>{m.label}</ItemG>

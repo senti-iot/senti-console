@@ -109,8 +109,9 @@ import LocalOffer from '@material-ui/icons/LocalOffer'
 import Airplay from '@material-ui/icons/Airplay'
 import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
-
+import Palette from '@material-ui/icons/Palette'
 export {
+	Palette,
 	Https,
 	GaugeIcon,
 	InsertChart,

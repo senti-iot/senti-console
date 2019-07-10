@@ -75,7 +75,6 @@ class DoubleChartData extends PureComponent {
 	componentDidMount = async () => {
 		const { period } = this.props
 		const { loading } = this.state
-		console.log('Mounted')
 		if (period && loading) {
 			await this.getData()
 		}
@@ -96,11 +95,7 @@ class DoubleChartData extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		// if (this.props.create) {
-		// 	this.setState({ loading: true }, async () => {
-		// 		this.getData()
-		// 	})
-		// }
+
 		console.log('CDUP',  prevProps.g.dataSource.dataKey, this.props.g.dataSource.dataKey)
 		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
 			this.setState({ loading: true }, async () => {
