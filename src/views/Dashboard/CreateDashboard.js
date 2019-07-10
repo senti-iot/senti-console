@@ -8,7 +8,7 @@ import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
 import { useDrop, useDrag } from 'react-dnd'
-import GaugeFakeData from 'views/Charts/GaugeFakeData';
+import GaugeSData from 'views/Charts/GaugeSData';
 import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
@@ -142,7 +142,7 @@ class CreateDashboard extends React.Component {
 			case 1:
 				return <Paper key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
-					<GaugeFakeData
+					<GaugeSData
 						create
 						title={g.name}
 						period={g.period}

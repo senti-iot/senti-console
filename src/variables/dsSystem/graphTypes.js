@@ -3,12 +3,12 @@ export const graphType = (type) => {
 		case "chart": //Charts
 			return {
 				grid: {
-					minW: 4,
+					minW: 6,
 					minH: 8,
 					x: 0,
 					y: 0,
 					h: 8,
-					w: 4
+					w: 6
 				},
 				chartType: 3, //Line Graph
 				dataSource: {

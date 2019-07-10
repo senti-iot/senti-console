@@ -263,7 +263,7 @@ export class EditDataSource extends Component {
 		switch (g.type) {
 			case 0:
 				return <Fragment>
-					<ItemG>
+					<ItemG xs={12}>
 						<ExpansionPanel
 							expanded={generalExp}
 							square
@@ -375,7 +375,7 @@ export class EditDataSource extends Component {
 				</Fragment>
 			case 1:
 				return <Fragment>
-					<ItemG>
+					<ItemG xs={12}>
 						<ExpansionPanel
 							expanded={generalExp}
 							square
@@ -399,14 +399,6 @@ export class EditDataSource extends Component {
 											margin='normal'
 										/>
 									</ItemG>
-									{/* <ItemG xs={12}>
-										<DSelect
-											onChange={this.handleEditChartType}
-											label={t('dashboard.fields.chartType')}
-											value={g.period.chartType}
-											menuItems={this.chartTypes()}
-										/>
-									</ItemG> */}
 								</ItemG>
 							</ExpansionPanelDetails>
 

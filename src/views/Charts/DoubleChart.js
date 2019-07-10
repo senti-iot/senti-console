@@ -595,17 +595,6 @@ class DoubleChartData extends PureComponent {
 						<ListItemIcon><CloudDownload /></ListItemIcon>
 						<ListItemText>{t('menus.export')}</ListItemText>
 					</ListItem>
-					{/* <ListItem button onClick={() => this.props.changeRawData(period)}>
-						<ListItemIcon>
-							<Checkbox
-								checked={period.raw}
-								className={classes.noPadding}
-							/>
-						</ListItemIcon>
-						<ListItemText>
-							{t('collections.rawData')}
-						</ListItemText>
-					</ListItem> */}
 					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
 						<ListItemIcon>
 							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
@@ -614,14 +603,6 @@ class DoubleChartData extends PureComponent {
 							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 						</ListItemText>
 					</ListItem>
-					{/* <ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
-						<ListItemIcon>
-							<Clear />
-						</ListItemIcon>
-						<ListItemText>
-							{t('menus.charts.deleteThisPeriod')}
-						</ListItemText>
-					</ListItem> */}
 
 				</Menu>
 			</ItemG>

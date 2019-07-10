@@ -7,7 +7,7 @@ import { ItemG, T, CircularLoader } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
-import GaugeFakeData from 'views/Charts/GaugeFakeData';
+import GaugeSData from 'views/Charts/GaugeSData';
 import DoubleChart from 'views/Charts/DoubleChart';
 import logo from '../../logo.svg'
 import ScorecardAB from 'views/Charts/ScorecardAB';
@@ -146,7 +146,7 @@ class DashboardPanel extends Component {
 							case 1:
 								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
-									<GaugeFakeData
+									<GaugeSData
 										title={g.name}
 										period={{ ...g.period, menuId: g.periodType }}
 										t={t}

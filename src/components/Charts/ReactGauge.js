@@ -97,7 +97,7 @@ const draw = (props, opts) => {
 	svg = el.append('svg').attr('class', `${props.classes.svg}`).attr('width', width + margin.left + margin.right).attr('height', height).attr('position', 'relative');
 
 	// Add layer for the panel
-	chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left + margin.right) / 2) + ", " + ((height - margin.top)) + ")").attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	chart = svg.append('g').attr('transform', "translate(" + ((width) / 2) + ", " + ((height - margin.top)) + ")").attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
 
 	//Add the Arcs
 	chart.append('path').attr('class', `arc ${props.classes.chartFilled}`);
@@ -106,20 +106,21 @@ const draw = (props, opts) => {
 	}
 	chart.append('path').attr('class', `arc ${props.classes.chartEmpty}`);
 	
+
 	//Add the text
 	if (labels) {
 		valueLabel = svg.append("text")
 			.attr('dominant-baseline', "middle")
-			.attr("x", "50%")
-			.attr("y", "80%")
+			.attr("x", (width / 2))
+			.attr("y", (((height - margin.top) * 95) / 100))
 			.attr("text-anchor", 'middle')
 			.attr('class', props.classes ? props.classes.label : "small-label")
 			// .text(props.value)
 			.attr('font-family', "Roboto")
 			.attr('font-size', "16px");
 		valueDesc = svg.append("text")
-			.attr("x", "50%")
-			.attr("y", "60%")
+			.attr("x", (width / 2))
+			.attr("y", (((height - margin.top) * 95) / 100))
 			.attr('dominant-baseline', "middle")
 			.attr("text-anchor", 'middle')
 			.attr('class', props.classes ? props.classes.label : "label")
@@ -175,7 +176,7 @@ const draw = (props, opts) => {
 			let oldPerc2 = value2percent(oldValue2)
 
 			if (labels) {
-				valueLabel.text(parseFloat(prev ? value2 : value).toFixed(3))
+				valueLabel.text(parseFloat(prev ? value2 : value) ? parseFloat(prev ? value2 : value).toFixed(3) : '---')
 				valueDesc.text(txt)
 			}
 			this.el.transition().duration(400).select('.' + props.classes.chartFilled).tween('progress', function () {

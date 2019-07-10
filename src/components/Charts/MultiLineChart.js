@@ -72,7 +72,6 @@ class LineChart extends PureComponent {
 				long: 0
 			},
 			lineOptions: {
-				pointRadius: 1,
 				lineTension: 0,
 				responsive: true,
 				animation: {
@@ -98,7 +97,7 @@ class LineChart extends PureComponent {
 								color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
 							},
 							ticks: {
-								// source: 'labels',
+								source: 'labels',
 								maxRotation: 0,
 								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 							},
@@ -127,7 +126,7 @@ class LineChart extends PureComponent {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
-								// source: 'labels',
+								source: 'labels',
 								maxRotation: 0
 							},
 							id: 'xAxis-day',
@@ -444,14 +443,11 @@ class LineChart extends PureComponent {
 		return (
 			<Fragment>
 				<div style={{ display: 'block', height: '100%', width: '100%', /* maxHeight: 300, */ position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: '100%', /*  maxHeight: 300, */ width: '100%' }}>
+					<div style={{ display: 'block', height: '100%', /*  maxHeight: 300, */ width: '100%', position: 'relative' }}>
 
 						<ChartComponent
-							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
 							data={data}
-							// height={'100%'}
-							// width={'100%'}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}

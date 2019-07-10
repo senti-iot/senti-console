@@ -8,7 +8,7 @@ import { Close } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
-import GaugeFakeData from 'views/Charts/GaugeFakeData';
+import GaugeSData from 'views/Charts/GaugeSData';
 import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
@@ -17,17 +17,9 @@ import withLocalization from 'components/Localization/T';
 import { editGraph } from 'redux/dsSystem';
 import { getSensorLS } from 'redux/data';
 import EditDataSource from './EditDataSource';
-// import { useWidth } from 'components/WidthProvider/Width';
-// import { useWidth } from 'components/WidthProvider/Width';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-// function withWidth(Component) {
-// 	return function WrappedComponent(props) {
-// 	  const width = useWidth();
-// 	  return <Component {...props} width={width} />;
-// 	}
-// }
 class EditGraph extends Component {
 	constructor(props) {
 		super(props)
@@ -36,23 +28,7 @@ class EditGraph extends Component {
 			loading: false
 		}
 	}
-	// componentDidUpdate(prevProps, prevState) {
-	// 	console.log(this.state.layout)
-	// }
-	
-	// renderPos = (l) => {
-	// 	return <div style={{ position: 'absolute',
-	// 		top: '50%',
-	// 		left: '50%',
-	// 		zIndex: '9999',
-	// 		background: 'white',
-	// 		fontSize: '24px',
-	// 		padding: '20px',
-	// 		transformOrigin: 'center',
-	// 		transform: 'translate(-50%, -50%)' }}>
-	// 		[{l.x}, {l.y}, {l.w}, {l.h}]
-	// 	</div>
-	// }
+
 	typeChildren = (g) => {
 		const { t } = this.props
 		let d = this.props.d
@@ -61,7 +37,7 @@ class EditGraph extends Component {
 			switch (g.type) {
 				case 1:
 					return <Paper key={g.id} data-grid={this.getCoords(g.grid)}>
-						<GaugeFakeData
+						<GaugeSData
 							create
 							title={g.name}
 							period={{ ...g.period, menuId: g.periodType }}
