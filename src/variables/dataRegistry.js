@@ -5,7 +5,7 @@ export const getAllRegistries = async (customerID, su) => {
 	let response = []
 	if (su)
 		response = await servicesAPI.get('/v1/registries').then(rs => rs.ok ? rs.data : [])
-	else 
+	else
 		response = await servicesAPI.get(`/v1/${customerID}/registries`).then(rs => rs.ok ? rs.data : [])
 	return response
 }
@@ -82,7 +82,7 @@ export const createSensor = async (sensor) => {
 	return response
 }
 export const updateSensor = async (sensor) => {
-	let response = await servicesAPI.post(`v1/device`, sensor).then(rs => rs.data )
+	let response = await servicesAPI.post(`v1/device`, sensor).then(rs => rs.data)
 	return response
 }
 export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chartType, calc) => {
@@ -101,7 +101,7 @@ export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chart
 		}
 		return response.avrg
 	}
-	else { 
+	else {
 		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}`
 		response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
 		return response
@@ -114,5 +114,26 @@ export const getSensorData = async (id) => {
 }
 export const getAllMessages = async cId => {
 	let response = await servicesAPI.get(`/v1/messages/${cId}`).then(rs => rs.ok ? rs.data : rs.ok)
+	return response
+}
+
+export const getAllTokens = async userId => {
+	let response = await externalAPI.get(`/tokens/${userId}`).then(rs => rs.ok ? rs.data : [])
+	return response
+}
+
+export const generateToken = async token => {
+	let response = await externalAPI.post(`/generateToken`, token).then(rs => rs.ok ? rs.data : null)
+	return response
+}
+
+export const deleteTokens = async tokens => {
+	let response = Promise.all(tokens.map(t => externalAPI.post(`/deletetoken/${t}`))).then(rs => {
+		console.log(rs)
+		if (rs.find(f => f === false))
+			return false
+		else 
+			return true
+	})
 	return response
 }
