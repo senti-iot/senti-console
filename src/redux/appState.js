@@ -223,6 +223,7 @@ const initialState = {
 		dsType: 0
 	}],
 	filters: {
+		tokens: [],
 		favorites: [],
 		projects: [],
 		devices: [],

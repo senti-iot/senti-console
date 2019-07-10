@@ -9,7 +9,7 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor, getAllMessages } from 'variables/dataRegistry';
+import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor, getAllMessages, getAllTokens } from 'variables/dataRegistry';
 import { getAllFunctions, getFunction } from 'variables/dataFunctions';
 
 
@@ -68,6 +68,11 @@ const sData = 'Sort Data'
 //#region Messages
 const setmessages = 'setMessages'
 const gotmessages = 'gotMessages'
+//#endregion
+
+//#region Tokens
+const settokens = 'setTokens'
+const gottokens = 'gotTokens'
 //#endregion
 
 //#region Users
@@ -888,6 +893,37 @@ export const setProjects = () => {
 	}
 }
 //#endregion
+//#region Tokens
+export const getTokens = (userId, reload) => {
+	return dispatch => {
+		getAllTokens(userId).then(rs => {
+			let tokens = handleRequestSort('title', 'asc', rs)
+			set('tokens', tokens)
+			if (reload) {
+				dispatch(setTokens())
+			}
+			dispatch({ type: gottokens, payload: true })
+		})
+
+	}
+}
+
+export const setTokens = () => {
+	return dispatch => {
+		let tokens = get('tokens')
+		if (tokens) {
+			dispatch({
+				type: settokens,
+				payload: tokens
+			})
+			dispatch(getSuggestions())
+		}
+		else {
+			dispatch({ type: gottokens, payload: false })
+		}
+	}
+}
+//#endregion
 
 //#region Messages
 export const getMessages = (customerID, reload) => {
@@ -924,6 +960,7 @@ export const setMessages = () => {
 //#endregion
 
 const initialState = {
+	tokens: [],
 	messages: [],
 	favorites: [],
 	users: [],
@@ -951,6 +988,12 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { favorites: payload })
 		case setFavorites:
 			return Object.assign({}, state, { favorites: payload })
+		//#endregion
+		//#region Tokens
+		case settokens:
+			return Object.assign({}, state, { tokens: payload })
+		case gottokens:
+			return Object.assign({}, state, { gottokens: payload })
 		//#endregion
 		//#region Messages
 		case setmessages:
