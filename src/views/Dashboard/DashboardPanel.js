@@ -160,9 +160,7 @@ class DashboardPanel extends Component {
 					// compactType={this.state.compactType}
 				>
 					{d.graphs.map((g, i) => {
-						console.log(g)
-						let grid = graphType(this.gridCoords(g.type)).grid
-						console.log(grid)
+						let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
 						switch (g.type) {
 							case 1:
 								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>

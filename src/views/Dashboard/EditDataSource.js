@@ -101,7 +101,12 @@ export class EditDataSource extends Component {
 		newG[prop] = e.target.value
 		this.props.editGraph(newG)
 	}
-
+	handleEditName = (prop) => e => {
+		let newG = { ...this.props.g }
+		newG.dataSources[prop].label = e.target.value
+		console.log(newG, e.target.value)
+		this.props.editGraph(newG)
+	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -110,8 +115,12 @@ export class EditDataSource extends Component {
 			}
 		})
 	}
+	
 	handleChangeDS = () => this.setState({ dataSourceExp: !this.state.dataSourceExp })
 	handleChangeGeneral = () => this.setState({ generalExp: !this.state.generalExp })
+
+	handleChangeDSa = () => this.setState({ dataSourceA: !this.state.dataSourceA })
+	handleChangeDSb = () => this.setState({ dataSourceB: !this.state.dataSourceB })
 
 	handleOpenD = () => this.setState({ selectDevice: true })
 	handleOpenF = () => this.setState({ selectFunction: true })
@@ -259,7 +268,7 @@ export class EditDataSource extends Component {
 
 	render() {
 		const { t, classes, sensor, g, cfs } = this.props
-		const { dataSourceExp, generalExp } = this.state
+		const { dataSourceExp, generalExp, dataSourceA, dataSourceB } = this.state
 		switch (g.type) {
 			case 0:
 				return <Fragment>
@@ -478,9 +487,188 @@ export class EditDataSource extends Component {
 					</ItemG>
 				</Fragment>
 			case 2:
-				return <ItemG>
-					DiffCard
-				</ItemG>
+				return <Fragment>
+					<ItemG xs={12}>
+						<ExpansionPanel
+							expanded={generalExp}
+							square
+							onChange={this.handleChangeGeneral}
+							classes={{
+								root: classes.expansionPanel
+							}}
+						>
+							<ExpansionPanelSummary expandIcon={<ExpandMore className={classes.icon} />}>
+								<T>{`${t('dashboard.fields.general')}`}</T>
+							</ExpansionPanelSummary>
+							<ExpansionPanelDetails>
+								<ItemG container>
+									<ItemG xs={12}>
+										<TextF
+											handleChange={this.handleEditG('name')}
+											autoFocus
+											id={'name'}
+											label={t('dashboard.fields.label')}
+											value={g.name}
+											margin='normal'
+										/>
+									</ItemG>
+								</ItemG>
+							</ExpansionPanelDetails>
+
+						</ExpansionPanel>
+
+					</ItemG>
+					<ItemG xs={12}>
+						<ExpansionPanel
+							expanded={dataSourceA}
+							square
+							onChange={this.handleChangeDSa}
+							classes={{
+								root: classes.expansionPanel
+							}}
+						>
+							<ExpansionPanelSummary expandIcon={<ExpandMore className={classes.icon} />}>
+								<T>{`${t('dashboard.fields.dataSource')}`}</T>
+							</ExpansionPanelSummary>
+							<ExpansionPanelDetails>
+								<ItemG container>
+									<ItemG xs={12}>
+										<DateFilterMenu
+											customSetDate={this.handleEditPeriodG}
+											label={t('dashboard.fields.defaultPeriod')}
+											inputType
+											t={t}
+											period={g.period} />
+									</ItemG>
+									<ItemG xs={12}>
+										{this.renderSelectDevice()}
+										<TextF
+											id={'sensorChart'}
+											label={t('dashboard.fields.device')}
+											value={sensor ? sensor.name : t('no.device')}
+											handleClick={this.handleOpenD}
+											handleChange={() => { }}
+										/>
+									</ItemG>
+									<ItemG>
+										<TextF
+											id={'scbAB-a-name'}
+											label={t('dashboard.field.name')}
+											value={g.dataSources.a.label}
+											handleChange={this.handleEditName('a')}
+										/>
+									</ItemG>
+									<Collapse unmountOnExit in={g.dataSources.a.deviceId > 0}>
+										{g.dataSources.a.deviceId > 0 ?
+											<Fragment>
+												<ItemG>
+													<DSelect
+														simple
+														value={g.dataSources.a.dataKey}
+														onChange={this.handleEditDataKey}
+														menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt =>  dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
+													/>
+												</ItemG>
+												<ItemG>
+													{this.renderSelectFunction()}
+													<TextF
+														id={'cfSelect'}
+														label={t('dashboard.fields.cf')}
+														value={cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)].name : t('no.function')}
+														handleClick={this.handleOpenF}
+														handleChange={() => { }}
+													/>
+												</ItemG>
+												<ItemG xs={12}>
+													<TextF
+														handleChange={this.handleEditG('unit')}
+														autoFocus
+														id={'unit'}
+														label={t('dashboard.fields.unit')}
+														value={g.unit}
+														margin='normal'
+													/>
+												</ItemG>
+											</Fragment>
+											: null}
+									</Collapse>
+								</ItemG>
+							</ExpansionPanelDetails>
+
+						</ExpansionPanel>
+					</ItemG>
+					<ItemG xs={12}>
+						<ExpansionPanel
+							expanded={dataSourceB}
+							square
+							onChange={this.handleChangeDSb}
+							classes={{
+								root: classes.expansionPanel
+							}}
+						>
+							<ExpansionPanelSummary expandIcon={<ExpandMore className={classes.icon} />}>
+								<T>{`${t('dashboard.fields.dataSource')}`}</T>
+							</ExpansionPanelSummary>
+							<ExpansionPanelDetails>
+								<ItemG container>
+									<ItemG xs={12}>
+										<DateFilterMenu
+											customSetDate={this.handleEditPeriodG}
+											label={t('dashboard.fields.defaultPeriod')}
+											inputType
+											t={t}
+											period={g.period} />
+									</ItemG>
+									<ItemG xs={12}>
+										{this.renderSelectDevice()}
+										<TextF
+											id={'sensorChart'}
+											label={t('dashboard.fields.device')}
+											value={sensor ? sensor.name : t('no.device')}
+											handleClick={this.handleOpenD}
+											handleChange={() => { }}
+										/>
+									</ItemG>
+									<Collapse unmountOnExit in={g.dataSources.b.deviceId > 0}>
+										{g.dataSources.b.deviceId > 0 ?
+											<Fragment>
+												<ItemG>
+													<DSelect
+														simple
+														value={g.dataSources.b.dataKey}
+														onChange={this.handleEditDataKey}
+														menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt =>  dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
+													/>
+												</ItemG>
+												<ItemG>
+													{this.renderSelectFunction()}
+													<TextF
+														id={'cfSelect'}
+														label={t('dashboard.fields.cf')}
+														value={cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)].name : t('no.function')}
+														handleClick={this.handleOpenF}
+														handleChange={() => { }}
+													/>
+												</ItemG>
+												<ItemG xs={12}>
+													<TextF
+														handleChange={this.handleEditG('unit')}
+														autoFocus
+														id={'unit'}
+														label={t('dashboard.fields.unit')}
+														value={g.unit}
+														margin='normal'
+													/>
+												</ItemG>
+											</Fragment>
+											: null}
+									</Collapse>
+								</ItemG>
+							</ExpansionPanelDetails>
+
+						</ExpansionPanel>
+					</ItemG>
+				</Fragment>
 			case 3:
 				return <ItemG>
 					ScoreCard

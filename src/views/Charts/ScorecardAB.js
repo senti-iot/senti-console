@@ -82,17 +82,19 @@ class ScoreCard extends PureComponent {
 		Promise.all([
 			getSensorDataClean(g.dataSources.a.deviceId, period.from, period.to, g.dataSources.a.dataKey, g.dataSources.a.cf, g.dataSources.a.deviceType, g.dataSources.a.type),
 			getSensorDataClean(g.dataSources.b.deviceId, period.from, period.to, g.dataSources.b.dataKey, g.dataSources.b.cf, g.dataSources.b.deviceType, g.dataSources.b.type),
-		]).then(rs => { 
+		]).then(rs => {
 			newState.a.data = parseFloat(rs[0])
 			newState.b.data = parseFloat(rs[1])
 			this.setState({
 				...newState, loading: false
 			})
-		}) 
-	
+		})
+
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
+		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || 
+			prevProps.g !== this.props.g || prevProps.g.dataSources.a.dataKey !== this.props.g.dataSources.a.dataKey
+			|| prevProps.g.dataSources.b.dataKey !== this.props.g.dataSources.b.dataKey) {
 			this.setState({ loading: true }, async () => {
 				let newState = await this.getData(this.props.period)
 				this.setState({ ...newState, loading: false })
@@ -369,15 +371,22 @@ class ScoreCard extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG style={{ flex: '1',
-				textAlign: 'center' }}>
+			<ItemG style={{
+				flex: '1',
+				textAlign: 'center'
+			}}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>
 	}
 	relDiff(oldNumber, newNumber) {
 		var decreaseValue = oldNumber - newNumber;
-		return ((decreaseValue / oldNumber) * 100).toFixed(3);
+		let finalValue = ((decreaseValue / oldNumber) * 100).toFixed(3)
+		return !isNaN(finalValue) ? finalValue : '---';
+	}
+	diff(oldNumber, newNumber) {
+		let number = (oldNumber - newNumber).toFixed(3)
+		return !isNaN(number) ? number : '---'
 	}
 	renderType = () => {
 		const { loading, a, b } = this.state
@@ -385,36 +394,36 @@ class ScoreCard extends PureComponent {
 			return <Table>
 				<TableBody>
 					<TableRow>
-						<TC label={a.label}/>
+						<TC label={a.label ? a.label : '---'} />
 						<TC content={
 							<T style={{ fontWeight: 500 }}>
-								{a.data}
+								{!isNaN(a.data) ? a.data : '---' }
 							</T>
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={b.label}/>
+						<TC label={b.label ? b.label : '---'} />
 						<TC content={
 							<T style={{ fontWeight: 500 }}>
-								{b.data}
+								{!isNaN(b.data) ? a.data : '---'}
 							</T>
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={'Difference'}/>
+						<TC label={'Difference'} />
 						<TC content={
 							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
-								{a.data > b.data ? (a.data - b.data).toFixed(3) : (b.data - a.data).toFixed(3)}
+								{a.data > b.data ? this.diff(a.data, b.data) : this.diff(b.data, a.data)}
 							</T>
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={'Percentage Difference:'}/>
+						<TC label={'Percentage Difference:'} />
 						<TC content={
 							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
-								{a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)}% 
+								{`${a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)} %`}
 							</T>
-						}/>
+						} />
 					</TableRow>
 				</TableBody>
 			</Table>
@@ -479,7 +488,7 @@ class ScoreCard extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <Assignment/>
+		return <Assignment />
 	}
 
 	render() {
