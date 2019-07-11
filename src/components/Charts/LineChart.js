@@ -297,7 +297,7 @@ class LineChart extends PureComponent {
 		}
 
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 
 		this.setTooltip({
@@ -420,7 +420,7 @@ class LineChart extends PureComponent {
 				await this.props.onElementsClick(elements)
 			}
 			catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 			this.hideTooltip()
 		}

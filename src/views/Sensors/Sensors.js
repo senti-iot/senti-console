@@ -107,10 +107,6 @@ class Sensors extends Component {
 	}
 
 	componentDidUpdate = () => {
-		// console.log(this.props.devices)
-		// if (this.props.user && this.props.accessLevel && this.props.devices.length === 0) {
-		// 	this.getData(true)
-		// }
 		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
 			const { devices } = this.props

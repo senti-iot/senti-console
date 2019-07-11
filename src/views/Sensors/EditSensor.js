@@ -323,7 +323,6 @@ class EditSensor extends Component {
 				metadata: mtd
 			}
 		}
-		// console.log(newSensor)
 		return await updateSensor(newSensor)
 	}
 	handleCreate = async () => {

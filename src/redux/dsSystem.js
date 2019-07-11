@@ -183,10 +183,7 @@ export const editGraph = (newG) => {
 		let nG = {}
 		nG = newG
 		gs = getState().dsSystem.cGraphs
-		console.log('Before', gs)
-		console.log(nG, newG)
 		gs[gs.findIndex(f => f.id === nG.id)] = nG
-		console.log(gs)
 		dispatch({ type: cGraph, payload: gs })
 		dispatch({ type: setGraphE, payload: nG })
 	}

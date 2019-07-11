@@ -257,7 +257,7 @@ class BarChart extends PureComponent {
 			this.setState({ id: id })
 		}
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 		this.setTooltip({
 			...this.state.tooltip,
@@ -391,7 +391,7 @@ class BarChart extends PureComponent {
 				await this.props.onElementsClick(elements)
 			}
 			catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 			this.hideTooltip()
 		}

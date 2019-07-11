@@ -336,7 +336,6 @@ class CreateCollection extends Component {
 				metadata: mtd
 			}
 		}
-		// console.log(mtd)	
 		return await createSensor(newSensor)
 	}
 	handleCreate = async () => {

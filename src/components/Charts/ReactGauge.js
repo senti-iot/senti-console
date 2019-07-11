@@ -83,9 +83,7 @@ const draw = (props, opts) => {
 	labels = options.labels || true;
 
 	//#endregion
-	console.log(className)
 	let el = d3.select('.' + className)
-	console.log(el)
 
 	width = el['_groups'][0][0].offsetWidth;
 	height = el['_groups'][0][0].offsetHeight;

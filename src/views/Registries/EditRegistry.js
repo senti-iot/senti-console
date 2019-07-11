@@ -35,7 +35,6 @@ class UpdateRegistry extends Component {
 		const { location, setHeader, registry } = this.props
 		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
 			let orgs = this.props.orgs
-			console.log(registry, orgs)
 			this.setState({
 				registry: registry,
 				org: orgs[orgs.findIndex(o => o.id === registry.orgId)],

@@ -103,7 +103,6 @@ class DateFilterMenu extends Component {
 		if (this.props.heatmap) {
 			return this.props.handleSetHeatmapDate(menuId, to, from, defaultT)
 		}
-		console.log(this.props)
 		if (this.props.customSetDate) {
 			return this.props.customSetDate(menuId, to, from, defaultT)
 		}

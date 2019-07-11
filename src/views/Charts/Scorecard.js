@@ -79,16 +79,10 @@ class ScoreCard extends PureComponent {
 	}
 	asyncForEach = async (array, callback) => {
 		for (let index = 0; index < array.length; index++) {
-		  await callback(array[index], index, array)
+			await callback(array[index], index, array)
 		}
-	  }
-	// start = async () => {
-	// 	await this.asyncForEach([1, 2, 3], async (num) => {
-	// 	  await waitFor(50);
-	// 	  console.log(num);
-	// 	});
-	// 	console.log('Done');
-	//   }	  
+	}
+
 	getData = async () => {
 		const { g, period } = this.props
 		let data = []
@@ -100,7 +94,7 @@ class ScoreCard extends PureComponent {
 		this.setState({
 			data: data, loading: false
 		})
-	
+
 
 	}
 	componentDidUpdate = async (prevProps) => {
@@ -308,8 +302,10 @@ class ScoreCard extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG style={{ flex: '1',
-				textAlign: 'center' }}>
+			<ItemG style={{
+				flex: '1',
+				textAlign: 'center'
+			}}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>

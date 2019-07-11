@@ -16,9 +16,9 @@ let reducers = combineReducers({ settings, localization, favorites, doi, appStat
 *	 Debugging purposes
 **/ 
 // const logger = store => next => action => {
-//  console.log('dispatching', action)
+//  console.info('dispatching', action)
 // 	let result = next(action)
-// 	console.log('next state', store.getState())
+// 	console.info('next state', store.getState())
 // 	return result
 // } 
 

@@ -98,9 +98,7 @@ class WindCard extends PureComponent {
 	// start = async () => {
 	// 	await this.asyncForEach([1, 2, 3], async (num) => {
 	// 	  await waitFor(50);
-	// 	  console.log(num);
 	// 	});
-	// 	console.log('Done');
 	//   }	  
 	getData = async () => {
 		const { g, period } = this.props
@@ -111,7 +109,6 @@ class WindCard extends PureComponent {
 		// 	let deviceData = )
 		// 	data.push({ ...d, data: deviceData })
 		// })
-		console.log(data)
 		this.setState({
 			data: data, loading: false
 		})

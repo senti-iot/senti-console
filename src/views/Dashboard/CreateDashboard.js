@@ -84,7 +84,6 @@ class CreateDashboard extends React.Component {
 		const { t } = this.props
 		// const { d } = this.state
 		let d = this.props.d
-		// console.log('G Type', g.type, g.grid)
 		switch (g.type) {
 			case 1:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
@@ -269,7 +268,7 @@ class CreateDashboard extends React.Component {
 						<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }); this.forceUpdate() }} openEditGraph={this.state.openEditGraph} />
 						: null}
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
-						<DropZone color={d.color} onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
+						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
 								onBreakpointChange={(n) => this.setState({ n })}

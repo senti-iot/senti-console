@@ -56,7 +56,6 @@ class FavoriteTable extends React.Component {
 	isSelected = id => this.props.selected.indexOf(id) !== -1;
 	renderIcon = (type) => {
 		const { t } = this.props
-		console.log(type)
 		switch (type) {
 			case 'project':
 				return <Tooltip title={t('tooltips.project')}>

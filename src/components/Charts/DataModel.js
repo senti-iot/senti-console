@@ -493,7 +493,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 	let dataArr = []
 	let dataSet, prevDataSet = null
 	let data, prevData = null
-	// console.log(v)
 	await Promise.all(objArr.map(async o => {
 		if (type === 'device') {
 			data = await getSensorDataClean(o.id, startDate, endDate, v, nId)
@@ -506,7 +505,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 					prevData[moment(p, format).add(1, 'day').format('YYYY-MM-DD HH:mm')] = prevData[p]	
 					delete prevData[p];
 				})
-				// console.log(prevData)
 			}
 		}
 		else {
@@ -538,7 +536,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 			data: regenerateData(data, 'hour'),
 			...o,
 		}
-		// console.log(prevDataSet)
 		return dataArr.push(dataSet, prevDataSet)
 	}))
 	//Filter nulls
@@ -566,7 +563,6 @@ export const getWMeterData = async (objArr, hoverId, v, nId, prevPeriod) => {
 		let prevEndDate = moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
 		data = await getSensorDataClean(o.id, startDate, endDate, v, nId)
 		data2 = await getSensorDataClean(o.id, prevStartDate, prevEndDate, false, nId)
-		// console.log(o)
 		dataSet = {
 			name: o.name,
 			id: o.id,
@@ -602,7 +598,6 @@ export const getWMeterData = async (objArr, hoverId, v, nId, prevPeriod) => {
 	dataArr = handleRequestSort('name', 'asc', dataArr)
 	// if (simple)
 	// return dataArr
-	// console.log('dataArr', dataArr)
 	let newState = setMeterData(dataArr, hoverId)
 	// let exportData = setExportData(dataArr, 'daily')
 	let exportData = []
@@ -673,6 +668,5 @@ export const setMeterData = (dataArr, hoverID) => {
 					}))
 		}
 	}
-	// console.log('state', state)
 	return state
 }

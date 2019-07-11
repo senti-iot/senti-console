@@ -125,7 +125,6 @@ export const generateToken = async token => {
 
 export const deleteTokens = async tokens => {
 	let response = Promise.all(tokens.map(t => externalAPI.post(`/deletetoken/${t}`))).then(rs => {
-		console.log(rs)
 		if (rs.find(f => f === false))
 			return false
 		else 

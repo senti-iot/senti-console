@@ -74,7 +74,6 @@ class ScoreCard extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period } = this.props
-		console.log(g.dataSources)
 		let newState = {
 			a: { ...g.dataSources.a },
 			b: { ...g.dataSources.b }

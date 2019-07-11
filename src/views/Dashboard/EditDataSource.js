@@ -48,7 +48,6 @@ export class EditDataSource extends Component {
 		let newG = { ...this.props.g }
 		// Object.assign(newG, this.props.g)
 		newG.dataSource.dataKey = e.target.value
-		console.log(newG)
 		this.props.editGraph(newG)
 		// this.forceUpdate()
 	}
@@ -104,7 +103,6 @@ export class EditDataSource extends Component {
 	handleEditName = (prop) => e => {
 		let newG = { ...this.props.g }
 		newG.dataSources[prop].label = e.target.value
-		console.log(newG, e.target.value)
 		this.props.editGraph(newG)
 	}
 	handleFilterKeyword = value => {

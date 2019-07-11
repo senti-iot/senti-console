@@ -223,7 +223,6 @@ class LineChart extends PureComponent {
 	}
 
 	customTooltip = async (tooltipModel) => {
-		// console.log(tooltipModel)
 		if (tooltipModel.opacity === 0) {
 			return !this.clickEvent() ? null : this.hideTooltip()
 		}
@@ -301,7 +300,7 @@ class LineChart extends PureComponent {
 		}
 
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 
 		this.setTooltip({
@@ -425,7 +424,7 @@ class LineChart extends PureComponent {
 				await this.props.onElementsClick(elements)
 			}
 			catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 			this.hideTooltip()
 		}

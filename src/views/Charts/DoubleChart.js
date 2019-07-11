@@ -69,9 +69,6 @@ class DoubleChartData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
-	// g = setInterval(() => {
-	// 	console.log(this.props.g.dataSource)
-	// }, 3000);
 	componentDidMount = async () => {
 		const { period } = this.props
 		const { loading } = this.state
@@ -96,7 +93,6 @@ class DoubleChartData extends PureComponent {
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 
-		console.log('CDUP',  prevProps.g.dataSource.dataKey, this.props.g.dataSource.dataKey)
 		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
 			this.setState({ loading: true }, async () => {
 				this.getData()

@@ -157,8 +157,6 @@ class Tokens extends Component {
 	filterItems = (data) => {
 		const rFilters = this.props.filters
 		const { filters } = this.state
-		console.log(data)
-		console.log(filterItems(data, filters))
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	snackBarTokens = (token, display) => {

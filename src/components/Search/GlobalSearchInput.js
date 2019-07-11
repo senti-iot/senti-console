@@ -23,7 +23,6 @@ class GlobalSearchInput extends Component {
 		this.props.inputProps.onBlur()
 	}
 	onFocusInput = () => {
-		// console.log()
 		this.setState({ focused: true })
 		this.props.inputProps.onFocus()
 	}
