@@ -11,11 +11,28 @@ const styles = theme => ({
 	underlineRev: {
 		background: '#fff'
 	},
+	root: {
+		"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
+		  borderColor: "rgba(255,255,255, 0.67)"
+		}
+	},
+	disabled: {},
+	focused: {},
+	error: {},
+	notchedOutline: {
+		borderColor: 'rgba(255,255,255, 0.23)'
+	},
 	reversed: {
 		color: 'rgba(255, 255, 255, 0.23)',
+		"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
+			borderColor: "#fff"
+		}
 	},
 	reversedBorder: {
-		borderColor: 'rgba(255, 255, 255, 0.23)'
+		borderColor: 'rgba(255, 255, 255, 0.23)',
+		"&:hover": {
+			borderColor: '#fff !important;'
+		}
 	}
 })
 
@@ -29,9 +46,9 @@ const TextF = (props) => {
 		[props.classes.reversed]: props.reversed,
 		[props.classes.textField]: props.classes.textField ? true : false
 	})
-	let notchedCX = cx({
-		[props.classes.reversedBorder]: props.reversed,
-	})
+	// let notchedCX = cx({
+	// 	[props.classes.reversedBorder]: props.reversed,
+	// })
 	return (		
 		<TextField
 			style={{ maxWidth: props.fullWidth ? undefined : mobile ? undefined : 230 }}
@@ -57,7 +74,11 @@ const TextF = (props) => {
 				...props.InputProps, 
 				style: { ...props.InputProps.style, boxSizing: 'border-box' },
 				classes: {
-					notchedOutline: notchedCX
+					root: props.classes.root,
+					disabled: props.classes.disabled,
+					focused: props.classes.focused,
+					error: props.classes.error,
+					notchedOutline: props.classes.notchedOutline,
 				}
 			} : null}
 			onKeyPress={props.onKeyPress}

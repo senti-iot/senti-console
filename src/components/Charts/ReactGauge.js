@@ -39,7 +39,7 @@ const draw = (props, opts) => {
 	//#region Variables
 	//options
 	let valueDesc, valueLabel;
-	let min, max, margin, totalPercent, width, height, className, labels;
+	let min, max, margin, totalPercent, width, height, className, labels, color;
 	//gauge vars
 	let barWidth, chart, chartInset, padRad, radius, svg, arcStartRad, arcEndRad;
 	//utility
@@ -57,6 +57,7 @@ const draw = (props, opts) => {
 		bottom: 30,
 		left: 8
 	};
+	color = options.color || props.color || '#ffffff'
 	chartInset = options.chartInset || 10;
 	padRad = options.padRad || 0.025;
 	totalPercent = options.totalPercent || .75;
@@ -117,7 +118,8 @@ const draw = (props, opts) => {
 			.attr('class', props.classes ? props.classes.label : "small-label")
 			// .text(props.value)
 			.attr('font-family', "Roboto")
-			.attr('font-size', "16px");
+			.attr('font-size', "16px")
+			.attr('fill', color);
 		valueDesc = svg.append("text")
 			.attr("x", (width / 2))
 			.attr("y", (((height - margin.top) * 95) / 100))
@@ -211,8 +213,8 @@ class ReactGauge extends Component {
 	componentDidMount() {
 		window.d3 = d3
 		let { oldValue, oldPrevValue }  = this.state
-		let { value, label } = this.props
-		let g = draw({ value: parseFloat(value), oldValue: parseFloat(oldValue), prevValue: 0, prevOldValue: 0, ...this.props, min: 0, max: 100 }, { className: this.props.chartId })
+		let { value, label, color } = this.props
+		let g = draw({ value: parseFloat(value), oldValue: parseFloat(oldValue), prevValue: 0, prevOldValue: 0, ...this.props, min: 0, max: 100 }, { className: this.props.chartId, color: color })
 		if (g)
 			this.setState({
 				gauge: g

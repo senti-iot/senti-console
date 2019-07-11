@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDrop } from 'react-dnd';
-import { bgColors } from 'assets/jss/material-dashboard-react/backgroundColors';
 import { withStyles } from '@material-ui/styles';
+import { bgColorsDark } from 'assets/jss/material-dashboard-react/bgColorsDark';
 
 const style = (theme) => ({
 	container: {
@@ -10,7 +10,7 @@ const style = (theme) => ({
 		transition: 'background 100ms ease',
 		overflow: 'auto'
 	},
-	...bgColors
+	...bgColorsDark
 
 })
 

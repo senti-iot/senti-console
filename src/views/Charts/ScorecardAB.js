@@ -483,13 +483,14 @@ class ScoreCard extends PureComponent {
 	}
 
 	render() {
-		const { t, period } = this.props
+		const { t, period, color } = this.props
 		const { openDownload, loading, exportData } = this.state
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
+					color={color}
 					title={this.renderTitle()}
 					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}

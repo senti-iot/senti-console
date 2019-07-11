@@ -18,7 +18,7 @@ import {
 } from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
 import { red, green } from '@material-ui/core/colors';
-import { bgColors } from './backgroundColors';
+import { bgColorsLight } from './bgColorsLight';
 
 const regularCardStyle = theme => ({
 	transition: {
@@ -192,7 +192,7 @@ const regularCardStyle = theme => ({
 		display: "block",
 		height: "auto"
 	},
-	...bgColors,
+	...bgColorsLight,
 
 });
 

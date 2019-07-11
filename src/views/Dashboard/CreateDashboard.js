@@ -3,7 +3,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
 import { T, ItemG, CircularLoader, Dropdown, TextF } from 'components';
 import cx from 'classnames'
-import { Close, Edit, Clear, Palette } from 'variables/icons';
+import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
@@ -87,7 +87,7 @@ class CreateDashboard extends React.Component {
 		// console.log('G Type', g.type, g.grid)
 		switch (g.type) {
 			case 1:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
 					<GaugeSData
 						create
@@ -101,7 +101,7 @@ class CreateDashboard extends React.Component {
 					/>
 				</Paper>
 			case 0:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
 					<DoubleChart
 						create
@@ -114,7 +114,7 @@ class CreateDashboard extends React.Component {
 					/>
 				</Paper>
 			case 2:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
 					<ScorecardAB
 						create
@@ -126,7 +126,7 @@ class CreateDashboard extends React.Component {
 					/>
 				</Paper>
 			case 3:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
 					<Scorecard
 						create
@@ -138,7 +138,7 @@ class CreateDashboard extends React.Component {
 					/>
 				</Paper>
 			case 4:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
 					<WindCard
 						create
@@ -191,7 +191,7 @@ class CreateDashboard extends React.Component {
 		/>
 	}
 	render() {
-		const { openAddDash, handleCloseDT, classes, d } = this.props
+		const { openAddDash, handleCloseDT, classes, d, t } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -211,14 +211,15 @@ class CreateDashboard extends React.Component {
 						<Toolbar>
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
-									<ItemG xs={2} container alignItems={'center'}>
+									<ItemG xs={1} container alignItems={'center'}>
 										<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
 											<Close />
 										</IconButton>
 									</ItemG>
 									<ItemG container xs={10} justify={'center'} alignItems={'center'}>
 									
-										<TextF 
+										<TextF
+											id={'dashboardName'}
 											InputProps={{
 												style: {
 													color: '#fff'
@@ -230,6 +231,11 @@ class CreateDashboard extends React.Component {
 										/>
 										{this.renderColorPicker()}
 										
+									</ItemG>
+									<ItemG xs={1}>
+										<Button color={'primary'} variant={'outlined'}>
+											<Save style={{ marginRight: 8 }}/> {t('actions.save')}
+										</Button>
 									</ItemG>
 								</ItemG>
 							</Hidden>

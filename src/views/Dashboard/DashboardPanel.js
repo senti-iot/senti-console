@@ -14,6 +14,8 @@ import ScorecardAB from 'views/Charts/ScorecardAB';
 import Scorecard from 'views/Charts/Scorecard';
 import WindCard from 'views/Charts/WindCard';
 import { Responsive, WidthProvider } from "react-grid-layout";
+import { ThemeProvider } from '@material-ui/styles';
+import { darkTheme } from 'variables/themes';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -49,7 +51,7 @@ class DashboardPanel extends Component {
 			fontSize: '24px',
 			padding: '20px',
 			transformOrigin: 'center',
-			transform: 'translate(-50%, -50%)' }}>
+			transform: 'translate(-50%, -50%)', backgroundColor: "#000" }}>
 			[{l.x}, {l.y}, {l.w}, {l.h}]
 		</div>
 	}
@@ -144,7 +146,7 @@ class DashboardPanel extends Component {
 						let l = this.state.initialLayout.lg[i]
 						switch (g.type) {
 							case 1:
-								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
 									<GaugeSData
 										title={g.name}
@@ -157,7 +159,7 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 0:
-								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
 									<DoubleChart
 										title={g.name}
@@ -171,9 +173,10 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 2:
-								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
 									<ScorecardAB
+										color={d.color}
 										title={g.name}
 										gId={g.id}
 										dId={d.id}
@@ -182,9 +185,10 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 3:
-								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
 									<Scorecard
+										color={d.color}
 										title={g.name}
 										gId={g.id}
 										dId={d.id}
@@ -193,7 +197,7 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 4:
-								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
 									{this.renderPos(l)}
 									<WindCard
 										title={g.name}
@@ -216,7 +220,9 @@ class DashboardPanel extends Component {
 		const { d, data } = this.props
 		return (
 			<Fragment>
-				{this.renderDashboard()}
+				<ThemeProvider theme={darkTheme}>
+					{this.renderDashboard()}
+				</ThemeProvider>
 				<ItemG xs={12} md={4} lg={3} xl={2}>
 					<DashboardCard
 						handleOpenDashboard={this.handleOpenDashboard}

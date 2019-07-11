@@ -14,6 +14,8 @@ import DashboardPanel from './DashboardPanel.js';
 import CreateDashboard from './CreateDashboard.js';
 import { Add } from 'variables/icons.js';
 import { teal } from '@material-ui/core/colors';
+import { ThemeProvider } from '@material-ui/styles';
+import { darkTheme } from 'variables/themes/index.js';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -85,7 +87,9 @@ class Dashboard extends React.Component {
 					transitionDelay: 200,
 				}}>
 					<div style={{ position: 'relative' }}>
-						{this.renderAddDashboard()}
+						<ThemeProvider theme={darkTheme}>
+							{this.renderAddDashboard()}
+						</ThemeProvider>
 						<GridContainer spacing={1}>
 							{this.props.dashboards.map((d, i) => {
 								return <DashboardPanel

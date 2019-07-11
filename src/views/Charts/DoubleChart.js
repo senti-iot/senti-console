@@ -626,10 +626,11 @@ class DoubleChartData extends PureComponent {
 	}
 
 	render() {
-		const { t, period } = this.props
+		const { t, period, color } = this.props
 		const { loading } = this.state
 		return (
 			<InfoCard
+				color={color}
 				title={this.renderTitle()}
 				subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 				avatar={this.renderIcon()}

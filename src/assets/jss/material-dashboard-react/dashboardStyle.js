@@ -3,10 +3,12 @@
 // #############################
 
 import { successColor, headerColor, transition, drawerWidth } from "assets/jss/material-dashboard-react.js";
-import { bgColors } from './backgroundColors';
+// import { bgColors } from './backgroundColors';
+// import { bgColorsDark } from './bgColorsDark';
+import { bgColorsLight } from './bgColorsLight';
 
 const dashboardStyle = theme => ({
-	...bgColors,
+	...bgColorsLight,
 	icon: {
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
