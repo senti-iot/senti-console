@@ -45,11 +45,30 @@ const draw = (props, opts) => {
 	//utility
 	let degToRad, percToRad, percToDeg, value2percent;
 	//#endregion
-
+	const getMax = (value) => {
+		let str = value.toString().split('.')
+		let max = 1
+		if (str[0].length === 1) {
+			if (parseInt(str[0]) === 0) {
+				return max = 1
+			}
+		}
+		if (str.length > 1) {
+			for (let index = 0; index < str[0].length; index++) {
+				max += '0';
+			}
+		}
+		else {
+			for (let index = 0; index < str[0].length; index++) {
+				max += '0';
+			}
+		}
+		return max
+	}
 	//#region Options
 	let options = opts ? opts : {}
 	className = options.className || props.classes.gauge || '.gauge'
-	max = options.max || 100;
+	max = options.max || getMax(props.value) || 100;
 	min = options.min || 0;
 	margin = options.margin || {
 		top: 20,

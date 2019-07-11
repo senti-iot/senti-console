@@ -16,6 +16,7 @@ import WindCard from 'views/Charts/WindCard';
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme } from 'variables/themes';
+import { graphType } from 'variables/dsSystem/graphTypes';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -67,6 +68,22 @@ class DashboardPanel extends Component {
 				lg: args
 			}
 		})
+	}
+	gridCoords = (type) => {
+		switch (type) {
+			case 0:
+				return 'chart'
+			case 1: 
+				return 'gauge'
+			case 2:
+				return 'scorecardAB'
+			case 3:
+				return 'scorecard'
+			case 4:
+				return 'windcard'
+			default:
+				break;
+		}
 	}
 	renderDashboard = () => {
 		const { t, classes, d, loading } = this.props
@@ -135,19 +152,21 @@ class DashboardPanel extends Component {
 			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
 				<ResponsiveReactGridLayout
 					{...this.props}
-					layouts={this.state.initialLayout}
+					// layouts={this.state.initialLayout}
 					onBreakpointChange={this.onBreakpointChange}
 					onLayoutChange={this.onLayoutChange}
 					measureBeforeMount={false}
 					useCSSTransforms={this.state.mounted}
-					compactType={this.state.compactType}
+					// compactType={this.state.compactType}
 				>
 					{d.graphs.map((g, i) => {
-						let l = this.state.initialLayout.lg[i]
+						console.log(g)
+						let grid = graphType(this.gridCoords(g.type)).grid
+						console.log(grid)
 						switch (g.type) {
 							case 1:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
-									{this.renderPos(l)}
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+									{this.renderPos(grid)}
 									<GaugeSData
 										title={g.name}
 										period={{ ...g.period, menuId: g.periodType }}
@@ -159,8 +178,8 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 0:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
-									{this.renderPos(l)}
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+									{this.renderPos(grid)}
 									<DoubleChart
 										title={g.name}
 										g={g}
@@ -173,8 +192,8 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 2:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
-									{this.renderPos(l)}
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+									{this.renderPos(grid)}
 									<ScorecardAB
 										color={d.color}
 										title={g.name}
@@ -185,8 +204,8 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 3:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
-									{this.renderPos(l)}
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+									{this.renderPos(grid)}
 									<Scorecard
 										color={d.color}
 										title={g.name}
@@ -197,8 +216,8 @@ class DashboardPanel extends Component {
 									/>
 								</Paper>
 							case 4:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.state.initialLayout.lg[i]}>
-									{this.renderPos(l)}
+								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+									{this.renderPos(grid)}
 									<WindCard
 										title={g.name}
 										gId={g.id}
@@ -245,95 +264,6 @@ DashboardPanel.defaultProps = {
 	// isResizable: false,
 	onLayoutChange: () => { },
 	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-	initialLayout: {
-
-		lg: [{
-			i: '0',
-			x: 0,
-			y: 0,
-			h: 11,
-			w: 3,
-			minH: 10,
-			minW: 3
-		},
-		{
-			i: '1',
-			x: 4,
-			y: 0,
-			h: 8,
-			w: 3
-		},
-		{
-			i: '2',
-			x: 4,
-			y: 7,
-			h: 13,
-			w: 3
-		},
-		{
-			i: '3',
-			x: 4,
-			y: 14,
-			h: 4,
-			w: 3
-		},
-		{
-			i: '4',
-			x: 7,
-			y: 0,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '5',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '6',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '7',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '8',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '9',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '10',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '11',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		}, ]
-	}
 };
 const mapStateToProps = (state, ownProps) => ({
 	// loading: state.dsSystem.gotDashboardData
