@@ -204,6 +204,7 @@
 		"title": "Senti Cookie Policy"
 	},
 	"dashboard": {
+		"editGraph": "Edit",
 		"fields": {
 			"general": "General",
 			"label": "Header",

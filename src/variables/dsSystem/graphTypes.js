@@ -7,7 +7,7 @@ export const graphType = (type) => {
 					minH: 8,
 					x: 0,
 					y: 0,
-					h: 8,
+					h: 11,
 					w: 6
 				},
 				chartType: 3, //Line Graph
@@ -19,7 +19,7 @@ export const graphType = (type) => {
 				},
 				id: "",
 				name: "Chart",
-				periodType: 0,
+				periodType: 3,
 				type: 0,
 				unit: ""
 			}

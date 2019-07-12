@@ -264,9 +264,7 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
-					{this.state.openEditGraph ?
-						<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }); this.forceUpdate() }} openEditGraph={this.state.openEditGraph} />
-						: null}
+					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false })}} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout

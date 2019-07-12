@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Drawer } from '@material-ui/core';
+import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Drawer, Slide } from '@material-ui/core';
 import { T, ItemG, CircularLoader } from 'components';
 import cx from 'classnames'
 import { Close } from 'variables/icons';
@@ -20,6 +20,10 @@ import EditDataSource from './EditDataSource';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
+  
 class EditGraph extends Component {
 	constructor(props) {
 		super(props)
@@ -35,35 +39,36 @@ class EditGraph extends Component {
 		if (g)
 			switch (g.type) {
 				case 1:
-					return <Paper key={g.id} data-grid={this.getCoords(g.grid)}>
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
 						<GaugeSData
 							create
+							color={d.color}
 							title={g.name}
 							period={{ ...g.period, menuId: g.periodType }}
 							t={t}
-							color={d.color}
 							gId={g.id}
 							dId={d.id}
 							single
 						/>
 					</Paper>
 				case 0:
-					return <Paper key={g.id} data-grid={this.getCoords(g.grid)}>
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
 						<DoubleChart
 							create
+							color={d.color}
 							title={g.name}
 							gId={g.id}
 							dId={d.id}
-							color={d.color}
 							single={true}
 							t={t}
 						/>
 					</Paper>
 				case 2:
-					return <Paper key={g.id} data-grid={this.getCoords(g.grid)}>
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
 
 						<ScorecardAB
 							create
+							color={d.color}
 							title={g.name}
 							gId={g.id}
 							dId={d.id}
@@ -72,10 +77,11 @@ class EditGraph extends Component {
 						/>
 					</Paper>
 				case 3:
-					return <Paper key={g.id} data-grid={this.getCoords(g.grid)}>
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
 
 						<Scorecard
 							create
+							color={d.color}
 							title={g.name}
 							gId={g.id}
 							dId={d.id}
@@ -84,9 +90,10 @@ class EditGraph extends Component {
 						/>
 					</Paper>
 				case 4:
-					return <Paper key={g.id} data-grid={this.getCoords(g.grid)}>
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
 						<WindCard
 							create
+							color={d.color}
 							title={g.name}
 							gId={g.id}
 							dId={d.id}
@@ -117,7 +124,7 @@ class EditGraph extends Component {
 	}
 
 	render() {
-		const { openEditGraph, handleCloseEG, classes, g, t } = this.props
+		const { openEditGraph, handleCloseEG, classes, g, t, d } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -126,17 +133,18 @@ class EditGraph extends Component {
 				fullScreen
 				open={openEditGraph}
 				onClose={handleCloseEG}
-				TransitionComponent={this.transition}
+				keepMounted
+				TransitionComponent={Transition}
 			>	<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 					<Toolbar>
 						<Hidden mdDown>
 							<ItemG container alignItems={'center'}>
-								<ItemG xs={2} container alignItems={'center'}>
+								<ItemG xs={1} container alignItems={'center'}>
 									<IconButton color='inherit' onClick={handleCloseEG} aria-label='Close'>
 										<Close />
 									</IconButton>
 								</ItemG>
-								<ItemG xs={10}>
+								<ItemG xs={10} container justify={'center'}>
 									<T variant='h6' color='inherit' className={classes.flex}>
 										{t('dashboard.editGraph')}
 									</T>
@@ -157,7 +165,7 @@ class EditGraph extends Component {
 						</Hidden>
 					</Toolbar>
 				</AppBar>
-				<div style={{ width: '100%', height: 'calc(100% - 70px)', background: '#eee' }}>
+				<div className={classes[d.color]}style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 					{this.state.loading ? <CircularLoader /> :
 						<ResponsiveReactGridLayout
 							compactType={null}
@@ -176,6 +184,7 @@ class EditGraph extends Component {
 						style: {
 							width: 360,
 							top: 70,
+							background: 'rgba(0, 0, 0, 0.7)'
 						}
 					}}
 				>
