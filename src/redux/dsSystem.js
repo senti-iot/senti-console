@@ -135,7 +135,8 @@ export const setDashboards = (payload) => {
 
 export const createGraph = (payload) => {
 	 return (dispatch, getState) => {
-		let gs = getState().dsSystem.cGraphs
+		let gs = []
+		gs = [...getState().dsSystem.cGraphs]
 		let newG = graphType(payload)
 		newG.id = generateID(newG.name)
 		newG.grid.i = newG.id
@@ -170,7 +171,10 @@ export const setGE = (payload) => {
 	return (dispatch, getState) => {
 		let gs = []
 		gs = getState().dsSystem.cGraphs
-		let g = gs[gs.findIndex(f => f.id === payload.i)]
+		let g = null;
+		if (payload) {
+			g = gs[gs.findIndex(f => f.id === payload.i)]
+		}
 		dispatch({
 			type: setGraphE,
 			payload: g

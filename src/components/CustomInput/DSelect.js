@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import { FormControl, withStyles, Select, MenuItem, InputLabel, OutlinedInput, FormHelperText } from '@material-ui/core';
 import { ItemG } from 'components';
@@ -16,7 +16,7 @@ const styles = theme => ({
 	},
 });
  
-class DSelect extends Component {
+class DSelect extends PureComponent {
 	componentDidMount = () => {
 	  this.setState({ labelWidth: ReactDOM.findDOMNode(this.InputRef).offsetWidth })
 	}

@@ -23,7 +23,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
-  
+
 class EditGraph extends Component {
 	constructor(props) {
 		super(props)
@@ -31,11 +31,13 @@ class EditGraph extends Component {
 		this.state = {
 			loading: false
 		}
+		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
 
 	typeChildren = (g) => {
 		const { t } = this.props
 		let d = this.props.d
+		console.log(g)
 		if (g)
 			switch (g.type) {
 				case 1:
@@ -165,13 +167,17 @@ class EditGraph extends Component {
 						</Hidden>
 					</Toolbar>
 				</AppBar>
-				<div className={classes[d.color]}style={{ width: '100%', height: 'calc(100% - 70px)' }}>
+				<div className={classes[d.color]} style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 					{this.state.loading ? <CircularLoader /> :
 						<ResponsiveReactGridLayout
 							compactType={null}
-							{...this.props}
-							onLayoutChange={layout => this.setState({ layout })}
-							// style={{ width: '100%', height: '100%', minWidth: '600px' }}
+							cols={this.cols}
+							className={"layout"}
+							rowHeight={25}
+							isDraggable={true}
+							isResizable={false}
+						// onLayoutChange={layout => this.setState({ layout })}
+						// style={{ width: '100%', height: '100%', minWidth: '600px' }}
 						>
 							{this.typeChildren(g)}
 						</ResponsiveReactGridLayout>
@@ -198,12 +204,6 @@ class EditGraph extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
-	className: "layout",
-	// verticalCompact: false,
-	rowHeight: 25,
-	isDraggable: true,
-	isResizable: false,
 	cfs: state.data.functions,
 	sensors: state.data.sensors
 })

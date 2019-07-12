@@ -40,12 +40,14 @@ class CreateDashboard extends React.Component {
 				}))
 			}
 		};
+		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
 
 	componentDidMount = () => {
 		this.props.createDash()
 	}
 	componentDidUpdate(prevProps, prevState) {
+		console.log(prevProps.gs !== this.props.gs)
 		if (prevProps.gs !== this.props.gs) {
 			this.setState({
 				layout: {
@@ -187,6 +189,11 @@ class CreateDashboard extends React.Component {
 			onChange={this.changeColor}
 		/>
 	}
+	handleCloseEG = () => { 
+		this.props.setGE(null)
+		this.setState({ openEditGraph: false })
+
+	}
 	render() {
 		const { openAddDash, handleCloseDT, classes, d, t } = this.props
 		const appBarClasses = cx({
@@ -262,15 +269,19 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
-					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }) }} openEditGraph={this.state.openEditGraph} />
+					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
-						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
+						<DropZone color={d.color} onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
-								onBreakpointChange={(n) => this.setState({ n })}
-								onResizeStop={this.editGraphPos}
+								cols={this.cols}
+								draggableCancel={".disableDrag"}
+								draggableHandle={".dragHandle"}
+								className={"layout"}
+								rowHeight={25}
+								preventCollision={false}
 								measureBeforeMount={false}
-								onLayoutChange={() => { }}
+								onLayoutChange={() => {}}
 								useCSSTransforms={true}
 							>
 								{this.generateDOM()}
@@ -287,12 +298,12 @@ const mapStateToProps = (state) => ({
 	d: state.dsSystem.cDash,
 	gs: state.dsSystem.cGraphs,
 	eGraph: state.dsSystem.eGraph,
-	cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
-	draggableCancel: ".disableDrag",
-	draggableHandle: ".dragHandle",
-	className: "layout",
-	rowHeight: 25,
-	preventCollision: false,
+	// cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
+	// draggableCancel: ".disableDrag",
+	// draggableHandle: ".dragHandle",
+	// className: "layout",
+	// rowHeight: 25,
+	// preventCollision: false,
 })
 
 const mapDispatchToProps = dispatch => ({
