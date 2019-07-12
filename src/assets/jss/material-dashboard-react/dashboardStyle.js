@@ -207,8 +207,8 @@ const dashboardStyle = theme => ({
 		transformOrigin: 'center',
 		transform: 'translate(-50%, -50%)',
 		"&:hover": {
-			background: '#eeeeeeaa',
-			cursor: 'move',
+			background: 'rgba(128,128,128,0.7)',
+			// cursor: 'move',
 			opacity: 1
 		}
 	},

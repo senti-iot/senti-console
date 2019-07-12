@@ -68,16 +68,26 @@ class CreateDashboard extends React.Component {
 	renderPos = (l) => {
 		const { classes } = this.props
 		return <div className={classes.editGraph}>
-			<ItemG>
-				<Button style={{ margin: 4 }} variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
-					<Edit style={{ marginRight: 8 }} />Edit
-				</Button>
+			<ItemG container justify={'center'} alignItems={'center'}>
+				<ItemG xs={6} container justify={'flex-end'}>
+					<Button style={{ width: 125, margin: 4 }} variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
+						<Edit style={{ marginRight: 8 }} />Edit
+					</Button>
+				</ItemG>
+				<ItemG xs={6}>
+					<Button variant={'contained'} style={{ width: 125, margin: 4, background: red[600], color: '#fff' }} onClick={this.removeGraph(l)}>
+						<Clear style={{ marginRight: 8 }} /> Remove
+					</Button>
+				</ItemG>
+				<ItemG xs={12} container justify={'center'} alignItems={'center'}>
+					<div className={'dragHandle'} style={{ marginTop: 50 }}>
+						<Button variant={'outlined'} disableRipple style={{ padding: "25px 50px", cursor: 'move' }}>
+							Drag
+						</Button>
+					</div>
+				</ItemG>
 			</ItemG>
-			<ItemG>
-				<Button variant={'contained'} style={{ margin: 4, background: red[600], color: '#fff' }} onClick={this.removeGraph(l)}>
-					<Clear style={{ marginRight: 8 }} /> Remove
-				</Button>
-			</ItemG>
+	
 		</div>
 	}
 	typeChildren = (g, i) => {
@@ -156,19 +166,7 @@ class CreateDashboard extends React.Component {
 		const gs = this.props.gs
 		return gs.map((g, i) => this.typeChildren(g, i))
 	}
-	editGraphPos = (layout, oldItem, ng, placeholder, e, element) => {
-		this.setState({ updated: true })
-		this.props.editGraphPos({
-			h: ng.h,
-			i: ng.i,
-			minH: ng.minH,
-			minW: ng.minW,
-			w: ng.w,
-			x: ng.x,
-			y: ng.y,
-		})
-		this.setState({ updated: false })
-	}
+
 	changeColor = (value) => {
 		const { d } = this.props
 		let newD = Object.assign({}, d)
@@ -183,8 +181,8 @@ class CreateDashboard extends React.Component {
 	}
 	renderColorPicker = () => {
 		const { t } = this.props
-		return <Dropdown 
-			icon={<Palette style={{ color: "#FFF" }}/>}
+		return <Dropdown
+			icon={<Palette style={{ color: "#FFF" }} />}
 			menuItems={weekendColorsDropdown(t)}
 			onChange={this.changeColor}
 		/>
@@ -216,7 +214,7 @@ class CreateDashboard extends React.Component {
 										</IconButton>
 									</ItemG>
 									<ItemG container xs={10} justify={'center'} alignItems={'center'}>
-									
+
 										<TextF
 											id={'dashboardName'}
 											InputProps={{
@@ -229,11 +227,11 @@ class CreateDashboard extends React.Component {
 											reversed
 										/>
 										{this.renderColorPicker()}
-										
+
 									</ItemG>
 									<ItemG xs={1}>
 										<Button color={'primary'} variant={'outlined'}>
-											<Save style={{ marginRight: 8 }}/> {t('actions.save')}
+											<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 										</Button>
 									</ItemG>
 								</ItemG>
@@ -264,16 +262,15 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
-					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false })}} openEditGraph={this.state.openEditGraph} />
+					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={() => { this.setState({ openEditGraph: false }) }} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
 								onBreakpointChange={(n) => this.setState({ n })}
-								onDragStop={this.editGraphPos}
 								onResizeStop={this.editGraphPos}
 								measureBeforeMount={false}
-								onLayoutChange={() => {}}
+								onLayoutChange={() => { }}
 								useCSSTransforms={true}
 							>
 								{this.generateDOM()}
@@ -291,6 +288,8 @@ const mapStateToProps = (state) => ({
 	gs: state.dsSystem.cGraphs,
 	eGraph: state.dsSystem.eGraph,
 	cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
+	draggableCancel: ".disableDrag",
+	draggableHandle: ".dragHandle",
 	className: "layout",
 	rowHeight: 25,
 	preventCollision: false,
