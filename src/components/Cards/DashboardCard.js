@@ -7,8 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import cx from 'classnames'
 import { colors, IconButton } from '@material-ui/core';
-import { Muted } from 'components';
-import { MoreVert, Visibility, Airplay, Star, LocalOffer } from 'variables/icons';
+import { Muted, Dropdown } from 'components';
+import { Visibility, Airplay, Star, LocalOffer } from 'variables/icons';
 
 const styles = theme => ({
 	smallButton: {
@@ -145,7 +145,7 @@ const styles = theme => ({
 
 class DashboardCard extends Component {
 	render() {
-		const { classes, header, content, c, handleOpenDashboard } = this.props;
+		const { classes, header, content, c, handleOpenDashboard, t  } = this.props;
 		return (
 			<Card className={classes.card}>
 			
@@ -159,9 +159,16 @@ class DashboardCard extends Component {
 					src={'ps'}
 					title=''
 				>
-					<IconButton className={classes.menuButton}>
+					<Dropdown
+						buttonClassName={classes.menuButton}
+						menuItems={[
+							{ label: t('actions.delete'), func: this.props.deleteDashboard }
+						]}>
+
+					</Dropdown>
+					{/* <IconButton >
 						<MoreVert/>
-					</IconButton>
+					</IconButton> */}
 
 				</CardMedia>
 				<CardContent classes={{ root: classes.cardContent }}>

@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
@@ -22,7 +22,6 @@ import { weekendColorsDropdown } from 'variables/functions';
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
-//ignore
 class CreateDashboard extends React.Component {
 	constructor(props) {
 		super(props);
@@ -195,6 +194,9 @@ class CreateDashboard extends React.Component {
 		this.setState({ openEditGraph: false })
 
 	}
+	onLayoutChange = (layout) => {
+		this.props.setLayout(layout)
+	}
 	render() {
 		const { openAddDash, handleCloseDT, classes, d, t } = this.props
 		const appBarClasses = cx({
@@ -282,7 +284,8 @@ class CreateDashboard extends React.Component {
 								rowHeight={25}
 								preventCollision={false}
 								measureBeforeMount={false}
-								onLayoutChange={() => {}}
+								onLayoutChange={this.onLayoutChange}
+								// onDragStop={(item) => console.log(item)}
 								useCSSTransforms={true}
 							>
 								{this.generateDOM()}
@@ -314,7 +317,8 @@ const mapDispatchToProps = dispatch => ({
 	editDashboard: (d) => dispatch(editDash(d)),
 	setGE: g => dispatch(setGE(g)),
 	removeGE: g => dispatch(removeGE(g)),
-	saveDashboard: () => dispatch(saveDashboard())
+	saveDashboard: () => dispatch(saveDashboard()),
+	setLayout: (l) => dispatch(setLayout(l))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))

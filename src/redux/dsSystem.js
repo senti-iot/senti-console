@@ -212,6 +212,23 @@ export const editDash = (d) => {
 	}
 }
 
+export const removeDashboard = id => { 
+	return (dispatch, getState) => {
+		let user = {}
+		let ds = []
+		user = getState().settings.user
+		ds = user.aux.senti.dashboards
+		ds = ds.filter(f => f.id !== id)
+		console.log(ds)
+		user.aux.senti.dashboards = ds
+		dispatch(saveOnServ(user))
+		dispatch({
+			type: getDashboards,
+			payload: ds
+		})
+	}
+}
+
 export const saveDashboard = () => { 
 	return (dispatch, getState) => {
 		let user, newD = {}
@@ -224,7 +241,22 @@ export const saveDashboard = () => {
 		// dispatch()
 		dispatch(saveOnServ(user))
 	}
+}
 
+export const setLayout = (l) => {
+	return (dispatch, getState) => {
+		let graphs = []
+		// let g = {}
+		graphs = getState().dsSystem.cGraphs
+		graphs.forEach(g => { 
+			let grid = l[l.findIndex(r => r.i === g.id)]
+			g.grid = grid
+		})
+		dispatch({
+			type: cGraph,
+			payload: graphs
+		})
+	}
 }
 
 

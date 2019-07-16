@@ -17,6 +17,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme } from 'variables/themes';
 import { graphType } from 'variables/dsSystem/graphTypes';
+import { removeDashboard } from 'redux/dsSystem';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -234,7 +235,7 @@ class DashboardPanel extends Component {
 		</Dialog>
 	}
 	render() {
-		const { d, data } = this.props
+		const { d, data, t } = this.props
 		return (
 			<Fragment>
 				<ThemeProvider theme={darkTheme}>
@@ -242,12 +243,14 @@ class DashboardPanel extends Component {
 				</ThemeProvider>
 				<ItemG xs={12} md={4} lg={3} xl={2}>
 					<DashboardCard
+						deleteDashboard={() => this.props.removeDashboard(d.id)}
 						handleOpenDashboard={this.handleOpenDashboard}
 						data={data}
 						header={d.name}
 						img={imgs.data}
 						content={d.description}
 						c={d.color}
+						t={t}
 					/>
 				</ItemG>
 			</Fragment>
@@ -268,6 +271,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+	removeDashboard: (id) => dispatch(removeDashboard(id))
 })
 
 export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))

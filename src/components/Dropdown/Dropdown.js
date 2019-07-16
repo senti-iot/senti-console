@@ -21,6 +21,7 @@ class Dropdown extends Component {
 		this.setState({ actionAnchor: null });
 	}
 	handleMenuItemClick = (m) => e => {
+		console.log(m)
 		if (m.func) {
 			m.func()
 		}
@@ -31,7 +32,7 @@ class Dropdown extends Component {
 	}
 	render() {
 		const { actionAnchor } = this.state
-		const { menuItems, icon, button, divider, tooltip, t } = this.props
+		const { menuItems, icon, button, divider, tooltip, t, buttonClassName } = this.props
 		return (
 			<Fragment>
 				{button && <Button
@@ -47,6 +48,9 @@ class Dropdown extends Component {
 						aria-label='More'
 						aria-owns={actionAnchor ? 'long-menu' : null}
 						aria-haspopup='true'
+						classes={{
+							root: buttonClassName
+						}}
 						onClick={this.handleOpenActionsDetails}>
 						{icon ? icon : <MoreVert />}
 					</IconButton>
