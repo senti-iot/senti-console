@@ -68,7 +68,15 @@ export const resetSettings = () => {
 		dispatch(await getSettings())
 	}
 }
-
+export const saveOnServ = (user) => {
+	return async (dispatch) => {
+		var saved = await saveSettings(user);
+		dispatch({
+			type: SAVESETTINGS,
+			saved: saved ? true : false
+		})
+	}
+}
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user

@@ -1,6 +1,7 @@
 // import { getSensorDataClean } from 'variables/dataRegistry';
 import moment from 'moment'
 import { graphType } from 'variables/dsSystem/graphTypes';
+import { saveOnServ } from './settings';
 // import { createSelector } from 'reselect'
 
 export const getDashboards = 'getDashboards'
@@ -59,7 +60,7 @@ const menuSelect = (p, c) => {
 	return { to, from, timeType, chartType }
 }
 
-const generateID = (name) => {
+export const generateID = (name) => {
 	var randHex = function(len) {
 		let maxlen = 8
 		let min = Math.pow(16, Math.min(len, maxlen) - 1) 
@@ -209,6 +210,21 @@ export const editDash = (d) => {
 		// let 
 		dispatch({ type: eDash, payload: d })
 	}
+}
+
+export const saveDashboard = () => { 
+	return (dispatch, getState) => {
+		let user, newD = {}
+		let graphs = []
+		user = getState().settings.user
+		newD = getState().dsSystem.cDash
+		graphs = getState().dsSystem.cGraphs
+		newD.graphs = graphs
+		user.aux.senti.dashboards.push(newD)
+		// dispatch()
+		dispatch(saveOnServ(user))
+	}
+
 }
 
 

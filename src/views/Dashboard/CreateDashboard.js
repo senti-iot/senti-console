@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
@@ -174,10 +174,12 @@ class CreateDashboard extends React.Component {
 		newD.color = value
 		this.props.editDashboard(newD)
 	}
+
 	changeName = (e) => {
 		const { d } = this.props
 		let newD = Object.assign({}, d)
 		newD.name = e.target.value
+		newD.id = generateID(newD.name)
 		this.props.editDashboard(newD)
 	}
 	renderColorPicker = () => {
@@ -236,7 +238,7 @@ class CreateDashboard extends React.Component {
 
 									</ItemG>
 									<ItemG xs={1}>
-										<Button color={'primary'} variant={'outlined'}>
+										<Button color={'primary'} variant={'outlined'} onClick={this.props.saveDashboard}>
 											<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 										</Button>
 									</ItemG>
@@ -311,7 +313,8 @@ const mapDispatchToProps = dispatch => ({
 	editGraphPos: (g) => dispatch(editGraphPos(g)),
 	editDashboard: (d) => dispatch(editDash(d)),
 	setGE: g => dispatch(setGE(g)),
-	removeGE: g => dispatch(removeGE(g))
+	removeGE: g => dispatch(removeGE(g)),
+	saveDashboard: () => dispatch(saveDashboard())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))
