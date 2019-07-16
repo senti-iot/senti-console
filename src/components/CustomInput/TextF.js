@@ -103,12 +103,12 @@ const TextF = (props) => {
 			} : null}
 			onKeyPress={props.onKeyPress}
 			onKeyDown={props.onKeyDown}
-			FormHelperTextProps={{
-				className: classNames
-			}}
-			InputLabelProps={{
-				className: classNames
-			}}
+			// FormHelperTextProps={{
+			// 	className: classNames
+			// }}
+			// InputLabelProps={{
+			// 	className: classNames
+			// }}
 		/>
 
 	)

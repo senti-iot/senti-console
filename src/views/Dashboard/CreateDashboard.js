@@ -47,7 +47,6 @@ class CreateDashboard extends React.Component {
 		this.props.createDash()
 	}
 	componentDidUpdate(prevProps, prevState) {
-		console.log(prevProps.gs !== this.props.gs)
 		if (prevProps.gs !== this.props.gs) {
 			this.setState({
 				layout: {

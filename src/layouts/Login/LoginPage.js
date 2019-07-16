@@ -178,7 +178,7 @@ class NewLoginPage extends Component {
 												<TextF
 													id={'user'}
 													autoFocus
-													reversed
+													
 													label={t('login.username')}
 													error={this.state.error}
 													fullWidth
