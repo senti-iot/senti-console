@@ -91,11 +91,13 @@ class CreateToken extends Component {
 			open={openConfimClose}
 			disableBackdropClick
 		>
-			<DialogTitle>
-				{t('dialogs.tokens.createToken.title')}
-				<IconButton aria-label="Close" className={classes.closeButton} onClick={() => this.setState({ openConfimClose: false })}>
-					<Close />
-				</IconButton>
+			<DialogTitle >
+				<ItemG container justify={'space-between'} alignItems={'center'}>
+					{t('dialogs.tokens.createToken.title')}					
+					<IconButton aria-label="Close" className={classes.closeButton} onClick={() => this.setState({ openConfimClose: false })}>
+						<Close />
+					</IconButton>
+				</ItemG>
 			</DialogTitle>
 			<DialogContent>
 				<ItemG container>
@@ -181,16 +183,12 @@ class CreateToken extends Component {
 			// onClose={this.handleCloseToken}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
-			PaperProps={{
-				style: {
-					// width: 600
-				}
-			}}
+
 		>
 			{token ?
 				<Fragment>
 					{this.renderCloseDialog()}
-					<DialogTitle disableTypography >
+					<DialogTitle>
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{t('menus.create.token')}
 							<IconButton aria-label="Close" className={classes.closeButton} onClick={generatedToken ? this.handleConfirmClose : this.props.handleClose}>
