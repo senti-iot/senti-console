@@ -8,6 +8,7 @@ import { copyToClipboard } from 'variables/functions';
 import withSnackbar from 'components/Localization/S';
 import { generateToken } from 'variables/dataRegistry'
 import { connect } from 'react-redux'
+import { getTokens } from 'redux/data';
 
 class CreateToken extends Component {
 	constructor(props) {
@@ -163,6 +164,7 @@ class CreateToken extends Component {
 								openDeviceType: false
 
 							})
+							this.props.getTokens(this.props.user.id)
 							this.props.handleClose()
 						}}
 						variant={'outlined'} className={classes.redButton}>
@@ -280,8 +282,8 @@ const mapStateToProps = (state) => ({
 	user: state.settings.user
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	getTokens: (uId) => dispatch(getTokens(uId, true))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()(withStyles(projectStyles)(CreateToken)))
