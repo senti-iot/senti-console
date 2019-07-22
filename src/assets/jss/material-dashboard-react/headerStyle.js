@@ -36,7 +36,7 @@ const headerStyle = theme => ({
 		borderBottom: "0",
 		marginBottom: "0",
 		position: 'fixed',
-		padding: "0 !important",
+		// padding: "0 !important",
 		[theme.breakpoints.down('xs')]: {
 			height: 48
 		},
@@ -44,7 +44,7 @@ const headerStyle = theme => ({
 		zIndex: "1029",
 		color: "#ffffff",
 		border: "0",
-		transition: "all 150ms ease 0s",
+		// transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
 	},
