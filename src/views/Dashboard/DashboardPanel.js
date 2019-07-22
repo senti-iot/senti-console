@@ -153,19 +153,17 @@ class DashboardPanel extends Component {
 			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
 				<ResponsiveReactGridLayout
 					{...this.props}
-					// layouts={this.state.initialLayout}
 					onBreakpointChange={this.onBreakpointChange}
 					onLayoutChange={this.onLayoutChange}
 					measureBeforeMount={false}
 					useCSSTransforms={this.state.mounted}
-					// compactType={this.state.compactType}
 				>
 					{d.graphs.map((g, i) => {
 						let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
 						switch (g.type) {
 							case 1:
 								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{this.renderPos(grid)}
+									{/* {this.renderPos(grid)} */}
 									<GaugeSData
 										title={g.name}
 										period={{ ...g.period, menuId: g.periodType }}
@@ -178,7 +176,7 @@ class DashboardPanel extends Component {
 								</Paper>
 							case 0:
 								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{this.renderPos(grid)}
+									{/* {this.renderPos(grid)} */}
 									<DoubleChart
 										title={g.name}
 										g={g}
@@ -192,7 +190,7 @@ class DashboardPanel extends Component {
 								</Paper>
 							case 2:
 								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{this.renderPos(grid)}
+									{/* {this.renderPos(grid)} */}
 									<ScorecardAB
 										color={d.color}
 										title={g.name}
@@ -204,7 +202,7 @@ class DashboardPanel extends Component {
 								</Paper>
 							case 3:
 								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{this.renderPos(grid)}
+									{/* {this.renderPos(grid)} */}
 									<Scorecard
 										color={d.color}
 										title={g.name}
@@ -216,7 +214,7 @@ class DashboardPanel extends Component {
 								</Paper>
 							case 4:
 								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{this.renderPos(grid)}
+									{/* {this.renderPos(grid)} */}
 									<WindCard
 										title={g.name}
 										gId={g.id}
@@ -261,8 +259,6 @@ DashboardPanel.defaultProps = {
 	className: "layout",
 	rowHeight: 25,
 	preventCollision: false,
-	// autoSize: false,
-	// isResizable: false,
 	onLayoutChange: () => { },
 	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
 };
