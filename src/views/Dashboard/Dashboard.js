@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade, IconButton, /* IconButton, */  } from '@material-ui/core';
+import { Button, withStyles, Fade, IconButton, Tooltip, Hidden /* IconButton, */ } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -7,13 +7,12 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
+// import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import DashboardPanel from './DashboardPanel.js';
 // import { teal } from '@material-ui/core/colors';
 // import { Add } from 'variables/icons';
 import CreateDashboard from './CreateDashboard.js';
 import { Add } from 'variables/icons.js';
-import { teal } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme } from 'variables/themes/index.js';
 
@@ -32,7 +31,16 @@ class Dashboard extends React.Component {
 		props.setTabs({
 			id: 'dashboard',
 			tabs: [],
-			// dontShow: true
+			content: [
+				<Hidden smDown>
+					<Tooltip title={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}>
+						<IconButton
+							onClick={this.handleOpenDT}
+							style={{ color: '#fff', borderRadius: 4, marginRight: 8, padding: '12px' }}>
+							<Add />
+						</IconButton>
+					</Tooltip>
+				</Hidden>]
 		})
 	}
 
@@ -76,13 +84,13 @@ class Dashboard extends React.Component {
 			handleCloseDT={handleCloseDT}
 			t={t}
 		/>
-		
+
 	}
 	render() {
-		const { discoverSenti, t, history } = this.props
+		const { /* discoverSenti, */ t, /* history */ } = this.props
 		return (
 			<Fragment>
-				{discoverSenti ? <DiscoverSenti t={t} history={history} /> : null}
+				{/* {discoverSenti ? <DiscoverSenti t={t} history={history} /> : null} */}
 				<Fade in={true} style={{
 					transitionDelay: 200,
 				}}>
@@ -99,12 +107,8 @@ class Dashboard extends React.Component {
 								/>
 							})}
 						</GridContainer>
-						<IconButton
-							onClick={this.handleOpenDT} 
-							style={{ position: 'absolute', top: 0, right: 0, background: teal[500], color: '#fff', borderRadius: 4, marginRight: 8, padding: '8px' }}>
-							<Add />
-						</IconButton>
-					
+
+
 					</div>
 				</Fade>
 			</Fragment>

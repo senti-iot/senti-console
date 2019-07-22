@@ -66,23 +66,23 @@ class CreateDashboard extends React.Component {
 		this.props.removeGE(l)
 	}
 	renderPos = (l) => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <div className={classes.editGraph}>
 			<ItemG container justify={'center'} alignItems={'center'}>
 				<ItemG xs={6} container justify={'flex-end'}>
 					<Button style={{ width: 125, margin: 4 }} variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
-						<Edit style={{ marginRight: 8 }} />Edit
+						<Edit style={{ marginRight: 8 }} />{t('actions.edit')}
 					</Button>
 				</ItemG>
 				<ItemG xs={6}>
 					<Button variant={'contained'} style={{ width: 125, margin: 4, background: red[600], color: '#fff' }} onClick={this.removeGraph(l)}>
-						<Clear style={{ marginRight: 8 }} /> Remove
+						<Clear style={{ marginRight: 8 }} /> {t('actions.delete')}
 					</Button>
 				</ItemG>
 				<ItemG xs={12} container justify={'center'} alignItems={'center'}>
 					<div className={'dragHandle'} style={{ marginTop: 50 }}>
 						<Button variant={'outlined'} disableRipple style={{ padding: "25px 50px", cursor: 'move' }}>
-							Drag
+							{t('actions.move')}
 						</Button>
 					</div>
 				</ItemG>

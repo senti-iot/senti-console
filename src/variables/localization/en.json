@@ -9,6 +9,7 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
+		"move": "Move",
 		"close": "Close",
 		"create":"Create",
 		"delete": "Delete",
