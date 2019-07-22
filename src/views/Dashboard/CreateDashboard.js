@@ -32,12 +32,12 @@ class CreateDashboard extends React.Component {
 			mounted: false,
 			openEditGraph: false,
 			openToolbox: true,
-			layout: {
-				lg: props.gs.map((g) => ({
-					i: g.id,
-					...g.grid
-				}))
-			}
+			// layout: {
+			// 	lg: props.gs.map((g) => ({
+			// 		i: g.id,
+			// 		...g.grid
+			// 	}))
+			// }
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
@@ -47,14 +47,14 @@ class CreateDashboard extends React.Component {
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.gs !== this.props.gs) {
-			this.setState({
-				layout: {
-					lg: this.props.gs.map((g) => ({
-						i: g.id,
-						...g.grid
-					}))
-				}
-			})
+			// this.setState({
+			// 	layout: {
+			// 		lg: this.props.gs.map((g) => ({
+			// 			i: g.id,
+			// 			...g.grid
+			// 		}))
+			// 	}
+			// })
 
 		}
 	}

@@ -155,8 +155,10 @@ class DashboardPanel extends Component {
 					{...this.props}
 					onBreakpointChange={this.onBreakpointChange}
 					onLayoutChange={this.onLayoutChange}
-					measureBeforeMount={false}
+					measureBeforeMount={true}
 					useCSSTransforms={this.state.mounted}
+					isResizable={false}
+					isDraggable={false}
 				>
 					{d.graphs.map((g, i) => {
 						let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
@@ -261,6 +263,8 @@ DashboardPanel.defaultProps = {
 	preventCollision: false,
 	onLayoutChange: () => { },
 	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+
+
 };
 const mapStateToProps = (state, ownProps) => ({
 	// loading: state.dsSystem.gotDashboardData
