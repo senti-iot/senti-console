@@ -97,15 +97,14 @@ class DisplaySettings extends Component {
 					content={
 						<Grid container>
 							<List className={classes.list}>
-								<ListItem divider>
+								{/* <ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.discoverSenti')}</ListItemText>
 										<Switch 
 											checked={discSentiVal}
 											onChange={this.changeDiscoverSenti}/>
-										{/* <DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} /> */}
 									</ItemGrid>
-								</ListItem>
+								</ListItem> */}
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.language')}</ListItemText>
