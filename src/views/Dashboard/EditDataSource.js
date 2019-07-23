@@ -278,7 +278,6 @@ export class EditDataSource extends Component {
 	render() {
 		const { t, classes, sensor, g, cfs, getSensor } = this.props
 		const { dataSourceExp, generalExp, dataSourceA, dataSourceB } = this.state
-		console.log('EDS', sensor)
 		switch (g.type) {
 			case 0:
 				return <ESChart

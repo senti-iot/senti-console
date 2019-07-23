@@ -364,15 +364,16 @@ class GaugeComponent extends PureComponent {
 		</ItemG>
 	}
 	renderType = () => {
-		const { period, color, g } = this.props
+		const { period, color, g, create, chartId } = this.props
 		const { loading, data } = this.state
+		let id = chartId ? chartId :  create ? 'edit' + g.id : g.id
 		if (!loading) {
 			return <RGauge
 				color={color}
 				title={this.props.title}
 				period={period}
 				value={data}
-				chartId={g.id}
+				chartId={id}
 			/>
 		}
 		else return this.renderNoData()

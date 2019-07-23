@@ -1,7 +1,7 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
-import { T, ItemG, CircularLoader, Dropdown, TextF } from 'components';
+import { T, ItemG, Dropdown, TextF } from 'components';
 import cx from 'classnames'
 import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
@@ -22,7 +22,8 @@ import { weekendColorsDropdown } from 'variables/functions';
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
-class CreateDashboard extends React.Component {
+
+class EditDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -45,8 +46,8 @@ class CreateDashboard extends React.Component {
 	componentDidMount = () => {
 	}
 	componentDidUpdate(prevProps, prevState) {
-		if ((this.props.openAddDash !== prevProps.openAddDash) && this.props.openAddDash) {
-			this.props.createDash()
+		if ((this.props.open !== prevProps.open) && this.props.open) {
+			this.props.editDashboard(this.props.eDash)
 		}
 		if (prevProps.gs !== this.props.gs) {
 			// this.setState({
@@ -180,7 +181,7 @@ class CreateDashboard extends React.Component {
 		const { d } = this.props
 		let newD = Object.assign({}, d)
 		newD.name = e.target.value
-		newD.id = generateID(newD.name)
+		// newD.id = generateID(newD.name)
 		this.props.editDashboard(newD)
 	}
 	renderColorPicker = () => {
@@ -200,7 +201,7 @@ class CreateDashboard extends React.Component {
 		this.props.setLayout(layout)
 	}
 	render() {
-		const { openAddDash, handleCloseDT, classes, d, t } = this.props
+		const { open, handleClose, classes, d, t } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -209,8 +210,8 @@ class CreateDashboard extends React.Component {
 			!d ? null :
 				<Dialog
 					fullScreen
-					open={openAddDash}
-					onClose={handleCloseDT}
+					open={open}
+					onClose={handleClose}
 					TransitionComponent={this.transition}
 					PaperProps={{
 						className: classes[d.color]
@@ -221,7 +222,7 @@ class CreateDashboard extends React.Component {
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={1} container alignItems={'center'}>
-										<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
+										<IconButton color='inherit' onClick={handleClose} aria-label='Close'>
 											<Close />
 										</IconButton>
 									</ItemG>
@@ -251,7 +252,7 @@ class CreateDashboard extends React.Component {
 							<Hidden lgUp>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={4} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={handleCloseDT} aria-label='Close'>
+										<IconButton color={'inherit'} onClick={handleClose} aria-label='Close'>
 											<Close />
 										</IconButton>
 										<T variant='h6' color='inherit' className={classes.flex}>
@@ -303,24 +304,18 @@ class CreateDashboard extends React.Component {
 const mapStateToProps = (state) => ({
 	d: state.dsSystem.cDash,
 	gs: state.dsSystem.cGraphs,
-	eGraph: state.dsSystem.eGraph,
-	// cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
-	// draggableCancel: ".disableDrag",
-	// draggableHandle: ".dragHandle",
-	// className: "layout",
-	// rowHeight: 25,
-	// preventCollision: false,
+	eGraph: state.dsSystem.eGraph
 })
 
 const mapDispatchToProps = dispatch => ({
 	createDash: () => dispatch(createDash()),
 	createGraph: (type) => dispatch(createGraph(type)),
 	editGraphPos: (g) => dispatch(editGraphPos(g)),
-	editDashboard: (d) => dispatch(editDash(d)),
+	editDashboard: (d) => dispatch(editDash(d, true)),
 	setGE: g => dispatch(setGE(g)),
 	removeGE: g => dispatch(removeGE(g)),
-	saveDashboard: () => dispatch(saveDashboard()),
+	saveDashboard: () => dispatch(saveDashboard(true)),
 	setLayout: (l) => dispatch(setLayout(l))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDashboard))

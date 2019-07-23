@@ -4,7 +4,7 @@ import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
 import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide, Paper } from '@material-ui/core';
 import { ItemG, T, CircularLoader } from 'components';
-import { Close } from 'variables/icons';
+import { Close, Edit } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GaugeSData from 'views/Charts/GaugeSData';
@@ -45,7 +45,8 @@ class DashboardPanel extends Component {
 		return <Slide direction='up' {...props} />;
 	}
 	renderPos = (l) => {
-		return <div style={{ position: 'absolute',
+		return <div style={{
+			position: 'absolute',
 			top: '50%',
 			left: '50%',
 			zIndex: '9999',
@@ -53,7 +54,8 @@ class DashboardPanel extends Component {
 			fontSize: '24px',
 			padding: '20px',
 			transformOrigin: 'center',
-			transform: 'translate(-50%, -50%)', backgroundColor: "#000" }}>
+			transform: 'translate(-50%, -50%)', backgroundColor: "#000"
+		}}>
 			[{l.x}, {l.y}, {l.w}, {l.h}]
 		</div>
 	}
@@ -62,7 +64,7 @@ class DashboardPanel extends Component {
 			initialLayout: this.props.initialLayout
 		})
 	}
-	
+
 	onLayoutChange = (args) => {
 		this.setState({
 			initialLayout: {
@@ -74,7 +76,7 @@ class DashboardPanel extends Component {
 		switch (type) {
 			case 0:
 				return 'chart'
-			case 1: 
+			case 1:
 				return 'gauge'
 			case 2:
 				return 'scorecardAB'
@@ -87,7 +89,7 @@ class DashboardPanel extends Component {
 		}
 	}
 	renderDashboard = () => {
-		const { t, classes, d, loading } = this.props
+		const { t, classes, d, loading, handleOpenEDT } = this.props
 		const { openDashboard } = this.state
 		const { handleCloseDashboard } = this
 		const appBarClasses = cx({
@@ -127,6 +129,9 @@ class DashboardPanel extends Component {
 								</T>
 							</ItemG>
 							<ItemG xs={1} container justify={'flex-end'}>
+								<IconButton color='inherit' onClick={() => {handleOpenEDT(); handleCloseDashboard();}} aria-label='Close'>
+									<Edit />
+								</IconButton>
 								<IconButton color='inherit' onClick={handleCloseDashboard} aria-label='Close'>
 									<Close />
 								</IconButton>
@@ -150,89 +155,91 @@ class DashboardPanel extends Component {
 					</Hidden>
 				</Toolbar>
 			</AppBar>
-			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-				<ResponsiveReactGridLayout
-					{...this.props}
-					onBreakpointChange={this.onBreakpointChange}
-					onLayoutChange={this.onLayoutChange}
-					measureBeforeMount={true}
-					useCSSTransforms={this.state.mounted}
-					isResizable={false}
-					isDraggable={false}
-				>
-					{d.graphs.map((g, i) => {
-						let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
-						switch (g.type) {
-							case 1:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{/* {this.renderPos(grid)} */}
-									<GaugeSData
-										title={g.name}
-										period={{ ...g.period, menuId: g.periodType }}
-										t={t}
-										color={d.color}
-										gId={g.id}
-										dId={d.id}
-										single
-									/>
-								</Paper>
-							case 0:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{/* {this.renderPos(grid)} */}
-									<DoubleChart
-										title={g.name}
-										g={g}
-										period={{ ...g.period }}
-										gId={g.id}
-										dId={d.id}
-										color={d.color}
-										single={true}
-										t={t}
-									/>
-								</Paper>
-							case 2:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{/* {this.renderPos(grid)} */}
-									<ScorecardAB
-										color={d.color}
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										t={t}
-									/>
-								</Paper>
-							case 3:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{/* {this.renderPos(grid)} */}
-									<Scorecard
-										color={d.color}
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										t={t}
-									/>
-								</Paper>
-							case 4:
-								return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-									{/* {this.renderPos(grid)} */}
-									<WindCard
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										t={t}
-									/>
-								</Paper>
-							default:
-								return null;
-						}
-		
-					})}
-				</ResponsiveReactGridLayout>
-			</div>}
-		</Dialog>
+			{
+				loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+					<ResponsiveReactGridLayout
+						{...this.props}
+						onBreakpointChange={this.onBreakpointChange}
+						onLayoutChange={this.onLayoutChange}
+						measureBeforeMount={true}
+						useCSSTransforms={this.state.mounted}
+						isResizable={false}
+						isDraggable={false}
+					>
+						{d.graphs.map((g, i) => {
+							let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
+							switch (g.type) {
+								case 1:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<GaugeSData
+											title={g.name}
+											period={{ ...g.period, menuId: g.periodType }}
+											t={t}
+											color={d.color}
+											gId={g.id}
+											dId={d.id}
+											single
+										/>
+									</Paper>
+								case 0:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<DoubleChart
+											title={g.name}
+											g={g}
+											period={{ ...g.period }}
+											gId={g.id}
+											dId={d.id}
+											color={d.color}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 2:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<ScorecardAB
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 3:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<Scorecard
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 4:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<WindCard
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								default:
+									return null;
+							}
+
+						})}
+					</ResponsiveReactGridLayout>
+				</div>
+			}
+		</Dialog >
 	}
 	render() {
 		const { d, data, t } = this.props

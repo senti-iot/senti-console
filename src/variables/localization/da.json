@@ -9,6 +9,7 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
+		"edit":"Rediger",
 		"move": "Flytte",
 		"close": "Luk",
 		"create":"Opret",

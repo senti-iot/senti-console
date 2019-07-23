@@ -44,6 +44,7 @@ class EditGraph extends Component {
 					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
 						<GaugeSData
 							create
+							chartId={'editor' + g.id}
 							color={d.color}
 							title={g.name}
 							period={{ ...g.period, menuId: g.periodType }}

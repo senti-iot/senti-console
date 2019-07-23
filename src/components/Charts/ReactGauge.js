@@ -68,6 +68,7 @@ const draw = (props, opts) => {
 	//#region Options
 	let options = opts ? opts : {}
 	className = options.className || props.classes.gauge || '.gauge'
+	console.log(className)
 	max = options.max || getMax(props.value) || 100;
 	min = options.min || 0;
 	margin = options.margin || {

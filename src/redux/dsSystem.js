@@ -1,7 +1,7 @@
 // import { getSensorDataClean } from 'variables/dataRegistry';
 import moment from 'moment'
 import { graphType } from 'variables/dsSystem/graphTypes';
-import { saveOnServ } from './settings';
+import { saveOnServ, getSettings } from './settings';
 // import { createSelector } from 'reselect'
 
 export const getDashboards = 'getDashboards'
@@ -83,7 +83,8 @@ export const getPeriod = (state, id, create) => {
 	}
 	let gs = state.dsSystem.graphs
 	let g = gs[gs.findIndex(r => r.id === id)]
-	return g.period
+	if (g.period)
+		return g.period
 }
 
 export const getGraph = (state, id, create) => {
@@ -209,11 +210,12 @@ export const editDash = (d) => {
 	 return (dispatch) => {
 		// let 
 		dispatch({ type: eDash, payload: d })
+		dispatch({ type: cGraph, payload: d.graphs })
 	}
 }
 
 export const removeDashboard = id => { 
-	return (dispatch, getState) => {
+	return async (dispatch, getState) => {
 		let user = {}
 		let ds = []
 		user = getState().settings.user
@@ -222,24 +224,43 @@ export const removeDashboard = id => {
 		console.log(ds)
 		user.aux.senti.dashboards = ds
 		dispatch(saveOnServ(user))
+		dispatch(await getSettings())
 		dispatch({
 			type: getDashboards,
 			payload: ds
 		})
 	}
 }
-
-export const saveDashboard = () => { 
-	return (dispatch, getState) => {
+export const reset = () => {
+	return dispatch => {
+		dispatch({
+			type: cDash,
+			payload: null
+		})
+		dispatch({
+			type: cGraph,
+			payload: []
+		})
+	}
+}
+export const saveDashboard = (edit) => { 
+	return async (dispatch, getState) => {
 		let user, newD = {}
 		let graphs = []
 		user = getState().settings.user
 		newD = getState().dsSystem.cDash
 		graphs = getState().dsSystem.cGraphs
 		newD.graphs = graphs
-		user.aux.senti.dashboards.push(newD)
+		if (edit) {
+			user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
+		}
+		else {
+			user.aux.senti.dashboards.push(newD)
+		}
 		// dispatch()
 		dispatch(saveOnServ(user))
+		dispatch(await getSettings())
+
 	}
 }
 

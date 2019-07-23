@@ -15,6 +15,8 @@ import CreateDashboard from './CreateDashboard.js';
 import { Add } from 'variables/icons.js';
 import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme } from 'variables/themes/index.js';
+import EditDashboard from './EditDashboard.js';
+import { reset } from 'redux/dsSystem.js';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -24,7 +26,9 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: false
+			openAddDash: false,
+			openEditDash: false,
+			eDash: null
 		}
 		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC('dashboard', '', '', false)
@@ -71,9 +75,34 @@ class Dashboard extends React.Component {
 		})
 	}
 	handleCloseDT = () => {
+		this.props.resetDash()
 		this.setState({
 			openAddDash: false
 		})
+	}
+	handleOpenEDT = (eDash) => {
+		this.setState({
+			openEditDash: true,
+			eDash: eDash
+		})
+	}
+	handleCloseEDT = () => {
+		this.props.resetDash()
+		this.setState({
+			openEditDash: false,
+			eDash: null
+		})
+	}
+	renderEditDashboard = () => {
+		const { t } = this.props
+		const { openEditDash, eDash } = this.state
+		const { handleCloseEDT } = this
+		return <EditDashboard 
+			eDash={eDash}
+			open={openEditDash}
+			handleClose={handleCloseEDT}
+			t={t}
+		/>
 	}
 	renderAddDashboard = () => {
 		const { t } = this.props
@@ -97,10 +126,12 @@ class Dashboard extends React.Component {
 					<div style={{ position: 'relative' }}>
 						<ThemeProvider theme={darkTheme}>
 							{this.renderAddDashboard()}
+							{this.renderEditDashboard()}
 						</ThemeProvider>
 						<GridContainer spacing={1}>
 							{this.props.dashboards.map((d, i) => {
 								return <DashboardPanel
+									handleOpenEDT={() => this.handleOpenEDT(d)}
 									key={i}
 									d={d}
 									t={t}
@@ -124,8 +155,8 @@ const mapStateToProps = (state) => ({
 	dashboards: state.dsSystem.dashboards
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	resetDash: () => dispatch(reset())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(dashboardStyle)(Dashboard)))
