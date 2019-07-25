@@ -3,7 +3,6 @@ import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-da
 
 const deviceStyles = theme => ({
 	scrollbar: {
-		marginTop: 15,
 		background: "rgba(255,255,255,0.3)",
 		borderRadius: 8,
 		transition: "all 100ms ease",
