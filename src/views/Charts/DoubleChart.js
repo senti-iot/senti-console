@@ -377,10 +377,11 @@ class DoubleChartData extends PureComponent {
 		</ItemG>
 	}
 	renderType = () => {
-		const { title, setHoverID, t, device, period, single, hoverID } = this.props
+		const { title, setHoverID, t, g, device, period, single, hoverID } = this.props
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
+			console.log(g.id, period.timeType)
 			switch (period.chartType) {
 				case 0:
 					return roundDataSets ?

@@ -10,7 +10,7 @@ import {
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	ExportModal,
+	// ExportModal,
 	DateFilterMenu,
 	T,
 } from 'components';
@@ -24,6 +24,7 @@ import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 // import TC from 'components/Table/TC'
+import { Scrollbars } from 'react-custom-scrollbars';
 
 class WindCard extends PureComponent {
 	constructor(props) {
@@ -292,11 +293,11 @@ class WindCard extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
-		const { period, t, title } = this.props
+		const { period, /* t, */ title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
-			<Hidden mdDown>
+		return <ItemG container style={{ alignItems: 'center' }}>
+			{/* <Hidden mdDown>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
@@ -304,12 +305,12 @@ class WindCard extends PureComponent {
 						</IconButton>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG>
+			</Hidden> */}
+			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
-			<Hidden mdDown>
+			{/* <Hidden mdDown>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
@@ -319,9 +320,11 @@ class WindCard extends PureComponent {
 						</div>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG style={{ flex: '1',
-				textAlign: 'center' }}>
+			</Hidden> */}
+			<ItemG style={{
+				flex: '1',
+				textAlign: 'center'
+			}}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>
@@ -330,13 +333,40 @@ class WindCard extends PureComponent {
 		var decreaseValue = oldNumber - newNumber;
 		return ((decreaseValue / oldNumber) * 100).toFixed(3);
 	}
+	renderThumb = ({ style, ...props }) => {
+		// const { top } = this.state;
+		const { classes } = this.props
+		// const thumbStyle = {
+		// 	backgroundColor: `#ffffffaa`,
+		// 	borderRadius: 8
+		// };
+		return (
+			<div
+				className={classes.scrollbar}
+				style={{ ...style }}
+				{...props}/>
+		);
+	}
+	renderContainer = ({ style, ...props }) => {
+		const viewStyle = {
+			display: 'inline-flex'
+		}
+		return (
+			<div
+				style={{ ...style, ...viewStyle }} 
+			/>)
+	}
 	renderType = () => {
 		const { loading, data } = this.state
 		if (!loading) {
-			return <div style={{ maxHeight: 300, maxWidth: '100%', overflow: 'auto' }}>
-				<div style={{ display: 'inline-flex' }}>
+			return <ItemG xs={12}>
+				<Scrollbars
+					renderThumbHorizontal={this.renderThumb}
+					renderThumbVertical={this.renderThumb}
+					renderView={this.renderContainer}
+					style={{ maxWidth: '100%' }}>
 					{Object.keys(data).reverse().map((a, i) => {
-						return <Paper style={{ height: 250, minWidth: 100, margin: 4 }} key={i}>
+						return <Paper style={{ minHeight: 200, minWidth: 100, margin: 4 }} key={i}>
 							<ItemG container alignItems={'center'} style={{ height: '100%' }}>
 								<ItemG xs={12}>
 									<T style={{ textAlign: 'center' }}>
@@ -344,7 +374,6 @@ class WindCard extends PureComponent {
 									</T>
 								</ItemG>
 								<ItemG xs={12}>
-
 									<T style={{ textAlign: 'center' }}>
 										{moment(a).format('HH:mm:ss')}
 									</T>
@@ -363,8 +392,8 @@ class WindCard extends PureComponent {
 						</Paper>
 					}
 					)}
-				</div>
-			</div>
+				</Scrollbars>
+			</ItemG>
 		}
 		else return this.renderNoData()
 	}
@@ -430,35 +459,24 @@ class WindCard extends PureComponent {
 	}
 
 	render() {
-		const { t, period } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { t, period, color } = this.props
+		const { loading, /* openDownload,  exportData */ } = this.state
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
+					color={color}
 					title={this.renderTitle()}
 					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
+					dashboard
 					topAction={this.renderMenu()}
-					background={this.props.color}
 					content={
-						<Grid container style={{ minHeight: 300 }}>
-							<ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/>
+						<Grid container style={{ height: '100%', width: '100%' }}>
 							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
-
-								<ItemG xs={12}>
-									{this.renderType()}
-								</ItemG>
+								this.renderType()
 							}
 						</Grid>}
 				/>

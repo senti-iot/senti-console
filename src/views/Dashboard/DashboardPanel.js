@@ -156,12 +156,12 @@ class DashboardPanel extends Component {
 				</Toolbar>
 			</AppBar>
 			{
-				loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+				loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
 					<ResponsiveReactGridLayout
 						{...this.props}
 						onBreakpointChange={this.onBreakpointChange}
 						onLayoutChange={this.onLayoutChange}
-						measureBeforeMount={true}
+						// measureBeforeMount={true}
 						useCSSTransforms={this.state.mounted}
 						isResizable={false}
 						isDraggable={false}
@@ -224,6 +224,7 @@ class DashboardPanel extends Component {
 									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
 										{/* {this.renderPos(grid)} */}
 										<WindCard
+											color={d.color}
 											title={g.name}
 											gId={g.id}
 											dId={d.id}

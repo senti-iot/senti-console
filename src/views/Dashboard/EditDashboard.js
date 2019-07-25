@@ -19,6 +19,7 @@ import { red } from '@material-ui/core/colors';
 import ToolbarItem from './ToolbarItem';
 import DropZone from './DropZone';
 import { weekendColorsDropdown } from 'variables/functions';
+import { graphType } from 'variables/dsSystem/graphTypes';
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -93,13 +94,30 @@ class EditDashboard extends React.Component {
 	
 		</div>
 	}
+	gridCoords = (type) => {
+		switch (type) {
+			case 0:
+				return 'chart'
+			case 1:
+				return 'gauge'
+			case 2:
+				return 'scorecardAB'
+			case 3:
+				return 'scorecard'
+			case 4:
+				return 'windcard'
+			default:
+				break;
+		}
+	}
 	typeChildren = (g, i) => {
 		const { t } = this.props
 		// const { d } = this.state
 		let d = this.props.d
+		let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
 		switch (g.type) {
 			case 1:
-				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
 					{this.renderPos(g.grid)}
 					<GaugeSData
 						create
@@ -113,7 +131,7 @@ class EditDashboard extends React.Component {
 					/>
 				</Paper>
 			case 0:
-				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
 					{this.renderPos(g.grid)}
 					<DoubleChart
 						create
@@ -126,11 +144,12 @@ class EditDashboard extends React.Component {
 					/>
 				</Paper>
 			case 2:
-				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
 					{this.renderPos(g.grid)}
 					<ScorecardAB
 						create
 						title={g.name}
+						color={d.color}
 						gId={g.id}
 						dId={d.id}
 						single={true}
@@ -138,11 +157,12 @@ class EditDashboard extends React.Component {
 					/>
 				</Paper>
 			case 3:
-				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
 					{this.renderPos(g.grid)}
 					<Scorecard
 						create
 						title={g.name}
+						color={d.color}
 						gId={g.id}
 						dId={d.id}
 						single={true}
@@ -150,11 +170,12 @@ class EditDashboard extends React.Component {
 					/>
 				</Paper>
 			case 4:
-				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
 					{this.renderPos(g.grid)}
 					<WindCard
 						create
 						title={g.name}
+						color={d.color}
 						gId={g.id}
 						dId={d.id}
 						single={true}

@@ -42,6 +42,7 @@
 		"react-chartjs-2": "^2.7.6",
 		"react-cookies": "^0.1.1",
 		"react-csv": "^1.1.1",
+		"react-custom-scrollbars": "^4.2.1",
 		"react-dnd": "^8.0.3",
 		"react-dnd-html5-backend": "^8.0.3",
 		"react-dnd-touch-backend": "^0.8.3",

@@ -3,7 +3,7 @@ export const graphType = (type) => {
 		case "chart": //Charts
 			return {
 				grid: {
-					minW: 6,
+					minW: 4,
 					minH: 8,
 					x: 0,
 					y: 0,
@@ -115,7 +115,7 @@ export const graphType = (type) => {
 			return {
 				grid: {
 					minW: 4,
-					minH: 13,
+					minH: 12,
 					x: 0,
 					y: 0,
 					h: 13,
