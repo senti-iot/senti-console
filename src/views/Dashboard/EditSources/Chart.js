@@ -18,7 +18,7 @@ export class ESChart extends Component {
 			 openCF: false
 		}
 	}
-
+	
 	handleExpand = (prop, val) => e => this.setState({ [prop]: val !== undefined ? val : !this.state[prop] })
 
 	chartTypes = () => {
