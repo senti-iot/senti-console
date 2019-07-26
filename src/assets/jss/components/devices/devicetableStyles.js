@@ -2,6 +2,9 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	noRows: {
+		display: 'none'
+	},
 	blocked: {
 		color: red[500],
 		marginRight: 8
@@ -142,7 +145,7 @@ const devicetableStyles = theme => ({
 		fontSize: '0.875rem',
 		borderTop: "1px solid rgba(224, 224, 224, 1)",
 		/*padding: 0, */
-		width: '50px', 
+		width: '50px',
 	},
 	paddingLeft: {
 		paddingLeft: 16
