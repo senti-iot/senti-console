@@ -63,7 +63,7 @@ const menuSelect = (p, c) => {
 export const generateID = (name) => {
 	var randHex = function(len) {
 		let maxlen = 8
-		let min = Math.pow(16, Math.min(len, maxlen) - 1) 
+		let min = Math.pow(16, Math.min(len, maxlen) - 1)
 		let max = Math.pow(16, Math.min(len, maxlen)) - 1
 		let n   = Math.floor( Math.random() * (max - min + 1) ) + min
 		let r   = n.toString(16);
@@ -105,7 +105,7 @@ export const handleSetDate = (dId, gId, p) => {
 		if (graph) {
 			graph.period = p
 			graph.periodType = p.menuId
-			gs[gs.findIndex(g => g.id === gId)] = graph 
+			gs[gs.findIndex(g => g.id === gId)] = graph
 			// ds[ds.findIndex(d => d.id === dId)] = dash
 			dispatch({ type: setGraphs, payload: gs })
 		}
@@ -150,7 +150,7 @@ export const createGraph = (payload) => {
 }
 export const editGraphPos = (payload) => {
 	return (dispatch, getState) => {
-		let gs = [] 
+		let gs = []
 		gs = getState().dsSystem.cGraphs
 		let g = gs[gs.findIndex(f => f.id === payload.i)]
 		g.grid = payload
@@ -208,13 +208,14 @@ export const createDash = () => {
 }
 export const editDash = (d) => {
 	 return (dispatch) => {
-		// let 
+		// let
 		dispatch({ type: eDash, payload: d })
-		dispatch({ type: cGraph, payload: d.graphs })
+		if (d.graphs.length > 0)
+			dispatch({ type: cGraph, payload: d.graphs })
 	}
 }
 
-export const removeDashboard = id => { 
+export const removeDashboard = id => {
 	return async (dispatch, getState) => {
 		let user = {}
 		let ds = []
@@ -243,7 +244,7 @@ export const reset = () => {
 		})
 	}
 }
-export const saveDashboard = (edit) => { 
+export const saveDashboard = (edit) => {
 	return async (dispatch, getState) => {
 		let user, newD = {}
 		let graphs = []
@@ -269,7 +270,7 @@ export const setLayout = (l) => {
 		let graphs = []
 		// let g = {}
 		graphs = getState().dsSystem.cGraphs
-		graphs.forEach(g => { 
+		graphs.forEach(g => {
 			let grid = l[l.findIndex(r => r.i === g.id)]
 			g.grid = grid
 		})
@@ -294,12 +295,12 @@ const setState = (key, payload, state) => Object.assign({}, state, { [key]: payl
 
 export const dsSystem = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case setGraphE: 
+		case setGraphE:
 			return setState('eGraph', payload, state)
-		case cGraph: 
+		case cGraph:
 			return setState('cGraphs', payload, state)
 		case eDash:
-		case cDash: 
+		case cDash:
 			return setState('cDash', payload, state)
 		case setGraphs:
 			return setState('graphs', payload, state)

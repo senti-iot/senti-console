@@ -1,7 +1,7 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
-import { T, ItemG, Dropdown, TextF } from 'components';
+import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button } from '@material-ui/core';
+import { ItemG, Dropdown, TextF } from 'components';
 import cx from 'classnames'
 import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -32,12 +32,6 @@ class CreateDashboard extends React.Component {
 			mounted: false,
 			openEditGraph: false,
 			openToolbox: true,
-			// layout: {
-			// 	lg: props.gs.map((g) => ({
-			// 		i: g.id,
-			// 		...g.grid
-			// 	}))
-			// }
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
@@ -46,18 +40,8 @@ class CreateDashboard extends React.Component {
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.props.openAddDash !== prevProps.openAddDash) && this.props.openAddDash) {
+			console.log('Bing')
 			this.props.createDash()
-		}
-		if (prevProps.gs !== this.props.gs) {
-			// this.setState({
-			// 	layout: {
-			// 		lg: this.props.gs.map((g) => ({
-			// 			i: g.id,
-			// 			...g.grid
-			// 		}))
-			// 	}
-			// })
-
 		}
 	}
 	editGraphOpen = l => e => {
@@ -89,7 +73,7 @@ class CreateDashboard extends React.Component {
 					</div>
 				</ItemG>
 			</ItemG>
-	
+
 		</div>
 	}
 	typeChildren = (g, i) => {
@@ -191,7 +175,7 @@ class CreateDashboard extends React.Component {
 			onChange={this.changeColor}
 		/>
 	}
-	handleCloseEG = () => { 
+	handleCloseEG = () => {
 		this.props.setGE(null)
 		this.setState({ openEditGraph: false })
 
@@ -218,48 +202,34 @@ class CreateDashboard extends React.Component {
 				>
 					<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 						<Toolbar>
-							<Hidden mdDown>
-								<ItemG container alignItems={'center'}>
-									<ItemG xs={1} container alignItems={'center'}>
-										<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
-											<Close />
-										</IconButton>
-									</ItemG>
-									<ItemG container xs={10} justify={'center'} alignItems={'center'}>
-
-										<TextF
-											id={'dashboardName'}
-											InputProps={{
-												style: {
-													color: '#fff'
-												}
-											}}
-											value={d.name}
-											handleChange={this.changeName}
-											reversed
-										/>
-										{this.renderColorPicker()}
-
-									</ItemG>
-									<ItemG xs={1}>
-										<Button color={'primary'} variant={'outlined'} onClick={this.props.saveDashboard}>
-											<Save style={{ marginRight: 8 }} /> {t('actions.save')}
-										</Button>
-									</ItemG>
+							<ItemG container alignItems={'center'}>
+								<ItemG xs={1} container alignItems={'center'}>
+									<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
+										<Close />
+									</IconButton>
 								</ItemG>
-							</Hidden>
-							<Hidden lgUp>
-								<ItemG container alignItems={'center'}>
-									<ItemG xs={4} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={handleCloseDT} aria-label='Close'>
-											<Close />
-										</IconButton>
-										<T variant='h6' color='inherit' className={classes.flex}>
-											{this.state.n}
-										</T>
-									</ItemG>
+								<ItemG container xs={10} justify={'center'} alignItems={'center'}>
+
+									<TextF
+										id={'dashboardName'}
+										InputProps={{
+											style: {
+												color: '#fff'
+											}
+										}}
+										value={d.name}
+										handleChange={this.changeName}
+										reversed
+									/>
+									{this.renderColorPicker()}
+
 								</ItemG>
-							</Hidden>
+								<ItemG xs={1}>
+									<Button color={'primary'} variant={'outlined'} onClick={this.props.saveDashboard}>
+										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
+									</Button>
+								</ItemG>
+							</ItemG>
 						</Toolbar>
 					</AppBar>
 					<CreateDashboardToolbar

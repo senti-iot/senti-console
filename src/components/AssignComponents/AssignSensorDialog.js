@@ -87,7 +87,7 @@ class AssignSensorDialog extends PureComponent {
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={3} container alignItems={'center'}>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sidebar.sensors')}
+										{t('sidebar.devices')}
 									</Typography>
 								</ItemG>
 								<ItemG xs>
