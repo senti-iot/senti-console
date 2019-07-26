@@ -50,13 +50,7 @@ class TP extends Component {
 					classes: {
 						select: selectClasses,
 						icon: iconClass
-					},
-					// style: {
-					// 	opacity: disableRowsPerPage ? '0' : undefined,
-					// },
-					// renderPrefix: null,
-					// renderValue: null
-
+					}
 				}}
 			/>
 		)
