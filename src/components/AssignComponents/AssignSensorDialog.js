@@ -64,11 +64,12 @@ class AssignSensorDialog extends PureComponent {
 
 	render() {
 		const { filters, page } = this.state
+		const { sensors, classes, open, t } = this.props;
 
 		let height = window.innerHeight
 		let rows = Math.round((height - 85 - 49 - 49) / 49)
 		let rowsPerPage = rows
-		const { sensors, classes, open, t } = this.props;
+
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -155,7 +156,7 @@ class AssignSensorDialog extends PureComponent {
 					<TP
 						disableRowsPerPage
 						count={sensors ? sensors.length : 0}
-						page={this.state.page}
+						page={page}
 						t={t}
 						handleChangePage={this.handleChangePage}
 					/>

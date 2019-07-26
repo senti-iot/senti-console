@@ -9,6 +9,7 @@ import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { connect } from 'react-redux'
+import TP from 'components/Table/TP';
 
 class AssignCloudFunctionDialog extends PureComponent {
 	constructor(props) {
@@ -17,6 +18,7 @@ class AssignCloudFunctionDialog extends PureComponent {
 		this.state = {
 			cfs: [],
 			selectedCloudFunction: null,
+			page: 0,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -33,7 +35,7 @@ class AssignCloudFunctionDialog extends PureComponent {
 		this._isMounted = 0
 	}
 	assignCloudFunction = sId => e => {
-		// let sId = this.state.selectedCloudFunction
+		// let sId = selectedCloudFunction
 		let cfs = this.props.cfs
 		let org = cfs[cfs.findIndex(o => o.id === sId)]
 		this.props.callBack(org)
@@ -57,13 +59,18 @@ class AssignCloudFunctionDialog extends PureComponent {
 		})
 	}
 	render() {
-		const {  filters } = this.state
+		const { filters, page, selectedCloudFunction } = this.state
 		const { cfs, classes, open, t } = this.props;
+
+		let height = window.innerHeight
+		let rows = Math.round((height - 85 - 49 - 49) / 49)
+		let rowsPerPage = rows
+
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 		return (
-			
+
 			<Dialog
 				fullScreen
 				open={open}
@@ -122,37 +129,45 @@ class AssignCloudFunctionDialog extends PureComponent {
 					</Toolbar>
 				</AppBar>
 				<List>
-					{cfs ? filterItems(cfs, filters).map((p, i) => (
+					{cfs ? filterItems(cfs, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
 						<Fragment key={i}>
 							<ListItem button onClick={this.assignCloudFunction(p.id)} value={p.id}
 								classes={{
-									root: this.state.selectedCloudFunction === p.id ? classes.selectedItem : null
+									root: selectedCloudFunction === p.id ? classes.selectedItem : null
 								}}
 							>
-								<ListItemText primaryTypographyProps={{
-									className: this.state.selectedCloudFunction === p.id ? classes.selectedItemText : null
-								}}
-								secondaryTypographyProps={{
-									classes: { root: this.state.selectedCloudFunction === p.id ? classes.selectedItemText : null }
-								}}
-								primary={p.name} />
+								<ListItemText
+									primaryTypographyProps={{
+										className: selectedCloudFunction === p.id ? classes.selectedItemText : null
+									}}
+									secondaryTypographyProps={{
+										classes: { root: selectedCloudFunction === p.id ? classes.selectedItemText : null }
+									}}
+									primary={p.name} />
 							</ListItem>
 							<Divider />
 						</Fragment>
 					)
 					) : <CircularLoader />}
+					<TP
+						disableRowsPerPage
+						count={cfs ? cfs.length : 0}
+						page={page}
+						t={t}
+						handleChangePage={this.handleChangePage}
+					/>
 				</List>
 			</Dialog>
-		
+
 		);
 	}
 }
 const mapStateToProps = (state, props) => ({
-	cfs: [{ id: -1, name: props.t('no.cloudfunction') }, ...state.data.functions ],
+	cfs: [{ id: -1, name: props.t('no.cloudfunction') }, ...state.data.functions],
 })
 
 const mapDispatchToProps = {
-	
+
 }
 
 AssignCloudFunctionDialog.propTypes = {

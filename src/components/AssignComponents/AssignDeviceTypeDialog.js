@@ -9,6 +9,7 @@ import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { connect } from 'react-redux'
+import TP from 'components/Table/TP';
 
 class AssignDeviceTypeDialog extends PureComponent {
 	constructor(props) {
@@ -57,13 +58,18 @@ class AssignDeviceTypeDialog extends PureComponent {
 		})
 	}
 	render() {
-		const {  filters } = this.state
+		const { filters, page } = this.state
 		const { deviceTypes, classes, open, t } = this.props;
+
+		let height = window.innerHeight
+		let rows = Math.round((height - 85 - 49 - 49) / 49)
+		let rowsPerPage = rows
+
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 		return (
-			
+
 			<Dialog
 				fullScreen
 				open={open}
@@ -122,28 +128,36 @@ class AssignDeviceTypeDialog extends PureComponent {
 					</Toolbar>
 				</AppBar>
 				<List>
-					{deviceTypes ? filterItems(deviceTypes, filters).map((p, i) => (
+					{deviceTypes ? filterItems(deviceTypes, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
 						<Fragment key={i}>
 							<ListItem button onClick={this.assignDeviceType(p.id)} value={p.id}
 								classes={{
 									root: this.state.selectedDeviceType === p.id ? classes.selectedItem : null
 								}}
 							>
-								<ListItemText primaryTypographyProps={{
-									className: this.state.selectedDeviceType === p.id ? classes.selectedItemText : null
-								}}
-								secondaryTypographyProps={{
-									classes: { root: this.state.selectedDeviceType === p.id ? classes.selectedItemText : null }
-								}}
-								primary={p.name} />
+								<ListItemText
+									primaryTypographyProps={{
+										className: this.state.selectedDeviceType === p.id ? classes.selectedItemText : null
+									}}
+									secondaryTypographyProps={{
+										classes: { root: this.state.selectedDeviceType === p.id ? classes.selectedItemText : null }
+									}}
+									primary={p.name} />
 							</ListItem>
 							<Divider />
 						</Fragment>
 					)
 					) : <CircularLoader />}
+					<TP
+						disableRowsPerPage
+						count={deviceTypes ? deviceTypes.length : 0}
+						page={page}
+						t={t}
+						handleChangePage={this.handleChangePage}
+					/>
 				</List>
 			</Dialog>
-		
+
 		);
 	}
 }
@@ -152,7 +166,7 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-	
+
 }
 
 AssignDeviceTypeDialog.propTypes = {
