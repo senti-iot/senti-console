@@ -15,7 +15,7 @@ import Scorecard from 'views/Charts/Scorecard';
 import WindCard from 'views/Charts/WindCard';
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { ThemeProvider } from '@material-ui/styles';
-import { darkTheme } from 'variables/themes';
+import { darkTheme, lightTheme } from 'variables/themes';
 import { graphType } from 'variables/dsSystem/graphTypes';
 import { removeDashboard } from 'redux/dsSystem';
 
@@ -129,7 +129,7 @@ class DashboardPanel extends Component {
 								</T>
 							</ItemG>
 							<ItemG xs={1} container justify={'flex-end'}>
-								<IconButton color='inherit' onClick={() => {handleOpenEDT(); handleCloseDashboard();}} aria-label='Close'>
+								<IconButton color='inherit' onClick={() => { handleOpenEDT(); handleCloseDashboard(); }} aria-label='Close'>
 									<Edit />
 								</IconButton>
 								<IconButton color='inherit' onClick={handleCloseDashboard} aria-label='Close'>
@@ -243,10 +243,11 @@ class DashboardPanel extends Component {
 		</Dialog >
 	}
 	render() {
-		const { d, data, t } = this.props
+		const { d, data, t, dsTheme } = this.props
+
 		return (
 			<Fragment>
-				<ThemeProvider theme={darkTheme}>
+				<ThemeProvider theme={dsTheme === 0 ? lightTheme : darkTheme}>
 					{this.renderDashboard()}
 				</ThemeProvider>
 				<ItemG xs={12} md={4} lg={3} xl={2}>
@@ -276,6 +277,7 @@ DashboardPanel.defaultProps = {
 };
 const mapStateToProps = (state, ownProps) => ({
 	// loading: state.dsSystem.gotDashboardData
+	dsTheme: state.settings.dsTheme
 })
 
 const mapDispatchToProps = (dispatch) => ({

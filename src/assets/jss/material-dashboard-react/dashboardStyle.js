@@ -8,7 +8,7 @@ import { successColor, headerColor, transition, drawerWidth } from "assets/jss/m
 import { bgColorsLight } from './bgColorsLight';
 
 const dashboardStyle = theme => ({
-	...bgColorsLight,
+	...bgColorsLight(theme),
 	icon: {
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4

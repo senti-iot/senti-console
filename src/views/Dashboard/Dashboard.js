@@ -14,7 +14,7 @@ import DashboardPanel from './DashboardPanel.js';
 import CreateDashboard from './CreateDashboard.js';
 import { Add } from 'variables/icons.js';
 import { ThemeProvider } from '@material-ui/styles';
-import { darkTheme } from 'variables/themes/index.js';
+import { darkTheme, lightTheme } from 'variables/themes/index.js';
 import EditDashboard from './EditDashboard.js';
 import { reset } from 'redux/dsSystem.js';
 
@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: true,
+			openAddDash: false,
 			openEditDash: false,
 			eDash: null
 		}
@@ -115,6 +115,9 @@ class Dashboard extends React.Component {
 		/>
 
 	}
+	renderTheme = t => {
+		return t === 1 ? darkTheme : lightTheme
+	}
 	render() {
 		const { /* discoverSenti, */ t, /* history */ } = this.props
 		return (
@@ -124,7 +127,7 @@ class Dashboard extends React.Component {
 					transitionDelay: 200,
 				}}>
 					<div style={{ position: 'relative' }}>
-						<ThemeProvider theme={darkTheme}>
+						<ThemeProvider theme={this.renderTheme(this.props.dsTheme)}>
 							{this.renderAddDashboard()}
 							{this.renderEditDashboard()}
 						</ThemeProvider>
@@ -151,7 +154,7 @@ Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 const mapStateToProps = (state) => ({
-	// discoverSenti: state.settings.discSentiVal
+	dsTheme: state.settings.dsTheme,
 	dashboards: state.dsSystem.dashboards
 })
 

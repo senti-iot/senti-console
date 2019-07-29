@@ -7,6 +7,7 @@ import { setDates } from './dateTime';
 import { setPrefix, set, get } from 'variables/storage';
 import { getAllData } from './data';
 import { setDashboards } from './dsSystem';
+import { async } from 'q';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -27,7 +28,7 @@ const changeHB = 'changeHeaderBorder'
 const changeBC = 'changeBreadCrumbs'
 const changeHT = 'changeHoverTime'
 const changeGS = 'changeGlobalSearch'
-
+const changeDSTheme = 'changeDashboardTheme'
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
@@ -107,7 +108,8 @@ export const saveSettingsOnServ = () => {
 			headerBorder: s.headerBorder,
 			breadcrumbs: s.breadcrumbs,
 			hoverTime: s.hoverTime,
-			globalSearch: s.globalSearch
+			globalSearch: s.globalSearch,
+			dsTheme: s.dsTheme
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -167,14 +169,14 @@ export const getSettings = async () => {
 					user
 				})
 			}
-			
+
 			else {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
 					...getState().settings,
 					language: user.aux.odeum.language
 				}
-				
+
 				dispatch({
 					type: NOSETTINGS,
 					loading: false,
@@ -185,9 +187,9 @@ export const getSettings = async () => {
 			if (favorites) {
 				dispatch({
 					type: GETFAVS,
-					payload: 
+					payload:
 						[...favorites]
-					
+
 				})
 			}
 			if (dashboards) {
@@ -515,7 +517,15 @@ export const changeWeekendColor = (id) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-
+export const changeDashboardTheme = (id) => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: changeDSTheme,
+			dsTheme: id
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
@@ -568,12 +578,15 @@ let initialState = {
 	headerBorder: false,
 	breadcrumbs: true,
 	hoverTime: 1000,
-	globalSearch: true
+	globalSearch: true,
+	dsTheme: 0
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeDSTheme:
+			return Object.assign({}, state, { dsTheme: action.dsTheme })
 		case changeGS:
 			return Object.assign({}, state, { globalSearch: action.globalSearch })
 		case changeHT:

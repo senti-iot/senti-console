@@ -344,30 +344,12 @@ class DoubleChartData extends PureComponent {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container style={{ alignItems: 'center' }}>
-			{/* <Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-			</Hidden> */}
+
 			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
-			{/* <Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
-			</Hidden> */}
+
 			<ItemG style={{
 				flex: '1',
 				textAlign: 'center'
@@ -475,7 +457,6 @@ class DoubleChartData extends PureComponent {
 		const { actionAnchor, resetZoom } = this.state
 		const { classes, t, period } = this.props
 		return <ItemG container direction={'column'}>
-			{/* <Hidden lgUp> */}
 			<ItemG container>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
@@ -494,7 +475,6 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</ItemG>
-			{/* </Hidden> */}
 			<ItemG container>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
@@ -512,33 +492,7 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 					}
 				</Collapse>
-				{/* <ItemG>
-					 <Hidden smDown> 
-					<Tooltip title={t('tooltips.chart.type')}>
-						<IconButton variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
-							{this.renderIcon()}
-						</IconButton>
-					</Tooltip>
-					<Menu
-						marginThreshold={24}
-						id='long-menu'
-						anchorEl={actionAnchorVisibility}
-						open={Boolean(actionAnchorVisibility)}
-						onClose={() => this.setState({ actionAnchorVisibility: null })}
-						PaperProps={{ style: { minWidth: 250 } }}>
-						<List component='div' disablePadding>
-							{this.visibilityOptions.map(op => {
-								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-									<ListItemIcon>
-										{op.icon}
-									</ListItemIcon>
-									<ListItemText inset primary={op.label} />
-								</ListItem>
-							})}
-						</List>
-					</Menu>
-					</Hidden>
-				</ItemG> */}
+
 				<ItemG>
 					<Tooltip title={t('menus.menu')}>
 						<IconButton

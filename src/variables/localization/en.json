@@ -824,6 +824,7 @@
 	},
 	"settings": {
 		"alerts": "Alerts",
+		"dashboardTheme": "Dashboard Theme",
 		"breadcrumbs": "Breadcrumbs",
 		"calibration": {
 			"12months": "Every 12 months",

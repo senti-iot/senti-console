@@ -3,11 +3,11 @@ import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-da
 
 const deviceStyles = theme => ({
 	scrollbar: {
-		background: "rgba(255,255,255,0.3)",
+		background: theme.palette.type === "light" ? "rgba(128,128,128,0.3)" : "rgba(255,255,255,0.3)",
 		borderRadius: 8,
 		transition: "all 100ms ease",
 		"&:hover": {
-			background: "rgba(255,255,255, 0.7)"
+			background: theme.palette.type === "light" ? "rgba(128,128,128,0.7)" : "rgba(255,255,255, 0.7)"
 		},
 		cursor: "drag"
 	},

@@ -824,6 +824,7 @@
 		}
 	},
 	"settings": {
+		"dashboardTheme": "Dashboard tema",
 		"alerts": "Alarmeringer",
 		"breadcrumbs": "Brødkrummer",
 		"calibration": {

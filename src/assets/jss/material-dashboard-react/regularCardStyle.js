@@ -77,7 +77,7 @@ const regularCardStyle = theme => ({
 		marginRight: 8
 	},
 	smallCardGrid: {
-		// width: "33%",	
+		// width: "33%",
 		[theme.breakpoints.down('sm')]: {
 			width: '100%'
 		}
@@ -192,7 +192,7 @@ const regularCardStyle = theme => ({
 		display: "block",
 		height: "auto"
 	},
-	...bgColorsLight,
+	...bgColorsLight(theme),
 
 });
 

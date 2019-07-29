@@ -357,8 +357,10 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG style={{ flex: '1',
-				textAlign: 'center' }}>
+			<ItemG style={{
+				flex: '1',
+				textAlign: 'center'
+			}}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>
@@ -366,7 +368,7 @@ class GaugeComponent extends PureComponent {
 	renderType = () => {
 		const { period, color, g, create, chartId } = this.props
 		const { loading, data } = this.state
-		let id = chartId ? chartId :  create ? 'edit' + g.id : g.id
+		let id = chartId ? chartId : create ? 'edit' + g.id : g.id
 		if (!loading) {
 			return <RGauge
 				color={color}
@@ -426,47 +428,6 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 					}
 				</Collapse>
-
-			 {/* <ItemG>
-					<Tooltip title={t('menus.menu')}>
-						<IconButton
-							aria-label='More'
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup='true'
-							onClick={this.handleOpenActionsDetails}>
-							<MoreVert />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-				<Menu
-					marginThreshold={24}
-					id='long-menu'
-					anchorEl={actionAnchor}
-					open={Boolean(actionAnchor)}
-					onClose={this.handleCloseActionsDetails}
-					onChange={this.handleVisibility}
-					PaperProps={{ style: { minWidth: 250 } }}>
-					<ListItem button onClick={this.handleOpenDownloadModal}>
-						<ListItemIcon><CloudDownload /></ListItemIcon>
-						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
-						<ListItemIcon>
-							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
-						</ListItemIcon>
-						<ListItemText>
-							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
-						</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
-						<ListItemIcon>
-							<Clear />
-						</ListItemIcon>
-						<ListItemText>
-							{t('menus.charts.deleteThisPeriod')}
-						</ListItemText>
-					</ListItem>
-			 </Menu> */}
 			</ItemG>
 		</ItemG>
 	}
@@ -477,7 +438,7 @@ class GaugeComponent extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <GaugeIcon/>
+		return <GaugeIcon />
 	}
 
 	render() {

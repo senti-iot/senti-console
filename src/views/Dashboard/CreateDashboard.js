@@ -37,7 +37,7 @@ class CreateDashboard extends React.Component {
 
 	componentDidMount = () => {
 		//temp
-		this.props.createDash()
+		// this.props.createDash()
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.props.openAddDash !== prevProps.openAddDash) && this.props.openAddDash) {
@@ -116,6 +116,7 @@ class CreateDashboard extends React.Component {
 						title={g.name}
 						gId={g.id}
 						dId={d.id}
+						color={d.color}
 						single={true}
 						t={t}
 					/>
@@ -128,6 +129,7 @@ class CreateDashboard extends React.Component {
 						title={g.name}
 						gId={g.id}
 						dId={d.id}
+						color={d.color}
 						single={true}
 						t={t}
 					/>
@@ -140,6 +142,7 @@ class CreateDashboard extends React.Component {
 						title={g.name}
 						gId={g.id}
 						dId={d.id}
+						color={d.color}
 						single={true}
 						t={t}
 					/>

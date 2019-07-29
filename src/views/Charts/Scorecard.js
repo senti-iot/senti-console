@@ -287,7 +287,7 @@ class ScoreCard extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG>
+			<ItemG container style={{ width: 'auto', flexFlow: 'column' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
