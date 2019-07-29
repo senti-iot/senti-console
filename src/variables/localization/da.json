@@ -9,10 +9,11 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"edit":"Rediger",
+		"add": "Tilføj",
+		"edit": "Rediger",
 		"move": "Flytte",
 		"close": "Luk",
-		"create":"Opret",
+		"create": "Opret",
 		"delete": "Slet",
 		"accept": "Godkend",
 		"addFilter": "Tilføj filter",
@@ -1175,7 +1176,7 @@
 				"device": "Enhed",
 				"devicetype": "Enhedstype",
 				"registry": "Register"
-			}, 
+			},
 			"reference": "Reference"
 		}
 	}

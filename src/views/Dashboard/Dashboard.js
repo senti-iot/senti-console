@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: false,
+			openAddDash: true,
 			openEditDash: false,
 			eDash: null
 		}
@@ -97,7 +97,7 @@ class Dashboard extends React.Component {
 		const { t } = this.props
 		const { openEditDash, eDash } = this.state
 		const { handleCloseEDT } = this
-		return <EditDashboard 
+		return <EditDashboard
 			eDash={eDash}
 			open={openEditDash}
 			handleClose={handleCloseEDT}

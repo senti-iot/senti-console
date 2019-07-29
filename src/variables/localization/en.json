@@ -9,10 +9,11 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
+		"add": "Add",
 		"edit": "Edit",
 		"move": "Move",
 		"close": "Close",
-		"create":"Create",
+		"create": "Create",
 		"delete": "Delete",
 		"accept": "Accept",
 		"addFilter": "Add filter",

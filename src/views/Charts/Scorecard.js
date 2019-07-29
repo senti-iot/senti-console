@@ -98,7 +98,7 @@ class ScoreCard extends PureComponent {
 
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
+		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSources !== this.props.g.dataSources) {
 			this.setState({ loading: true }, async () => {
 				let newState = await this.getData(this.props.period)
 				this.setState({ ...newState, loading: false })

@@ -15,7 +15,7 @@ const dashboardStyle = theme => ({
 	},
 	expansionPanel: {
 		border: 'none',
-		width: '100%'
+		width: '100%',
 	},
 	drawerPaper: {
 		color: '#fff',
@@ -33,7 +33,7 @@ const dashboardStyle = theme => ({
 		width: drawerWidth,
 		flexShrink: 0,
 		whiteSpace: 'nowrap',
-			
+
 	},
 	drawerOpen: {
 		width: drawerWidth,
@@ -86,7 +86,7 @@ const dashboardStyle = theme => ({
 			content: '""',
 			position: "absolute",
 			bottom: "0",
-	
+
 			height: "0px",
 			right: "15px",
 			width: "calc(100% - 30px)",
@@ -155,7 +155,7 @@ const dashboardStyle = theme => ({
 		display: "flex",
 		justifyContent: 'center',
 		height: 70,
-	
+
 	},
 	appBar: {
 		WebkitOverflowScrolling: "touch",
@@ -195,11 +195,11 @@ const dashboardStyle = theme => ({
 		width: '100%',
 		height: '100%',
 		opacity: 0,
-		
+
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		
+
 		fontSize: '24px',
 		// padding: '20px',
 		borderRadius: 4,

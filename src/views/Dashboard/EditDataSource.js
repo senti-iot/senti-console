@@ -12,6 +12,7 @@ import { editGraph } from 'redux/dsSystem';
 import { getSensorLS } from 'redux/data';
 import ESChart from './EditSources/Chart'
 import ESGauge from './EditSources/Gauge';
+import ESScorecard from './EditSources/Scorecard';
 
 export class EditDataSource extends Component {
 	constructor(props) {
@@ -492,9 +493,15 @@ export class EditDataSource extends Component {
 					</ItemG>
 				</Fragment>
 			case 3:
-				return <ItemG>
-					ScoreCard
-				</ItemG>
+				return <ESScorecard
+					handleEditGraph={this.handleEditGraph}
+					getSensor={getSensor}
+					t={t}
+					classes={classes}
+					sensor={sensor}
+					g={g}
+					cfs={cfs}
+				/>
 			case 4:
 				return <ItemG>
 					WindCard

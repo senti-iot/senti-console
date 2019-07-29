@@ -29,7 +29,6 @@ class CreateDashboard extends React.Component {
 			graphs: [],
 			currentBreakpoint: "lg",
 			compactType: 'vertical',
-			mounted: false,
 			openEditGraph: false,
 			openToolbox: true,
 		};
@@ -37,10 +36,11 @@ class CreateDashboard extends React.Component {
 	}
 
 	componentDidMount = () => {
+		//temp
+		this.props.createDash()
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.props.openAddDash !== prevProps.openAddDash) && this.props.openAddDash) {
-			console.log('Bing')
 			this.props.createDash()
 		}
 	}

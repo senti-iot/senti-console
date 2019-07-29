@@ -58,6 +58,9 @@ class AssignCloudFunctionDialog extends PureComponent {
 			}
 		})
 	}
+	handleChangePage = (event, page) => {
+		this.setState({ page });
+	}
 	render() {
 		const { filters, page, selectedCloudFunction } = this.state
 		const { cfs, classes, open, t } = this.props;

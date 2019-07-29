@@ -189,6 +189,7 @@ class EditGraph extends Component {
 					anchor={'right'}
 					PaperProps={{
 						style: {
+							height: 'calc(100% - 70px)',
 							width: 360,
 							top: 70,
 							background: 'rgba(0, 0, 0, 0.7)'
