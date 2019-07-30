@@ -7,7 +7,7 @@ import { setDates } from './dateTime';
 import { setPrefix, set, get } from 'variables/storage';
 import { getAllData } from './data';
 import { setDashboards } from './dsSystem';
-import { async } from 'q';
+
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
