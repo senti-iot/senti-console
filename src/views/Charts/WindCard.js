@@ -1,7 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
-import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, Paper, /* TableRow, Table, TableBody, */
-} from '@material-ui/core';
+import { Grid, IconButton, withStyles,  Hidden, Tooltip, Paper } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
@@ -293,7 +291,7 @@ class WindCard extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { period, t, title } = this.props
+		const { period, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container alignItems={'center'} spacing={2}>

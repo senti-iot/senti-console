@@ -1,26 +1,20 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, TableRow, Table, TableBody,
+	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, Assignment,
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment,
 } from 'variables/icons'
-import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	ExportModal,
-	DateFilterMenu,
-	T,
-} from 'components';
+import { CircularLoader, Caption, ItemG, InfoCard, DateFilterMenu, T } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-// import { getSensorDataClean } from 'variables/dataRegistry';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 import TC from 'components/Table/TC'
@@ -274,7 +268,7 @@ class ScoreCard extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { period, t, title } = this.props
+		const { period, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container alignItems={'center'} spacing={2}>

@@ -1,27 +1,20 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Tooltip,
+	Grid, IconButton, withStyles, Hidden, Tooltip,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, GaugeIcon,
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, GaugeIcon,
 } from 'variables/icons'
-import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	// ExportModal,
-	DateFilterMenu,
-	T,
-	// T,
-} from 'components';
+import { CircularLoader, Caption, ItemG, InfoCard, DateFilterMenu, T } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-// import { getSensorDataClean } from 'variables/dataRegistry';
 import RGauge from 'components/Charts/RGauge';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
@@ -330,7 +323,7 @@ class GaugeComponent extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { period, t, title } = this.props
+		const { period, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container alignItems={'center'} spacing={2}>

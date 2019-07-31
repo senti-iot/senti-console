@@ -1,12 +1,12 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Tooltip, TableRow, Table, TableBody,
+	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, Assignment,
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,

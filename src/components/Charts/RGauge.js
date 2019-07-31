@@ -1,7 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/styles';
 import ItemG from 'components/Grid/ItemG';
-import { T } from 'components';
+// import { T } from 'components';
 import { graphStyles } from './graphStyles';
 import ReactGauge from './ReactGauge'
 import { colors } from '@material-ui/core';
