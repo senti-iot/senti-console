@@ -34,12 +34,6 @@ class EditDashboard extends React.Component {
 			mounted: false,
 			openEditGraph: false,
 			openToolbox: true,
-			// layout: {
-			// 	lg: props.gs.map((g) => ({
-			// 		i: g.id,
-			// 		...g.grid
-			// 	}))
-			// }
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
@@ -115,6 +109,13 @@ class EditDashboard extends React.Component {
 		// const { d } = this.state
 		let d = this.props.d
 		let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
+		if (!grid.minW || !grid.minH) {
+			grid = {
+				...graphType(this.gridCoords(g.type)).grid,
+				...grid
+			}
+		}
+		console.log(grid)
 		switch (g.type) {
 			case 1:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>

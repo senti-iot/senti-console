@@ -186,7 +186,7 @@ class LineChart extends PureComponent {
 
 		})
 	}
-	updateHover = () => { 
+	updateHover = () => {
 		const { hoverID } = this.props
 		let dId = this.chart.chartInstance.data.datasets.findIndex(d => d.id === hoverID)
 		// let dId = 0
@@ -194,7 +194,7 @@ class LineChart extends PureComponent {
 			let dataset = this.chart.chartInstance.data.datasets[dId]
 			dataset.borderWidth = 7
 		}
-		else { 
+		else {
 			this.chart.chartInstance.data.datasets.forEach(d => {
 				d.borderWidth = 3
 			})
@@ -203,10 +203,10 @@ class LineChart extends PureComponent {
 		this.chart.chartInstance.update()
 	}
 	componentDidUpdate = (prevProps) => {
-		if (prevProps.hoverID !== this.props.hoverID) { 
+		if (prevProps.hoverID !== this.props.hoverID) {
 			this.setState({ updateHover: true })
 		}
-		if (this.state.updateHover) { 
+		if (this.state.updateHover) {
 			this.updateHover()
 		}
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
@@ -399,7 +399,7 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				show: false, 
+				show: false,
 				showWeather: false,
 				exited: true
 			}

@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip,
+	Grid, IconButton, withStyles, Collapse, Hidden, Tooltip,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
@@ -12,6 +12,7 @@ import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
 	// ExportModal,
 	DateFilterMenu,
+	T,
 	// T,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -328,41 +329,33 @@ class GaugeComponent extends PureComponent {
 		}
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, t, /* title */ } = this.props
+	renderTitle = (small) => {
+		const { period, t, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
-			<Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
+		return <ItemG container alignItems={'center'} spacing={2}>
+			{small ? null :
+				<Hidden smDown>
+					<ItemG xs zeroMinWidth>
+						<Tooltip title={title}>
+							<div>
+								<T noWrap variant={'h6'}>{title}</T>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Hidden>
+			}
+			<ItemG container style={{ width: 'min-content' }}>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}>{`${displayFrom}`}</T>
 				</ItemG>
-			</Hidden>
-			<ItemG container style={{ width: 'auto', flexFlow: 'column' }}>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${displayTo}`}</T>
+				</ItemG>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+				</ItemG>
 			</ItemG>
-			<Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
-			</Hidden>
-			{/* <ItemG style={{
-				flex: '1',
-				textAlign: 'center'
-			}}>
-				<T>{title}</T>
-			</ItemG> */}
 		</ItemG>
 	}
 	renderType = () => {
@@ -372,7 +365,7 @@ class GaugeComponent extends PureComponent {
 		if (!loading) {
 			return <RGauge
 				color={color}
-				title={this.props.title}
+				// title={this.props.title}
 				period={period}
 				value={data}
 				chartId={id}
@@ -388,30 +381,17 @@ class GaugeComponent extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { /* actionAnchor, actionAnchorVisibility, */ resetZoom } = this.state
 		const { /* classes, */ t, period } = this.props
 		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
-				</ItemG>
-			</Hidden>
+			{/* <Hidden lgUp> */}
 			<ItemG container>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
 						<DateFilterMenu
@@ -420,14 +400,15 @@ class GaugeComponent extends PureComponent {
 							t={t} />
 					</Tooltip>
 				</ItemG>
-				<Collapse in={resetZoom}>
-					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
-						<IconButton onClick={this.handleReverseZoomOnData}>
-							<ArrowUpward />
-						</IconButton>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
 					</Tooltip>
-					}
-				</Collapse>
+				</ItemG>
 			</ItemG>
 		</ItemG>
 	}
@@ -441,39 +422,45 @@ class GaugeComponent extends PureComponent {
 		return <GaugeIcon />
 	}
 
+	renderSmallTitle = () => {
+		const { title, classes } = this.props
+		return <ItemG xs={12} container justify={'center'}>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+		</ItemG>
+	}
+
 	render() {
-		const { period, color } = this.props
-		const { /* openDownload, */ loading, /* exportData */ } = this.state
-		// let displayTo = dateTimeFormatter(period.to)
-		// let displayFrom = dateTimeFormatter(period.from)
+		const { g, color, classes } = this.props
+		const { loading } = this.state
+		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
+
 		return (
 			<Fragment>
 				<InfoCard
 					color={color}
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}`}
+					title={this.renderTitle(small)}
+					// subheader={`${this.options[period.menuId].label}`}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
-					// background={this.props.color}
+					headerClasses={{
+						root: small ? classes.smallSubheader : classes.subheader
+					}}
+					bodyClasses={{
+						root: small ? classes.smallBody : classes.body
+					}}
 					content={
 						<Grid container>
-							{/* <ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/> */}
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-								<ItemG xs={12}>
-									{/* <div style={{ height: 300 }}> */}
-
+							{loading ? <div style={{ height: 300, width: '100%' }}>
+								<CircularLoader notCentered />
+							</div> :
+								<Fragment>
+									{small ? this.renderSmallTitle() : null}
+									<Hidden mdUp>
+										{this.renderSmallTitle()}
+									</Hidden>
 									{this.renderType()}
-									{/* </div> */}
-								</ItemG>
+								</Fragment>
 							}
 						</Grid>}
 				/>

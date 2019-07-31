@@ -339,32 +339,41 @@ class DoubleChartData extends PureComponent {
 		}
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, /* t, */ title } = this.props
+	renderTitle = (small) => {
+		const { period, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ alignItems: 'center' }}>
-			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
+		return <ItemG container alignItems={'center'}>
+			{small ? null :
+				<Hidden smDown>
+					<ItemG xs zeroMinWidth>
+						<Tooltip title={title}>
+							<div>
+								<T noWrap variant={'h6'}>{title}</T>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Hidden>
+			}
+			<ItemG container style={{ width: 'min-content' }}>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}>{`${displayFrom}`}</T>
+				</ItemG>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${displayTo}`}</T>
+				</ItemG>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+				</ItemG>
 			</ItemG>
 
-			<Hidden smDown>
-				<ItemG style={{
-					flex: '1',
-					textAlign: 'center'
-				}}>
-					<T variant={'h6'}>{title}</T>
-				</ItemG>
-			</Hidden>
 		</ItemG>
 	}
 	renderType = () => {
-		const { title, setHoverID, t, g, device, period, single, hoverID } = this.props
+		const { title, setHoverID, t, device, period, single, hoverID } = this.props
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
-			console.log(g.id, period.timeType)
 			switch (period.chartType) {
 				case 0:
 					return roundDataSets ?
@@ -579,31 +588,33 @@ class DoubleChartData extends PureComponent {
 	renderSmallTitle = () => {
 		const { title, classes } = this.props
 		return <ItemG xs={12} container justify={'center'}>
-			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+			<T className={classes.smallTitleNP} variant={'h6'}>{title}</T>
 		</ItemG>
 	}
 	render() {
-		const { period, color, classes } = this.props
+		const { g, color, classes } = this.props
 		const { loading } = this.state
+		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 		return (
 			<InfoCard
 				color={color}
-				title={this.renderTitle()}
-				subheader={`${this.options[period.menuId].label}`}
+				title={this.renderTitle(small)}
+				// subheader={`${this.options[period.menuId].label}`}
 				avatar={this.renderIcon()}
 				noExpand
 				dashboard
 				headerClasses={{
-					root: classes.subheader
+					root: small ? classes.smallSubheader : classes.subheader
 				}}
 				bodyClasses={{
-					root: classes.body
+					root: small ? classes.smallBody : classes.body
 				}}
 				topAction={this.renderMenu()}
 				content={
 					<Grid container style={{ height: '100%', width: '100%' }}>
 						{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
 							<Fragment>
+								{small ? this.renderSmallTitle() : null}
 								<Hidden mdUp>
 									{this.renderSmallTitle()}
 								</Hidden>

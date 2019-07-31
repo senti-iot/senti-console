@@ -2,14 +2,33 @@ import { red, yellow, green } from "@material-ui/core/colors";
 import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
+	smallBody: {
+		paddingTop: 0
+	},
+	smallSubheader: {
+		paddingBottom: 0
+	},
 	body: {
 		[theme.breakpoints.down('md')]: {
 			paddingTop: 0
 		}
 	},
+	smallTitleNP: {
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+	},
 	smallTitle: {
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
 		[theme.breakpoints.down('md')]: {
-			paddingBottom: 16
+			paddingBottom: 8,
+			paddingTop: 8
+		},
+		[theme.breakpoints.up('sm')]: {
+			paddingBottom: 16,
+			paddingTop: 16
 		}
 	},
 	subheader: {

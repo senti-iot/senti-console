@@ -10,6 +10,7 @@ const styles = (theme) => ({
 	},
 	label: {
 		fontSize: '24px',
+		fontWeight: 500
 		// fill: '#aaa',
 	},
 	chartFilled2: {
@@ -17,16 +18,15 @@ const styles = (theme) => ({
 		zIndex: '2',
 		fill: 'steelblue',
 	},
-	
+
 	chartFilled: {
 		position: 'absolute',
 		zIndex: '1',
-		fill: 'teal',
 		'&:hover': {
 			zIndex: 3
 		}
 	},
-	
+
 	chartEmpty: {
 		zIndex: '0',
 		fill: '#dedede',
@@ -38,7 +38,7 @@ const styles = (theme) => ({
 const draw = (props, opts) => {
 	//#region Variables
 	//options
-	let valueDesc, valueLabel;
+	let /* valueDesc, */ valueLabel;
 	let min, max, margin, totalPercent, width, height, className, labels, color;
 	//gauge vars
 	let barWidth, chart, chartInset, padRad, radius, svg, arcStartRad, arcEndRad;
@@ -68,7 +68,6 @@ const draw = (props, opts) => {
 	//#region Options
 	let options = opts ? opts : {}
 	className = options.className || props.classes.gauge || '.gauge'
-	console.log(className)
 	max = options.max || getMax(props.value) || 100;
 	min = options.min || 0;
 	margin = options.margin || {
@@ -94,7 +93,7 @@ const draw = (props, opts) => {
 
 	//#region Utility methods
 
-	value2percent = function(value) {
+	value2percent = function (value) {
 		return value > 0 ? (((value - min) * 100) / (max - min)) / 100 : 0
 	}
 
@@ -111,7 +110,7 @@ const draw = (props, opts) => {
 	};
 
 	//#endregion
-	
+
 	// Create SVG element
 	svg = el.append('svg').attr('class', `${props.classes.svg}`).attr('width', width + margin.left + margin.right).attr('height', height).attr('position', 'relative');
 
@@ -119,12 +118,12 @@ const draw = (props, opts) => {
 	chart = svg.append('g').attr('transform', "translate(" + ((width) / 2) + ", " + ((height - margin.top)) + ")").attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
 
 	//Add the Arcs
-	chart.append('path').attr('class', `arc ${props.classes.chartFilled}`);
+	chart.append('path').attr('class', `arc ${props.classes.chartFilled}`).attr('fill', color);
 	if (props.dGauge) {
 		chart.append('path').attr('class', `arc ${props.classes.chartFilled2}`)
 	}
 	chart.append('path').attr('class', `arc ${props.classes.chartEmpty}`);
-	
+
 
 	//Add the text
 	if (labels) {
@@ -138,15 +137,15 @@ const draw = (props, opts) => {
 			.attr('font-family', "Roboto")
 			.attr('font-size', "16px")
 			.attr('fill', color);
-		valueDesc = svg.append("text")
-			.attr("x", (width / 2))
-			.attr("y", (((height - margin.top) * 95) / 100))
-			.attr('dominant-baseline', "middle")
-			.attr("text-anchor", 'middle')
-			.attr('class', props.classes ? props.classes.label : "label")
-			// .text(props.value)
-			.attr('font-family', "Roboto")
-			.attr('font-size', "24px");
+		// valueDesc = svg.append("text")
+		// 	.attr("x", (width / 2))
+		// 	.attr("y", (((height - margin.top) * 95) / 100))
+		// 	.attr('dominant-baseline', "middle")
+		// 	.attr("text-anchor", 'middle')
+		// 	.attr('class', props.classes ? props.classes.label : "label")
+		// 	// .text(props.value)
+		// 	.attr('font-family', "Roboto")
+		// 	.attr('font-size', "24px");
 	}
 
 
@@ -197,7 +196,7 @@ const draw = (props, opts) => {
 
 			if (labels) {
 				valueLabel.text(parseFloat(prev ? value2 : value) ? parseFloat(prev ? value2 : value).toFixed(3) : '---')
-				valueDesc.text(txt)
+				// valueDesc.text(txt)
 			}
 			this.el.transition().duration(400).select('.' + props.classes.chartFilled).tween('progress', function () {
 				return function (percentOfPercent) {
@@ -220,17 +219,17 @@ const draw = (props, opts) => {
 class ReactGauge extends Component {
 	constructor(props) {
 		super(props)
-	
+
 		this.state = {
-			 prevSee: false,
-			 oldValue: props.value,
-			 oldPrevValue: props.dGauge ? 0 : props.prevValue,
-			 gauge: null
+			prevSee: false,
+			oldValue: props.value,
+			oldPrevValue: props.dGauge ? 0 : props.prevValue,
+			gauge: null
 		}
 	}
 	componentDidMount() {
 		window.d3 = d3
-		let { oldValue, oldPrevValue }  = this.state
+		let { oldValue, oldPrevValue } = this.state
 		let { value, label, color } = this.props
 		let g = draw({ value: parseFloat(value), oldValue: parseFloat(oldValue), prevValue: 0, prevOldValue: 0, ...this.props, min: 0, max: 100 }, { className: this.props.chartId, color: color })
 		if (g)
@@ -241,7 +240,7 @@ class ReactGauge extends Component {
 			})
 	}
 	componentDidUpdate(prevProps, prevState) {
-		let { gauge, oldValue, oldPrevValue, prevSee }  = this.state
+		let { gauge, oldValue, oldPrevValue, prevSee } = this.state
 		let { value, label, prevValue, prevLabel } = this.props
 		if (prevProps.value !== value || prevProps.prevValue !== prevValue) {
 			if (gauge) {
@@ -260,9 +259,9 @@ class ReactGauge extends Component {
 					})
 				}
 			}
-		} 
+		}
 	}
-	
+
 	setPrevSee = () => {
 		this.setState({
 			prevSee: !this.state.prevSee
@@ -270,9 +269,9 @@ class ReactGauge extends Component {
 	}
 	render() {
 		const { chartId } = this.props
-		
+
 		return (
-			<div className={this.props.classes.gauge + ' ' + chartId} onClick={() => {this.setPrevSee()}} />
+			<div className={this.props.classes.gauge + ' ' + chartId} onClick={() => { this.setPrevSee() }} />
 		)
 	}
 }

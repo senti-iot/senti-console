@@ -100,7 +100,7 @@ class WindCard extends PureComponent {
 	// 	await this.asyncForEach([1, 2, 3], async (num) => {
 	// 	  await waitFor(50);
 	// 	});
-	//   }	  
+	//   }
 	getData = async () => {
 		const { g, period } = this.props
 		let d = g.dataSource
@@ -292,40 +292,32 @@ class WindCard extends PureComponent {
 		}
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, /* t, */ title } = this.props
+	renderTitle = (small) => {
+		const { period, t, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ alignItems: 'center' }}>
-			{/* <Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
+		return <ItemG container alignItems={'center'} spacing={2}>
+			{small ? null :
+				<Hidden smDown>
+					<ItemG xs zeroMinWidth>
+						<Tooltip title={title}>
+							<div>
+								<T noWrap variant={'h6'}>{title}</T>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Hidden>
+			}
+			<ItemG container style={{ width: 'min-content' }}>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}>{`${displayFrom}`}</T>
 				</ItemG>
-			</Hidden> */}
-			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
-			</ItemG>
-			{/* <Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${displayTo}`}</T>
 				</ItemG>
-			</Hidden> */}
-			<ItemG style={{
-				flex: '1',
-				textAlign: 'center'
-			}}>
-				<T>{title}</T>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+				</ItemG>
 			</ItemG>
 		</ItemG>
 	}
@@ -344,7 +336,7 @@ class WindCard extends PureComponent {
 			<div
 				className={classes.scrollbar}
 				style={{ ...style }}
-				{...props}/>
+				{...props} />
 		);
 	}
 	renderContainer = ({ style, ...props }) => {
@@ -353,7 +345,7 @@ class WindCard extends PureComponent {
 		}
 		return (
 			<div
-				style={{ ...style, ...viewStyle }} 
+				style={{ ...style, ...viewStyle }}
 			/>)
 	}
 	renderType = () => {
@@ -405,30 +397,17 @@ class WindCard extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { /* actionAnchor, actionAnchorVisibility, */ resetZoom } = this.state
 		const { /* classes, */ t, period } = this.props
 		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
-				</ItemG>
-			</Hidden>
+			{/* <Hidden lgUp> */}
 			<ItemG container>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
 						<DateFilterMenu
@@ -437,17 +416,19 @@ class WindCard extends PureComponent {
 							t={t} />
 					</Tooltip>
 				</ItemG>
-				<Collapse in={resetZoom}>
-					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
-						<IconButton onClick={this.handleReverseZoomOnData}>
-							<ArrowUpward />
-						</IconButton>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
 					</Tooltip>
-					}
-				</Collapse>
+				</ItemG>
 			</ItemG>
 		</ItemG>
 	}
+
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
 			<Caption> {this.props.t('devices.noData')}</Caption>
@@ -458,25 +439,45 @@ class WindCard extends PureComponent {
 		return <Assignment />
 	}
 
+	renderSmallTitle = () => {
+		const { title, classes } = this.props
+		return <ItemG xs={12} container justify={'center'}>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+		</ItemG>
+	}
+
 	render() {
-		const { t, period, color } = this.props
+		const { classes, color, g } = this.props
 		const { loading, /* openDownload,  exportData */ } = this.state
-		// let displayTo = dateTimeFormatter(period.to)
-		// let displayFrom = dateTimeFormatter(period.from)
+		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
+
 		return (
 			<Fragment>
 				<InfoCard
 					color={color}
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					title={this.renderTitle(small)}
+					// subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
 					dashboard
+					headerClasses={{
+						root: small ? classes.smallSubheader : classes.subheader
+					}}
+					bodyClasses={{
+						root: small ? classes.smallBody : classes.body
+					}}
 					topAction={this.renderMenu()}
 					content={
 						<Grid container style={{ height: '100%', width: '100%' }}>
 							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
-								this.renderType()
+								<Fragment>
+									{small ? this.renderSmallTitle() : null}
+									<Hidden mdUp>
+										{this.renderSmallTitle()}
+									</Hidden>
+
+									{this.renderType()}
+								</Fragment>
 							}
 						</Grid>}
 				/>

@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, TableRow, Table, TableBody,
+	Grid, IconButton, withStyles, Collapse, Hidden, Tooltip, TableRow, Table, TableBody,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
@@ -10,7 +10,7 @@ import {
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	ExportModal,
+	// ExportModal,
 	DateFilterMenu,
 	T,
 } from 'components';
@@ -91,7 +91,7 @@ class ScoreCard extends PureComponent {
 
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || 
+		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType ||
 			prevProps.g !== this.props.g || prevProps.g.dataSources.a.dataKey !== this.props.g.dataSources.a.dataKey
 			|| prevProps.g.dataSources.b.dataKey !== this.props.g.dataSources.b.dataKey) {
 			this.setState({ loading: true }, async () => {
@@ -341,40 +341,32 @@ class ScoreCard extends PureComponent {
 		}
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, t, title } = this.props
+	renderTitle = (small) => {
+		const { period, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
-			<Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
+		return <ItemG container alignItems={'center'} spacing={2}>
+			{small ? null :
+				<Hidden smDown>
+					<ItemG xs zeroMinWidth>
+						<Tooltip title={title}>
+							<div>
+								<T noWrap variant={'h6'}>{title}</T>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Hidden>
+			}
+			<ItemG container style={{ width: 'min-content' }}>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}>{`${displayFrom}`}</T>
 				</ItemG>
-			</Hidden>
-			<ItemG>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
-			</ItemG>
-			<Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${displayTo}`}</T>
 				</ItemG>
-			</Hidden>
-			<ItemG style={{
-				flex: '1',
-				textAlign: 'center'
-			}}>
-				<T>{title}</T>
+				<ItemG xs={12}>
+					<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+				</ItemG>
 			</ItemG>
 		</ItemG>
 	}
@@ -396,7 +388,7 @@ class ScoreCard extends PureComponent {
 						<TC label={a.label ? a.label : '---'} />
 						<TC content={
 							<T style={{ fontWeight: 500 }}>
-								{!isNaN(a.data) ? a.data : '---' }
+								{!isNaN(a.data) ? a.data : '---'}
 							</T>
 						} />
 					</TableRow>
@@ -437,30 +429,17 @@ class ScoreCard extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { /* actionAnchor, actionAnchorVisibility, */ resetZoom } = this.state
 		const { /* classes, */ t, period } = this.props
 		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
-				</ItemG>
-			</Hidden>
+			{/* <Hidden lgUp> */}
 			<ItemG container>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
 						<DateFilterMenu
@@ -469,14 +448,15 @@ class ScoreCard extends PureComponent {
 							t={t} />
 					</Tooltip>
 				</ItemG>
-				<Collapse in={resetZoom}>
-					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
-						<IconButton onClick={this.handleReverseZoomOnData}>
-							<ArrowUpward />
-						</IconButton>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
 					</Tooltip>
-					}
-				</Collapse>
+				</ItemG>
 			</ItemG>
 		</ItemG>
 	}
@@ -489,38 +469,44 @@ class ScoreCard extends PureComponent {
 	renderIcon = () => {
 		return <Assignment />
 	}
-
+	renderSmallTitle = () => {
+		const { title, classes } = this.props
+		return <ItemG xs={12} container justify={'center'}>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+		</ItemG>
+	}
 	render() {
-		const { t, period, color } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { color, classes, g } = this.props
+		const { loading } = this.state
+		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 		return (
 			<Fragment>
 				<InfoCard
 					color={color}
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					title={this.renderTitle(small)}
 					avatar={this.renderIcon()}
 					noExpand
+					headerClasses={{
+						root: small ? classes.smallSubheader : classes.subheader
+					}}
+					bodyClasses={{
+						root: small ? classes.smallBody : classes.body
+					}}
 					topAction={this.renderMenu()}
-					background={this.props.color}
 					content={
-						<Grid container style={{ minHeight: 300 }}>
-							<ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/>
+						<Grid container style={{ height: '100%', width: '100%' }}>
 							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
+								<Fragment>
 
-								<ItemG xs={12}>
-									{this.renderType()}
-								</ItemG>
+									{small ? this.renderSmallTitle() : null}
+									<Hidden mdUp>
+										{this.renderSmallTitle()}
+									</Hidden>
+
+									<ItemG xs={12}>
+										{this.renderType()}
+									</ItemG>
+								</Fragment>
 							}
 						</Grid>}
 				/>
