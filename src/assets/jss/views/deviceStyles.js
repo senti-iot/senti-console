@@ -2,6 +2,21 @@ import { red, yellow, green } from "@material-ui/core/colors";
 import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
+	body: {
+		[theme.breakpoints.down('md')]: {
+			paddingTop: 0
+		}
+	},
+	smallTitle: {
+		[theme.breakpoints.down('md')]: {
+			paddingBottom: 16
+		}
+	},
+	subheader: {
+		[theme.breakpoints.down('md')]: {
+			paddingBottom: 0
+		}
+	},
 	scrollbar: {
 		background: theme.palette.type === "light" ? "rgba(128,128,128,0.3)" : "rgba(255,255,255,0.3)",
 		borderRadius: 8,

@@ -88,6 +88,9 @@ class DashboardPanel extends Component {
 				break;
 		}
 	}
+	onBreakpointChange = (args) => {
+		console.log(args)
+	}
 	renderDashboard = () => {
 		const { t, classes, d, loading, handleOpenEDT } = this.props
 		const { openDashboard } = this.state
@@ -271,7 +274,7 @@ DashboardPanel.defaultProps = {
 	rowHeight: 25,
 	preventCollision: false,
 	onLayoutChange: () => { },
-	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+	cols: { lg: 12, md: 6, sm: 6, xs: 3, xxs: 3 },
 
 
 };

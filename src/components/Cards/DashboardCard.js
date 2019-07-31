@@ -30,7 +30,6 @@ const styles = theme => ({
 		// width: 250,
 		// height: 300,
 		minHeight: 300,
-		margin: 8,
 		display: 'flex',
 		flexFlow: 'column',
 		// flexGrow: 1,
@@ -145,12 +144,12 @@ const styles = theme => ({
 
 class DashboardCard extends Component {
 	render() {
-		const { classes, header, content, c, handleOpenDashboard, t  } = this.props;
+		const { classes, header, content, c, handleOpenDashboard, t } = this.props;
 		return (
 			<Card className={classes.card}>
-			
+
 				<CardMedia
-					className={cx({ 
+					className={cx({
 						[classes.media]: true,
 						[classes.cardImg]: true,
 						[classes[c]]: true
@@ -181,17 +180,17 @@ class DashboardCard extends Component {
 				</CardContent>
 				<CardActions>
 					<IconButton className={classes.smallButton}>
-						<Visibility/>
+						<Visibility />
 					</IconButton>
 					<IconButton className={classes.smallButton} onClick={handleOpenDashboard}>
-						<Airplay/>
+						<Airplay />
 					</IconButton>
 					<IconButton className={classes.smallButton}>
-						<Star/>
+						<Star />
 					</IconButton>
-					<div style={{ marginLeft: 'auto' }}/>
+					<div style={{ marginLeft: 'auto' }} />
 					<IconButton className={classes.smallButton}>
-						<LocalOffer/>
+						<LocalOffer />
 					</IconButton>
 				</CardActions>
 			</Card>

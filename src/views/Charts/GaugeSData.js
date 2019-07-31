@@ -12,7 +12,7 @@ import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
 	// ExportModal,
 	DateFilterMenu,
-	T,
+	// T,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { connect } from 'react-redux'
@@ -329,7 +329,7 @@ class GaugeComponent extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
-		const { period, t, title } = this.props
+		const { period, t, /* title */ } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
@@ -357,12 +357,12 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG style={{
+			{/* <ItemG style={{
 				flex: '1',
 				textAlign: 'center'
 			}}>
 				<T>{title}</T>
-			</ItemG>
+			</ItemG> */}
 		</ItemG>
 	}
 	renderType = () => {
@@ -442,7 +442,7 @@ class GaugeComponent extends PureComponent {
 	}
 
 	render() {
-		const { t, period, color } = this.props
+		const { period, color } = this.props
 		const { /* openDownload, */ loading, /* exportData */ } = this.state
 		// let displayTo = dateTimeFormatter(period.to)
 		// let displayFrom = dateTimeFormatter(period.from)
@@ -451,7 +451,7 @@ class GaugeComponent extends PureComponent {
 				<InfoCard
 					color={color}
 					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					subheader={`${this.options[period.menuId].label}`}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
@@ -344,18 +344,19 @@ class DoubleChartData extends PureComponent {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container style={{ alignItems: 'center' }}>
-
 			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
 
-			<ItemG style={{
-				flex: '1',
-				textAlign: 'center'
-			}}>
-				<T>{title}</T>
-			</ItemG>
+			<Hidden smDown>
+				<ItemG style={{
+					flex: '1',
+					textAlign: 'center'
+				}}>
+					<T variant={'h6'}>{title}</T>
+				</ItemG>
+			</Hidden>
 		</ItemG>
 	}
 	renderType = () => {
@@ -575,25 +576,41 @@ class DoubleChartData extends PureComponent {
 				break;
 		}
 	}
-
+	renderSmallTitle = () => {
+		const { title, classes } = this.props
+		return <ItemG xs={12} container justify={'center'}>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+		</ItemG>
+	}
 	render() {
-		const { t, period, color } = this.props
+		const { period, color, classes } = this.props
 		const { loading } = this.state
 		return (
 			<InfoCard
 				color={color}
 				title={this.renderTitle()}
-				subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+				subheader={`${this.options[period.menuId].label}`}
 				avatar={this.renderIcon()}
 				noExpand
 				dashboard
+				headerClasses={{
+					root: classes.subheader
+				}}
+				bodyClasses={{
+					root: classes.body
+				}}
 				topAction={this.renderMenu()}
 				content={
 					<Grid container style={{ height: '100%', width: '100%' }}>
 						{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-						// <ItemG xs={12}>
-							this.renderType()
-							// </ItemG>
+							<Fragment>
+								<Hidden mdUp>
+									{this.renderSmallTitle()}
+								</Hidden>
+
+								{this.renderType()}
+
+							</Fragment>
 						}
 					</Grid>}
 			/>
@@ -602,7 +619,7 @@ class DoubleChartData extends PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	g: getGraph(state, ownProps.gId, ownProps.create ),
+	g: getGraph(state, ownProps.gId, ownProps.create),
 	period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 

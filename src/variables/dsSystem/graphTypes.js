@@ -4,10 +4,10 @@ export const graphType = (type) => {
 			return {
 				grid: {
 					minW: 4,
-					minH: 8,
+					minH: 12,
 					x: 0,
 					y: 0,
-					h: 11,
+					h: 12,
 					w: 6
 				},
 				chartType: 3, //Line Graph
@@ -27,10 +27,10 @@ export const graphType = (type) => {
 			return {
 				grid: {
 					minW: 4,
-					minH: 11,
+					minH: 12,
 					x: 0,
 					y: 0,
-					h: 11,
+					h: 12,
 					w: 4
 				},
 				dataSource: {
@@ -46,13 +46,13 @@ export const graphType = (type) => {
 				unit: ""
 			}
 		case "scorecardAB"://Scorecard AB
-			return { 
+			return {
 				grid: {
 					minW: 4,
-					minH: 11,
+					minH: 12,
 					x: 0,
 					y: 0,
-					h: 11,
+					h: 12,
 					w: 4
 				},
 				dataSources: {
@@ -82,10 +82,10 @@ export const graphType = (type) => {
 			return {
 				grid: {
 					minW: 4,
-					minH: 11,
+					minH: 12,
 					x: 0,
 					y: 0,
-					h: 11,
+					h: 12,
 					w: 4
 				},
 				dataSources: [

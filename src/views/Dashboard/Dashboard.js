@@ -131,7 +131,7 @@ class Dashboard extends React.Component {
 							{this.renderAddDashboard()}
 							{this.renderEditDashboard()}
 						</ThemeProvider>
-						<GridContainer spacing={1}>
+						<GridContainer spacing={2}>
 							{this.props.dashboards.map((d, i) => {
 								return <DashboardPanel
 									handleOpenEDT={() => this.handleOpenEDT(d)}
