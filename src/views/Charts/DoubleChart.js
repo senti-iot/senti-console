@@ -64,8 +64,8 @@ class DoubleChartData extends PureComponent {
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
+		// { id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
+		// { id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
@@ -578,7 +578,7 @@ class DoubleChartData extends PureComponent {
 										<ListItemIcon>
 											{op.icon}
 										</ListItemIcon>
-										<ListItemText inset primary={op.label} />
+										<ListItemText primary={op.label} />
 									</ListItem>
 								})}
 							</List>
