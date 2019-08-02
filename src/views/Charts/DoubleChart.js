@@ -78,8 +78,6 @@ class DoubleChartData extends PureComponent {
 	}
 	setData = (data, timeType) => {
 		const { g, title, color } = this.props
-
-		console.log(timeType)
 		switch (timeType) {
 			case 0:
 				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
