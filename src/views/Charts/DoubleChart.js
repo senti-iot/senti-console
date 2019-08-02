@@ -93,7 +93,12 @@ class DoubleChartData extends PureComponent {
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 
-		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
+		if (prevProps.period.menuId !== this.props.period.menuId ||
+			prevProps.period.timeType !== this.props.period.timeType ||
+			prevProps.g !== this.props.g ||
+			prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey ||
+			prevProps.period.from !== this.props.period.from
+		) {
 			this.setState({ loading: true }, async () => {
 				this.getData()
 			})
@@ -340,14 +345,14 @@ class DoubleChartData extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { period, title } = this.props
+		const { period, title, t } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container alignItems={'center'}>
+		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
 			{small ? null :
-				<Hidden smDown>
+				<Hidden xsDown>
 					<ItemG xs zeroMinWidth>
-						<Tooltip title={title}>
+						<Tooltip enterDelay={1000} title={title}>
 							<div>
 								<T noWrap variant={'h6'}>{title}</T>
 							</div>
@@ -355,15 +360,57 @@ class DoubleChartData extends PureComponent {
 					</ItemG>
 				</Hidden>
 			}
-			<ItemG container style={{ width: 'min-content' }}>
-				<ItemG xs={12}>
-					<T noWrap component={'span'}>{`${displayFrom}`}</T>
+			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
 				</ItemG>
-				<ItemG xs={12}>
-					<T noWrap component={'span'}> {`${displayTo}`}</T>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.period')}>
+						<DateFilterMenu
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+											</ItemG>
+										</ItemG>
+
+									</ItemG>
+
+								</ItemG>
+							}
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
+					</Tooltip>
 				</ItemG>
-				<ItemG xs={12}>
-					<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
+					</Tooltip>
 				</ItemG>
 			</ItemG>
 
@@ -373,7 +420,11 @@ class DoubleChartData extends PureComponent {
 		const { title, setHoverID, t, device, period, single, hoverID } = this.props
 		const { loading } = this.state
 		if (!loading) {
+
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
+			if (!period.timeType) {
+				console.log(this.props.g)
+			}
 			switch (period.chartType) {
 				case 0:
 					return roundDataSets ?
@@ -382,7 +433,6 @@ class DoubleChartData extends PureComponent {
 								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md/* md={roundDataSets.length >= 2 ? period.length > 2 ? 12 : 6 : 12} */ direction={'column'} container justify={'center'}>
 									<div style={{ maxHeight: 200 }}>
 										<PieChart
-											// height={200}
 											title={title}
 											single
 											unit={this.timeTypes[period.timeType]}
@@ -465,35 +515,12 @@ class DoubleChartData extends PureComponent {
 	}
 	renderMenu = () => {
 		const { actionAnchor, resetZoom } = this.state
-		const { classes, t, period } = this.props
+		const { classes, t, /* period */ } = this.props
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container direction={'column'}>
+
 			<ItemG container>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
-			</ItemG>
-			<ItemG container>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
-					</Tooltip>
-				</ItemG>
 				<Collapse in={resetZoom}>
 					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
 						<IconButton onClick={this.handleReverseZoomOnData}>
@@ -523,34 +550,28 @@ class DoubleChartData extends PureComponent {
 					onChange={this.handleVisibility}
 					PaperProps={{ style: { minWidth: 250 } }}>
 					<div>
-						<Hidden mdUp>
-							<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
-								<ListItemIcon>
-									<Visibility />
-								</ListItemIcon>
-								<ListItemText inset primary={t('filters.options.graphType')} />
-								<ExpandMore className={classNames({
-									[classes.expandOpen]: this.state.visibility,
-								}, classes.expand)} />
-							</ListItem>
-							<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
-								<List component='div' disablePadding>
-									{this.visibilityOptions.map(op => {
-										return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-											<ListItemIcon>
-												{op.icon}
-											</ListItemIcon>
-											<ListItemText inset primary={op.label} />
-										</ListItem>
-									})}
-								</List>
-							</Collapse>
-						</Hidden>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText primary={t('filters.options.graphType')} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+							<List component='div' disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText inset primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
 					</div>
-					<ListItem button onClick={this.handleOpenDownloadModal}>
-						<ListItemIcon><CloudDownload /></ListItemIcon>
-						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem>
 					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
 						<ListItemIcon>
 							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
@@ -558,6 +579,10 @@ class DoubleChartData extends PureComponent {
 						<ListItemText>
 							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 						</ListItemText>
+					</ListItem>
+					<ListItem button onClick={this.handleOpenDownloadModal}>
+						<ListItemIcon><CloudDownload /></ListItemIcon>
+						<ListItemText>{t('menus.export')}</ListItemText>
 					</ListItem>
 
 				</Menu>
@@ -588,13 +613,14 @@ class DoubleChartData extends PureComponent {
 	renderSmallTitle = () => {
 		const { title, classes } = this.props
 		return <ItemG xs={12} container justify={'center'}>
-			<T className={classes.smallTitleNP} variant={'h6'}>{title}</T>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
 		</ItemG>
 	}
 	render() {
-		const { g, color, classes } = this.props
+		const { color, classes, g } = this.props
 		const { loading } = this.state
 		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
+
 		return (
 			<InfoCard
 				color={color}
@@ -614,13 +640,13 @@ class DoubleChartData extends PureComponent {
 					<Grid container style={{ height: '100%', width: '100%' }}>
 						{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
 							<Fragment>
-								{small ? this.renderSmallTitle() : null}
-								<Hidden mdUp>
+								<Hidden xsDown>
+									{small ? this.renderSmallTitle() : null}
+								</Hidden>
+								<Hidden smUp>
 									{this.renderSmallTitle()}
 								</Hidden>
-
 								{this.renderType()}
-
 							</Fragment>
 						}
 					</Grid>}

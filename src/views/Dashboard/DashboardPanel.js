@@ -41,9 +41,8 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		})
 	}
-	transition(props) {
-		return <Slide direction='up' {...props} />;
-	}
+	transition = React.forwardRef((props, ref) => (<Slide direction='up' {...props} ref={ref} />));
+
 	renderPos = (l) => {
 		return <div style={{
 			position: 'absolute',
@@ -274,7 +273,7 @@ DashboardPanel.defaultProps = {
 	rowHeight: 25,
 	preventCollision: false,
 	onLayoutChange: () => { },
-	cols: { lg: 12, md: 6, sm: 6, xs: 3, xxs: 3 },
+	cols: { lg: 12, md: 6, sm: 4, xs: 3, xxs: 3 },
 
 
 };

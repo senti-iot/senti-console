@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
 			id: 'dashboard',
 			tabs: [],
 			content: [
-				<Hidden smDown>
+				<Hidden smDown key={'createDash'}>
 					<Tooltip title={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}>
 						<IconButton
 							onClick={this.handleOpenDT}

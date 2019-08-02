@@ -56,6 +56,9 @@ Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
+		if (!props.unit) {
+			console.log(props)
+		}
 		this.state = {
 			weather: '',
 			weatherDate: null,
@@ -109,8 +112,8 @@ class LineChart extends PureComponent {
 									day: 'DD MMM',
 									minute: 'LT'
 								},
-								unit: props.unit.chart,
-								tooltipFormat: props.unit.format
+								unit: props.unit ? props.unit.chart : 'day',
+								tooltipFormat: props.unit ? props.unit.format : console.log(props)
 							},
 						},
 						{

@@ -161,7 +161,7 @@ class DateFilterMenu extends Component {
 	isSelected = (value) => value === this.props.period ? this.props.period.menuId ? true : false : false
 
 	render() {
-		const { label, period, t, classes, icon, button, settings, inputType } = this.props
+		const { label, period, t, classes, icon, button, settings, inputType, buttonProps } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = period ? dateTimeFormatter(period.to) : ""
 		let displayFrom = period ? dateTimeFormatter(period.from) : ""
@@ -174,11 +174,14 @@ class DateFilterMenu extends Component {
 			/> :
 				<Fragment>
 					{button && <Button
+
 						aria-label='More'
 						aria-owns={actionAnchor ? 'long-menu' : null}
 						aria-haspopup='true'
 						style={{ color: 'rgba(0, 0, 0, 0.54)' }}
-						onClick={this.handleOpenMenu}>
+						onClick={this.handleOpenMenu}
+						{...buttonProps}
+					>
 						{icon ? icon : <DateRange />}
 					</Button>}
 					{!button && <Tooltip title={t('tooltips.chart.period')}>
@@ -248,5 +251,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 let DFMenu = compose(connect(mapStateToProps, mapDispatchToProps, undefined, { forwardRef: true }), withStyles(styles))(DateFilterMenu)
 // export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))
-const DFMenuRef = React.forwardRef((props, ref) => <DFMenu {...props} ref={ref}/>)
+const DFMenuRef = React.forwardRef((props, ref) => <DFMenu {...props} ref={ref} />)
 export default DFMenuRef
