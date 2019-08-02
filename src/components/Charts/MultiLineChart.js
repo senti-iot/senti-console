@@ -56,6 +56,8 @@ Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
+
+		console.log(props)
 		this.state = {
 			weather: '',
 			weatherDate: null,

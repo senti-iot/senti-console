@@ -27,7 +27,7 @@ import { changeYAxis } from 'redux/appState'
 import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
 import { handleSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
 import { getSensorDataClean } from 'variables/dataRegistry';
-import { setDailyData } from 'components/Charts/DataModel';
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
 
 class DoubleChartData extends PureComponent {
 	constructor(props) {
@@ -76,11 +76,27 @@ class DoubleChartData extends PureComponent {
 			await this.getData()
 		}
 	}
+	setData = (data, timeType) => {
+		const { g, title, color } = this.props
+
+		console.log(timeType)
+		switch (timeType) {
+			case 0:
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			case 1:
+				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			case 2:
+				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			default:
+				break;
+		}
+	}
 	getData = async () => {
-		const { g, period, title, color } = this.props
+		const { g, period } = this.props
 		if (g.dataSource.dataKey) {
 			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
-			let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			// let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			let newState = this.setData(data, period.timeType)
 			this.setState({
 				...newState, loading: false
 			})
