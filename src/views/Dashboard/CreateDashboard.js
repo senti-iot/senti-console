@@ -249,7 +249,7 @@ class CreateDashboard extends React.Component {
 					</CreateDashboardToolbar>
 					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
-						<DropZone color={d.color} onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
+						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
 								cols={this.cols}
@@ -260,7 +260,6 @@ class CreateDashboard extends React.Component {
 								preventCollision={false}
 								measureBeforeMount={false}
 								onLayoutChange={this.onLayoutChange}
-								// onDragStop={(item) => console.log(item)}
 								useCSSTransforms={true}
 							>
 								{this.generateDOM()}

@@ -115,7 +115,6 @@ class GaugeComponent extends PureComponent {
 		this.setState({ openDownload: true, actionAnchor: null })
 	}
 	handleOpenActionsDetails = event => {
-		console.log(event.currentTarget)
 		this.setState({ actionAnchor: event.currentTarget });
 	}
 

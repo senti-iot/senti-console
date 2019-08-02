@@ -56,7 +56,6 @@ export class ESGauge extends Component {
 		this.props.handleEditGraph(newG)
 	}
 	handleEditCF = d => {
-		console.log(d)
 		let newG = { ...this.props.g }
 		newG.dataSource.cf = d.id
 		this.props.handleEditGraph(newG)

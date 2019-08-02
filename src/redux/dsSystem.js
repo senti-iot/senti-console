@@ -100,7 +100,6 @@ export const getGraph = (state, id, create) => {
 
 export const handleSetDate = (dId, gId, p) => {
 	return async (dispatch, getState) => {
-		console.log(p)
 		let gs = getState().dsSystem.graphs
 		let graph = gs[gs.findIndex(g => g.id === gId)]
 		if (graph) {
@@ -224,7 +223,6 @@ export const removeDashboard = id => {
 		user = getState().settings.user
 		ds = user.aux.senti.dashboards
 		ds = ds.filter(f => f.id !== id)
-		console.log(ds)
 		user.aux.senti.dashboards = ds
 		dispatch(saveOnServ(user))
 		dispatch(await getSettings())

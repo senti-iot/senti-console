@@ -88,7 +88,7 @@ class DashboardPanel extends Component {
 		}
 	}
 	onBreakpointChange = (args) => {
-		console.log(args)
+		// console.log(args)
 	}
 	renderDashboard = () => {
 		const { t, classes, d, loading, handleOpenEDT } = this.props

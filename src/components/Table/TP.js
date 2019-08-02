@@ -23,7 +23,6 @@ class TP extends Component {
 		const iconClass = cx({
 			[classes.noRows]: disableRowsPerPage
 		})
-		console.log(width)
 		return (
 			<TablePagination
 				component='div'

@@ -107,7 +107,6 @@ export const hoursToArr = (from, to) => {
 	return arr
 }
 export const isWeekend = (date) => {
-	console.log(date)
 	return moment(date, 'YYYY-MM-DD HH:mm:ss').day() === 6 || moment(date).day() === 0 ? true : false
 }
 export const allDatesToArr = (from, to) => {

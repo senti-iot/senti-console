@@ -21,7 +21,6 @@ class Dropdown extends Component {
 		this.setState({ actionAnchor: null });
 	}
 	handleMenuItemClick = (m) => e => {
-		console.log(m)
 		if (m.func) {
 			m.func()
 		}

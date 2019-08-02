@@ -37,7 +37,6 @@ class EditGraph extends Component {
 	typeChildren = (g) => {
 		const { t } = this.props
 		let d = this.props.d
-		console.log(g)
 		if (g)
 			switch (g.type) {
 				case 1:
