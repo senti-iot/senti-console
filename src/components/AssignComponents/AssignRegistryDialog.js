@@ -3,7 +3,7 @@ import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
-// import { getAllDeviceTypes } from 'variables/dataDeviceTypes';
+// import { getAllRegistrys } from 'variables/dataRegistrys';
 import { ItemG, CircularLoader } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -11,13 +11,13 @@ import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 
-class AssignDeviceTypeDialog extends PureComponent {
+class AssignRegistryDialog extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			deviceTypes: [],
-			selectedDeviceType: null,
+			registries: [],
+			selectedRegistry: null,
 			page: 0,
 			filters: {
 				keyword: '',
@@ -29,23 +29,23 @@ class AssignDeviceTypeDialog extends PureComponent {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// await getAllDeviceTypes().then(rs => this._isMounted ? this.setState({ deviceTypes: rs }) : null)
+		// await getAllRegistrys().then(rs => this._isMounted ? this.setState({ registries: rs }) : null)
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	assignDeviceType = sId => e => {
-		// let sId = this.state.selectedDeviceType
-		let deviceTypes = this.props.deviceTypes
-		let org = deviceTypes[deviceTypes.findIndex(o => o.id === sId)]
+	assignRegistry = sId => e => {
+		// let sId = this.state.selectedRegistry
+		let registries = this.props.registries
+		let org = registries[registries.findIndex(o => o.id === sId)]
 		this.props.callBack(org)
 	}
 	Transition(props) {
 		return <Slide direction='up' {...props} />;
 	}
-	selectDeviceType = pId => e => {
+	selectRegistry = pId => e => {
 		e.preventDefault()
-		this.setState({ selectedDeviceType: pId })
+		this.setState({ selectedRegistry: pId })
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)
@@ -64,7 +64,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 
 	render() {
 		const { filters, page } = this.state
-		const { deviceTypes, classes, open, t } = this.props;
+		const { registries, classes, open, t } = this.props;
 
 		let height = window.innerHeight
 		let rows = Math.round((height - 85 - 49 - 49) / 49)
@@ -87,7 +87,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={3} container alignItems={'center'}>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sidebar.devices')}
+										{t('sidebar.registries')}
 									</Typography>
 								</ItemG>
 								<ItemG xs>
@@ -95,7 +95,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 										fullWidth
 										open={true}
 										focusOnMount
-										suggestions={deviceTypes ? suggestionGen(deviceTypes) : []}
+										suggestions={registries ? suggestionGen(registries) : []}
 										handleFilterKeyword={this.handleFilterKeyword}
 										searchValue={filters.keyword} />
 								</ItemG>
@@ -115,7 +115,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 										<Close />
 									</IconButton>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('deviceTypes.pageTitle')}
+										{t('registries.pageTitle')}
 									</Typography>
 								</ItemG>
 								<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -124,7 +124,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 										fullWidth
 										open={true}
 										focusOnMount
-										suggestions={deviceTypes ? suggestionGen(deviceTypes) : []}
+										suggestions={registries ? suggestionGen(registries) : []}
 										handleFilterKeyword={this.handleFilterKeyword}
 										searchValue={filters.keyword} />
 								</ItemG>
@@ -133,19 +133,19 @@ class AssignDeviceTypeDialog extends PureComponent {
 					</Toolbar>
 				</AppBar>
 				<List>
-					{deviceTypes ? filterItems(deviceTypes, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
+					{registries ? filterItems(registries, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
 						<Fragment key={i}>
-							<ListItem button onClick={this.assignDeviceType(p.id)} value={p.id}
+							<ListItem button onClick={this.assignRegistry(p.id)} value={p.id}
 								classes={{
-									root: this.state.selectedDeviceType === p.id ? classes.selectedItem : null
+									root: this.state.selectedRegistry === p.id ? classes.selectedItem : null
 								}}
 							>
 								<ListItemText
 									primaryTypographyProps={{
-										className: this.state.selectedDeviceType === p.id ? classes.selectedItemText : null
+										className: this.state.selectedRegistry === p.id ? classes.selectedItemText : null
 									}}
 									secondaryTypographyProps={{
-										classes: { root: this.state.selectedDeviceType === p.id ? classes.selectedItemText : null }
+										classes: { root: this.state.selectedRegistry === p.id ? classes.selectedItemText : null }
 									}}
 									primary={p.name} />
 							</ListItem>
@@ -155,7 +155,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 					) : <CircularLoader />}
 					<TP
 						disableRowsPerPage
-						count={deviceTypes ? deviceTypes.length : 0}
+						count={registries ? registries.length : 0}
 						page={page}
 						t={t}
 						handleChangePage={this.handleChangePage}
@@ -167,7 +167,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 	}
 }
 const mapStateToProps = (state, props) => ({
-	deviceTypes: state.data.deviceTypes,
+	registries: state.data.registries,
 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 })
 
@@ -175,8 +175,8 @@ const mapDispatchToProps = {
 
 }
 
-AssignDeviceTypeDialog.propTypes = {
+AssignRegistryDialog.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(assignStyles)(AssignDeviceTypeDialog))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(assignStyles)(AssignRegistryDialog))

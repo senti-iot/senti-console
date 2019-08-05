@@ -130,7 +130,7 @@ class Tokens extends Component {
 	//#endregion
 
 	//#region Functions
-	addNewToken = () => { 
+	addNewToken = () => {
 		this.setState({
 			openNewToken: true
 		})
@@ -249,7 +249,7 @@ class Tokens extends Component {
 		if (r) {
 			this.setState({
 				selected: [],
-				openDelete: false, 
+				openDelete: false,
 				anchorElMenu: null
 			})
 			this.getData(true)
@@ -390,9 +390,9 @@ class Tokens extends Component {
 			case 0:
 				return t('tokens.fields.types.device')
 			case 1:
-				return t('tokens.fields.types.devicetype')
-			case 2:
 				return t('tokens.fields.types.registry')
+			case 2:
+				return t('tokens.fields.types.devicetype')
 
 			default:
 				break;
@@ -511,7 +511,7 @@ class Tokens extends Component {
 	renderNewToken = () => {
 		const { t } = this.props
 		const { openNewToken } = this.state
-		return <CreateToken 
+		return <CreateToken
 			t={t}
 			openToken={openNewToken}
 			handleClose={() => {
@@ -544,7 +544,7 @@ class Tokens extends Component {
 	renderCards = () => {
 		const { /* t, history, tokens, */ loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <TokenCards tokens={this.filterItems(tokens)} t={t} history={history} /> 
+			// <TokenCards tokens={this.filterItems(tokens)} t={t} history={history} />
 			null
 	}
 

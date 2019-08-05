@@ -9,6 +9,8 @@ import withSnackbar from 'components/Localization/S';
 import { generateToken } from 'variables/dataRegistry'
 import { connect } from 'react-redux'
 import { getTokens } from 'redux/data';
+import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog';
+import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
 
 class CreateToken extends Component {
 	constructor(props) {
@@ -24,6 +26,14 @@ class CreateToken extends Component {
 				name: "",
 				id: ""
 			},
+			registry: {
+				name: "",
+				id: ""
+			},
+			deviceType: {
+				name: "",
+				id: ""
+			},
 			generatedToken: null,
 			openSensor: false,
 			openRegistry: false,
@@ -32,7 +42,7 @@ class CreateToken extends Component {
 	}
 	renderType = (type) => {
 		const { t } = this.props
-		const { sensor } = this.state
+		const { sensor, openSensor, registry, openRegistry, deviceType, openDeviceType } = this.state
 		switch (type) {
 			case 0:
 				return <Fragment>
@@ -45,7 +55,7 @@ class CreateToken extends Component {
 					/>
 					<AssignSensorDialog
 						t={t}
-						open={this.state.openSensor}
+						open={openSensor}
 						handleClose={() => this.setState({ openSensor: false })}
 						callBack={sensor => {
 							this.setState({
@@ -60,9 +70,56 @@ class CreateToken extends Component {
 					/>
 				</Fragment>
 			case 1:
-				return t('tokens.fields.types.devicetype')
+				return <Fragment>
+					<TextF
+						label={t('tokens.fields.types.registry')}
+						value={registry.name}
+						handleClick={() => this.setState({ openRegistry: true })}
+						readonly
+						fullWidth
+					/>
+					<AssignRegistryDialog
+						t={t}
+						open={openRegistry}
+						handleClose={() => this.setState({ openRegistry: false })}
+						callBack={registry => {
+							this.setState({
+								openRegistry: false,
+								token: {
+									...this.state.token,
+									typeId: registry.id
+								},
+								registry: registry
+							});
+						}}
+					/>
+				</Fragment>
+			// return t('tokens.fields.types.devicetype')
 			case 2:
-				return t('tokens.fields.types.registry')
+				return <Fragment>
+					<TextF
+						label={t('tokens.fields.types.deviceTypes')}
+						value={deviceType.name}
+						handleClick={() => this.setState({ openDeviceType: true })}
+						readonly
+						fullWidth
+					/>
+					<AssignDeviceTypeDialog
+						t={t}
+						open={openDeviceType}
+						handleClose={() => this.setState({ openDeviceType: false })}
+						callBack={deviceType => {
+							this.setState({
+								openDeviceType: false,
+								token: {
+									...this.state.token,
+									typeId: deviceType.id
+								},
+								deviceType: deviceType
+							});
+						}}
+					/>
+				</Fragment>
 
 			default:
 				break;
@@ -94,7 +151,7 @@ class CreateToken extends Component {
 		>
 			<DialogTitle >
 				<ItemG container justify={'space-between'} alignItems={'center'}>
-					{t('dialogs.tokens.createToken.title')}					
+					{t('dialogs.tokens.createToken.title')}
 					<IconButton aria-label="Close" className={classes.closeButton} onClick={() => this.setState({ openConfimClose: false })}>
 						<Close />
 					</IconButton>
@@ -106,7 +163,7 @@ class CreateToken extends Component {
 						<Warning>{t('dialogs.tokens.createToken.closeWarning')}</Warning>
 					</ItemG>
 					<ItemG xs={12}>
-						<Divider style={{ marginTop: 20 }}/>
+						<Divider style={{ marginTop: 20 }} />
 						<Info>
 							{t('dialogs.tokens.createToken.closeConfirm')}
 						</Info>
@@ -216,8 +273,8 @@ class CreateToken extends Component {
 									value={token.type}
 									menuItems={[
 										{ value: 0, label: t('tokens.fields.types.device') },
-										{ value: 1, label: t('tokens.fields.types.devicetype') },
-										{ value: 2, label: t('tokens.fields.types.registry') }
+										{ value: 1, label: t('tokens.fields.types.registry') },
+										{ value: 2, label: t('tokens.fields.types.devicetype') }
 									]}
 									onChange={this.handleChange('type')}
 								/>
