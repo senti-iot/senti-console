@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Collapse, Paper } from '@material-ui/core'
-import { CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning, ItemG, DatePicker } from 'components'
+import { CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning, ItemG, DatePicker, SlideT } from 'components'
 import withLocalization from 'components/Localization/T';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -12,18 +12,15 @@ import Gravatar from 'react-gravatar'
 
 class CreateProjectForm extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		  filters: {
-			  keyword: ''
-		  }
-	  }
+		super(props)
+
+		this.state = {
+			filters: {
+				keyword: ''
+			}
+		}
 	}
-	
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -41,7 +38,7 @@ class CreateProjectForm extends Component {
 			fullScreen
 			open={openUser}
 			onClose={handleCloseUser}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -94,7 +91,7 @@ class CreateProjectForm extends Component {
 					return <Fragment key={i}>
 						<ListItem button onClick={handleChangeUser(o)}>
 							<Gravatar default='mp' email={o.email} className={classes.img} />
-							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name}/>
+							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name} />
 						</ListItem>
 						<Divider />
 					</Fragment>
@@ -112,7 +109,7 @@ class CreateProjectForm extends Component {
 			fullScreen
 			open={openOrg}
 			onClose={handleCloseOrg}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -174,7 +171,7 @@ class CreateProjectForm extends Component {
 	}
 	render() {
 		const { t, classes, errorMessage, error,
-			created, title, handleChange, handleDateChange, 
+			created, title, handleChange, handleDateChange,
 			description, startDate, endDate, creating, handleOpenOrg, org,
 			handleCreateProject, handleOpenUser, user, goToProject
 		} = this.props
@@ -268,7 +265,7 @@ class CreateProjectForm extends Component {
 								}}
 							/>
 						</ItemGrid>
-							
+
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>
 						<Collapse in={creating} timeout='auto' unmountOnExit>
@@ -295,12 +292,12 @@ class CreateProjectForm extends Component {
 							>
 								{created ? t('snackbars.redirect')
 									: t('actions.save')}
-										
+
 							</Button>
 						</div>
 					</ItemGrid>
 				</Paper>
-			</GridContainer> 
+			</GridContainer>
 		)
 	}
 }

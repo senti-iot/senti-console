@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide, Paper } from '@material-ui/core';
-import { ItemG, T, CircularLoader } from 'components';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Paper } from '@material-ui/core';
+import { ItemG, T, CircularLoader, SlideT } from 'components';
 import { Close, Edit } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -41,7 +41,6 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		})
 	}
-	transition = React.forwardRef((props, ref) => (<Slide direction='up' {...props} ref={ref} />));
 
 	renderPos = (l) => {
 		return <div style={{
@@ -101,7 +100,7 @@ class DashboardPanel extends Component {
 			fullScreen
 			open={openDashboard}
 			onClose={handleCloseDashboard}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>

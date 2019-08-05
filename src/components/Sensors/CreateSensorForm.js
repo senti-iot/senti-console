@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close, CheckCircle, Block } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 // import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T, SlideT } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
@@ -26,9 +26,6 @@ class CreateSensorForm extends Component {
 		}
 	}
 
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -78,7 +75,7 @@ class CreateSensorForm extends Component {
 			fullScreen
 			open={openCF.open}
 			onClose={handleCloseFunc}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>

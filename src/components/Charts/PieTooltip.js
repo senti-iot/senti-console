@@ -48,7 +48,7 @@ class PieTooltip extends Component {
 	}
 	handleRange = () => {
 		const { tooltip, unit } = this.props
-		let date = moment(tooltip.date) 
+		let date = moment(tooltip.date)
 		if (date) {
 			if (tooltip.lastPoint) {
 				if (moment(date).diff(moment(), 'days') === 0) {
@@ -96,7 +96,7 @@ class PieTooltip extends Component {
 		const { tooltip } = this.props
 		return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
 	}
-	renderTooltip = () => { 
+	renderTooltip = () => {
 		const { t, classes, tooltip, weather,
 			handleCloseTooltip, todayOfInterest } = this.props
 		let doi = todayOfInterest(tooltip.date)
@@ -166,14 +166,14 @@ class PieTooltip extends Component {
 			</Paper>
 		</Grow>
 	}
-	handleTransition = (props) => {
-		return <Grow in {...props} />;
-	}
+
+	handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
+
 	render() {
-		const {  tooltip, mobile,
+		const { tooltip, mobile,
 			getRef, handleCloseTooltip } = this.props
 		return (
-			this.clickEvent() ? 
+			this.clickEvent() ?
 				<div ref={r => getRef(r)} style={{
 					zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
 					// zIndex: 1028,
@@ -185,7 +185,7 @@ class PieTooltip extends Component {
 					maxWidth: mobile ? 300 : 500
 				}}>
 					{this.renderTooltip()}
-				</div> : 
+				</div> :
 				<Dialog
 					// open={true}
 					open={tooltip.show}

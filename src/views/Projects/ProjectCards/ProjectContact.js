@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { InfoCard, ItemGrid, Caption, Info, Dropdown, ItemG } from 'components';
-import { Grid, Typography, IconButton, Hidden, Toolbar, AppBar, Dialog, List, ListItem, ListItemText, Slide, Button } from '@material-ui/core';
+import { InfoCard, ItemGrid, Caption, Info, Dropdown, ItemG, SlideT } from 'components';
+import { Grid, Typography, IconButton, Hidden, Toolbar, AppBar, Dialog, List, ListItem, ListItemText, Button } from '@material-ui/core';
 import { Person, Edit, Close } from 'variables/icons'
 import { Link } from 'react-router-dom'
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -13,7 +13,7 @@ import { updateProject } from 'variables/dataProjects';
 export class ProjectContact extends Component {
 	constructor(props) {
 	  super(props)
-	
+
 	  this.state = {
 		 openEditContact: false,
 		  filters: {
@@ -24,22 +24,19 @@ export class ProjectContact extends Component {
 		  }
 	  }
 	}
-	componentDidMount = async () => { 
+	componentDidMount = async () => {
 		await getAllUsers().then(rs => this.setState({ users: rs }))
 
 	}
-	handleOpenEditContact = () => { 
+	handleOpenEditContact = () => {
 		this.setState({
 			openEditContact: true
 		})
 	}
-	handleCloseEditContact = () => { 
+	handleCloseEditContact = () => {
 		this.setState({
 			openEditContact: false
 		})
-	}
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
 	}
 	handleFilterKeyword = value => {
 		this.setState({
@@ -48,12 +45,12 @@ export class ProjectContact extends Component {
 			}
 		})
 	}
-	handleChangeUser = o => { 
+	handleChangeUser = o => {
 		this.setState({
 			selectedUser: o
 		})
 	}
-	handleChangeContactPerson = async () => { 
+	handleChangeContactPerson = async () => {
 		let newProject = {
 			...this.props.project,
 			user: this.state.selectedUser
@@ -63,7 +60,7 @@ export class ProjectContact extends Component {
 			this.props.reload()
 		})
 	}
-	renderEditContact = () => { 
+	renderEditContact = () => {
 		const { t, classes } = this.props
 		const { filters, users, openEditContact } = this.state
 		const appBarClasses = classNames({
@@ -73,7 +70,7 @@ export class ProjectContact extends Component {
 			fullScreen
 			open={openEditContact}
 			onClose={this.handleCloseEditContact}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -125,7 +122,7 @@ export class ProjectContact extends Component {
 									handleFilterKeyword={this.handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
-						
+
 						</ItemG>
 					</Hidden>
 				</Toolbar>
@@ -147,7 +144,7 @@ export class ProjectContact extends Component {
 					</Fragment>
 				}) : null}
 			</List>
-		</Dialog> : null	
+		</Dialog> : null
 	}
 	render() {
 		const { t, project, classes } = this.props

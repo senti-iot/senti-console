@@ -1,10 +1,10 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 import { getAllCollections } from 'variables/dataCollections';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { assignDeviceToCollection } from 'variables/dataCollections';
@@ -23,23 +23,23 @@ class AssignDC extends PureComponent {
 			},
 		}
 	}
-	//#region LifeCycle 
+	//#region LifeCycle
 	componentDidMount = async () => {
 		this._isMounted = 1
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.open !== this.props.open && this.props.open === true) { 
+		if (prevProps.open !== this.props.open && this.props.open === true) {
 			await getAllCollections().then(rs => rs ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
 		}
 	}
-	
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
 	//#endregion
-	
-	//#region External 
+
+	//#region External
 
 	assignCollection = async () => {
 		const { deviceId } = this.props
@@ -49,11 +49,9 @@ class AssignDC extends PureComponent {
 		})
 	}
 	//#endregion
-	
-	//#region Handlers 
-	handleTransition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+
+	//#region Handlers
+
 	handleClick = (e, pId) => {
 		e.preventDefault()
 		this.setState({ selectedCollections: pId })
@@ -66,9 +64,9 @@ class AssignDC extends PureComponent {
 			}
 		})
 	}
-	isSelected = id => this.state.selectedCollections === (id) ? true : false 
+	isSelected = id => this.state.selectedCollections === (id) ? true : false
 	//#endregion
-	
+
 	render() {
 		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
@@ -81,7 +79,7 @@ class AssignDC extends PureComponent {
 				fullScreen
 				open={open}
 				onClose={() => this.props.handleClose(false)}
-				TransitionComponent={this.handleTransition}
+				TransitionComponent={SlideT}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>
@@ -156,7 +154,7 @@ class AssignDC extends PureComponent {
 					) : <CircularLoader />}
 				</List>
 			</Dialog>
-			
+
 		);
 	}
 }

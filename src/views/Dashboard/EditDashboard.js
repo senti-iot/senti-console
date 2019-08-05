@@ -1,7 +1,7 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button } from '@material-ui/core';
-import { ItemG, Dropdown, TextF } from 'components';
+import { ItemG, Dropdown, TextF, SlideT } from 'components';
 import cx from 'classnames'
 import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -233,7 +233,7 @@ class EditDashboard extends React.Component {
 					fullScreen
 					open={open}
 					onClose={handleClose}
-					TransitionComponent={this.transition}
+					TransitionComponent={SlideT}
 					PaperProps={{
 						className: classes[d.color]
 					}}

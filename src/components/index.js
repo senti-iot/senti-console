@@ -32,6 +32,11 @@ import AssignOrg from './AssignComponents/AssignOrg'
 import AssignDevice from './AssignComponents/AssignDevice'
 import AssignProject from './AssignComponents/AssignProject'
 import AssignDC from './AssignComponents/AssignDC'
+// ##############################
+// // // Dialog
+// #############################
+
+import SlideT from './Dialog/SlideT'
 
 // ##############################
 // // // CustomInput
@@ -98,6 +103,7 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	SlideT,
 	Box,
 	MultiLineChart,
 	DatePicker,

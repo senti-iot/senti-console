@@ -1,10 +1,10 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 // import { getAllSensors } from 'variables/dataSensors';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
@@ -39,9 +39,6 @@ class AssignSensorDialog extends PureComponent {
 		let sensors = this.props.sensors
 		let org = sensors[sensors.findIndex(o => o.id === sId)]
 		this.props.callBack(org)
-	}
-	Transition(props) {
-		return <Slide direction='up' {...props} />;
 	}
 	selectSensor = pId => e => {
 		e.preventDefault()
@@ -79,7 +76,7 @@ class AssignSensorDialog extends PureComponent {
 				fullScreen
 				open={open}
 				onClose={this.handleClose}
-				TransitionComponent={this.Transition}
+				TransitionComponent={SlideT}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>

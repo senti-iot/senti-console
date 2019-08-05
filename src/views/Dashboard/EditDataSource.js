@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, ListItemText, Divider, Collapse } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF, DateFilterMenu, CircularLoader } from 'components';
+import { T, ItemG, DSelect, TextF, DateFilterMenu, CircularLoader, SlideT } from 'components';
 import { Close, PieChartRounded, DonutLargeRounded, BarChart, ShowChart, ExpandMore } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
@@ -140,7 +140,7 @@ export class EditDataSource extends Component {
 			fullScreen
 			open={selectFunction}
 			onClose={this.handleCloseF}
-			TransitionComponent={this.transition}
+			TransitionComponent={SlideT}
 		>	<AppBar className={classes.cAppBar}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -209,7 +209,7 @@ export class EditDataSource extends Component {
 			fullScreen
 			open={selectDevice}
 			onClose={this.handleCloseD}
-			TransitionComponent={this.transition}
+			TransitionComponent={SlideT}
 		>	<AppBar className={classes.cAppBar}>
 				<Toolbar>
 					<Hidden smDown>
