@@ -347,7 +347,7 @@ class SensorMessages extends PureComponent {
 
 							{`${dateTimeFormatter(msg.created, true)} - ${msg.id}`}
 
-							<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseMessage}>
+							<IconButton aria-label="Close" style={{ color: '#fff' }} className={classes.closeButton} onClick={this.handleCloseMessage}>
 								<Close />
 							</IconButton>
 						</ItemG>
