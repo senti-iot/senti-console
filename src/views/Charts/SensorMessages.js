@@ -1,33 +1,35 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography, Tooltip,
+	ListItemIcon, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider
 } from '@material-ui/core';
 import {
-	Timeline, MoreVert,
+	MoreVert,
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear, KeyboardArrowLeft, KeyboardArrowRight,
+	ShowChart, CloudDownload, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
-	LineChart,
-	DoughnutChart,
-	PieChart,
-	ExportModal,
+	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
 	DateFilterMenu,
+	T
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-// import * as ReactIs from 'react-is'
+import TP from 'components/Table/TP';
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import AceEditor from 'react-ace';
 
-class ChartData extends PureComponent {
+import 'brace/mode/json';
+import 'brace/theme/tomorrow';
+import 'brace/theme/monokai';
+
+class SensorMessages extends PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -40,7 +42,9 @@ class ChartData extends PureComponent {
 			zoomDate: [],
 			loading: true,
 			chartType: 'linear',
-			initialPeriod: null
+			initialPeriod: null,
+			page: 0,
+			msg: null
 		}
 	}
 
@@ -71,14 +75,14 @@ class ChartData extends PureComponent {
 		const { period } = this.props
 		const { loading } = this.state
 		if (period && loading) {
-			let newState = await this.props.getData(period)
-			this.setState({ ...newState, loading: false })
+			await this.props.getData()
+			this.setState({ loading: false })
 		}
 	}
-	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw) {
+	componentDidUpdate = async (prevProps) => {
+		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
 			this.setState({ loading: true }, async () => {
-				let newState = await this.props.getData(this.props.period)
+				let newState = await this.props.getData()
 				this.setState({ ...newState, loading: false })
 			})
 		}
@@ -86,6 +90,17 @@ class ChartData extends PureComponent {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		this.setState({
+			raw: this.props.raw ? this.props.raw : false,
+			actionAnchor: null,
+			openDownload: false,
+			visibility: false,
+			resetZoom: false,
+			zoomDate: [],
+			loading: true,
+			chartType: 'linear',
+			initialPeriod: null
+		})
 	}
 	handleChangeChartType = (type) => {
 		this.setState({
@@ -221,7 +236,7 @@ class ChartData extends PureComponent {
 		else {
 			if (initialPeriod.menuId === 6) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
-				from = moment(period.from).subtaddraddact(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
+				from = moment(period.from).add(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
 				to = moment(period.to).add(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
 				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
 
@@ -310,118 +325,110 @@ class ChartData extends PureComponent {
 		}
 		this.props.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, t } = this.props
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row' }}>
-			<Hidden mdDown>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-			</Hidden>
-			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
-			</ItemG>
-			<Hidden mdDown>
-				<ItemG xs>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
-			</Hidden>
-		</ItemG>
-	}
-	renderType = () => {
-		const { title, setHoverID, t, device, period, single, hoverID } = this.props
-		const { loading } = this.state
-		if (!loading) {
-			const { roundDataSets, lineDataSets, barDataSets } = this.state
-			switch (period.chartType) {
-				case 0:
-					return roundDataSets ?
-						<ItemG container >
-							{roundDataSets.map((d, i) => {
-								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md/* md={roundDataSets.length >= 2 ? periods.length > 2 ? 12 : 6 : 12} */ direction={'column'} container justify={'center'}>
-									<div style={{ maxHeight: 200 }}>
-										<PieChart
-											height={200}
-											title={title}
-											single
-											unit={this.timeTypes[period.timeType]}
-											setHoverID={setHoverID}
-											data={d}
-											t={t}
-										/>
-									</div>
-									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
-								</ItemG>
-							})}
-						</ItemG>
-						: this.renderNoData()
-				case 1:
-					return roundDataSets ?
-						<ItemG container >
-							{roundDataSets.map((d, i) => {
-								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md direction={'column'} container justify={'center'}>
-									<div style={{ maxHeight: 200 }}>
-										<DoughnutChart
-											height={200}
-											title={title}
-											single
-											unit={this.timeTypes[period.timeType]}
-											setHoverID={setHoverID}
-											data={d}
-											t={t}
-										/>
-									</div>
-									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
-								</ItemG>
-							})}
-						</ItemG>
-						: this.renderNoData()
-				case 2:
-					return barDataSets ?
-						<BarChart
-							chartYAxis={this.state.chartType}
-							single={single}
-							hoverID={hoverID}
-							obj={device}
-							unit={this.timeTypes[period.timeType]}
-							onElementsClick={this.handleZoomOnData}
-							setHoverID={setHoverID}
-							data={barDataSets}
-							t={t}
-						/> : this.renderNoData()
-				case 3:
 
-					return lineDataSets ?
-						<LineChart
-							chartYAxis={this.state.chartType}
-							single={single}
-							hoverID={this.props.hoverID}
-							handleReverseZoomOnData={this.handleReverseZoomOnData}
-							resetZoom={this.state.resetZoom}
-							obj={device}
-							unit={this.timeTypes[period.timeType]}
-							onElementsClick={this.handleZoomOnData}
-							setHoverID={setHoverID}
-							data={lineDataSets}
-							t={t}
-						/> : this.renderNoData()
-				default:
-					break;
-			}
+	renderMessage = () => {
+		let { openMessage, msg } = this.state
+		let { t, classes } = this.props
+		return <Dialog
+			open={openMessage}
+			onClose={this.handleCloseMessage}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
+			PaperProps={{
+				style: {
+					width: 600
+				}
+			}}
+		>
+			{msg ?
+				<Fragment>
+					<DialogTitle disableTypography >
+						<ItemG container justify={'space-between'} alignItems={'center'}>
+
+							{`${dateTimeFormatter(msg.created, true)} - ${msg.id}`}
+
+							<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseMessage}>
+								<Close />
+							</IconButton>
+						</ItemG>
+					</DialogTitle>
+					<DialogContent>
+						<ItemG container>
+							<ItemG xs={12}>
+								<Caption>{t('messages.fields.data')}</Caption>
+								<Divider />
+								<div className={classes.editor}>
+									<AceEditor
+										height={300}
+										mode={'json'}
+										theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
+										// onChange={handleCodeChange('js')}
+										value={JSON.stringify(msg.data, null, 4)}
+										showPrintMargin={false}
+										style={{ width: '100%' }}
+										name="seeMsgData"
+									// editorProps={{ $blockScrolling: true }}
+									/>
+								</div>
+							</ItemG>
+						</ItemG>
+					</DialogContent>
+				</Fragment>
+				: null}
+		</Dialog>
+	}
+	handleCloseMessage = () => {
+		this.setState({
+			msg: null,
+			openMessage: false
+		})
+	}
+	handleOpenMessage = msg => () => {
+		this.setState({
+			msg,
+			openMessage: true
+		})
+	}
+	messagesHeader = () => {
+		const { t } = this.props
+		return [
+			{ id: 'id', label: t('messages.fields.id') },
+			{ id: 'created', label: t('registries.fields.created') },
+		]
+	}
+	handleChangePage = (event, page) => {
+		this.setState({ page });
+	}
+
+	renderType = () => {
+		const { t, classes, messages, rowsPerPage } = this.props
+		const { loading, page } = this.state
+		if (!loading) {
+			return (
+				<Fragment>
+					<List style={{
+						width: '100%'
+					}}>
+						{messages ? messages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+
+							return (
+								<ListItem button onClick={this.handleOpenMessage(n)} divider style={{ paddingLeft: 24 }}>
+									<ListItemText style={{ margin: 0 }} primary={dateTimeFormatter(n.created, true)} secondary={n.id} />
+								</ListItem>
+							)
+						}) : null}
+					</List>
+					<TP
+						count={messages ? messages.length : 0}
+						classes={classes}
+						page={page}
+						t={t}
+						handleChangePage={this.handleChangePage}
+					/>
+				</Fragment>
+			)
 		}
+
 		else return this.renderNoData()
 	}
 	disableFuture = () => {
@@ -432,149 +439,92 @@ class ChartData extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
-		const { classes, t, period } = this.props
-		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={this.handlePreviousPeriod}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
+		const { actionAnchor } = this.state
+		const { t, period } = this.props
+		// const {  } = this.props
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
+		return <ItemG container alignItems={'center'}>
+			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG container>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu period={period} t={t} />
+						<DateFilterMenu
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+											</ItemG>
+										</ItemG>
+
+									</ItemG>
+
+								</ItemG>
+							}
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
 					</Tooltip>
 				</ItemG>
-				<Collapse in={resetZoom}>
-					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
-						<IconButton onClick={this.handleReverseZoomOnData}>
-							<ArrowUpward />
-						</IconButton>
-					</Tooltip>
-					}
-				</Collapse>
 				<ItemG>
-					<Hidden smDown>
-						<Tooltip title={t('tooltips.chart.type')}>
-							<IconButton variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
-								{this.renderIcon()}
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
 							</IconButton>
-						</Tooltip>
-						<Menu
-							marginThreshold={24}
-							id='long-menu'
-							anchorEl={actionAnchorVisibility}
-							open={Boolean(actionAnchorVisibility)}
-							onClose={() => this.setState({ actionAnchorVisibility: null })}
-							PaperProps={{ style: { minWidth: 250 } }}>
-							<List component='div' disablePadding>
-								{this.visibilityOptions.map(op => {
-									return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-										<ListItemIcon>
-											{op.icon}
-										</ListItemIcon>
-										<ListItemText inset primary={op.label} />
-									</ListItem>
-								})}
-							</List>
-						</Menu>
-					</Hidden>
-				</ItemG>
-
-				<ItemG>
-					<Tooltip title={t('menus.menu')}>
-						<IconButton
-							aria-label='More'
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup='true'
-							onClick={this.handleOpenActionsDetails}>
-							<MoreVert />
-						</IconButton>
+						</div>
 					</Tooltip>
 				</ItemG>
-				<Menu
-					marginThreshold={24}
-					id='long-menu'
-					anchorEl={actionAnchor}
-					open={Boolean(actionAnchor)}
-					onClose={this.handleCloseActionsDetails}
-					onChange={this.handleVisibility}
-					PaperProps={{ style: { minWidth: 250 } }}>
-					<div>
-						<Hidden mdUp>
-							<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
-								<ListItemIcon>
-									<Visibility />
-								</ListItemIcon>
-								<ListItemText inset primary={t('filters.options.graphType')} />
-								<ExpandMore className={classNames({
-									[classes.expandOpen]: this.state.visibility,
-								}, classes.expand)} />
-							</ListItem>
-							<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
-								<List component='div' disablePadding>
-									{this.visibilityOptions.map(op => {
-										return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-											<ListItemIcon>
-												{op.icon}
-											</ListItemIcon>
-											<ListItemText inset primary={op.label} />
-										</ListItem>
-									})}
-								</List>
-							</Collapse>
-						</Hidden>
-					</div>
-					<ListItem button onClick={this.handleOpenDownloadModal}>
-						<ListItemIcon><CloudDownload /></ListItemIcon>
-						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => this.props.changeRawData(period)}>
-						<ListItemIcon>
-							<Checkbox
-								checked={period.raw}
-								className={classes.noPadding}
-							/>
-						</ListItemIcon>
-						<ListItemText>
-							{t('collections.rawData')}
-						</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
-						<ListItemIcon>
-							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
-						</ListItemIcon>
-						<ListItemText>
-							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
-						</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
-						<ListItemIcon>
-							<Clear />
-						</ListItemIcon>
-						<ListItemText>
-							{t('menus.charts.deleteThisPeriod')}
-						</ListItemText>
-					</ListItem>
-
-				</Menu>
 			</ItemG>
+
+			<ItemG>
+				<Tooltip title={t('menus.menu')}>
+					<IconButton
+						aria-label='More'
+						aria-owns={actionAnchor ? 'long-menu' : null}
+						aria-haspopup='true'
+						onClick={this.handleOpenActionsDetails}>
+						<MoreVert />
+					</IconButton>
+				</Tooltip>
+			</ItemG>
+			<Menu
+				marginThreshold={24}
+				id='long-menu'
+				anchorEl={actionAnchor}
+				open={Boolean(actionAnchor)}
+				onClose={this.handleCloseActionsDetails}
+				onChange={this.handleVisibility}
+				PaperProps={{ style: { minWidth: 250 } }}>
+
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t('menus.export')}</ListItemText>
+				</ListItem>
+
+			</Menu>
 		</ItemG>
 	}
 	renderNoData = () => {
@@ -583,49 +533,27 @@ class ChartData extends PureComponent {
 		</ItemG>
 	}
 
-	renderIcon = () => {
-		const { period } = this.props
-		switch (period.chartType) {
-			case 0:
-				return <PieChartRounded />
-			case 1:
-				return <DonutLargeRounded />
-			case 2:
-				return <BarChartIcon />
-			case 3:
-				return <ShowChart />
-			default:
-				break;
-		}
-	}
+
 
 	render() {
-		const { t, period } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { t } = this.props
+		const { loading } = this.state
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
-					avatar={this.renderIcon()}
+					title={t('sidebar.messages')}
+					// subheader={`${this.options[period.menuId].label}`}
+					avatar={<InsertChart />}
 					noExpand
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							<ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/>
 							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
 
 								<ItemG xs={12}>
+									{this.renderMessage()}
 									{this.renderType()}
 								</ItemG>
 							}
@@ -636,6 +564,7 @@ class ChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
+	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -646,4 +575,7 @@ const mapDispatchToProps = dispatch => ({
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ChartData))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles((theme) => ({
+	...deviceStyles(theme),
+	...devicetableStyles(theme),
+}), { withTheme: true })(SensorMessages))

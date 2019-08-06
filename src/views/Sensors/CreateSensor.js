@@ -274,7 +274,7 @@ class CreateSensor extends Component {
 			}
 		})
 	}
-	handleChangeFunc = (o, where) => e => {
+	handleChangeFunc = (o, where) => {
 		const { select } = this.state
 		let metadata = this.state.sensorMetadata[where]
 		metadata[select[where]].nId = o.id

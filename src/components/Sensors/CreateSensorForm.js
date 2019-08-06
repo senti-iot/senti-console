@@ -11,6 +11,7 @@ import OpenStreetMap from 'components/Map/OpenStreetMap';
 import Info from 'components/Typography/Info';
 import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
 import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog';
+import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
@@ -268,6 +269,7 @@ class CreateSensorForm extends Component {
 		const { t,
 			handleOpenReg, openReg, handleCloseReg, handleChangeReg,
 			handleOpenDT, handleCloseDT, openDT, handleChangeDT,
+			openCF, handleCloseFunc, handleChangeFunc,
 			handleChange, sensor, getLatLngFromMap,
 			classes, handleCreate, goToRegistries, select } = this.props
 		return (
@@ -279,7 +281,17 @@ class CreateSensorForm extends Component {
 						noHeader
 						content={
 							<ItemG>
-								{this.renderSelectFunction()}
+
+								<AssignCFDialog
+									t={t}
+									open={openCF.open}
+									handleClose={handleCloseFunc}
+									callBack={cf => {
+										handleChangeFunc(cf, openCF.where)
+										handleCloseFunc()
+									}}
+								/>
+								{/* {this.renderSelectFunction()} */}
 								<ItemGrid xs={12}>
 									<TextF
 										id={'sensorName'}

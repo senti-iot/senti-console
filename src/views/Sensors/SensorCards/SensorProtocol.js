@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, ContentCopy, /* Delete */ } from 'variables/icons';
+import { Wifi, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, ContentCopy, /* Delete */ } from 'variables/icons';
 import { connect } from 'react-redux'
 import { copyToClipboard } from 'variables/functions';
 import withSnackbar from 'components/Localization/S';
@@ -28,11 +28,11 @@ class SensorDetails extends Component {
 		switch (id) {
 			case 0:
 				return t('registries.fields.protocols.none')
-			case 1: 
+			case 1:
 				return t('registries.fields.protocols.mqtt')
-			case 2: 
+			case 2:
 				return t('registries.fields.protocols.http')
-			case 3: 
+			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
@@ -54,16 +54,11 @@ class SensorDetails extends Component {
 		return (
 			<InfoCard
 				title={t('registries.fields.protocol')}
-				avatar={<DataUsage />}
-				// noPadding
-				// noRightExpand
-				// menuExpand
+				avatar={<Wifi />}
 				noExpand
-				// expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
-						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 
 					]
@@ -101,21 +96,24 @@ class SensorDetails extends Component {
 							</ItemG> : null}
 							{sensor.protocol === 2 || sensor.protocol === 3 ? <ItemG xs={12}>
 								<Caption>{t('registries.fields.protocols.http')} POST</Caption>
-								<TextF 
+								<TextF
 									id={'htpp-publish'}
 									fullWidth
 									label={''}
 									readOnly
 									value={`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`}
-									InputProps = {{ endAdornment:
-										<ItemG>
-											<IconButton onClick={() => { 
-												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`)}
-											}>
-												<ContentCopy/>
-											</IconButton>
-										</ItemG> }
+									InputProps={{
+										endAdornment:
+											<ItemG>
+												<IconButton onClick={() => {
+													this.props.s('snackbars.urlCopied')
+													copyToClipboard(`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`)
+												}
+												}>
+													<ContentCopy />
+												</IconButton>
+											</ItemG>
+									}
 									}
 								/>
 							</ItemG> : null}
@@ -130,34 +128,40 @@ class SensorDetails extends Component {
 									label={''}
 									readOnly
 									value={`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`}
-									InputProps = {{ endAdornment:
-										<ItemG>
-											<IconButton onClick={() => { 
-												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)}
-											}>
-												<ContentCopy/>
-											</IconButton>
-										</ItemG> }
+									InputProps={{
+										endAdornment:
+											<ItemG>
+												<IconButton onClick={() => {
+													this.props.s('snackbars.urlCopied')
+													copyToClipboard(`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)
+												}
+												}>
+													<ContentCopy />
+												</IconButton>
+											</ItemG>
+									}
 									}
 								/>
 							</ItemG> : null}
 							{sensor.protocol === 2 || sensor.protocol === 3 ? <ItemG xs={12}>
 								<Caption>{t('registries.fields.protocols.http')}</Caption>
-								<TextF 
+								<TextF
 									id={'http-state'}
 									fullWidth
 									readOnly
 									value={`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`}
-									InputProps = {{ endAdornment:
-										<ItemG>
-											<IconButton onClick={() => { 
-												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)}
-											}>
-												<ContentCopy/>
-											</IconButton>
-										</ItemG> }
+									InputProps={{
+										endAdornment:
+											<ItemG>
+												<IconButton onClick={() => {
+													this.props.s('snackbars.urlCopied')
+													copyToClipboard(`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)
+												}
+												}>
+													<ContentCopy />
+												</IconButton>
+											</ItemG>
+									}
 									}
 								/>
 							</ItemG> : null}
@@ -172,15 +176,18 @@ class SensorDetails extends Component {
 									label={''}
 									readOnly
 									value={`{{API_TOKEN_HERE}}/devicedata/${sensor.uuid}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_KEY}}/?{{CLOUD_FUNCTION_ID}}`}
-									InputProps = {{ endAdornment:
-										<ItemG>
-											<IconButton onClick={() => { 
-												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)}
-											}>
-												<ContentCopy/>
-											</IconButton>
-										</ItemG> }
+									InputProps={{
+										endAdornment:
+											<ItemG>
+												<IconButton onClick={() => {
+													this.props.s('snackbars.urlCopied')
+													copyToClipboard(`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)
+												}
+												}>
+													<ContentCopy />
+												</IconButton>
+											</ItemG>
+									}
 									}
 								/>
 							</ItemG>

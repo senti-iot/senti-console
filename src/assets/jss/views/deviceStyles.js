@@ -2,6 +2,7 @@ import { red, yellow, green } from "@material-ui/core/colors";
 import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
+
 	smallBody: {
 		paddingTop: 0
 	},

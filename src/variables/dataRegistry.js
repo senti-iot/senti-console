@@ -108,6 +108,14 @@ export const getSensorData = async (id) => {
 	let response = await servicesAPI.get(`/v1/devicedata/${id}`).then(rs => rs.ok ? rs.data : rs.ok)
 	return response
 }
+
+export const getSensorMessages = async (id, period) => {
+	let startDate = moment(period.from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let endDate = moment(period.to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let response = await servicesAPI.get(`/v1/messages/device/${id}/${startDate}/${endDate} `).then(rs => rs.ok ? rs.data : rs.ok)
+	return response
+}
+
 export const getAllMessages = async cId => {
 	let response = await servicesAPI.get(`/v1/messages/${cId}`).then(rs => rs.ok ? rs.data : rs.ok)
 	return response
@@ -127,7 +135,7 @@ export const deleteTokens = async tokens => {
 	let response = Promise.all(tokens.map(t => externalAPI.post(`/deletetoken/${t}`))).then(rs => {
 		if (rs.find(f => f === false))
 			return false
-		else 
+		else
 			return true
 	})
 	return response
