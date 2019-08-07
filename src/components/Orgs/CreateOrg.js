@@ -76,23 +76,23 @@ class CreateOrg extends Component {
 
 	handleValidation = () => {
 		let errorCode = [];
-		const { name, address, city, zip, country } = this.state.org
+		const { name, /* address, city, zip, country */ } = this.state.org
 		const { selectedOrg } = this.state
 		if (name === '') {
 			errorCode.push(0)
 		}
-		if (address === '') {
-			errorCode.push(1)
-		}
-		if (city === '') {
-			errorCode.push(2)
-		}
-		if (zip === '') {
-			errorCode.push(3)
-		}
-		if (country === '') {
-			errorCode.push(4)
-		}
+		// if (address === '') {
+		// 	errorCode.push(1)
+		// }
+		// if (city === '') {
+		// 	errorCode.push(2)
+		// }
+		// if (zip === '') {
+		// 	errorCode.push(3)
+		// }
+		// if (country === '') {
+		// 	errorCode.push(4)
+		// }
 		if (selectedOrg === null) {
 			errorCode.push(5)
 		}
