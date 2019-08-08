@@ -8,7 +8,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 // import { deleteDeviceType, unassignDeviceFromDeviceType, getDeviceType } from 'variables/dataDeviceTypes';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Edit, ViewList, ViewModule, Add, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignProject } from 'components'
+import { GridContainer, CircularLoader } from 'components'
 // import DeviceTypesCards from './DeviceTypesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
@@ -65,12 +65,8 @@ class DeviceTypes extends Component {
 	devicetypesHeader = () => {
 		const { t } = this.props
 		return [
-			// { id: 'id', label: t('devicetypes.fields.id') },
 			{ id: 'name', label: t('devicetypes.fields.name') },
 			{ id: 'customer_name', label: t('devices.fields.org') }
-			// { id: 'region', label: t('devicetypes.fields.region') },
-			// { id: 'protocol', label: t('devicetypes.fields.created') },
-			// { id: 'customer', label: t('devicetypes.fields.customer') },
 		]
 	}
 	options = () => {
@@ -328,32 +324,7 @@ class DeviceTypes extends Component {
 		/>
 	}
 
-	renderAssignProject = () => {
-		const { selected, openAssignProject } = this.state
-		const { t } = this.props
-		return <AssignProject
-			// multiple
-			devicetypeId={selected ? selected : []}
-			handleCancel={this.handleCancelAssignProject}
-			handleClose={this.handleCloseAssignProject}
-			open={openAssignProject}
-			t={t}
-		/>
-	}
 
-	renderAssignDevice = () => {
-		// const { selected, openAssignDevice } = this.state
-		// const { t, devicetypes } = this.props
-		// let devicetypeOrg = devicetypes.find(r => r.id === selected[0])
-		// return <AssignDevice
-		// 	devicetypeId={selected[0] ? selected[0] : 0}
-		// 	orgId={devicetypeOrg ? devicetypeOrg.org.id : 0}
-		// 	handleCancel={this.handleCancelAssignDevice}
-		// 	handleClose={this.handleCloseAssignDevice}
-		// 	open={openAssignDevice}
-		// 	t={t}
-		// />
-	}
 
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
@@ -375,18 +346,14 @@ class DeviceTypes extends Component {
 	renderCards = () => {
 		const { /* t, history, devicetypes, */ loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <DeviceTypesCards devicetypes={this.filterItems(devicetypes)} t={t} history={history} /> 
+			// <DeviceTypesCards devicetypes={this.filterItems(devicetypes)} t={t} history={history} />
 			null
 	}
 
 	renderFavorites = () => {
 		const { classes, loading } = this.props
-		const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderAssignProject()}
-				{this.renderAssignDevice()}
-				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
 				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 				{this.renderConfirmDelete()}
@@ -397,12 +364,8 @@ class DeviceTypes extends Component {
 
 	renderDeviceTypes = () => {
 		const { classes, devicetypes, loading } = this.props
-		// const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{/* {this.renderAssignProject()} */}
-				{/* {this.renderAssignDevice()} */}
-				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
 				{this.renderTable(devicetypes, this.handleDeviceTypeClick, 'devicetypes')}
 				{this.renderConfirmDelete()}
@@ -412,8 +375,7 @@ class DeviceTypes extends Component {
 	}
 
 	render() {
-		// const { devicetypes, route, filters } = this.state
-		const { /* history,  */match } = this.props
+		const { match } = this.props
 		return (
 			<Fragment>
 				<Switch>
