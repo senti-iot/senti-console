@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Info, Caption, ItemG } from 'components'
+import { InfoCard, ItemGrid, Info, Caption, ItemG, T } from 'components'
 import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/core'
 import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import TC from 'components/Table/TC'
@@ -33,7 +33,10 @@ class OrgDevices extends Component {
 			return (
 				<InfoCard
 					title={t('devices.pageTitle')}
-					subheader={`${t('orgs.fields.deviceCount')}: ${devices.length}`}
+					subheader={<T>
+						{`${t('orgs.fields.deviceCount')}: ${devices.length}`}
+					</T>
+					}
 					avatar={<DeviceHub />}
 					noExpand
 					noPadding
@@ -59,13 +62,13 @@ class OrgDevices extends Component {
 														</ItemGrid>
 														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 															<Caption noWrap className={classes.noMargin}>
-												
+
 															</Caption>
 														</ItemGrid>
 														{/* </ItemGrid> */}
 													</ItemGrid>
 												}/>
-									
+
 											</Hidden>
 											<Hidden mdDown>
 												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.liveStatus)} />

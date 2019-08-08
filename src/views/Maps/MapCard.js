@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react'
-import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
+import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu, T } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
 import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, /* DialogTitle, */ DialogActions, Button, Drawer, withStyles, Tooltip } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
@@ -57,8 +57,7 @@ class MapCard extends PureComponent {
 			)
 		}
 		if (prevProps.device && this.props.device) {
-			if (prevProps.device.address !== this.props.device.address)
-			{
+			if (prevProps.device.address !== this.props.device.address) {
 				this.setState({ /* loading: true, */ markers: this.props.markers })
 				// setTimeout(() => {
 				// 	this.setState({ loading: false })
@@ -220,11 +219,13 @@ class MapCard extends PureComponent {
 				[
 					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ dontShow: this.isExpanded() ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
+					{ dontShow: this.props.device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }
+				]
 			} />
 
 		</Fragment>
 	}
+
 	getRef = (r) => {
 		this.map = r
 	}
@@ -357,7 +358,10 @@ class MapCard extends PureComponent {
 				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
+				subheader={<T>{
+					device ?
+						`${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
+				</T>}
 				avatar={<Map />}
 				expanded={this.isExpanded()}
 				topAction={this.renderMenu()}
