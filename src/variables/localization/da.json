@@ -216,7 +216,8 @@
 			"dataSource": "Datakilde",
 			"defaultPeriod": "Standard periode",
 			"device": "Enhed",
-			"unit": "Måleenhed"
+			"unit": "Måleenhed",
+			"cf": "Cloud Funktion"
 		},
 		"cardContent": {
 			"alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",

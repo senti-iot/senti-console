@@ -329,7 +329,7 @@ class ChartData extends PureComponent {
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
 			<Hidden mdDown>
-				<ItemG xs>
+				<ItemG>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
 							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>

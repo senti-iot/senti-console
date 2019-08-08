@@ -215,7 +215,8 @@
 			"dataSource": "Data source",
 			"defaultPeriod": "Default period",
 			"device": "Device",
-			"unit": "Measuring Unit"
+			"unit": "Measuring Unit",
+			"cf": "Cloud Function"
 		},
 		"cardContent": {
 			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",

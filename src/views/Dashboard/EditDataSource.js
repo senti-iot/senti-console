@@ -153,7 +153,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('cfs.pageTitle')}
+									{t('sidebar.cloudfunctions')}
 								</T>
 							</ItemG>
 							<ItemG xs={8}>
@@ -174,7 +174,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('cfs.pageTitle')}
+									{t('sidebar.cloudfunctions')}
 								</T>
 							</ItemG>
 							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -222,7 +222,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('sensors.pageTitle')}
+									{t('devices.pageTitle')}
 								</T>
 							</ItemG>
 							<ItemG xs={9} md={7}>
@@ -243,7 +243,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('sensors.pageTitle')}
+									{t('devices.pageTitle')}
 								</T>
 							</ItemG>
 							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -371,7 +371,7 @@ export class EditDataSource extends Component {
 									<ItemG>
 										<TextF
 											id={'scbAB-a-name'}
-											label={t('dashboard.field.name')}
+											label={t('dashboard.fields.name')}
 											value={g.dataSources.a.label}
 											handleChange={this.handleEditName('a')}
 										/>
@@ -450,7 +450,7 @@ export class EditDataSource extends Component {
 									<ItemG>
 										<TextF
 											id={'scbAB-b-name'}
-											label={t('dashboard.field.name')}
+											label={t('dashboard.fields.name')}
 											value={g.dataSources.b.label}
 											handleChange={this.handleEditName('b')}
 										/>

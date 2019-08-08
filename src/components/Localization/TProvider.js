@@ -33,7 +33,7 @@ class TProvider extends Component {
 		}
 		var result = phrase
 		var interpolationRegex = tokenRegex || defaultTokenRegex
-		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions		
+		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions
 		result = replace.call(result, interpolationRegex,
 			function (expression, argument) {
 				if (!has(options, argument) || options[argument] == null) {
@@ -58,7 +58,7 @@ class TProvider extends Component {
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
-			// console.info('Missing key: "' + key + '"')
+			console.info('Missing key: "' + key + '"')
 			result = key
 		}
 		if (typeof phrase === 'string') {
