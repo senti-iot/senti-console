@@ -34,10 +34,11 @@ class CreateToken extends Component {
 				name: "",
 				id: ""
 			},
-			generatedToken: null,
+			generatedToken: "",
 			openSensor: false,
 			openRegistry: false,
-			openDeviceType: false
+			openDeviceType: false,
+			confirmClose: ""
 		}
 	}
 	renderType = (type) => {
@@ -47,6 +48,7 @@ class CreateToken extends Component {
 			case 0:
 				return <Fragment>
 					<TextF
+						id={'token-sensor'}
 						label={t('tokens.fields.types.device')}
 						value={sensor.name}
 						handleClick={() => this.setState({ openSensor: true })}
@@ -72,6 +74,7 @@ class CreateToken extends Component {
 			case 1:
 				return <Fragment>
 					<TextF
+						id={'token-registry'}
 						label={t('tokens.fields.types.registry')}
 						value={registry.name}
 						handleClick={() => this.setState({ openRegistry: true })}
@@ -98,6 +101,7 @@ class CreateToken extends Component {
 			case 2:
 				return <Fragment>
 					<TextF
+						id={'token-dt'}
 						label={t('tokens.fields.types.devicetype')}
 						value={deviceType.name}
 						handleClick={() => this.setState({ openDeviceType: true })}
@@ -193,6 +197,7 @@ class CreateToken extends Component {
 					</ItemG>
 					<ItemG xs={12}>
 						<TextF
+							id={'token-confirmClose'}
 							fullWidth
 							value={confirmClose}
 							handleChange={e => this.setState({ confirmClose: e.target.value })}
@@ -285,7 +290,7 @@ class CreateToken extends Component {
 								</Collapse>
 							</ItemG>
 							<ItemG xs={12}>
-								<Collapse in={generatedToken}>
+								<Collapse in={Boolean(generatedToken)}>
 									<Divider />
 
 									<TextF
