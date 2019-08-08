@@ -275,9 +275,9 @@ class EditDashboard extends React.Component {
 							<ItemG container style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }}>
 								<ToolbarItem type={"chart"} name={'Chart'} />
 								<ToolbarItem type={"gauge"} name={'Gauge'} />
-								<ToolbarItem type={"scorecard"} name={'Scorecard'} />
+								{/* <ToolbarItem type={"scorecard"} name={'Scorecard'} />
 								<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />
-								<ToolbarItem type={"windcard"} name={'Windcard'} />
+								<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
 							</ItemG>
 
 						}>

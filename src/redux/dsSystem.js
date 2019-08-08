@@ -281,7 +281,18 @@ export const setLayout = (l) => {
 	}
 }
 
-
+export const resetCreateDash = () => {
+	return dispatch => {
+		dispatch({
+			type: cDash,
+			payload: null,
+		})
+		dispatch({
+			type: cGraph,
+			payload: []
+		})
+	}
+}
 const initialState = {
 	dashboards: [],
 	dashboard: null,

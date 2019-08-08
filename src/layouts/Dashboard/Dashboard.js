@@ -102,21 +102,9 @@ class App extends React.Component {
 			await this.props.getDaysOfIterest()
 			if (this.props.theme === 1) {
 				document.body.style = 'background: #2e2e2e;';
-				// if (this.props.user.id === 136550100000003) {
-				// 	document.body.style = 'background: #2e2e2e;transform:rotate(18deg);transition: all 300ms ease;';
-				// 	setTimeout(() => {
-				// 		document.body.style = 'background: #2e2e2e;transform:rotate(0deg);transition: all 300ms ease;';
-				// 	}, 3000);
-				// }
 			}
 			else {
 				document.body.style = 'background: #eee;';
-				// if (this.props.user.id === 136550100000003) {
-				// 	document.body.style = 'background: #eee;transform:rotate(18deg);transition: all 300ms ease;';
-				// 	setTimeout(() => {
-				// 		document.body.style = 'background: #eee;transform:rotate(0deg);transition: all 300ms ease;';
-				// 	}, 3000);
-				// }
 			}
 		})
 	}

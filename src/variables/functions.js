@@ -92,7 +92,7 @@ export const allHoursToArr = (from, to) => {
 }
 export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
-	let endDate = moment(to)
+	let endDate = moment(to).add(1, 'hour')
 	let diff = moment.duration(endDate.diff(startDate)).asHours()
 	let amount = 1
 	amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
@@ -122,7 +122,7 @@ export const allDatesToArr = (from, to) => {
 }
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
-	let endDate = moment(to)
+	let endDate = moment(to).add(1, 'd')
 	let diff = moment.duration(endDate.diff(startDate)).asDays()
 	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 15 : 5 : 3 : 1
 	if (window.innerWidth < 426)
