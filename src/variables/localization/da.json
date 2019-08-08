@@ -812,7 +812,8 @@
 			"metadata": "Enhedsmetadata",
 			"protocols": {
 				"publishData": "Udgiv data",
-				"state": "Enhedstilstand"
+				"state": "Enhedstilstand",
+				"externalAPI": "External API"
 			},
 			"registry": "Register",
 			"uuid": "Unik ID"

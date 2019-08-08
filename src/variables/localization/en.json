@@ -807,7 +807,8 @@
 			"metadata": "Device Metadata",
 			"protocols": {
 				"publishData": "Publish Data",
-				"state": "Device state"
+				"state": "Device state",
+				"externalAPI": "External API"
 			},
 			"registry": "Registry",
 			"uuid": "Unique ID"

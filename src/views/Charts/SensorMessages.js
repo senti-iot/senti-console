@@ -36,7 +36,7 @@ class SensorMessages extends PureComponent {
 		this.state = {
 			raw: props.raw ? props.raw : false,
 			actionAnchor: null,
-			openDownload: false,
+			openMessage: false,
 			visibility: false,
 			resetZoom: false,
 			zoomDate: [],
@@ -359,13 +359,13 @@ class SensorMessages extends PureComponent {
 								<Divider />
 								<div className={classes.editor}>
 									<AceEditor
-										height={300}
+										// height={300}
 										mode={'json'}
 										theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 										// onChange={handleCodeChange('js')}
 										value={JSON.stringify(msg.data, null, 4)}
 										showPrintMargin={false}
-										style={{ width: '100%' }}
+										style={{ width: '100%', height: '300px' }}
 										name="seeMsgData"
 									// editorProps={{ $blockScrolling: true }}
 									/>
@@ -374,7 +374,7 @@ class SensorMessages extends PureComponent {
 						</ItemG>
 					</DialogContent>
 				</Fragment>
-				: null}
+				: <div></div>}
 		</Dialog>
 	}
 	handleCloseMessage = () => {
@@ -401,7 +401,7 @@ class SensorMessages extends PureComponent {
 	}
 
 	renderType = () => {
-		const { t, classes, messages, rowsPerPage } = this.props
+		const { t, messages, rowsPerPage } = this.props
 		const { loading, page } = this.state
 		if (!loading) {
 			return (
@@ -412,7 +412,7 @@ class SensorMessages extends PureComponent {
 						{messages ? messages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 
 							return (
-								<ListItem button onClick={this.handleOpenMessage(n)} divider style={{ paddingLeft: 24 }}>
+								<ListItem key={n.id} button onClick={this.handleOpenMessage(n)} divider style={{ paddingLeft: 24 }}>
 									<ListItemText style={{ margin: 0 }} primary={dateTimeFormatter(n.created, true)} secondary={n.id} />
 								</ListItem>
 							)
@@ -420,7 +420,6 @@ class SensorMessages extends PureComponent {
 					</List>
 					<TP
 						count={messages ? messages.length : 0}
-						classes={classes}
 						page={page}
 						t={t}
 						handleChangePage={this.handleChangePage}
