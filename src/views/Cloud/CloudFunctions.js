@@ -1,20 +1,16 @@
 import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TableToolbar from 'components/Table/TableToolbar';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import { deleteFunction, unassignDeviceFromFunction, getFunction } from 'variables/dataFunctions';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder } from 'variables/icons';
+import { /* Delete, PictureAsPdf, DeviceHub, LibraryBooks,  LayersClear, ViewModule, */ Edit, ViewList, Add, Star, StarBorder } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignProject, /* T */ } from 'components'
-// import FunctionsCards from './FunctionsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getFunctions, setFunctions, sortData } from 'redux/data';
 import FunctionTable from 'components/Cloud/FunctionTable';
-// import { setFunctions, getFunctions, sortData } from 'redux/data';
 
 class Functions extends Component {
 	constructor(props) {
@@ -46,7 +42,7 @@ class Functions extends Component {
 		const { t, match } = this.props
 		return [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
+			// { id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
@@ -89,11 +85,11 @@ class Functions extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			{ label: t('menus.assign.deviceToFunction'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t('menus.unassign.deviceFromFunction'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: functions[functions.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
+			// { label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
+			// { label: t('menus.assign.deviceToFunction'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			// { label: t('menus.unassign.deviceFromFunction'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: functions[functions.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
+			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 		]
 		return allOptions
@@ -488,7 +484,7 @@ class Functions extends Component {
 	renderCards = () => {
 		const { /* t, history, functions, */ loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <FunctionsCards functions={this.filterItems(functions)} t={t} history={history} /> 
+			// <FunctionsCards functions={this.filterItems(functions)} t={t} history={history} />
 			null
 	}
 
@@ -543,7 +539,7 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	functions: state.data.functions,
 	loading: false, //!state.data.gotfunctions,
-	filters: state.appState.filters.functions,	
+	filters: state.appState.filters.functions,
 	user: state.settings.user
 })
 
