@@ -111,12 +111,12 @@ class Functions extends Component {
 			const { selected } = this.state
 			let collection = functions[functions.findIndex(d => d.id === selected[0])]
 			if (collection) {
-				if (isFav({ id: collection.id, type: 'collection' })) {
+				if (isFav({ id: collection.id, type: 'function' })) {
 					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.cloudfunction') })
 					finishedSaving()
 					this.setState({ selected: [] })
 				}
-				if (!isFav({ id: collection.id, type: 'collection' })) {
+				if (!isFav({ id: collection.id, type: 'function' })) {
 					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.cloudfunction') })
 					finishedSaving()
 					this.setState({ selected: [] })
@@ -135,7 +135,7 @@ class Functions extends Component {
 	getFavs = () => {
 		const { order, orderBy } = this.state
 		const { favorites, functions } = this.props
-		let favs = favorites.filter(f => f.type === 'collection')
+		let favs = favorites.filter(f => f.type === 'function')
 		let favFunctions = favs.map(f => {
 			return functions[functions.findIndex(d => d.id === f.id)]
 		})
