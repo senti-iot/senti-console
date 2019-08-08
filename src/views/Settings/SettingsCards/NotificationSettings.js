@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, DSelect } from 'components';
+import { InfoCard, ItemGrid, DSelect, Caption, ItemG } from 'components';
 import { Notifications } from 'variables/icons';
 import { Grid, List, ListItem, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
@@ -25,7 +25,12 @@ class NotificationSettings extends Component {
 				noExpand
 				avatar={<Notifications />}
 				title={t('settings.headers.notifications')}
-				subheader={'*Work in progress*'}
+				subheader={<ItemG>
+					<Caption>
+						*Work in progress*
+					</Caption>
+				</ItemG>
+				}
 				content={
 					<Grid container>
 						<List className={classes.list}>

@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react'
-import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu, T } from 'components';
+import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
 import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, /* DialogTitle, */ DialogActions, Button, Drawer, withStyles, Tooltip } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
@@ -358,10 +358,10 @@ class MapCard extends PureComponent {
 				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
-				subheader={<T>{
-					device ?
+				subheader={<ItemG><Caption>
+					{device ?
 						`${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
-				</T>}
+				</Caption></ItemG>}
 				avatar={<Map />}
 				expanded={this.isExpanded()}
 				topAction={this.renderMenu()}

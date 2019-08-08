@@ -13,7 +13,9 @@ class OrgDevices extends Component {
 		return (
 			<InfoCard
 				title={t('projects.pageTitle')}
-				subheader={`${t('orgs.fields.deviceCount')}: ${projects.length}`}
+				subheader={<ItemG><Caption>
+					{`${t('orgs.fields.projectCount')}: ${projects.length}`}
+				</Caption></ItemG>}
 				avatar={<LibraryBooks />}
 				noExpand
 				noPadding
@@ -29,7 +31,7 @@ class OrgDevices extends Component {
 										style={{ cursor: 'pointer', padding: '0 20px' }}
 									>
 										<Hidden lgUp>
-											<TC checkbox content={<ItemG container justify={'center'}><LibraryBooks/></ItemG>} className={classes.orgDevicesTD}/>
+											<TC checkbox content={<ItemG container justify={'center'}><LibraryBooks /></ItemG>} className={classes.orgDevicesTD} />
 											<TC content={
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -39,16 +41,16 @@ class OrgDevices extends Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-												
+
 														</Caption>
 													</ItemGrid>
 													{/* </ItemGrid> */}
 												</ItemGrid>
-											}/>
-									
+											} />
+
 										</Hidden>
 										<Hidden mdDown>
-											<TC checkbox center className={classes.orgDevicesTD} label={n.id}/>
+											<TC checkbox center className={classes.orgDevicesTD} label={n.id} />
 											<TC label={n.title} />
 											{/* <TC checkbox label={n.id} /> */}
 										</Hidden>
@@ -58,7 +60,7 @@ class OrgDevices extends Component {
 							}) : null}
 						</TableBody>
 					</Table>
-				}/>
+				} />
 		)
 	}
 }

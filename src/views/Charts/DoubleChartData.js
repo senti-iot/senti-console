@@ -623,7 +623,9 @@ class DoubleChartData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					subheader={<Caption>
+						{`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					</Caption>}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}

@@ -660,6 +660,8 @@
 			"city": "City",
 			"country": "Country",
 			"deviceCount": "Number of devices",
+			"collectionCount": "Number of collections",
+			"projectCount": "Number of projects",
 			"name": "Organisation name",
 			"org": "Organisation",
 			"parentOrg": "Parent Organisation",

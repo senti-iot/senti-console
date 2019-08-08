@@ -665,6 +665,8 @@
 			"city": "By",
 			"country": "Land",
 			"deviceCount": "Antal enheder",
+			"collectionCount": "Antal datasamlinger",
+			"projectCount": "Antal projekter",
 			"name": "Organisationsnavn",
 			"org": "Organisation",
 			"parentOrg": "Organisatorisk tilhørsforhold",

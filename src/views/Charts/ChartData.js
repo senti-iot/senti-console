@@ -17,7 +17,6 @@ import {
 	PieChart,
 	ExportModal,
 	DateFilterMenu,
-	T,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -609,10 +608,9 @@ class ChartData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={this.renderTitle()}
-					subheader={<T>
+					subheader={<ItemG><Caption>
 						{`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
-					</T>
-					}
+					</Caption></ItemG>}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
