@@ -9,6 +9,12 @@ import { bgColorsLight } from './bgColorsLight';
 
 const dashboardStyle = theme => ({
 	...bgColorsLight(theme),
+	editSourceDrawer: {
+		height: 'calc(100% - 70px)',
+		width: 360,
+		top: 70,
+		background: theme.palette.type === 'light' ? 'rgba(255,255,255, 0.3)' : 'rgba(0, 0, 0, 0.7)'
+	},
 	icon: {
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
