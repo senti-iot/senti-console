@@ -293,6 +293,18 @@ export const resetCreateDash = () => {
 		})
 	}
 }
+export const resetEditDash = () => {
+	return dispatch => {
+		dispatch({
+			type: eDash,
+			payload: null,
+		})
+		dispatch({
+			type: cGraph,
+			payload: []
+		})
+	}
+}
 const initialState = {
 	dashboards: [],
 	dashboard: null,

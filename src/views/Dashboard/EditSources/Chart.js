@@ -12,10 +12,10 @@ export class ESChart extends Component {
 		super(props)
 
 		this.state = {
-			 dataSourceExp: false,
-			 generalExp: false,
-			 openSensor: false,
-			 openCF: false
+			dataSourceExp: false,
+			generalExp: false,
+			openSensor: false,
+			openCF: false
 		}
 	}
 
@@ -60,6 +60,11 @@ export class ESChart extends Component {
 		newG.dataSource.cf = d.id
 		this.props.handleEditGraph(newG)
 		this.handleExpand('openCF', false)()
+	}
+	componentDidMount = () => {
+		if (this.props.g.dataSource.deviceId > 0) {
+			this.props.getSensor(this.props.g.dataSource.deviceId)
+		}
 	}
 	handleEditDevice = d => {
 		let newG = { ...this.props.g }
@@ -164,7 +169,7 @@ export class ESChart extends Component {
 													simple
 													value={g.dataSource.dataKey}
 													onChange={this.handleEditDataKey}
-													menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt =>  dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
+													menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt => dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
 												/>
 											</ItemG>
 											<ItemG>

@@ -9,7 +9,7 @@ import withLocalization from 'components/Localization/T';
 import { suggestionGen, filterItems } from 'variables/functions';
 import Search from 'components/Search/Search';
 import { editGraph } from 'redux/dsSystem';
-import { getSensorLS } from 'redux/data';
+import { getSensorLS, unassignSensor } from 'redux/data';
 import ESChart from './EditSources/Chart'
 import ESGauge from './EditSources/Gauge';
 import ESScorecard from './EditSources/Scorecard';
@@ -28,6 +28,9 @@ export class EditDataSource extends Component {
 				keyword: ''
 			}
 		}
+	}
+	componentWillUnmount = () => {
+		this.props.unassignSensor()
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 
@@ -520,7 +523,8 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
 	editGraph: (newG) => dispatch(editGraph(newG)),
-	getSensor: async id => dispatch(await getSensorLS(id))
+	getSensor: async id => dispatch(await getSensorLS(id)),
+	unassignSensor: () => dispatch(unassignSensor())
 })
 
 export default withLocalization()(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDataSource)))
