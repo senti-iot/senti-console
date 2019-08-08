@@ -353,9 +353,9 @@
 	"dialogs": {
 		"tokens": {
 			"createToken": {
-				"title": "Confirm that you have saved the token",
-				"closeWarning": "ONCE YOU CLOSE THIS WINDOW YOU WILL NOT BE ABLE TO SEE THE TOKEN AGAIN !!!",
-				"closeConfirm": "Insert the token in the empty field as confirmation!"
+				"title": "Bekræft at du har gemt tokenet.",
+				"closeWarning": "NÅR DU LUKKER DETTE VINDU, DER VIL IKKE være i stand til at se token igen!",
+				"closeConfirm": "Indsæt tokenet i det tomme felt som bekræftelse!"
 			}
 		},
 		"cookies": {
