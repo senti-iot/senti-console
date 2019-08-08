@@ -23,9 +23,7 @@ class Tokens extends Component {
 		this.state = {
 			selected: [],
 			openToken: false,
-			openAssignDevice: false,
-			openAssignProject: false,
-			openUnassignDevice: false,
+			openNewToken: false,
 			openDelete: false,
 			route: 0,
 			order: 'asc',
@@ -443,10 +441,13 @@ class Tokens extends Component {
 						</ItemG>
 					</DialogContent>
 					<DialogActions>
-						<Button variant={'outlined'} className={classes.redButton}><Close /> {t('actions.delete')}</Button>
+						<Button variant={'outlined'} onClick={e => {
+							this.handleCheckboxClick(e, token.id)
+							this.handleOpenDeleteDialog()
+						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button>
 					</DialogActions>
 				</Fragment>
-				: null}
+				: <div/>}
 		</Dialog>
 	}
 	renderConfirmDelete = () => {

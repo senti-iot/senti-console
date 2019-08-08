@@ -233,9 +233,9 @@ class CreateToken extends Component {
 	}
 	handleConfirmClose = () => this.setState({ openConfimClose: true })
 	render() {
-		let { openToken } = this.props
+		// let { openToken } = this.props
 		let { token, generatedToken } = this.state
-		let { t, classes } = this.props
+		let { t, classes, openToken } = this.props
 		return <Dialog
 			open={openToken}
 			disableBackdropClick
@@ -320,10 +320,11 @@ class CreateToken extends Component {
 									!generatedToken ? <Fragment>
 										<Save />
 										{t('actions.create')}
-									</Fragment> : <Fragment>
-										<Close />
-										{t('actions.close')}
-									</Fragment>
+									</Fragment> :
+										<Fragment>
+											<Close />
+											{t('actions.close')}
+										</Fragment>
 								}
 							</Button>
 						</ItemG>
