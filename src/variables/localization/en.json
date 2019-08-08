@@ -1014,6 +1014,7 @@
 		"collectionCreated": "Data Collection created!",
 		"collectionDeleted": "Data Collection deleted!",
 		"collectionUpdated": "Data Collection updated!",
+		"copied": "Copied to clipboard!",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",

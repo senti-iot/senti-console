@@ -41,6 +41,56 @@ class CreateToken extends Component {
 			confirmClose: ""
 		}
 	}
+	handleChange = field => e => {
+		this.setState({
+			token: {
+				...this.state.token,
+				[field]: e.target.value
+			}
+		})
+	}
+	handleGenerateToken = async () => {
+		let newToken = {}
+		newToken = this.state.token
+		newToken.userId = this.props.user.id
+		let token = await generateToken(newToken)
+		this.setState({
+			generatedToken: token
+		})
+	}
+	handleClose = () => {
+		this.setState({
+			token: {
+				name: "",
+				type: null,
+				typeId: null
+			},
+			sensor: {
+				name: "",
+				id: ""
+			},
+			registry: {
+				name: "",
+				id: ""
+			},
+			deviceType: {
+				name: "",
+				id: ""
+			},
+			generatedToken: "",
+			openSensor: false,
+			openRegistry: false,
+			openDeviceType: false,
+			openConfimClose: false,
+			confirmClose: ""
+		})
+
+		this.props.getTokens(this.props.user.id)
+		this.props.handleClose()
+
+	}
+	handleCloseConfirmDialog = () => this.setState({ openConfimClose: false })
+
 	renderType = (type) => {
 		const { t } = this.props
 		const { sensor, openSensor, registry, openRegistry, deviceType, openDeviceType } = this.state
@@ -51,7 +101,7 @@ class CreateToken extends Component {
 						id={'token-sensor'}
 						label={t('tokens.fields.types.device')}
 						value={sensor.name}
-						handleClick={() => this.setState({ openSensor: true })}
+						handleClick={this.handleOpenSensor}
 						readonly
 						fullWidth
 					/>
@@ -129,23 +179,10 @@ class CreateToken extends Component {
 				break;
 		}
 	}
-	handleChange = field => e => {
-		this.setState({
-			token: {
-				...this.state.token,
-				[field]: e.target.value
-			}
-		})
-	}
-	handleGenerateToken = async () => {
-		let newToken = {}
-		newToken = this.state.token
-		newToken.userId = this.props.user.id
-		let token = await generateToken(newToken)
-		this.setState({
-			generatedToken: token
-		})
-	}
+	handleConfirmClose = () => this.setState({ openConfimClose: true })
+
+	handleOpenSensor = () => this.setState({ openSensor: true })
+
 	renderCloseDialog = () => {
 		const { classes, t } = this.props
 		const { confirmClose, generatedToken, openConfimClose } = this.state
@@ -156,7 +193,7 @@ class CreateToken extends Component {
 			<DialogTitle >
 				<ItemG container justify={'space-between'} alignItems={'center'}>
 					{t('dialogs.tokens.createToken.title')}
-					<IconButton aria-label="Close" className={classes.closeButton} onClick={() => this.setState({ openConfimClose: false })}>
+					<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseConfirmDialog}>
 						<Close />
 					</IconButton>
 				</ItemG>
@@ -209,26 +246,7 @@ class CreateToken extends Component {
 				<ItemG container justify={'center'}>
 					<Button
 						disabled={!(confirmClose === generatedToken)}
-						onClick={() => {
-							this.setState({
-								token: {
-									name: "",
-									type: -1,
-									typeId: -1
-								},
-								sensor: {
-									name: "",
-									id: ""
-								},
-								generatedToken: null,
-								openSensor: false,
-								openRegistry: false,
-								openDeviceType: false
-
-							})
-							this.props.getTokens(this.props.user.id)
-							this.props.handleClose()
-						}}
+						onClick={this.handleClose}
 						variant={'outlined'} className={classes.redButton}>
 						<Close /> {t('actions.close')}
 					</Button>
@@ -236,7 +254,7 @@ class CreateToken extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	handleConfirmClose = () => this.setState({ openConfimClose: true })
+
 	render() {
 		// let { openToken } = this.props
 		let { token, generatedToken } = this.state
