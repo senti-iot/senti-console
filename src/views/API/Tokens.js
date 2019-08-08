@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort, dateTimeFormatter } from 'variables/functions';
-import { Delete, ViewList, ViewModule, Star, StarBorder, Close, Add } from 'variables/icons';
+import { Delete, ViewList, /* ViewModule, */ Star, StarBorder, Close, Add } from 'variables/icons';
 import { GridContainer, CircularLoader, ItemG, Caption, Info, /* AssignProject */ } from 'components'
 // import TokensCards from './TokensCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -47,7 +47,7 @@ class Tokens extends Component {
 		const { t, match } = this.props
 		return [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
+			// { id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
 			// { id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
@@ -517,7 +517,8 @@ class Tokens extends Component {
 			handleClose={() => {
 				this.setState({
 					openNewToken: false
-				})}}
+				})
+			}}
 		/>
 	}
 	renderTable = (items, handleClick, key) => {

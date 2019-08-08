@@ -98,7 +98,7 @@ class CreateToken extends Component {
 			case 2:
 				return <Fragment>
 					<TextF
-						label={t('tokens.fields.types.deviceTypes')}
+						label={t('tokens.fields.types.devicetype')}
 						value={deviceType.name}
 						handleClick={() => this.setState({ openDeviceType: true })}
 						readonly

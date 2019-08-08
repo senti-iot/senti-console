@@ -2,20 +2,16 @@ import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentTex
 import projectStyles from 'assets/jss/views/projects';
 import SensorTable from 'components/Sensors/SensorTable';
 import TableToolbar from 'components/Table/TableToolbar';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import { deleteRegistry, unassignDeviceFromRegistry, getRegistry } from 'variables/dataSensors';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignProject, T } from 'components'
-// import SensorsCards from './SensorsCards';
+import { GridContainer, CircularLoader } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getSensors, setSensors, sortData } from 'redux/data';
 import SensorCards from 'components/Sensors/SensorCards';
-// import { setSensors, getSensors, sortData } from 'redux/data';
 
 class Sensors extends Component {
 	constructor(props) {
@@ -51,7 +47,7 @@ class Sensors extends Component {
 	dCommunication = () => {
 		const { t, classes } = this.props
 		return [
-			{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} />  },
+			{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} /> },
 			{ value: 1, label: t("sensors.fields.communications.allowed"), icon: <CheckCircle className={classes.allowed} /> }
 		]
 	}
@@ -333,55 +329,10 @@ class Sensors extends Component {
 		})
 	}
 
-	handleUnassignDevice = async () => {
-		// const { selected } = this.state
-		// let device = await getRegistry(selected[0])
-		// if (device.activeDeviceStats)
-		// 	await unassignDeviceFromRegistry({
-		// 		id: device.id,
-		// 		deviceId: device.activeDeviceStats.id
-		// 	}).then(async rs => {
-		// 		if (rs) {
-		// 			this.handleCloseUnassignDevice()
-		// 			this.snackBarMessages(1)
-		// 			await this.getRegistry(this.state.device.id)
-		// 		}
-		// 	})
-		// else {
-		// 	//The Registry doesn't have a device assigned to it...
-		// 	this.handleCloseUnassignDevice()
-		// }
-	}
+
 	//#endregion
 
-	renderDeviceUnassign = () => {
-		const { t, devices } = this.props
-		const { selected } = this.state
-		let device = devices[devices.findIndex(c => c.id === selected[0])]
-		if (device.activeDeviceStats === null)
-			return null
-		return <Dialog
-			open={this.state.openUnassignDevice}
-			onClose={this.handleCloseUnassignDevice}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			<DialogTitle disableTypography id='alert-dialog-title'><T reversed variant={'h6'}>{t('dialogs.unassign.title.devicesFromRegistry')}</T></DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.unassign.message.deviceFromRegistry', { device: device.name })}
-				</DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseUnassignDevice} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleUnassignDevice} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
+
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { t, classes, devices } = this.props
@@ -437,32 +388,8 @@ class Sensors extends Component {
 		/>
 	}
 
-	renderAssignProject = () => {
-		const { selected, openAssignProject } = this.state
-		const { t } = this.props
-		return <AssignProject
-			// multiple
-			deviceId={selected ? selected : []}
-			handleCancel={this.handleCancelAssignProject}
-			handleClose={this.handleCloseAssignProject}
-			open={openAssignProject}
-			t={t}
-		/>
-	}
 
-	renderAssignDevice = () => {
-		// const { selected, openAssignDevice } = this.state
-		// const { t, devices } = this.props
-		// let deviceOrg = devices.find(r => r.id === selected[0])
-		// return <AssignDevice
-		// 	deviceId={selected[0] ? selected[0] : 0}
-		// 	orgId={deviceOrg ? deviceOrg.org.id : 0}
-		// 	handleCancel={this.handleCancelAssignDevice}
-		// 	handleClose={this.handleCloseAssignDevice}
-		// 	open={openAssignDevice}
-		// 	t={t}
-		// />
-	}
+
 
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
@@ -484,18 +411,18 @@ class Sensors extends Component {
 	renderCards = () => {
 		const { t, history, devices, loading } = this.props
 		return loading ? <CircularLoader /> :
-			<SensorCards sensors={this.filterItems(devices)} t={t} history={history} /> 
-			// null
+			<SensorCards sensors={this.filterItems(devices)} t={t} history={history} />
+		// null
 	}
 
 	renderFavorites = () => {
 		const { classes, loading } = this.props
-		const { selected } = this.state
+		// const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderAssignProject()}
-				{this.renderAssignDevice()}
-				{selected.length > 0 ? this.renderDeviceUnassign() : null}
+				{/* {this.renderAssignProject()} */}
+				{/* {this.renderAssignDevice()} */}
+				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
 				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 				{this.renderConfirmDelete()}
