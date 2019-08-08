@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block } from 'variables/icons';
+import { /* Delete, */ Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block } from 'variables/icons';
 import { GridContainer, CircularLoader } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
@@ -85,7 +85,7 @@ class Sensors extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
+			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 		]
 		return allOptions

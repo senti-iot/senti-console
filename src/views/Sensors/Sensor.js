@@ -43,8 +43,8 @@ class Sensor extends Component {
 		const { t } = this.props
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			{ id: 1, title: t('sidebar.messages'), label: <InsertChart/>, url: `#messages`},
-			{ id: 2, title: t('registries.fields.protocol'), label: <Wifi />, url:`#protocol`}
+			{ id: 1, title: t('sidebar.messages'), label: <InsertChart/>, url: `#messages` },
+			{ id: 2, title: t('registries.fields.protocol'), label: <Wifi />, url: `#protocol` }
 			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
 			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
 			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },

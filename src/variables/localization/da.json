@@ -374,9 +374,13 @@
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
 				"tokens": "Er du sikker på du ønsker at slette disse API tokens:",
 				"user": "Er du sikker på du ønsker at slette denne bruger ( %{user} ) ?",
-				"users": "Er du sikker på du ønsker at slette disse brugere:"
+				"users": "Er du sikker på du ønsker at slette disse brugere:",
+				"devices": "Er du sikker på du ønsker at slette disse enheder:",
+				"device": "Er du sikker på du ønsker at slette denne enhed ( %{sensor} ) ?"
 			},
 			"title": {
+				"device": "Slet enhed?",
+				"devices": "Slet enheder?",
 				"tokens": "Slet API Tokens?",
 				"collection": "Slet datasamling?",
 				"collections": "Slet datasamlinger?",
