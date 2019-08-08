@@ -444,6 +444,7 @@ class Tokens extends Component {
 						<Button variant={'outlined'} onClick={e => {
 							this.handleCheckboxClick(e, token.id)
 							this.handleOpenDeleteDialog()
+							this.handleCloseToken()
 						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button>
 					</DialogActions>
 				</Fragment>
