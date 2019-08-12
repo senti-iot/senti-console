@@ -9,13 +9,8 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"add": "Tilføj",
-		"edit": "Rediger",
-		"move": "Flytte",
-		"close": "Luk",
-		"create": "Opret",
-		"delete": "Slet",
 		"accept": "Godkend",
+		"add": "Tilføj",
 		"addFilter": "Tilføj filter",
 		"addInboundFunc": "Tilføj funktion ved modtagelse af data",
 		"addKey": "Tilføj enhed datafelt",
@@ -26,9 +21,13 @@
 		"cancel": "Anuller",
 		"changeLanguage": "Change to English",
 		"changePassword": "Skift kodeord",
+		"close": "Luk",
 		"copyToClipboard": "Kopi til klippebord",
+		"create": "Opret",
 		"decline": "Afvis",
+		"delete": "Slet",
 		"deletePicture": "Slet dette billede",
+		"edit": "Rediger",
 		"editFilter": "Rediger filter",
 		"editLocation": "Rediger lokation",
 		"extendProfile": "Udvidet profil",
@@ -46,6 +45,7 @@
 		"loginWithGoogle": "Log ind med Google",
 		"manualCalibration": "Manuel kalibrering",
 		"more": "mere",
+		"move": "Flytte",
 		"next": "Næste",
 		"nextPage": "Næste side",
 		"no": "Nej",
@@ -208,17 +208,6 @@
 		"title": "Senti Cookie Politik"
 	},
 	"dashboard": {
-		"editGraph": "Rediger",
-		"fields": {
-			"general": "General",
-			"label": "Overskrift",
-			"chartType": "Diagramtype",
-			"dataSource": "Datakilde",
-			"defaultPeriod": "Standard periode",
-			"device": "Enhed",
-			"unit": "Måleenhed",
-			"cf": "Cloud Funktion"
-		},
 		"cardContent": {
 			"alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
 			"api": "SentiAPI giver dig mulighed for at opbygge dine egne IoT Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine datasamlinger eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede datasamlinger.",
@@ -240,6 +229,17 @@
 			"projects": "Projekter",
 			"settings": "Indstillinger",
 			"users": "Brugere"
+		},
+		"editGraph": "Rediger",
+		"fields": {
+			"cf": "Cloud Funktion",
+			"chartType": "Diagramtype",
+			"dataSource": "Datakilde",
+			"defaultPeriod": "Standard periode",
+			"device": "Enhed",
+			"general": "General",
+			"label": "Overskrift",
+			"unit": "Måleenhed"
 		},
 		"pageTitle": "Senti",
 		"subtitle": "Senti tilbyder dataopsamling og visualisering fra alle dine IoT enheder."
@@ -351,13 +351,6 @@
 		"pageTitle": "Enhedstype"
 	},
 	"dialogs": {
-		"tokens": {
-			"createToken": {
-				"title": "Bekræft at du har gemt tokenet.",
-				"closeWarning": "NÅR DU LUKKER DETTE VINDU, DER VIL IKKE være i stand til at se token igen!",
-				"closeConfirm": "Indsæt tokenet i det tomme felt som bekræftelse!"
-			}
-		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."
@@ -367,28 +360,33 @@
 			"message": {
 				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} ) ?",
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
+				"device": "Er du sikker på du ønsker at slette denne enhed ( %{sensor} ) ?",
 				"deviceImage": "Er du sikker på du ønsker at slette dette billede?",
+				"devices": "Er du sikker på du ønsker at slette disse enheder:",
 				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
 				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
+				"registries": "Er du sikker på du ønsker at slette disse registre:",
+				"registry": "Er du sikker på du ønsker at slette denne register ( %{registry} )?",
 				"tokens": "Er du sikker på du ønsker at slette disse API tokens:",
+				"token": "Er du sikker på du ønsker at slette denne API token?",
 				"user": "Er du sikker på du ønsker at slette denne bruger ( %{user} ) ?",
 				"users": "Er du sikker på du ønsker at slette disse brugere:",
-				"devices": "Er du sikker på du ønsker at slette disse enheder:",
-				"device": "Er du sikker på du ønsker at slette denne enhed ( %{sensor} ) ?"
+				"deviceType": "Er du sikker på du ønsker at slette denne enhedstype ( %{deviceType} ) ?",
+				"deviceTypes": "Er du sikker på du ønsker at slette disse enhedstyper:"
 			},
 			"title": {
-				"device": "Slet enhed?",
-				"devices": "Slet enheder?",
-				"tokens": "Slet API Tokens?",
 				"collection": "Slet datasamling?",
 				"collections": "Slet datasamlinger?",
+				"device": "Slet enhed?",
 				"deviceImage": "Slet dette billede?",
+				"devices": "Slet enheder?",
 				"org": "Slet organisation?",
 				"orgs": "Slet organisationer?",
 				"project": "Slet projekt?",
 				"projects": "Slet projekter?",
+				"tokens": "Slet API Tokens?",
 				"user": "Slet bruger?",
 				"users": "Slet brugere?"
 			}
@@ -406,6 +404,13 @@
 			"passwordReseted": "Din adgangskode er blevet ændret!",
 			"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
 			"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
+		},
+		"tokens": {
+			"createToken": {
+				"closeConfirm": "Indsæt tokenet i det tomme felt som bekræftelse!",
+				"closeWarning": "NÅR DU LUKKER DETTE VINDU, DER VIL IKKE være i stand til at se token igen!",
+				"title": "Bekræft at du har gemt tokenet."
+			}
 		},
 		"unassign": {
 			"message": {
@@ -572,7 +577,6 @@
 		},
 		"copyEmails": "Kopier E-mail adresser",
 		"create": {
-			"token": "Opret API Token",
 			"cloudfunction": "Opret cloud funktion",
 			"collection": "Opret datasamling",
 			"device": "Opret enhed",
@@ -580,6 +584,7 @@
 			"org": "Opret organisation",
 			"project": "Opret projekt",
 			"registry": "Opret register",
+			"token": "Opret API Token",
 			"user": "Opret bruger"
 		},
 		"delete": "Slet",
@@ -663,13 +668,13 @@
 			"EAN": "EAN nummer",
 			"address": "Adresse",
 			"city": "By",
+			"collectionCount": "Antal datasamlinger",
 			"country": "Land",
 			"deviceCount": "Antal enheder",
-			"collectionCount": "Antal datasamlinger",
-			"projectCount": "Antal projekter",
 			"name": "Organisationsnavn",
 			"org": "Organisation",
 			"parentOrg": "Organisatorisk tilhørsforhold",
+			"projectCount": "Antal projekter",
 			"region": "Region",
 			"topLevelOrg": "Uden tilhørsforhold",
 			"url": "Website",
@@ -813,26 +818,25 @@
 			"deviceType": "Enhedstype",
 			"metadata": "Enhedsmetadata",
 			"protocols": {
+				"externalAPI": "External API",
 				"publishData": "Udgiv data",
-				"state": "Enhedstilstand",
-				"externalAPI": "External API"
+				"state": "Enhedstilstand"
 			},
 			"registry": "Register",
 			"uuid": "Unik ID"
 		},
 		"metadata": {
+			"co2": "CO2",
 			"humidity": "Fugtighed",
 			"maxFlow": "Maksimal vandgennemstrømning",
 			"minATemp": "Mindste omgivelsestemperatur",
 			"minFlow": "Mindste vandgennemstrømning",
 			"minWTemp": "Mindste vandtemperatur",
 			"temperature": "Temperatur",
-			"value": "Vand",
-			"co2": "CO2"
+			"value": "Vand"
 		}
 	},
 	"settings": {
-		"dashboardTheme": "Dashboard tema",
 		"alerts": "Alarmeringer",
 		"breadcrumbs": "Brødkrummer",
 		"calibration": {
@@ -878,6 +882,7 @@
 				"yellow": "Gul"
 			}
 		},
+		"dashboardTheme": "Dashboard tema",
 		"default": "Standard",
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"defaultRoute": "Startside",
@@ -1005,30 +1010,30 @@
 			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
-		"create": {
-			"device": "Enhed %{device} er oprettet!",
-			"registry": "Register %{reg} er oprettet!",
-			"devicetype": "Enhedstype %{dt} er oprettet!",
-			"cloudfunction": "Cloud funktion %{cf} er oprettet!"
-		},
-		"edit": {
-			"device": "Enhed %{device} er opdateret!",
-			"registry": "Register %{reg} er opdateret!",
-			"devicetype": "Enhedtype %{dt} updated!",
-			"cloudfunction": "Cloud funktion %{cf} er opdateret!"
-		},
 		"assignFailed": "Tilknytning fejlede!",
 		"collectionCreated": "Datasamling er oprettet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",
+		"copied": "Kopieret til udklipsholder",
+		"create": {
+			"cloudfunction": "Cloud funktion %{cf} er oprettet!",
+			"device": "Enhed %{device} er oprettet!",
+			"devicetype": "Enhedstype %{dt} er oprettet!",
+			"registry": "Register %{reg} er oprettet!"
+		},
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
 		"creating": "Opretter ...",
-		"copied": "Kopieret til udklipsholder",
 		"deletedFail": "Sletning fejlede!",
 		"deletedSuccess": "Slettet!",
 		"deleting": "Sletter ...",
 		"deviceUpdated": "Enhed %{device} er opdateret!",
+		"edit": {
+			"cloudfunction": "Cloud funktion %{cf} er opdateret!",
+			"device": "Enhed %{device} er opdateret!",
+			"devicetype": "Enhedtype %{dt} updated!",
+			"registry": "Register %{reg} er opdateret!"
+		},
 		"emailsCopied": "E-mail adresser kopieret til klippebord",
 		"exported": "Eksporteret!",
 		"favorite": {
@@ -1088,6 +1093,20 @@
 		"projects": "Projekter",
 		"userHistory": "System log",
 		"users": "Brugere"
+	},
+	"tokens": {
+		"fields": {
+			"created": "Oprettet",
+			"id": "ID",
+			"name": "Navn",
+			"reference": "Reference",
+			"type": "Type",
+			"types": {
+				"device": "Enhed",
+				"devicetype": "Enhedstype",
+				"registry": "Register"
+			}
+		}
 	},
 	"tooltips": {
 		"cardView": "Gittervisning",
@@ -1174,20 +1193,6 @@
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
 			"userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
-		}
-	},
-	"tokens": {
-		"fields": {
-			"name": "Navn",
-			"id": "ID",
-			"type": "Type",
-			"created": "Oprettet",
-			"types": {
-				"device": "Enhed",
-				"devicetype": "Enhedstype",
-				"registry": "Register"
-			},
-			"reference": "Reference"
 		}
 	}
 }

@@ -9,13 +9,8 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"add": "Add",
-		"edit": "Edit",
-		"move": "Move",
-		"close": "Close",
-		"create": "Create",
-		"delete": "Delete",
 		"accept": "Accept",
+		"add": "Add",
 		"addFilter": "Add filter",
 		"addInboundFunc": "Add function on receiving data",
 		"addKey": "Add device data field",
@@ -26,9 +21,13 @@
 		"cancel": "Cancel",
 		"changeLanguage": "Skift til Dansk",
 		"changePassword": "Change Password",
+		"close": "Close",
 		"copyToClipboard": "Copy to clipboard",
+		"create": "Create",
 		"decline": "Decline",
+		"delete": "Delete",
 		"deletePicture": "Delete this picture",
+		"edit": "Edit",
 		"editFilter": "Edit filter",
 		"editLocation": "Edit location",
 		"extendProfile": "Extended Profile",
@@ -46,6 +45,7 @@
 		"loginWithGoogle": "Log in with Google",
 		"manualCalibration": "Manual calibration",
 		"more": "more",
+		"move": "Move",
 		"next": "Next",
 		"nextPage": "Next page",
 		"no": "No",
@@ -119,20 +119,21 @@
 		"fields": {
 			"code": "Source Code",
 			"description": "Description",
-			"keys": "Device data keys",
+			"inboundfunc": "Cloud Function",
 			"key": "Device data key",
+			"keys": "Device data keys",
 			"metadata": {
+				"defaultValue": "Metadata default value",
 				"key": "Metadata key",
-				"value": "Metadata value",
-				"defaultValue": "Metadata default value"
+				"value": "Metadata value"
 			},
 			"name": "Name",
 			"type": "Type",
 			"types": {
-				"inbound": "Function on Receiving data",
-				"outbound": "Cloud Function",
 				"external": "External call",
-				"function": "JavaScript function"
+				"function": "JavaScript function",
+				"inbound": "Function on Receiving data",
+				"outbound": "Cloud Function"
 			}
 		},
 		"pageTitle": "Cloud functions"
@@ -207,17 +208,6 @@
 		"title": "Senti Cookie Policy"
 	},
 	"dashboard": {
-		"editGraph": "Edit",
-		"fields": {
-			"general": "General",
-			"label": "Header",
-			"chartType": "Chart type",
-			"dataSource": "Data source",
-			"defaultPeriod": "Default period",
-			"device": "Device",
-			"unit": "Measuring Unit",
-			"cf": "Cloud Function"
-		},
 		"cardContent": {
 			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
 			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
@@ -239,6 +229,17 @@
 			"projects": "Projects",
 			"settings": "Settings",
 			"users": "Users"
+		},
+		"editGraph": "Edit",
+		"fields": {
+			"cf": "Cloud Function",
+			"chartType": "Chart type",
+			"dataSource": "Data source",
+			"defaultPeriod": "Default period",
+			"device": "Device",
+			"general": "General",
+			"label": "Header",
+			"unit": "Measuring Unit"
 		},
 		"pageTitle": "Senti",
 		"subtitle": "Senti lets you control and manage all your Senti-in-a-Box Devices."
@@ -350,13 +351,6 @@
 		"pageTitle": "Device Type"
 	},
 	"dialogs": {
-		"tokens": {
-			"createToken": {
-				"title": "Confirm that you have saved the token",
-				"closeWarning": "ONCE YOU CLOSE THIS WINDOW YOU WILL NOT BE ABLE TO SEE THE TOKEN AGAIN !!!",
-				"closeConfirm": "Insert the token in the empty field as confirmation!"
-			}
-		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
@@ -366,17 +360,23 @@
 			"message": {
 				"collection": "Are you sure you want to delete this data collection ( %{collection} ) ?",
 				"collections": "Are you sure you want to delete these data collections:",
+				"device": "Are you sure you want to delete this device ( %{sensor} ) ?",
 				"deviceImage": "Are you sure you want to delete this picture?",
+				"devices": "Are you sure you want to delete these devices:",
 				"org": "Are you sure you want to delete this organisation?",
 				"orgs": "Are you sure you want to delete these organisations:",
 				"project": "Are you sure you want to delete this project?",
 				"projects": "Are you sure you want to delete these projects:",
+				"registries": "Are you sure you want to delete these registries:",
+				"registry": "Are you sure you want to delete this registry ( %{registry} ) ?",
+				"tokens": "Are you sure you want to delete these API tokens:",
+				"token": "Are you sure you want to delete this API token?",
 				"user": "Are you sure you want to delete this user ( %{user} ) ?",
 				"users": "Are you sure you want to delete these users:",
-				"tokens": "Are you sure you want to delete these API tokens:"
+				"deviceType": "Are you sure you want to delete this device type ( %{deviceType} ) ?",
+				"deviceTypes": "Are you sure you want to delete these device types:"
 			},
 			"title": {
-				"tokens": "Delete API tokens?",
 				"collection": "Delete data collection?",
 				"collections": "Delete data collections?",
 				"deviceImage": "Delete this picture?",
@@ -384,6 +384,9 @@
 				"orgs": "Delete organisations?",
 				"project": "Delete project?",
 				"projects": "Delete projects?",
+				"registries": "Delete registries?",
+				"registry": "Delete registry?",
+				"tokens": "Delete API tokens?",
 				"user": "Delete user?",
 				"users": "Delete users?"
 			}
@@ -401,6 +404,13 @@
 			"passwordReseted": "Your password resetted!",
 			"resetPassRequestMessage": "An E-mail sent with instructions on how to reset your password!",
 			"resetPasswordMessage": "Reset your password by entering your E-mail"
+		},
+		"tokens": {
+			"createToken": {
+				"closeConfirm": "Insert the token in the empty field as confirmation!",
+				"closeWarning": "ONCE YOU CLOSE THIS WINDOW YOU WILL NOT BE ABLE TO SEE THE TOKEN AGAIN !!!",
+				"title": "Confirm that you have saved the token"
+			}
 		},
 		"unassign": {
 			"message": {
@@ -567,7 +577,6 @@
 		},
 		"copyEmails": "Copy E-mail addresses",
 		"create": {
-			"token": "Create API Token",
 			"cloudfunction": "Create cloud function",
 			"collection": "Create data collection",
 			"device": "Create device",
@@ -575,6 +584,7 @@
 			"org": "Create organisation",
 			"project": "Create project",
 			"registry": "Create registry",
+			"token": "Create API Token",
 			"user": "Create user"
 		},
 		"delete": "Delete",
@@ -632,9 +642,6 @@
 		}
 	},
 	"no": {
-		"metadata": "No metadata",
-		"deviceInboundFunc": "No function on receiving data",
-		"deviceDataKeys": "No device data keys",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"birthdays": "No birthdays today",
@@ -642,10 +649,13 @@
 		"collection": "No collection",
 		"collections": "No collections",
 		"device": "No device",
+		"deviceDataKeys": "No device data keys",
+		"deviceInboundFunc": "No function on receiving data",
 		"devices": "No devices",
 		"doi": "No Holidays today",
 		"freeDevices": "No available devices",
 		"history": "No history",
+		"metadata": "No metadata",
 		"org": "No organisation",
 		"project": "No project",
 		"projects": "No projects"
@@ -658,13 +668,13 @@
 			"EAN": "EAN Number",
 			"address": "Address",
 			"city": "City",
+			"collectionCount": "Number of collections",
 			"country": "Country",
 			"deviceCount": "Number of devices",
-			"collectionCount": "Number of collections",
-			"projectCount": "Number of projects",
 			"name": "Organisation name",
 			"org": "Organisation",
 			"parentOrg": "Parent Organisation",
+			"projectCount": "Number of projects",
 			"region": "Region",
 			"topLevelOrg": "No Parent Organisation",
 			"url": "Website",
@@ -808,27 +818,26 @@
 			"deviceType": "Device Type",
 			"metadata": "Device Metadata",
 			"protocols": {
+				"externalAPI": "External API",
 				"publishData": "Publish Data",
-				"state": "Device state",
-				"externalAPI": "External API"
+				"state": "Device state"
 			},
 			"registry": "Registry",
 			"uuid": "Unique ID"
 		},
 		"metadata": {
+			"co2": "CO2",
 			"humidity": "Humidity",
 			"maxFlow": "Maximum water flow",
 			"minATemp": "Minimum ambient temperature",
 			"minFlow": "Minimum water flow",
 			"minWTemp": "Minimum water temperature",
 			"temperature": "Temperature",
-			"value": "Water consumption / reading",
-			"co2": "CO2"
+			"value": "Water consumption / reading"
 		}
 	},
 	"settings": {
 		"alerts": "Alerts",
-		"dashboardTheme": "Dashboard Theme",
 		"breadcrumbs": "Breadcrumbs",
 		"calibration": {
 			"12months": "Every 12 months",
@@ -873,6 +882,7 @@
 				"yellow": "Yellow"
 			}
 		},
+		"dashboardTheme": "Dashboard Theme",
 		"default": "Default",
 		"defaultDataSet": "Default data set for charts",
 		"defaultRoute": "Start page",
@@ -1000,23 +1010,17 @@
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
 			"projectToOrg": "Project %{project} assigned to organisation %{org}"
 		},
-		"create": {
-			"device": "Device %{device} created!",
-			"registry": "Registry %{reg} created!",
-			"devicetype": "Device Type %{dt} created!",
-			"cloudfunction": "Cloud function %{cf} created!"
-		},
-		"edit": {
-			"device": "Device %{device} updated!",
-			"registry": "Registry %{reg} updated!",
-			"devicetype": "Device Type %{dt} updated!",
-			"cloudfunction": "Cloud function %{cf} updated!"
-		},
 		"assignFailed": "Assignment failed!",
 		"collectionCreated": "Data Collection created!",
 		"collectionDeleted": "Data Collection deleted!",
 		"collectionUpdated": "Data Collection updated!",
 		"copied": "Copied to clipboard!",
+		"create": {
+			"cloudfunction": "Cloud function %{cf} created!",
+			"device": "Device %{device} created!",
+			"devicetype": "Device Type %{dt} created!",
+			"registry": "Registry %{reg} created!"
+		},
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -1024,6 +1028,12 @@
 		"deletedSuccess": "Deleted!",
 		"deleting": "Deleting...",
 		"deviceUpdated": "Device %{device} updated!",
+		"edit": {
+			"cloudfunction": "Cloud function %{cf} updated!",
+			"device": "Device %{device} updated!",
+			"devicetype": "Device Type %{dt} updated!",
+			"registry": "Registry %{reg} updated!"
+		},
 		"emailsCopied": "E-mail adresses copied to clipboard",
 		"exported": "Exported!",
 		"favorite": {
@@ -1084,6 +1094,20 @@
 		"userHistory": "User log",
 		"users": "Users"
 	},
+	"tokens": {
+		"fields": {
+			"created": "Created",
+			"id": "ID",
+			"name": "Label",
+			"reference": "Reference",
+			"type": "Type",
+			"types": {
+				"device": "Device",
+				"devicetype": "Device type",
+				"registry": "Registry"
+			}
+		}
+	},
 	"tooltips": {
 		"cardView": "Card view",
 		"chart": {
@@ -1099,7 +1123,9 @@
 			"removeCloudFunction": "Remove Cloud Function",
 			"removeDataField": "Delete data field"
 		},
+		"devicetype": "Device Type",
 		"favorites": "Favorites",
+		"function": "Cloud Function",
 		"listView": "List view",
 		"map": {
 			"layer": "Map Layer"
@@ -1107,10 +1133,8 @@
 		"mapView": "Map view",
 		"org": "Organisation",
 		"project": "Project",
-		"user": "User",
 		"registry": "Registry",
-		"function": "Cloud Function",
-		"devicetype": "Device Type"
+		"user": "User"
 	},
 	"users": {
 		"editUser": "Edit user",
@@ -1169,20 +1193,6 @@
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
 			"userAlreadyExists": "E-mail is already assigned to a user account!"
-		}
-	},
-	"tokens": {
-		"fields": {
-			"id": "ID",
-			"name": "Label",
-			"created": "Created",
-			"type": "Type",
-			"types": {
-				"device": "Device",
-				"devicetype": "Device type",
-				"registry": "Registry"
-			},
-			"reference": "Reference"
 		}
 	}
 }
