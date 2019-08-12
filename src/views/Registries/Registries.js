@@ -286,39 +286,7 @@ class Registries extends Component {
 		this.setState({ selected: newSelected })
 	}
 
-	handleOpenAssignDevice = () => {
-		this.setState({ openAssignDevice: true, anchorElMenu: null })
-	}
 
-	handleCancelAssignDevice = () => {
-		this.setState({ openAssignDevice: false })
-	}
-
-	handleCloseAssignDevice = async (reload, display) => {
-		if (reload) {
-			this.setState({ openAssignDevice: false })
-			await this.getData(true).then(() => {
-				this.snackBarMessages(6, display)
-				this.setState({ selected: [] })
-			})
-		}
-	}
-	handleOpenAssignProject = () => {
-		this.setState({ openAssignProject: true, anchorElMenu: null })
-	}
-
-	handleCancelAssignProject = () => {
-		this.setState({ openAssignProject: false })
-	}
-
-	handleCloseAssignProject = async (reload) => {
-		if (reload) {
-			this.setState({ openAssignProject: false })
-			await this.getData(true).then(() => {
-				this.snackBarMessages(6)
-			})
-		}
-	}
 
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
@@ -327,18 +295,6 @@ class Registries extends Component {
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
-	handleOpenUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: true
-		})
-	}
-
-	handleCloseUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: false, anchorEl: null
-		})
-	}
-
 
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state

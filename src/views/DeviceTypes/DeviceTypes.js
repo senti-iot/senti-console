@@ -1,20 +1,17 @@
-import { Paper, withStyles, /* Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, */ IconButton, Fade, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TableToolbar from 'components/Table/TableToolbar';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import { deleteDeviceType, unassignDeviceFromDeviceType, getDeviceType } from 'variables/dataDeviceTypes';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Edit, ViewList, /* ViewModule, */ Add, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
+import { Edit, ViewList, Add, Star, StarBorder, SignalWifi2Bar, Memory, Delete } from 'variables/icons';
 import { GridContainer, CircularLoader } from 'components'
-// import DeviceTypesCards from './DeviceTypesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getDeviceTypes, setDeviceTypes, sortData } from 'redux/data';
 import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable';
-// import { setDeviceTypes, getDeviceTypes, sortData } from 'redux/data';
+import { deleteDeviceType } from 'variables/dataDeviceTypes';
 
 class DeviceTypes extends Component {
 	constructor(props) {
@@ -22,6 +19,7 @@ class DeviceTypes extends Component {
 
 		this.state = {
 			selected: [],
+			openDelete: false,
 			route: 0,
 			order: 'asc',
 			orderBy: 'id',
@@ -86,8 +84,8 @@ class DeviceTypes extends Component {
 			// { label: t('menus.assign.deviceToDeviceType'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			// { label: t('menus.unassign.deviceFromDeviceType'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -266,37 +264,66 @@ class DeviceTypes extends Component {
 		this.setState({ selected: newSelected })
 	}
 
+
+
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true, anchorElMenu: null })
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
+	}
+
+	handleDeleteDeviceTypes = async () => {
+		const { selected } = this.state
+		Promise.all([selected.map(u => {
+			return deleteDeviceType(u)
+		})]).then(async () => {
+			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
+			await this.getData(true).then(
+				() => this.snackBarMessages(1)
+			)
+		})
+	}
 	//#endregion
 
 	renderConfirmDelete = () => {
-		return null
-		// const { openDelete, selected } = this.state
-		// const { t, classes, devicetypes } = this.props
-		// return <Dialog
-		// 	open={openDelete}
-		// 	onClose={this.handleCloseDeleteDialog}
-		// 	aria-labelledby='alert-dialog-title'
-		// 	aria-describedby='alert-dialog-description'
-		// >
-		// 	<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.devicetypes')}</DialogTitle>
-		// 	<DialogContent>
-		// 		<DialogContentText id='alert-dialog-description'>
-		// 			{t('dialogs.delete.message.devicetypes')}
-		// 		</DialogContentText>
-		// 		<List>
-		// 			{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-		// 				<ListItemText primary={devicetypes[devicetypes.findIndex(d => d.id === s)].name} /></ListItem>)}
-		// 		</List>
-		// 	</DialogContent>
-		// 	<DialogActions>
-		// 		<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-		// 			{t('actions.no')}
-		// 		</Button>
-		// 		<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
-		// 			{t('actions.yes')}
-		// 		</Button>
-		// 	</DialogActions>
-		// </Dialog>
+		const { openDelete, selected } = this.state
+		const { t, devicetypes } = this.props
+		return <Dialog
+			open={openDelete}
+			onClose={this.handleCloseDeleteDialog}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
+		>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.deviceTypes')}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.deviceTypes')}
+				</DialogContentText>
+				<List dense={true}>
+					<Divider />
+					{selected.map(s => {
+						let u = devicetypes[devicetypes.findIndex(d => d.id === s)]
+						return u ? <ListItem divider key={u.id}>
+							<ListItemIcon>
+								<Memory />
+							</ListItemIcon>
+							<ListItemText primary={u.name} />
+						</ListItem> : null
+					})
+					}
+				</List>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
+				</Button>
+				<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
+					{t('actions.yes')}
+				</Button>
+			</DialogActions>
+		</Dialog>
 	}
 
 
