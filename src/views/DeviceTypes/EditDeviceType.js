@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import CreateDeviceTypeForm from 'components/Collections/CreateDeviceTypeForm';
 import { getDeviceTypeLS, getDeviceTypes } from 'redux/data';
-import { updateDeviceType } from 'variables/dataRegistry';
+import { updateDeviceType } from 'variables/dataDeviceTypes';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
@@ -230,7 +230,7 @@ class CreateDeviceType extends Component {
 
 	//#endregion
 
-	//#region Function selector	
+	//#region Function selector
 
 	handleOpenFunc = (p, where) => e => {
 		this.setState({
@@ -281,7 +281,7 @@ class CreateDeviceType extends Component {
 		const { t, cloudfunctions } = this.props
 		const { devicetype, sensorMetadata, loading, org } = this.state
 
-		return ( loading ? <CircularLoader/> :
+		return (loading ? <CircularLoader /> :
 
 			<CreateDeviceTypeForm
 				org={org}
@@ -296,7 +296,7 @@ class CreateDeviceType extends Component {
 				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
 				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
-				
+
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}

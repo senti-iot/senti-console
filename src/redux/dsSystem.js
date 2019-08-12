@@ -1,8 +1,6 @@
-// import { getSensorDataClean } from 'variables/dataRegistry';
 import moment from 'moment'
 import { graphType } from 'variables/dsSystem/graphTypes';
 import { saveOnServ, getSettings } from './settings';
-// import { createSelector } from 'reselect'
 
 export const getDashboards = 'getDashboards'
 export const SetDashboard = 'SetDashboard'

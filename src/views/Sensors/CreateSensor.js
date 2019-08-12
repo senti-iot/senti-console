@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import CreateSensorForm from 'components/Collections/CreateSensorForm';
-import { createSensor } from 'variables/dataRegistry';
+import { createSensor } from 'variables/dataSensors';
 import CreateSensorForm from 'components/Sensors/CreateSensorForm';
 import { getAddressByLocation } from 'variables/dataDevices';
 import { getSensors } from 'redux/data';

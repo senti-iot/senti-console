@@ -23,7 +23,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 import RGauge from 'components/Charts/RGauge';
 
 class GaugeComponent extends PureComponent {
@@ -373,7 +373,7 @@ class GaugeComponent extends PureComponent {
 						period={period}
 						value={this.state.value}
 					/>
-						
+
 				default:
 					break;
 			}

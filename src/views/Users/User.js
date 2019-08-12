@@ -28,6 +28,7 @@ class User extends Component {
 		this.state = {
 			openSnackbar: 0,
 			openDelete: false,
+			openConfirm: false,
 			openChangePassword: false,
 			openResendConfirm: false,
 			pw: {
@@ -95,7 +96,7 @@ class User extends Component {
 				await this.getUser(match.params.id).then(() => {
 					let name = this.props.user.firstName + ' ' + this.props.user.lastName
 					setBC('user', name ? name : "")
-				
+
 				})
 				let prevURL = location.prevURL ? location.prevURL : '/management/users'
 				setHeader("users.user", true, prevURL, 'users')
@@ -148,7 +149,7 @@ class User extends Component {
 			let favObj = {
 				id: user.id,
 				type: 'user'
-			}	
+			}
 			if (this.props.isFav(favObj)) {
 				this.removeFromFav()
 			}

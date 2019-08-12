@@ -26,7 +26,7 @@ import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
 import { handleSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
 
 class DoubleChartData extends PureComponent {

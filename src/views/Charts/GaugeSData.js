@@ -16,7 +16,7 @@ import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 import RGauge from 'components/Charts/RGauge';
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 
 class GaugeComponent extends PureComponent {

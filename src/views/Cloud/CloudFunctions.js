@@ -29,7 +29,7 @@ class Functions extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('cloudfunctions.pageTitle', false, '', 'manage.functions')
+		props.setHeader('cloudfunctions.pageTitle', false, '', 'manage.cloudfunctions')
 		props.setBC('cloudfunctions')
 		props.setTabs({
 			id: 'functions',

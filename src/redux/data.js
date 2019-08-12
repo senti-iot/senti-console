@@ -9,7 +9,9 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor, getAllMessages, getAllTokens } from 'variables/dataRegistry';
+import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry';
+import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
+import { getAllSensors, getSensor } from 'variables/dataSensors'
 import { getAllFunctions, getFunction } from 'variables/dataFunctions';
 
 

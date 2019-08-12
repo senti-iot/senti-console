@@ -1,4 +1,7 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
+import {
+	Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button,
+	ListItemIcon, IconButton, Fade, Tooltip, Divider
+} from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import SensorTable from 'components/Sensors/SensorTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -6,12 +9,13 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { /* Delete, */ Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block } from 'variables/icons';
+import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block, DeviceHub } from 'variables/icons';
 import { GridContainer, CircularLoader } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getSensors, setSensors, sortData } from 'redux/data';
 import SensorCards from 'components/Sensors/SensorCards';
+import { deleteSensor } from 'variables/dataSensors';
 
 class Sensors extends Component {
 	constructor(props) {
@@ -85,7 +89,7 @@ class Sensors extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 		]
 		return allOptions
@@ -236,19 +240,20 @@ class Sensors extends Component {
 		this.setState({ route: value })
 	}
 	handleDeleteSensors = async () => {
-		// const { selected } = this.state
-		// Promise.all([selected.map(u => {
-		// 	return deleteRegistry(u)
-		// })]).then(async () => {
-		// 	this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-		// 	await this.getData(true).then(
-		// 		() => this.snackBarMessages(1)
-		// 	)
-		// })
+		const { selected } = this.state
+		Promise.all([selected.map(u => {
+			return deleteSensor(u)
+		})]).then(async () => {
+			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
+			await this.getData(true).then(
+				() => this.snackBarMessages(1)
+			)
+		})
 	}
-	handleSelectAllClick = (event, checked) => {
+	handleSelectAllClick = (arr, checked) => {
+		console.log(checked)
 		if (checked) {
-			this.setState({ selected: this.props.devices.map(n => n.id) })
+			this.setState({ selected: arr })
 			return;
 		}
 		this.setState({ selected: [] })
@@ -335,7 +340,7 @@ class Sensors extends Component {
 
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
-		const { t, classes, devices } = this.props
+		const { t, devices } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
@@ -347,9 +352,18 @@ class Sensors extends Component {
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.devices')}
 				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={devices[devices.findIndex(d => d.id === s)].name} /></ListItem>)}
+				<List dense={true}>
+					<Divider />
+					{selected.map(s => {
+						let u = devices[devices.findIndex(d => d.id === s)]
+						return u ? <ListItem divider key={u.id}>
+							<ListItemIcon>
+								<DeviceHub />
+							</ListItemIcon>
+							<ListItemText primary={u.name} />
+						</ListItem> : null
+					})
+					}
 				</List>
 			</DialogContent>
 			<DialogActions>
