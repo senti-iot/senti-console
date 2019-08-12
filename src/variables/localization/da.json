@@ -362,6 +362,8 @@
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
 				"device": "Er du sikker på du ønsker at slette denne enhed ( %{sensor} ) ?",
 				"deviceImage": "Er du sikker på du ønsker at slette dette billede?",
+				"deviceType": "Er du sikker på du ønsker at slette denne enhedstype ( %{deviceType} ) ?",
+				"deviceTypes": "Er du sikker på du ønsker at slette disse enhedstyper:",
 				"devices": "Er du sikker på du ønsker at slette disse enheder:",
 				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
@@ -369,12 +371,10 @@
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
 				"registries": "Er du sikker på du ønsker at slette disse registre:",
 				"registry": "Er du sikker på du ønsker at slette denne register ( %{registry} )?",
-				"tokens": "Er du sikker på du ønsker at slette disse API tokens:",
 				"token": "Er du sikker på du ønsker at slette denne API token?",
+				"tokens": "Er du sikker på du ønsker at slette disse API tokens:",
 				"user": "Er du sikker på du ønsker at slette denne bruger ( %{user} ) ?",
-				"users": "Er du sikker på du ønsker at slette disse brugere:",
-				"deviceType": "Er du sikker på du ønsker at slette denne enhedstype ( %{deviceType} ) ?",
-				"deviceTypes": "Er du sikker på du ønsker at slette disse enhedstyper:"
+				"users": "Er du sikker på du ønsker at slette disse brugere:"
 			},
 			"title": {
 				"collection": "Slet datasamling?",
@@ -386,6 +386,10 @@
 				"orgs": "Slet organisationer?",
 				"project": "Slet projekt?",
 				"projects": "Slet projekter?",
+				"registries": "Slet registre?",
+				"registry": "Slet register?",
+				"deviceType": "Slet enhedstype?",
+				"deviceTypes": "Slet enhedstyper?",
 				"tokens": "Slet API Tokens?",
 				"user": "Slet bruger?",
 				"users": "Slet brugere?"
