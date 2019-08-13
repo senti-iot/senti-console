@@ -55,9 +55,13 @@ class CreateOrg extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		window.addEventListener('keydown', this.keyHandler, false)
-		const { t, accessLevel, setHeader, location } = this.props
+		const { t, accessLevel, setHeader, location, setTabs } = this.props
 		let prevURL = location.prevURL ? location.prevURL : `/management/orgs`
-		setHeader('orgs.createOrg', true, prevURL, '/management/users')
+		setHeader('orgs.createOrg', true, prevURL, 'users')
+		setTabs({
+			id: "createOrg",
+			tabs: []
+		})
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
@@ -96,7 +100,7 @@ class CreateOrg extends Component {
 		if (selectedOrg === null) {
 			errorCode.push(5)
 		}
-		// if (!url.includes('http')) { 
+		// if (!url.includes('http')) {
 		// 	errorCode.push(6)
 		// }
 		this.setState({
