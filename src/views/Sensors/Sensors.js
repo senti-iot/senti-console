@@ -251,7 +251,6 @@ class Sensors extends Component {
 		})
 	}
 	handleSelectAllClick = (arr, checked) => {
-		console.log(checked)
 		if (checked) {
 			this.setState({ selected: arr })
 			return;

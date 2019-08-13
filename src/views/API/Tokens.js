@@ -262,14 +262,13 @@ class Tokens extends Component {
 		// 	)
 		// })
 	}
-	handleSelectAllClick = (event, checked) => {
+	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.tokens.map(n => n.id) })
+			this.setState({ selected: arr })
 			return;
 		}
 		this.setState({ selected: [] })
 	}
-
 	handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const { selected } = this.state;
@@ -448,7 +447,7 @@ class Tokens extends Component {
 						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button>
 					</DialogActions>
 				</Fragment>
-				: <div/>}
+				: <div />}
 		</Dialog>
 	}
 	renderConfirmDelete = () => {

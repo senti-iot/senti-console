@@ -33,6 +33,12 @@ class FunctionTable extends React.Component {
 		this.setState({ page });
 	}
 
+	handleSelectAllClick = (event, checked) => {
+		const { data } = this.props
+		let selected = data.map(d => d.id)
+		this.props.handleSelectAllClick(selected, checked)
+	}
+
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	setHover = (e, n) => {
@@ -40,7 +46,7 @@ class FunctionTable extends React.Component {
 		const { hoverTime } = this.props
 		const { rowHover } = this.state
 		if (hoverTime > 0)
-		 this.timer = setTimeout(() => {
+			this.timer = setTimeout(() => {
 				if (rowHover) {
 					this.setState({
 						rowHover: null
@@ -70,7 +76,7 @@ class FunctionTable extends React.Component {
 		switch (id) {
 			case 0:
 				return t('cloudfunctions.fields.types.function')
-			case 1: 
+			case 1:
 				return t('cloudfunctions.fields.types.external')
 			default:
 				break;
@@ -93,7 +99,7 @@ class FunctionTable extends React.Component {
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={this.props.handleSelectAllClick}
+							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
@@ -144,15 +150,15 @@ class FunctionTable extends React.Component {
 														</Caption>
 													</ItemGrid> */}
 												</ItemGrid>
-											}/>
+											} />
 										</Hidden>
 
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC 
+											<TC
 												// onMouseEnter={e => { this.setHover(e, n) }}
 												// onMouseLeave={this.unsetTimeout}
-												FirstC label={n.name}/>
+												FirstC label={n.name} />
 											<TC label={this.renderProtocol(n.type)} />
 										</Hidden>
 									</TableRow>

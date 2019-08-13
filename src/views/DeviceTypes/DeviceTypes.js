@@ -234,9 +234,9 @@ class DeviceTypes extends Component {
 		this.setState({ route: value })
 	}
 
-	handleSelectAllClick = (event, checked) => {
+	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.devicetypes.map(n => n.id) })
+			this.setState({ selected: arr })
 			return;
 		}
 		this.setState({ selected: [] })

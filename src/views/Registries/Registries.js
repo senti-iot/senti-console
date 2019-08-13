@@ -256,9 +256,9 @@ class Registries extends Component {
 			)
 		})
 	}
-	handleSelectAllClick = (event, checked) => {
+	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.registries.map(n => n.id) })
+			this.setState({ selected: arr })
 			return;
 		}
 		this.setState({ selected: [] })

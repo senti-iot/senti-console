@@ -250,9 +250,9 @@ class Functions extends Component {
 		// 	)
 		// })
 	}
-	handleSelectAllClick = (event, checked) => {
+	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.functions.map(n => n.id) })
+			this.setState({ selected: arr })
 			return;
 		}
 		this.setState({ selected: [] })
