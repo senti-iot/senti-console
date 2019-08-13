@@ -38,7 +38,7 @@ class DeviceType extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
-		props.setHeader('sidebar.devicetype', true, prevURL, 'deviceTypes')
+		props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'

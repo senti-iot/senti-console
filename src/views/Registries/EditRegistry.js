@@ -21,7 +21,7 @@ class UpdateRegistry extends Component {
 		props.setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
 		props.setBC('updateregistry')
 		props.setTabs({
-			id: 'createRegistry',
+			id: 'editRegistry',
 			tabs: []
 		})
 	}
@@ -36,7 +36,7 @@ class UpdateRegistry extends Component {
 		await getRegistry(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, registry } = this.props
+		const { location, setHeader, setBC, registry } = this.props
 		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
 			let orgs = this.props.orgs
 			this.setState({
@@ -45,8 +45,8 @@ class UpdateRegistry extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('menus.edits.registry', true, prevURL, 'registries')
-			this.props.setBC('editregistry', registry.name, registry.id)
+			setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
+			setBC('editregistry', registry.name, registry.id)
 		}
 	}
 	componentDidMount = async () => {

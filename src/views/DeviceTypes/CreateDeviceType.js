@@ -31,8 +31,12 @@ class CreateDeviceType extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
-		props.setHeader('menus.create.devicetype', true, prevURL, '')
+		props.setHeader('menus.create.devicetype', true, prevURL, 'manage.devicetypes')
 		props.setBC('createdevicetypes')
+		props.setTabs({
+			id: 'createDT',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
