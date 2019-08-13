@@ -2,6 +2,9 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	noCheckbox: {
+		padding: 10
+	},
 	noRows: {
 		display: 'none'
 	},

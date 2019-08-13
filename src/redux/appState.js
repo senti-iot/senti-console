@@ -54,7 +54,7 @@ export const changeTableRows = (val) => {
 		let trp = val
 		if (val.toString().includes('auto')) {
 			let height = window.innerHeight
-			let rows = Math.round((height - 70 - 48 - 30 - 64 - 56 - 30 - 56) / 49)
+			let rows = Math.round((height - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 			trp = rows
 			dispatch({ type: 'autoRowsPerPage', payload: trp })
 		}

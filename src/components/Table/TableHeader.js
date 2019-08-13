@@ -10,6 +10,7 @@ class TableHeader extends Component {
 
 	render() {
 		const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes, mdDown, customColumn, noCheckbox } = this.props;
+
 		return (
 			<TableHead>
 				<TableRow>
@@ -24,12 +25,19 @@ class TableHeader extends Component {
 					</TableCell>}
 					<Hidden mdDown>
 						{columnData.map((column, i) => {
+							let tcClasses = classNames({
+								[classes.header]: classes,
+								[classes.tableCell]: classes,
+								[classes.centered]: classes && column.centered,
+								[classes.tablecellcheckbox]: classes && column.checkbox,
+								[classes.noCheckbox]: noCheckbox
+							})
 							return (
 								<TableCell
 									key={i}
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
-									className={classes ? `${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''} ${column.checkbox ? classes.tablecellcheckbox : ''}` : null}
+									className={tcClasses}
 								>
 									<TableSortLabel
 										active={orderBy === column.id}

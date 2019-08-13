@@ -534,7 +534,7 @@ export const finishedSaving = () => {
 		saved: false
 	}
 }
-let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56) / 49) + ' - auto'
+let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49) + ' - auto'
 let initialState = {
 	weekendColor: 'red',
 	periods: [{

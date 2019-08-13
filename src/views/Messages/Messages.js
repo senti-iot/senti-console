@@ -76,7 +76,7 @@ class Messages extends Component {
 	messagesHeader = () => {
 		const { t } = this.props
 		return [
-			{ id: 'id', label: t('messages.fields.id') },
+			{ id: 'id', label: t('messages.fields.id'), centered: true },
 			{ id: 'deviceName', label: t('messages.fields.deviceName') },
 			{ id: 'registryName', label: t('messages.fields.registryName') },
 			{ id: 'created', label: t('registries.fields.created') },
@@ -228,10 +228,6 @@ class Messages extends Component {
 		}
 		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
-	}
-	handleMessageClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push('/message/' + id)
 	}
 
 	handleFavClick = id => e => {
@@ -518,7 +514,7 @@ class Messages extends Component {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderTableToolBar()}
-				{this.renderTable(messages, this.handleMessageClick, 'messages')}
+				{this.renderTable(messages, 'messages')}
 				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}

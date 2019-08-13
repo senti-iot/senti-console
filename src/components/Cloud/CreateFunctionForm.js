@@ -48,7 +48,6 @@ class CreateFunctionForm extends Component {
 
 	render() {
 		const { t, handleChange, org, cloudfunction, handleOrgChange, classes, handleCreate, handleCodeChange, goToRegistries } = this.props
-		console.log(this.props)
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>

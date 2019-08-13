@@ -34,11 +34,11 @@ export const copyToClipboard = str => {
 		document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
 		document.getSelection().addRange(selected);   // Restore the original selection
 	}
-	navigator.clipboard.writeText(str).then(function() {
+	navigator.clipboard.writeText(str).then(function () {
 		console.info('Async: Copying to clipboard was successful!');
-	  }, function(err) {
+	}, function (err) {
 		console.error('Async: Could not copy text: ', err);
-	  });
+	});
 };
 
 export const dateDiff = (from, to) => {
