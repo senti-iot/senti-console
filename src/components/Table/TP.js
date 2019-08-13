@@ -45,7 +45,6 @@ class TP extends Component {
 				onChangeRowsPerPage={this.handleChangeRowsPerPage}
 				labelRowsPerPage={isWidthUp('sm', width) ? disableRowsPerPage ? `` : t('tables.rowsPerPage') : ''}
 				rowsPerPageOptions={rowsPerPageOptions}
-				Menu
 				SelectProps={{
 					renderValue: value => value,
 					classes: {
