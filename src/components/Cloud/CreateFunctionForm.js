@@ -48,6 +48,7 @@ class CreateFunctionForm extends Component {
 
 	render() {
 		const { t, handleChange, org, cloudfunction, handleOrgChange, classes, handleCreate, handleCodeChange, goToRegistries } = this.props
+		console.log(this.props)
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -64,7 +65,7 @@ class CreateFunctionForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
-									id={'functionName'}
+									id={'functionDesc'}
 									label={t('collections.fields.description')}
 									handleChange={handleChange('description')}
 									value={cloudfunction.description}
@@ -76,6 +77,7 @@ class CreateFunctionForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
+									id={'cfOrgId'}
 									value={org.name}
 									handleClick={() => this.setState({ openOrg: true })}
 									readonly
