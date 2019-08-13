@@ -37,6 +37,10 @@ class EditProject extends Component {
 			},
 			openUser: false
 		}
+		props.setTabs({
+			id: "editProject",
+			tabs: []
+		})
 	}
 
 	handleValidation = () => {

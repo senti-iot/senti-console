@@ -44,6 +44,10 @@ class CreateProject extends Component {
 		}
 		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
 		props.setBC('createproject')
+		props.setTabs({
+			id: "createProject",
+			tabs: []
+		})
 	}
 	keyHandler = (e) => {
 		if (e.key === 'Escape') {
@@ -214,7 +218,7 @@ class CreateProject extends Component {
 	}
 
 	goToProject = () => this.props.history.push('/projects')
-	
+
 	render() {
 		const { created, orgs, org, error,
 			title, description, creating, startDate, endDate, openOrg,

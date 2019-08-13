@@ -50,6 +50,10 @@ class EditCollection extends Component {
 			let prevURL = location.prevURL ? location.prevURL : `/collection/${this.id}`
 			setHeader('collections.editCollection', true, prevURL, 'collections')
 			this.props.setBC('editcollection', collection.name, collection.id)
+			this.props.setTabs({
+				id: 'createCollection',
+				tabs: []
+			})
 		}
 	}
 
