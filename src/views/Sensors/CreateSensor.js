@@ -45,8 +45,12 @@ class CreateSensor extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('menus.create.device', true, prevURL, '')
+		props.setHeader('menus.create.device', true, prevURL, 'manage.sensors')
 		props.setBC('createsensor')
+		props.setTabs({
+			id: 'createSensor',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {

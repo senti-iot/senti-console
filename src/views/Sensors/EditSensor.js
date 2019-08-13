@@ -17,6 +17,7 @@ class EditSensor extends Component {
 			sensor: {
 				reg_id: 0,
 				type_id: 0,
+				description: '',
 				lat: 56.2639,
 				lng: 9.5018,
 				address: '',
@@ -43,8 +44,12 @@ class EditSensor extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('menus.edits.device', true, prevURL, '')
+		props.setHeader('menus.edits.device', true, prevURL, 'manage.sensors')
 		props.setBC('editsensor')
+		props.setTabs({
+			id: 'editSensor',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -77,7 +82,7 @@ class EditSensor extends Component {
 
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, sensor, deviceTypes, registries } = this.props
+		const { location, setHeader, setBC, sensor, deviceTypes, registries } = this.props
 		if ((!prevProps.sensor && sensor !== prevProps.sensor && sensor) || (this.state.registry === null && sensor)) {
 			this.setState({
 				sensor: { ...sensor },
@@ -97,8 +102,8 @@ class EditSensor extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/sensor/${this.id}`
-			setHeader('menus.edits.device', true, prevURL, 'sensors')
-			this.props.setBC('editsensor', sensor.name, sensor.id)
+			setHeader('menus.edits.device', true, prevURL, 'manage.sensors')
+			setBC('editsensor', sensor.name, sensor.id)
 		}
 	}
 	componentDidMount = async () => {

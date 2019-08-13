@@ -272,6 +272,8 @@ class CreateSensorForm extends Component {
 			openCF, handleCloseFunc, handleChangeFunc,
 			handleChange, sensor, getLatLngFromMap,
 			classes, handleCreate, goToRegistries, select } = this.props
+		console.log(sensor)
+
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
@@ -347,11 +349,10 @@ class CreateSensorForm extends Component {
 											handleCloseDT()
 										}}
 									/>
-									{/* {this.renderSelectType()} */}
 									<TextF
 										id={'regID'}
 										label={t('sensors.fields.deviceType')}
-										value={select.dt.name}
+										value={select.dt.name ? select.dt.name : ''}
 										readOnly
 										handleClick={handleOpenDT}
 										handleChange={() => { }}
