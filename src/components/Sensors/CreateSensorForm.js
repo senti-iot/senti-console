@@ -272,8 +272,6 @@ class CreateSensorForm extends Component {
 			openCF, handleCloseFunc, handleChangeFunc,
 			handleChange, sensor, getLatLngFromMap,
 			classes, handleCreate, goToRegistries, select } = this.props
-		console.log(sensor)
-
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
