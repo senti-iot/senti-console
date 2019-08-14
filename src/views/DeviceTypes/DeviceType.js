@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // import { getProject } from 'variables/dataProjects';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
-import { DataUsage } from 'variables/icons';
+import { DataUsage, CloudUpload, StorageIcon } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
@@ -46,6 +46,8 @@ class DeviceType extends Component {
 		const { t } = this.props
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+			{ id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
+			{ id: 2, title: t('tabs.cloudfunctions'), label: <CloudUpload />, url: `#cloudfunctions` },
 			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
 			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
 			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
@@ -175,7 +177,7 @@ class DeviceType extends Component {
 								t={t}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'metadata'}>
+						<ItemGrid xs={12} noMargin id={'cloudfunctions'}>
 							<DeviceTypeCloudFunctions
 								deviceType={deviceType}
 								t={t}
