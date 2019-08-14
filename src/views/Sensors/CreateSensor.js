@@ -107,7 +107,6 @@ class CreateSensor extends Component {
 		})
 	}
 	handleChangeDT = (o) => {
-		// console.log(o)
 		this.setState({
 			sensor: {
 				...this.state.sensor,
