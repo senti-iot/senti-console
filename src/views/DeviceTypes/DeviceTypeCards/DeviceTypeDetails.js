@@ -5,12 +5,14 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, /* Delete */ } from 'variables/icons';
+import { DataUsage, Edit, Star, StarBorder, Delete } from 'variables/icons';
 import { connect } from 'react-redux'
 
 class DeviceTypeDetails extends Component {
 	render() {
-		const { classes, deviceType, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
+		const { classes, handleOpenDeleteDialog, deviceType, t,
+			isFav, addToFav, removeFromFav, detailsPanel, history
+		} = this.props
 		return (
 			<InfoCard
 				title={deviceType.name ? deviceType.name : deviceType.id}
@@ -20,8 +22,8 @@ class DeviceTypeDetails extends Component {
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
-						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
-						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 					]
 				} />
 				}

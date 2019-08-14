@@ -1,6 +1,6 @@
 import { withStyles, Fade } from '@material-ui/core';
 import deviceTypeStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 // import { getProject } from 'variables/dataProjects';
@@ -14,6 +14,7 @@ import { getDeviceTypeLS } from 'redux/data';
 import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
 import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
+import { deleteDeviceType } from 'variables/dataDeviceTypes';
 
 
 class DeviceType extends Component {
@@ -21,20 +22,9 @@ class DeviceType extends Component {
 		super(props)
 
 		this.state = {
-			//Date Filter
-			//End Date Filter Tools
-			deviceType: null,
-			activeDevice: null,
 			loading: true,
-			anchorElHardware: null,
-			openAssign: false,
-			openUnassignDevice: false,
-			openAssignOrg: false,
-			openAssignDevice: false,
-			openDelete: false,
-			//Map
-			loadingMap: true,
-			heatData: null,
+			openDelete: false
+			//Ma
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
@@ -138,14 +128,46 @@ class DeviceType extends Component {
 	}
 
 	snackBarMessages = (msg) => {
-		// const { s, t, deviceType } = this.props
-
 		switch (msg) {
 			default:
 				break
 		}
 	}
 
+	handleOpenDeleteDialog = () => {
+		this.setState({
+			openDelete: true
+		})
+	}
+	handleCloseDeleteDialog = () => {
+		this.setState({
+			openDelete: false
+		})
+	}
+	handleDeleteDT = async () => {
+		const { deviceType } = this.props
+		if (this.props.isFav(deviceType.id))
+			this.removeFromFav()
+		await deleteDeviceType(deviceType.id).then(() => {
+			this.handleCloseDeleteDialog()
+			this.snackBarMessages(1)
+			this.props.history.push('/devicetypes/list')
+		})
+	}
+	renderDeleteDialog = () => {
+		const { openDelete } = this.state
+		const { t } = this.props
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.deviceType'}
+			message={'dialogs.delete.message.deviceType'}
+			messageOpts={{ deviceType: this.props.deviceType.name }}
+			open={openDelete}
+			single
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteDT}
+		/>
+	}
 
 
 	renderLoader = () => {
@@ -159,11 +181,13 @@ class DeviceType extends Component {
 			<Fragment>
 				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
+						{this.renderDeleteDialog()}
 						<ItemGrid xs={12} noMargin id='details'>
 							<DeviceTypeDetails
 								isFav={this.props.isFav({ id: deviceType.id, type: 'deviceType' })}
 								addToFav={this.addToFav}
 								removeFromFav={this.removeFromFav}
+								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 								deviceType={deviceType}
 								history={history}
 								match={match}
