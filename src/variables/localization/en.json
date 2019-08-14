@@ -1006,6 +1006,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"repairedOldDashboards": "Some dashboards' graphs have been reordered due to the new drag & drop system!",
 		"assign": {
 			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
 			"collectionToProject": "Data collection %{collection} assigned to project %{project}",

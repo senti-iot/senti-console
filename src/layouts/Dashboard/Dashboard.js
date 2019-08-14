@@ -213,7 +213,7 @@ class App extends React.Component {
 										</Switch>
 									</div>
 
-									<Cookies />
+									{!this.props.cookies && <Cookies />}
 									<Snackbar
 										anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
 										open={this.props.sOpen}
@@ -259,7 +259,8 @@ const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
 	drawer: state.settings.drawer,
 	tabs: state.appState.tabs,
-	user: state.settings.user
+	user: state.settings.user,
+	cookies: state.settings.cookies
 })
 
 const mapDispatchToProps = dispatch => ({

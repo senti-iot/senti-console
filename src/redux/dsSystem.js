@@ -12,6 +12,7 @@ export const eGraph = 'eGraph'
 export const cDash = 'cDash'
 export const eDash = 'eDash'
 export const setGraphE = 'setGraphE'
+const snackBar = 'snackBar'
 
 const menuSelect = (p, c) => {
 	let to, from, timeType, chartType;
@@ -111,17 +112,96 @@ export const handleSetDate = (dId, gId, p) => {
 
 	}
 }
+const gridCoords = (type) => {
+	switch (type) {
+		case 0:
+			return 'chart'
+		case 1:
+			return 'gauge'
+		case 2:
+			return 'scorecardAB'
+		case 3:
+			return 'scorecard'
+		case 4:
+			return 'windcard'
+		default:
+			break;
+	}
+}
+export const finishedSaving = () => {
+	return {
+		type: snackBar,
+		payload: false
+	}
+}
+export const saveSnackbar = (type) => {
+	return {
+		type: snackBar,
+		payload: type
+	}
+}
+export const repairDashboard = (dashboard) => {
+	return async (dispatch, getState) => {
+		let user, newD = {}
+		user = getState().settings.user
+		newD = { ...dashboard }
+		user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
+		dispatch(saveSnackbar('snackbars.repairedOldDashboards'))
+		dispatch(saveOnServ(user))
+		dispatch(await getSettings())
 
+	}
+}
 export const setDashboards = (payload) => {
 	return async dispatch => {
 		let ds = payload
 		let allGraphs = []
+		let lastG = {}
 		ds.forEach(d => {
-			d.graphs.forEach(g => {
+			let brokenDash = false
+			d.graphs.forEach((g, i) => {
+
+				/**
+				 * This if statement is for Users using v0 of Dashboards that were static and had no ability to be resized or moved
+				 * If statement generates the missing grid prop and expanding each graph to half of screen and default height of the first for each row
+				 * Should be removed in the future
+				 */
+				if (!g.grid) {
+					brokenDash = true
+					if (!d.graphs[i - 1]) {
+						g.grid = graphType(gridCoords(g.type)).grid
+						g.grid.w = 6
+						lastG = g.grid
+					}
+					else {
+
+						let newGrid = graphType(gridCoords(g.type)).grid
+						let prevGrid = lastG
+						g.grid = {
+							...newGrid,
+							x: prevGrid.x + prevGrid.w,
+							y: prevGrid.y,
+							h: prevGrid.h,
+							w: 6
+						}
+						if ((g.grid.x + g.grid.w) > 12) {
+							g.grid.y = prevGrid.h + prevGrid.y
+							g.grid.x = 0
+						}
+						lastG = g.grid
+						// }
+					}
+				}
 				g.period = menuSelect(g.periodType, g.chartType)
 				g.period.menuId = g.periodType
+
 				allGraphs.push(g)
 			})
+			if (brokenDash) {
+				dispatch(repairDashboard(d))
+				console.log(d.graphs)
+				brokenDash = false
+			}
 		})
 		dispatch({
 			type: getDashboards,
@@ -131,6 +211,7 @@ export const setDashboards = (payload) => {
 			type: setGraphs,
 			payload: allGraphs
 		})
+
 	}
 }
 
@@ -224,6 +305,7 @@ export const removeDashboard = id => {
 		user.aux.senti.dashboards = ds
 		dispatch(saveOnServ(user))
 		dispatch(await getSettings())
+		dispatch(saveSnackbar('snackbars.deletedSuccess'))
 		dispatch({
 			type: getDashboards,
 			payload: ds
@@ -259,6 +341,7 @@ export const saveDashboard = (edit) => {
 		// dispatch()
 		dispatch(saveOnServ(user))
 		dispatch(await getSettings())
+		dispatch(saveSnackbar('snackbars.createdSuccess'))
 
 	}
 }
@@ -309,13 +392,16 @@ const initialState = {
 	gotDashboardData: true,
 	graphs: [],
 	cDash: null,
-	cGraphs: []
+	cGraphs: [],
+	saved: false
 }
 
 const setState = (key, payload, state) => Object.assign({}, state, { [key]: payload })
 
 export const dsSystem = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case snackBar:
+			return setState('saved', payload, state)
 		case setGraphE:
 			return setState('eGraph', payload, state)
 		case cGraph:

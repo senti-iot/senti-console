@@ -17,6 +17,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme, lightTheme } from 'variables/themes/index.js';
 import EditDashboard from './EditDashboard.js';
 import { reset } from 'redux/dsSystem.js';
+import { finishedSaving } from 'redux/dsSystem';
+import withSnackbar from 'components/Localization/S.js';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -51,8 +53,14 @@ class Dashboard extends React.Component {
 
 	componentDidMount = async () => {
 		this.props.setHeader('Senti', false, '', 'dashboard')
-	}
 
+	}
+	componentDidUpdate = () => {
+		if (this.props.saved) {
+			this.props.s(this.props.saved)
+			this.props.finishedSaving()
+		}
+	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
@@ -155,11 +163,13 @@ Dashboard.propTypes = {
 }
 const mapStateToProps = (state) => ({
 	dsTheme: state.settings.dsTheme,
-	dashboards: state.dsSystem.dashboards
+	dashboards: state.dsSystem.dashboards,
+	saved: state.dsSystem.saved
 })
 
 const mapDispatchToProps = dispatch => ({
-	resetDash: () => dispatch(reset())
+	resetDash: () => dispatch(reset()),
+	finishedSaving: () => dispatch(finishedSaving())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(dashboardStyle)(Dashboard)))
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()(withLocalization()(withStyles(dashboardStyle)(Dashboard))))

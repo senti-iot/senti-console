@@ -114,12 +114,12 @@ export const graphType = (type) => {
 		case "windcard": //Wind Speed card
 			return {
 				grid: {
-					minW: 4,
+					minW: 6,
 					minH: 12,
 					x: 0,
 					y: 0,
 					h: 13,
-					w: 4
+					w: 6
 				},
 				dataSource: {
 					cf: -1,
