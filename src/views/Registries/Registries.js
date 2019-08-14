@@ -106,8 +106,9 @@ class Registries extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		this.getData()
-
+		if (this.props.user && this.props.accessLevel) {
+			this.getData(true)
+		}
 	}
 
 	componentDidUpdate = () => {
