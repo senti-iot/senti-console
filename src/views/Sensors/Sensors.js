@@ -1,7 +1,4 @@
-import {
-	Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button,
-	ListItemIcon, IconButton, Fade, Tooltip, Divider
-} from '@material-ui/core';
+import { Paper, withStyles, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import SensorTable from 'components/Sensors/SensorTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -10,7 +7,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block, DeviceHub } from 'variables/icons';
-import { GridContainer, CircularLoader } from 'components'
+import { GridContainer, CircularLoader, DeleteDialog } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getSensors, setSensors, sortData } from 'redux/data';
@@ -336,46 +333,22 @@ class Sensors extends Component {
 
 	//#endregion
 
-
-	renderConfirmDelete = () => {
+	renderDeleteDialog = () => {
 		const { openDelete, selected } = this.state
 		const { t, devices } = this.props
-		return <Dialog
+		let data = selected.map(s => devices[devices.findIndex(d => d.id === s)])
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.devices'}
+			message={'dialogs.delete.message.devices'}
 			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.devices')}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.devices')}
-				</DialogContentText>
-				<List dense={true}>
-					<Divider />
-					{selected.map(s => {
-						let u = devices[devices.findIndex(d => d.id === s)]
-						return u ? <ListItem divider key={u.id}>
-							<ListItemIcon>
-								<DeviceHub />
-							</ListItemIcon>
-							<ListItemText primary={u.name} />
-						</ListItem> : null
-					})
-					}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleDeleteSensors} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
+			icon={<DeviceHub />}
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteSensors}
+			data={data}
+			dataKey={'name'}
+		/>
 	}
-
 
 	renderTableToolBarContent = () => {
 		const { t } = this.props
@@ -438,7 +411,7 @@ class Sensors extends Component {
 				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
 				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderConfirmDelete()}
+				{this.renderDeleteDialog()}
 			</Paper>
 			}
 		</GridContainer>
@@ -454,7 +427,8 @@ class Sensors extends Component {
 				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
 				{this.renderTable(devices, this.handleRegistryClick, 'sensors')}
-				{this.renderConfirmDelete()}
+				{/* {this.renderConfirmDelete()} */}
+				{this.renderDeleteDialog()}
 			</Paper></Fade>
 			}
 		</GridContainer>

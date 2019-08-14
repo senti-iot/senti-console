@@ -1,6 +1,6 @@
 import { withStyles, Fade } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getWeather } from 'variables/dataDevices';
@@ -13,6 +13,7 @@ import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 import SensorMessages from 'views/Charts/SensorMessages';
 import { getSensorMessages } from 'variables/dataSensors';
+import { deleteSensor } from 'variables/dataSensors';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -24,9 +25,6 @@ class Sensor extends Component {
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
-			openUnassignDevice: false,
-			openAssignOrg: false,
-			openAssignDevice: false,
 			openDelete: false,
 			//Map
 			loadingMap: true,
@@ -62,19 +60,13 @@ class Sensor extends Component {
 	}
 	componentDidUpdate = async (prevProps) => {
 		const { registry } = this.props
-		// if (prevProps.match.params.id !== this.props.match.params.id)
-		// await this.componentDidMount()
 		if (registry && !prevProps.registry) {
-
 			if (registry.activeDevice) {
 				let data = await getWeather(registry.activeDevice, moment(), this.props.language)
 				this.setState({ weather: data })
 			}
 		}
-		// if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-		// 	// this.handleSwitchDayHourSummary()
-		// 	// this.getHeatMapData()
-		// }
+
 		if (this.props.saved === true) {
 			const { sensor } = this.props
 			if (this.props.isFav({ id: sensor.id, type: 'sensor' })) {
@@ -99,7 +91,7 @@ class Sensor extends Component {
 				})
 				this.props.setTabs({
 					route: 0,
-					id: 'registry',
+					id: 'sensor',
 					tabs: this.tabs(),
 					hashLinks: true
 				})
@@ -151,8 +143,41 @@ class Sensor extends Component {
 				break
 		}
 	}
+	handleOpenDeleteDialog = () => {
+		this.setState({
+			openDelete: true
+		})
+	}
+	handleCloseDeleteDialog = () => {
+		this.setState({
+			openDelete: false
+		})
+	}
+	handleDeleteSensor = async () => {
+		const { sensor } = this.props
+		if (this.props.isFav(sensor.id))
+			this.removeFromFav()
+		await deleteSensor(sensor.id).then(() => {
+			this.handleCloseDeleteDialog()
+			this.snackBarMessages(1)
+			this.props.history.push('/sensors/list')
+		})
+	}
 
-
+	renderDeleteDialog = () => {
+		const { openDelete } = this.state
+		const { t } = this.props
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.device'}
+			message={'dialogs.delete.message.device'}
+			messageOpts={{ sensor: this.props.sensor.name }}
+			open={openDelete}
+			single
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteSensor}
+		/>
+	}
 	renderLoader = () => {
 		return <CircularLoader />
 	}
@@ -171,9 +196,6 @@ class Sensor extends Component {
 								sensor={sensor}
 								history={history}
 								match={match}
-								handleOpenAssignProject={this.handleOpenAssignProject}
-								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
 								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 								handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
@@ -241,6 +263,7 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
+						{this.renderDeleteDialog()}
 					</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>
