@@ -1,16 +1,17 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TableToolbar from 'components/Table/TableToolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { /* Delete, PictureAsPdf, DeviceHub, LibraryBooks,  LayersClear, ViewModule, */ Edit, ViewList, Add, Star, StarBorder } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignProject, /* T */ } from 'components'
+import { /* Delete, PictureAsPdf, DeviceHub, LibraryBooks,  LayersClear, ViewModule, */ Edit, ViewList, Add, Star, StarBorder, CloudDownload, Delete } from 'variables/icons';
+import { GridContainer, CircularLoader, DeleteDialog } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getFunctions, setFunctions, sortData } from 'redux/data';
 import FunctionTable from 'components/Cloud/FunctionTable';
+import { deleteCFunction } from 'variables/dataFunctions';
 
 class Functions extends Component {
 	constructor(props) {
@@ -18,9 +19,6 @@ class Functions extends Component {
 
 		this.state = {
 			selected: [],
-			openAssignDevice: false,
-			openAssignProject: false,
-			openUnassignDevice: false,
 			openDelete: false,
 			route: 0,
 			order: 'asc',
@@ -89,8 +87,8 @@ class Functions extends Component {
 			// { label: t('menus.assign.deviceToFunction'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			// { label: t('menus.unassign.deviceFromFunction'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: functions[functions.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -100,11 +98,13 @@ class Functions extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		this.getData()
+		if (this.props.user && this.props.accessLevel) {
+			this.getData(true)
+		}
 
 	}
 
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = () => {
 		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
 			const { functions } = this.props
@@ -239,17 +239,7 @@ class Functions extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-	handleDeleteFunctions = async () => {
-		// const { selected } = this.state
-		// Promise.all([selected.map(u => {
-		// 	return deleteFunction(u)
-		// })]).then(async () => {
-		// 	this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-		// 	await this.getData(true).then(
-		// 		() => this.snackBarMessages(1)
-		// 	)
-		// })
-	}
+
 	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			this.setState({ selected: arr })
@@ -280,138 +270,44 @@ class Functions extends Component {
 		this.setState({ selected: newSelected })
 	}
 
-	handleOpenAssignDevice = () => {
-		this.setState({ openAssignDevice: true, anchorElMenu: null })
-	}
-
-	handleCancelAssignDevice = () => {
-		this.setState({ openAssignDevice: false })
-	}
-
-	handleCloseAssignDevice = async (reload, display) => {
-		if (reload) {
-			this.setState({ openAssignDevice: false })
-			await this.getData(true).then(rs => {
-				this.snackBarMessages(6, display)
-				this.setState({ selected: [] })
-			})
-		}
-	}
-	handleOpenAssignProject = () => {
-		this.setState({ openAssignProject: true, anchorElMenu: null })
-	}
-
-	handleCancelAssignProject = () => {
-		this.setState({ openAssignProject: false })
-	}
-
-	handleCloseAssignProject = async (reload) => {
-		if (reload) {
-			this.setState({ openAssignProject: false })
-			await this.getData(true).then(rs => {
-				this.snackBarMessages(6)
-			})
-		}
-	}
 
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
 	}
 
+
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
-	handleOpenUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: true
+
+	handleDeleteCloudFunctions = () => {
+		const { selected } = this.state
+		Promise.all([selected.map(u => {
+			return deleteCFunction(u)
+		})]).then(async () => {
+			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
+			await this.getData(true).then(
+				() => this.snackBarMessages(1)
+			)
 		})
 	}
 
-	handleCloseUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: false, anchorEl: null
-		})
-	}
-
-	handleUnassignDevice = async () => {
-		// const { selected } = this.state
-		// let collection = await getFunction(selected[0])
-		// if (collection.activeDeviceStats)
-		// 	await unassignDeviceFromFunction({
-		// 		id: collection.id,
-		// 		deviceId: collection.activeDeviceStats.id
-		// 	}).then(async rs => {
-		// 		if (rs) {
-		// 			this.handleCloseUnassignDevice()
-		// 			this.snackBarMessages(1)
-		// 			await this.getFunction(this.state.collection.id)
-		// 		}
-		// 	})
-		// else {
-		// 	//The Function doesn't have a device assigned to it...
-		// 	this.handleCloseUnassignDevice()
-		// }
-	}
-	//#endregion
-
-	renderDeviceUnassign = () => {
-		// const { t, functions } = this.props
-		// const { selected } = this.state
-		// let collection = functions[functions.findIndex(c => c.id === selected[0])]
-		// if (collection.activeDeviceStats === null)
-		// 	return null
-		// return <Dialog
-		// 	open={this.state.openUnassignDevice}
-		// 	onClose={this.handleCloseUnassignDevice}
-		// 	aria-labelledby='alert-dialog-title'
-		// 	aria-describedby='alert-dialog-description'
-		// >
-		// 	<DialogTitle disableTypography id='alert-dialog-title'><T reversed variant={'h6'}>{t('dialogs.unassign.title.devicesFromFunction')}</T></DialogTitle>
-		// 	<DialogContent>
-		// 		<DialogContentText id='alert-dialog-description'>
-		// 			{t('dialogs.unassign.message.deviceFromFunction', { collection: collection.name, device: collection.activeDeviceStats.id })}
-		// 		</DialogContentText>
-		// 	</DialogContent>
-		// 	<DialogActions>
-		// 		<Button onClick={this.handleCloseUnassignDevice} color='primary'>
-		// 			{t('actions.no')}
-		// 		</Button>
-		// 		<Button onClick={this.handleUnassignDevice} color='primary' autoFocus>
-		// 			{t('actions.yes')}
-		// 		</Button>
-		// 	</DialogActions>
-		// </Dialog>
-	}
-	renderConfirmDelete = () => {
+	renderDeleteDialog = () => {
 		const { openDelete, selected } = this.state
-		const { t, classes, functions } = this.props
-		return <Dialog
+		const { t, functions } = this.props
+		let data = selected.map(s => functions[functions.findIndex(d => d.id === s)])
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.cloudfunctions'}
+			message={'dialogs.delete.message.cloudfunctions'}
 			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.functions')}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.functions')}
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={functions[functions.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleDeleteFunctions} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
+			icon={<CloudDownload />}
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteCloudFunctions}
+			data={data}
+			dataKey={'name'}
+		/>
 	}
-
 
 	renderTableToolBarContent = () => {
 		const { t } = this.props
@@ -435,33 +331,6 @@ class Functions extends Component {
 			t={t}
 			content={this.renderTableToolBarContent()}
 		/>
-	}
-
-	renderAssignProject = () => {
-		const { selected, openAssignProject } = this.state
-		const { t } = this.props
-		return <AssignProject
-			// multiple
-			collectionId={selected ? selected : []}
-			handleCancel={this.handleCancelAssignProject}
-			handleClose={this.handleCloseAssignProject}
-			open={openAssignProject}
-			t={t}
-		/>
-	}
-
-	renderAssignDevice = () => {
-		// const { selected, openAssignDevice } = this.state
-		// const { t, functions } = this.props
-		// let collectionOrg = functions.find(r => r.id === selected[0])
-		// return <AssignDevice
-		// 	collectionId={selected[0] ? selected[0] : 0}
-		// 	orgId={collectionOrg ? collectionOrg.org.id : 0}
-		// 	handleCancel={this.handleCancelAssignDevice}
-		// 	handleClose={this.handleCloseAssignDevice}
-		// 	open={openAssignDevice}
-		// 	t={t}
-		// />
 	}
 
 	renderTable = (items, handleClick, key) => {
@@ -490,15 +359,11 @@ class Functions extends Component {
 
 	renderFavorites = () => {
 		const { classes, loading } = this.props
-		const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderAssignProject()}
-				{this.renderAssignDevice()}
-				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
 				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderConfirmDelete()}
+				{this.renderDeleteDialog()}
 			</Paper>
 			}
 		</GridContainer>
@@ -510,15 +375,14 @@ class Functions extends Component {
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable(functions, this.handleFunctionClick, 'functions')}
-				{this.renderConfirmDelete()}
+				{this.renderDeleteDialog()}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
 	render() {
-		// const { functions, route, filters } = this.state
-		const { /* history,  */match } = this.props
+		const { match } = this.props
 		return (
 			<Fragment>
 				<Switch>

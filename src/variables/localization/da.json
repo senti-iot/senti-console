@@ -358,6 +358,8 @@
 		},
 		"delete": {
 			"message": {
+				"cloudfunction": "Er du sikker på du ønsker at slette denne Cloud Funktion ( %{cf} ) ?",
+				"cloudfunctions": "Er du sikker på du ønsker at slette disse cloud funktioner:",
 				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} ) ?",
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
 				"device": "Er du sikker på du ønsker at slette denne enhed ( %{sensor} ) ?",
@@ -377,6 +379,8 @@
 				"users": "Er du sikker på du ønsker at slette disse brugere:"
 			},
 			"title": {
+				"cloudfunction": "Slet cloud funktion?",
+				"cloudfunctions": "Slet cloud funktioner?",
 				"collection": "Slet datasamling?",
 				"collections": "Slet datasamlinger?",
 				"device": "Slet enhed?",

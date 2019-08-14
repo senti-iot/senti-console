@@ -358,6 +358,8 @@
 		},
 		"delete": {
 			"message": {
+				"cloudfunction": "Are you sure you want to delete this Cloud Function ( %{cf} ) ?",
+				"cloudfunctions": "Are you sure you want to delete these cloud functions:",
 				"collection": "Are you sure you want to delete this data collection ( %{collection} ) ?",
 				"collections": "Are you sure you want to delete these data collections:",
 				"device": "Are you sure you want to delete this device ( %{sensor} ) ?",
@@ -377,6 +379,8 @@
 				"users": "Are you sure you want to delete these users:"
 			},
 			"title": {
+				"cloudfunction": "Delete cloud function?",
+				"cloudfunctions": "Delete cloud functions?",
 				"collection": "Delete data collection?",
 				"collections": "Delete data collections?",
 				"device": "Delete device?",
