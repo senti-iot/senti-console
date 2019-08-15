@@ -395,6 +395,7 @@
 				"deviceType": "Delete device type?",
 				"deviceTypes": "Delete device types?",
 				"tokens": "Delete API tokens?",
+				"token": "Delete API token?",
 				"user": "Delete user?",
 				"users": "Delete users?"
 			}

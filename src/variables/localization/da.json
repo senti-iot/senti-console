@@ -394,7 +394,8 @@
 				"registry": "Slet register?",
 				"deviceType": "Slet enhedstype?",
 				"deviceTypes": "Slet enhedstyper?",
-				"tokens": "Slet API Tokens?",
+				"tokens": "Slet API tokens?",
+				"token": "Slet API token?",
 				"user": "Slet bruger?",
 				"users": "Slet brugere?"
 			}

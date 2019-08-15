@@ -19,7 +19,7 @@ class CreateToken extends Component {
 		this.state = {
 			token: {
 				name: "",
-				type: null,
+				type: "",
 				typeId: null
 			},
 			sensor: {
@@ -38,6 +38,7 @@ class CreateToken extends Component {
 			openSensor: false,
 			openRegistry: false,
 			openDeviceType: false,
+			openConfimClose: false,
 			confirmClose: ""
 		}
 	}
@@ -62,7 +63,7 @@ class CreateToken extends Component {
 		this.setState({
 			token: {
 				name: "",
-				type: null,
+				type: "",
 				typeId: null
 			},
 			sensor: {
@@ -83,6 +84,7 @@ class CreateToken extends Component {
 			openDeviceType: false,
 			openConfimClose: false,
 			confirmClose: ""
+
 		})
 
 		this.props.getTokens(this.props.user.id)

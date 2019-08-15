@@ -1,13 +1,13 @@
-import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TokensTable from 'components/API/TokensTable';
 import TableToolbar from 'components/Table/TableToolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, handleRequestSort, dateTimeFormatter } from 'variables/functions';
-import { Delete, ViewList, /* ViewModule, */ Star, StarBorder, Close, Add } from 'variables/icons';
-import { GridContainer, CircularLoader, ItemG, Caption, Info, /* AssignProject */ } from 'components'
+import { filterItems, dateTimeFormatter } from 'variables/functions';
+import { Delete, ViewList, Close, Add, Code } from 'variables/icons';
+import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, /* AssignProject */ } from 'components'
 // import TokensCards from './TokensCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
@@ -24,7 +24,8 @@ class Tokens extends Component {
 			selected: [],
 			openToken: false,
 			openNewToken: false,
-			openDelete: false,
+			openDeleteS: false,
+			openDeleteM: false,
 			route: 0,
 			order: 'asc',
 			orderBy: 'id',
@@ -61,7 +62,7 @@ class Tokens extends Component {
 	ft = () => {
 		const { t } = this.props
 		return [
-			// { key: 'name', name: t('tokens.fields.name'), type: 'string' },
+			{ key: 'name', name: t('tokens.fields.name'), type: 'string' },
 			// { key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
 			// { key: 'created', name: t('tokens.fields.created'), type: 'date' },
 			// { key: 'protocol', name: t('tokens.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
@@ -78,20 +79,9 @@ class Tokens extends Component {
 		]
 	}
 	options = () => {
-		const { t, isFav, tokens } = this.props
-		const { selected } = this.state
-		let token = tokens[tokens.findIndex(d => d.id === selected[0])]
-		let favObj = {
-			id: token.id,
-			name: token.name,
-			type: 'token',
-			path: `/token/${token.id}`
-		}
-		let isFavorite = isFav(favObj)
+		const { t } = this.props
 		let allOptions = [
-			// { label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialogM, icon: Delete },
 		]
 		return allOptions
 	}
@@ -106,24 +96,7 @@ class Tokens extends Component {
 	}
 
 	componentDidUpdate = () => {
-		const { t, saved, s, isFav, finishedSaving } = this.props
-		if (saved === true) {
-			const { tokens } = this.props
-			const { selected } = this.state
-			let token = tokens[tokens.findIndex(d => d.id === selected[0])]
-			if (token) {
-				if (isFav({ id: token.id, type: 'token' })) {
-					s('snackbars.favorite.saved', { name: token.name, type: t('favorites.types.token') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-				if (!isFav({ id: token.id, type: 'token' })) {
-					s('snackbars.favorite.removed', { name: token.name, type: t('favorites.types.token') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-			}
-		}
+
 	}
 	//#endregion
 
@@ -134,45 +107,18 @@ class Tokens extends Component {
 		})
 	}
 
-	getFavs = () => {
-		const { order, orderBy } = this.state
-		const { favorites, tokens } = this.props
-		let favs = favorites.filter(f => f.type === 'token')
-		let favTokens = favs.map(f => {
-			return tokens[tokens.findIndex(d => d.id === f.id)]
-		})
-		favTokens = handleRequestSort(orderBy, order, favTokens)
-		return favTokens
-	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
-	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
-	}
 	filterItems = (data) => {
 		const rFilters = this.props.filters
 		const { filters } = this.state
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
-	snackBarTokens = (token, display) => {
+	snackBarTokens = (token) => {
 		const { s } = this.props
 		// const { selected } = this.state
 		switch (token) {
 			case 1:
 				s('snackbars.deletedSuccess')
 				break;
-			// case 2:
-			// 	s('snackbars.exported')
-			// 	break;
-			// case 3:
-			// 	s('snackbars.assign.deviceToToken', { token: ``, what: 'Device' })
-			// 	break;
-			// case 6:
-			// 	s('snackbars.assign.deviceToToken', { token: `${tokens[tokens.findIndex(c => c.id === selected[0])].name}`, device: display })
-			// 	break
 			default:
 				break;
 		}
@@ -192,25 +138,11 @@ class Tokens extends Component {
 
 	//#region Handlers
 
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/token/${selected[0]}/edit`, prevURL: `/tokens/list` })
-	}
-
 	handleTabs = () => {
 		const { location } = this.props
 		if (location.pathname.includes('grid'))
 			// this.setState({ route: 1 })
 			return 1
-		else {
-			if (location.pathname.includes('favorites'))
-				// this.setState({ route: 2 })
-				return 2
-			else {
-				// this.setState({ route: 0 })
-				return 0
-			}
-		}
 	}
 	handleRequestSort = key => (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
@@ -219,15 +151,6 @@ class Tokens extends Component {
 		}
 		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
-	}
-	handleTokenClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push('/token/' + id)
-	}
-
-	handleFavClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push({ pathname: '/token/' + id, prevURL: '/tokens/favorites' })
 	}
 	handleFilterKeyword = (value) => {
 		this.setState({
@@ -247,20 +170,28 @@ class Tokens extends Component {
 		if (r) {
 			this.setState({
 				selected: [],
-				openDelete: false,
+				openDeleteM: false,
 				anchorElMenu: null
 			})
 			this.getData(true)
 			this.snackBarTokens(1)
 		}
-		// Promise.all([selected.map(u => {
-		// 	return deleteToken(u)
-		// })]).then(async () => {
-		// 	this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-		// 	await this.getData(true).then(
-		// 		() => this.snackBarTokens(1)
-		// 	)
-		// })
+	}
+	handleDeleteToken = async () => {
+		const { token } = this.state
+		console.log(token)
+		let r = await deleteTokens([token.id])
+		if (r) {
+			this.setState({
+				selected: [],
+				token: null,
+				openToken: false,
+				openDeleteS: false,
+				anchorElMenu: false
+			})
+			this.getData(true)
+			this.snackBarTokens(1)
+		}
 	}
 	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
@@ -291,59 +222,23 @@ class Tokens extends Component {
 		this.setState({ selected: newSelected })
 	}
 
-	handleOpenAssignDevice = () => {
-		this.setState({ openAssignDevice: true, anchorElMenu: null })
+	handleOpenDeleteDialogM = () => {
+		this.setState({ openDeleteM: true, anchorElMenu: null })
 	}
 
-	handleCancelAssignDevice = () => {
-		this.setState({ openAssignDevice: false })
+	handleCloseDeleteDialogM = () => {
+		this.setState({ openDeleteM: false })
 	}
 
-	handleCloseAssignDevice = async (reload, display) => {
-		if (reload) {
-			this.setState({ openAssignDevice: false })
-			await this.getData(true).then(() => {
-				this.snackBarTokens(6, display)
-				this.setState({ selected: [] })
-			})
-		}
-	}
-	handleOpenAssignProject = () => {
-		this.setState({ openAssignProject: true, anchorElMenu: null })
+	handleOpenDeleteDialogS = () => {
+		this.setState({ openDeleteS: true, anchorElMenu: null })
 	}
 
-	handleCancelAssignProject = () => {
-		this.setState({ openAssignProject: false })
+	handleCloseDeleteDialogS = () => {
+		this.setState({ openDeleteS: false })
 	}
 
-	handleCloseAssignProject = async (reload) => {
-		if (reload) {
-			this.setState({ openAssignProject: false })
-			await this.getData(true).then(() => {
-				this.snackBarTokens(6)
-			})
-		}
-	}
-
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
-	}
-
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-	handleOpenUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: true
-		})
-	}
-
-	handleCloseUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: false, anchorEl: null
-		})
-	}
-	handleOpenToken = token => e => {
+	handleOpenToken = token => () => {
 		this.setState({
 			openToken: true,
 			token: token
@@ -442,47 +337,44 @@ class Tokens extends Component {
 					<DialogActions>
 						<Button variant={'outlined'} onClick={e => {
 							this.handleCheckboxClick(e, token.id)
-							this.handleOpenDeleteDialog()
-							this.handleCloseToken()
+							this.handleOpenDeleteDialogS()
+							// this.handleCloseToken()
 						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button>
 					</DialogActions>
 				</Fragment>
 				: <div />}
 		</Dialog>
 	}
-	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { t, classes, tokens } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-			PaperProps={{
-				style: {
-					minWidth: 300
-				}
-			}}
-		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.tokens')}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.tokens')}
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><div>&bull;</div>
-						<ListItemText primary={tokens[tokens.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleDeleteTokens} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
+	renderDeleteDialogMultiple = () => {
+		const { openDeleteM, selected } = this.state
+		const { t, tokens } = this.props
+		let data = selected.map(s => tokens[tokens.findIndex(t => t.id === s)])
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.tokens'}
+			message={'dialogs.delete.message.tokens'}
+			open={openDeleteM}
+			handleCloseDeleteDialog={this.handleCloseDeleteDialogM}
+			icon={<Code />}
+			handleDelete={this.handleDeleteTokens}
+			data={data}
+			dataKey={'name'}
+		/>
+	}
+
+	renderDeleteDialogSingle = () => {
+		const { openDeleteS, token } = this.state
+		const { t } = this.props
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.token'}
+			message={'dialogs.delete.message.token'}
+			messageOpts={{ token: token ? token.name : '' }}
+			open={openDeleteS}
+			single
+			handleCloseDeleteDialog={this.handleCloseDeleteDialogS}
+			handleDelete={this.handleDeleteToken}
+		/>
 	}
 
 
@@ -550,22 +442,6 @@ class Tokens extends Component {
 			null
 	}
 
-	renderFavorites = () => {
-		const { classes, loading } = this.props
-		const { selected } = this.state
-		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderAssignProject()}
-				{this.renderAssignDevice()}
-				{selected.length > 0 ? this.renderDeviceUnassign() : null}
-				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderConfirmDelete()}
-			</Paper>
-			}
-		</GridContainer>
-	}
-
 	renderTokens = () => {
 		const { classes, tokens, loading } = this.props
 		// const { selected } = this.state
@@ -573,7 +449,8 @@ class Tokens extends Component {
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable(tokens, this.handleTokenClick, 'tokens')}
-				{this.renderConfirmDelete()}
+				{this.renderDeleteDialogMultiple()}
+				{this.renderDeleteDialogSingle()}
 			</Paper></Fade>
 			}
 		</GridContainer>
