@@ -302,7 +302,7 @@ class EditSensor extends Component {
 			openReg: false
 		})
 	}
-	handleChangeReg = (o) => e => {
+	handleChangeReg = (o) => {
 		this.setState({
 			sensor: {
 				...this.state.sensor,
