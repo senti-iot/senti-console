@@ -68,7 +68,6 @@ class CreateFunctionForm extends Component {
 									label={t('collections.fields.description')}
 									handleChange={handleChange('description')}
 									value={cloudfunction.description}
-									autoFocus
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
