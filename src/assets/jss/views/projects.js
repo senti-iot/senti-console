@@ -17,14 +17,22 @@ const projectStyles = theme => ({
 			background: 'rgb(211,47,47, 0.2)'
 		}
 	},
+	iconButton: {
+		color: theme.palette.grey[500]
+	},
 	closeButton: {
 		marginLeft: 'auto',
-		color: theme.palette.grey[500],
-	  },
+		color: red[500],
+		"&:hover": {
+			// borderColor: red[700],
+			// color: red[500],
+			background: 'rgb(211,47,47, 0.2)'
+		}
+	},
 	editor: {
-		width: 'calc(100% - 16px)', 
-		border: '1px solid rgba(100, 100, 100, 0.25)', 
-		padding: 4, 
+		width: 'calc(100% - 16px)',
+		border: '1px solid rgba(100, 100, 100, 0.25)',
+		padding: 4,
 		borderRadius: 4,
 		"&:hover": {
 			boder: '1px solid #000'
@@ -83,7 +91,7 @@ const projectStyles = theme => ({
 	leftIcon: {
 		marginRight: 8
 	},
-	
+
 });
 
 export default projectStyles;

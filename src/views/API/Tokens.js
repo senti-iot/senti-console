@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TokensTable from 'components/API/TokensTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -309,9 +309,16 @@ class Tokens extends Component {
 					<DialogTitle disableTypography >
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{token.name}
-							<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseToken}>
-								<Close />
-							</IconButton>
+							<Tooltip title={t('actions.delete')}>
+								<IconButton className={classes.closeButton} onClick={this.handleOpenDeleteDialogS}>
+									<Delete />
+								</IconButton>
+							</Tooltip>
+							<Tooltip title={t('actions.close')}>
+								<IconButton aria-label="Close" className={classes.iconButton} onClick={this.handleCloseToken}>
+									<Close />
+								</IconButton>Icon
+							</Tooltip>
 						</ItemG>
 					</DialogTitle>
 					<DialogContent>
@@ -335,11 +342,11 @@ class Tokens extends Component {
 						</ItemG>
 					</DialogContent>
 					<DialogActions>
-						<Button variant={'outlined'} onClick={e => {
+						{/* <Button variant={'outlined'} onClick={e => {
 							this.handleCheckboxClick(e, token.id)
 							this.handleOpenDeleteDialogS()
 							// this.handleCloseToken()
-						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button>
+						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button> */}
 					</DialogActions>
 				</Fragment>
 				: <div />}
