@@ -147,7 +147,6 @@ export class ESChart extends Component {
 								</ItemG>
 								<ItemG xs={12}>
 									<AssignSensorDialog
-										all
 										t={t}
 										open={openSensor}
 										handleClose={this.handleExpand('openSensor', false)}

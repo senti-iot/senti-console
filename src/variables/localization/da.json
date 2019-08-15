@@ -453,7 +453,7 @@
 		},
 		"pageTitle": "Favoritter",
 		"types": {
-			"cloudfunction": "Cloud funktion",
+			"function": "Cloud funktion",
 			"collection": "Datasamling",
 			"device": "Enhed",
 			"devicetype": "Enhedstype",

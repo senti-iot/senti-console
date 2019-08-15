@@ -164,7 +164,7 @@ class AssignSensorDialog extends PureComponent {
 	}
 }
 const mapStateToProps = (state, props) => ({
-	sensors: props.all ? [{ id: 'all', name: props.t('dashboard.devices.all') }, ...state.data.sensors] : state.data.sensors,
+	sensors: state.data.sensors,
 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 })
 
