@@ -190,6 +190,10 @@ class CreateDashboard extends React.Component {
 	onLayoutChange = (layout) => {
 		this.props.setLayout(layout)
 	}
+	handleSave = () => {
+		this.props.saveDashboard()
+		this.props.handleCloseDT()
+	}
 	render() {
 		const { openAddDash, handleCloseDT, classes, d, t } = this.props
 		const appBarClasses = cx({
@@ -232,7 +236,7 @@ class CreateDashboard extends React.Component {
 
 								</ItemG>
 								<ItemG xs={1}>
-									<Button color={'primary'} variant={'outlined'} onClick={this.props.saveDashboard}>
+									<Button color={'primary'} variant={'outlined'} onClick={this.handleSave}>
 										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 									</Button>
 								</ItemG>
