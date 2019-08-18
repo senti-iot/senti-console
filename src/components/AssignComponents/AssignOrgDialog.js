@@ -1,10 +1,10 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 // import { getAllOrgs } from 'variables/dataOrgs';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
@@ -41,9 +41,6 @@ class AssignOrgDialog extends PureComponent {
 		let org = orgs[orgs.findIndex(o => o.id === sId)]
 		this.props.callBack(org)
 	}
-	Transition(props) {
-		return <Slide direction='up' {...props} />;
-	}
 	selectOrg = pId => e => {
 		e.preventDefault()
 		this.setState({ selectedOrg: pId })
@@ -60,18 +57,18 @@ class AssignOrgDialog extends PureComponent {
 		})
 	}
 	render() {
-		const {  filters } = this.state
+		const { filters } = this.state
 		const { orgs, classes, open, t } = this.props;
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 		return (
-			
+
 			<Dialog
 				fullScreen
 				open={open}
 				onClose={this.handleClose}
-				TransitionComponent={this.Transition}
+				TransitionComponent={SlideT}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>
@@ -146,7 +143,7 @@ class AssignOrgDialog extends PureComponent {
 					) : <CircularLoader />}
 				</List>
 			</Dialog>
-		
+
 		);
 	}
 }
@@ -155,7 +152,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-	
+
 }
 
 AssignOrgDialog.propTypes = {

@@ -61,17 +61,17 @@ const menuSelect = (p, c) => {
 }
 
 export const generateID = (name) => {
-	var randHex = function(len) {
+	var randHex = function (len) {
 		let maxlen = 8
 		let min = Math.pow(16, Math.min(len, maxlen) - 1)
 		let max = Math.pow(16, Math.min(len, maxlen)) - 1
-		let n   = Math.floor( Math.random() * (max - min + 1) ) + min
-		let r   = n.toString(16);
-		while ( r.length < len ) {
-		   r = r + randHex( len - maxlen );
+		let n = Math.floor(Math.random() * (max - min + 1)) + min
+		let r = n.toString(16);
+		while (r.length < len) {
+			r = r + randHex(len - maxlen);
 		}
 		return r;
-	  };
+	};
 	return name.replace(/\s+/g, '-').toLowerCase() + '-' + randHex(8);
 }
 
@@ -105,6 +105,7 @@ export const handleSetDate = (dId, gId, p) => {
 		if (graph) {
 			graph.period = p
 			graph.periodType = p.menuId
+			graph.period.timeType = p.timeType
 			gs[gs.findIndex(g => g.id === gId)] = graph
 			// ds[ds.findIndex(d => d.id === dId)] = dash
 			dispatch({ type: setGraphs, payload: gs })
@@ -136,7 +137,7 @@ export const setDashboards = (payload) => {
 }
 
 export const createGraph = (payload) => {
-	 return (dispatch, getState) => {
+	return (dispatch, getState) => {
 		let gs = []
 		gs = [...getState().dsSystem.cGraphs]
 		let newG = graphType(payload)
@@ -184,7 +185,7 @@ export const setGE = (payload) => {
 	}
 }
 export const editGraph = (newG) => {
-	 return (dispatch, getState) => {
+	return (dispatch, getState) => {
 		let gs = []
 		let nG = {}
 		nG = newG
@@ -195,7 +196,7 @@ export const editGraph = (newG) => {
 	}
 }
 export const createDash = () => {
-	 return dispatch => {
+	return dispatch => {
 		let newD = {
 			id: generateID('My Dashboard'),
 			name: 'My Dashboard',
@@ -207,7 +208,7 @@ export const createDash = () => {
 	}
 }
 export const editDash = (d) => {
-	 return (dispatch) => {
+	return (dispatch) => {
 		// let
 		dispatch({ type: eDash, payload: d })
 		if (d.graphs.length > 0)
@@ -222,7 +223,6 @@ export const removeDashboard = id => {
 		user = getState().settings.user
 		ds = user.aux.senti.dashboards
 		ds = ds.filter(f => f.id !== id)
-		console.log(ds)
 		user.aux.senti.dashboards = ds
 		dispatch(saveOnServ(user))
 		dispatch(await getSettings())

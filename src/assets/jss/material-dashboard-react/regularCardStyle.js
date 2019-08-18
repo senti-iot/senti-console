@@ -142,6 +142,7 @@ const regularCardStyle = theme => ({
 		transform: 'rotate(180deg)',
 	},
 	avatar: {
+		color: '#fff',
 		backgroundColor: teal[600],
 	},
 	whiteAvatar: {

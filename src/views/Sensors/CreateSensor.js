@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
+// import CreateSensorForm from 'components/Collections/CreateSensorForm';
 import { createSensor } from 'variables/dataRegistry';
 import CreateSensorForm from 'components/Sensors/CreateSensorForm';
 import { getAddressByLocation } from 'variables/dataDevices';
 import { getSensors } from 'redux/data';
 
-class CreateCollection extends Component {
+class CreateSensor extends Component {
 	constructor(props) {
 		super(props)
 
@@ -102,7 +102,8 @@ class CreateCollection extends Component {
 			openDT: false
 		})
 	}
-	handleChangeDT = (o) => e => {
+	handleChangeDT = (o) => {
+		// console.log(o)
 		this.setState({
 			sensor: {
 				...this.state.sensor,
@@ -112,7 +113,7 @@ class CreateCollection extends Component {
 				// ...this.state.sensorMetadata,
 				inbound: o.inbound ? o.inbound : [],
 				outbound: o.outbound ? o.outbound : [],
-				metadata: o.metadata ?  o.metadata  : {}
+				metadata: o.metadata ? o.metadata : {}
 			},
 			openDT: false,
 			select: {
@@ -273,7 +274,7 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	handleChangeFunc = (o, where) => e => {
+	handleChangeFunc = (o, where) => {
 		const { select } = this.state
 		let metadata = this.state.sensorMetadata[where]
 		metadata[select[where]].nId = o.id
@@ -303,7 +304,7 @@ class CreateCollection extends Component {
 			openReg: false
 		})
 	}
-	handleChangeReg = (o) => e => {
+	handleChangeReg = (o) => {
 		this.setState({
 			sensor: {
 				...this.state.sensor,
@@ -420,4 +421,4 @@ const mapDispatchToProps = dispatch => ({
 	getSensors: async (reload, orgId, ua) => dispatch(await getSensors(reload, orgId, ua))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateSensor)

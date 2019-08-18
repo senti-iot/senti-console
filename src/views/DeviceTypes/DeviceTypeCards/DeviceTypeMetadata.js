@@ -33,13 +33,13 @@ class DeviceTypeMetadata extends Component {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									 {mtd.map(s => {
-										return  <TableRow key={s}>
+									{mtd.map(s => {
+										return <TableRow key={s.key}>
 											<TableCell>
-												{mtd[s].key}
+												{s.key}
 											</TableCell>
 											<TableCell>
-												{mtd[s].value}
+												{s.value}
 											</TableCell>
 										</TableRow>
 									})}

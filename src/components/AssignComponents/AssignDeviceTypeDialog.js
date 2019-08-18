@@ -1,10 +1,10 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 // import { getAllDeviceTypes } from 'variables/dataDeviceTypes';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
@@ -18,6 +18,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 		this.state = {
 			deviceTypes: [],
 			selectedDeviceType: null,
+			page: 0,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -39,9 +40,6 @@ class AssignDeviceTypeDialog extends PureComponent {
 		let org = deviceTypes[deviceTypes.findIndex(o => o.id === sId)]
 		this.props.callBack(org)
 	}
-	Transition(props) {
-		return <Slide direction='up' {...props} />;
-	}
 	selectDeviceType = pId => e => {
 		e.preventDefault()
 		this.setState({ selectedDeviceType: pId })
@@ -57,6 +55,10 @@ class AssignDeviceTypeDialog extends PureComponent {
 			}
 		})
 	}
+	handleChangePage = (event, page) => {
+		this.setState({ page });
+	}
+
 	render() {
 		const { filters, page } = this.state
 		const { deviceTypes, classes, open, t } = this.props;
@@ -74,7 +76,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 				fullScreen
 				open={open}
 				onClose={this.handleClose}
-				TransitionComponent={this.Transition}
+				TransitionComponent={SlideT}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>
@@ -82,7 +84,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={3} container alignItems={'center'}>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sidebar.cloudfunctions')}
+										{t('sidebar.devices')}
 									</Typography>
 								</ItemG>
 								<ItemG xs>
@@ -163,6 +165,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 }
 const mapStateToProps = (state, props) => ({
 	deviceTypes: state.data.deviceTypes,
+	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 })
 
 const mapDispatchToProps = {

@@ -5,22 +5,20 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
-import { DataUsage } from 'variables/icons';
+import { DataUsage, InsertChart, Wifi } from 'variables/icons';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getSensorLS, unassignSensor } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
-import SensorData from './SensorCards/SensorData';
-import GaugeData from 'views/Charts/GaugeData';
+import SensorMessages from 'views/Charts/SensorMessages';
+import { getSensorMessages } from 'variables/dataRegistry';
 
 class Sensor extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			//Date Filter
-			//End Date Filter Tools
 			registry: null,
 			activeDevice: null,
 			loading: true,
@@ -45,6 +43,8 @@ class Sensor extends Component {
 		const { t } = this.props
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+			{ id: 1, title: t('sidebar.messages'), label: <InsertChart/>, url: `#messages`},
+			{ id: 2, title: t('registries.fields.protocol'), label: <Wifi />, url:`#protocol`}
 			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
 			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
 			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
@@ -71,10 +71,10 @@ class Sensor extends Component {
 				this.setState({ weather: data })
 			}
 		}
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			// this.handleSwitchDayHourSummary()
-			// this.getHeatMapData()
-		}
+		// if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
+		// 	// this.handleSwitchDayHourSummary()
+		// 	// this.getHeatMapData()
+		// }
 		if (this.props.saved === true) {
 			const { sensor } = this.props
 			if (this.props.isFav({ id: sensor.id, type: 'sensor' })) {
@@ -135,7 +135,14 @@ class Sensor extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-
+	getDeviceMessages = async () => {
+		const { sensor, periods } = this.props
+		await getSensorMessages(sensor.id, periods[0]).then(rs => {
+			this.setState({
+				sensorMessages: rs
+			})
+		})
+	}
 	snackBarMessages = (msg) => {
 		// const { s, t, registry } = this.props
 
@@ -145,26 +152,6 @@ class Sensor extends Component {
 		}
 	}
 
-	handleDataSize = (i) => {
-		let visiblePeriods = 0
-		const { sensor } = this.props
-		if (sensor.metadata) {
-			if (sensor.metadata.dataKeys) {
-				sensor.metadata.dataKeys.forEach(p => visiblePeriods += 1)
-				if (visiblePeriods === 1)
-					return 12
-				if (i === this.props.sensor.metadata.dataKeys.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
-					return 12
-				return 6
-			}
-			else {
-				return 12
-			}
-		}
-		else {
-			return 12
-		}
-	}
 
 	renderLoader = () => {
 		return <CircularLoader />
@@ -193,11 +180,18 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-					
-						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+						<ItemGrid xs={12} noMargin id={'messages'}>
+							<SensorMessages
+								period={periods[0]}
+								t={t}
+								messages={this.state.sensorMessages}
+								getData={this.getDeviceMessages}
+							/>
+						</ItemGrid>
+						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return 	<ItemGrid xs={12} container noMargin key={i + 'gauges'}>
-									<GaugeData 
+									<GaugeData
 										v={k.key}
 										nId={k.nId}
 										t={t}
@@ -208,9 +202,9 @@ class Sensor extends Component {
 
 							}
 							else return null
-						}) : null}
+						}) : null} */}
 						{/* <ItemGrid xs={12} container noMaring id={'charts'}> */}
-						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 0)
 								return 	<ItemGrid xs={12} container noMargin key={i + 'charts'}>
 									<SensorData
@@ -228,9 +222,9 @@ class Sensor extends Component {
 								return null
 							}
 						}
-						) : null}
+						) : null} */}
 						{/* </ItemGrid> */}
-						<ItemGrid xs={12} noMargin id='details'>
+						<ItemGrid xs={12} noMargin id='protocol'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
 								addToFav={this.addToFav}

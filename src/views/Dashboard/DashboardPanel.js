@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide, Paper } from '@material-ui/core';
-import { ItemG, T, CircularLoader } from 'components';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Paper } from '@material-ui/core';
+import { ItemG, T, CircularLoader, SlideT } from 'components';
 import { Close, Edit } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -41,9 +41,7 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		})
 	}
-	transition(props) {
-		return <Slide direction='up' {...props} />;
-	}
+
 	renderPos = (l) => {
 		return <div style={{
 			position: 'absolute',
@@ -89,7 +87,7 @@ class DashboardPanel extends Component {
 		}
 	}
 	onBreakpointChange = (args) => {
-		console.log(args)
+		// console.log(args)
 	}
 	renderDashboard = () => {
 		const { t, classes, d, loading, handleOpenEDT } = this.props
@@ -102,7 +100,7 @@ class DashboardPanel extends Component {
 			fullScreen
 			open={openDashboard}
 			onClose={handleCloseDashboard}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -274,7 +272,7 @@ DashboardPanel.defaultProps = {
 	rowHeight: 25,
 	preventCollision: false,
 	onLayoutChange: () => { },
-	cols: { lg: 12, md: 6, sm: 6, xs: 3, xxs: 3 },
+	cols: { lg: 12, md: 6, sm: 4, xs: 3, xxs: 3 },
 
 
 };

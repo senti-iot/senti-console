@@ -1,18 +1,14 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAvailableDevices } from 'variables/dataDevices';
-import { ItemG, CircularLoader, Info } from 'components';
+import { ItemG, CircularLoader, Info, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { assignDeviceToCollection } from 'variables/dataCollections';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
-
-function Transition(props) {
-	return <Slide direction='up' {...props} />;
-}
 
 class AssignDevice extends React.Component {
 	constructor(props) {
@@ -43,11 +39,11 @@ class AssignDevice extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	
+
 	//#endregion
 
 	//#region External
-	
+
 	assignDevice = async () => {
 		const { collectionId } = this.props
 		const { selectedDevices } = this.state
@@ -59,7 +55,7 @@ class AssignDevice extends React.Component {
 			this.props.handleClose(true, device)
 		})
 	}
-	
+
 	//#endregion
 
 	//#region Handlers
@@ -106,9 +102,9 @@ class AssignDevice extends React.Component {
 			}
 		})
 	}
-	
+
 	isSelected = id => this.state.selectedDevices === id ? true : false
-	
+
 	//#endregion
 
 	render() {
@@ -123,7 +119,7 @@ class AssignDevice extends React.Component {
 					fullScreen
 					open={open}
 					onClose={this.handleCloseDialog}
-					TransitionComponent={Transition}
+					TransitionComponent={SlideT}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, withStyles, Slide } from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
 import { GridContainer, ItemGrid, TextF, DSelect } from 'components'
@@ -24,9 +24,6 @@ class CreateFunctionForm extends Component {
 		}
 	}
 
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -48,7 +45,7 @@ class CreateFunctionForm extends Component {
 			]}
 		/>
 	}
-	
+
 	render() {
 		const { t, handleChange, org, cloudfunction, handleOrgChange, classes, handleCreate, handleCodeChange, goToRegistries } = this.props
 		return (
@@ -78,22 +75,22 @@ class CreateFunctionForm extends Component {
 								{this.renderType()}
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<TextF 
+								<TextF
 									value={org.name}
 									handleClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
-								<AssignOrgDialog 
+								<AssignOrgDialog
 									t={t}
 									open={this.state.openOrg}
 									handleClose={() => this.setState({ openOrg: false })}
-									callBack={org => {this.setState({ openOrg: false }); handleOrgChange(org)}}
+									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{cloudfunction.type === 0 ? 
+								{cloudfunction.type === 0 ?
 									<div className={classes.editor}>
-										<AceEditor 
+										<AceEditor
 											mode={'javascript'}
 											theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 											onChange={handleCodeChange('js')}
@@ -121,8 +118,8 @@ class CreateFunctionForm extends Component {
 										{t('actions.save')}
 									</Button>
 								</div>
-							</ItemGrid> 
-						
+							</ItemGrid>
+
 						</Grid>
 					</form>
 				</Paper>

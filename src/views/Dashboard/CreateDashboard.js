@@ -1,7 +1,7 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button } from '@material-ui/core';
-import { ItemG, Dropdown, TextF } from 'components';
+import { ItemG, Dropdown, TextF, SlideT } from 'components';
 import cx from 'classnames'
 import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -198,7 +198,7 @@ class CreateDashboard extends React.Component {
 					fullScreen
 					open={openAddDash}
 					onClose={handleCloseDT}
-					TransitionComponent={this.transition}
+					TransitionComponent={SlideT}
 					PaperProps={{
 						className: classes[d.color]
 					}}
@@ -249,7 +249,7 @@ class CreateDashboard extends React.Component {
 					</CreateDashboardToolbar>
 					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
-						<DropZone color={d.color} onDrop={item => { console.log(item); this.props.createGraph(item.type) }}>
+						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
 								cols={this.cols}
@@ -260,7 +260,6 @@ class CreateDashboard extends React.Component {
 								preventCollision={false}
 								measureBeforeMount={false}
 								onLayoutChange={this.onLayoutChange}
-								// onDragStop={(item) => console.log(item)}
 								useCSSTransforms={true}
 							>
 								{this.generateDOM()}

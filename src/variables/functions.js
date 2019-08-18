@@ -107,7 +107,7 @@ export const hoursToArr = (from, to) => {
 	return arr
 }
 export const isWeekend = (date) => {
-	return moment(date).day() === 6 || moment(date).day() === 0 ? true : false
+	return moment(date, 'YYYY-MM-DD HH:mm:ss').day() === 6 || moment(date).day() === 0 ? true : false
 }
 export const allDatesToArr = (from, to) => {
 	let startDate = moment(from)
@@ -291,9 +291,9 @@ const sortFunc = (a, b, orderBy, way, type) => {
 }
 /**
  * Handle Sorting
- * @param {String} property 
- * @param {String} way 
- * @param {Array} data 
+ * @param {String} property
+ * @param {String} way
+ * @param {Array} data
  */
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
@@ -303,7 +303,7 @@ export const handleRequestSort = (property, way, data) => {
 }
 /**
  * Phone Formatter
- * @param {String} phone 
+ * @param {String} phone
  */
 export const pF = (phone) => {
 	let phoneNumber
@@ -317,8 +317,8 @@ export const pF = (phone) => {
 }
 /**
  * Date Time Formatter
- * @param {Date} date 
- * @param {boolean} withSeconds 
+ * @param {Date} date
+ * @param {boolean} withSeconds
  */
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
@@ -330,7 +330,7 @@ export const dateTimeFormatter = (date, withSeconds) => {
 }
 /**
  * Short Date 'll' format
- * @param {Date} date 
+ * @param {Date} date
  */
 export const shortDateFormat = (date) => {
 	var a = moment(date).format('ll')
@@ -338,7 +338,7 @@ export const shortDateFormat = (date) => {
 }
 /**
  * Date Formatter 'LL' format
- * @param {Date} date 
+ * @param {Date} date
  */
 export const dateFormatter = (date) => {
 	var a = moment(date).format('LL')

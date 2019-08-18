@@ -10,7 +10,7 @@ import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 export class ESChart extends Component {
 	constructor(props) {
 		super(props)
-	
+
 		this.state = {
 			 dataSourceExp: false,
 			 generalExp: false,
@@ -18,7 +18,7 @@ export class ESChart extends Component {
 			 openCF: false
 		}
 	}
-	
+
 	handleExpand = (prop, val) => e => this.setState({ [prop]: val !== undefined ? val : !this.state[prop] })
 
 	chartTypes = () => {
@@ -56,7 +56,6 @@ export class ESChart extends Component {
 		this.props.handleEditGraph(newG)
 	}
 	handleEditCF = d => {
-		console.log(d)
 		let newG = { ...this.props.g }
 		newG.dataSource.cf = d.id
 		this.props.handleEditGraph(newG)
@@ -148,7 +147,7 @@ export class ESChart extends Component {
 										open={openSensor}
 										handleClose={this.handleExpand('openSensor', false)}
 										callBack={this.handleEditDevice}
-									/>									
+									/>
 									<TextF
 										id={'sensorChart'}
 										label={t('dashboard.fields.device')}

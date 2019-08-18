@@ -1,12 +1,12 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Hidden, Tooltip,
+	Grid, IconButton, withStyles, Hidden, Tooltip, Menu, ListItem, ListItemIcon, ListItemText,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, GaugeIcon,
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, GaugeIcon, CloudDownload, MoreVert,
 } from 'variables/icons'
 import { CircularLoader, Caption, ItemG, InfoCard, DateFilterMenu, T } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -75,7 +75,11 @@ class GaugeComponent extends PureComponent {
 		})
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period.menuId !== this.props.period.menuId || prevProps.period.timeType !== this.props.period.timeType || prevProps.g !== this.props.g || prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey) {
+		if (prevProps.period.menuId !== this.props.period.menuId ||
+			prevProps.period.timeType !== this.props.period.timeType ||
+			prevProps.g !== this.props.g ||
+			prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey ||
+			prevProps.period.from !== this.props.period.from) {
 			this.setState({ loading: true }, async () => {
 				await this.getData()
 			})
@@ -323,14 +327,14 @@ class GaugeComponent extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { period, title } = this.props
+		const { period, title, t } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container alignItems={'center'} spacing={2}>
+		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
 			{small ? null :
-				<Hidden smDown>
+				<Hidden xsDown>
 					<ItemG xs zeroMinWidth>
-						<Tooltip title={title}>
+						<Tooltip enterDelay={1000} title={title}>
 							<div>
 								<T noWrap variant={'h6'}>{title}</T>
 							</div>
@@ -338,17 +342,60 @@ class GaugeComponent extends PureComponent {
 					</ItemG>
 				</Hidden>
 			}
-			<ItemG container style={{ width: 'min-content' }}>
-				<ItemG xs={12}>
-					<T noWrap component={'span'}>{`${displayFrom}`}</T>
+			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
 				</ItemG>
-				<ItemG xs={12}>
-					<T noWrap component={'span'}> {`${displayTo}`}</T>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.period')}>
+						<DateFilterMenu
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+											</ItemG>
+										</ItemG>
+
+									</ItemG>
+
+								</ItemG>
+							}
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
+					</Tooltip>
 				</ItemG>
-				<ItemG xs={12}>
-					<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
+					</Tooltip>
 				</ItemG>
 			</ItemG>
+
 		</ItemG>
 	}
 	renderType = () => {
@@ -374,35 +421,36 @@ class GaugeComponent extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { /* classes, */ t, period } = this.props
-		return <ItemG container direction={'column'}>
-			{/* <Hidden lgUp> */}
-			<ItemG container>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
-					</Tooltip>
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
-			</ItemG>
+		const { t } = this.props
+		const { actionAnchor } = this.state
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
+		return <ItemG container>
+			<Tooltip title={t('menus.menu')}>
+				<IconButton
+					aria-label='More'
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup='true'
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</Tooltip>
+			<Menu
+				marginThreshold={24}
+				id='long-menu'
+				anchorEl={actionAnchor}
+				open={Boolean(actionAnchor)}
+				onClose={this.handleCloseActionsDetails}
+				onChange={this.handleVisibility}
+				PaperProps={{ style: { minWidth: 250 } }}>
+
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t('menus.export')}</ListItemText>
+				</ListItem>
+
+
+			</Menu>
 		</ItemG>
 	}
 	renderNoData = () => {
@@ -423,7 +471,7 @@ class GaugeComponent extends PureComponent {
 	}
 
 	render() {
-		const { g, color, classes } = this.props
+		const { color, classes, g } = this.props
 		const { loading } = this.state
 		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 
@@ -432,7 +480,6 @@ class GaugeComponent extends PureComponent {
 				<InfoCard
 					color={color}
 					title={this.renderTitle(small)}
-					// subheader={`${this.options[period.menuId].label}`}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
@@ -448,8 +495,10 @@ class GaugeComponent extends PureComponent {
 								<CircularLoader notCentered />
 							</div> :
 								<Fragment>
-									{small ? this.renderSmallTitle() : null}
-									<Hidden mdUp>
+									<Hidden xsDown>
+										{small ? this.renderSmallTitle() : null}
+									</Hidden>
+									<Hidden smUp>
 										{this.renderSmallTitle()}
 									</Hidden>
 									{this.renderType()}

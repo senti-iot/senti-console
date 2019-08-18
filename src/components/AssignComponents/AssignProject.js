@@ -1,4 +1,4 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -6,13 +6,9 @@ import React, { Fragment } from 'react';
 import { getAllProjects } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
-import { ItemG } from 'components';
+import { ItemG, SlideT } from 'components';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { updateCollection, getCollection } from 'variables/dataCollections';
-
-function Transition(props) {
-	return <Slide direction='up' {...props} />;
-}
 
 class AssignProject extends React.Component {
 	constructor(props) {
@@ -46,17 +42,17 @@ class AssignProject extends React.Component {
 		let collection = await getCollection(this.props.collectionId)
 		// let newProject = await getProject(selectedProject.id)
 		// if (this.props.multiple)
-		// { 
+		// {
 		// 	if (newProject.dataCollections.length > 0)
 		// 		newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
 		// 	else {
 		// 		newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]
 		// 	}
-		// }	
+		// }
 		// else {
 		// 	if (newProject.dataCollections)
 		// 		newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ ...ci }))]
-		// 	else { 
+		// 	else {
 		// 		newProject.dataCollections = [...this.props.collectionId.map(ci => ({  ...ci }))]
 		// 	}
 		// }
@@ -75,7 +71,7 @@ class AssignProject extends React.Component {
 		else { this.setState({ selectedProject: pId }) }
 
 	}
-	
+
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -97,7 +93,7 @@ class AssignProject extends React.Component {
 					fullScreen
 					open={open}
 					onClose={handleCancel}
-					TransitionComponent={Transition}
+					TransitionComponent={SlideT}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>
@@ -152,7 +148,7 @@ class AssignProject extends React.Component {
 										/>
 
 									</ItemG>
-								</ItemG>	
+								</ItemG>
 							</Hidden>
 						</Toolbar>
 					</AppBar>

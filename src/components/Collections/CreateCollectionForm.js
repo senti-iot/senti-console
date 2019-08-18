@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, SlideT } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 /**
@@ -22,9 +22,6 @@ class CreateCollectionForm extends Component {
 		}
 	}
 
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -42,7 +39,7 @@ class CreateCollectionForm extends Component {
 			fullScreen
 			open={openDevice}
 			onClose={handleCloseDevice}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -125,7 +122,7 @@ class CreateCollectionForm extends Component {
 			fullScreen
 			open={openOrg}
 			onClose={handleCloseOrg}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -199,7 +196,7 @@ class CreateCollectionForm extends Component {
 									handleChange={handleChange('name')}
 									value={collection.name}
 									autoFocus
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -210,7 +207,7 @@ class CreateCollectionForm extends Component {
 									value={collection.description}
 									multiline
 									rows={3}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -242,7 +239,7 @@ class CreateCollectionForm extends Component {
 									}}
 								/>
 							</ItemGrid>
-						
+
 							<ItemGrid xs={12}>
 								{this.renderSelectState()}
 							</ItemGrid>
@@ -261,7 +258,7 @@ class CreateCollectionForm extends Component {
 										{t('actions.save')}
 									</Button>
 								</div>
-							</ItemGrid> 
+							</ItemGrid>
 						</Grid>
 					</form>
 				</Paper>

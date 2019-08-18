@@ -66,7 +66,7 @@ class PieTooltip extends Component {
 		const { tooltip } = this.props
 		return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
 	}
-	renderTooltip = () => { 
+	renderTooltip = () => {
 		const { t, classes, tooltip, handleCloseTooltip } = this.props
 		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
 			<Paper className={classes.paper}>
@@ -87,6 +87,9 @@ class PieTooltip extends Component {
 			</Paper>
 		</Grow>
 	}
+
+	handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
+
 	render() {
 		const { tooltip, mobile, getRef, handleCloseTooltip } = this.props
 		return (

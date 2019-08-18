@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Grid, Dialog, Slide, AppBar, Toolbar, List, ListItem, Divider, ListItemText, withStyles, Button, Typography } from '@material-ui/core'
-import { GridContainer, TextF, ItemGrid } from 'components/index';
+import { Paper, Grid, Dialog, AppBar, Toolbar, List, ListItem, Divider, ListItemText, withStyles, Button, Typography } from '@material-ui/core'
+import { GridContainer, TextF, ItemGrid, SlideT } from 'components/index';
 import PropTypes from 'prop-types'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import cx from 'classnames';
@@ -17,9 +17,7 @@ import { Close } from 'variables/icons';
 	orgs:array.isRequired,	>}
 */
 class EditCollectionForm extends Component {
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+
 	renderSelectState = () => {
 		const { t, collection, handleChange } = this.props
 		return <DSelect
@@ -41,7 +39,7 @@ class EditCollectionForm extends Component {
 			fullScreen
 			open={open}
 			onClose={handleCloseOrg}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Typography variant='h6' color='inherit' className={classes.flex}>

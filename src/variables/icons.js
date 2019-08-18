@@ -10,6 +10,7 @@ import Call from '@material-ui/icons/Call'
 import Language from '@material-ui/icons/Language'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import InsertChart from '@material-ui/icons/InsertChart'
+import Wifi from '@material-ui/icons/Wifi'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -111,6 +112,7 @@ import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
 import Palette from '@material-ui/icons/Palette'
 export {
+	Wifi,
 	Palette,
 	Https,
 	GaugeIcon,

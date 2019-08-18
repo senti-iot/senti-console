@@ -80,12 +80,7 @@ class Messages extends Component {
 			{ id: 'deviceName', label: t('messages.fields.deviceName') },
 			{ id: 'registryName', label: t('messages.fields.registryName') },
 			{ id: 'created', label: t('registries.fields.created') },
-			{ id: 'customerName', label: t('orgs.fields.name') },
-			// { id: 'name', label: t('messages.fields.name') },
-			// { id: 'region', label: t('messages.fields.region') },
-			// { id: 'protocol', label: t('messages.fields.protocol') },
-			// { id: 'protocol', label: t('messages.fields.created') },
-			// { id: 'customer', label: t('messages.fields.customer') },
+			{ id: 'customerName', label: t('orgs.fields.name') }
 		]
 	}
 	options = () => {
@@ -379,7 +374,7 @@ class Messages extends Component {
 					<DialogTitle disableTypography >
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 
-							{msg.deviceName} 
+							{msg.deviceName}
 
 							<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseMessage}>
 								<Close />
@@ -477,7 +472,7 @@ class Messages extends Component {
 		/>
 	}
 
-	renderTable = (items, handleClick, key) => {
+	renderTable = (items, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
 		return <Fragment>
@@ -500,7 +495,7 @@ class Messages extends Component {
 	renderCards = () => {
 		const { /* t, history, messages, */ loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <MessageCards messages={this.filterItems(messages)} t={t} history={history} /> 
+			// <MessageCards messages={this.filterItems(messages)} t={t} history={history} />
 			null
 	}
 

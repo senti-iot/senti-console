@@ -324,12 +324,12 @@ class ChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG container style={{ flexFlow: 'column' }}>
+			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
 			<Hidden mdDown>
-				<ItemG>
+				<ItemG xs>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
 							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
