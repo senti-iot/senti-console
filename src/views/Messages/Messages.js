@@ -76,7 +76,7 @@ class Messages extends Component {
 	messagesHeader = () => {
 		const { t } = this.props
 		return [
-			{ id: 'id', label: t('messages.fields.id') },
+			{ id: 'id', label: t('messages.fields.id'), centered: true },
 			{ id: 'deviceName', label: t('messages.fields.deviceName') },
 			{ id: 'registryName', label: t('messages.fields.registryName') },
 			{ id: 'created', label: t('registries.fields.created') },
@@ -228,10 +228,6 @@ class Messages extends Component {
 		}
 		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
-	}
-	handleMessageClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push('/message/' + id)
 	}
 
 	handleFavClick = id => e => {
@@ -399,22 +395,19 @@ class Messages extends Component {
 								<Caption>{t('messages.fields.data')}</Caption>
 								<div className={classes.editor}>
 									<AceEditor
-										height={300}
 										mode={'json'}
 										theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
-										// onChange={handleCodeChange('js')}
 										value={JSON.stringify(msg.data, null, 4)}
 										showPrintMargin={false}
-										style={{ width: '100%' }}
+										style={{ width: '100%', height: '300px' }}
 										name="seeMsgData"
-										// editorProps={{ $blockScrolling: true }}
 									/>
 								</div>
 							</ItemG>
 						</ItemG>
 					</DialogContent>
 				</Fragment>
-				: null}
+				: <div />}
 		</Dialog>
 	}
 	renderConfirmDelete = () => {
@@ -521,7 +514,7 @@ class Messages extends Component {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderTableToolBar()}
-				{this.renderTable(messages, this.handleMessageClick, 'messages')}
+				{this.renderTable(messages, 'messages')}
 				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}

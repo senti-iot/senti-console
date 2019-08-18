@@ -23,6 +23,7 @@ import Sleet from 'assets/weather/sleet.svg'
 import Snow from 'assets/weather/snow.svg'
 import Wind from 'assets/weather/wind.svg'
 //#endregion
+import StorageIcon from '@material-ui/icons/Storage'
 import Cake from '@material-ui/icons/Cake'
 import Star from '@material-ui/icons/Star'
 import StarBorder from '@material-ui/icons/StarBorder'
@@ -112,6 +113,7 @@ import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
 import Palette from '@material-ui/icons/Palette'
 export {
+	StorageIcon,
 	Wifi,
 	Palette,
 	Https,

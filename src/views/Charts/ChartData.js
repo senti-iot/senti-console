@@ -608,7 +608,9 @@ class ChartData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					subheader={<ItemG><Caption>
+						{`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					</Caption></ItemG>}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}

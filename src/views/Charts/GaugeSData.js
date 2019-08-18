@@ -16,7 +16,7 @@ import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 import RGauge from 'components/Charts/RGauge';
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 
 class GaugeComponent extends PureComponent {
@@ -68,7 +68,10 @@ class GaugeComponent extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period } = this.props
-		let data = await getSensorDataClean(g.dataSource.deviceId, moment(period.from).subtract(1, 'day'), period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+		let data = null
+		if (g.dataSource.deviceId && g.dataSource.dataKey) {
+			data = await getSensorDataClean(g.dataSource.deviceId, moment(period.from).subtract(1, 'day'), period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+		}
 		// let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
 		this.setState({
 			data, loading: false
@@ -402,7 +405,7 @@ class GaugeComponent extends PureComponent {
 		const { period, color, g, create, chartId } = this.props
 		const { loading, data } = this.state
 		let id = chartId ? chartId : create ? 'edit' + g.id : g.id
-		if (!loading) {
+		if (!loading && data) {
 			return <RGauge
 				color={color}
 				// title={this.props.title}

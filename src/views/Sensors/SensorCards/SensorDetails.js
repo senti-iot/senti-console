@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, /* Delete */ } from 'variables/icons';
+import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, Delete } from 'variables/icons';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 
@@ -27,11 +27,11 @@ class SensorDetails extends Component {
 		switch (id) {
 			case 0:
 				return t('registries.fields.protocols.none')
-			case 1: 
+			case 1:
 				return t('registries.fields.protocols.mqtt')
-			case 2: 
+			case 2:
 				return t('registries.fields.protocols.http')
-			case 3: 
+			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
@@ -49,7 +49,9 @@ class SensorDetails extends Component {
 		}
 	}
 	render() {
-		const { classes, sensor, t, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history } = this.props
+		const { classes, sensor, t, isFav, addToFav, removeFromFav,
+			handleOpenDeleteDialog,
+			/* accessLevel ,*/ history } = this.props
 		return (
 			<InfoCard
 				title={sensor.name ? sensor.name : sensor.id}
@@ -62,8 +64,8 @@ class SensorDetails extends Component {
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
-						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
-						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog }
 
 					]
 				} />

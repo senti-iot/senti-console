@@ -347,11 +347,10 @@ class CreateSensorForm extends Component {
 											handleCloseDT()
 										}}
 									/>
-									{/* {this.renderSelectType()} */}
 									<TextF
 										id={'regID'}
 										label={t('sensors.fields.deviceType')}
-										value={select.dt.name}
+										value={select.dt.name ? select.dt.name : ''}
 										readOnly
 										handleClick={handleOpenDT}
 										handleChange={() => { }}

@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout, resetCreateDash } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
@@ -39,6 +39,10 @@ class CreateDashboard extends React.Component {
 		//temp
 		// this.props.createDash()
 	}
+	componentWillUnmount() {
+		this.props.resetCreateDash()
+	}
+
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.props.openAddDash !== prevProps.openAddDash) && this.props.openAddDash) {
 			this.props.createDash()
@@ -186,6 +190,10 @@ class CreateDashboard extends React.Component {
 	onLayoutChange = (layout) => {
 		this.props.setLayout(layout)
 	}
+	handleSave = () => {
+		this.props.saveDashboard()
+		this.props.handleCloseDT()
+	}
 	render() {
 		const { openAddDash, handleCloseDT, classes, d, t } = this.props
 		const appBarClasses = cx({
@@ -228,7 +236,7 @@ class CreateDashboard extends React.Component {
 
 								</ItemG>
 								<ItemG xs={1}>
-									<Button color={'primary'} variant={'outlined'} onClick={this.props.saveDashboard}>
+									<Button color={'primary'} variant={'outlined'} onClick={this.handleSave}>
 										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 									</Button>
 								</ItemG>
@@ -240,9 +248,9 @@ class CreateDashboard extends React.Component {
 							<ItemG container style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }}>
 								<ToolbarItem type={"chart"} name={'Chart'} />
 								<ToolbarItem type={"gauge"} name={'Gauge'} />
-								<ToolbarItem type={"scorecard"} name={'Scorecard'} />
+								{/* <ToolbarItem type={"scorecard"} name={'Scorecard'} />
 								<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />
-								<ToolbarItem type={"windcard"} name={'Windcard'} />
+								<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
 							</ItemG>
 
 						}>
@@ -292,7 +300,8 @@ const mapDispatchToProps = dispatch => ({
 	setGE: g => dispatch(setGE(g)),
 	removeGE: g => dispatch(removeGE(g)),
 	saveDashboard: () => dispatch(saveDashboard()),
-	setLayout: (l) => dispatch(setLayout(l))
+	setLayout: (l) => dispatch(setLayout(l)),
+	resetCreateDash: () => dispatch(resetCreateDash())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))

@@ -31,7 +31,11 @@ class DeviceTypeTable extends React.Component {
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	}
-
+	handleSelectAllClick = (event, checked) => {
+		const { data } = this.props
+		let selected = data.map(d => d.id)
+		this.props.handleSelectAllClick(selected, checked)
+	}
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	setHover = (e, n) => {
@@ -39,7 +43,7 @@ class DeviceTypeTable extends React.Component {
 		const { hoverTime } = this.props
 		const { rowHover } = this.state
 		if (hoverTime > 0)
-		 this.timer = setTimeout(() => {
+			this.timer = setTimeout(() => {
 				if (rowHover) {
 					this.setState({
 						rowHover: null
@@ -64,21 +68,7 @@ class DeviceTypeTable extends React.Component {
 	renderHover = () => {
 		return <DeviceTypeHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} devicetype={this.state.hoverDeviceType} />
 	}
-	// renderProtocol = (id) => {
-	// 	const { t } = this.props
-	// 	switch (id) {
-	// 		case 0:
-	// 			return t('registries.fields.protocols.none')
-	// 		case 1: 
-	// 			return t('registries.fields.protocols.mqtt')
-	// 		case 2: 
-	// 			return t('registries.fields.protocols.http')
-	// 		case 3: 
-	// 			return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
-	// 		default:
-	// 			break;
-	// 	}
-	// }
+
 	render() {
 		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { page } = this.state
@@ -95,7 +85,7 @@ class DeviceTypeTable extends React.Component {
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={this.props.handleSelectAllClick}
+							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
@@ -141,16 +131,16 @@ class DeviceTypeTable extends React.Component {
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
-											}/>
+											} />
 										</Hidden>
 
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC 
+											<TC
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
-												FirstC label={n.name}/>
-											<TC 
+												FirstC label={n.name} />
+											<TC
 												label={n.customer_name}
 											/>
 										</Hidden>

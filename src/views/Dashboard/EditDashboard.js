@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
@@ -36,6 +36,9 @@ class EditDashboard extends React.Component {
 			openToolbox: true,
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
+	}
+	componentWillUnmount() {
+		this.props.resetEditDash()
 	}
 
 	componentDidMount = () => {
@@ -275,9 +278,9 @@ class EditDashboard extends React.Component {
 							<ItemG container style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }}>
 								<ToolbarItem type={"chart"} name={'Chart'} />
 								<ToolbarItem type={"gauge"} name={'Gauge'} />
-								<ToolbarItem type={"scorecard"} name={'Scorecard'} />
+								{/* <ToolbarItem type={"scorecard"} name={'Scorecard'} />
 								<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />
-								<ToolbarItem type={"windcard"} name={'Windcard'} />
+								<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
 							</ItemG>
 
 						}>
@@ -321,7 +324,8 @@ const mapDispatchToProps = dispatch => ({
 	setGE: g => dispatch(setGE(g)),
 	removeGE: g => dispatch(removeGE(g)),
 	saveDashboard: () => dispatch(saveDashboard(true)),
-	setLayout: (l) => dispatch(setLayout(l))
+	setLayout: (l) => dispatch(setLayout(l)),
+	resetEditDash: () => dispatch(resetEditDash())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDashboard))

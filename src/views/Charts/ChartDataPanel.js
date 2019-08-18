@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { InfoCard, DateFilterMenu, Dropdown, T } from 'components';
+import { InfoCard, DateFilterMenu, Dropdown, T, ItemG } from 'components';
 import { withStyles, Button, IconButton, Typography } from '@material-ui/core';
 import { Add, Visibility, VisibilityOff, Clear, Timeline } from 'variables/icons';
 import { connect } from 'react-redux'
@@ -10,7 +10,7 @@ import withLocalization from 'components/Localization/T';
 
 const styles = theme => ({
 	icon: {
-		
+
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
 	}
@@ -32,13 +32,13 @@ class ChartDataPanel extends Component {
 						{periods.length < 5 &&
 							<DateFilterMenu
 								button={mobile}
-								icon={<Fragment><Add className={classes.icon} />{!mobile ? null : <Typography>{t('menus.charts.addAPeriod')}</Typography>}</Fragment>}
+								icon={<ItemG container alignItems={'center'}><Add className={classes.icon} />{!mobile ? null : <T className={classes.icon}>{t('menus.charts.addAPeriod')}</T>}</ItemG>}
 								t={t}
 							/>
 						}
 
 						<Dropdown
-							icon={<Fragment><Visibility className={classes.icon} />{!mobile ? null : <Typography>{t('menus.charts.showHidePeriods')}</Typography>}</Fragment>}
+							icon={<Fragment><Visibility className={classes.icon} />{!mobile ? null : <T className={classes.icon}>{t('menus.charts.showHidePeriods')}</T>}</Fragment>}
 							button={mobile}
 							divider
 							menuItems={

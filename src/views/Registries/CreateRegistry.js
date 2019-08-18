@@ -23,8 +23,12 @@ class CreateCollection extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('menus.create.registry', true, prevURL, '')
+		props.setHeader('menus.create.registry', true, prevURL, 'manage.registries')
 		props.setBC('createregistry')
+		props.setTabs({
+			id: 'createRegistry',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -48,12 +52,13 @@ class CreateCollection extends Component {
 		})
 	}
 	handleOrgChange = org => {
-		this.setState({ org, 
+		this.setState({
+			org,
 			registry: {
 				...this.state.registry,
 				orgId: org.id
 			}
-	 })
+		})
 	}
 	createRegistry = async () => {
 		return await createRegistry(this.state.registry)

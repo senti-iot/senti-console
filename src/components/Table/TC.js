@@ -1,7 +1,11 @@
 import React from 'react'
 import { TableCell, Typography, withStyles } from '@material-ui/core'
+import classNames from 'classnames'
 
 const styles = theme => ({
+	tablecellPadding: {
+		padding: 9
+	},
 	tableCell: {
 		// paddingRight: "8px",
 		// padding: 0,
@@ -23,12 +27,16 @@ const styles = theme => ({
 
 
 const TC = (props) => {
-	const { checkbox, classes, label, content, className, center, FirstC, ...rest } = props
+	const { checkbox, noCheckbox, classes, label, content, className, center, FirstC, ...rest } = props
+	let tcClasses = classNames({
+		[className]: className,
+		[classes.tableCellCheckbox]: checkbox,
+		[classes.tableCell]: true,
+		[classes.tablecellPadding]: noCheckbox
+	})
 	return (
-		<TableCell classes={{
-			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell) 
-		}}
-		{...rest}
+		<TableCell classes={{ root: tcClasses }}
+			{...rest}
 		>
 			{(label !== null || label !== undefined) ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
 				{label}

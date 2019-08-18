@@ -5,7 +5,7 @@
 import BarChart from './Charts/BarChart'
 import LineChart from './Charts/LineChart'
 import DoughnutChart from './Charts/DoughnutChart'
-import PieChart	 from './Charts/PieChart'
+import PieChart from './Charts/PieChart'
 import MultiLineChart from './Charts/MultiLineChart'
 
 // ##############################
@@ -37,6 +37,7 @@ import AssignDC from './AssignComponents/AssignDC'
 // #############################
 
 import SlideT from './Dialog/SlideT'
+import DeleteDialog from './Dialog/DeleteDialog'
 
 // ##############################
 // // // CustomInput
@@ -103,6 +104,7 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	DeleteDialog,
 	SlideT,
 	Box,
 	MultiLineChart,

@@ -112,7 +112,7 @@ class AssignSensorDialog extends PureComponent {
 										<Close />
 									</IconButton>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sensors.pageTitle')}
+										{t('sidebar.devices')}
 									</Typography>
 								</ItemG>
 								<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -164,7 +164,7 @@ class AssignSensorDialog extends PureComponent {
 	}
 }
 const mapStateToProps = (state, props) => ({
-	sensors: props.all ? [{ id: 'all', name: props.t('dashboard.devices.all') }, ...state.data.sensors] : state.data.sensors,
+	sensors: state.data.sensors,
 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 })
 

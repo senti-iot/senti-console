@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createDeviceType } from 'variables/dataRegistry';
+import { createDeviceType } from 'variables/dataDeviceTypes';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { getDeviceTypes } from 'redux/data';
 
@@ -31,8 +31,12 @@ class CreateDeviceType extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
-		props.setHeader('menus.create.devicetype', true, prevURL, '')
+		props.setHeader('menus.create.devicetype', true, prevURL, 'manage.devicetypes')
 		props.setBC('createdevicetypes')
+		props.setTabs({
+			id: 'createDT',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -223,10 +227,10 @@ class CreateDeviceType extends Component {
 	}
 
 	//#endregion
-	
+
 	//#region Create Device Type
 
-	createDeviceType = async () => { 
+	createDeviceType = async () => {
 		let smtd = this.state.sensorMetadata.metadata
 		let mtd = {}
 		smtd.forEach((m) => {
@@ -265,7 +269,7 @@ class CreateDeviceType extends Component {
 
 	render() {
 		const { t, cloudfunctions } = this.props
-		const { deviceType, keyName, value, sensorMetadata, org  } = this.state
+		const { deviceType, keyName, value, sensorMetadata, org } = this.state
 		return (
 			<CreateDeviceTypeForm
 				org={org}
@@ -280,7 +284,7 @@ class CreateDeviceType extends Component {
 				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
 				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
-				
+
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}

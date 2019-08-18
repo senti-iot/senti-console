@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, /* Delete */ } from 'variables/icons';
+import { DataUsage, Edit, Delete, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, /* Delete */ } from 'variables/icons';
 import { connect } from 'react-redux'
 
 class RegistryDetails extends Component {
@@ -15,14 +15,14 @@ class RegistryDetails extends Component {
 		switch (id) {
 			case 0:
 				return t('cloudfunctions.fields.types.function')
-			case 1: 
+			case 1:
 				return t('registries.fields.protocols.mqtt')
 			default:
 				break;
 		}
 	}
 	render() {
-		const { classes, cloudfunction, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
+		const { handleOpenDeleteDialog, classes, cloudfunction, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
 		return (
 			<InfoCard
 				title={cloudfunction.name ? cloudfunction.name : cloudfunction.uuid}
@@ -32,8 +32,8 @@ class RegistryDetails extends Component {
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/function/${cloudfunction.id}/edit`, prevURL: `/function/${cloudfunction.id}` }) },
-						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
-						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 
 					]
 				} />

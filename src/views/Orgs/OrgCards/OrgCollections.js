@@ -7,84 +7,84 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 
 
 class OrgCollections extends Component {
-		renderIcon = (status) => {
-			const { classes, t } = this.props
-			switch (status) {
-				case 1:
-					return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
-						<SignalWifi2Bar className={classes.yellowSignal} />
-					</ItemG>
-				case 2:
-					return <ItemG container justify={'center'} title={t('devices.status.green')}>
-						<SignalWifi2Bar className={classes.greenSignal} />
-					</ItemG>
-				case 0:
-					return <ItemG container justify={'center'} title={t('devices.status.red')}>
-						<SignalWifi2Bar className={classes.redSignal} />
-					</ItemG>
-				case null:
-					return <ItemG container justify={'center'} title={t('devices.status.red')}>
-						<SignalWifi2Bar />
-					</ItemG>
-				default:
-					break;
-			}
+	renderIcon = (status) => {
+		const { classes, t } = this.props
+		switch (status) {
+			case 1:
+				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
+					<SignalWifi2Bar className={classes.yellowSignal} />
+				</ItemG>
+			case 2:
+				return <ItemG container justify={'center'} title={t('devices.status.green')}>
+					<SignalWifi2Bar className={classes.greenSignal} />
+				</ItemG>
+			case 0:
+				return <ItemG container justify={'center'} title={t('devices.status.red')}>
+					<SignalWifi2Bar className={classes.redSignal} />
+				</ItemG>
+			case null:
+				return <ItemG container justify={'center'} title={t('devices.status.red')}>
+					<SignalWifi2Bar />
+				</ItemG>
+			default:
+				break;
 		}
-		render() {
-			const { collections, classes, t } = this.props
-			return (
-				<InfoCard
-					title={t('collections.pageTitle')}
-					subheader={<ItemG>
-						{`${t('orgs.fields.deviceCount')}: ${collections.length}`}
-					</ItemG>}
-					avatar={<DataUsage />}
-					noExpand
-					noPadding
-					content={
-						<Table>
-							<TableBody style={{ padding: "0 24px" }}>
-								{collections ? collections.map((n, i) => {
-									return (
-										<TableRow
-											hover
-											onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/management/org/${this.props.org.id}` }) }}
-											key={i}
-											style={{ cursor: 'pointer', padding: '0 20px' }}
-										>
-											<Hidden lgUp>
-												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
-												<TC content={
-													<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-															<Info noWrap paragraphCell={classes.noMargin}>
-																{`${n.name} - ${n.id}`}
-															</Info>
-														</ItemGrid>
-														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-															<Caption noWrap className={classes.noMargin}>
-												
-															</Caption>
-														</ItemGrid>
-														{/* </ItemGrid> */}
+	}
+	render() {
+		const { collections, classes, t } = this.props
+		return (
+			<InfoCard
+				title={t('collections.pageTitle')}
+				subheader={<ItemG><Caption>
+					{`${t('orgs.fields.collectionCount')}: ${collections.length}`}
+				</Caption></ItemG>}
+				avatar={<DataUsage />}
+				noExpand
+				noPadding
+				content={
+					<Table>
+						<TableBody style={{ padding: "0 24px" }}>
+							{collections ? collections.map((n, i) => {
+								return (
+									<TableRow
+										hover
+										onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/management/org/${this.props.org.id}` }) }}
+										key={i}
+										style={{ cursor: 'pointer', padding: '0 20px' }}
+									>
+										<Hidden lgUp>
+											<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
+											<TC content={
+												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Info noWrap paragraphCell={classes.noMargin}>
+															{`${n.name} - ${n.id}`}
+														</Info>
 													</ItemGrid>
-												}/>
-									
-											</Hidden>
-											<Hidden mdDown>
-												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
-												<TC checkbox label={n.id} />
-												<TC label={n.name} />
-											</Hidden>
-										</TableRow>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Caption noWrap className={classes.noMargin}>
 
-									)
-								}) : null}
-							</TableBody>
-						</Table>
-					}/>
-			)
-		}
+														</Caption>
+													</ItemGrid>
+													{/* </ItemGrid> */}
+												</ItemGrid>
+											} />
+
+										</Hidden>
+										<Hidden mdDown>
+											<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
+											<TC checkbox label={n.id} />
+											<TC label={n.name} />
+										</Hidden>
+									</TableRow>
+
+								)
+							}) : null}
+						</TableBody>
+					</Table>
+				} />
+		)
+	}
 }
 
 export default withStyles(devicetableStyles)(OrgCollections)

@@ -23,6 +23,7 @@ const deviceStyles = theme => ({
 		whiteSpace: 'nowrap',
 		overflow: 'hidden',
 		textOverflow: 'ellipsis',
+		paddingLeft: 8,
 		[theme.breakpoints.down('sm')]: {
 			paddingBottom: 8,
 			paddingTop: 8

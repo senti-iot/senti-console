@@ -64,11 +64,10 @@ class CreateFunctionForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
-									id={'functionName'}
+									id={'functionDesc'}
 									label={t('collections.fields.description')}
 									handleChange={handleChange('description')}
 									value={cloudfunction.description}
-									autoFocus
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -76,6 +75,7 @@ class CreateFunctionForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
+									id={'cfOrgId'}
 									value={org.name}
 									handleClick={() => this.setState({ openOrg: true })}
 									readonly

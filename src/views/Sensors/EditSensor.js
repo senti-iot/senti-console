@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import EditSensorForm from 'components/Collections/EditSensorForm';
 import { getSensorLS, getSensors } from 'redux/data';
-import { updateSensor } from 'variables/dataRegistry';
+import { updateSensor } from 'variables/dataSensors';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 import CreateSensorForm from 'components/Sensors/CreateSensorForm';
@@ -17,6 +17,7 @@ class EditSensor extends Component {
 			sensor: {
 				reg_id: 0,
 				type_id: 0,
+				description: '',
 				lat: 56.2639,
 				lng: 9.5018,
 				address: '',
@@ -43,8 +44,12 @@ class EditSensor extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('menus.edits.device', true, prevURL, '')
+		props.setHeader('menus.edits.device', true, prevURL, 'manage.sensors')
 		props.setBC('editsensor')
+		props.setTabs({
+			id: 'editSensor',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -71,12 +76,13 @@ class EditSensor extends Component {
 				...this.state.sensor,
 				lat,
 				lng,
-				address }
+				address
+			}
 		})
 
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, sensor, deviceTypes, registries } = this.props
+		const { location, setHeader, setBC, sensor, deviceTypes, registries } = this.props
 		if ((!prevProps.sensor && sensor !== prevProps.sensor && sensor) || (this.state.registry === null && sensor)) {
 			this.setState({
 				sensor: { ...sensor },
@@ -96,8 +102,8 @@ class EditSensor extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/sensor/${this.id}`
-			setHeader('menus.edits.device', true, prevURL, 'sensors')
-			this.props.setBC('editsensor', sensor.name, sensor.id)
+			setHeader('menus.edits.device', true, prevURL, 'manage.sensors')
+			setBC('editsensor', sensor.name, sensor.id)
 		}
 	}
 	componentDidMount = async () => {
@@ -137,7 +143,7 @@ class EditSensor extends Component {
 				metadata: Object.keys(o.metadata).map(m => ({ key: m, value: o.metadata[m] })),
 				// ...this.state.sensorMetadata,
 				inbound: o.inbound ? o.inbound : [],
-				outbound: o.outbound ? o.outbound : []	
+				outbound: o.outbound ? o.outbound : []
 			},
 			openDT: false,
 			select: {
@@ -156,7 +162,7 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleAddInboundFunction = e => { 
+	handleAddInboundFunction = e => {
 		let mtd = this.state.sensorMetadata.inbound
 		this.setState({
 			sensorMetadata: {
@@ -184,7 +190,7 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleAddKey = e => { 
+	handleAddKey = e => {
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -206,7 +212,7 @@ class EditSensor extends Component {
 		let mtd = this.state.sensorMetadata.metadata
 		mtd.push({ key: "", value: "" })
 		this.setState({
-			sensorMetadata: { 
+			sensorMetadata: {
 				...this.state.sensorMetadata,
 				metadata: mtd
 			}
@@ -261,7 +267,7 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleChangeFunc = (o, where) => e => {	
+	handleChangeFunc = (o, where) => e => {
 		const { select } = this.state
 		let metadata = this.state.sensorMetadata[where]
 		metadata[select[where]].nId = o.id
@@ -296,7 +302,7 @@ class EditSensor extends Component {
 			openReg: false
 		})
 	}
-	handleChangeReg = (o) => e => {
+	handleChangeReg = (o) => {
 		this.setState({
 			sensor: {
 				...this.state.sensor,
@@ -352,7 +358,7 @@ class EditSensor extends Component {
 	render() {
 		const { t, cloudfunctions } = this.props
 		const { sensor, sensorMetadata, loading } = this.state
-		return ( loading ? <CircularLoader/> :
+		return (loading ? <CircularLoader /> :
 
 			<CreateSensorForm
 				sensor={sensor}
@@ -365,7 +371,7 @@ class EditSensor extends Component {
 				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
 				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
-			
+
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}
@@ -374,7 +380,7 @@ class EditSensor extends Component {
 
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
-			
+
 				handleChangeMetadataKey={this.handleChangeMetadataKey}
 				handleChangeMetadata={this.handleChangeMetadata}
 				handleRemoveMtdKey={this.handleRemoveMtdKey}
@@ -385,7 +391,7 @@ class EditSensor extends Component {
 				handleChangeDT={this.handleChangeDT}
 				openDT={this.state.openDT}
 				deviceTypes={this.props.deviceTypes}
-			
+
 				registries={this.props.registries}
 				handleOpenReg={this.handleOpenReg}
 				handleCloseReg={this.handleCloseReg}

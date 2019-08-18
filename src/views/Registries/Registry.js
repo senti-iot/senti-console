@@ -1,6 +1,6 @@
 import { withStyles, Fade } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { DataUsage, DeviceHub } from 'variables/icons';
@@ -10,6 +10,7 @@ import { scrollToAnchor } from 'variables/functions';
 import { getRegistryLS } from 'redux/data';
 import RegistryDetails from './RegistryCards/RegistryDetails';
 import RegistryDevices from './RegistryCards/RegistryDevices';
+import { deleteRegistry } from 'variables/dataRegistry';
 
 class Registry extends Component {
 	constructor(props) {
@@ -76,7 +77,7 @@ class Registry extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getRegistry(id).then(() => this.props.registry ? this.props.setBC('registry',  this.props.registry.name) : null
+				await this.getRegistry(id).then(() => this.props.registry ? this.props.setBC('registry', this.props.registry.name) : null
 				)
 				this.props.setTabs({
 					route: 0,
@@ -126,6 +127,40 @@ class Registry extends Component {
 		}
 	}
 
+	handleOpenDeleteDialog = () => {
+		this.setState({
+			openDelete: true
+		})
+	}
+	handleCloseDeleteDialog = () => {
+		this.setState({
+			openDelete: false
+		})
+	}
+	handleDeleteRegistry = async () => {
+		const { registry } = this.props
+		if (this.props.isFav(registry.id))
+			this.removeFromFav()
+		await deleteRegistry(registry.id).then(() => {
+			this.handleCloseDeleteDialog()
+			this.snackBarMessages(1)
+			this.props.history.push('/registries/list')
+		})
+	}
+	renderDeleteDialog = () => {
+		const { openDelete } = this.state
+		const { t } = this.props
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.registry'}
+			message={'dialogs.delete.message.registry'}
+			messageOpts={{ registry: this.props.registry.name }}
+			open={openDelete}
+			single
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteRegistry}
+		/>
+	}
 
 
 	renderLoader = () => {
@@ -139,6 +174,7 @@ class Registry extends Component {
 			<Fragment>
 				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
+						{this.renderDeleteDialog()}
 						<ItemGrid xs={12} noMargin id='details'>
 							<RegistryDetails
 								isFav={this.props.isFav({ id: registry.id, type: 'registry' })}
@@ -147,17 +183,13 @@ class Registry extends Component {
 								registry={registry}
 								history={history}
 								match={match}
-								// handleOpenAssignProject={this.handleOpenAssignProject}
-								// handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								// handleOpenAssignOrg={this.handleOpenAssignOrg}
-								// handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								// handleOpenAssignDevice={this.handleOpenAssignDevice}
+								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 								t={t}
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={'devices'}>
-							<RegistryDevices 
+							<RegistryDevices
 								devices={registry.devices}
 								t={t}
 							/>

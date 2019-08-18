@@ -9,7 +9,7 @@ import withLocalization from 'components/Localization/T';
 import { suggestionGen, filterItems } from 'variables/functions';
 import Search from 'components/Search/Search';
 import { editGraph } from 'redux/dsSystem';
-import { getSensorLS } from 'redux/data';
+import { getSensorLS, unassignSensor } from 'redux/data';
 import ESChart from './EditSources/Chart'
 import ESGauge from './EditSources/Gauge';
 import ESScorecard from './EditSources/Scorecard';
@@ -28,6 +28,9 @@ export class EditDataSource extends Component {
 				keyword: ''
 			}
 		}
+	}
+	componentWillUnmount = () => {
+		this.props.unassignSensor()
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 
@@ -150,7 +153,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('cfs.pageTitle')}
+									{t('sidebar.cloudfunctions')}
 								</T>
 							</ItemG>
 							<ItemG xs={8}>
@@ -171,7 +174,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('cfs.pageTitle')}
+									{t('sidebar.cloudfunctions')}
 								</T>
 							</ItemG>
 							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -219,7 +222,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('sensors.pageTitle')}
+									{t('devices.pageTitle')}
 								</T>
 							</ItemG>
 							<ItemG xs={9} md={7}>
@@ -240,7 +243,7 @@ export class EditDataSource extends Component {
 									<Close />
 								</IconButton>
 								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('sensors.pageTitle')}
+									{t('devices.pageTitle')}
 								</T>
 							</ItemG>
 							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -368,7 +371,7 @@ export class EditDataSource extends Component {
 									<ItemG>
 										<TextF
 											id={'scbAB-a-name'}
-											label={t('dashboard.field.name')}
+											label={t('dashboard.fields.name')}
 											value={g.dataSources.a.label}
 											handleChange={this.handleEditName('a')}
 										/>
@@ -447,7 +450,7 @@ export class EditDataSource extends Component {
 									<ItemG>
 										<TextF
 											id={'scbAB-b-name'}
-											label={t('dashboard.field.name')}
+											label={t('dashboard.fields.name')}
 											value={g.dataSources.b.label}
 											handleChange={this.handleEditName('b')}
 										/>
@@ -520,7 +523,8 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
 	editGraph: (newG) => dispatch(editGraph(newG)),
-	getSensor: async id => dispatch(await getSensorLS(id))
+	getSensor: async id => dispatch(await getSensorLS(id)),
+	unassignSensor: () => dispatch(unassignSensor())
 })
 
 export default withLocalization()(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDataSource)))

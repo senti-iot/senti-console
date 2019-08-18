@@ -84,7 +84,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={3} container alignItems={'center'}>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sidebar.devices')}
+										{t('sidebar.devicetypes')}
 									</Typography>
 								</ItemG>
 								<ItemG xs>
@@ -112,7 +112,7 @@ class AssignDeviceTypeDialog extends PureComponent {
 										<Close />
 									</IconButton>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('deviceTypes.pageTitle')}
+										{t('sidebar.devicetypes')}
 									</Typography>
 								</ItemG>
 								<ItemG xs={12} container alignItems={'center'} justify={'center'}>

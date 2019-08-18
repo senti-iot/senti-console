@@ -40,7 +40,7 @@ class MessageTable extends React.Component {
 		const { hoverTime } = this.props
 		const { rowHover } = this.state
 		if (hoverTime > 0)
-		 this.timer = setTimeout(() => {
+			this.timer = setTimeout(() => {
 				if (rowHover) {
 					this.setState({
 						rowHover: null
@@ -53,6 +53,11 @@ class MessageTable extends React.Component {
 					this.setState({ rowHover: e.target, hoverMessage: n })
 				}
 			}, hoverTime);
+	}
+	handleSelectAllClick = (event, checked) => {
+		const { data } = this.props
+		let selected = data.map(d => d.id)
+		this.props.handleSelectAllClick(selected, checked)
 	}
 	unsetTimeout = () => {
 		clearTimeout(this.timer)
@@ -70,11 +75,11 @@ class MessageTable extends React.Component {
 		switch (id) {
 			case 0:
 				return t('registries.fields.protocols.none')
-			case 1: 
+			case 1:
 				return t('registries.fields.protocols.mqtt')
-			case 2: 
+			case 2:
 				return t('registries.fields.protocols.http')
-			case 3: 
+			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
@@ -96,7 +101,7 @@ class MessageTable extends React.Component {
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={this.props.handleSelectAllClick}
+							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
@@ -142,17 +147,17 @@ class MessageTable extends React.Component {
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
-											}/>
+											} />
 										</Hidden>
 
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC 
+											<TC
 												checkbox
-												label={n.id}/>
+												label={n.id} />
 											<TC
 												FirstC
-												label={n.name} 
+												label={n.name}
 											/>
 											<TC label={dateTimeFormatter(n.created, true)} />
 										</Hidden>

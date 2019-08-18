@@ -10,7 +10,7 @@ import {
 } from 'variables/dataDevices';
 import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections';
 import store from 'redux/store';
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 // import store from ''
 const format = 'YYYY-MM-DD+HH:mm'
 
@@ -65,8 +65,7 @@ const regenerateData = (d, unit) => {
 export const setExportData = (dataArr, unit, type, from, to) => {
 	let dataSets = dataArr
 	let newData = []
-	if (type === 'summary')
-	{
+	if (type === 'summary') {
 		if (dataSets) {
 			dataSets.map(d => newData.push({
 				dcId: d.dcId,
@@ -179,7 +178,7 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 			roundDataSets: [{
 				from: from,
 				to: to,
-				labels: dataArr.map(d => [d.name, d.name, d.data[0]] ),
+				labels: dataArr.map(d => [d.name, d.name, d.data[0]]),
 				datasets: [{
 					data: dataArr.map(d => d.data[0]),
 					backgroundColor: dataArr.map(d => d.color),
@@ -638,7 +637,8 @@ export const setMeterData = (dataArr, hoverID) => {
 						data: d.data.map(f => ({ x: f.created, y: f.data.value + Math.random() * 10 })),
 						// data: d.data
 					})
-				}) },
+				})
+			},
 			barDataSets: {
 				labels: labels,
 				datasets: dataArr.map((d) => ({
@@ -654,18 +654,18 @@ export const setMeterData = (dataArr, hoverID) => {
 				}))
 			},
 			roundDataSets:
-					dataArr.map(d => ({
-						name: d.name,
-						color: d.color,
-						labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
-						datasets: [{
-							id: d.id,
-							lat: d.lat,
-							long: d.long,
-							backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-							data: Object.entries(d.data).map(d => d[1])
-						}]
-					}))
+				dataArr.map(d => ({
+					name: d.name,
+					color: d.color,
+					labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
+					datasets: [{
+						id: d.id,
+						lat: d.lat,
+						long: d.long,
+						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+						data: Object.entries(d.data).map(d => d[1])
+					}]
+				}))
 		}
 	}
 	return state

@@ -23,8 +23,12 @@ class CreateCollection extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
-		props.setHeader('menus.create.cloudfunction', true, prevURL, '')
+		props.setHeader('menus.create.cloudfunction', true, prevURL, 'manage.cloudfunctions')
 		props.setBC('createcloudfunction')
+		props.setTabs({
+			id: 'createCF',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -57,7 +61,7 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	createFunction = async () => { 
+	createFunction = async () => {
 
 		let res = await createFunction({ ...this.state.cloudfunction, orgId: this.state.org.id })
 		await this.props.getFunctions(true, this.props.orgId, this.props.accessLevel.apisuperuser ? true : false)
@@ -81,7 +85,7 @@ class CreateCollection extends Component {
 		const { t } = this.props
 		const { cloudfunction, org } = this.state
 		return (
-		
+
 			<CreateFunctionForm
 				cloudfunction={cloudfunction}
 				org={org}

@@ -46,6 +46,7 @@ class TP extends Component {
 				labelRowsPerPage={isWidthUp('sm', width) ? disableRowsPerPage ? `` : t('tables.rowsPerPage') : ''}
 				rowsPerPageOptions={rowsPerPageOptions}
 				SelectProps={{
+					renderValue: value => value,
 					classes: {
 						select: selectClasses,
 						icon: iconClass

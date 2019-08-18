@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import CreateSensorForm from 'components/Collections/CreateSensorForm';
-import { createSensor } from 'variables/dataRegistry';
+import { createSensor } from 'variables/dataSensors';
 import CreateSensorForm from 'components/Sensors/CreateSensorForm';
 import { getAddressByLocation } from 'variables/dataDevices';
 import { getSensors } from 'redux/data';
@@ -45,8 +45,12 @@ class CreateSensor extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('menus.create.device', true, prevURL, '')
+		props.setHeader('menus.create.device', true, prevURL, 'manage.sensors')
 		props.setBC('createsensor')
+		props.setTabs({
+			id: 'createSensor',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -103,7 +107,6 @@ class CreateSensor extends Component {
 		})
 	}
 	handleChangeDT = (o) => {
-		// console.log(o)
 		this.setState({
 			sensor: {
 				...this.state.sensor,

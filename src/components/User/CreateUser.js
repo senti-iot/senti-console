@@ -60,6 +60,10 @@ class CreateUser extends Component {
 			selectedGroup: 136550100000225,
 		}
 		props.setBC('createuser')
+		props.setTabs({
+			id: 'createUser',
+			tabs: []
+		})
 	}
 	keyHandler = (e) => {
 		if (e.key === 'Escape') {
@@ -115,7 +119,7 @@ class CreateUser extends Component {
 		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
 		this.props.getUsers(true)
 		history.push(`/management/user/${rs.id}`)
-	
+
 	}
 	handleExtendedBirthdayChange = prop => e => {
 

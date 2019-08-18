@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import CreateDeviceTypeForm from 'components/Collections/CreateDeviceTypeForm';
 import { getDeviceTypeLS, getDeviceTypes } from 'redux/data';
-import { updateDeviceType } from 'variables/dataRegistry';
+import { updateDeviceType } from 'variables/dataDeviceTypes';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
@@ -25,6 +25,10 @@ class CreateDeviceType extends Component {
 		this.id = props.match.params.id
 		// let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
 		props.setBC('createdevicetype')
+		props.setTabs({
+			id: 'createDT',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -50,7 +54,7 @@ class CreateDeviceType extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${this.id}`
-			setHeader('menus.edits.devicetype', true, prevURL, 'devicetypes')
+			setHeader('menus.edits.devicetype', true, prevURL, 'manage.devicetypes')
 			setBC('editdevicetype', devicetype.name, devicetype.id)
 		}
 	}
@@ -230,7 +234,7 @@ class CreateDeviceType extends Component {
 
 	//#endregion
 
-	//#region Function selector	
+	//#region Function selector
 
 	handleOpenFunc = (p, where) => e => {
 		this.setState({
@@ -281,7 +285,7 @@ class CreateDeviceType extends Component {
 		const { t, cloudfunctions } = this.props
 		const { devicetype, sensorMetadata, loading, org } = this.state
 
-		return ( loading ? <CircularLoader/> :
+		return (loading ? <CircularLoader /> :
 
 			<CreateDeviceTypeForm
 				org={org}
@@ -296,7 +300,7 @@ class CreateDeviceType extends Component {
 				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
 				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
-				
+
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}

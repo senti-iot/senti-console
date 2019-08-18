@@ -18,10 +18,8 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-// import { getSensorDataClean } from 'variables/dataRegistry';
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
-// import TC from 'components/Table/TC'
 import { Scrollbars } from 'react-custom-scrollbars';
 
 class WindCard extends PureComponent {

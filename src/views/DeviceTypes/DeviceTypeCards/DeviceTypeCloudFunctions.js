@@ -4,7 +4,7 @@ import { ItemG, CircularLoader, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
-import { DataUsage } from 'variables/icons';
+import { CloudUpload } from 'variables/icons';
 import { connect } from 'react-redux'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -33,13 +33,13 @@ class DeviceTypeCloudFunctions extends Component {
 		return (
 			<InfoCard
 				title={t('sidebar.cloudfunctions')}
-				avatar={<DataUsage />}
+				avatar={<CloudUpload />}
 				noExpand
 				content={
 					loading ? <CircularLoader /> : <ItemG container spacing={3}>
 						<ItemG xs={12}>
 							<Info>{t('cloudfunctions.fields.inboundfunc')}</Info>
-							{cfi ? 	<Table>
+							{cfi ? <Table>
 								<TableHead>
 									<TableRow>
 										<TableCell>{t('cloudfunctions.fields.types.inbound')}</TableCell>
@@ -70,21 +70,21 @@ class DeviceTypeCloudFunctions extends Component {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									 {cfo.map((s, i) => {
+									{cfo.map((s, i) => {
 										return <TableRow key={i + 'inbound'}>
 											<TableCell>
 												{s.key}
 											</TableCell>
 											<TableCell>
 												<Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
-													{s.nId > 0 ?  cf[cf.findIndex(f => f.id === s.nId)].name : '-'}
+													{s.nId > 0 ? cf[cf.findIndex(f => f.id === s.nId)].name : '-'}
 												</Link>
 											</TableCell>
 											<TableCell>
 												{this.renderType(s.type)}
 											</TableCell>
 										</TableRow>
-									})} 
+									})}
 								</TableBody>
 							</Table> : <Info>{t('no.deviceDataKeys')}</Info>}
 						</ItemG>

@@ -18,8 +18,12 @@ class UpdateRegistry extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('menus.edits.registry', true, prevURL, '')
+		props.setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
 		props.setBC('updateregistry')
+		props.setTabs({
+			id: 'editRegistry',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -32,7 +36,7 @@ class UpdateRegistry extends Component {
 		await getRegistry(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, registry } = this.props
+		const { location, setHeader, setBC, registry } = this.props
 		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
 			let orgs = this.props.orgs
 			this.setState({
@@ -41,8 +45,8 @@ class UpdateRegistry extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('menus.edits.registry', true, prevURL, 'registries')
-			this.props.setBC('editregistry', registry.name, registry.id)
+			setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
+			setBC('editregistry', registry.name, registry.id)
 		}
 	}
 	componentDidMount = async () => {
@@ -54,12 +58,13 @@ class UpdateRegistry extends Component {
 		window.removeEventListener('keydown', this.keyHandler, false)
 	}
 	handleOrgChange = org => {
-		this.setState({ org, 
+		this.setState({
+			org,
 			registry: {
 				...this.state.registry,
 				orgId: org.id
 			}
-	 })
+		})
 	}
 	handleChange = (what) => e => {
 		this.setState({
@@ -98,7 +103,7 @@ class UpdateRegistry extends Component {
 	render() {
 		const { t } = this.props
 		const { loading, registry, org } = this.state
-		return ( loading ? <CircularLoader/> :
+		return (loading ? <CircularLoader /> :
 
 			<UpdateRegistryForm
 				org={org}
@@ -124,7 +129,7 @@ const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
 	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
-	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua)) 
+	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateRegistry)

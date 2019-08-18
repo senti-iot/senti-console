@@ -14,12 +14,18 @@ class EditCloudFunction extends Component {
 		this.state = {
 			loading: true,
 			cloudfunction: null,
-			org: null
+			org: {
+				name: ''
+			}
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
-		props.setHeader('menus.edits.cloudfunction', true, prevURL, '')
+		props.setHeader('menus.edits.cloudfunction', true, prevURL, 'manage.cloudfunctions')
 		props.setBC('updatecloudfunction')
+		props.setTabs({
+			id: "editCF",
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -32,8 +38,12 @@ class EditCloudFunction extends Component {
 		await getFunction(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, cloudfunction } = this.props
-		if ((!prevProps.cloudfunction && cloudfunction !== prevProps.cloudfunction && cloudfunction) || (this.state.cloudfunction === null && cloudfunction)) {
+		const { location, setHeader, setBC, cloudfunction } = this.props
+		if (((!prevProps.cloudfunction
+			&& cloudfunction !== prevProps.cloudfunction
+			&& cloudfunction)
+			|| (this.state.cloudfunction === null && cloudfunction))
+			&& this.props.orgs.length > 0) {
 			let orgs = this.props.orgs
 			this.setState({
 				cloudfunction: cloudfunction,
@@ -42,7 +52,7 @@ class EditCloudFunction extends Component {
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/function/${this.id}`
 			setHeader('menus.edits.cloudfunction', true, prevURL, 'manage.cloudfunctions')
-			this.props.setBC('editcloudfunction', cloudfunction.name, cloudfunction.id)
+			setBC('editcloudfunction', cloudfunction.name, cloudfunction.id)
 		}
 	}
 	componentDidMount = async () => {
@@ -107,7 +117,7 @@ class EditCloudFunction extends Component {
 	render() {
 		const { t } = this.props
 		const { loading, cloudfunction, org } = this.state
-		return ( loading ? <CircularLoader/> :
+		return (loading ? <CircularLoader /> :
 
 			<CreateFunctionForm
 				cloudfunction={cloudfunction}
