@@ -35,7 +35,9 @@ class OrgCollections extends Component {
 			return (
 				<InfoCard
 					title={t('collections.pageTitle')}
-					subheader={`${t('orgs.fields.deviceCount')}: ${collections.length}`}
+					subheader={<ItemG>
+						{`${t('orgs.fields.deviceCount')}: ${collections.length}`}
+					</ItemG>}
 					avatar={<DataUsage />}
 					noExpand
 					noPadding
