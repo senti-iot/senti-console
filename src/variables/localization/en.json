@@ -1038,6 +1038,7 @@
 			"devicetype": "Device Type %{dt} created!",
 			"registry": "Registry %{reg} created!"
 		},
+		"importedSucces": "Imported!",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",

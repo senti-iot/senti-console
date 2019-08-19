@@ -38,7 +38,13 @@ export const deleteRegistry = async (uuid) => {
 }
 
 export const getAllMessages = async cId => {
-	let response = await servicesAPI.get(`/v1/messages/${cId}`).then(rs => rs.ok ? rs.data : rs.ok)
+	let response
+	if (cId) {
+		response = await servicesAPI.get(`/v1/messages/${cId}`).then(rs => rs.ok ? rs.data : rs.ok)
+	}
+	else {
+		response = await servicesAPI.get(`/v1/messages/`).then(rs => rs.ok ? rs.data : rs.ok)
+	}
 	return response
 }
 

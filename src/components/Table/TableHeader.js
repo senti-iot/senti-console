@@ -107,7 +107,7 @@ class TableHeader extends Component {
 TableHeader.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 	onRequestSort: PropTypes.func.isRequired,
-	onSelectAllClick: PropTypes.func.isRequired,
+	onSelectAllClick: PropTypes.func,
 	order: PropTypes.string.isRequired,
 	orderBy: PropTypes.string.isRequired,
 	rowCount: PropTypes.number.isRequired,

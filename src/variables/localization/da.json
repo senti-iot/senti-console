@@ -1038,6 +1038,7 @@
 			"devicetype": "Enhedstype %{dt} er oprettet!",
 			"registry": "Register %{reg} er oprettet!"
 		},
+		"importedSuccess": "Importeret!",
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
 		"creating": "Opretter ...",

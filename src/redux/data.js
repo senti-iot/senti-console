@@ -928,13 +928,14 @@ export const setTokens = () => {
 //#endregion
 
 //#region Messages
-export const getMessages = (customerID, reload) => {
+export const getMessages = (customerID, reload, ua) => {
 	return dispatch => {
-		getAllMessages(customerID).then(rs => {
-			let messages = handleRequestSort('title', 'asc', rs)
-			set('messages', messages)
+
+		getAllMessages(ua ? undefined : customerID).then(rs => {
+			// let messages = handleRequestSort('title', 'asc', rs)
+			// set('messages', messages)
 			if (reload) {
-				dispatch(setMessages())
+				dispatch(setMessages(rs))
 			}
 			dispatch({ type: gotmessages, payload: true })
 		})
@@ -942,9 +943,9 @@ export const getMessages = (customerID, reload) => {
 	}
 }
 
-export const setMessages = () => {
+export const setMessages = (messages) => {
 	return dispatch => {
-		let messages = get('messages')
+		// let messages = get('messages')
 		if (messages) {
 			dispatch({
 				type: setmessages,

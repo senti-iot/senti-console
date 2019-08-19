@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, Fade } from '@material-ui/core';
+import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import MessageTable from 'components/Message/MessageTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort, dateTimeFormatter } from 'variables/functions';
-import { Delete, Edit, ViewList, ViewModule, Star, StarBorder, Close } from 'variables/icons';
+import { ViewList, Close } from 'variables/icons';
 import { GridContainer, CircularLoader, ItemG, Caption, Info, /* AssignProject */ } from 'components'
 // import MessagesCards from './MessagesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -25,11 +25,7 @@ class Messages extends Component {
 		this.state = {
 			selected: [],
 			openMessage: false,
-			openAssignDevice: false,
-			openAssignProject: false,
-			openUnassignDevice: false,
 			openDelete: false,
-			route: 0,
 			order: 'asc',
 			orderBy: 'id',
 			filters: {
@@ -41,16 +37,14 @@ class Messages extends Component {
 		props.setTabs({
 			id: 'messages',
 			tabs: this.tabs(),
-			route: this.handleTabs()
+			// route: this.handleTabs()
 		})
 	}
 	//#region Constants
 	tabs = () => {
 		const { t, match } = this.props
 		return [
-			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
-			// { id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
+			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` }
 		]
 	}
 	dProtocols = () => {
@@ -66,7 +60,8 @@ class Messages extends Component {
 		const { t } = this.props
 		return [
 			// { key: 'name', name: t('messages.fields.name'), type: 'string' },
-			// { key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'customerName', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'registryName', name: t('messages.fields.registryName'), type: 'string' },
 			// { key: 'created', name: t('messages.fields.created'), type: 'date' },
 			// { key: 'protocol', name: t('messages.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
 			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
@@ -84,60 +79,17 @@ class Messages extends Component {
 		]
 	}
 	options = () => {
-		const { t, isFav, messages } = this.props
-		const { selected } = this.state
-		let message = messages[messages.findIndex(d => d.id === selected[0])]
-		let favObj = {
-			id: message.id,
-			name: message.name,
-			type: 'message',
-			path: `/message/${message.id}`
-		}
-		let isFavorite = isFav(favObj)
-		let allOptions = [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			// { label: t('menus.assign.messageToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			// { label: t('menus.assign.deviceToMessage'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			// { label: t('menus.unassign.deviceFromMessage'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: messages[messages.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
-			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
-		]
-		return allOptions
+		return []
 	}
 	//#endregion
 
 	//#region Life Cycle
 	componentDidMount = async () => {
 		this._isMounted = 1
-		this.handleTabs()
 		this.getData()
 
 	}
 
-	componentDidUpdate = () => {
-		const { t, saved, s, isFav, finishedSaving } = this.props
-		if (saved === true) {
-			const { messages } = this.props
-			const { selected } = this.state
-			let message = messages[messages.findIndex(d => d.id === selected[0])]
-			if (message) {
-				if (isFav({ id: message.id, type: 'message' })) {
-					s('snackbars.favorite.saved', { name: message.name, type: t('favorites.types.message') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-				if (!isFav({ id: message.id, type: 'message' })) {
-					s('snackbars.favorite.removed', { name: message.name, type: t('favorites.types.message') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-			}
-		}
-	}
-	componentWillUnmount = () => {
-		// this._isMounted = 0
-	}
 	//#endregion
 
 	//#region Functions
@@ -173,15 +125,6 @@ class Messages extends Component {
 			case 1:
 				s('snackbars.deletedSuccess')
 				break;
-			// case 2:
-			// 	s('snackbars.exported')
-			// 	break;
-			// case 3:
-			// 	s('snackbars.assign.deviceToMessage', { message: ``, what: 'Device' })
-			// 	break;
-			// case 6:
-			// 	s('snackbars.assign.deviceToMessage', { message: `${messages[messages.findIndex(c => c.id === selected[0])].name}`, device: display })
-			// 	break
 			default:
 				break;
 		}
@@ -201,26 +144,6 @@ class Messages extends Component {
 
 	//#region Handlers
 
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/message/${selected[0]}/edit`, prevURL: `/messages/list` })
-	}
-
-	handleTabs = () => {
-		const { location } = this.props
-		if (location.pathname.includes('grid'))
-			// this.setState({ route: 1 })
-			return 1
-		else {
-			if (location.pathname.includes('favorites'))
-				// this.setState({ route: 2 })
-				return 2
-			else {
-				// this.setState({ route: 0 })
-				return 0
-			}
-		}
-	}
 	handleRequestSort = key => (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) {
@@ -230,10 +153,6 @@ class Messages extends Component {
 		this.setState({ order, orderBy: property })
 	}
 
-	handleFavClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push({ pathname: '/message/' + id, prevURL: '/messages/favorites' })
-	}
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -245,80 +164,6 @@ class Messages extends Component {
 
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
-	}
-	handleDeleteMessages = async () => {
-		// const { selected } = this.state
-		// Promise.all([selected.map(u => {
-		// 	return deleteMessage(u)
-		// })]).then(async () => {
-		// 	this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-		// 	await this.getData(true).then(
-		// 		() => this.snackBarMessages(1)
-		// 	)
-		// })
-	}
-	handleSelectAllClick = (event, checked) => {
-		if (checked) {
-			this.setState({ selected: this.props.messages.map(n => n.id) })
-			return;
-		}
-		this.setState({ selected: [] })
-	}
-
-	handleCheckboxClick = (event, id) => {
-		event.stopPropagation()
-		const { selected } = this.state;
-		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1))
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1))
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1),
-			);
-		}
-
-		this.setState({ selected: newSelected })
-	}
-
-	handleOpenAssignDevice = () => {
-		this.setState({ openAssignDevice: true, anchorElMenu: null })
-	}
-
-	handleCancelAssignDevice = () => {
-		this.setState({ openAssignDevice: false })
-	}
-
-	handleCloseAssignDevice = async (reload, display) => {
-		if (reload) {
-			this.setState({ openAssignDevice: false })
-			await this.getData(true).then(() => {
-				this.snackBarMessages(6, display)
-				this.setState({ selected: [] })
-			})
-		}
-	}
-	handleOpenAssignProject = () => {
-		this.setState({ openAssignProject: true, anchorElMenu: null })
-	}
-
-	handleCancelAssignProject = () => {
-		this.setState({ openAssignProject: false })
-	}
-
-	handleCloseAssignProject = async (reload) => {
-		if (reload) {
-			this.setState({ openAssignProject: false })
-			await this.getData(true).then(() => {
-				this.snackBarMessages(6)
-			})
-		}
 	}
 
 	handleOpenDeleteDialog = () => {
@@ -410,35 +255,6 @@ class Messages extends Component {
 				: <div />}
 		</Dialog>
 	}
-	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { t, classes, messages } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.messages')}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.messages')}
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={messages[messages.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleDeleteMessages} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
 
 
 	renderTableToolBarContent = () => {
@@ -485,28 +301,6 @@ class Messages extends Component {
 		</Fragment>
 	}
 
-	renderCards = () => {
-		const { /* t, history, messages, */ loading } = this.props
-		return loading ? <CircularLoader /> :
-			// <MessageCards messages={this.filterItems(messages)} t={t} history={history} />
-			null
-	}
-
-	renderFavorites = () => {
-		const { classes, loading } = this.props
-		const { selected } = this.state
-		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderAssignProject()}
-				{this.renderAssignDevice()}
-				{selected.length > 0 ? this.renderDeviceUnassign() : null}
-				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderConfirmDelete()}
-			</Paper>
-			}
-		</GridContainer>
-	}
 
 	renderMessages = () => {
 		const { classes, messages, loading } = this.props
@@ -515,7 +309,6 @@ class Messages extends Component {
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable(messages, 'messages')}
-				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}
 		</GridContainer>
