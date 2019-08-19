@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { createBrowserHistory } from 'history'
 import { Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -34,30 +34,35 @@ countries.registerLocale(require('i18n-iso-countries/langs/da.json'))
 export const hist = createBrowserHistory();
 
 
-class App extends Component {
-	render() {
-		let width = window.innerWidth
-		return (
-			<Provider store={store}>
-				<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
-					<MuiPickersUtilsProvider utils={MomentUtils}>
-						<TProvider>
-							<MuiThemeProvider theme={lightTheme}>
-								<Router history={hist}>
-									<Switch>
-										{indexRoutes.map((prop, key) => {
-											return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
-										})}
-									</Switch>
-								</Router>
-							</MuiThemeProvider>
-						</TProvider>
-					</MuiPickersUtilsProvider>
-				</DndProvider>
-			</Provider>
-		)
-	}
+function App() {
+	let width = window.ineerWidth
+	return <Provider store={store}>
+		<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
+			<MuiPickersUtilsProvider utils={MomentUtils}>
+				<TProvider>
+					<MuiThemeProvider theme={lightTheme}>
+						<Router history={hist}>
+							<Switch>
+								{indexRoutes.map((prop, key) => {
+									return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+								})}
+							</Switch>
+						</Router>
+					</MuiThemeProvider>
+				</TProvider>
+			</MuiPickersUtilsProvider>
+		</DndProvider>
+	</Provider>
 }
+
+// class App extends Component {
+// 	render() {
+// 		let width = window.innerWidth
+// 		return (
+
+// 		)
+// 	}
+// }
 
 
 export default App

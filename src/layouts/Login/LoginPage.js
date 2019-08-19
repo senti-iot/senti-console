@@ -24,6 +24,7 @@ import { defaultFont } from 'assets/jss/material-dashboard-react';
 
 let moment = require('moment');
 
+const [state, dispatch] = useReducer(reducer, initialState, init)
 
 class NewLoginPage extends Component {
 	constructor(props) {
@@ -156,7 +157,7 @@ class NewLoginPage extends Component {
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
 								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
-									<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => {}} notCentered>
+									<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => { }} notCentered>
 
 										<ItemG xs={12} container justify={'center'}>
 											<ItemG xs={12} container justify={'center'}>
@@ -178,7 +179,7 @@ class NewLoginPage extends Component {
 												<TextF
 													id={'user'}
 													autoFocus
-													
+
 													label={t('login.username')}
 													error={this.state.error}
 													fullWidth
@@ -189,7 +190,7 @@ class NewLoginPage extends Component {
 														autoComplete: 'on',
 														type: 'email',
 														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
-															<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }}/>
+															<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
 														</InputAdornment>
 													}}
 												/>
@@ -208,7 +209,7 @@ class NewLoginPage extends Component {
 														autoComplete: 'on',
 														// type: 'password',
 														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
-														                <IconButton
+															<IconButton
 																className={classes.smallAction}
 																onClick={() => this.setState({ showPassword: !this.state.showPassword })}
 															>
@@ -235,7 +236,7 @@ class NewLoginPage extends Component {
 												<GoogleLogin
 													clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
 													render={renderProps => (
-														<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={() => {renderProps.onClick(); this.setState({ loggingInGoogle: true })}}>
+														<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={() => { renderProps.onClick(); this.setState({ loggingInGoogle: true }) }}>
 															<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
 															{t('actions.loginWithGoogle')}
 														</Button>)}
