@@ -333,7 +333,13 @@ export const importDashboard = (iDash) => {
 		// if (user.aux.senti.dashboards.findIndex(f => f.id === iDash.id)) {
 		// 	user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f=> f.id === iDash.id)] =
 		// }
-		user.aux.senti.dashboards.push(newD)
+		if (user.aux.senti.dashboards) {
+			user.aux.senti.dashboards.push(newD)
+		}
+		else {
+			user.aux.senti.dashboards = []
+			user.aux.senti.dashboards.push(newD)
+		}
 		dispatch(saveOnServ(user))
 		dispatch(await getSettings())
 		dispatch(saveSnackbar('snackbars.importedSuccess'))
