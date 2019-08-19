@@ -2,13 +2,25 @@
 // // // Dashboard styles
 // #############################
 
-import { successColor, headerColor, transition, drawerWidth } from "assets/jss/material-dashboard-react.js";
+import { successColor, headerColor, transition, drawerWidth, hoverColor } from "assets/jss/material-dashboard-react.js";
 // import { bgColors } from './backgroundColors';
 // import { bgColorsDark } from './bgColorsDark';
 import { bgColorsLight } from './bgColorsLight';
 
 const dashboardStyle = theme => ({
 	...bgColorsLight(theme),
+	exportTArea: {
+		border: '1px solid black',
+		borderRadius: 4,
+		transition: '100ms all ease',
+		// width: 550,
+		height: 300,
+		margin: 8,
+		'&:hover': {
+			border: `4px solid ${hoverColor}`,
+			margin: 5
+		}
+	},
 	speedDial: {
 		bottom: 30,
 		right: 30,

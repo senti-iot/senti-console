@@ -18,9 +18,11 @@ import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme, lightTheme } from 'variables/themes';
 import { graphType } from 'variables/dsSystem/graphTypes';
 import { removeDashboard } from 'redux/dsSystem';
-import { /* encrypyAES, */ copyToClipboard } from 'variables/functions';
+import { /* encrypyAES, */ copyToClipboard, selectAll } from 'variables/functions';
 import withSnackbar from 'components/Localization/S';
+import SB from 'components/Scrollbar/SB';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
 class DashboardPanel extends Component {
 	constructor(props) {
 		super(props)
@@ -41,9 +43,6 @@ class DashboardPanel extends Component {
 		this.setState({
 			openDashboard: false
 		})
-	}
-	componentDidUpdate = (prevProps) => { 
-		console.log(this.props, prevProps)
 	}
 	renderPos = (l) => {
 		return <div style={{
@@ -97,36 +96,60 @@ class DashboardPanel extends Component {
 			openShare: true
 		})
 	}
-	handleCloseShare = () => { 
+	handleCloseShare = () => {
 		this.setState({
 			openShare: false
 		})
-	} 
-	handleCopyToClipboard = () => { 
+	}
+	handleCopyToClipboard = () => {
 		const { s, d } = this.props
 		let str = JSON.stringify(d, null, 4)
 		copyToClipboard(str)
 		s('snackbars.copied')
 	}
 	renderShareDashboard = () => {
-		const { t, d } = this.props
+		const { t, d, classes } = this.props
 		const { openShare } = this.state
-		if (d) { 
+		if (d) {
 			const encrypted = JSON.stringify(d, null, 4)
 			return <Dialog
 				open={openShare}
 				onClose={this.handleCloseShare}
+				PaperProps={{
+					style: {
+						width: '100%'
+
+					}
+				}}
 			>
 				<DialogTitle>{t('dialogs.dashboards.share.title')}</DialogTitle>
 				<DialogContent>
 					<ItemG container justify='center'>
 
-						<textarea style={{ overflow: 'auto', overflowX: 'scroll', height: 250, width: '100%', margin: 8 }}>{encrypted}</textarea>
-						{/* <T>{decrypted}</T> */}
-						<Button onClick={this.handleCopyToClipboard}>
-							<ContentCopy style={{ marginRight: 8 }}/>
-							{t('actions.copyToClipboard')}
-						</Button>
+						<ItemG xs={12}>
+							<div className={classes.exportTArea}>
+								<SB>
+
+									<pre id={'pre' + d.id} onClick={() => selectAll('pre' + d.id)}>
+										{encrypted}
+
+									</pre>
+									{/* <ContentEditable
+										html={<pre>
+											{encrypted}
+										</pre>}
+										style={{ width: '100%', height: '100%' }}>
+									</ContentEditable> */}
+								</SB>
+							</div>
+						</ItemG>
+						<ItemG xs={12}>
+
+							<Button onClick={this.handleCopyToClipboard}>
+								<ContentCopy style={{ marginRight: 8 }} />
+								{t('actions.copyToClipboard')}
+							</Button>
+						</ItemG>
 					</ItemG>
 				</DialogContent>
 				<DialogActions></DialogActions>
@@ -291,7 +314,7 @@ class DashboardPanel extends Component {
 		const { d } = this.props
 		this.props.removeDashboard(d.id)
 	}
-	handleEditDashboard = () => { 
+	handleEditDashboard = () => {
 		const { d } = this.props
 		this.props.handleOpenEDT(d)
 	}

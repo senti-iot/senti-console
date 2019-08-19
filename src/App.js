@@ -23,7 +23,8 @@ import { lightTheme } from 'variables/themes';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DndProvider } from 'react-dnd'
-// import TouchBackend from 'react-dnd-touch-backend';
+
+import TouchBackend from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend'
 
 var countries = require('i18n-iso-countries')
@@ -35,9 +36,10 @@ export const hist = createBrowserHistory();
 
 class App extends Component {
 	render() {
+		let width = window.innerWidth
 		return (
 			<Provider store={store}>
-				<DndProvider backend={HTML5Backend}>
+				<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 						<TProvider>
 							<MuiThemeProvider theme={lightTheme}>
@@ -56,6 +58,6 @@ class App extends Component {
 		)
 	}
 }
-		
-		
+
+
 export default App

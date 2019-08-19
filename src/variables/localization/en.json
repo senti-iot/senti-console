@@ -354,6 +354,11 @@
 		"pageTitle": "Device Type"
 	},
 	"dialogs": {
+		"dashboards": {
+			"share": {
+				"title": "Export dashboard"
+			}
+		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."

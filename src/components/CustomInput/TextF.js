@@ -65,7 +65,7 @@ const TextF = (props) => {
 	// })
 	return (
 		<TextField
-			style={{ maxWidth: props.fullWidth ? undefined : mobile ? undefined : 230 }}
+			style={{ maxWidth: props.fullWidth !== undefined ? undefined : mobile ? undefined : 230, ...props.style }}
 			variant={'outlined'}
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			placeholder={props.placeholder ? props.placeholder : undefined}
@@ -74,7 +74,8 @@ const TextF = (props) => {
 			value={props.value}
 			onClick={props.handleClick}
 			onChange={props.handleChange}
-			fullWidth={props.fullWidth || mobile ? true : false}
+			fullWidth={props.fullWidth !== undefined ? props.fullWidth : mobile ? true : false}
+			// fullWidth={props.fullWidth || mobile ? true : false}
 			multiline={props.multiline ? props.multiline : undefined}
 			rows={props.rows ? props.rows : undefined}
 			className={classNames}
@@ -93,22 +94,23 @@ const TextF = (props) => {
 					focused: props.classes.focusedReversed,
 					error: props.classes.errorReversed,
 					notchedOutline: props.classes.notchedOutlineReversed,
-				} : {
-					root: props.classes.root, 
-					disabled: props.classes.disabled, 
-					focused: props.classes.focused, 
-					error: props.classes.error, 
-					notchedOutline: props.classes.notchedOutline
-				}
+				} :
+					{
+						root: props.classes.root,
+						disabled: props.classes.disabled,
+						focused: props.classes.focused,
+						error: props.classes.error,
+						notchedOutline: props.classes.notchedOutline
+					}
 			} : null}
 			onKeyPress={props.onKeyPress}
 			onKeyDown={props.onKeyDown}
-			// FormHelperTextProps={{
-			// 	className: classNames
-			// }}
-			// InputLabelProps={{
-			// 	className: classNames
-			// }}
+		// FormHelperTextProps={{
+		// 	className: classNames
+		// }}
+		// InputLabelProps={{
+		// 	className: classNames
+		// }}
 		/>
 
 	)

@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade } from '@material-ui/core';
+import { Button, withStyles, Fade, Hidden } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -44,11 +44,7 @@ class Dashboard extends React.Component {
 		this.props.setTabs({
 			id: 'dashboard',
 			dontShow: true,
-			tabs: [],
-			// content: [
-			// 	<Hidden smDown key={'createDash'}>
-
-			// 	</Hidden>]
+			tabs: []
 		})
 	}
 
@@ -62,13 +58,11 @@ class Dashboard extends React.Component {
 		this._isMounted = 0
 	}
 	handleOpenSpeed = () => {
-		console.log("Opened")
 		this.setState({
 			openSpeed: true
 		})
 	}
 	handleCloseSpeed = () => {
-		console.log("Closed")
 		this.setState({
 			openSpeed: false
 		})
@@ -85,7 +79,9 @@ class Dashboard extends React.Component {
 		const { t, /* history */ } = this.props
 		return <Button size={'small'} color={'primary'} component={Link} to={loc} style={right ? { marginLeft: 'auto' } : null}>{t(text)}</Button>
 	}
-	handleOpenDT = () => {
+	handleOpenDT = e => {
+		e.stopPropagation()
+		e.preventDefault()
 		this.setState({
 			openAddDash: true
 		})
@@ -159,43 +155,35 @@ class Dashboard extends React.Component {
 						</GridContainer>
 
 
-						{/* <div style={{ position: 'relative' }}> */}
+						<Hidden xsDown>
 
-						<SpeedDial
-							ariaLabel="SpeedDial tooltip example"
-							className={this.props.classes.speedDial}
-							// hidden={true}
-							icon={<SpeedDialIcon />}
-							onBlur={this.handleCloseSpeed}
-							onClick={this.handleOpenSpeed}
-							onClose={this.handleCloseSpeed}
-							// onFocus={this.handleOpenSpeed}
-							onMouseEnter={this.handleOpenSpeed}
-							onMouseLeave={this.handleCloseSpeed}
-							open={this.state.openSpeed}
-							direction={'up'}
-						>
-							<SpeedDialAction
-								icon={<ImportExport />}
-								tooltipTitle={`${this.props.t('actions.import')} ${this.props.t('sidebar.dashboard')}`}
-								tooltipOpen
-								onClikc={this.handleOpenImport}
-							/>
-							<SpeedDialAction
-								icon={<Add />}
-								tooltipTitle={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}
-								tooltipOpen
-								onClick={this.handleOpenDT}
-							/>
-							{/* <Tooltip title={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}>
-							<IconButton
-							onClick={this.handleOpenDT}
-							style={{ color: '#fff', borderRadius: 4, marginRight: 8, padding: '12px' }}>
-								<Add />
-								</IconButton>
-							</Tooltip> */}
-						</SpeedDial>
-						{/* </div> */}
+							<SpeedDial
+								ariaLabel="SpeedDial tooltip example"
+								className={this.props.classes.speedDial}
+								icon={<SpeedDialIcon />}
+								onBlur={this.handleCloseSpeed}
+								onClick={this.handleOpenSpeed}
+								onClose={this.handleCloseSpeed}
+								onMouseEnter={this.handleOpenSpeed}
+								onMouseLeave={this.handleCloseSpeed}
+								open={this.state.openSpeed}
+								direction={'up'}
+							>
+								<SpeedDialAction
+									icon={<ImportExport />}
+									tooltipTitle={`${this.props.t('actions.import')} ${this.props.t('sidebar.dashboard')}`}
+									tooltipOpen
+									onClick={this.handleOpenImport}
+								/>
+								<SpeedDialAction
+									icon={<Add />}
+									tooltipTitle={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}
+									tooltipOpen
+									onClick={this.handleOpenDT}
+								/>
+
+							</SpeedDial>
+						</Hidden>
 					</div>
 				</Fade>
 			</Fragment>

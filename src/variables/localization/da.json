@@ -354,6 +354,11 @@
 		"pageTitle": "Enhedstype"
 	},
 	"dialogs": {
+		"dashboards": {
+			"share": {
+				"title": "Eksporter dashboard"
+			}
+		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."

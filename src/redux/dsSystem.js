@@ -199,7 +199,6 @@ export const setDashboards = (payload) => {
 			})
 			if (brokenDash) {
 				dispatch(repairDashboard(d))
-				console.log(d.graphs)
 				brokenDash = false
 			}
 		})

@@ -219,9 +219,10 @@ class CreateDashboard extends React.Component {
 										<Close />
 									</IconButton>
 								</ItemG>
-								<ItemG container xs={10} justify={'center'} alignItems={'center'}>
+								<ItemG container md={10} sm={9} xs={9} justify={'center'} alignItems={'center'}>
 
 									<TextF
+										fullWidth={false}
 										id={'dashboardName'}
 										InputProps={{
 											style: {
@@ -235,7 +236,7 @@ class CreateDashboard extends React.Component {
 									{this.renderColorPicker()}
 
 								</ItemG>
-								<ItemG xs={1}>
+								<ItemG sm={1} xs={1} md={1}>
 									<Button color={'primary'} variant={'outlined'} onClick={this.handleSave}>
 										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 									</Button>

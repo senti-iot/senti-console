@@ -9,7 +9,7 @@ export const encrypyAES = (str) => {
 
 	return Crypto.AES.encrypt(str, key).toString()
 }
-export const decryptAES = str => { 
+export const decryptAES = str => {
 	return Crypto.AES.decrypt(str, key).toString(Crypto.enc.Utf8)
 }
 window.decryptAES = decryptAES
@@ -19,6 +19,20 @@ export const scrollToAnchor = (id) => {
 		let topOfElement = el.offsetTop - 130
 		window.scroll({ top: topOfElement, behavior: 'smooth' })
 	}
+}
+export const selectAll = containerid => {
+	var range = {}
+	if (document.selection) { // IE
+		range = document.body.createTextRange();
+		range.moveToElementText(document.getElementById(containerid));
+		range.select();
+	} else if (window.getSelection) {
+		range = document.createRange();
+		range.selectNode(document.getElementById(containerid));
+		window.getSelection().removeAllRanges();
+		window.getSelection().addRange(range);
+	}
+
 }
 export const copyToClipboard = str => {
 
