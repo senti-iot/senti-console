@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { ItemG, TextF, T, Muted } from 'components';
 import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, ButtonBase, IconButton } from '@material-ui/core';
 import logo from 'logo.svg'
@@ -64,13 +64,15 @@ function NewLoginPage(props) {
 	// }
 	const handleCloseCookies = () => setCookies(false)
 	const handleOpenCookies = () => setCookies(true)
+	const handleOpenPrivacy = () => setPrivacy(true)
+	const handleClosePrivacy = () => setPrivacy(false)
 
-	handlePrivacy = () => {
-		this.setState({
-			privacy: !this.state.privacy
-		})
-	}
-	googleSignIn = async (googleUser) => {
+	// handlePrivacy = () => {
+	// 	this.setState({
+	// 		privacy: !this.state.privacy
+	// 	})
+	// }
+	const googleSignIn = async (googleUser) => {
 		if (googleUser.error) {
 			this.setState({ loggingIn: false, error: true })
 			return console.error(googleUser.error)
@@ -95,10 +97,11 @@ function NewLoginPage(props) {
 			})
 		}
 	}
-	logUser = () => {
-		this.setState({ loggingIn: true })
+	const logUser = () => {
+		setLoggingIn(true)
+		// this.setState({ loggingIn: true })
 	}
-	loginUser = async () => {
+	const loginUser = async () => {
 
 		await loginUser(this.state.user, this.state.pass).then(async rs => {
 			if (rs) {
@@ -139,24 +142,28 @@ function NewLoginPage(props) {
 	useEffect(() => {
 		// window.addEventListener('keypress', handleKeyPress, false)
 		let loginData = cookie.load('SESSION')
-
-	});
-	componentDidMount() {
-		this._isMounted = 1
-		window.addEventListener('keypress', this.handleKeyPress, false)
-		var loginData = cookie.load('SESSION')
 		if (loginData) {
 			if (setToken()) {
-				this.props.history.push('/dashboard')
+				props.history.push('/dashboard')
 			}
 		}
-		if (this.props.location.pathname.includes('en')) {
-			this.props.setLanguage('en')
-			this.setState({ language: 'en' })
-		}
-		// @ts-ignore
-		if (this.inputRef.current) { this.inputRef.current.focus() }
-	}
+	});
+	// componentDidMount() {
+	// 	this._isMounted = 1
+	// 	window.addEventListener('keypress', this.handleKeyPress, false)
+	// 	var loginData = cookie.load('SESSION')
+	// 	if (loginData) {
+	// 		if (setToken()) {
+	// 			this.props.history.push('/dashboard')
+	// 		}
+	// 	}
+	// 	if (this.props.location.pathname.includes('en')) {
+	// 		this.props.setLanguage('en')
+	// 		this.setState({ language: 'en' })
+	// 	}
+	// 	// @ts-ignore
+	// 	if (this.inputRef.current) { this.inputRef.current.focus() }
+	// }
 
 	const { classes, t } = props
 	const IconEndAd = cx({
@@ -185,7 +192,7 @@ function NewLoginPage(props) {
 											<T className={classes.loginButton + ' ' + classes.needAccount}>
 												<span style={{ marginRight: 4 }}>
 													{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti</span> <span>{t('login.needAnAccount2')}</span>?
-													</span>
+												</span>
 												<span>
 													<Link to={'/login'}>
 														{t('login.createAccount')}
@@ -292,6 +299,6 @@ function NewLoginPage(props) {
 		</div>
 	)
 }
-}
+// }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withStyles(loginPageStyles), withWidth())(NewLoginPage)

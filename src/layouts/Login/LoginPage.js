@@ -24,7 +24,6 @@ import { defaultFont } from 'assets/jss/material-dashboard-react';
 
 let moment = require('moment');
 
-const [state, dispatch] = useReducer(reducer, initialState, init)
 
 class NewLoginPage extends Component {
 	constructor(props) {

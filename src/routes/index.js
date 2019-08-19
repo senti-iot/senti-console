@@ -2,7 +2,7 @@
 import Dashboard from 'layouts/Dashboard/Dashboard.js';
 import ConfirmUser from 'layouts/ConfirmUser/ConfirmUser'
 import ResetPassword from 'layouts/ResetPassword/ResetPassword';
-import LoginPage from 'layouts/Login/LoginPage'
+import LoginPage from 'layouts/Login/LoginPageH'
 import OutlinedInputAdornments from 'layouts/Login/Test'
 // import PrivacyDialog from 'components/Cookies/PrivacyDialog';
 import PrivacyPolicy from 'layouts/Privacy/Privacy';
