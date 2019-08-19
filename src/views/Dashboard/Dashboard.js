@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade, Hidden } from '@material-ui/core';
+import { Button, withStyles, Fade, Hidden, DialogContent, DialogActions, DialogTitle, Dialog } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -16,10 +16,11 @@ import { Add, ImportExport } from 'variables/icons.js';
 import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme, lightTheme } from 'variables/themes/index.js';
 import EditDashboard from './EditDashboard.js';
-import { reset } from 'redux/dsSystem.js';
+import { reset, importDashboard } from 'redux/dsSystem.js';
 import { finishedSaving } from 'redux/dsSystem';
 import withSnackbar from 'components/Localization/S.js';
 import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab';
+import { TextF } from 'components/index.js';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -32,7 +33,8 @@ class Dashboard extends React.Component {
 			openAddDash: false,
 			openEditDash: false,
 			eDash: null,
-			openSpeed: false
+			openSpeed: false,
+			openImport: false
 		}
 
 	}
@@ -105,6 +107,69 @@ class Dashboard extends React.Component {
 			eDash: null
 		})
 	}
+	handleOpenImport = e => {
+		e.preventDefault()
+		e.stopPropagation()
+		this.setState({
+			openImport: true
+		})
+	}
+	handleCloseImport = () => {
+		this.setState({
+			openImport: false,
+			error: false
+		})
+	}
+	handleCheckJSON = e => {
+		try {
+			let newD = JSON.parse(e.target.value)
+			console.log(newD)
+			this.setState({ newD: newD })
+		} catch (error) {
+			console.log(error.message)
+			this.setState({
+				error: true
+			})
+		}
+	}
+	handleImport = () => {
+		let newD = this.state.newD
+		if (newD) {
+			this.props.importDashboard(newD)
+			this.setState({
+				newD: null,
+				openImport: false
+			})
+		}
+	}
+	renderImportDashboard = () => {
+		const { t } = this.props
+		const { openImport, error } = this.state
+		return <Dialog
+			open={openImport}
+			onClose={this.handleCloseImport}
+			PaperProps={{
+				style: {
+					width: '100%'
+				}
+			}}
+		>
+			<DialogTitle>{`${t('actions.import')} ${t('sidebar.dashboard')}`}</DialogTitle>
+			<DialogContent>
+				<TextF
+					fullWidth
+					multiline
+					rows={10}
+					handleChange={this.handleCheckJSON}
+					error={error}
+				/>
+			</DialogContent>
+			<DialogActions>
+				<Button variant={'outlined'} color={'primary'} onClick={this.handleImport} disabled={error}>{t('actions.import')}</Button>
+			</DialogActions>
+
+		</Dialog>
+	}
 	renderEditDashboard = () => {
 		const { t } = this.props
 		const { openEditDash, eDash } = this.state
@@ -139,6 +204,7 @@ class Dashboard extends React.Component {
 					transitionDelay: 200,
 				}}>
 					<div style={{ position: 'relative' }}>
+						{this.renderImportDashboard()}
 						<ThemeProvider theme={this.renderTheme(this.props.dsTheme)}>
 							{this.renderAddDashboard()}
 							{this.renderEditDashboard()}
@@ -202,7 +268,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
 	resetDash: () => dispatch(reset()),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	importDashboard: (d) => dispatch(importDashboard(d))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()(withLocalization()(withStyles(dashboardStyle)(Dashboard))))

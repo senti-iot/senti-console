@@ -323,6 +323,22 @@ export const reset = () => {
 		})
 	}
 }
+export const importDashboard = (iDash) => {
+	return async (dispatch, getState) => {
+		let user, newD = {}
+		user = getState().settings.user
+		newD = iDash
+		newD.id = generateID(iDash.name)
+		//check for update
+		// if (user.aux.senti.dashboards.findIndex(f => f.id === iDash.id)) {
+		// 	user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f=> f.id === iDash.id)] =
+		// }
+		user.aux.senti.dashboards.push(newD)
+		dispatch(saveOnServ(user))
+		dispatch(await getSettings())
+		dispatch(saveSnackbar('snackbars.importedSuccess'))
+	}
+}
 export const saveDashboard = (edit) => {
 	return async (dispatch, getState) => {
 		let user, newD = {}
