@@ -3,7 +3,16 @@ import { parsePhoneNumber } from 'libphonenumber-js'
 import { colors } from '@material-ui/core';
 var moment = require('moment');
 var _ = require('lodash')
+var Crypto = require('crypto-js')
+var key = '0011001100110011'
+export const encrypyAES = (str) => {
 
+	return Crypto.AES.encrypt(str, key).toString()
+}
+export const decryptAES = str => { 
+	return Crypto.AES.decrypt(str, key).toString(Crypto.enc.Utf8)
+}
+window.decryptAES = decryptAES
 export const scrollToAnchor = (id) => {
 	let el = document.getElementById(id.substring(1, id.length))
 	if (el) {

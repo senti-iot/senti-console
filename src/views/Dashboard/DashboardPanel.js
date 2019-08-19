@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Paper } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Paper, DialogContent, DialogActions, DialogTitle, Button } from '@material-ui/core';
 import { ItemG, T, CircularLoader, SlideT } from 'components';
-import { Close, Edit } from 'variables/icons';
+import { Close, Edit, ContentCopy } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GaugeSData from 'views/Charts/GaugeSData';
@@ -18,15 +18,16 @@ import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme, lightTheme } from 'variables/themes';
 import { graphType } from 'variables/dsSystem/graphTypes';
 import { removeDashboard } from 'redux/dsSystem';
-
+import { /* encrypyAES, */ copyToClipboard } from 'variables/functions';
+import withSnackbar from 'components/Localization/S';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
-
 class DashboardPanel extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			openDashboard: false,
+			openShare: false,
 			initialLayout: props.initialLayout
 		}
 	}
@@ -41,7 +42,9 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		})
 	}
-
+	componentDidUpdate = (prevProps) => { 
+		console.log(this.props, prevProps)
+	}
 	renderPos = (l) => {
 		return <div style={{
 			position: 'absolute',
@@ -89,6 +92,47 @@ class DashboardPanel extends Component {
 	onBreakpointChange = (args) => {
 		// console.log(args)
 	}
+	handleOpenShare = () => {
+		this.setState({
+			openShare: true
+		})
+	}
+	handleCloseShare = () => { 
+		this.setState({
+			openShare: false
+		})
+	} 
+	handleCopyToClipboard = () => { 
+		const { s, d } = this.props
+		let str = JSON.stringify(d, null, 4)
+		copyToClipboard(str)
+		s('snackbars.copied')
+	}
+	renderShareDashboard = () => {
+		const { t, d } = this.props
+		const { openShare } = this.state
+		if (d) { 
+			const encrypted = JSON.stringify(d, null, 4)
+			return <Dialog
+				open={openShare}
+				onClose={this.handleCloseShare}
+			>
+				<DialogTitle>{t('dialogs.dashboards.share.title')}</DialogTitle>
+				<DialogContent>
+					<ItemG container justify='center'>
+
+						<textarea style={{ overflow: 'auto', overflowX: 'scroll', height: 250, width: '100%', margin: 8 }}>{encrypted}</textarea>
+						{/* <T>{decrypted}</T> */}
+						<Button onClick={this.handleCopyToClipboard}>
+							<ContentCopy style={{ marginRight: 8 }}/>
+							{t('actions.copyToClipboard')}
+						</Button>
+					</ItemG>
+				</DialogContent>
+				<DialogActions></DialogActions>
+			</Dialog>
+		}
+	}
 	renderDashboard = () => {
 		const { t, classes, d, loading, handleOpenEDT } = this.props
 		const { openDashboard } = this.state
@@ -130,7 +174,7 @@ class DashboardPanel extends Component {
 								</T>
 							</ItemG>
 							<ItemG xs={1} container justify={'flex-end'}>
-								<IconButton color='inherit' onClick={() => { handleOpenEDT(); handleCloseDashboard(); }} aria-label='Close'>
+								<IconButton color='inherit' onClick={() => { handleOpenEDT(d); handleCloseDashboard(); }} aria-label='Close'>
 									<Edit />
 								</IconButton>
 								<IconButton color='inherit' onClick={handleCloseDashboard} aria-label='Close'>
@@ -243,6 +287,14 @@ class DashboardPanel extends Component {
 			}
 		</Dialog >
 	}
+	handleDeleteDashboard = () => {
+		const { d } = this.props
+		this.props.removeDashboard(d.id)
+	}
+	handleEditDashboard = () => { 
+		const { d } = this.props
+		this.props.handleOpenEDT(d)
+	}
 	render() {
 		const { d, data, t, dsTheme } = this.props
 
@@ -251,10 +303,13 @@ class DashboardPanel extends Component {
 				<ThemeProvider theme={dsTheme === 0 ? lightTheme : darkTheme}>
 					{this.renderDashboard()}
 				</ThemeProvider>
+				{this.renderShareDashboard()}
 				<ItemG xs={12} md={4} lg={3} xl={2}>
 					<DashboardCard
-						deleteDashboard={() => this.props.removeDashboard(d.id)}
+						deleteDashboard={this.handleDeleteDashboard}
 						handleOpenDashboard={this.handleOpenDashboard}
+						handleEditDashboard={this.handleEditDashboard}
+						handleOpenShare={this.handleOpenShare}
 						data={data}
 						header={d.name}
 						img={imgs.data}
@@ -285,4 +340,4 @@ const mapDispatchToProps = (dispatch) => ({
 	removeDashboard: (id) => dispatch(removeDashboard(id))
 })
 
-export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))
+export default withSnackbar()(withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel)))

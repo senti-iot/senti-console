@@ -6,9 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import cx from 'classnames'
-import { colors, IconButton } from '@material-ui/core';
-import { Muted, Dropdown } from 'components';
-import { Visibility, Airplay, Star, LocalOffer } from 'variables/icons';
+import { colors } from '@material-ui/core';
+import { Muted, Dropdown, ITB } from 'components';
+import { Share, Airplay, Edit, /* Star, LocalOffer */ } from 'variables/icons';
 
 const styles = theme => ({
 	smallButton: {
@@ -144,7 +144,7 @@ const styles = theme => ({
 
 class DashboardCard extends Component {
 	render() {
-		const { classes, header, content, c, handleOpenDashboard, t } = this.props;
+		const { classes, header, content, c, handleOpenDashboard, t, handleEditDashboard, handleOpenShare } = this.props;
 		return (
 			<Card className={classes.card}>
 
@@ -161,7 +161,7 @@ class DashboardCard extends Component {
 					<Dropdown
 						buttonClassName={classes.menuButton}
 						menuItems={[
-							{ label: t('actions.delete'), func: this.props.deleteDashboard }
+							{ label: t('actions.delete'), func: this.props.deleteDashboard },
 						]}>
 
 					</Dropdown>
@@ -179,19 +179,24 @@ class DashboardCard extends Component {
 					</Muted>
 				</CardContent>
 				<CardActions>
-					<IconButton className={classes.smallButton}>
-						<Visibility />
-					</IconButton>
-					<IconButton className={classes.smallButton} onClick={handleOpenDashboard}>
-						<Airplay />
-					</IconButton>
-					<IconButton className={classes.smallButton}>
-						<Star />
-					</IconButton>
+					<ITB
+						icon={<Airplay />}
+						label={'actions.open'}
+						buttonClass={classes.smallButton}
+						onClick={handleOpenDashboard}
+					/>
+					<ITB
+						icon={<Share />}
+						label={'actions.share'}
+						buttonClass={classes.smallButton}
+						onClick={handleOpenShare}
+					/>
 					<div style={{ marginLeft: 'auto' }} />
-					<IconButton className={classes.smallButton}>
-						<LocalOffer />
-					</IconButton>
+					<ITB
+						icon={<Edit/>}
+						label={'actions.edit'}
+						buttonClass={classes.smallButton} 
+						onClick={handleEditDashboard} />
 				</CardActions>
 			</Card>
 		);

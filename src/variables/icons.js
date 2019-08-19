@@ -91,6 +91,7 @@ import Notifications from '@material-ui/icons/Notifications'
 import Email from '@material-ui/icons/Email'
 import LockOpen from '@material-ui/icons/LockOpen'
 import FolderShared from '@material-ui/icons/FolderShared'
+import Share from '@material-ui/icons/Share'
 import DataUsage from '@material-ui/icons/DataUsage'
 import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
@@ -113,6 +114,7 @@ import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
 import Palette from '@material-ui/icons/Palette'
 export {
+	Share,
 	StorageIcon,
 	Wifi,
 	Palette,
