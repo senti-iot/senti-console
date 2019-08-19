@@ -113,7 +113,9 @@ import Airplay from '@material-ui/icons/Airplay'
 import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
 import Palette from '@material-ui/icons/Palette'
+import ImportExport from '@material-ui/icons/ImportExport'
 export {
+	ImportExport,
 	Share,
 	StorageIcon,
 	Wifi,

@@ -9,6 +9,12 @@ import { bgColorsLight } from './bgColorsLight';
 
 const dashboardStyle = theme => ({
 	...bgColorsLight(theme),
+	speedDial: {
+		bottom: 30,
+		right: 30,
+		position: 'fixed'
+	},
+
 	editSourceDrawer: {
 		height: 'calc(100% - 70px)',
 		width: 360,

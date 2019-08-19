@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade, IconButton, Tooltip, Hidden /* IconButton, */ } from '@material-ui/core';
+import { Button, withStyles, Fade } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -12,13 +12,14 @@ import DashboardPanel from './DashboardPanel.js';
 // import { teal } from '@material-ui/core/colors';
 // import { Add } from 'variables/icons';
 import CreateDashboard from './CreateDashboard.js';
-import { Add } from 'variables/icons.js';
+import { Add, ImportExport } from 'variables/icons.js';
 import { ThemeProvider } from '@material-ui/styles';
 import { darkTheme, lightTheme } from 'variables/themes/index.js';
 import EditDashboard from './EditDashboard.js';
 import { reset } from 'redux/dsSystem.js';
 import { finishedSaving } from 'redux/dsSystem';
 import withSnackbar from 'components/Localization/S.js';
+import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -30,31 +31,27 @@ class Dashboard extends React.Component {
 			devices: 0,
 			openAddDash: false,
 			openEditDash: false,
-			eDash: null
+			eDash: null,
+			openSpeed: false
 		}
-		props.setHeader('Senti', false, '', 'dashboard')
-		props.setBC('dashboard', '', '', false)
-		props.setTabs({
-			id: 'dashboard',
-			tabs: [],
-			content: [
-				<Hidden smDown key={'createDash'}>
-					<Tooltip title={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}>
-						<IconButton
-							onClick={this.handleOpenDT}
-							style={{ color: '#fff', borderRadius: 4, marginRight: 8, padding: '12px' }}>
-							<Add />
-						</IconButton>
-					</Tooltip>
-				</Hidden>]
-		})
+
 	}
 
 
 	componentDidMount = async () => {
 		this.props.setHeader('Senti', false, '', 'dashboard')
+		this.props.setBC('dashboard', '', '', true)
+		this.props.setTabs({
+			id: 'dashboard',
+			dontShow: true,
+			tabs: [],
+			// content: [
+			// 	<Hidden smDown key={'createDash'}>
 
+			// 	</Hidden>]
+		})
 	}
+
 	componentDidUpdate = () => {
 		if (this.props.saved) {
 			this.props.s(this.props.saved)
@@ -64,7 +61,18 @@ class Dashboard extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	handleOpenSpeed = () => {
+		console.log("Opened")
+		this.setState({
+			openSpeed: true
+		})
+	}
+	handleCloseSpeed = () => {
+		console.log("Closed")
+		this.setState({
+			openSpeed: false
+		})
+	}
 	handleChange = (value) => {
 		this.setState({ value })
 	}
@@ -151,6 +159,43 @@ class Dashboard extends React.Component {
 						</GridContainer>
 
 
+						{/* <div style={{ position: 'relative' }}> */}
+
+						<SpeedDial
+							ariaLabel="SpeedDial tooltip example"
+							className={this.props.classes.speedDial}
+							// hidden={true}
+							icon={<SpeedDialIcon />}
+							onBlur={this.handleCloseSpeed}
+							onClick={this.handleOpenSpeed}
+							onClose={this.handleCloseSpeed}
+							// onFocus={this.handleOpenSpeed}
+							onMouseEnter={this.handleOpenSpeed}
+							onMouseLeave={this.handleCloseSpeed}
+							open={this.state.openSpeed}
+							direction={'up'}
+						>
+							<SpeedDialAction
+								icon={<ImportExport />}
+								tooltipTitle={`${this.props.t('actions.import')} ${this.props.t('sidebar.dashboard')}`}
+								tooltipOpen
+								onClikc={this.handleOpenImport}
+							/>
+							<SpeedDialAction
+								icon={<Add />}
+								tooltipTitle={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}
+								tooltipOpen
+								onClick={this.handleOpenDT}
+							/>
+							{/* <Tooltip title={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}>
+							<IconButton
+							onClick={this.handleOpenDT}
+							style={{ color: '#fff', borderRadius: 4, marginRight: 8, padding: '12px' }}>
+								<Add />
+								</IconButton>
+							</Tooltip> */}
+						</SpeedDial>
+						{/* </div> */}
 					</div>
 				</Fade>
 			</Fragment>
