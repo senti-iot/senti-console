@@ -1,9 +1,9 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button } from '@material-ui/core';
+import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button, Divider } from '@material-ui/core';
 import { ItemG, Dropdown, TextF, SlideT } from 'components';
 import cx from 'classnames'
-import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
+import { Close, Edit, Clear, Palette, Save, Menu } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
 import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout, resetCreateDash } from 'redux/dsSystem';
-import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
+// import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
 import ToolbarItem from './ToolbarItem';
@@ -219,7 +219,24 @@ class CreateDashboard extends React.Component {
 										<Close />
 									</IconButton>
 								</ItemG>
-								<ItemG container md={10} sm={9} xs={9} justify={'center'} alignItems={'center'}>
+								<ItemG xs={4} container /* style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }} */>
+									<ItemG container style={{ background: 'teal', borderRadius: 4, padding: 4, margin: "0px 16px" }}>
+										{/* <CreateDashboardToolbar> */}
+										{/* <ItemG xs={1} container alignItems="center" justify={'center'}> */}
+										<IconButton size={'small'}/* onClick={this.expandToolbar} */ style={{ color: '#fff', borderRadius: 0 }}>
+											<Menu />
+										</IconButton>
+										{/* </ItemG> */}
+										<Divider style={{ width: 2, height: '100%' }} />
+										<ToolbarItem type={"chart"} name={'Chart'} />
+										<ToolbarItem type={"gauge"} name={'Gauge'} />
+										<ToolbarItem type={"scorecard"} name={'Scorecard'} />
+										{/*<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />*/}
+										{/*<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
+									</ItemG>
+									{/* </CreateDashboardToolbar> */}
+								</ItemG>
+								<ItemG container xs={6} /* justify={'center'} */ alignItems={'center'}>
 
 									<TextF
 										fullWidth={false}
@@ -229,14 +246,16 @@ class CreateDashboard extends React.Component {
 												color: '#fff'
 											}
 										}}
+										margin={'none'}
 										value={d.name}
 										handleChange={this.changeName}
 										reversed
+										notched={false}
 									/>
 									{this.renderColorPicker()}
 
 								</ItemG>
-								<ItemG sm={1} xs={1} md={1}>
+								<ItemG xs={1}>
 									<Button color={'primary'} variant={'outlined'} onClick={this.handleSave}>
 										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 									</Button>
@@ -244,20 +263,20 @@ class CreateDashboard extends React.Component {
 							</ItemG>
 						</Toolbar>
 					</AppBar>
-					<CreateDashboardToolbar
+					{/* <CreateDashboardToolbar
 						content={
 							<ItemG container style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }}>
 								<ToolbarItem type={"chart"} name={'Chart'} />
 								<ToolbarItem type={"gauge"} name={'Gauge'} />
-								{/* <ToolbarItem type={"scorecard"} name={'Scorecard'} />
+								<ToolbarItem type={"scorecard"} name={'Scorecard'} />
 								<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />
-								<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
+								<ToolbarItem type={"windcard"} name={'Windcard'} />
 							</ItemG>
 
 						}>
-					</CreateDashboardToolbar>
+					</CreateDashboardToolbar> */}
 					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
-					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
+					<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}
