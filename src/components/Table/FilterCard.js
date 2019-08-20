@@ -266,7 +266,7 @@ class FilterCard extends Component {
 								timeIcon={<AccessTime />}
 								rightArrowIcon={<KeyboardArrowRight />}
 								leftArrowIcon={<KeyboardArrowLeft />}
-								InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
+								InputLabelProps={{/*  FormLabelClasses: { root: classes.label, focused: classes.focused } */ }}
 								InputProps={{ classes: { underline: classes.underline } }}
 							/>
 						</MuiPickersUtilsProvider>

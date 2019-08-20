@@ -4,9 +4,10 @@ import { TablePagination, withWidth, withStyles } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
 import { changeTableRows } from 'redux/appState';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import cx from 'classnames'
 
 class TP extends Component {
-	
+
 	handleChangeRowsPerPage = e => {
 		this.props.handleChangeRowsPerPage(e.target.value)
 	}
@@ -14,7 +15,14 @@ class TP extends Component {
 		this.props.handleChangePage(e, page)
 	}
 	render() {
-		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page, width } = this.props
+		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page, width, disableRowsPerPage } = this.props
+		const selectClasses = cx({
+			[classes.SelectIcon]: disableRowsPerPage,
+			[classes.noRows]: disableRowsPerPage
+		})
+		const iconClass = cx({
+			[classes.noRows]: disableRowsPerPage
+		})
 		return (
 			<TablePagination
 				component='div'
@@ -32,14 +40,16 @@ class TP extends Component {
 					input: classes.spaceBetween,
 					caption: classes.tablePaginationCaption
 				}}
-				labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${t('tables.of')} ${count}`}
+				labelDisplayedRows={({ from, to, count }) => disableRowsPerPage ? `` : `${from}-${to} ${t('tables.of')} ${count}`}
 				onChangePage={this.handleChangePage}
 				onChangeRowsPerPage={this.handleChangeRowsPerPage}
-				labelRowsPerPage={isWidthUp('sm', width) ?  t('tables.rowsPerPage') : ''}
-				rowsPerPageOptions={ rowsPerPageOptions}
+				labelRowsPerPage={isWidthUp('sm', width) ? disableRowsPerPage ? `` : t('tables.rowsPerPage') : ''}
+				rowsPerPageOptions={rowsPerPageOptions}
 				SelectProps={{
+					renderValue: value => value,
 					classes: {
-						select: classes.SelectIcon
+						select: selectClasses,
+						icon: iconClass
 					}
 				}}
 			/>

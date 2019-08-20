@@ -1,16 +1,16 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, TableRow, Table, TableBody,
+	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody, Menu, ListItem, ListItemIcon, ListItemText,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, Assignment,
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment, MoreVert, CloudDownload,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	ExportModal,
+	// ExportModal,
 	DateFilterMenu,
 	T,
 } from 'components';
@@ -20,8 +20,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-// import { getSensorDataClean } from 'variables/dataRegistry';
-import { getSensorDataClean } from 'variables/dataRegistry';
+import { getSensorDataClean } from 'variables/dataSensors';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 import TC from 'components/Table/TC'
 import withLocalization from 'components/Localization/T';
@@ -75,7 +74,6 @@ class ScoreCard extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period } = this.props
-		console.log(g.dataSources)
 		let newState = {
 			a: { ...g.dataSources.a },
 			b: { ...g.dataSources.b }
@@ -83,17 +81,22 @@ class ScoreCard extends PureComponent {
 		Promise.all([
 			getSensorDataClean(g.dataSources.a.deviceId, period.from, period.to, g.dataSources.a.dataKey, g.dataSources.a.cf, g.dataSources.a.deviceType, g.dataSources.a.type),
 			getSensorDataClean(g.dataSources.b.deviceId, period.from, period.to, g.dataSources.b.dataKey, g.dataSources.b.cf, g.dataSources.b.deviceType, g.dataSources.b.type),
-		]).then(rs => { 
+		]).then(rs => {
 			newState.a.data = parseFloat(rs[0])
 			newState.b.data = parseFloat(rs[1])
 			this.setState({
 				...newState, loading: false
 			})
-		}) 
-	
+		})
+
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
+		if (prevProps.period.menuId !== this.props.period.menuId ||
+			prevProps.period.timeType !== this.props.period.timeType ||
+			prevProps.g !== this.props.g ||
+			prevProps.g.dataSources.a.dataKey !== this.props.g.dataSources.a.dataKey ||
+			prevProps.g.dataSources.b.dataKey !== this.props.g.dataSources.b.dataKey ||
+			prevProps.period.from !== this.props.period.from) {
 			this.setState({ loading: true }, async () => {
 				let newState = await this.getData(this.props.period)
 				this.setState({ ...newState, loading: false })
@@ -341,81 +344,123 @@ class ScoreCard extends PureComponent {
 		}
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, t, title } = this.props
+	renderTitle = (small) => {
+		const { period, title, t } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
-			<Hidden mdDown>
+		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
+			{small ? null :
+				<Hidden xsDown>
+					<ItemG xs zeroMinWidth>
+						<Tooltip enterDelay={1000} title={title}>
+							<div>
+								<T noWrap variant={'h6'}>{title}</T>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Hidden>
+			}
+			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
 							<KeyboardArrowLeft />
 						</IconButton>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
-			</ItemG>
-			<Hidden mdDown>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.period')}>
+						<DateFilterMenu
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+											</ItemG>
+										</ItemG>
+
+									</ItemG>
+
+								</ItemG>
+							}
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
+					</Tooltip>
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
 								<KeyboardArrowRight />
 							</IconButton>
 						</div>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG>
-				<T>{title}</T>
 			</ItemG>
+
 		</ItemG>
 	}
 	relDiff(oldNumber, newNumber) {
 		var decreaseValue = oldNumber - newNumber;
-		return ((decreaseValue / oldNumber) * 100).toFixed(3);
+		let finalValue = ((decreaseValue / oldNumber) * 100).toFixed(3)
+		return !isNaN(finalValue) ? finalValue : '---';
+	}
+	diff(oldNumber, newNumber) {
+		let number = (oldNumber - newNumber).toFixed(3)
+		return !isNaN(number) ? number : '---'
 	}
 	renderType = () => {
 		const { loading, a, b } = this.state
-		const { t } = this.props
 		if (!loading) {
 			return <Table>
 				<TableBody>
 					<TableRow>
-						<TC label={a.label}/>
+						<TC label={a.label ? a.label : '---'} />
 						<TC content={
 							<T style={{ fontWeight: 500 }}>
-								{a.data}
+								{!isNaN(a.data) ? a.data : '---'}
 							</T>
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={b.label}/>
+						<TC label={b.label ? b.label : '---'} />
 						<TC content={
 							<T style={{ fontWeight: 500 }}>
-								{b.data}
+								{!isNaN(b.data) ? a.data : '---'}
 							</T>
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={t('dashboard.fields.difference')}/>
+						<TC label={'Difference'} />
 						<TC content={
 							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
-								{a.data > b.data ? (a.data - b.data).toFixed(3) : (b.data - a.data).toFixed(3)}
+								{a.data > b.data ? this.diff(a.data, b.data) : this.diff(b.data, a.data)}
 							</T>
 						} />
 					</TableRow>
 					<TableRow>
-						<TC label={t('dashboard.fields.percDifference')}/>
+						<TC label={'Percentage Difference:'} />
 						<TC content={
 							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
-								{a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)}% 
+								{`${a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)} %`}
 							</T>
-						}/>
+						} />
 					</TableRow>
 				</TableBody>
 			</Table>
@@ -430,47 +475,36 @@ class ScoreCard extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { /* actionAnchor, actionAnchorVisibility, */ resetZoom } = this.state
-		const { /* classes, */ t, period } = this.props
-		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
-				</ItemG>
-			</Hidden>
-			<ItemG container>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
-					</Tooltip>
-				</ItemG>
-				<Collapse in={resetZoom}>
-					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
-						<IconButton onClick={this.handleReverseZoomOnData}>
-							<ArrowUpward />
-						</IconButton>
-					</Tooltip>
-					}
-				</Collapse>
-			</ItemG>
+		const { t } = this.props
+		const { actionAnchor } = this.state
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
+		return <ItemG container>
+			<Tooltip title={t('menus.menu')}>
+				<IconButton
+					aria-label='More'
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup='true'
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</Tooltip>
+			<Menu
+				marginThreshold={24}
+				id='long-menu'
+				anchorEl={actionAnchor}
+				open={Boolean(actionAnchor)}
+				onClose={this.handleCloseActionsDetails}
+				onChange={this.handleVisibility}
+				PaperProps={{ style: { minWidth: 250 } }}>
+
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t('menus.export')}</ListItemText>
+				</ListItem>
+
+
+			</Menu>
 		</ItemG>
 	}
 	renderNoData = () => {
@@ -480,39 +514,44 @@ class ScoreCard extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <Assignment/>
+		return <Assignment />
 	}
-
+	renderSmallTitle = () => {
+		const { title, classes } = this.props
+		return <ItemG xs={12} container justify={'center'}>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+		</ItemG>
+	}
 	render() {
-		const { t, period } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { color, classes, g } = this.props
+		const { loading } = this.state
+		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 		return (
 			<Fragment>
 				<InfoCard
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					color={color}
+					title={this.renderTitle(small)}
 					avatar={this.renderIcon()}
 					noExpand
+					headerClasses={{
+						root: small ? classes.smallSubheader : classes.subheader
+					}}
+					bodyClasses={{
+						root: small ? classes.smallBody : classes.body
+					}}
 					topAction={this.renderMenu()}
-					background={this.props.color}
 					content={
-						<Grid container style={{ minHeight: 300 }}>
-							<ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/>
+						<Grid container style={{ height: '100%', width: '100%' }}>
 							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
-
-								<ItemG xs={12}>
+								<Fragment>
+									<Hidden xsDown>
+										{small ? this.renderSmallTitle() : null}
+									</Hidden>
+									<Hidden smUp>
+										{this.renderSmallTitle()}
+									</Hidden>
 									{this.renderType()}
-								</ItemG>
+								</Fragment>
 							}
 						</Grid>}
 				/>
@@ -521,8 +560,8 @@ class ScoreCard extends PureComponent {
 	}
 }
 const mapStateToProps = (state, ownProps) => ({
-	g: getGraph(state, ownProps.gId),
-	period: getPeriod(state, ownProps.gId)
+	g: getGraph(state, ownProps.gId, ownProps.create),
+	period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({

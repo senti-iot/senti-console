@@ -2,11 +2,78 @@
 // // // Dashboard styles
 // #############################
 
-import { successColor, headerColor } from "assets/jss/material-dashboard-react.js";
-import { bgColors } from './backgroundColors';
+import { successColor, headerColor, transition, drawerWidth, hoverColor } from "assets/jss/material-dashboard-react.js";
+// import { bgColors } from './backgroundColors';
+// import { bgColorsDark } from './bgColorsDark';
+import { bgColorsLight } from './bgColorsLight';
 
 const dashboardStyle = theme => ({
-	...bgColors,
+	...bgColorsLight(theme),
+	exportTArea: {
+		border: '1px solid black',
+		borderRadius: 4,
+		transition: '100ms all ease',
+		// width: 550,
+		height: 300,
+		margin: 8,
+		'&:hover': {
+			border: `4px solid ${hoverColor}`,
+			margin: 5
+		}
+	},
+	speedDial: {
+		bottom: 30,
+		right: 30,
+		position: 'fixed'
+	},
+
+	editSourceDrawer: {
+		height: 'calc(100% - 70px)',
+		width: 360,
+		top: 70,
+		background: theme.palette.type === 'light' ? 'rgba(255,255,255, 0.3)' : 'rgba(0, 0, 0, 0.7)'
+	},
+	icon: {
+		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
+		marginRight: 4
+	},
+	expansionPanel: {
+		border: 'none',
+		width: '100%',
+	},
+	drawerPaper: {
+		color: '#fff',
+		backgroundColor: "#434351",
+		overflowY: 'inherit',
+		top: 70,
+		[theme.breakpoints.down('md')]: {
+			top: 0
+		},
+		width: drawerWidth,
+		border: 'none',
+	},
+	drawer: {
+		top: 70,
+		width: drawerWidth,
+		flexShrink: 0,
+		whiteSpace: 'nowrap',
+
+	},
+	drawerOpen: {
+		width: drawerWidth,
+		overflowX: "auto",
+		...transition
+	},
+	drawerClose: {
+		...transition,
+		overflowX: 'hidden',
+		width: 60
+	},
+	drawerPersClose: {
+		...transition,
+		overflowX: 'hidden',
+		width: 0
+	},
 	image: {
 		backgroundColor: '#1a1b32',
 		position: "relative",
@@ -43,7 +110,7 @@ const dashboardStyle = theme => ({
 			content: '""',
 			position: "absolute",
 			bottom: "0",
-	
+
 			height: "0px",
 			right: "15px",
 			width: "calc(100% - 30px)",
@@ -78,8 +145,24 @@ const dashboardStyle = theme => ({
 	centerGrid: {
 		margin: "0 auto",
 	},
-	appBar: {
-		WebkitOverflowScrolling: "touch",
+	// appBar: {
+	// 	position: 'sticky',
+	// 	backgroundColor: headerColor,
+	// 	boxShadow: "none",
+	// 	borderBottom: "0",
+	// 	marginBottom: "0",
+	// 	width: "100%",
+	// 	paddingTop: "10px",
+	// 	zIndex: "1029",
+	// 	color: "#ffffff",
+	// 	border: "0",
+	// 	// borderRadius: "3px",
+	// 	padding: "10px 0",
+	// 	transition: "all 150ms ease 0s",
+	// 	minHeight: "50px",
+	// 	display: "block"
+	// },
+	cAppBar: {
 		position: 'sticky',
 		backgroundColor: headerColor,
 		boxShadow: "none",
@@ -93,8 +176,29 @@ const dashboardStyle = theme => ({
 		// borderRadius: "3px",
 		padding: "10px 0",
 		transition: "all 150ms ease 0s",
-		minHeight: "50px",
-		display: "block"
+		display: "flex",
+		justifyContent: 'center',
+		height: 70,
+
+	},
+	appBar: {
+		WebkitOverflowScrolling: "touch",
+		backgroundColor: headerColor,
+		boxShadow: "none",
+		borderBottom: "0",
+		marginBottom: "0",
+		position: 'fixed',
+		padding: "0 !important",
+		[theme.breakpoints.down('xs')]: {
+			height: 48
+		},
+		height: "70px",
+		zIndex: "1029",
+		color: "#ffffff",
+		border: "0",
+		transition: "all 150ms ease 0s",
+		minHeight: "48px",
+		display: "block",
 	},
 	successText: {
 		color: successColor
@@ -106,6 +210,31 @@ const dashboardStyle = theme => ({
 	typo: {
 		marginBottom: "40px",
 		position: "relative"
+	},
+	editGraph: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		zIndex: '9999',
+		width: '100%',
+		height: '100%',
+		opacity: 0,
+
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+
+		fontSize: '24px',
+		// padding: '20px',
+		borderRadius: 4,
+		transition: 'all 300ms ease',
+		transformOrigin: 'center',
+		transform: 'translate(-50%, -50%)',
+		"&:hover": {
+			background: 'rgba(128,128,128,0.7)',
+			// cursor: 'move',
+			opacity: 1
+		}
 	},
 	note: {
 		fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',

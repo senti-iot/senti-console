@@ -12,6 +12,7 @@ import MultiTooltip from './MultiTooltip';
 
 Chart.defaults.global.elements.line.tension = 0;
 Chart.defaults.multicolorLine = Chart.defaults.line;
+Chart.defaults.global.elements.point.radius = 1;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 	draw: function (ease) {
 		var startIndex = 0,
@@ -78,7 +79,6 @@ class LineChart extends PureComponent {
 					onComplete: props.getImage ? props.getImage : null,
 				},
 				display: true,
-
 				maintainAspectRatio: false,
 				tooltips: {
 					titleFontFamily: 'inherit',
@@ -97,7 +97,7 @@ class LineChart extends PureComponent {
 								color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
 							},
 							ticks: {
-								// source: 'labels',
+								source: 'labels',
 								maxRotation: 0,
 								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 							},
@@ -126,7 +126,7 @@ class LineChart extends PureComponent {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
-								// source: 'labels',
+								source: 'labels',
 								maxRotation: 0
 							},
 							id: 'xAxis-day',
@@ -186,7 +186,7 @@ class LineChart extends PureComponent {
 
 		})
 	}
-	updateHover = () => { 
+	updateHover = () => {
 		const { hoverID } = this.props
 		let dId = this.chart.chartInstance.data.datasets.findIndex(d => d.id === hoverID)
 		// let dId = 0
@@ -194,7 +194,7 @@ class LineChart extends PureComponent {
 			let dataset = this.chart.chartInstance.data.datasets[dId]
 			dataset.borderWidth = 7
 		}
-		else { 
+		else {
 			this.chart.chartInstance.data.datasets.forEach(d => {
 				d.borderWidth = 3
 			})
@@ -203,10 +203,10 @@ class LineChart extends PureComponent {
 		this.chart.chartInstance.update()
 	}
 	componentDidUpdate = (prevProps) => {
-		if (prevProps.hoverID !== this.props.hoverID) { 
+		if (prevProps.hoverID !== this.props.hoverID) {
 			this.setState({ updateHover: true })
 		}
-		if (this.state.updateHover) { 
+		if (this.state.updateHover) {
 			this.updateHover()
 		}
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
@@ -223,7 +223,6 @@ class LineChart extends PureComponent {
 	}
 
 	customTooltip = async (tooltipModel) => {
-		// console.log(tooltipModel)
 		if (tooltipModel.opacity === 0) {
 			return !this.clickEvent() ? null : this.hideTooltip()
 		}
@@ -301,7 +300,7 @@ class LineChart extends PureComponent {
 		}
 
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 
 		this.setTooltip({
@@ -400,7 +399,7 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				show: false, 
+				show: false,
 				showWeather: false,
 				exited: true
 			}
@@ -425,7 +424,7 @@ class LineChart extends PureComponent {
 				await this.props.onElementsClick(elements)
 			}
 			catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 			this.hideTooltip()
 		}
@@ -442,11 +441,10 @@ class LineChart extends PureComponent {
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
+				<div style={{ /* display: 'block', */ height: '100%', width: '100%', /* maxHeight: 300, */ position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ /* display: 'block', */ height: '100%', /*  maxHeight: 300, */ width: '100%', position: 'relative' }}>
 
 						<ChartComponent
-							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
 							data={data}
 							ref={r => this.chart = r}

@@ -2,24 +2,35 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide } from '@material-ui/core';
-import { ItemG, T, GridContainer, CircularLoader } from 'components';
-import { Close } from 'variables/icons';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Paper, DialogContent, DialogActions, DialogTitle, Button } from '@material-ui/core';
+import { ItemG, T, CircularLoader, SlideT } from 'components';
+import { Close, Edit, ContentCopy } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
-import GaugeFakeData from 'views/Charts/GaugeFakeData';
-import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
+import GaugeSData from 'views/Charts/GaugeSData';
+import DoubleChart from 'views/Charts/DoubleChart';
 import logo from '../../logo.svg'
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import Scorecard from 'views/Charts/Scorecard';
 import WindCard from 'views/Charts/WindCard';
+import { Responsive, WidthProvider } from "react-grid-layout";
+import { ThemeProvider } from '@material-ui/styles';
+import { darkTheme, lightTheme } from 'variables/themes';
+import { graphType } from 'variables/dsSystem/graphTypes';
+import { removeDashboard } from 'redux/dsSystem';
+import { /* encrypyAES, */ copyToClipboard, selectAll } from 'variables/functions';
+import withSnackbar from 'components/Localization/S';
+import SB from 'components/Scrollbar/SB';
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class DashboardPanel extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			openDashboard: false
+			openDashboard: false,
+			openShare: false,
+			initialLayout: props.initialLayout
 		}
 	}
 
@@ -33,11 +44,120 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		})
 	}
-	transition(props) {
-		return <Slide direction='up' {...props} />;
+	renderPos = (l) => {
+		return <div style={{
+			position: 'absolute',
+			top: '50%',
+			left: '50%',
+			zIndex: '9999',
+			background: 'white',
+			fontSize: '24px',
+			padding: '20px',
+			transformOrigin: 'center',
+			transform: 'translate(-50%, -50%)', backgroundColor: "#000"
+		}}>
+			[{l.x}, {l.y}, {l.w}, {l.h}]
+		</div>
+	}
+	componentDidMount() {
+		this.setState({
+			initialLayout: this.props.initialLayout
+		})
+	}
+
+	onLayoutChange = (args) => {
+		this.setState({
+			initialLayout: {
+				lg: args
+			}
+		})
+	}
+	gridCoords = (type) => {
+		switch (type) {
+			case 0:
+				return 'chart'
+			case 1:
+				return 'gauge'
+			case 2:
+				return 'scorecardAB'
+			case 3:
+				return 'scorecard'
+			case 4:
+				return 'windcard'
+			default:
+				break;
+		}
+	}
+	onBreakpointChange = (args) => {
+		// console.log(args)
+	}
+	handleOpenShare = () => {
+		this.setState({
+			openShare: true
+		})
+	}
+	handleCloseShare = () => {
+		this.setState({
+			openShare: false
+		})
+	}
+	handleCopyToClipboard = () => {
+		const { s, d } = this.props
+		let str = JSON.stringify(d, null, 4)
+		copyToClipboard(str)
+		s('snackbars.copied')
+	}
+	renderShareDashboard = () => {
+		const { t, d, classes } = this.props
+		const { openShare } = this.state
+		if (d) {
+			const encrypted = JSON.stringify(d, null, 4)
+			return <Dialog
+				open={openShare}
+				onClose={this.handleCloseShare}
+				PaperProps={{
+					style: {
+						width: '100%'
+
+					}
+				}}
+			>
+				<DialogTitle>{t('dialogs.dashboards.share.title')}</DialogTitle>
+				<DialogContent>
+					<ItemG container justify='center'>
+
+						<ItemG xs={12}>
+							<div className={classes.exportTArea}>
+								<SB>
+
+									<pre id={'pre' + d.id} onClick={() => selectAll('pre' + d.id)}>
+										{encrypted}
+
+									</pre>
+									{/* <ContentEditable
+										html={<pre>
+											{encrypted}
+										</pre>}
+										style={{ width: '100%', height: '100%' }}>
+									</ContentEditable> */}
+								</SB>
+							</div>
+						</ItemG>
+						<ItemG xs={12}>
+
+							<Button onClick={this.handleCopyToClipboard}>
+								<ContentCopy style={{ marginRight: 8 }} />
+								{t('actions.copyToClipboard')}
+							</Button>
+						</ItemG>
+					</ItemG>
+				</DialogContent>
+				<DialogActions></DialogActions>
+			</Dialog>
+		}
 	}
 	renderDashboard = () => {
-		const { t, classes, d, loading } = this.props
+		const { t, classes, d, loading, handleOpenEDT } = this.props
 		const { openDashboard } = this.state
 		const { handleCloseDashboard } = this
 		const appBarClasses = cx({
@@ -47,8 +167,8 @@ class DashboardPanel extends Component {
 			fullScreen
 			open={openDashboard}
 			onClose={handleCloseDashboard}
-			TransitionComponent={this.transition}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+			TransitionComponent={SlideT}>
+			<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
 						<ItemG container alignItems={'center'}>
@@ -77,6 +197,9 @@ class DashboardPanel extends Component {
 								</T>
 							</ItemG>
 							<ItemG xs={1} container justify={'flex-end'}>
+								<IconButton color='inherit' onClick={() => { handleOpenEDT(d); handleCloseDashboard(); }} aria-label='Close'>
+									<Edit />
+								</IconButton>
 								<IconButton color='inherit' onClick={handleCloseDashboard} aria-label='Close'>
 									<Close />
 								</IconButton>
@@ -100,99 +223,144 @@ class DashboardPanel extends Component {
 					</Hidden>
 				</Toolbar>
 			</AppBar>
-			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-				<GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
-				>
-					{d.graphs.map((g, i) => {
-						switch (g.type) {
-							case 1:
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									<GaugeFakeData
-										title={g.name}
-										period={{ ...g.period, menuId: g.periodType }}
-										t={t}
-										color={d.color}
-										gId={g.id}
-										dId={d.id}
-										single
-									/>
-								</ItemG>
-							case 0: 
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									<DoubleChartFakeData
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										color={d.color}
-										single={true}
-										t={t}
-									/>
-								</ItemG>
-							case 2:
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									 <ScorecardAB
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										t={t}
-									/> 
-								</ItemG>
-							case 3: 
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									<Scorecard
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										t={t}
-									/>
-								</ItemG>
-							case 4: 
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									<WindCard
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										t={t}
-									/>
-								</ItemG>
-							default:
-								return null;
-						}
-					
-					
-					})}
-				</GridContainer>
-			</div>}
-		</Dialog>
+			{
+				loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
+					<ResponsiveReactGridLayout
+						{...this.props}
+						onBreakpointChange={this.onBreakpointChange}
+						onLayoutChange={this.onLayoutChange}
+						// measureBeforeMount={true}
+						useCSSTransforms={this.state.mounted}
+						isResizable={false}
+						isDraggable={false}
+					>
+						{d.graphs.map((g, i) => {
+							let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
+							switch (g.type) {
+								case 1:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<GaugeSData
+											title={g.name}
+											period={{ ...g.period, menuId: g.periodType }}
+											t={t}
+											color={d.color}
+											gId={g.id}
+											dId={d.id}
+											single
+										/>
+									</Paper>
+								case 0:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<DoubleChart
+											title={g.name}
+											g={g}
+											period={{ ...g.period }}
+											gId={g.id}
+											dId={d.id}
+											color={d.color}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 2:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<ScorecardAB
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 3:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<Scorecard
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 4:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<WindCard
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											single={true}
+											t={t}
+										/>
+									</Paper>
+								default:
+									return null;
+							}
+
+						})}
+					</ResponsiveReactGridLayout>
+				</div>
+			}
+		</Dialog >
+	}
+	handleDeleteDashboard = () => {
+		const { d } = this.props
+		this.props.removeDashboard(d.id)
+	}
+	handleEditDashboard = () => {
+		const { d } = this.props
+		this.props.handleOpenEDT(d)
 	}
 	render() {
-		const { d, data } = this.props
+		const { d, data, t, dsTheme } = this.props
+
 		return (
 			<Fragment>
-				{this.renderDashboard()}
+				<ThemeProvider theme={dsTheme === 0 ? lightTheme : darkTheme}>
+					{this.renderDashboard()}
+				</ThemeProvider>
+				{this.renderShareDashboard()}
 				<ItemG xs={12} md={4} lg={3} xl={2}>
 					<DashboardCard
+						deleteDashboard={this.handleDeleteDashboard}
 						handleOpenDashboard={this.handleOpenDashboard}
+						handleEditDashboard={this.handleEditDashboard}
+						handleOpenShare={this.handleOpenShare}
 						data={data}
 						header={d.name}
 						img={imgs.data}
 						content={d.description}
 						c={d.color}
+						t={t}
 					/>
 				</ItemG>
 			</Fragment>
 		)
 	}
 }
+DashboardPanel.defaultProps = {
+	className: "layout",
+	rowHeight: 25,
+	preventCollision: false,
+	onLayoutChange: () => { },
+	cols: { lg: 12, md: 6, sm: 4, xs: 3, xxs: 3 },
 
+
+};
 const mapStateToProps = (state, ownProps) => ({
 	// loading: state.dsSystem.gotDashboardData
+	dsTheme: state.settings.dsTheme
 })
 
 const mapDispatchToProps = (dispatch) => ({
+	removeDashboard: (id) => dispatch(removeDashboard(id))
 })
 
-export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))
+export default withSnackbar()(withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel)))

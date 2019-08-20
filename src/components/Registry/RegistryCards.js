@@ -28,7 +28,7 @@ class RegistryCards extends Component {
 		const { registries, t,  rowsPerPage, classes } = this.props
 		const { page } = this.state
 		return (
-			<GridContainer spacing={8}>			
+			<GridContainer spacing={2}>			
 				{registries ? registries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) =>
 					<ItemG container key={i} justify={'center'} xs={12} sm={6} md={4}><RegistryCard t={t} key={p.id} p={p} /></ItemG>
 				) : null}

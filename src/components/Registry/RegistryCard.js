@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { IconButton, Menu, MenuItem, withStyles, Button, Typography } from '@material-ui/core'
-import { ItemGrid, SmallCard, ItemG, T } from 'components'
+import { ItemGrid, SmallCard, ItemG, T, Caption } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
 import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ InputIcon } from 'variables/icons'
 import { withRouter } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 class RegistryCard extends Component {
 	constructor(props) {
 	  super(props)
-	
+
 	  this.state = {
 		 actionAnchor: null,
 		 img: null
@@ -33,11 +33,11 @@ class RegistryCard extends Component {
 		switch (id) {
 			case 0:
 				return t('registries.fields.protocols.none')
-			case 1: 
+			case 1:
 				return t('registries.fields.protocols.mqtt')
-			case 2: 
+			case 2:
 				return t('registries.fields.protocols.http')
-			case 3: 
+			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
@@ -47,12 +47,14 @@ class RegistryCard extends Component {
 		const { p, classes, t } = this.props
 		const { actionAnchor } = this.state
 		return (
-			
+
 			<SmallCard
 				avatar={<InputIcon />}
 				key={p.id}
 				title={p.name}
-				subheader={p.uuid}
+				subheader={<ItemG><Caption>
+					{p.uuid}
+				</Caption></ItemG>}
 				img={this.state.img}
 				topAction={
 					<ItemGrid noMargin noPadding>
@@ -74,7 +76,7 @@ class RegistryCard extends Component {
 								}
 							}}>
 							<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
-								<Edit className={classes.leftIcon} />{t('menus.edit')}									
+								<Edit className={classes.leftIcon} />{t('menus.edit')}
 							</MenuItem>
 						</Menu>
 					</ItemGrid>

@@ -257,7 +257,7 @@ class BarChart extends PureComponent {
 			this.setState({ id: id })
 		}
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 		this.setTooltip({
 			...this.state.tooltip,
@@ -391,7 +391,7 @@ class BarChart extends PureComponent {
 				await this.props.onElementsClick(elements)
 			}
 			catch (e) {
-				console.log(e)
+				console.error(e)
 			}
 			this.hideTooltip()
 		}
@@ -411,10 +411,10 @@ class BarChart extends PureComponent {
 
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
+				<div style={{ display: 'block', width: '100%', position: 'relative', height: '100%' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', width: '100%', height: '100%' }}>
 						<Bar
-							height={300}
+							// height={300}
 							data={this.props.data}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}

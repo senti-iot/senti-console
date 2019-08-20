@@ -2,6 +2,51 @@ import { red, yellow, green } from "@material-ui/core/colors";
 import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
+
+	smallBody: {
+		paddingTop: 0
+	},
+	smallSubheader: {
+		paddingBottom: 0
+	},
+	body: {
+		[theme.breakpoints.down('sm')]: {
+			paddingTop: 0
+		}
+	},
+	smallTitleNP: {
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+	},
+	smallTitle: {
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+		paddingLeft: 8,
+		[theme.breakpoints.down('sm')]: {
+			paddingBottom: 8,
+			paddingTop: 8
+		},
+		[theme.breakpoints.up('xs')]: {
+			paddingBottom: 16,
+			paddingTop: 16
+		}
+	},
+	subheader: {
+		[theme.breakpoints.down('sm')]: {
+			paddingBottom: 0
+		}
+	},
+	scrollbar: {
+		background: theme.palette.type === "light" ? "rgba(128,128,128,0.3)" : "rgba(255,255,255,0.3)",
+		borderRadius: 8,
+		transition: "all 100ms ease",
+		"&:hover": {
+			background: theme.palette.type === "light" ? "rgba(128,128,128,0.7)" : "rgba(255,255,255, 0.7)"
+		},
+		cursor: "drag"
+	},
 	blocked: {
 		color: red[500],
 		marginRight: 8
@@ -34,7 +79,7 @@ const deviceStyles = theme => ({
 		padding: 30
 	},
 	nested: {
-		paddingLeft: theme.spacing.unit * 4,
+		paddingLeft: theme.spacing(4),
 	},
 	root: {
 		display: 'flex',
@@ -44,12 +89,12 @@ const deviceStyles = theme => ({
 		alignItems: "center"
 	},
 	selectEmpty: {
-		marginTop: theme.spacing.unit * 2,
+		marginTop: theme.spacing(2),
 	},
 	modal: {
 		[theme.breakpoints.up('md')]: {
-			width: theme.spacing.unit * 50,
-			height: theme.spacing.unit * 50,
+			width: theme.spacing(50),
+			height: theme.spacing(50),
 			maxHeight: 'calc(100vh - 60px)'
 		},
 		[theme.breakpoints.down('sm')]: {
@@ -63,7 +108,7 @@ const deviceStyles = theme => ({
 		position: 'absolute',
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
-		padding: theme.spacing.unit * 4,
+		padding: theme.spacing(4),
 		top: `50%`,
 		left: `50%`,
 		transform: `translate(-50%, -50%)`,
@@ -100,7 +145,7 @@ const deviceStyles = theme => ({
 		height: 30
 	},
 	leftIcon: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	InfoSignal: {
 		marginBottom: '16px',

@@ -4,7 +4,7 @@ import { T } from 'components';
 
 const styles = theme => ({
 	p: {
-		marginBottom: theme.spacing.unit
+		marginBottom: theme.spacing(1)
 	},
 	dialogContent: {
 		padding: 24,

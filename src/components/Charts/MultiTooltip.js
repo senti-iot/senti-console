@@ -21,11 +21,11 @@ class Tooltip extends Component {
 
 		let x = 0
 		let y = 0
-		
+
 		x = '-50%'
 		y = tooltip.top < (chartHeight / 2) ? '15%' : '-115%'
-		
-		if (chartWidth > screenWidth / 2) { 
+
+		if (chartWidth > screenWidth / 2) {
 			if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 				y = '15%'
 			}
@@ -156,7 +156,7 @@ class Tooltip extends Component {
 								</Fragment>
 							</Collapse>
 						</ItemG>
-						{days.length > 0 || birthdays.length > 0 ? 
+						{days.length > 0 || birthdays.length > 0 ?
 							<ItemG container alignItems={'center'} justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
 								<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
 								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : undefined}>
@@ -170,13 +170,16 @@ class Tooltip extends Component {
 										{`\u{2022} ${d.name}`}
 									</T>) : <Muted>{t('no.birthdays')}</Muted>}
 								</ItemG>
-							</ItemG> 
+							</ItemG>
 							: null}
 					</ItemG>
 				</ItemG>
 			</Paper>
 		</Grow>
 	}
+
+	handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
+
 	render() {
 		const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = this.props
 		let screenWidth = window.innerWidth
@@ -199,7 +202,7 @@ class Tooltip extends Component {
 					open={tooltip.show}
 					onClose={e => { e.stopPropagation(); handleCloseTooltip() }}
 					TransitionComponent={this.handleTransition}
-					// onBackdropClick={e => e.stopPropagation()}
+				// onBackdropClick={e => e.stopPropagation()}
 				>
 
 					<DialogContent style={{ padding: 0 }}>

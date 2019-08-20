@@ -42,7 +42,7 @@ function getSuggestionValue(suggestion) {
 	return suggestion.label;
 }
 
-class GlobalSearch extends React.PureComponent {
+class GlobalSearch extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -54,6 +54,13 @@ class GlobalSearch extends React.PureComponent {
 		this.inputRef = null
 
 	}
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextProps.suggestions !== this.props.suggestions) {
+			return true
+		}		
+		return false
+	}
+	
 	componentDidMount() {
 		// if (this.props.focusOnMount && this.inputRef.current)
 		// this.focusInput()

@@ -9,7 +9,9 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor, getAllMessages, getAllTokens } from 'variables/dataRegistry';
+import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry';
+import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
+import { getAllSensors, getSensor } from 'variables/dataSensors'
 import { getAllFunctions, getFunction } from 'variables/dataFunctions';
 
 
@@ -168,7 +170,7 @@ export const getAllData = async (reload, orgId, su) => {
 		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
 		dispatch(await getFunctions(true, orgId, su))
-		dispatch(await getMessages(orgId, true))
+		// dispatch(await getMessages(orgId, true))
 	}
 }
 
@@ -926,13 +928,14 @@ export const setTokens = () => {
 //#endregion
 
 //#region Messages
-export const getMessages = (customerID, reload) => {
+export const getMessages = (customerID, reload, ua) => {
 	return dispatch => {
-		getAllMessages(customerID).then(rs => {
-			let messages = handleRequestSort('title', 'asc', rs)
-			set('messages', messages)
+
+		getAllMessages(ua ? undefined : customerID).then(rs => {
+			// let messages = handleRequestSort('title', 'asc', rs)
+			// set('messages', messages)
 			if (reload) {
-				dispatch(setMessages())
+				dispatch(setMessages(rs))
 			}
 			dispatch({ type: gotmessages, payload: true })
 		})
@@ -940,9 +943,9 @@ export const getMessages = (customerID, reload) => {
 	}
 }
 
-export const setMessages = () => {
+export const setMessages = (messages) => {
 	return dispatch => {
-		let messages = get('messages')
+		// let messages = get('messages')
 		if (messages) {
 			dispatch({
 				type: setmessages,

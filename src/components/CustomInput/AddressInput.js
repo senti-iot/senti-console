@@ -13,7 +13,7 @@ import teal from '@material-ui/core/colors/teal'
 
 const styles = theme => ({
 	listItem: {
-		padding: theme.spacing.unit, 
+		padding: theme.spacing(1), 
 		cursor: 'pointer',
 		'&:hover': {
 			background: theme.palette.type === 'dark' ? "#333" : teal[500],
@@ -28,7 +28,7 @@ const styles = theme => ({
 		overflow: 'auto'
 	},
 	textField: {
-		margin: theme.spacing.unit * 2
+		margin: theme.spacing(2)
 	},
 	root: {
 		flexGrow: 1,
@@ -39,7 +39,7 @@ const styles = theme => ({
 	suggestionsContainerOpen: {
 		position: 'absolute',
 		zIndex: 1050,
-		marginTop: theme.spacing.unit,
+		marginTop: theme.spacing(1),
 		left: 0,
 		right: 0,
 	},
@@ -52,7 +52,7 @@ const styles = theme => ({
 		listStyleType: 'none',
 	},
 	divider: {
-		height: theme.spacing.unit * 2,
+		height: theme.spacing(2),
 	},
 });
 

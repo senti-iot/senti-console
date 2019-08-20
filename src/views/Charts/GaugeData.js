@@ -23,8 +23,8 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { getSensorDataClean } from 'variables/dataRegistry';
-import Gauge from 'components/Charts/Gauge';
+import { getSensorDataClean } from 'variables/dataSensors';
+import RGauge from 'components/Charts/RGauge';
 
 class GaugeComponent extends PureComponent {
 	constructor(props) {
@@ -343,7 +343,7 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG>
+			<ItemG container style={{ width: 'auto', flexFlow: 'column' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
@@ -369,11 +369,11 @@ class GaugeComponent extends PureComponent {
 		if (!loading) {
 			switch (period.chartType) {
 				case 3:
-					return <Gauge
+					return <RGauge
 						period={period}
 						value={this.state.value}
 					/>
-						
+
 				default:
 					break;
 			}

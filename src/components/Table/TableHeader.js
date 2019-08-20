@@ -9,11 +9,11 @@ class TableHeader extends Component {
 	};
 
 	render() {
-		const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes, mdDown, customColumn } = this.props;
+		const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes, mdDown, customColumn, noCheckbox } = this.props;
 		return (
 			<TableHead>
 				<TableRow>
-					<TableCell className={classes.header + ' ' + classes.tablecellcheckbox}>
+					{noCheckbox ? null : <TableCell className={classes.header + ' ' + classes.tablecellcheckbox}>
 						<Checkbox
 							indeterminate={numSelected > 0 && numSelected < rowCount}
 							checked={numSelected === rowCount && numSelected > 0}
@@ -21,15 +21,22 @@ class TableHeader extends Component {
 							onChange={onSelectAllClick}
 							className={classes.checkbox}
 						/>
-					</TableCell>
+					</TableCell>}
 					<Hidden mdDown>
 						{columnData.map((column, i) => {
+							let tcClasses = classNames({
+								[classes.header]: classes,
+								[classes.tableCell]: classes,
+								[classes.centered]: classes && column.centered,
+								[classes.tablecellcheckbox]: classes && column.checkbox,
+								[classes.noCheckbox]: noCheckbox
+							})
 							return (
 								<TableCell
 									key={i}
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
-									className={`${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''} ${column.checkbox ? classes.tablecellcheckbox : ''}`}
+									className={tcClasses}
 								>
 									<TableSortLabel
 										active={orderBy === column.id}
@@ -40,8 +47,8 @@ class TableHeader extends Component {
 											root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
 												[classes.hideIcon]: !(orderBy === column.id) ? true : false
 											}),
-											
-											
+
+
 										}}>
 										{column.checkbox ? column.label : <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>{column.label}</Typography>}
 									</TableSortLabel>
@@ -100,12 +107,12 @@ class TableHeader extends Component {
 TableHeader.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 	onRequestSort: PropTypes.func.isRequired,
-	onSelectAllClick: PropTypes.func.isRequired,
+	onSelectAllClick: PropTypes.func,
 	order: PropTypes.string.isRequired,
 	orderBy: PropTypes.string.isRequired,
 	rowCount: PropTypes.number.isRequired,
 	columnData: PropTypes.array.isRequired,
-	classes: PropTypes.object.isRequired 
+	classes: PropTypes.object.isRequired
 };
 
 export default TableHeader

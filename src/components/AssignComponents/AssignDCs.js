@@ -1,10 +1,10 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllCollections } from 'variables/dataCollections';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
@@ -57,10 +57,7 @@ class AssignDCS extends React.Component {
 	//#endregion
 
 	//#region Handlers
-	
-	handleTransition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+
 	handleClick = (event, id) => {
 		event.stopPropagation()
 		const { selectedCollections } = this.state;
@@ -99,7 +96,7 @@ class AssignDCS extends React.Component {
 					fullScreen
 					open={open}
 					onClose={() => this.props.handleClose(false)}
-					TransitionComponent={this.handleTransition}
+					TransitionComponent={SlideT}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>

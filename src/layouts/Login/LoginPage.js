@@ -54,7 +54,7 @@ class NewLoginPage extends Component {
 	googleSignIn = async (googleUser) => {
 		if (googleUser.error) {
 			this.setState({ loggingIn: false, error: true })
-			return console.log(googleUser.error)
+			return console.error(googleUser.error)
 		}
 		if (googleUser) {
 			let token = googleUser.getAuthResponse().id_token
@@ -178,7 +178,7 @@ class NewLoginPage extends Component {
 												<TextF
 													id={'user'}
 													autoFocus
-													reversed
+													
 													label={t('login.username')}
 													error={this.state.error}
 													fullWidth

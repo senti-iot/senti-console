@@ -11,19 +11,19 @@ import { compose } from 'recompose';
 import cx from 'classnames'
 class InfoCard extends PureComponent {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		  expanded: props.expanded ? props.expanded : false,
-		  leftActions: false,
-	  }
+		super(props)
+
+		this.state = {
+			expanded: props.expanded ? props.expanded : false,
+			leftActions: false,
+		}
 	}
 	handleExpandClick = () => {
 		this.setState({ expanded: !this.state.expanded });
 	};
 	hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
 	renderSubHeader = () => {
-		const { subheader, subheaderTitle  } = this.props
+		const { subheader, subheaderTitle } = this.props
 		return subheader ? subheader.toString().length > 200 ?
 			<Fragment>
 				<Typography variant={'caption'}>
@@ -36,7 +36,7 @@ class InfoCard extends PureComponent {
 			: null : null
 
 	}
-	handleExpandCardClick = () => { 
+	handleExpandCardClick = () => {
 		this.setState({ cardExpanded: !this.state.cardExpanded })
 	}
 	renderTopAction = () => {
@@ -50,18 +50,19 @@ class InfoCard extends PureComponent {
 			>
 				<ExpandMore className={classnames(classes.expand, {
 					[classes.expandOpen]: this.state.expanded,
-				})}/>
+				})} />
 			</IconButton>}
 		</ItemG>
 	}
 	render() {
 		const { classes, title, subheader,
 			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent, background, noRightExpand, t, whiteAvatar, noHeader } = this.props;
+			noAvatar, leftActions, leftActionContent, color, noRightExpand, t,
+			whiteAvatar, noHeader, dashboard, headerClasses, bodyClasses } = this.props;
 		const cardClasses = cx({
 			[classes.card]: true,
 			[classes.plainCardCalsses]: true,
-			[classes[background]]: background
+			[classes['']]: color
 		})
 		return (
 			<Card className={cardClasses}>
@@ -69,20 +70,27 @@ class InfoCard extends PureComponent {
 					action={this.renderTopAction()}
 					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar + ' ' + (whiteAvatar ? classes.whiteAvatar : "")}>{avatar}</Avatar>}
 					title={title}
-					subheader={this.hasSubheader(subheader)}
+					disableTypography
+					subheader={subheader}
 					classes={{
 						title: classes.title,
 						action: classes.actions,
-						subheader: classes.subheader
+						subheader: classes.subheader,
+						...headerClasses
 					}}
 				>
 
 				</CardHeader>}
-				<CardContent className={classnames(
-					{ [classes.transition]: true },
-					{ [classes.contentMedia]: this.props.noPadding },
-					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>
-					{this.renderSubHeader()}
+				<CardContent
+					classes={{
+						...bodyClasses
+					}}
+					className={classnames(
+						{ [classes.dashboard]: dashboard },
+						{ [classes.transition]: true },
+						{ [classes.contentMedia]: this.props.noPadding },
+						{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>
+					{/* {this.renderSubHeader()} */}
 					{content ? content : null}
 				</CardContent>
 				{!this.props.noExpand ?
@@ -97,7 +105,7 @@ class InfoCard extends PureComponent {
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
 						</Collapse>
-						<CardActions className={classes.actions} disableActionSpacing>
+						<CardActions className={classes.actions}>
 							{leftActions ? leftActions : null}
 							{!noRightExpand ? <Button
 								variant={'text'}
@@ -128,7 +136,7 @@ InfoCard.propTypes = {
 	leftActions: PropTypes.any,
 	leftActionContent: PropTypes.any,
 	noExpand: PropTypes.bool,
-	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object ]),
+	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	subheader: PropTypes.any,
 	hiddenContent: PropTypes.any,
 	noAvatar: PropTypes.any,

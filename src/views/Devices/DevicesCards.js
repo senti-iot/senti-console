@@ -28,7 +28,7 @@ class DevicesCards extends Component {
 		const { devices, t,  rowsPerPage, classes } = this.props
 		const { page } = this.state
 		return (
-			<GridContainer spacing={8} justify={'center'}>			
+			<GridContainer spacing={2} justify={'center'}>			
 				{devices ? devices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) =>
 					<ItemG container key={i} justify={'center'} xs={12} sm={6} md={4}><DeviceCard t={t} key={p.id} d={p} /></ItemG>
 				) : null}

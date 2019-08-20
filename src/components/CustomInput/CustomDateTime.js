@@ -34,7 +34,7 @@ const CustomDateTime = (props) => {
 			aria-describedby='alert-dialog-description'>
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('filters.dateOptions.custom')}</DialogTitle>
 			<DialogContent className={classes.dialogWidth}>
-				<ItemG container spacing={8}>
+				<ItemG container spacing={2}>
 					<ItemG xs={12}>
 						<DateTimePicker
 							autoOk

@@ -18,7 +18,7 @@ class DeviceDataCollection extends Component {
 		let dc = await getCollection(this.props.dcId)
 		if (dc) {
 			this.setState({
-				dc: dc, 
+				dc: dc,
 				loading: false
 			})
 		}
@@ -35,10 +35,12 @@ class DeviceDataCollection extends Component {
 				noExpand
 				avatar={<DataUsage />}
 				title={t('collections.pageTitle')}
-				subheader={noDc ? '' : `${t('collections.fields.id')}: ${dc ? dc.id : ''}`}
+				subheader={noDc ? '' : <Caption>
+					{`${t('collections.fields.id')}: ${dc ? dc.id : ''}`}
+				</Caption>}
 				content={
 					!loading ? <ItemGrid container>
-	
+
 						<ItemG xs={12}>
 							<Caption>{t(`collections.fields.name`)}</Caption>
 							<Info>{dc.name}</Info>

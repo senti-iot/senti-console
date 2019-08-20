@@ -201,6 +201,9 @@ class Tooltip extends Component {
 			</Paper>
 		</Grow>
 	}
+
+	handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
+
 	render() {
 		const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = this.props
 		let screenWidth = window.innerWidth

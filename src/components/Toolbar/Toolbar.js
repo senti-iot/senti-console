@@ -4,11 +4,13 @@ import React, { PureComponent } from 'react'
 import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, Tooltip, /*  Grow */ } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
-import { NavHashLink as Link } from 'react-router-hash-link';
+import { NavHashLink } from 'react-router-hash-link';
 import { connect } from 'react-redux'
 import { transition } from 'assets/jss/material-dashboard-react';
 import cx from 'classnames'
 // import inView from 'in-view'
+
+const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref}/>)
 
 const styles = theme => ({
 	appBarDrawerOpen: {
@@ -133,7 +135,7 @@ class Toolbar extends PureComponent {
 									key={i}
 									onMouseEnter={e => this.setState({ tooltip: t.id })}
 									onMouseLeave={() => this.setState({ tooltip: -1 })}
-									component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
+									component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={this.handleScroll} style={{ color: '#fff' }} />)}
 									value={t.id}
 									smooth
 									onClick={this.handleTooltipClose}

@@ -18,22 +18,22 @@ import OpenStreetMap from 'components/Map/OpenStreetMap';
 const styles = theme => ({
 
 	actionsContainer: {
-		marginTop: theme.spacing.unit * 2,
+		marginTop: theme.spacing(2),
 	},
 	resetContainer: {
-		padding: theme.spacing.unit * 3,
+		padding: theme.spacing(3),
 	},
 	latlong: {
-		margin: theme.spacing.unit * 2 + 'px 0px'
+		margin: theme.spacing(2) + 'px 0px'
 	},
 	buttonMargin: {
-		margin: theme.spacing.unit
+		margin: theme.spacing(1)
 	},
 	iconButton: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	iconButtonRight: {
-		marginLeft: theme.spacing.unit
+		marginLeft: theme.spacing(1)
 	},
 	mobileStepper: {
 		padding: '8px 0px',
@@ -192,7 +192,7 @@ class CalibrateDevice extends Component {
 
 	renderDeviceNameDescriptionForms = () => {
 		const { classes, t } = this.props
-		return <Grid container spacing={8}>
+		return <Grid container spacing={2}>
 			<ItemG xs={12}>
 				<TextF
 					id={'name'}
@@ -267,7 +267,7 @@ class CalibrateDevice extends Component {
 	renderDeviceLocation = () => {
 		const { t } = this.props
 		const { lat, long } = this.state
-		return <Grid container spacing={8}>
+		return <Grid container spacing={2}>
 			<ItemG xs={12} container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
 				<Button
 					variant='outlined'

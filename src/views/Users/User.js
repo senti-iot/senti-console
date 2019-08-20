@@ -12,7 +12,7 @@ import {
 	Button,
 	Fade
 } from '@material-ui/core';
-import { deleteUser, resendConfirmEmail } from 'variables/dataUsers';
+import { deleteUser, resendConfirmEmail, confirmUser } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
@@ -28,6 +28,7 @@ class User extends Component {
 		this.state = {
 			openSnackbar: 0,
 			openDelete: false,
+			openConfirm: false,
 			openChangePassword: false,
 			openResendConfirm: false,
 			pw: {
@@ -95,7 +96,7 @@ class User extends Component {
 				await this.getUser(match.params.id).then(() => {
 					let name = this.props.user.firstName + ' ' + this.props.user.lastName
 					setBC('user', name ? name : "")
-				
+
 				})
 				let prevURL = location.prevURL ? location.prevURL : '/management/users'
 				setHeader("users.user", true, prevURL, 'users')
@@ -142,13 +143,24 @@ class User extends Component {
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+	handleOpenConfirmDialog = () => {
+		this.setState({ openConfirm: true })
+	}
+	handleCloseConfirmDialog = () => {
+		this.setState({ openConfirm: false })
+	}
+	handleConfirmUser = async () => {
+		const { user } = this.props
+		await confirmUser(user).then(rs => console.log(rs))
+		this.handleCloseConfirmDialog()
+	}
 	handleDeleteUser = async () => {
 		const { user } = this.props
 		await deleteUser(user.id).then(rs => rs ? () => {
 			let favObj = {
 				id: user.id,
 				type: 'user'
-			}	
+			}
 			if (this.props.isFav(favObj)) {
 				this.removeFromFav()
 			}
@@ -273,6 +285,32 @@ class User extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+	renderConfirmUser = () => {
+		const { openConfirm } = this.state
+		const { t, user } = this.props
+		return <Dialog
+			open={openConfirm}
+			onClose={this.handleCloseConfirmDialog}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
+		>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('users.userResendEmail')}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id='alert-dialog-description'>
+					{t('users.userResendConfirm', { user: (user.firstName + ' ' + user.lastName) }) + '?'}
+				</DialogContentText>
+
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseConfirmDialog} color='primary'>
+					{t('actions.cancel')}
+				</Button>
+				<Button onClick={this.handleConfirmUser} color='primary' autoFocus>
+					{t('actions.yes')}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
 	renderConfirmEmail = () => {
 		const { openResendConfirm } = this.state
 		const { t, user } = this.props
@@ -344,6 +382,7 @@ class User extends Component {
 							deleteUser={this.handleOpenDeleteDialog}
 							changePass={this.handleOpenChangePassword}
 							resendConfirmEmail={this.handleOpenResend}
+							handleOpenConfirmDialog={this.handleOpenConfirmDialog}
 							{...rp} />
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'log'}>
@@ -352,6 +391,7 @@ class User extends Component {
 					{this.renderDeleteDialog()}
 					{this.renderConfirmEmail()}
 					{this.renderChangePassword()}
+					{/* {this.renderConfirmUser()} */}
 				</GridContainer>
 			</Fade>
 		)

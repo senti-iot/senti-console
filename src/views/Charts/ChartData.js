@@ -25,6 +25,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+// import * as ReactIs from 'react-is'
 
 class ChartData extends PureComponent {
 	constructor(props) {
@@ -316,7 +317,6 @@ class ChartData extends PureComponent {
 		return <ItemG container style={{ flexFlow: 'row' }}>
 			<Hidden mdDown>
 				<ItemG>
-
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
 							<KeyboardArrowLeft />
@@ -324,12 +324,12 @@ class ChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG>
+			<ItemG container style={{ flexFlow: 'column', width: 'auto' }}>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
 			<Hidden mdDown>
-				<ItemG>
+				<ItemG xs>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
 							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
@@ -608,7 +608,9 @@ class ChartData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					subheader={<ItemG><Caption>
+						{`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					</Caption></ItemG>}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}

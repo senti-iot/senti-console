@@ -1,31 +1,35 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip,
+	Grid, IconButton, Menu, withStyles, ListItem,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
 } from '@material-ui/core';
 import {
+	Timeline, MoreVert,
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, GaugeIcon,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, KeyboardArrowLeft, KeyboardArrowRight,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	ExportModal,
+	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
+	MultiLineChart,
+	DoughnutChart,
+	PieChart,
 	DateFilterMenu,
 	T,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
+import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
-import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-// import { getSensorDataClean } from 'variables/dataRegistry';
-import Gauge from 'components/Charts/Gauge';
-import { getSensorDataClean } from 'variables/dataRegistry';
-import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
+import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { handleSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
+import { getSensorDataClean } from 'variables/dataSensors';
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
 
-class GaugeComponent extends PureComponent {
+class DoubleChartData extends PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -60,8 +64,8 @@ class GaugeComponent extends PureComponent {
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
+		// { id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
+		// { id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
@@ -69,32 +73,52 @@ class GaugeComponent extends PureComponent {
 		const { period } = this.props
 		const { loading } = this.state
 		if (period && loading) {
-			await this.getData(period)
+			await this.getData()
+		}
+	}
+	setData = (data, timeType) => {
+		const { g, title, color } = this.props
+		switch (timeType) {
+			case 0:
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			case 1:
+				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			case 2:
+				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			default:
+				break;
 		}
 	}
 	getData = async () => {
 		const { g, period } = this.props
-		// console.log(g.dataSource)
-		let data = await getSensorDataClean(g.dataSource.deviceId, moment(period.from).subtract(1, 'day'), 
-			period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
-		// let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
-		this.setState({
-			data, loading: false
-		})
-	}
-	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
-			this.setState({ loading: true }, async () => {
-				await this.getData()
-				// let newState = await this.getData(this.props.period)
-				// this.setState({ ...newState, loading: false })
+		if (g.dataSource.dataKey && g.dataSource.deviceId) {
+			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+			// let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			let newState = this.setData(data, period.timeType)
+			this.setState({
+				...newState, loading: false
+			})
+		}
+		else {
+			this.setState({
+				loading: false
 			})
 		}
 	}
-	handleSetDate = async (menuId, to, from, defaultT, chartType) => {
-		const { dId, gId, period } = this.props
-		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
+	componentDidUpdate = async (prevProps, prevState) => {
+
+		if (prevProps.period.menuId !== this.props.period.menuId ||
+			prevProps.period.timeType !== this.props.period.timeType ||
+			prevProps.g !== this.props.g ||
+			prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey ||
+			prevProps.period.from !== this.props.period.from
+		) {
+			this.setState({ loading: true }, async () => {
+				this.getData()
+			})
+		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		this.setState({
@@ -128,10 +152,12 @@ class GaugeComponent extends PureComponent {
 		this.setState({ actionAnchor: null });
 	}
 
-	handleVisibility = () => (event) => {
+	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
+		const { period } = this.props
 		// this.props.changeChartType(this.props.period, id)
+		this.handleSetDate(period.menuId, period.to, period.from, period.timeType, id)
 		this.setState({ actionAnchorVisibility: null })
 	}
 
@@ -332,50 +358,157 @@ class GaugeComponent extends PureComponent {
 		}
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
-	renderTitle = () => {
-		const { period, t, title } = this.props
+	renderTitle = (small) => {
+		const { period, title, t } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
-			<Hidden mdDown>
+		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
+			{small ? null :
+				<Hidden xsDown>
+					<ItemG xs zeroMinWidth>
+						<Tooltip enterDelay={1000} title={title}>
+							<div>
+								<T noWrap variant={'h6'}>{title}</T>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Hidden>
+			}
+			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={this.handlePreviousPeriod}>
+						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
 							<KeyboardArrowLeft />
 						</IconButton>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG>
-				<Typography component={'span'}>{`${displayFrom}`}</Typography>
-				<Typography component={'span'}> {`${displayTo}`}</Typography>
-			</ItemG>
-			<Hidden mdDown>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.period')}>
+						<DateFilterMenu
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+											</ItemG>
+										</ItemG>
+
+									</ItemG>
+
+								</ItemG>
+							}
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
+					</Tooltip>
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
-							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
+							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
 								<KeyboardArrowRight />
 							</IconButton>
 						</div>
 					</Tooltip>
 				</ItemG>
-			</Hidden>
-			<ItemG>
-				<T>{title}</T>
 			</ItemG>
+
 		</ItemG>
 	}
 	renderType = () => {
-		const { period, color } = this.props
-		const { loading, data } = this.state
+		const { title, setHoverID, t, device, period, single, hoverID } = this.props
+		const { loading } = this.state
 		if (!loading) {
-			return <Gauge
-				color={color}
-				title={this.props.title}
-				period={period}
-				value={data}
-			/>
+			const { roundDataSets, lineDataSets, barDataSets } = this.state
+			switch (period.chartType) {
+				case 0:
+					return roundDataSets ?
+						<ItemG container >
+							{roundDataSets.map((d, i) => {
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md/* md={roundDataSets.length >= 2 ? period.length > 2 ? 12 : 6 : 12} */ direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 200 }}>
+										<PieChart
+											title={title}
+											single
+											unit={this.timeTypes[period.timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 1:
+					return roundDataSets ?
+						<ItemG container >
+							{roundDataSets.map((d, i) => {
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 200 }}>
+										<DoughnutChart
+											// height={200}
+											title={title}
+											single
+											unit={this.timeTypes[period.timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 2:
+					return barDataSets ?
+						<BarChart
+							chartYAxis={this.state.chartType}
+							single={single}
+							hoverID={hoverID}
+							obj={device}
+							unit={this.timeTypes[period.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={barDataSets}
+							t={t}
+						/> : this.renderNoData()
+				case 3:
+
+					return lineDataSets ?
+						<MultiLineChart
+							chartYAxis={this.state.chartType}
+							single={single}
+							hoverID={this.props.hoverID}
+							handleReverseZoomOnData={this.handleReverseZoomOnData}
+							resetZoom={this.state.resetZoom}
+							obj={device}
+							unit={this.timeTypes[period.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={lineDataSets}
+							t={t}
+						/> : this.renderNoData()
+				default:
+					return null
+			}
 		}
 		else return this.renderNoData()
 	}
@@ -386,39 +519,18 @@ class GaugeComponent extends PureComponent {
 		}
 		return false
 	}
+	handleSetDate = async (menuId, to, from, defaultT, chartType) => {
+		const { dId, gId, period } = this.props
+		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
+	}
 	renderMenu = () => {
-		const { /* actionAnchor, actionAnchorVisibility, */ resetZoom } = this.state
-		const { /* classes, */ t, period } = this.props
+		const { actionAnchor, resetZoom } = this.state
+		const { classes, t, /* period */ } = this.props
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container direction={'column'}>
-			<Hidden lgUp>
-				<ItemG container>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
-					</ItemG>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
-					</ItemG>
-				</ItemG>
-			</Hidden>
+
 			<ItemG container>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
-					</Tooltip>
-				</ItemG>
 				<Collapse in={resetZoom}>
 					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
 						<IconButton onClick={this.handleReverseZoomOnData}>
@@ -428,7 +540,7 @@ class GaugeComponent extends PureComponent {
 					}
 				</Collapse>
 
-			 {/* <ItemG>
+				<ItemG>
 					<Tooltip title={t('menus.menu')}>
 						<IconButton
 							aria-label='More'
@@ -447,10 +559,29 @@ class GaugeComponent extends PureComponent {
 					onClose={this.handleCloseActionsDetails}
 					onChange={this.handleVisibility}
 					PaperProps={{ style: { minWidth: 250 } }}>
-					<ListItem button onClick={this.handleOpenDownloadModal}>
-						<ListItemIcon><CloudDownload /></ListItemIcon>
-						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem>
+					<div>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText primary={t('filters.options.graphType')} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+							<List component='div' disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</div>
 					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
 						<ListItemIcon>
 							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
@@ -459,15 +590,12 @@ class GaugeComponent extends PureComponent {
 							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 						</ListItemText>
 					</ListItem>
-					<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
-						<ListItemIcon>
-							<Clear />
-						</ListItemIcon>
-						<ListItemText>
-							{t('menus.charts.deleteThisPeriod')}
-						</ListItemText>
+					<ListItem button onClick={this.handleOpenDownloadModal}>
+						<ListItemIcon><CloudDownload /></ListItemIcon>
+						<ListItemText>{t('menus.export')}</ListItemText>
 					</ListItem>
-			 </Menu> */}
+
+				</Menu>
 			</ItemG>
 		</ItemG>
 	}
@@ -478,59 +606,76 @@ class GaugeComponent extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <GaugeIcon/>
+		const { period } = this.props
+		switch (period.chartType) {
+			case 0:
+				return <PieChartRounded />
+			case 1:
+				return <DonutLargeRounded />
+			case 2:
+				return <BarChartIcon />
+			case 3:
+				return <ShowChart />
+			default:
+				break;
+		}
 	}
-
+	renderSmallTitle = () => {
+		const { title, classes } = this.props
+		return <ItemG xs={12} container justify={'center'}>
+			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+		</ItemG>
+	}
 	render() {
-		const { t, period } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { color, classes, g } = this.props
+		const { loading } = this.state
+		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
+
 		return (
-			<Fragment>
-				<InfoCard
-					title={this.renderTitle()}
-					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
-					avatar={this.renderIcon()}
-					noExpand
-					topAction={this.renderMenu()}
-					// background={this.props.color}
-					content={
-						<Grid container>
-							<ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-
-								<ItemG xs={12}>
-									<div style={{ height: 300 }}>
-
-										{this.renderType()}
-									</div>
-								</ItemG>
-							}
-						</Grid>}
-				/>
-			</Fragment >
+			<InfoCard
+				color={color}
+				title={this.renderTitle(small)}
+				// subheader={`${this.options[period.menuId].label}`}
+				avatar={this.renderIcon()}
+				noExpand
+				dashboard
+				headerClasses={{
+					root: small ? classes.smallSubheader : classes.subheader
+				}}
+				bodyClasses={{
+					root: small ? classes.smallBody : classes.body
+				}}
+				topAction={this.renderMenu()}
+				content={
+					<Grid container style={{ height: '100%', width: '100%' }}>
+						{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
+							<Fragment>
+								<Hidden xsDown>
+									{small ? this.renderSmallTitle() : null}
+								</Hidden>
+								<Hidden smUp>
+									{this.renderSmallTitle()}
+								</Hidden>
+								{this.renderType()}
+							</Fragment>
+						}
+					</Grid>}
+			/>
 		);
 	}
 }
+
 const mapStateToProps = (state, ownProps) => ({
-	g: getGraph(state, ownProps.gId),
-	period: getPeriod(state, ownProps.gId)
+	g: getGraph(state, ownProps.gId, ownProps.create),
+	period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({
 	handleSetDate: async (dId, gId, p) => dispatch(await handleSetDate(dId, gId, p)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
 	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
+	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(GaugeComponent))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(DoubleChartData))

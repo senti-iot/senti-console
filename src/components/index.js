@@ -5,7 +5,7 @@
 import BarChart from './Charts/BarChart'
 import LineChart from './Charts/LineChart'
 import DoughnutChart from './Charts/DoughnutChart'
-import PieChart	 from './Charts/PieChart'
+import PieChart from './Charts/PieChart'
 import MultiLineChart from './Charts/MultiLineChart'
 
 // ##############################
@@ -32,6 +32,19 @@ import AssignOrg from './AssignComponents/AssignOrg'
 import AssignDevice from './AssignComponents/AssignDevice'
 import AssignProject from './AssignComponents/AssignProject'
 import AssignDC from './AssignComponents/AssignDC'
+
+// ##############################
+// // // Buttons
+// #############################
+
+import ITB from './Buttons/ITB' //Icon Tooltip Button Combo
+
+// ##############################
+// // // Dialog
+// #############################
+
+import SlideT from './Dialog/SlideT'
+import DeleteDialog from './Dialog/DeleteDialog'
 
 // ##############################
 // // // CustomInput
@@ -98,6 +111,9 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	ITB,
+	DeleteDialog,
+	SlideT,
 	Box,
 	MultiLineChart,
 	DatePicker,

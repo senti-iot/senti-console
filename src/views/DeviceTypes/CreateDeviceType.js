@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createDeviceType } from 'variables/dataRegistry';
+import { createDeviceType } from 'variables/dataDeviceTypes';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { getDeviceTypes } from 'redux/data';
 
@@ -27,11 +27,16 @@ class CreateDeviceType extends Component {
 				open: false,
 				where: null
 			},
+			org: props.org
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
-		props.setHeader('menus.create.devicetype', true, prevURL, '')
+		props.setHeader('menus.create.devicetype', true, prevURL, 'manage.devicetypes')
 		props.setBC('createdevicetypes')
+		props.setTabs({
+			id: 'createDT',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -222,10 +227,10 @@ class CreateDeviceType extends Component {
 	}
 
 	//#endregion
-	
+
 	//#region Create Device Type
 
-	createDeviceType = async () => { 
+	createDeviceType = async () => {
 		let smtd = this.state.sensorMetadata.metadata
 		let mtd = {}
 		smtd.forEach((m) => {
@@ -236,10 +241,14 @@ class CreateDeviceType extends Component {
 			inbound: this.state.sensorMetadata.inbound,
 			outbound: this.state.sensorMetadata.outbound,
 			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
-			customer_id: this.props.orgId
+			// customer_id: this.props.orgId
+			orgId: this.state.org.id
 		}
 
 		return await createDeviceType(newDeviceType)
+	}
+	handleOrgChange = org => {
+		this.setState({ org })
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
@@ -260,9 +269,11 @@ class CreateDeviceType extends Component {
 
 	render() {
 		const { t, cloudfunctions } = this.props
-		const { deviceType, keyName, value, sensorMetadata  } = this.state
+		const { deviceType, keyName, value, sensorMetadata, org } = this.state
 		return (
 			<CreateDeviceTypeForm
+				org={org}
+				handleOrgChange={this.handleOrgChange}
 				deviceType={deviceType}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
@@ -273,7 +284,7 @@ class CreateDeviceType extends Component {
 				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
 				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
-				
+
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}
@@ -300,7 +311,8 @@ class CreateDeviceType extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
-	cloudfunctions: state.data.functions
+	org: state.settings.user.org,
+	cloudfunctions: state.data.functions,
 })
 
 const mapDispatchToProps = dispatch => ({

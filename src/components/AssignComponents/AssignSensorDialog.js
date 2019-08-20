@@ -1,17 +1,15 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 // import { getAllSensors } from 'variables/dataSensors';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { connect } from 'react-redux'
-
-
-
+import TP from 'components/Table/TP';
 
 class AssignSensorDialog extends PureComponent {
 	constructor(props) {
@@ -20,6 +18,7 @@ class AssignSensorDialog extends PureComponent {
 		this.state = {
 			sensors: [],
 			selectedSensor: null,
+			page: 0,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -41,9 +40,6 @@ class AssignSensorDialog extends PureComponent {
 		let org = sensors[sensors.findIndex(o => o.id === sId)]
 		this.props.callBack(org)
 	}
-	Transition(props) {
-		return <Slide direction='up' {...props} />;
-	}
 	selectSensor = pId => e => {
 		e.preventDefault()
 		this.setState({ selectedSensor: pId })
@@ -59,19 +55,27 @@ class AssignSensorDialog extends PureComponent {
 			}
 		})
 	}
+	handleChangePage = (event, page) => {
+		this.setState({ page });
+	}
+
 	render() {
-		const {  filters } = this.state
+		const { filters, page } = this.state
 		const { sensors, classes, open, t } = this.props;
+
+		let height = window.innerHeight
+		let rows = Math.round((height - 85 - 49 - 49) / 49)
+		let rowsPerPage = rows
+
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 		return (
-			
 			<Dialog
 				fullScreen
 				open={open}
 				onClose={this.handleClose}
-				TransitionComponent={this.Transition}
+				TransitionComponent={SlideT}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>
@@ -79,7 +83,7 @@ class AssignSensorDialog extends PureComponent {
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={3} container alignItems={'center'}>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sidebar.sensors')}
+										{t('sidebar.devices')}
 									</Typography>
 								</ItemG>
 								<ItemG xs>
@@ -107,7 +111,7 @@ class AssignSensorDialog extends PureComponent {
 										<Close />
 									</IconButton>
 									<Typography variant='h6' color='inherit' className={classes.flex}>
-										{t('sensors.pageTitle')}
+										{t('sidebar.devices')}
 									</Typography>
 								</ItemG>
 								<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -125,37 +129,46 @@ class AssignSensorDialog extends PureComponent {
 					</Toolbar>
 				</AppBar>
 				<List>
-					{sensors ? filterItems(sensors, filters).map((p, i) => (
+					{sensors ? filterItems(sensors, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
 						<Fragment key={i}>
 							<ListItem button onClick={this.assignSensor(p.id)} value={p.id}
 								classes={{
 									root: this.state.selectedSensor === p.id ? classes.selectedItem : null
 								}}
 							>
-								<ListItemText primaryTypographyProps={{
-									className: this.state.selectedSensor === p.id ? classes.selectedItemText : null
-								}}
-								secondaryTypographyProps={{
-									classes: { root: this.state.selectedSensor === p.id ? classes.selectedItemText : null }
-								}}
-								primary={p.name} />
+								<ListItemText
+									primaryTypographyProps={{
+										className: this.state.selectedSensor === p.id ? classes.selectedItemText : null
+									}}
+									secondaryTypographyProps={{
+										classes: { root: this.state.selectedSensor === p.id ? classes.selectedItemText : null }
+									}}
+									primary={p.name} />
 							</ListItem>
 							<Divider />
 						</Fragment>
 					)
 					) : <CircularLoader />}
+					<TP
+						disableRowsPerPage
+						count={sensors ? sensors.length : 0}
+						page={page}
+						t={t}
+						handleChangePage={this.handleChangePage}
+					/>
 				</List>
 			</Dialog>
-		
+
 		);
 	}
 }
-const mapStateToProps = (state) => ({
-	sensors: state.data.sensors
+const mapStateToProps = (state, props) => ({
+	sensors: state.data.sensors,
+	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 })
 
 const mapDispatchToProps = {
-	
+
 }
 
 AssignSensorDialog.propTypes = {

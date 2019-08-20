@@ -4,7 +4,7 @@ import { primaryColor } from '../material-dashboard-react';
 
 const toolbarStyles = theme => ({
 	leftIcon: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	open: {
 		marginTop: 24
@@ -17,7 +17,7 @@ const toolbarStyles = theme => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'center',
-		paddingRight: theme.spacing.unit,
+		paddingRight: theme.spacing(1),
 		// margin: `4px 0px`,
 		paddingLeft: "16px",
 		[theme.breakpoints.down('sm')]: {

@@ -102,21 +102,9 @@ class App extends React.Component {
 			await this.props.getDaysOfIterest()
 			if (this.props.theme === 1) {
 				document.body.style = 'background: #2e2e2e;';
-				// if (this.props.user.id === 136550100000003) {
-				// 	document.body.style = 'background: #2e2e2e;transform:rotate(18deg);transition: all 300ms ease;';
-				// 	setTimeout(() => {
-				// 		document.body.style = 'background: #2e2e2e;transform:rotate(0deg);transition: all 300ms ease;';
-				// 	}, 3000);
-				// }
 			}
 			else {
 				document.body.style = 'background: #eee;';
-				// if (this.props.user.id === 136550100000003) {
-				// 	document.body.style = 'background: #eee;transform:rotate(18deg);transition: all 300ms ease;';
-				// 	setTimeout(() => {
-				// 		document.body.style = 'background: #eee;transform:rotate(0deg);transition: all 300ms ease;';
-				// 	}, 3000);
-				// }
 			}
 		})
 	}
@@ -225,7 +213,7 @@ class App extends React.Component {
 										</Switch>
 									</div>
 
-									<Cookies />
+									{!this.props.cookies && <Cookies />}
 									<Snackbar
 										anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
 										open={this.props.sOpen}
@@ -271,7 +259,8 @@ const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
 	drawer: state.settings.drawer,
 	tabs: state.appState.tabs,
-	user: state.settings.user
+	user: state.settings.user,
+	cookies: state.settings.cookies
 })
 
 const mapDispatchToProps = dispatch => ({

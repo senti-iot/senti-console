@@ -3,13 +3,36 @@ import { parsePhoneNumber } from 'libphonenumber-js'
 import { colors } from '@material-ui/core';
 var moment = require('moment');
 var _ = require('lodash')
+var Crypto = require('crypto-js')
+var key = '0011001100110011'
+export const encrypyAES = (str) => {
 
+	return Crypto.AES.encrypt(str, key).toString()
+}
+export const decryptAES = str => {
+	return Crypto.AES.decrypt(str, key).toString(Crypto.enc.Utf8)
+}
+window.decryptAES = decryptAES
 export const scrollToAnchor = (id) => {
 	let el = document.getElementById(id.substring(1, id.length))
 	if (el) {
 		let topOfElement = el.offsetTop - 130
 		window.scroll({ top: topOfElement, behavior: 'smooth' })
 	}
+}
+export const selectAll = containerid => {
+	var range = {}
+	if (document.selection) { // IE
+		range = document.body.createTextRange();
+		range.moveToElementText(document.getElementById(containerid));
+		range.select();
+	} else if (window.getSelection) {
+		range = document.createRange();
+		range.selectNode(document.getElementById(containerid));
+		window.getSelection().removeAllRanges();
+		window.getSelection().addRange(range);
+	}
+
 }
 export const copyToClipboard = str => {
 
@@ -35,11 +58,11 @@ export const copyToClipboard = str => {
 		document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
 		document.getSelection().addRange(selected);   // Restore the original selection
 	}
-	navigator.clipboard.writeText(str).then(function() {
-		console.log('Async: Copying to clipboard was successful!');
-	  }, function(err) {
+	navigator.clipboard.writeText(str).then(function () {
+		console.info('Async: Copying to clipboard was successful!');
+	}, function (err) {
 		console.error('Async: Could not copy text: ', err);
-	  });
+	});
 };
 
 export const dateDiff = (from, to) => {
@@ -93,7 +116,7 @@ export const allHoursToArr = (from, to) => {
 }
 export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
-	let endDate = moment(to)
+	let endDate = moment(to).add(1, 'hour')
 	let diff = moment.duration(endDate.diff(startDate)).asHours()
 	let amount = 1
 	amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
@@ -108,7 +131,7 @@ export const hoursToArr = (from, to) => {
 	return arr
 }
 export const isWeekend = (date) => {
-	return moment(date).day() === 6 || moment(date).day() === 0 ? true : false
+	return moment(date, 'YYYY-MM-DD HH:mm:ss').day() === 6 || moment(date).day() === 0 ? true : false
 }
 export const allDatesToArr = (from, to) => {
 	let startDate = moment(from)
@@ -123,7 +146,7 @@ export const allDatesToArr = (from, to) => {
 }
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
-	let endDate = moment(to)
+	let endDate = moment(to).add(1, 'd')
 	let diff = moment.duration(endDate.diff(startDate)).asDays()
 	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 15 : 5 : 3 : 1
 	if (window.innerWidth < 426)
@@ -292,9 +315,9 @@ const sortFunc = (a, b, orderBy, way, type) => {
 }
 /**
  * Handle Sorting
- * @param {String} property 
- * @param {String} way 
- * @param {Array} data 
+ * @param {String} property
+ * @param {String} way
+ * @param {Array} data
  */
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
@@ -304,7 +327,7 @@ export const handleRequestSort = (property, way, data) => {
 }
 /**
  * Phone Formatter
- * @param {String} phone 
+ * @param {String} phone
  */
 export const pF = (phone) => {
 	let phoneNumber
@@ -318,8 +341,8 @@ export const pF = (phone) => {
 }
 /**
  * Date Time Formatter
- * @param {Date} date 
- * @param {boolean} withSeconds 
+ * @param {Date} date
+ * @param {boolean} withSeconds
  */
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
@@ -331,7 +354,7 @@ export const dateTimeFormatter = (date, withSeconds) => {
 }
 /**
  * Short Date 'll' format
- * @param {Date} date 
+ * @param {Date} date
  */
 export const shortDateFormat = (date) => {
 	var a = moment(date).format('ll')
@@ -339,7 +362,7 @@ export const shortDateFormat = (date) => {
 }
 /**
  * Date Formatter 'LL' format
- * @param {Date} date 
+ * @param {Date} date
  */
 export const dateFormatter = (date) => {
 	var a = moment(date).format('LL')

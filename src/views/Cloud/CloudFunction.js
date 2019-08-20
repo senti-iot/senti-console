@@ -1,6 +1,6 @@
 import { withStyles, Fade } from '@material-ui/core';
 import cloudfunctionStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { DataUsage, Code } from 'variables/icons';
@@ -10,6 +10,7 @@ import { scrollToAnchor } from 'variables/functions';
 import { getFunctionLS } from 'redux/data';
 import FunctionCode from './CloudCards/FunctionCode';
 import FunctionDetails from './CloudCards/FunctionDetails';
+import { deleteCFunction } from 'variables/dataFunctions';
 // import FunctionDetails from './FunctionCards/FunctionDetails';
 // import FunctionDevices from './FunctionCards/FunctionDevices';
 
@@ -18,21 +19,9 @@ class Function extends Component {
 		super(props)
 
 		this.state = {
-			//Date Filter
-			//End Date Filter Tools
-			cloudfunction: null,
-			activeDevice: null,
 			loading: true,
 			anchorElHardware: null,
-			openAssign: false,
-			openUnassignDevice: false,
-			openAssignOrg: false,
-			openAssignDevice: false,
 			openDelete: false,
-			//Map
-			loadingMap: true,
-			heatData: null,
-			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
 		props.setHeader('sidebar.cloudfunction', true, prevURL, 'functions')
@@ -78,7 +67,7 @@ class Function extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getFunction(id).then(() => this.props.cloudfunction ? this.props.setBC('cloudfunction',  this.props.cloudfunction.name) : null
+				await this.getFunction(id).then(() => this.props.cloudfunction ? this.props.setBC('cloudfunction', this.props.cloudfunction.name) : null
 				)
 				this.props.setTabs({
 					route: 0,
@@ -127,8 +116,40 @@ class Function extends Component {
 				break
 		}
 	}
-
-
+	handleOpenDeleteDialog = () => {
+		this.setState({
+			openDelete: true
+		})
+	}
+	handleCloseDeleteDialog = () => {
+		this.setState({
+			openDelete: false
+		})
+	}
+	handleDeleteSensor = async () => {
+		const { cloudfunction } = this.props
+		if (this.props.isFav(cloudfunction.id))
+			this.removeFromFav()
+		await deleteCFunction(cloudfunction.id).then(() => {
+			this.handleCloseDeleteDialog()
+			this.snackBarMessages(1)
+			this.props.history.push('/functions/list')
+		})
+	}
+	renderDeleteDialog = () => {
+		const { openDelete } = this.state
+		const { t } = this.props
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.cloudfunction'}
+			message={'dialogs.delete.message.cloudfunction'}
+			messageOpts={{ cf: this.props.cloudfunction.name }}
+			open={openDelete}
+			single
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteSensor}
+		/>
+	}
 
 	renderLoader = () => {
 		return <CircularLoader />
@@ -141,9 +162,11 @@ class Function extends Component {
 			<Fragment>
 				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
+						{this.renderDeleteDialog()}
 						<ItemGrid xs={12} noMargin id="details">
 							<FunctionDetails
 								cloudfunction={cloudfunction}
+								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 								isFav={this.props.isFav({ id: cloudfunction.id, type: 'function' })}
 								addToFav={this.addToFav}
 								removeFromFav={this.removeFromFav}

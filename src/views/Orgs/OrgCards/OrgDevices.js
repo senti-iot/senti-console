@@ -33,7 +33,9 @@ class OrgDevices extends Component {
 			return (
 				<InfoCard
 					title={t('devices.pageTitle')}
-					subheader={`${t('orgs.fields.deviceCount')}: ${devices.length}`}
+					subheader={<ItemG><Caption>
+						{`${t('orgs.fields.deviceCount')}: ${devices.length}`}
+					</Caption></ItemG>}
 					avatar={<DeviceHub />}
 					noExpand
 					noPadding
@@ -59,13 +61,13 @@ class OrgDevices extends Component {
 														</ItemGrid>
 														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 															<Caption noWrap className={classes.noMargin}>
-												
+
 															</Caption>
 														</ItemGrid>
 														{/* </ItemGrid> */}
 													</ItemGrid>
 												}/>
-									
+
 											</Hidden>
 											<Hidden mdDown>
 												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.liveStatus)} />

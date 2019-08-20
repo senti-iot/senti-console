@@ -5,8 +5,10 @@ import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel,
-	 changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeHoverTime, changeGlobalSearch } from 'redux/settings';
+import {
+	changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel,
+	changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeHoverTime, changeGlobalSearch, changeDashboardTheme
+} from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -14,14 +16,15 @@ class DisplaySettings extends Component {
 	static propTypes = {
 		language: PropTypes.string.isRequired
 	}
-	
+
 	changeLang = (e) => this.props.changeLanguage(e.target.value)
 	changeTRP = (e) => this.props.changeTRP(e.target.value)
 	changeTheme = (e) => this.props.changeTheme(e.target.value)
+	changeDashboardTheme = (e) => this.props.changeDashboardTheme(e.target.value)
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.checked)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
-	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
+	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value)
 	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.checked)
 	changeDrawerType = e => this.props.changeDrawerType(e.target.value)
 	changeDrawerState = e => this.props.changeDrawerState(e.target.checked)
@@ -29,11 +32,11 @@ class DisplaySettings extends Component {
 	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.checked)
 	changeHoverTime = e => this.props.changeHoverTime(e.target.value)
 	changeGlobalSearch = e => this.props.changeGlobalSearch(e.target.checked)
-	
+
 	render() {
-		const { language, trp, sideBar, discSentiVal, 
+		const { language, trp, sideBar, discSentiVal,
 			theme, mapTheme, hoverTime, classes, t, snackbarLocation, detailsPanel, drawer,
-			 drawerState, drawerCloseOnNav, headerBorder, globalSearch } = this.props
+			drawerState, drawerCloseOnNav, headerBorder, globalSearch, dsTheme } = this.props
 
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
@@ -55,7 +58,11 @@ class DisplaySettings extends Component {
 			{ value: 1, label: t('settings.themes.dark') },
 			{ value: 0, label: t('settings.themes.light') }
 		]
+		// rowsPerPageOptions: [autoheight, 5, 7, 8, 10, 15, 20, 25, 50, 100],
+		let autoheightStr = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49) + ' - auto'
+		let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 		let trps = [
+			{ value: autoheight, label: autoheightStr },
 			{ value: 5, label: 5 },
 			{ value: 7, label: 7 },
 			{ value: 8, label: 8 },
@@ -81,15 +88,15 @@ class DisplaySettings extends Component {
 		]
 		let hoverTimes = [
 			{ value: 0, label: t('settings.hover.values.0') },
-			{ value: 300,  label: t('settings.hover.values.300') },
-			{ value: 500,  label: t('settings.hover.values.500') },
-			{ value: 700,  label: t('settings.hover.values.700') },
+			{ value: 300, label: t('settings.hover.values.300') },
+			{ value: 500, label: t('settings.hover.values.500') },
+			{ value: 700, label: t('settings.hover.values.700') },
 			{ value: 1000, label: t('settings.hover.values.1000') },
 			{ value: 2000, label: t('settings.hover.values.2000') },
 			{ value: 3000, label: t('settings.hover.values.3000') },
 		]
 		return (
-			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
+			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ?
 				<InfoCard
 					noExpand
 					avatar={<Laptop />}
@@ -97,22 +104,21 @@ class DisplaySettings extends Component {
 					content={
 						<Grid container>
 							<List className={classes.list}>
-								<ListItem divider>
+								{/* <ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.discoverSenti')}</ListItemText>
-										<Switch 
+										<Switch
 											checked={discSentiVal}
 											onChange={this.changeDiscoverSenti}/>
-										{/* <DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} /> */}
 									</ItemGrid>
-								</ListItem>
+								</ListItem> */}
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.language')}</ListItemText>
 										<DSelect menuItems={languages} value={language} onChange={this.changeLang} />
 									</ItemGrid>
 								</ListItem>
-							
+
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText secondary={t('settings.justForMobile')}>{t('settings.sideBarLoc')}</ListItemText>
@@ -123,6 +129,12 @@ class DisplaySettings extends Component {
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.theme')}</ListItemText>
 										<DSelect menuItems={themes} value={theme} onChange={this.changeTheme} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.dashboardTheme')}</ListItemText>
+										<DSelect menuItems={themes} value={dsTheme} onChange={this.changeDashboardTheme} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
@@ -140,7 +152,7 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.detailsPanel')}</ListItemText>
-										<Switch 
+										<Switch
 											checked={detailsPanel}
 											onChange={this.changeDetailsPanel}
 										/>
@@ -149,7 +161,7 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.drawer.state')}</ListItemText>
-										<Switch 
+										<Switch
 											checked={drawerState}
 											onChange={this.changeDrawerState}
 										/>
@@ -164,8 +176,8 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.drawer.callback')}</ListItemText>
-										<Switch 
-											checked={drawerCloseOnNav}
+										<Switch
+											checked={Boolean(drawerCloseOnNav)}
 											onChange={this.changeDrawerCloseOnNav}
 										/>
 									</ItemGrid>
@@ -173,7 +185,7 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText primary={t('settings.header.border')} />
-										<Switch 
+										<Switch
 											checked={headerBorder}
 											onChange={this.changeHeaderBorder}
 										/>
@@ -182,7 +194,7 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText primary={t('settings.globalSearch')} />
-										<Switch 
+										<Switch
 											checked={globalSearch}
 											onChange={this.changeGlobalSearch}
 										/>
@@ -196,14 +208,14 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText primary={t('settings.tables.hover')}/>
-										<DSelect menuItems={hoverTimes} value={hoverTime} onChange={this.changeHoverTime}/>
+										<ListItemText primary={t('settings.tables.hover')} />
+										<DSelect menuItems={hoverTimes} value={hoverTime} onChange={this.changeHoverTime} />
 									</ItemGrid>
 								</ListItem>
 							</List>
 						</Grid>
 					}
-				/> : <CircularLoader notCentered/>
+				/> : <CircularLoader notCentered />
 		)
 	}
 }
@@ -223,7 +235,8 @@ const mapStateToProps = state => {
 		drawerCloseOnNav: s.drawerCloseOnNav,
 		headerBorder: s.headerBorder,
 		hoverTime: s.hoverTime,
-		globalSearch: s.globalSearch
+		globalSearch: s.globalSearch,
+		dsTheme: s.dsTheme
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -241,7 +254,8 @@ const mapDispatchToProps = (dispatch) => {
 		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
 		changeHeaderBorder: val => dispatch(changeHeaderBorder(val)),
 		changeHoverTime: val => dispatch(changeHoverTime(val)),
-		changeGlobalSearch: val => dispatch(changeGlobalSearch(val))
+		changeGlobalSearch: val => dispatch(changeGlobalSearch(val)),
+		changeDashboardTheme: val => dispatch(changeDashboardTheme(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))

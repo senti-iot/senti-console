@@ -51,6 +51,7 @@ class UserContact extends Component {
 				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
 				{ label: t('menus.changePassword'), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t('menus.userResendEmail'), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
+				// { label: t('menus.confirmUser'), icon: <Email className={classes.leftIcon} />, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },
 				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
 				{
 					label: t('menus.delete'),

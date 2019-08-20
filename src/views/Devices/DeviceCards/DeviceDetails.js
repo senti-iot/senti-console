@@ -74,8 +74,9 @@ class DeviceDetails extends Component {
 				} />
 
 				}
-				subheader={device.id}
-				// noExpand
+				subheader={<ItemG><Caption>
+					{device.id}
+				</Caption></ItemG>}
 				noPadding
 				hiddenContent={
 					<ItemG container>

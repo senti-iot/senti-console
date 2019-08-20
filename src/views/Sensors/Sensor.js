@@ -1,34 +1,30 @@
 import { withStyles, Fade } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
-import { DataUsage } from 'variables/icons';
+import { DataUsage, InsertChart, Wifi } from 'variables/icons';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getSensorLS, unassignSensor } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
-import SensorData from './SensorCards/SensorData';
-import GaugeData from 'views/Charts/GaugeData';
+import SensorMessages from 'views/Charts/SensorMessages';
+import { getSensorMessages } from 'variables/dataSensors';
+import { deleteSensor } from 'variables/dataSensors';
 
 class Sensor extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			//Date Filter
-			//End Date Filter Tools
 			registry: null,
 			activeDevice: null,
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
-			openUnassignDevice: false,
-			openAssignOrg: false,
-			openAssignDevice: false,
 			openDelete: false,
 			//Map
 			loadingMap: true,
@@ -45,6 +41,8 @@ class Sensor extends Component {
 		const { t } = this.props
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+			{ id: 1, title: t('sidebar.messages'), label: <InsertChart />, url: `#messages` },
+			{ id: 2, title: t('registries.fields.protocol'), label: <Wifi />, url: `#protocol` }
 			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
 			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
 			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
@@ -62,18 +60,11 @@ class Sensor extends Component {
 	}
 	componentDidUpdate = async (prevProps) => {
 		const { registry } = this.props
-		// if (prevProps.match.params.id !== this.props.match.params.id)
-		// await this.componentDidMount()
 		if (registry && !prevProps.registry) {
-
 			if (registry.activeDevice) {
 				let data = await getWeather(registry.activeDevice, moment(), this.props.language)
 				this.setState({ weather: data })
 			}
-		}
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			// this.handleSwitchDayHourSummary()
-			// this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
 			const { sensor } = this.props
@@ -99,7 +90,7 @@ class Sensor extends Component {
 				})
 				this.props.setTabs({
 					route: 0,
-					id: 'registry',
+					id: 'sensor',
 					tabs: this.tabs(),
 					hashLinks: true
 				})
@@ -135,7 +126,14 @@ class Sensor extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-
+	getDeviceMessages = async () => {
+		const { sensor, periods } = this.props
+		await getSensorMessages(sensor.id, periods[0]).then(rs => {
+			this.setState({
+				sensorMessages: rs
+			})
+		})
+	}
 	snackBarMessages = (msg) => {
 		// const { s, t, registry } = this.props
 
@@ -144,28 +142,41 @@ class Sensor extends Component {
 				break
 		}
 	}
-
-	handleDataSize = (i) => {
-		let visiblePeriods = 0
+	handleOpenDeleteDialog = () => {
+		this.setState({
+			openDelete: true
+		})
+	}
+	handleCloseDeleteDialog = () => {
+		this.setState({
+			openDelete: false
+		})
+	}
+	handleDeleteSensor = async () => {
 		const { sensor } = this.props
-		if (sensor.metadata) {
-			if (sensor.metadata.dataKeys) {
-				sensor.metadata.dataKeys.forEach(p => visiblePeriods += 1)
-				if (visiblePeriods === 1)
-					return 12
-				if (i === this.props.sensor.metadata.dataKeys.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
-					return 12
-				return 6
-			}
-			else {
-				return 12
-			}
-		}
-		else {
-			return 12
-		}
+		if (this.props.isFav(sensor.id))
+			this.removeFromFav()
+		await deleteSensor(sensor.id).then(() => {
+			this.handleCloseDeleteDialog()
+			this.snackBarMessages(1)
+			this.props.history.push('/sensors/list')
+		})
 	}
 
+	renderDeleteDialog = () => {
+		const { openDelete } = this.state
+		const { t } = this.props
+		return <DeleteDialog
+			t={t}
+			title={'dialogs.delete.title.device'}
+			message={'dialogs.delete.message.device'}
+			messageOpts={{ sensor: this.props.sensor.name }}
+			open={openDelete}
+			single
+			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+			handleDelete={this.handleDeleteSensor}
+		/>
+	}
 	renderLoader = () => {
 		return <CircularLoader />
 	}
@@ -184,20 +195,24 @@ class Sensor extends Component {
 								sensor={sensor}
 								history={history}
 								match={match}
-								handleOpenAssignProject={this.handleOpenAssignProject}
-								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
 								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 								handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-					
-						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+						<ItemGrid xs={12} noMargin id={'messages'}>
+							<SensorMessages
+								period={periods[0]}
+								t={t}
+								messages={this.state.sensorMessages}
+								getData={this.getDeviceMessages}
+							/>
+						</ItemGrid>
+						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return 	<ItemGrid xs={12} container noMargin key={i + 'gauges'}>
-									<GaugeData 
+									<GaugeData
 										v={k.key}
 										nId={k.nId}
 										t={t}
@@ -208,9 +223,9 @@ class Sensor extends Component {
 
 							}
 							else return null
-						}) : null}
+						}) : null} */}
 						{/* <ItemGrid xs={12} container noMaring id={'charts'}> */}
-						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 0)
 								return 	<ItemGrid xs={12} container noMargin key={i + 'charts'}>
 									<SensorData
@@ -228,9 +243,9 @@ class Sensor extends Component {
 								return null
 							}
 						}
-						) : null}
+						) : null} */}
 						{/* </ItemGrid> */}
-						<ItemGrid xs={12} noMargin id='details'>
+						<ItemGrid xs={12} noMargin id='protocol'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
 								addToFav={this.addToFav}
@@ -247,6 +262,7 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
+						{this.renderDeleteDialog()}
 					</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>

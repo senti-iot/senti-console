@@ -214,12 +214,12 @@ class FilterInput extends Component {
 				return
 			}
 		}
-		if (event.keyCode === 37) { 
+		if (event.keyCode === 37) {
 			if (this.props.onBeforeDelete)
 				this.props.onBeforeDelete()
 		}
 		if (this.props.newChipKeyCodes.indexOf(event.keyCode) >= 0) {
-			if (focusedChip !== null) { 
+			if (focusedChip !== null) {
 				this.handleDoubleClick({ id: focusedChip })
 			}
 			else {
@@ -227,10 +227,11 @@ class FilterInput extends Component {
 					let result = this.handleAddChip({ key: "", value: event.target.value })
 					if (result !== false) {
 						event.preventDefault()
-					}}
+					}
+				}
 			}
 		} else if (event.keyCode === 8 || event.keyCode === 46) {
-			if (this.props.onBeforeDelete) { 
+			if (this.props.onBeforeDelete) {
 				this.props.onBeforeDelete()
 			}
 			if (event.target.value === '') {
@@ -392,7 +393,7 @@ class FilterInput extends Component {
 	handleDoubleClick = (chip) => {
 		if (this.props.handleDoubleClick)
 			this.props.handleDoubleClick(chip)
-	 }
+	}
 	render() {
 		const {
 			allowDuplicates,
@@ -480,7 +481,7 @@ class FilterInput extends Component {
 						[classes.error]: error
 					})}
 				>
-					{	chipRenderer({
+					{chipRenderer({
 						value: t('actions.addFilter'),
 						text: t('actions.addFilter'),
 						chip: t('actions.addFilter'),
