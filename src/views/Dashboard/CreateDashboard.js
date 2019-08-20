@@ -37,7 +37,7 @@ class CreateDashboard extends React.Component {
 
 	componentDidMount = () => {
 		//temp
-		this.props.createDash()
+		// this.props.createDash()
 	}
 	componentWillUnmount() {
 		this.props.resetCreateDash()

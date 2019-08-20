@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: true,
+			openAddDash: false,
 			openEditDash: false,
 			eDash: null,
 			openSpeed: false,
