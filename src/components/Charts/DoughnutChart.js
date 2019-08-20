@@ -129,7 +129,7 @@ class DoughnutChart extends PureComponent {
 			}
 		}
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;

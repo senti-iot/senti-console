@@ -5,17 +5,17 @@ const imageuploadStyles = theme => ({
 		justifyContent: 'center'
 	},
 	button: {
-		margin: theme.spacing.unit,
+		margin: theme.spacing(1),
 	},
 	input: {
 		display: 'none',
 	},
 	imgPreview: {
 		maxWidth: 200,
-		margin: theme.spacing.unit
+		margin: theme.spacing(1)
 	},
 	iconButton: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	}
 });
 

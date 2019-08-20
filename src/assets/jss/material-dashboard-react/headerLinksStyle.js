@@ -47,7 +47,7 @@ const headerLinksStyle = theme => ({
 		// marginLeft: 10
 	},
 	leftIcon: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	iconRoot: {
 		color: "#FFF",

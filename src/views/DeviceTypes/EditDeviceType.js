@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import CreateDeviceTypeForm from 'components/Collections/CreateDeviceTypeForm';
 import { getDeviceTypeLS, getDeviceTypes } from 'redux/data';
-import { updateDeviceType } from 'variables/dataRegistry';
+import { updateDeviceType } from 'variables/dataDeviceTypes';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
@@ -20,10 +20,15 @@ class CreateDeviceType extends Component {
 			deviceType: null,
 			keyName: '',
 			value: '',
+			org: null
 		}
 		this.id = props.match.params.id
 		// let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
 		props.setBC('createdevicetype')
+		props.setTabs({
+			id: 'createDT',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -36,7 +41,7 @@ class CreateDeviceType extends Component {
 		await getDeviceType(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, setBC, devicetype } = this.props
+		const { location, setHeader, setBC, devicetype, orgs } = this.props
 		if (!this.state.deviceType && devicetype !== prevProps.devicetype && devicetype) {
 			this.setState({
 				devicetype: devicetype,
@@ -45,10 +50,11 @@ class CreateDeviceType extends Component {
 					outbound: devicetype.outbound ? devicetype.outbound : [],
 					inbound: devicetype.inbound ? devicetype.inbound : []
 				},
+				org: orgs[orgs.findIndex(o => o.id === devicetype.orgId)],
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${this.id}`
-			setHeader('menus.edits.devicetype', true, prevURL, 'devicetypes')
+			setHeader('menus.edits.devicetype', true, prevURL, 'manage.devicetypes')
 			setBC('editdevicetype', devicetype.name, devicetype.id)
 		}
 	}
@@ -75,6 +81,7 @@ class CreateDeviceType extends Component {
 			outbound: this.state.sensorMetadata.outbound,
 			inbound: this.state.sensorMetadata.inbound,
 			metadata: this.state.sensorMetadata.metadata,
+			orgId: this.state.org.id
 		}
 		return await updateDeviceType(deviceType)
 	}
@@ -227,7 +234,7 @@ class CreateDeviceType extends Component {
 
 	//#endregion
 
-	//#region Function selector	
+	//#region Function selector
 
 	handleOpenFunc = (p, where) => e => {
 		this.setState({
@@ -265,18 +272,24 @@ class CreateDeviceType extends Component {
 			}
 		})
 	}
-
+	handleOrgChange = org => {
+		this.setState({
+			org: org
+		})
+	}
 	//#endregion
 
 	goToDeviceTypes = () => this.props.history.push('/devicetypes')
 
 	render() {
 		const { t, cloudfunctions } = this.props
-		const { devicetype, sensorMetadata, loading  } = this.state
+		const { devicetype, sensorMetadata, loading, org } = this.state
 
-		return ( loading ? <CircularLoader/> :
+		return (loading ? <CircularLoader /> :
 
 			<CreateDeviceTypeForm
+				org={org}
+				handleOrgChange={this.handleOrgChange}
 				deviceType={devicetype}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
@@ -287,7 +300,7 @@ class CreateDeviceType extends Component {
 				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
 				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
-				
+
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}
@@ -314,7 +327,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
 	cloudfunctions: state.data.functions,
-	devicetype: state.data.deviceType
+	devicetype: state.data.deviceType,
+	orgs: state.data.orgs
 })
 
 const mapDispatchToProps = dispatch => ({

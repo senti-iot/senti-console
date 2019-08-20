@@ -17,13 +17,18 @@ class CreateCollection extends Component {
 				region: "Europe",
 				protocol: 0,
 				ca_certificate: 0,
-				customer_id: 1
-			}
+				orgId: props.orgId
+			},
+			org: props.org
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('menus.create.registry', true, prevURL, '')
+		props.setHeader('menus.create.registry', true, prevURL, 'manage.registries')
 		props.setBC('createregistry')
+		props.setTabs({
+			id: 'createRegistry',
+			tabs: []
+		})
 	}
 
 	keyHandler = (e) => {
@@ -46,7 +51,16 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	createRegistry = async () => { 
+	handleOrgChange = org => {
+		this.setState({
+			org,
+			registry: {
+				...this.state.registry,
+				orgId: org.id
+			}
+		})
+	}
+	createRegistry = async () => {
 		return await createRegistry(this.state.registry)
 	}
 	handleCreate = async () => {
@@ -63,10 +77,12 @@ class CreateCollection extends Component {
 	goToRegistries = () => this.props.history.push('/registries')
 	render() {
 		const { t } = this.props
-		const { registry } = this.state
+		const { registry, org } = this.state
 		return (
-		
+
 			<CreateRegistryForm
+				org={org}
+				handleOrgChange={this.handleOrgChange}
 				registry={registry}
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
@@ -83,11 +99,12 @@ CreateCollection.propTypes = {
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	orgId: state.settings.user.org.id
+	orgId: state.settings.user.org.id,
+	org: state.settings.user.org,
 })
 
 const mapDispatchToProps = dispatch => ({
-	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua)) 
+	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)

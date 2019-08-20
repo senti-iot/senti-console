@@ -5,6 +5,7 @@ import { InfoCard, ItemG } from 'components';
 import { DeviceHub, CheckCircle, Block, SignalWifi2Bar } from 'variables/icons';
 import { red, green } from '@material-ui/core/colors';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const styles = (theme) => ({
 	blocked: {
@@ -69,7 +70,9 @@ class RegistryDevices extends Component {
 									return (
 										<TableRow key={d.id}>
 											<TableCell style={{ paddingLeft: 24 }} component="th" scope="row">
-												{d.name}
+												<Link to={`/sensor/${d.id}`}>
+													{d.name}
+												</Link>
 											</TableCell>
 											<TableCell component="th" scope="row">
 												{this.renderCommunication(d.communication)}

@@ -39,7 +39,7 @@ class ProjectDetails extends Component {
 					}
 				/>
 				}
-				hiddenContent={<ItemG container spacing={8}>
+				hiddenContent={<ItemG container spacing={2}>
 					<ItemG xs={12}>
 						<ItemG>
 							<Caption>{t('projects.fields.description')}:</Caption>

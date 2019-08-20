@@ -1,9 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-/**
-* Higher order component (HOC) decorator for components that need snackbarMessages
-*/
 export default function withSnackbar() {
 
 	return (WrappedComponent) => {

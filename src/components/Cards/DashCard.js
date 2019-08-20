@@ -63,7 +63,6 @@ class DashCard extends PureComponent {
 			[classes.plainCardCalsses]: true,
 			[classes[background]]: background
 		})
-		console.log(dashboard)
 		return (
 			<Card className={cardClasses}>
 				{noHeader ? null : <CardHeader
@@ -99,7 +98,7 @@ class DashCard extends PureComponent {
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
 						</Collapse>
-						<CardActions className={classes.actions} disableActionSpacing>
+						<CardActions className={classes.actions}>
 							{leftActions ? leftActions : null}
 							{!noRightExpand ? <Button
 								variant={'text'}

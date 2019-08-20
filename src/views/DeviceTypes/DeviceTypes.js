@@ -1,20 +1,17 @@
-import { Paper, withStyles, /* Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, */ IconButton, Fade, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TableToolbar from 'components/Table/TableToolbar';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import { deleteDeviceType, unassignDeviceFromDeviceType, getDeviceType } from 'variables/dataDeviceTypes';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Edit, ViewList, ViewModule, Add, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignProject } from 'components'
-// import DeviceTypesCards from './DeviceTypesCards';
+import { Edit, ViewList, Add, Star, StarBorder, SignalWifi2Bar, Memory, Delete } from 'variables/icons';
+import { GridContainer, CircularLoader } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getDeviceTypes, setDeviceTypes, sortData } from 'redux/data';
 import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable';
-// import { setDeviceTypes, getDeviceTypes, sortData } from 'redux/data';
+import { deleteDeviceType } from 'variables/dataDeviceTypes';
 
 class DeviceTypes extends Component {
 	constructor(props) {
@@ -22,6 +19,7 @@ class DeviceTypes extends Component {
 
 		this.state = {
 			selected: [],
+			openDelete: false,
 			route: 0,
 			order: 'asc',
 			orderBy: 'id',
@@ -42,7 +40,7 @@ class DeviceTypes extends Component {
 		const { t, match } = this.props
 		return [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
+			// { id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
@@ -65,12 +63,8 @@ class DeviceTypes extends Component {
 	devicetypesHeader = () => {
 		const { t } = this.props
 		return [
-			// { id: 'id', label: t('devicetypes.fields.id') },
 			{ id: 'name', label: t('devicetypes.fields.name') },
 			{ id: 'customer_name', label: t('devices.fields.org') }
-			// { id: 'region', label: t('devicetypes.fields.region') },
-			// { id: 'protocol', label: t('devicetypes.fields.created') },
-			// { id: 'customer', label: t('devicetypes.fields.customer') },
 		]
 	}
 	options = () => {
@@ -90,8 +84,8 @@ class DeviceTypes extends Component {
 			// { label: t('menus.assign.deviceToDeviceType'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			// { label: t('menus.unassign.deviceFromDeviceType'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -240,9 +234,9 @@ class DeviceTypes extends Component {
 		this.setState({ route: value })
 	}
 
-	handleSelectAllClick = (event, checked) => {
+	handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.devicetypes.map(n => n.id) })
+			this.setState({ selected: arr })
 			return;
 		}
 		this.setState({ selected: [] })
@@ -270,37 +264,66 @@ class DeviceTypes extends Component {
 		this.setState({ selected: newSelected })
 	}
 
+
+
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true, anchorElMenu: null })
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
+	}
+
+	handleDeleteDeviceTypes = async () => {
+		const { selected } = this.state
+		Promise.all([selected.map(u => {
+			return deleteDeviceType(u)
+		})]).then(async () => {
+			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
+			await this.getData(true).then(
+				() => this.snackBarMessages(1)
+			)
+		})
+	}
 	//#endregion
 
 	renderConfirmDelete = () => {
-		return null
-		// const { openDelete, selected } = this.state
-		// const { t, classes, devicetypes } = this.props
-		// return <Dialog
-		// 	open={openDelete}
-		// 	onClose={this.handleCloseDeleteDialog}
-		// 	aria-labelledby='alert-dialog-title'
-		// 	aria-describedby='alert-dialog-description'
-		// >
-		// 	<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.devicetypes')}</DialogTitle>
-		// 	<DialogContent>
-		// 		<DialogContentText id='alert-dialog-description'>
-		// 			{t('dialogs.delete.message.devicetypes')}
-		// 		</DialogContentText>
-		// 		<List>
-		// 			{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-		// 				<ListItemText primary={devicetypes[devicetypes.findIndex(d => d.id === s)].name} /></ListItem>)}
-		// 		</List>
-		// 	</DialogContent>
-		// 	<DialogActions>
-		// 		<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-		// 			{t('actions.no')}
-		// 		</Button>
-		// 		<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
-		// 			{t('actions.yes')}
-		// 		</Button>
-		// 	</DialogActions>
-		// </Dialog>
+		const { openDelete, selected } = this.state
+		const { t, devicetypes } = this.props
+		return <Dialog
+			open={openDelete}
+			onClose={this.handleCloseDeleteDialog}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
+		>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.deviceTypes')}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.deviceTypes')}
+				</DialogContentText>
+				<List dense={true}>
+					<Divider />
+					{selected.map(s => {
+						let u = devicetypes[devicetypes.findIndex(d => d.id === s)]
+						return u ? <ListItem divider key={u.id}>
+							<ListItemIcon>
+								<Memory />
+							</ListItemIcon>
+							<ListItemText primary={u.name} />
+						</ListItem> : null
+					})
+					}
+				</List>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
+				</Button>
+				<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
+					{t('actions.yes')}
+				</Button>
+			</DialogActions>
+		</Dialog>
 	}
 
 
@@ -328,32 +351,7 @@ class DeviceTypes extends Component {
 		/>
 	}
 
-	renderAssignProject = () => {
-		const { selected, openAssignProject } = this.state
-		const { t } = this.props
-		return <AssignProject
-			// multiple
-			devicetypeId={selected ? selected : []}
-			handleCancel={this.handleCancelAssignProject}
-			handleClose={this.handleCloseAssignProject}
-			open={openAssignProject}
-			t={t}
-		/>
-	}
 
-	renderAssignDevice = () => {
-		// const { selected, openAssignDevice } = this.state
-		// const { t, devicetypes } = this.props
-		// let devicetypeOrg = devicetypes.find(r => r.id === selected[0])
-		// return <AssignDevice
-		// 	devicetypeId={selected[0] ? selected[0] : 0}
-		// 	orgId={devicetypeOrg ? devicetypeOrg.org.id : 0}
-		// 	handleCancel={this.handleCancelAssignDevice}
-		// 	handleClose={this.handleCloseAssignDevice}
-		// 	open={openAssignDevice}
-		// 	t={t}
-		// />
-	}
 
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
@@ -375,18 +373,14 @@ class DeviceTypes extends Component {
 	renderCards = () => {
 		const { /* t, history, devicetypes, */ loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <DeviceTypesCards devicetypes={this.filterItems(devicetypes)} t={t} history={history} /> 
+			// <DeviceTypesCards devicetypes={this.filterItems(devicetypes)} t={t} history={history} />
 			null
 	}
 
 	renderFavorites = () => {
 		const { classes, loading } = this.props
-		const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderAssignProject()}
-				{this.renderAssignDevice()}
-				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
 				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 				{this.renderConfirmDelete()}
@@ -397,12 +391,8 @@ class DeviceTypes extends Component {
 
 	renderDeviceTypes = () => {
 		const { classes, devicetypes, loading } = this.props
-		// const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{/* {this.renderAssignProject()} */}
-				{/* {this.renderAssignDevice()} */}
-				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
 				{this.renderTable(devicetypes, this.handleDeviceTypeClick, 'devicetypes')}
 				{this.renderConfirmDelete()}
@@ -412,8 +402,7 @@ class DeviceTypes extends Component {
 	}
 
 	render() {
-		// const { devicetypes, route, filters } = this.state
-		const { /* history,  */match } = this.props
+		const { match } = this.props
 		return (
 			<Fragment>
 				<Switch>

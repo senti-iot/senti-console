@@ -16,7 +16,7 @@ const breadcrumbs = (t, name, id) => {
 		],
 		'editcloudfunction': [
 			{ label: t('sidebar.cloudfunctions'), path: '/functions' },
-			{ label: name, path: `/cloudfunction/${id}` },
+			{ label: name, path: `/function/${id}` },
 			{ label: t('menus.edits.cloudfunction'), path: `/function/${id}/edit` }
 		],
 		'registries': [

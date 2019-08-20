@@ -10,6 +10,7 @@ import Call from '@material-ui/icons/Call'
 import Language from '@material-ui/icons/Language'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import InsertChart from '@material-ui/icons/InsertChart'
+import Wifi from '@material-ui/icons/Wifi'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -22,6 +23,7 @@ import Sleet from 'assets/weather/sleet.svg'
 import Snow from 'assets/weather/snow.svg'
 import Wind from 'assets/weather/wind.svg'
 //#endregion
+import StorageIcon from '@material-ui/icons/Storage'
 import Cake from '@material-ui/icons/Cake'
 import Star from '@material-ui/icons/Star'
 import StarBorder from '@material-ui/icons/StarBorder'
@@ -89,6 +91,7 @@ import Notifications from '@material-ui/icons/Notifications'
 import Email from '@material-ui/icons/Email'
 import LockOpen from '@material-ui/icons/LockOpen'
 import FolderShared from '@material-ui/icons/FolderShared'
+import Share from '@material-ui/icons/Share'
 import DataUsage from '@material-ui/icons/DataUsage'
 import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
@@ -109,8 +112,15 @@ import LocalOffer from '@material-ui/icons/LocalOffer'
 import Airplay from '@material-ui/icons/Airplay'
 import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
+import Palette from '@material-ui/icons/Palette'
+import ImportExport from '@material-ui/icons/ImportExport'
 
 export {
+	ImportExport,
+	Share,
+	StorageIcon,
+	Wifi,
+	Palette,
 	Https,
 	GaugeIcon,
 	InsertChart,

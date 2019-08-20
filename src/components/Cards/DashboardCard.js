@@ -6,9 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import cx from 'classnames'
-import { colors, IconButton } from '@material-ui/core';
-import { Muted } from 'components';
-import { MoreVert, Visibility, Airplay, Star, LocalOffer } from 'variables/icons';
+import { colors } from '@material-ui/core';
+import { Muted, Dropdown, ITB } from 'components';
+import { Share, Airplay, Edit, /* Star, LocalOffer */ } from 'variables/icons';
 
 const styles = theme => ({
 	smallButton: {
@@ -30,7 +30,6 @@ const styles = theme => ({
 		// width: 250,
 		// height: 300,
 		minHeight: 300,
-		margin: 8,
 		display: 'flex',
 		flexFlow: 'column',
 		// flexGrow: 1,
@@ -145,12 +144,12 @@ const styles = theme => ({
 
 class DashboardCard extends Component {
 	render() {
-		const { classes, header, content, c, handleOpenDashboard } = this.props;
+		const { classes, header, content, c, handleOpenDashboard, t, handleEditDashboard, handleOpenShare } = this.props;
 		return (
 			<Card className={classes.card}>
-			
+
 				<CardMedia
-					className={cx({ 
+					className={cx({
 						[classes.media]: true,
 						[classes.cardImg]: true,
 						[classes[c]]: true
@@ -159,9 +158,16 @@ class DashboardCard extends Component {
 					src={'ps'}
 					title=''
 				>
-					<IconButton className={classes.menuButton}>
+					<Dropdown
+						buttonClassName={classes.menuButton}
+						menuItems={[
+							{ label: t('actions.delete'), func: this.props.deleteDashboard },
+						]}>
+
+					</Dropdown>
+					{/* <IconButton >
 						<MoreVert/>
-					</IconButton>
+					</IconButton> */}
 
 				</CardMedia>
 				<CardContent classes={{ root: classes.cardContent }}>
@@ -173,19 +179,24 @@ class DashboardCard extends Component {
 					</Muted>
 				</CardContent>
 				<CardActions>
-					<IconButton className={classes.smallButton}>
-						<Visibility/>
-					</IconButton>
-					<IconButton className={classes.smallButton} onClick={handleOpenDashboard}>
-						<Airplay/>
-					</IconButton>
-					<IconButton className={classes.smallButton}>
-						<Star/>
-					</IconButton>
-					<div style={{ marginLeft: 'auto' }}/>
-					<IconButton className={classes.smallButton}>
-						<LocalOffer/>
-					</IconButton>
+					<ITB
+						icon={<Airplay />}
+						label={'actions.open'}
+						buttonClass={classes.smallButton}
+						onClick={handleOpenDashboard}
+					/>
+					<ITB
+						icon={<Share />}
+						label={'actions.share'}
+						buttonClass={classes.smallButton}
+						onClick={handleOpenShare}
+					/>
+					<div style={{ marginLeft: 'auto' }} />
+					<ITB
+						icon={<Edit/>}
+						label={'actions.edit'}
+						buttonClass={classes.smallButton} 
+						onClick={handleEditDashboard} />
 				</CardActions>
 			</Card>
 		);

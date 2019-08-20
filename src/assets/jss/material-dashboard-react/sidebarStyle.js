@@ -12,7 +12,7 @@ import {
 
 const sidebarStyle = theme => ({
 	nested: {
-		paddingLeft: `${theme.spacing.unit * 2}px !important`,
+		paddingLeft: `${theme.spacing(2)}px !important`,
 	  },
 	appBarWrapper: {
 		backgroundColor: "#767684"
@@ -73,7 +73,7 @@ const sidebarStyle = theme => ({
 	},
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing.unit * 3,
+		padding: theme.spacing(3),
 	},
 	button: {
 		color: '#fff',

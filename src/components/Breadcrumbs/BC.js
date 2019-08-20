@@ -2,35 +2,14 @@ import React, { Component } from 'react'
 import breadcrumbs from 'routes/breadcrumbs';
 import { Link } from 'react-router-dom'
 import { Typography, withStyles, /* IconButton */ } from '@material-ui/core';
-import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
-// import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-// import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
 import { connect } from 'react-redux'
-// import { ExpandMore } from 'variables/icons';
-// import FilterToolbar from 'components/Table/FilterToolbar';
 
-// const ExpansionPanel = withStyles({
-// 	root: {
-// 		//   border: '1px solid rgba(0,0,0,.125)',
-// 		boxShadow: 'none',
-// 		'&:not(:last-child)': {
-// 			borderBottom: 0,
-// 		},
-// 		'&:before': {
-// 			display: 'none',
-// 		},
-// 	},
-// 	expanded: {
-// 		margin: 'auto',
-// 	},
-// })(MuiExpansionPanel);
 
 const ExpansionPanelSummary = withStyles({
 	root: {
-		//   backgroundColor: 'rgba(0,0,0,.03)',
-		//   borderBottom: '1px solid rgba(0,0,0,.125)',
 		cursor: "default !important",
 		marginBottom: -1,
 		minHeight: 56,
@@ -42,7 +21,6 @@ const ExpansionPanelSummary = withStyles({
 	content: {
 		margin: 0,
 		'&$expanded': {
-			// margin: '12px 0',
 		},
 		'&:last-child': {
 		}
@@ -51,12 +29,6 @@ const ExpansionPanelSummary = withStyles({
 })(props => <MuiExpansionPanelSummary {...props} />);
 
 ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
-
-// const ExpansionPanelDetails = withStyles(theme => ({
-// 	root: {
-// 		padding: theme.spacing.unit * 2,
-// 	},
-// }))(MuiExpansionPanelDetails);
 
 const styles = theme => ({
 	breadcrumbs: {
@@ -81,11 +53,7 @@ class BC extends Component {
 		// const { open } = this.state
 		const bcs = breadcrumbs(t, bc.name, bc.extra)[bc.id]
 		return (
-		
-			// <ExpansionPanel
-			// 	expanded={open}
-			// >
-			// 	<ExpansionPanelSummary>
+
 			bc.dontShow || !globalBC ? null : <Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
 				<Link color="inherit" to={defaultRoute}>
 					{t(`sidebar.home`)}

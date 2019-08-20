@@ -103,7 +103,12 @@ class EditOrg extends Component {
 						name: org.org.name !== null ? org.org.name : t('orgs.fields.topLevelOrg')
 					}
 				})
+				// this.props.setHeader()
 				this.props.setBC('editorg', org.name, org.id)
+				this.props.setTabs({
+					id: "editOrg",
+					tabs: []
+				})
 			}
 		}
 	}
@@ -127,7 +132,7 @@ class EditOrg extends Component {
 			loading: false
 		})
 		let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
-		this.props.setHeader('orgs.updateOrg', true, prevURL, '/management/users')
+		this.props.setHeader('orgs.updateOrg', true, prevURL, 'users')
 	}
 
 	componentWillUnmount = () => {
@@ -223,13 +228,13 @@ class EditOrg extends Component {
 		})
 	}
 	renderOrgs = () => {
-		const { t, org, orgs } = this.props
+		const { t, org, orgs, accessLevel } = this.props
 		// const {  } = this.state
 		return <DSelect
 			label={t('orgs.fields.parentOrg')}
 			value={org.org.id}
 			onChange={this.handleOrgChange}
-			menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
+			menuItems={accessLevel.apisuperuser ? [{ value: -1, label: t('orgs.fields.topLevelOrg') }, ...orgs.map(org => ({ value: org.id, label: org.name }))] : orgs.map(org => ({ value: org.id, label: org.name }))}
 		/>
 	}
 	render() {
@@ -355,7 +360,6 @@ class EditOrg extends Component {
 										className={classes.textField}
 										handleChange={this.handleAuxChange('cvr')}
 										margin='normal'
-
 										error={error}
 									/>
 								</ItemGrid>

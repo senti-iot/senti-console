@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Divider, MenuItem, Menu, IconButton, withStyles, Button, Tooltip } from '@material-ui/core';
-import { ItemGrid, Info, CustomDateTime, ItemG } from 'components';
+import { ItemGrid, Info, CustomDateTime, ItemG, DSelect } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
 import { DateRange } from 'variables/icons';
@@ -9,6 +9,7 @@ import teal from '@material-ui/core/colors/teal'
 import { connect } from 'react-redux'
 import { changeDate, changeHeatMapDate } from 'redux/dateTime';
 import { changeSettingsDate } from 'redux/settings';
+import { compose } from 'recompose';
 
 const styles = theme => ({
 	selected: {
@@ -34,6 +35,15 @@ class DateFilterMenu extends Component {
 		{ id: 1, format: 'lll', chart: 'hour' },
 		{ id: 2, format: 'll', chart: 'day' },
 		{ id: 3, format: 'll', chart: 'day' },
+	]
+	dOptions = [
+		{ value: 0, label: this.props.t('filters.dateOptions.today') },
+		{ value: 1, label: this.props.t('filters.dateOptions.yesterday') },
+		{ value: 2, label: this.props.t('filters.dateOptions.thisWeek') },
+		{ value: 3, label: this.props.t('filters.dateOptions.7days') },
+		{ value: 4, label: this.props.t('filters.dateOptions.30days') },
+		{ value: 5, label: this.props.t('filters.dateOptions.90days') },
+		{ value: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	options = [
 		{ id: 0, label: this.props.t('filters.dateOptions.today') },
@@ -151,64 +161,73 @@ class DateFilterMenu extends Component {
 	isSelected = (value) => value === this.props.period ? this.props.period.menuId ? true : false : false
 
 	render() {
-		const { period, t, classes, icon, button, settings } = this.props
+		const { label, period, t, classes, icon, button, settings, inputType, buttonProps } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = period ? dateTimeFormatter(period.to) : ""
 		let displayFrom = period ? dateTimeFormatter(period.from) : ""
 		return (
-			<Fragment>
-				{button && <Button
-					aria-label='More'
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup='true'
-					style={{ color: 'rgba(0, 0, 0, 0.54)' }}
-					onClick={this.handleOpenMenu}>
-					{icon ? icon : <DateRange />}
-				</Button>}
-				{!button && <Tooltip title={t('tooltips.chart.period')}>
-					<IconButton
+			inputType ? <DSelect
+				onChange={this.handleDateFilter}
+				label={label}
+				value={period.menuId}
+				menuItems={this.dOptions}
+			/> :
+				<Fragment>
+					{button && <Button
+
 						aria-label='More'
 						aria-owns={actionAnchor ? 'long-menu' : null}
 						aria-haspopup='true'
-						onClick={this.handleOpenMenu}>
+						style={{ color: 'rgba(0, 0, 0, 0.54)' }}
+						onClick={this.handleOpenMenu}
+						{...buttonProps}
+					>
 						{icon ? icon : <DateRange />}
-					</IconButton>
-				</Tooltip>}
-				<Menu
-					disableAutoFocus
-					disableRestoreFocus
-					id='long-menu'
-					anchorEl={actionAnchor}
-					open={Boolean(actionAnchor)}
-					anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-					onClose={this.handleCloseMenu}
-					getContentAnchorEl={null}
-					PaperProps={{
-						style: {
-							minWidth: 250
-						}
-					}}>
-					<ItemG container direction={'column'}>
-						{!settings && period && <Fragment>
-							<ItemGrid>
-								<Info>{this.options[this.options.findIndex(d => d.id === period.menuId ? true : false)].label}</Info>
-								<Info>{`${displayFrom} - ${displayTo}`}</Info>
-							</ItemGrid>
-							<Divider />
-						</Fragment>}
-						<MenuItem selected={this.isSelected(0)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={0}>{t('filters.dateOptions.today')}</MenuItem>
-						<MenuItem selected={this.isSelected(1)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={1}>{t('filters.dateOptions.yesterday')}</MenuItem>
-						<MenuItem selected={this.isSelected(2)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={2}>{t('filters.dateOptions.thisWeek')}</MenuItem>
-						<MenuItem selected={this.isSelected(3)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
-						<MenuItem selected={this.isSelected(4)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
-						<MenuItem selected={this.isSelected(5)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
+					</Button>}
+					{!button && <Tooltip title={t('tooltips.chart.period')}>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={this.handleOpenMenu}>
+							{icon ? icon : <DateRange />}
+						</IconButton>
+					</Tooltip>}
+					<Menu
+						disableAutoFocus
+						disableRestoreFocus
+						id='long-menu'
+						anchorEl={actionAnchor}
+						open={Boolean(actionAnchor)}
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+						onClose={this.handleCloseMenu}
+						getContentAnchorEl={null}
+						PaperProps={{
+							style: {
+								minWidth: 250
+							}
+						}}>
+						<ItemG container direction={'column'}>
+							{!settings && period && <Fragment>
+								<ItemGrid>
+									<Info>{this.options[this.options.findIndex(d => d.id === period.menuId ? true : false)].label}</Info>
+									<Info>{`${displayFrom} - ${displayTo}`}</Info>
+								</ItemGrid>
+								<Divider />
+							</Fragment>}
+							<MenuItem selected={this.isSelected(0)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={0}>{t('filters.dateOptions.today')}</MenuItem>
+							<MenuItem selected={this.isSelected(1)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={1}>{t('filters.dateOptions.yesterday')}</MenuItem>
+							<MenuItem selected={this.isSelected(2)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={2}>{t('filters.dateOptions.thisWeek')}</MenuItem>
+							<MenuItem selected={this.isSelected(3)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
+							<MenuItem selected={this.isSelected(4)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
+							<MenuItem selected={this.isSelected(5)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
 
-						<Divider />
-						<MenuItem selected={this.isSelected(6)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>
-					</ItemG>
-					{this.renderCustomDateDialog()}
-				</Menu>
-			</Fragment>
+							<Divider />
+							<MenuItem selected={this.isSelected(6)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>
+						</ItemG>
+						{this.renderCustomDateDialog()}
+					</Menu>
+				</Fragment>
 		)
 	}
 }
@@ -230,4 +249,7 @@ const mapDispatchToProps = (dispatch) => ({
 	handleSetHeatmapDate: (id, to, from, timeType) => dispatch(changeHeatMapDate(id, to, from, timeType))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))
+let DFMenu = compose(connect(mapStateToProps, mapDispatchToProps, undefined, { forwardRef: true }), withStyles(styles))(DateFilterMenu)
+// export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))
+const DFMenuRef = React.forwardRef((props, ref) => <DFMenu {...props} ref={ref} />)
+export default DFMenuRef

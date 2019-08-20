@@ -6,7 +6,7 @@ import React, { Fragment, PureComponent } from 'react';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { updateDevice } from 'variables/dataDevices'
 import { updateCollection } from 'variables/dataCollections';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
@@ -77,12 +77,12 @@ class AssignOrg extends PureComponent {
 			[' ' + classes['primary']]: 'primary'
 		});
 		return (
-			
+
 			<Dialog
 				fullScreen
 				open={open}
 				onClose={this.handleClose}
-				TransitionComponent={this.Transition}
+				TransitionComponent={SlideT}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>
@@ -161,7 +161,7 @@ class AssignOrg extends PureComponent {
 					) : <CircularLoader />}
 				</List>
 			</Dialog>
-		
+
 		);
 	}
 }

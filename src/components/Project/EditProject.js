@@ -6,10 +6,10 @@ import { Check, Close } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG, DatePicker } from 'components'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG, DatePicker, SlideT } from 'components'
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Typography, List, ListItem, ListItemText, Divider, Slide, Hidden, IconButton } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, List, ListItem, ListItemText, Divider, Hidden, IconButton } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { getProjectLS, getProjects, setUsers } from 'redux/data';
@@ -37,10 +37,12 @@ class EditProject extends Component {
 			},
 			openUser: false
 		}
+		props.setTabs({
+			id: "editProject",
+			tabs: []
+		})
 	}
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+
 	handleValidation = () => {
 		let errorCode = [];
 		const { title, startDate, endDate } = this.state.project
@@ -89,7 +91,7 @@ class EditProject extends Component {
 		const { project } = this.props
 		if ((!prevProps.project && project !== prevProps.project && project) || (this.state.project === null && project)) {
 			this.props.setBC('editproject', project.title, project.id)
-			
+
 			this.setState({
 				project: project,
 				user: project.user,
@@ -205,8 +207,8 @@ class EditProject extends Component {
 		})
 	}
 	renderSelectUser = () => {
-		const { t, classes, users  } = this.props
-		const { openUser, filters  } = this.state
+		const { t, classes, users } = this.props
+		const { openUser, filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -214,7 +216,7 @@ class EditProject extends Component {
 			fullScreen
 			open={openUser}
 			onClose={this.handleCloseUser}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>

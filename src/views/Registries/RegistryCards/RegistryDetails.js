@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, /* Delete */ } from 'variables/icons';
+import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Delete } from 'variables/icons';
 import { connect } from 'react-redux'
 
 class RegistryDetails extends Component {
@@ -37,7 +37,7 @@ class RegistryDetails extends Component {
 		}
 	}
 	render() {
-		const { classes, registry, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
+		const { classes, registry, t, isFav, addToFav, removeFromFav, detailsPanel, handleOpenDeleteDialog, history } = this.props
 		return (
 			<InfoCard
 				title={registry.name ? registry.name : registry.uuid}
@@ -49,7 +49,9 @@ class RegistryDetails extends Component {
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/registry/${registry.id}/edit`, prevURL: `/registry/${registry.id}` }) },
-						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog }
+
 
 					]
 				} />
@@ -76,7 +78,7 @@ class RegistryDetails extends Component {
 					</ItemG>
 				}
 				hiddenContent={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 					</ItemG>} />
 		)
 	}

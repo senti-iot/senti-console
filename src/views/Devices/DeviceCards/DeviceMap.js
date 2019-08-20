@@ -35,7 +35,7 @@ class DeviceMap extends PureComponent {
 			})
 		}
 	}
-	
+
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
@@ -52,7 +52,7 @@ class DeviceMap extends PureComponent {
 		let saved = await updateDevice(device)
 		if (saved)
 			this.props.reload(5)//msgId = 5 - Device Updated
-		else { 
+		else {
 			this.setState({ error: true })
 		}
 	}
@@ -76,7 +76,7 @@ class DeviceMap extends PureComponent {
 			markers: [{ ...this.props.device, weather: this.props.weather }]
 		})
 	}
-	handleOpenConfirmEditLocation = () => { 
+	handleOpenConfirmEditLocation = () => {
 		this.setState({
 			openModalEditLocation: true
 		})
@@ -89,12 +89,12 @@ class DeviceMap extends PureComponent {
 				<ItemG container>
 					<ItemG>
 						<IconButton onClick={this.handleOpenConfirmEditLocation}>
-							<Save style={{ color: teal[500] }}/>
+							<Save style={{ color: teal[500] }} />
 						</IconButton>
 					</ItemG>
 					<ItemG>
 						<IconButton onClick={this.handleCancelEditLocation}>
-							<Clear style={{ color: red[400] }}/>
+							<Clear style={{ color: red[400] }} />
 						</IconButton>
 					</ItemG>
 				</ItemG>
@@ -121,22 +121,22 @@ class DeviceMap extends PureComponent {
 					{/* </List> */}
 				</Menu>
 			</ItemG>
-			
+
 			<Dropdown menuItems={
 				[
-					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.props.changeHeatMap( !this.props.heatMap ) },
+					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }}/>, func: () => this.handleEditLocation() }]
+					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleEditLocation() }]
 			} />
 
 		</Fragment>
 	}
-	getRef = (r) => { 
+	getRef = (r) => {
 		this.map = r
 	}
-	flyToMarkers = () => { 
+	flyToMarkers = () => {
 		const { device } = this.props
-		if (this.map) { 
+		if (this.map) {
 			this.map.leafletElement.flyToBounds([[device.lat, device.long]])
 		}
 	}
@@ -151,7 +151,7 @@ class DeviceMap extends PureComponent {
 				address: addressStr,
 				lat,
 				long,
-				 weather: this.props.weather
+				weather: this.props.weather
 			}]
 		})
 	}
@@ -204,7 +204,7 @@ class DeviceMap extends PureComponent {
 				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}` : null}
+				subheader={device ? <Caption>{`${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}`} </Caption> : null}
 				avatar={<Map />}
 				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
 				hiddenContent={

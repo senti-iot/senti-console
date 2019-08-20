@@ -51,7 +51,7 @@ class SimpleMediaCard extends Component {
 				<CardContent classes={{ root: classes.cardContent }}>
 					{content}
 				</CardContent>
-				<CardActions className={classes.actions} disableActionSpacing>
+				<CardActions className={classes.actions}>
 					{leftActions}
 					<div className={classes.rightAction}>
 						{rightActions}

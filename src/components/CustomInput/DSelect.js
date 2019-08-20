@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import { FormControl, withStyles, Select, MenuItem, InputLabel, OutlinedInput, FormHelperText } from '@material-ui/core';
 import { ItemG } from 'components';
@@ -7,7 +7,7 @@ import { ItemG } from 'components';
 
 const styles = theme => ({
 	label: {
-		color: theme.palette.type === 'dark' ? "#fff" : undefined
+		color: theme.palette.type === 'dark' ? "#fff" : undefined,		
 	},
 	formControl: {
 		marginTop: 16,
@@ -16,7 +16,7 @@ const styles = theme => ({
 	},
 });
  
-class DSelect extends Component {
+class DSelect extends PureComponent {
 	componentDidMount = () => {
 	  this.setState({ labelWidth: ReactDOM.findDOMNode(this.InputRef).offsetWidth })
 	}
@@ -30,7 +30,7 @@ class DSelect extends Component {
 		}
 	}
 	render() {
-	  const { classes, error, helperText, value, onKeyPress, margin, onChange, menuItems, label, theme, fullWidth, leftIcon } = this.props
+	  const { classes, error, helperText, value, onKeyPress, margin, onChange, simple, menuItems, label, theme, fullWidth, leftIcon } = this.props
 	  let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	 
 		return (
@@ -38,7 +38,8 @@ class DSelect extends Component {
 			 <InputLabel ref={ref => {
 					this.InputRef = ref;
 				}}
-				 FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+				classes={{ asterisk: classes.label }}
+				 /* FormLabelClasses={{ root: classes.label }} */ color={'primary'} htmlFor='select-multiple-chip'>
 					{label}
 				</InputLabel>
 				<Select
@@ -50,7 +51,7 @@ class DSelect extends Component {
 					input={<OutlinedInput labelWidth={this.labelWidth()} variant={'outlined'} classes={{ root: classes.label }} />}
 					onKeyPress={onKeyPress}
 				>
-					{menuItems.map((m, i) => {
+					{!simple && menuItems.map((m, i) => {
 						return <MenuItem key={i} value={m.value}>
 							<ItemG container justify={'space-between'} alignItems={'center'}>
 								{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
@@ -59,6 +60,15 @@ class DSelect extends Component {
 							</ItemG>
 						</MenuItem>
 					})}
+					{simple && menuItems.map((m, i) => {
+						return <MenuItem key={i} value={m}>
+							<ItemG container justify={'space-between'} alignItems={'center'}>
+								{/* {leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null} */}
+								<ItemG xs>{m}</ItemG>
+								{/* {!leftIcon ? <ItemG>{m.icon ? m.icon : null}</ItemG> : null} */}
+							</ItemG>
+						</MenuItem>
+					}) }
 					})}
 				</Select>
 				{helperText ? <FormHelperText>{helperText}</FormHelperText> : null}

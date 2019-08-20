@@ -9,10 +9,9 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"close": "Close",
-		"create":"Create",
-		"delete": "Delete",
+		"import": "Import",
 		"accept": "Accept",
+		"add": "Add",
 		"addFilter": "Add filter",
 		"addInboundFunc": "Add function on receiving data",
 		"addKey": "Add device data field",
@@ -23,9 +22,13 @@
 		"cancel": "Cancel",
 		"changeLanguage": "Skift til Dansk",
 		"changePassword": "Change Password",
+		"close": "Close",
 		"copyToClipboard": "Copy to clipboard",
+		"create": "Create",
 		"decline": "Decline",
+		"delete": "Delete",
 		"deletePicture": "Delete this picture",
+		"edit": "Edit",
 		"editFilter": "Edit filter",
 		"editLocation": "Edit location",
 		"extendProfile": "Extended Profile",
@@ -43,11 +46,13 @@
 		"loginWithGoogle": "Log in with Google",
 		"manualCalibration": "Manual calibration",
 		"more": "more",
+		"move": "Move",
 		"next": "Next",
 		"nextPage": "Next page",
 		"no": "No",
 		"off": "Off",
 		"on": "On",
+		"open": "Open",
 		"openCounter": "Open counter",
 		"previousPage": "Previous page",
 		"read": "Read",
@@ -57,6 +62,7 @@
 		"save": "Save",
 		"search": "Type here to search",
 		"sendEmail": "Send e-mail",
+		"share": "Share",
 		"src": "Search...",
 		"start": "Start",
 		"startNow": "Start now",
@@ -116,20 +122,21 @@
 		"fields": {
 			"code": "Source Code",
 			"description": "Description",
-			"keys": "Device data keys",
+			"inboundfunc": "Cloud Function",
 			"key": "Device data key",
+			"keys": "Device data keys",
 			"metadata": {
+				"defaultValue": "Metadata default value",
 				"key": "Metadata key",
-				"value": "Metadata value",
-				"defaultValue": "Metadata default value"
+				"value": "Metadata value"
 			},
 			"name": "Name",
 			"type": "Type",
 			"types": {
-				"inbound": "Function on Receiving data",
-				"outbound": "Cloud Function",
 				"external": "External call",
-				"function": "JavaScript function"
+				"function": "JavaScript function",
+				"inbound": "Function on Receiving data",
+				"outbound": "Cloud Function"
 			}
 		},
 		"pageTitle": "Cloud functions"
@@ -204,10 +211,6 @@
 		"title": "Senti Cookie Policy"
 	},
 	"dashboard": {
-		"fields": {
-			"percDifference": "Percentage Difference:",
-			"difference": "Difference"
-		},
 		"cardContent": {
 			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
 			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
@@ -229,6 +232,19 @@
 			"projects": "Projects",
 			"settings": "Settings",
 			"users": "Users"
+		},
+		"editGraph": "Edit",
+		"fields": {
+			"percDifference": "Percentage Difference:",
+			"difference": "Difference",
+			"cf": "Cloud Function",
+			"chartType": "Chart type",
+			"dataSource": "Data source",
+			"defaultPeriod": "Default period",
+			"device": "Device",
+			"general": "General",
+			"label": "Header",
+			"unit": "Measuring Unit"
 		},
 		"pageTitle": "Senti",
 		"subtitle": "Senti lets you control and manage all your Senti-in-a-Box Devices."
@@ -340,11 +356,9 @@
 		"pageTitle": "Device Type"
 	},
 	"dialogs": {
-		"tokens": {
-			"createToken": {
-				"title": "Confirm that you have saved the token",
-				"closeWarning": "ONCE YOU CLOSE THIS WINDOW YOU WILL NOT BE ABLE TO SEE THE TOKEN AGAIN !!!",
-				"closeConfirm": "Insert the token in the empty field as confirmation!"
+		"dashboards": {
+			"share": {
+				"title": "Export dashboard"
 			}
 		},
 		"cookies": {
@@ -354,26 +368,44 @@
 		},
 		"delete": {
 			"message": {
+				"cloudfunction": "Are you sure you want to delete this Cloud Function ( %{cf} ) ?",
+				"cloudfunctions": "Are you sure you want to delete these cloud functions:",
 				"collection": "Are you sure you want to delete this data collection ( %{collection} ) ?",
 				"collections": "Are you sure you want to delete these data collections:",
+				"device": "Are you sure you want to delete this device ( %{sensor} ) ?",
 				"deviceImage": "Are you sure you want to delete this picture?",
+				"deviceType": "Are you sure you want to delete this device type ( %{deviceType} ) ?",
+				"deviceTypes": "Are you sure you want to delete these device types:",
+				"devices": "Are you sure you want to delete these devices:",
 				"org": "Are you sure you want to delete this organisation?",
 				"orgs": "Are you sure you want to delete these organisations:",
 				"project": "Are you sure you want to delete this project?",
 				"projects": "Are you sure you want to delete these projects:",
+				"registries": "Are you sure you want to delete these registries:",
+				"registry": "Are you sure you want to delete this registry ( %{registry} ) ?",
+				"token": "Are you sure you want to delete this API token?",
+				"tokens": "Are you sure you want to delete these API tokens:",
 				"user": "Are you sure you want to delete this user ( %{user} ) ?",
-				"users": "Are you sure you want to delete these users:",
-				"tokens": "Are you sure you want to delete these API tokens:"
+				"users": "Are you sure you want to delete these users:"
 			},
 			"title": {
-				"tokens": "Delete API tokens?",
+				"cloudfunction": "Delete cloud function?",
+				"cloudfunctions": "Delete cloud functions?",
 				"collection": "Delete data collection?",
 				"collections": "Delete data collections?",
+				"device": "Delete device?",
 				"deviceImage": "Delete this picture?",
+				"deviceType": "Delete device type?",
+				"deviceTypes": "Delete device types?",
+				"devices": "Delete devices?",
 				"org": "Delete organisation?",
 				"orgs": "Delete organisations?",
 				"project": "Delete project?",
 				"projects": "Delete projects?",
+				"registries": "Delete registries?",
+				"registry": "Delete registry?",
+				"token": "Delete API token?",
+				"tokens": "Delete API tokens?",
 				"user": "Delete user?",
 				"users": "Delete users?"
 			}
@@ -391,6 +423,13 @@
 			"passwordReseted": "Your password resetted!",
 			"resetPassRequestMessage": "An E-mail sent with instructions on how to reset your password!",
 			"resetPasswordMessage": "Reset your password by entering your E-mail"
+		},
+		"tokens": {
+			"createToken": {
+				"closeConfirm": "Insert the token in the empty field as confirmation!",
+				"closeWarning": "ONCE YOU CLOSE THIS WINDOW YOU WILL NOT BE ABLE TO SEE THE TOKEN AGAIN !!!",
+				"title": "Confirm that you have saved the token"
+			}
 		},
 		"unassign": {
 			"message": {
@@ -425,10 +464,10 @@
 		},
 		"pageTitle": "Favorites",
 		"types": {
-			"cloudfunction": "Cloud Function",
 			"collection": "Data collection",
 			"device": "Device",
 			"devicetype": "Device Type",
+			"function": "Cloud Function",
 			"org": "Organisation",
 			"project": "Project",
 			"registry": "Registry",
@@ -622,9 +661,6 @@
 		}
 	},
 	"no": {
-		"metadata": "No metadata",
-		"deviceInboundFunc": "No function on receiving data",
-		"deviceDataKeys": "No device data keys",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"birthdays": "No birthdays today",
@@ -632,10 +668,13 @@
 		"collection": "No collection",
 		"collections": "No collections",
 		"device": "No device",
+		"deviceDataKeys": "No device data keys",
+		"deviceInboundFunc": "No function on receiving data",
 		"devices": "No devices",
 		"doi": "No Holidays today",
 		"freeDevices": "No available devices",
 		"history": "No history",
+		"metadata": "No metadata",
 		"org": "No organisation",
 		"project": "No project",
 		"projects": "No projects"
@@ -648,11 +687,13 @@
 			"EAN": "EAN Number",
 			"address": "Address",
 			"city": "City",
+			"collectionCount": "Number of collections",
 			"country": "Country",
 			"deviceCount": "Number of devices",
 			"name": "Organisation name",
 			"org": "Organisation",
 			"parentOrg": "Parent Organisation",
+			"projectCount": "Number of projects",
 			"region": "Region",
 			"topLevelOrg": "No Parent Organisation",
 			"url": "Website",
@@ -782,7 +823,7 @@
 				"europe": "Europe"
 			},
 			"registry": "Registry",
-			"uuid": "Universal Unique Identifier (UUID)"
+			"uuid": "Unique ID"
 		},
 		"pageTitle": "Registries"
 	},
@@ -796,13 +837,15 @@
 			"deviceType": "Device Type",
 			"metadata": "Device Metadata",
 			"protocols": {
+				"externalAPI": "External API",
 				"publishData": "Publish Data",
 				"state": "Device state"
 			},
 			"registry": "Registry",
-			"uuid": "UUID"
+			"uuid": "Unique ID"
 		},
 		"metadata": {
+			"co2": "CO2",
 			"humidity": "Humidity",
 			"maxFlow": "Maximum water flow",
 			"minATemp": "Minimum ambient temperature",
@@ -858,6 +901,7 @@
 				"yellow": "Yellow"
 			}
 		},
+		"dashboardTheme": "Dashboard Theme",
 		"default": "Default",
 		"defaultDataSet": "Default data set for charts",
 		"defaultRoute": "Start page",
@@ -985,22 +1029,18 @@
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
 			"projectToOrg": "Project %{project} assigned to organisation %{org}"
 		},
-		"create": {
-			"device": "Device %{device} created!",
-			"registry": "Registry %{reg} created!",
-			"devicetype": "Device Type %{dt} created!",
-			"cloudfunction": "Cloud function %{cf} created!"
-		},
-		"edit": {
-			"device": "Device %{device} updated!",
-			"registry": "Registry %{reg} updated!",
-			"devicetype": "Device Type %{dt} updated!",
-			"cloudfunction": "Cloud function %{cf} updated!"
-		},
 		"assignFailed": "Assignment failed!",
 		"collectionCreated": "Data Collection created!",
 		"collectionDeleted": "Data Collection deleted!",
 		"collectionUpdated": "Data Collection updated!",
+		"copied": "Copied to clipboard!",
+		"create": {
+			"cloudfunction": "Cloud function %{cf} created!",
+			"device": "Device %{device} created!",
+			"devicetype": "Device Type %{dt} created!",
+			"registry": "Registry %{reg} created!"
+		},
+		"importedSucces": "Imported!",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -1008,6 +1048,12 @@
 		"deletedSuccess": "Deleted!",
 		"deleting": "Deleting...",
 		"deviceUpdated": "Device %{device} updated!",
+		"edit": {
+			"cloudfunction": "Cloud function %{cf} updated!",
+			"device": "Device %{device} updated!",
+			"devicetype": "Device Type %{dt} updated!",
+			"registry": "Registry %{reg} updated!"
+		},
 		"emailsCopied": "E-mail adresses copied to clipboard",
 		"exported": "Exported!",
 		"favorite": {
@@ -1026,6 +1072,7 @@
 		"projectExported": "Project exported!",
 		"projectUpdated": "Project %{project} updated!",
 		"redirect": "Redirecting ...",
+		"repairedOldDashboards": "Some dashboards' graphs have been reordered due to the new drag & drop system!",
 		"resetDeviceSuccess": "Device reset",
 		"settingsSaved": "Settings saved!",
 		"unassign": {
@@ -1083,7 +1130,9 @@
 			"removeCloudFunction": "Remove Cloud Function",
 			"removeDataField": "Delete data field"
 		},
+		"devicetype": "Device Type",
 		"favorites": "Favorites",
+		"function": "Cloud Function",
 		"listView": "List view",
 		"map": {
 			"layer": "Map Layer"
@@ -1091,10 +1140,8 @@
 		"mapView": "Map view",
 		"org": "Organisation",
 		"project": "Project",
-		"user": "User",
 		"registry": "Registry",
-		"function": "Cloud Function",
-		"devicetype": "Device Type"
+		"user": "User"
 	},
 	"users": {
 		"editUser": "Edit user",

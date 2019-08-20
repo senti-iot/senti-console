@@ -10,7 +10,7 @@ import { finishedSaving } from 'redux/settings';
 
 const styles = theme => ({
 	p: {
-		marginBottom: theme.spacing.unit
+		marginBottom: theme.spacing(1)
 	},
 	title: {
 		fontWeight: 500
@@ -18,12 +18,12 @@ const styles = theme => ({
 })
 class Cookies extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 open: false,
-		 showSnackBar: true,
-	  }
+		super(props)
+
+		this.state = {
+			open: false,
+			showSnackBar: true,
+		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
@@ -31,7 +31,7 @@ class Cookies extends Component {
 			this.props.finishedSaving()
 		}
 	}
-	handleAcceptCookies = () => { 
+	handleAcceptCookies = () => {
 		this.handleClose()
 		this.props.acceptCookies(true)
 	}
@@ -43,7 +43,7 @@ class Cookies extends Component {
 	};
 	renderCookiesPrivacy = () => {
 		const { t, classes } = this.props
-		return <CookiesDialog 
+		return <CookiesDialog
 			open={this.state.open}
 			handleClose={this.handleClose}
 			t={t}
@@ -75,7 +75,7 @@ class Cookies extends Component {
 				/>
 				{this.renderCookiesPrivacy()}
 			</Fragment>
-	
+
 		)
 	}
 }

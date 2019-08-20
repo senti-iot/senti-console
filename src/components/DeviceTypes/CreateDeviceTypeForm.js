@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, DSelect, T } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, DSelect, T, SlideT } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
@@ -16,13 +17,11 @@ class CreateDeviceTypeForm extends Component {
 		this.state = {
 			filters: {
 				keyword: ''
-			}
+			},
+			openOrg: false
 		}
 	}
 
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -46,7 +45,7 @@ class CreateDeviceTypeForm extends Component {
 							style: { marginRight: 8 }
 						}}
 					/>
-					<TextF 
+					<TextF
 						label={t('cloudfunctions.fields.metadata.value')}
 						handleChange={handleChangeMetadata(i)}
 						value={m.value}
@@ -110,7 +109,7 @@ class CreateDeviceTypeForm extends Component {
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 
 						<IconButton
-						// className={classes.smallAction}
+							// className={classes.smallAction}
 							style={{ marginTop: 6 }}
 							onClick={handleRemoveKey(i)}
 						>
@@ -125,7 +124,7 @@ class CreateDeviceTypeForm extends Component {
 			</ItemGrid>
 		</Fragment>
 	}
-	renderMetadataInbound = () => { 
+	renderMetadataInbound = () => {
 		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
@@ -135,7 +134,7 @@ class CreateDeviceTypeForm extends Component {
 						handleClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						InputProps={{	
+						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
 									<IconButton
@@ -153,7 +152,7 @@ class CreateDeviceTypeForm extends Component {
 			<ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddInboundFunction} color={'primary'}>{t('actions.addInboundFunc')}</Button>
 			</ItemGrid>
-		</Fragment> 
+		</Fragment>
 	}
 
 	renderSelectOrg = () => {
@@ -166,7 +165,7 @@ class CreateDeviceTypeForm extends Component {
 			fullScreen
 			open={openOrg}
 			onClose={handleCloseOrg}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -226,7 +225,7 @@ class CreateDeviceTypeForm extends Component {
 			</List>
 		</Dialog>
 	}
-	renderSelectFunction = () => { 
+	renderSelectFunction = () => {
 		const { t, openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = this.props
 		const { filters } = this.state
 		const appBarClasses = cx({
@@ -236,7 +235,7 @@ class CreateDeviceTypeForm extends Component {
 			fullScreen
 			open={openCF.open}
 			onClose={handleCloseFunc}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -296,9 +295,9 @@ class CreateDeviceTypeForm extends Component {
 			</List>
 		</Dialog>
 	}
-	
+
 	render() {
-		const { t, handleChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
+		const { t, handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
@@ -313,13 +312,27 @@ class CreateDeviceTypeForm extends Component {
 									label={t('collections.fields.name')}
 									handleChange={handleChange('name')}
 									value={deviceType.name}
-									// autoFocus
+								// autoFocus
 								/>
 							</ItemGrid>
 							<Divider style={{ margin: "16px" }} />
 							{this.renderMetadata()}
 							<Divider style={{ margin: "16px" }} />
 							{this.renderMetadataInbound()}
+							<Divider style={{ margin: "16px" }} />
+							<ItemGrid xs={12}>
+								<TextF
+									value={org.name}
+									handleClick={() => this.setState({ openOrg: true })}
+									readonly
+								/>
+								<AssignOrgDialog
+									t={t}
+									open={this.state.openOrg}
+									handleClose={() => this.setState({ openOrg: false })}
+									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
+								/>
+							</ItemGrid>
 							<Divider style={{ margin: "16px" }} />
 							<ItemGrid container>
 								<div className={classes.wrapper}>

@@ -7,9 +7,12 @@ import { setDates } from './dateTime';
 import { setPrefix, set, get } from 'variables/storage';
 import { getAllData } from './data';
 import { setDashboards } from './dsSystem';
+
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
+
+const autoRowsPerPage = 'autoRowsPerPage'
 
 //Display
 const MENULOC = 'sidebarLocation'
@@ -27,7 +30,7 @@ const changeHB = 'changeHeaderBorder'
 const changeBC = 'changeBreadCrumbs'
 const changeHT = 'changeHoverTime'
 const changeGS = 'changeGlobalSearch'
-
+const changeDSTheme = 'changeDashboardTheme'
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
@@ -68,7 +71,15 @@ export const resetSettings = () => {
 		dispatch(await getSettings())
 	}
 }
-
+export const saveOnServ = (user) => {
+	return async (dispatch) => {
+		var saved = await saveSettings(user);
+		dispatch({
+			type: SAVESETTINGS,
+			saved: saved ? true : false
+		})
+	}
+}
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
@@ -99,7 +110,8 @@ export const saveSettingsOnServ = () => {
 			headerBorder: s.headerBorder,
 			breadcrumbs: s.breadcrumbs,
 			hoverTime: s.hoverTime,
-			globalSearch: s.globalSearch
+			globalSearch: s.globalSearch,
+			dsTheme: s.dsTheme
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -175,9 +187,9 @@ export const getSettings = async () => {
 			if (favorites) {
 				dispatch({
 					type: GETFAVS,
-					payload: 
+					payload:
 						[...favorites]
-					
+
 				})
 			}
 			if (dashboards) {
@@ -505,13 +517,22 @@ export const changeWeekendColor = (id) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-
+export const changeDashboardTheme = (id) => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: changeDSTheme,
+			dsTheme: id
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
 		saved: false
 	}
 }
+let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49) + ' - auto'
 let initialState = {
 	weekendColor: 'red',
 	periods: [{
@@ -541,7 +562,7 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
+	rowsPerPageOptions: [autoheight, 5, 7, 8, 10, 15, 20, 25, 50, 100],
 	cardsPerPageOptions: [2, 3, 4, 6, 8, 9],
 	snackbarLocation: 'left',
 	detailsPanel: 0,
@@ -551,12 +572,19 @@ let initialState = {
 	headerBorder: false,
 	breadcrumbs: true,
 	hoverTime: 1000,
-	globalSearch: true
+	globalSearch: true,
+	dsTheme: 0
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case autoRowsPerPage:
+			let newRowsPerPage = [...initialState.rowsPerPageOptions]
+			newRowsPerPage[0] = action.payload + ' - auto'
+			return Object.assign({}, state, { rowsPerPageOptions: [...newRowsPerPage] })
 		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeDSTheme:
+			return Object.assign({}, state, { dsTheme: action.dsTheme })
 		case changeGS:
 			return Object.assign({}, state, { globalSearch: action.globalSearch })
 		case changeHT:
@@ -594,14 +622,12 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { discSentiVal: action.val })
 		case NOSETTINGS:
 			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })
-		case GetSettings:
-		{
+		case GetSettings: {
 			let periods = setDates(action.settings.periods)
 			set('settings', action.settings)
 			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}
-		case changeLangAction:
-		{
+		case changeLangAction: {
 			moment.locale(action.code)
 			return Object.assign({}, state, {
 				language: action.code,

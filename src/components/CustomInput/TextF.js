@@ -6,13 +6,47 @@ import { compose } from 'recompose';
 import cx from 'classnames'
 const styles = theme => ({
 	leftIcon: {
-		marginRight: theme.spacing.unit
+		marginRight: theme.spacing(1)
 	},
 	underlineRev: {
 		background: '#fff'
 	},
+	root: {
+		"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
+			borderColor: "rgb(39,136,129, 0.67)"
+		}
+	},
+	disabled: {},
+	focused: {},
+	error: {},
+	notchedOutline: {
+		borderColor: "rgb(39,136,129, 0.23)",
+		"&:hover": {
+			borderColor: "rgb(39,136,129, 1)"
+		}
+	},
+	rootReversed: {
+		"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
+			borderColor: "rgba(255,255,255, 0.67)"
+		}
+	},
+	disabledReversed: {},
+	focusedReversed: {},
+	errorReversed: {},
+	notchedOutlineReversed: {
+		borderColor: 'rgba(255,255,255, 0.23)'
+	},
 	reversed: {
-		color: '#fff',
+		color: 'rgba(255, 255, 255, 0.23)',
+		"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
+			borderColor: "#fff"
+		}
+	},
+	reversedBorder: {
+		borderColor: 'rgba(255, 255, 255, 0.23)',
+		"&:hover": {
+			borderColor: '#fff !important;'
+		}
 	}
 })
 
@@ -26,9 +60,12 @@ const TextF = (props) => {
 		[props.classes.reversed]: props.reversed,
 		[props.classes.textField]: props.classes.textField ? true : false
 	})
-	return (		
+	// let notchedCX = cx({
+	// 	[props.classes.reversedBorder]: props.reversed,
+	// })
+	return (
 		<TextField
-			style={{ maxWidth: props.fullWidth ? undefined : mobile ? undefined : 230 }}
+			style={{ maxWidth: props.fullWidth !== undefined ? undefined : mobile ? undefined : 230, ...props.style }}
 			variant={'outlined'}
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			placeholder={props.placeholder ? props.placeholder : undefined}
@@ -37,7 +74,8 @@ const TextF = (props) => {
 			value={props.value}
 			onClick={props.handleClick}
 			onChange={props.handleChange}
-			fullWidth={props.fullWidth || mobile ? true : false}
+			fullWidth={props.fullWidth !== undefined ? props.fullWidth : mobile ? true : false}
+			// fullWidth={props.fullWidth || mobile ? true : false}
 			multiline={props.multiline ? props.multiline : undefined}
 			rows={props.rows ? props.rows : undefined}
 			className={classNames}
@@ -45,11 +83,35 @@ const TextF = (props) => {
 			type={props.type ? props.type : undefined}
 			pattern={props.pattern ? props.pattern : ''}
 			disabled={props.disabled ? props.disabled : false}
-			margin='normal'
+			margin={props.margin ? props.margin : 'normal'}
+			notched={props.notched}
 			helperText={props.helperText}
-			InputProps={props.InputProps ? { ...props.InputProps, style: { ...props.InputProps.style, boxSizing: 'border-box' } } : null}
+			InputProps={props.InputProps ? {
+				...props.InputProps,
+				style: { ...props.InputProps.style, boxSizing: 'border-box' },
+				classes: props.InputProps.classes ? props.InputProps.classes : props.reversed ? {
+					root: props.classes.rootReversed,
+					disabled: props.classes.disabledReversed,
+					focused: props.classes.focusedReversed,
+					error: props.classes.errorReversed,
+					notchedOutline: props.classes.notchedOutlineReversed,
+				} :
+					{
+						root: props.classes.root,
+						disabled: props.classes.disabled,
+						focused: props.classes.focused,
+						error: props.classes.error,
+						notchedOutline: props.classes.notchedOutline
+					}
+			} : null}
 			onKeyPress={props.onKeyPress}
 			onKeyDown={props.onKeyDown}
+		// FormHelperTextProps={{
+		// 	className: classNames
+		// }}
+		// InputLabelProps={{
+		// 	className: classNames
+		// }}
 		/>
 
 	)

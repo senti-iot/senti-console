@@ -113,7 +113,7 @@ class PieChart extends PureComponent {
 			}
 		}
 		catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
@@ -217,9 +217,7 @@ class PieChart extends PureComponent {
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
-					onElementsClick={this.elementClicked}
-					// getElementAtEvent={e => console.log(e)}
-				
+					onElementsClick={this.elementClicked}				
 				/>
 				{ timeType === 3 ? <SummaryTooltip
 					getRef={this.getTooltipRef}

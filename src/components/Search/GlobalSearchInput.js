@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Input, InputAdornment, IconButton, ClickAwayListener, /* InputAdornment, IconButton */ } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Search, Clear, /* Clear */ } from 'variables/icons'
@@ -7,7 +7,7 @@ import cx from 'classnames'
 import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles';
 
 
-class GlobalSearchInput extends Component {
+class GlobalSearchInput extends PureComponent {
 	constructor(props) {
 	  super(props)
 	
@@ -23,7 +23,6 @@ class GlobalSearchInput extends Component {
 		this.props.inputProps.onBlur()
 	}
 	onFocusInput = () => {
-		// console.log()
 		this.setState({ focused: true })
 		this.props.inputProps.onFocus()
 	}

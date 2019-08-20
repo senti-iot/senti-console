@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
 import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase, Tooltip, Collapse } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink as Link } from 'react-router-dom';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,7 +14,7 @@ import { changeSmallMenu } from 'redux/appState';
 import { HeaderLinks } from 'components';
 import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
 
-
+const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref}/>)
 class Sidebar extends Component {
 	constructor(props) {
 		super(props)
@@ -63,23 +63,25 @@ class Sidebar extends Component {
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
 					if (route.dropdown) {
-						return <Fragment>
+						return <Fragment key={index}>
 							<Tooltip key={index}
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
-								<ListItem /* component={Button */
+								<ListItem
 									button
 									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
 									classes={{
 										button: classNames({
 											[classes.buttonOpen]: smallMenu,
-											// [classes.buttonClose]: !smallMenu,
+											[classes.buttonClose]: !smallMenu,
 											[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
 											[classes.button]: true
 										})
 									}}>
-									<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+									{/* <div> */}
+									<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+									{/* </div> */}
 								</ListItem>
 							</Tooltip>
 							<Collapse in={this.state[route.menuRoute]} >
@@ -99,7 +101,7 @@ class Sidebar extends Component {
 													[classes.nested]: smallMenu
 												})
 											}}>
-											<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon  className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									</Tooltip>)}
@@ -120,7 +122,7 @@ class Sidebar extends Component {
 								[classes.button]: true
 							})
 						}}>
-						<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+						<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
 						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 					</ListItem>
 				})}
@@ -172,7 +174,7 @@ class Sidebar extends Component {
 											[classes.button]: true
 										})
 									}}>
-									<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 							</Tooltip>
@@ -194,7 +196,7 @@ class Sidebar extends Component {
 													[classes.nested]: smallMenu
 												})
 											}}>
-											<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon  className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									</Tooltip>)}
@@ -216,7 +218,7 @@ class Sidebar extends Component {
 									[classes.button]: true
 								})
 							}}>
-							<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
 							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 						</ListItem>
 					</Tooltip>
@@ -267,7 +269,7 @@ class Sidebar extends Component {
 											[classes.button]: true
 										})
 									}}>
-									<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 								<Collapse in={this.state[route.menuRoute]}>
@@ -286,7 +288,7 @@ class Sidebar extends Component {
 													[classes.nested]: true
 												})
 											}}>
-											<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon /*  */ className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									)}
@@ -306,7 +308,7 @@ class Sidebar extends Component {
 									[classes.button]: true
 								})
 							}}>
-							<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
 							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 						</ListItem>
 					})}

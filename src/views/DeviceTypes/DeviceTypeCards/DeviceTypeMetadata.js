@@ -4,7 +4,7 @@ import { ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
-import { DataUsage } from 'variables/icons';
+import { StorageIcon } from 'variables/icons';
 import { connect } from 'react-redux'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,10 +20,10 @@ class DeviceTypeMetadata extends Component {
 		return (
 			<InfoCard
 				title={t('sensors.fields.metadata')}
-				avatar={<DataUsage />}
+				avatar={<StorageIcon />}
 				noExpand
 				content={
-					<ItemG container spacing={16}>
+					<ItemG container spacing={3}>
 						<ItemG xs={12}>
 							{mtd ? <Table>
 								<TableHead>
@@ -33,13 +33,13 @@ class DeviceTypeMetadata extends Component {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									 {mtd.map(s => {
-										return  <TableRow key={s}>
+									{mtd.map(s => {
+										return <TableRow key={s.key}>
 											<TableCell>
-												{mtd[s].key}
+												{s.key}
 											</TableCell>
 											<TableCell>
-												{mtd[s].value}
+												{s.value}
 											</TableCell>
 										</TableRow>
 									})}

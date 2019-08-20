@@ -62,14 +62,14 @@ const searchStyles = theme => ({
 		// position: 'absolute',
 		// right: "30px",
 		// zIndex: 1,
-		marginTop: theme.spacing.unit * 4,
+		marginTop: theme.spacing(4),
 		maxWidth: 'calc(100vw - 100px)'
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
 		right: "30px",
 		zIndex: 1,
-		marginTop: theme.spacing.unit * 4,
+		marginTop: theme.spacing(4),
 		maxWidth: 'calc(100vw - 100px)'
 		// left: 0,
 	},

@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, SlideT } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
@@ -17,13 +18,11 @@ class CreateRegistryForm extends Component {
 		this.state = {
 			filters: {
 				keyword: ''
-			}
+			},
+			openOrg: false
 		}
 	}
 
-	transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -41,7 +40,7 @@ class CreateRegistryForm extends Component {
 			fullScreen
 			open={openDevice}
 			onClose={handleCloseDevice}
-			TransitionComponent={this.transition}>
+			TransitionComponent={SlideT}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Hidden mdDown>
@@ -112,7 +111,7 @@ class CreateRegistryForm extends Component {
 				{ value: 0, label: t('registries.fields.protocols.none') },
 				{ value: 1, label: t('registries.fields.protocols.mqtt') },
 				{ value: 2, label: t('registries.fields.protocols.http') },
-				{ value: 3, label: `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}` } 
+				{ value: 3, label: `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}` }
 			]}
 		/>
 	}
@@ -127,7 +126,7 @@ class CreateRegistryForm extends Component {
 				{ value: 'europe', label: t('registries.fields.regions.europe') },
 				// { value: 1, label: t('registries.fields.protocols.mqtt') },
 				// { value: 2, label: t('registries.fields.protocols.http') },
-				// { value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
+				// { value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` }
 			]}
 		/>
 	}
@@ -145,7 +144,7 @@ class CreateRegistryForm extends Component {
 		/>
 	}
 	render() {
-		const { t, handleChange, registry, classes, handleCreate, goToRegistries } = this.props
+		const { t, org, handleOrgChange, handleChange, registry, classes, handleCreate, goToRegistries } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -167,8 +166,20 @@ class CreateRegistryForm extends Component {
 							<ItemGrid xs={12}>
 								{this.renderProtocol()}
 							</ItemGrid>
+							<ItemGrid xs={12}>
+								<TextF
+									value={org.name}
+									handleClick={() => this.setState({ openOrg: true })}
+									readonly
+								/>
+								<AssignOrgDialog
+									t={t}
+									open={this.state.openOrg}
+									handleClose={() => this.setState({ openOrg: false })}
+									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
+								/>
+							</ItemGrid>
 
-						
 							<ItemGrid container style={{ margin: 16 }}>
 								<div className={classes.wrapper}>
 									<Button
@@ -184,7 +195,7 @@ class CreateRegistryForm extends Component {
 										{t('actions.save')}
 									</Button>
 								</div>
-							</ItemGrid> 
+							</ItemGrid>
 						</Grid>
 					</form>
 				</Paper>

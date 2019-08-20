@@ -76,7 +76,7 @@ class ExportModal extends Component {
 									{`${from} - ${to}`}
 								</Info>
 							</ItemG>
-							<ItemG container spacing={8} justify={'center'} >
+							<ItemG container spacing={2} justify={'center'} >
 								<ItemG>
 									<Button filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'outlined'}>
 										CSV

@@ -37,7 +37,7 @@ class FilterToolbar extends Component {
 	handleClick = e => {
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 		if (this.state.actionAnchor === null) {
-			this.setState({ actionAnchor: this.chip.chipRef });
+			this.setState({ actionAnchor: this.chip });
 			window.addEventListener('keydown', this.handleMenuNav, false)
 			// this.input.focus()
 		}
@@ -153,7 +153,7 @@ class FilterToolbar extends Component {
 		const { t, filters, reduxKey } = this.props
 		const { actionAnchor, editChip, editFilter } = this.state
 		return (
-			<ClickAwayListener onClickAway={this.handleClose} style={{ margin: '4px 0px' }}>
+			<ClickAwayListener onClickAway={this.handleClose}>
 				<Fragment>
 					<FilterInput
 						onBlur={this.handleBlur}

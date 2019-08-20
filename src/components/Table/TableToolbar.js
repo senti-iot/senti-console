@@ -32,6 +32,7 @@ let selectedRender = props => {
 				disableEnforceFocus
 				id='long-menu'
 				anchorEl={anchor}
+				disablePortal
 				open={Boolean(anchor)}
 				onClose={e => setAnchor(null)}
 				PaperProps={{ style: { boxShadow: boxShadow } }}

@@ -18,7 +18,7 @@ import {
 } from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
 import { red, green } from '@material-ui/core/colors';
-import { bgColors } from './backgroundColors';
+import { bgColorsLight } from './bgColorsLight';
 
 const regularCardStyle = theme => ({
 	transition: {
@@ -71,13 +71,13 @@ const regularCardStyle = theme => ({
 		whiteSpace: "nowrap",
 		textOverflow: "ellipsis",
 		overflow: "hidden",
-		marginTop: theme.spacing.unit
+		marginTop: theme.spacing(1)
 	},
 	leftIcon: {
 		marginRight: 8
 	},
 	smallCardGrid: {
-		// width: "33%",	
+		// width: "33%",
 		[theme.breakpoints.down('sm')]: {
 			width: '100%'
 		}
@@ -114,6 +114,9 @@ const regularCardStyle = theme => ({
 		},
 		...transition
 	},
+	dashboard: {
+		height: 'calc(100% - 128px - 32px)'
+	},
 	root: {
 		paddingTop: 0,
 		marginTop: 0,
@@ -139,6 +142,7 @@ const regularCardStyle = theme => ({
 		transform: 'rotate(180deg)',
 	},
 	avatar: {
+		color: '#fff',
 		backgroundColor: teal[600],
 	},
 	whiteAvatar: {
@@ -189,7 +193,7 @@ const regularCardStyle = theme => ({
 		display: "block",
 		height: "auto"
 	},
-	...bgColors,
+	...bgColorsLight(theme),
 
 });
 

@@ -17,7 +17,7 @@ export const graphStyles = theme => ({
 		margin: '0 12px'
 	},
 	paper: {
-		padding: theme.spacing.unit
+		padding: theme.spacing(1)
 
 	},
 	popover: {
