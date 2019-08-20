@@ -21,12 +21,17 @@ let reducers = combineReducers({ settings, localization, favorites, doi, appStat
 // 	console.info('next state', store.getState())
 // 	return result
 // } 
-
+const rootReducer = (state, action) => { 
+	if (action.type === 'RESET_APP') { 
+		state = undefined
+	}
+	return reducers(state, action)
+}
 let composeMiddleware = compose(
 	applyMiddleware(thunk, /* logger */),
 	window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
 )
-const store = createStore(reducers, composeMiddleware)
+const store = createStore(rootReducer, composeMiddleware)
 
 
 export default store

@@ -9,7 +9,6 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"import": "Import",
 		"accept": "Accept",
 		"add": "Add",
 		"addFilter": "Add filter",
@@ -39,6 +38,7 @@
 		"goToDevice": "Go to device(s)",
 		"goToLogin": "Go to Login Page",
 		"heatMap": "Heatmap",
+		"import": "Import",
 		"insertAddress": "Enter an address",
 		"learn": "Learn",
 		"learnMore": "Learn more",
@@ -240,8 +240,10 @@
 			"dataSource": "Data source",
 			"defaultPeriod": "Default period",
 			"device": "Device",
+			"difference": "Difference",
 			"general": "General",
 			"label": "Header",
+			"percDifference": "Percentage Difference:",
 			"unit": "Measuring Unit"
 		},
 		"pageTitle": "Senti",
@@ -354,14 +356,14 @@
 		"pageTitle": "Device Type"
 	},
 	"dialogs": {
-		"dashboards": {
-			"share": {
-				"title": "Export dashboard"
-			}
-		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
+			}
+		},
+		"dashboards": {
+			"share": {
+				"title": "Export dashboard"
 			}
 		},
 		"delete": {
@@ -1038,7 +1040,6 @@
 			"devicetype": "Device Type %{dt} created!",
 			"registry": "Registry %{reg} created!"
 		},
-		"importedSucces": "Imported!",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -1060,6 +1061,7 @@
 			"saved": "%{name} (%{type}) added to favorites!",
 			"updated": "Favorites updated!"
 		},
+		"importedSucces": "Imported!",
 		"orgCreated": "Organisation %{org} created!",
 		"orgDeleted": "Organisation deleted!",
 		"orgUpdated": "Organisation %{org} updated!",

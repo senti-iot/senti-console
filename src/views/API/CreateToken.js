@@ -267,7 +267,6 @@ class CreateToken extends Component {
 			// onClose={this.handleCloseToken}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
-
 		>
 			{token ?
 				<Fragment>

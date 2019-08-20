@@ -23,6 +23,7 @@ import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 import { getSensorDataClean } from 'variables/dataSensors';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 import TC from 'components/Table/TC'
+import withLocalization from 'components/Localization/T';
 
 class ScoreCard extends PureComponent {
 	constructor(props) {
@@ -570,4 +571,4 @@ const mapDispatchToProps = dispatch => ({
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ScoreCard))
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(deviceStyles, { withTheme: true })(ScoreCard)))
