@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF } from 'components';
-import { ExpandMore } from 'variables/icons';
+import { T, ItemG, DSelect, TextF, ITB } from 'components';
+import { ExpandMore, Add, Delete } from 'variables/icons';
 import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons';
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
@@ -95,9 +95,10 @@ class ESScorecard extends Component {
 		})
 		this.props.handleEditGraph(newG)
 	}
-	handleRemoveDataSource = index => {
+	handleRemoveDataSource = index => e => {
+		e.stopPropagation()
 		let newG = { ...this.props.g }
-		newG.dataSources = newG.dataSources.filter((ds, i) => index === i)
+		newG.dataSources = newG.dataSources.filter((ds, i) => index !== i)
 		this.props.handleEditGraph(newG)
 	}
 	render() {
@@ -140,7 +141,24 @@ class ESScorecard extends Component {
 					</ExpansionPanel>
 
 				</ItemG>
+				<ItemG xs={12}>
 
+					<ExpansionPanel
+						expanded={false}
+						square
+						// onChange={this.handleAddDataSource}
+						classes={{
+							root: classes.expansionPanel
+						}}
+					>
+						<Button style={{ textTransform: 'none', textAlign: 'left', width: '100%' }} onClick={this.handleAddDataSource}>
+							<ExpansionPanelSummary className={classes.expandButton} expandIcon={<Add className={classes.icon} />}>
+								<T>{`${t('actions.add')} ${t('dashboard.fields.dataSource')}`}</T>
+							</ExpansionPanelSummary>
+						</Button>
+					</ExpansionPanel>
+
+				</ItemG>
 				{g.dataSources.map((ds, i) => {
 					return <ItemG xs={12}><ExpansionPanel
 						expanded={this.state['scorecard' + i]}
@@ -151,7 +169,16 @@ class ESScorecard extends Component {
 						}}
 					>
 						<ExpansionPanelSummary expandIcon={<ExpandMore className={classes.icon} />}>
-							<T>{`${t('dashboard.fields.dataSource')}`}</T>
+							<ItemG container justify={'space-between'} alignItems={'center'}>
+
+								<T>{`${t('dashboard.fields.dataSource')}`}</T>
+								<ITB
+									onClick={this.handleRemoveDataSource(i)}
+									size={'small'}
+									label={t('actions.delete')}
+									icon={<Delete />}
+								/>
+							</ItemG>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails>
 							<ItemG container>
