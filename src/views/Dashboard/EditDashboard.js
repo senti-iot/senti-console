@@ -1,7 +1,7 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button, Divider } from '@material-ui/core';
-import { ItemG, Dropdown, TextF, SlideT } from 'components';
+import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button, Divider, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import { ItemG, Dropdown, TextF, SlideT, T, Warning } from 'components';
 import cx from 'classnames'
 import { Close, Edit, Clear, Palette, Save, Menu } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -33,6 +33,7 @@ class EditDashboard extends React.Component {
 			mounted: false,
 			openEditGraph: false,
 			openToolbox: true,
+			openClose: false,
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
@@ -223,8 +224,36 @@ class EditDashboard extends React.Component {
 	onLayoutChange = (layout) => {
 		this.props.setLayout(layout)
 	}
+	handleOpenConfirmClose = () => this.setState({ openClose: true })
+	handleCloseConfirmClose = () => this.setState({ openClose: false })
+	handleConfirmClose = () => {
+		this.props.handleClose()
+		this.handleCloseConfirmClose()
+	}
+	renderConfirmClose = () => {
+		const { t } = this.props
+		const { openClose } = this.state
+		return <Dialog
+			open={openClose}
+		>
+			<DialogTitle>{t('dialogs.dashboards.close.title')}</DialogTitle>
+			<DialogContent>
+				<T style={{ marginBottom: 8 }}>{t('dialogs.dashboards.close.message')}</T>
+				<Warning>{t('dialogs.dashboards.close.warning')}</Warning>
+			</DialogContent>
+			<DialogActions>
+				<Button variant={'outlined'} onClick={this.handleCloseConfirmClose}>
+					{t('actions.no')}
+				</Button>
+				<Button variant={'outlined'} onClick={this.handleConfirmClose}>
+					{t('actions.yes')}
+				</Button>
+			</DialogActions>
+		</Dialog>
+
+	}
 	render() {
-		const { open, handleClose, classes, d, t } = this.props
+		const { open, classes, d, t } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -234,7 +263,7 @@ class EditDashboard extends React.Component {
 				<Dialog
 					fullScreen
 					open={open}
-					onClose={handleClose}
+					onClose={this.handleOpenConfirmClose}
 					TransitionComponent={SlideT}
 					PaperProps={{
 						className: classes[d.color]
@@ -244,7 +273,7 @@ class EditDashboard extends React.Component {
 						<Toolbar>
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={1} container alignItems={'center'}>
-									<IconButton color='inherit' onClick={handleClose} aria-label='Close'>
+									<IconButton color='inherit' onClick={this.handleOpenConfirmClose} aria-label='Close'>
 										<Close />
 									</IconButton>
 								</ItemG>
@@ -290,9 +319,9 @@ class EditDashboard extends React.Component {
 							</ItemG>
 						</Toolbar>
 					</AppBar>
-
+					{this.renderConfirmClose()}
 					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
-					<div style={{ width: '100%', height: 'calc(100% - 118px)' }}>
+					<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
 								{...this.props}

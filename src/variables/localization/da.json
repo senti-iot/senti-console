@@ -9,7 +9,6 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"import": "Importer",
 		"accept": "Godkend",
 		"add": "Tilføj",
 		"addFilter": "Tilføj filter",
@@ -39,6 +38,7 @@
 		"goToDevice": "Gå til enhed(er)",
 		"goToLogin": "Gå til log ind",
 		"heatMap": "Heatmap",
+		"import": "Importer",
 		"insertAddress": "Indtast adresse",
 		"learn": "Lær",
 		"learnMore": "Lær mere",
@@ -240,8 +240,10 @@
 			"dataSource": "Datakilde",
 			"defaultPeriod": "Standard periode",
 			"device": "Enhed",
+			"difference": "Difference",
 			"general": "General",
 			"label": "Overskrift",
+			"percDifference": "Percentage Difference:",
 			"unit": "Måleenhed"
 		},
 		"pageTitle": "Senti",
@@ -354,14 +356,19 @@
 		"pageTitle": "Enhedstype"
 	},
 	"dialogs": {
-		"dashboards": {
-			"share": {
-				"title": "Eksporter dashboard"
-			}
-		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."
+			}
+		},
+		"dashboards": {
+			"close": {
+				"message": "Er du sikker på du ønsker at lukker denne Dashboard?",
+				"warning": "Eventuelle ikke-gemte ændringer vil gå tabt!",
+				"title": "Close dashboard?"
+			},
+			"share": {
+				"title": "Eksporter dashboard"
 			}
 		},
 		"delete": {
@@ -1038,7 +1045,6 @@
 			"devicetype": "Enhedstype %{dt} er oprettet!",
 			"registry": "Register %{reg} er oprettet!"
 		},
-		"importedSuccess": "Importeret!",
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
 		"creating": "Opretter ...",
@@ -1060,6 +1066,7 @@
 			"saved": "%{name} (%{type}) er tilføjet til favoritter!",
 			"updated": "Favoritter er opdateret!"
 		},
+		"importedSuccess": "Importeret!",
 		"orgCreated": "Organisation %{org} er  oprettet!",
 		"orgDeleted": "Organisation er slettet!",
 		"orgUpdated": "Organisation %{org} er opdateret!",

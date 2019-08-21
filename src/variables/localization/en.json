@@ -362,6 +362,11 @@
 			}
 		},
 		"dashboards": {
+			"close": {
+				"message": "Are you sure you want to close the dashbord?",
+				"warning": "Any unsaved changes will be discarded!",
+				"title": "Close dashboard?"
+			},
 			"share": {
 				"title": "Export dashboard"
 			}
