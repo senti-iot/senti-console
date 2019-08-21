@@ -76,7 +76,7 @@
 		"skycons": "^1.0.0",
 		"store": "^2.0.12",
 		"styled-components": "^4.3.0",
-		"workbox-build": "^4.3.1",
+		"workbox-build": "4.3.1",
 		"zipcelx": "^1.6.2"
 	},
 	"devDependencies": {

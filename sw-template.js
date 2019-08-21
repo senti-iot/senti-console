@@ -4,7 +4,7 @@ importScripts('/workbox-sw.js');
 // workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
-workbox.precaching.suppressWarnings();
+// workbox.precaching.suppressWarnings();
 
 //This will precache everything
 workbox.precaching.precacheAndRoute([])
