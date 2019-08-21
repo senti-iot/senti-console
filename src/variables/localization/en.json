@@ -235,6 +235,8 @@
 		},
 		"editGraph": "Edit",
 		"fields": {
+			"name": "Name",
+			"description": "Description",
 			"cf": "Cloud Function",
 			"chartType": "Chart type",
 			"dataSource": "Data source",
@@ -1047,6 +1049,7 @@
 		},
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
+		"savedSuccess": "Saved!",
 		"creating": "Creating...",
 		"deletedFail": "Deletion failed!",
 		"deletedSuccess": "Deleted!",

@@ -205,9 +205,16 @@ class EditDashboard extends React.Component {
 		const { d } = this.props
 		let newD = Object.assign({}, d)
 		newD.name = e.target.value
-		// newD.id = generateID(newD.name)
 		this.props.editDashboard(newD)
 	}
+
+	changeDescription = (e) => {
+		const { d } = this.props
+		let newD = Object.assign({}, d)
+		newD.description = e.target.value
+		this.props.editDashboard(newD)
+	}
+
 	renderColorPicker = () => {
 		const { t } = this.props
 		return <Dropdown
@@ -252,6 +259,59 @@ class EditDashboard extends React.Component {
 		</Dialog>
 
 	}
+	handleSave = () => {
+		this.props.saveDashboard()
+		this.props.handleClose()
+	}
+	handleOpenSave = () => this.setState({ openSave: true })
+	handleCloseSave = () => this.setState({ openSave: false })
+
+	renderSaveDialog = () => {
+		const { openSave } = this.state
+		const { t, d } = this.props
+		return <Dialog
+			open={openSave}
+		>
+			<DialogContent>
+				<TextF
+					fullWidth
+					id={'dashboardNameSave'}
+					// margin={'none'}
+					label={t('dashboard.fields.name')}
+					value={d.name}
+					handleChange={this.changeName}
+					reversed
+				// notched={false}
+				/>
+				<TextF
+					fullWidth
+					id={'dashboardDesc'}
+					InputProps={{
+						style: {
+							color: '#fff'
+						}
+					}}
+					multiline
+					rows={4}
+					label={t('dashboard.fields.description')}
+					// margin={'none'}
+					value={d.description}
+					handleChange={this.changeDescription}
+					reversed
+				// notched={false}
+				/>
+			</DialogContent>
+			<DialogActions style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+				{/* <Button variant={'outlined'} onClick={this.handleCloseSave}>
+					{t('actions.cancel')}
+				</Button> */}
+				<Button variant={'outlined'} onClick={this.handleCloseSave}>
+					{t('actions.close')}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
+
 	render() {
 		const { open, classes, d, t } = this.props
 		const appBarClasses = cx({
@@ -305,14 +365,15 @@ class EditDashboard extends React.Component {
 										}}
 										margin='none'
 										value={d.name}
-										handleChange={this.changeName}
+										// handleChange={this.changeName}
+										handleClick={this.handleOpenSave}
 										reversed
 									/>
 									{this.renderColorPicker()}
 
 								</ItemG>
 								<ItemG xs={1}>
-									<Button color={'primary'} variant={'outlined'} onClick={this.props.saveDashboard}>
+									<Button color={'primary'} variant={'outlined'} onClick={this.handleSave}>
 										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
 									</Button>
 								</ItemG>
@@ -320,6 +381,7 @@ class EditDashboard extends React.Component {
 						</Toolbar>
 					</AppBar>
 					{this.renderConfirmClose()}
+					{this.renderSaveDialog()}
 					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>

@@ -362,7 +362,7 @@ export const saveDashboard = (edit) => {
 		// dispatch()
 		dispatch(saveOnServ(user))
 		dispatch(await getSettings())
-		dispatch(saveSnackbar('snackbars.createdSuccess'))
+		dispatch(saveSnackbar('snackbars.savedSuccess'))
 
 	}
 }

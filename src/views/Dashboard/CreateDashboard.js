@@ -176,6 +176,12 @@ class CreateDashboard extends React.Component {
 		newD.id = generateID(newD.name)
 		this.props.editDashboard(newD)
 	}
+	changeDescription = e => {
+		const { d } = this.props
+		let newD = Object.assign({}, d)
+		newD.description = e.target.value
+		this.props.editDashboard(newD)
+	}
 	renderColorPicker = () => {
 		const { t } = this.props
 		return <Dropdown
@@ -227,10 +233,52 @@ class CreateDashboard extends React.Component {
 	handleOpenSave = () => this.setState({ openSave: true })
 	handleCloseSave = () => this.setState({ openSave: false })
 
-
-	handleConfirmSave = () => {
-		this.handleSave()
+	renderSaveDialog = () => {
+		const { openSave } = this.state
+		const { t, d } = this.props
+		return <Dialog
+			open={openSave}
+		>
+			<DialogContent>
+				<TextF
+					fullWidth
+					id={'dashboardNameSave'}
+					// margin={'none'}
+					label={t('dashboard.fields.name')}
+					value={d.name}
+					handleChange={this.changeName}
+					reversed
+				// notched={false}
+				/>
+				<TextF
+					fullWidth
+					id={'dashboardDesc'}
+					InputProps={{
+						style: {
+							color: '#fff'
+						}
+					}}
+					multiline
+					rows={4}
+					label={t('dashboard.fields.description')}
+					// margin={'none'}
+					value={d.description}
+					handleChange={this.changeDescription}
+					reversed
+				// notched={false}
+				/>
+			</DialogContent>
+			<DialogActions style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+				{/* <Button variant={'outlined'} onClick={this.handleCloseSave}>
+					{t('actions.cancel')}
+				</Button> */}
+				<Button variant={'outlined'} onClick={this.handleCloseSave}>
+					{t('actions.close')}
+				</Button>
+			</DialogActions>
+		</Dialog>
 	}
+
 	handleSave = () => {
 		this.props.saveDashboard()
 		this.props.handleCloseDT()
@@ -283,13 +331,17 @@ class CreateDashboard extends React.Component {
 										fullWidth={false}
 										id={'dashboardName'}
 										InputProps={{
+											// onClick: this.handleOpenSave,
 											style: {
 												color: '#fff'
 											}
 										}}
 										margin={'none'}
 										value={d.name}
-										handleChange={this.changeName}
+
+										// handleChange={this.handleOpenSave}
+										handleClick={this.handleOpenSave}
+										readOnly
 										reversed
 										notched={false}
 									/>
@@ -317,6 +369,7 @@ class CreateDashboard extends React.Component {
 						}>
 					</CreateDashboardToolbar> */}
 					{this.renderConfirmClose()}
+					{this.renderSaveDialog()}
 					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>

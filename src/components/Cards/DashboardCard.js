@@ -36,15 +36,31 @@ const styles = theme => ({
 		right: 0
 	},
 	header: {
+		whiteSpace: 'nowrap',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden',
 		fontSize: '1rem',
 	},
 	content: {
-		fontSize: '0.875rem'
+		// whiteSpace: 'nowrap',
+		lineHeight: '1.2em',
+		overflow: 'hidden',
+		position: 'relative',
+		maxHeight: '3.6em',
+		marginRight: '-1em',
+		paddingRight: '1em',
+		height: '3.6em',
+		textOverflow: 'ellipsis',
+		fontSize: '0.875rem',
+		display: '-webkit-box',
+		boxOrient: 'vertical',
+		lineClamp: '3',
+
 	},
 	card: {
 		// width: 250,
 		// height: 300,
-		minHeight: 300,
+		minHeight: '100%',
 		display: 'flex',
 		flexFlow: 'column',
 		// flexGrow: 1,
@@ -196,11 +212,13 @@ class DashboardCard extends Component {
 
 				</CardMedia>
 				<CardContent classes={{ root: classes.cardContent }}>
-					<Typography gutterBottom className={classes.header}>
+					<Typography title={header} gutterBottom className={classes.header}>
 						{header}
 					</Typography>
-					<Muted className={classes.content}>
-						{content}
+					<Muted title={content} className={classes.content}>
+						<span>
+							{content}
+						</span>
 					</Muted>
 				</CardContent>
 				<CardActions>
