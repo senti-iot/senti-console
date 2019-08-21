@@ -11,6 +11,21 @@ import { Muted, Dropdown, ITB } from 'components';
 import { Share, Airplay, Edit, /* Star, LocalOffer */ } from 'variables/icons';
 
 const styles = theme => ({
+	overlayMedia: {
+		width: '100%',
+		height: '100%',
+		opacity: 0,
+		position: 'absolute',
+		top: '0',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		transition: 'all 300ms ease',
+		background: "rgba(64, 64, 64, 0.4)",
+		'&:hover': {
+			opacity: 1
+		}
+	},
 	smallButton: {
 		padding: 4
 	},
@@ -158,6 +173,16 @@ class DashboardCard extends Component {
 					src={'ps'}
 					title=''
 				>
+					<div className={classes.overlayMedia}>
+						<ITB
+							size={'medium'}
+							icon={<Airplay />}
+							label={'actions.open'}
+							// buttonClass={classes.smallButton}
+							style={{ color: '#fff' }}
+							onClick={handleOpenDashboard}
+						/>
+					</div>
 					<Dropdown
 						buttonClassName={classes.menuButton}
 						menuItems={[
@@ -193,9 +218,9 @@ class DashboardCard extends Component {
 					/>
 					<div style={{ marginLeft: 'auto' }} />
 					<ITB
-						icon={<Edit/>}
+						icon={<Edit />}
 						label={'actions.edit'}
-						buttonClass={classes.smallButton} 
+						buttonClass={classes.smallButton}
 						onClick={handleEditDashboard} />
 				</CardActions>
 			</Card>
