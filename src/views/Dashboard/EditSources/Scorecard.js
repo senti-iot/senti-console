@@ -69,7 +69,7 @@ class ESScorecard extends Component {
 		let newG = { ...this.props.g }
 		newG.dataSources[i].cf = d.id
 		this.props.handleEditGraph(newG)
-		this.handleExpand('openCF', false)()
+		this.handleExpand('openCF' + i, false)()
 	}
 	handleEditDevice = i => d => {
 		let newG = { ...this.props.g }

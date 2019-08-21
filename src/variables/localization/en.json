@@ -235,6 +235,8 @@
 		},
 		"editGraph": "Edit",
 		"fields": {
+			"name": "Name",
+			"description": "Description",
 			"cf": "Cloud Function",
 			"chartType": "Chart type",
 			"dataSource": "Data source",
@@ -362,6 +364,11 @@
 			}
 		},
 		"dashboards": {
+			"close": {
+				"message": "Are you sure you want to close the dashbord?",
+				"warning": "Any unsaved changes will be discarded!",
+				"title": "Close dashboard?"
+			},
 			"share": {
 				"title": "Export dashboard"
 			}
@@ -1042,6 +1049,7 @@
 		},
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
+		"savedSuccess": "Saved!",
 		"creating": "Creating...",
 		"deletedFail": "Deletion failed!",
 		"deletedSuccess": "Deleted!",
