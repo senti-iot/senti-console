@@ -285,12 +285,22 @@ export const createDash = () => {
 		dispatch({ type: cDash, payload: newD })
 	}
 }
-export const editDash = (d) => {
-	return (dispatch) => {
-		// let
+export const loadDash = d => {
+	return dispatch => {
 		dispatch({ type: eDash, payload: d })
-		if (d.graphs.length > 0)
-			dispatch({ type: cGraph, payload: d.graphs })
+		dispatch({ type: cGraph, payload: d.graphs })
+	}
+}
+export const editDash = (d) => {
+	return (dispatch, getState) => {
+		// let
+		// let newGraphs = getState().dsSystem.cGraphs
+		// console.log(newGraphs)
+		dispatch({ type: eDash, payload: d })
+		// 	if (d.graphs.length > 0)
+		// 		//old d.graphs
+		// 		dispatch({ type: cGraph, payload: newGraphs })
+		// }
 	}
 }
 

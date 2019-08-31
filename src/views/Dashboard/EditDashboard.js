@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash, loadDash } from 'redux/dsSystem';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
 import ToolbarItem from './ToolbarItem';
@@ -45,7 +45,7 @@ class EditDashboard extends React.Component {
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if ((this.props.open !== prevProps.open) && this.props.open) {
-			this.props.editDashboard(this.props.eDash)
+			this.props.loadDashboard(this.props.eDash)
 		}
 		if (prevProps.gs !== this.props.gs) {
 			// this.setState({
@@ -418,6 +418,7 @@ const mapDispatchToProps = dispatch => ({
 	createGraph: (type) => dispatch(createGraph(type)),
 	editGraphPos: (g) => dispatch(editGraphPos(g)),
 	editDashboard: (d) => dispatch(editDash(d, true)),
+	loadDashboard: (d) => dispatch(loadDash(d)),
 	setGE: g => dispatch(setGE(g)),
 	removeGE: g => dispatch(removeGE(g)),
 	saveDashboard: () => dispatch(saveDashboard(true)),
