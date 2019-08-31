@@ -84,6 +84,7 @@ class ScoreCard extends PureComponent {
 		]).then(rs => {
 			newState.a.data = parseFloat(rs[0])
 			newState.b.data = parseFloat(rs[1])
+			console.log(rs)
 			this.setState({
 				...newState, loading: false
 			})
@@ -442,7 +443,7 @@ class ScoreCard extends PureComponent {
 						<TC label={b.label ? b.label : '---'} />
 						<TC content={
 							<T style={{ fontWeight: 500 }}>
-								{!isNaN(b.data) ? a.data : '---'}
+								{!isNaN(b.data) ? b.data : '---'}
 							</T>
 						} />
 					</TableRow>
