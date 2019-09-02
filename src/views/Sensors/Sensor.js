@@ -14,6 +14,9 @@ import SensorProtocol from './SensorCards/SensorProtocol';
 import SensorMessages from 'views/Charts/SensorMessages';
 import { getSensorMessages } from 'variables/dataSensors';
 import { deleteSensor } from 'variables/dataSensors';
+// import DoubleChart from 'views/Charts/DoubleChart';
+// import SensorData from './SensorCards/SensorData';
+import SensorChart from 'views/Charts/SensorChart';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -209,9 +212,32 @@ class Sensor extends Component {
 								getData={this.getDeviceMessages}
 							/>
 						</ItemGrid>
+						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+							if (k.type === 1) {
+								return null
+							}
+							if (k.type === 0) {
+								// return null
+								return <ItemGrid xs={12} container noMargin id={'charts'} >
+									<SensorChart
+										deviceId={sensor.id}
+										dataKey={k.key}
+										title={k.key}
+										cfId={k.nId}
+										color={'teal'}
+										// gId={k}
+										// dId={d.id}
+										// color={d.color}
+										single={true}
+										t={t}
+									/>
+								</ItemGrid>
+							}
+							return null
+						}) : null}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
-								return 	<ItemGrid xs={12} container noMargin key={i + 'gauges'}>
+								return <ItemGrid xs={12} container noMargin key={i + 'gauges'}>
 									<GaugeData
 										v={k.key}
 										nId={k.nId}
@@ -227,7 +253,7 @@ class Sensor extends Component {
 						{/* <ItemGrid xs={12} container noMaring id={'charts'}> */}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 0)
-								return 	<ItemGrid xs={12} container noMargin key={i + 'charts'}>
+								return <ItemGrid xs={12} container noMargin key={i + 'charts'}>
 									<SensorData
 										periods={periods}
 										sensor={sensor}
@@ -236,7 +262,6 @@ class Sensor extends Component {
 										t={t}
 										v={k.key}
 										nId={k.nId}
-
 									/>
 								</ItemGrid>
 							else {

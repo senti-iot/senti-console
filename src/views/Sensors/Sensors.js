@@ -29,9 +29,9 @@ class Sensors extends Component {
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'manage.sensors')
-		props.setBC('devices')
+		props.setBC('sensors')
 		props.setTabs({
-			id: 'devices',
+			id: 'sensors',
 			tabs: this.tabs(),
 			route: this.handleTabs()
 		})
