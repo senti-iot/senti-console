@@ -213,7 +213,6 @@ class Sensor extends Component {
 							/>
 						</ItemGrid>
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
-							console.log(k)
 							if (k.type === 1) {
 								return null
 							}
@@ -234,6 +233,7 @@ class Sensor extends Component {
 									/>
 								</ItemGrid>
 							}
+							return null
 						}) : null}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
