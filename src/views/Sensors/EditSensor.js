@@ -364,6 +364,7 @@ class EditSensor extends Component {
 				sensor={sensor}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
+
 				handleOpenFunc={this.handleOpenFunc}
 				handleCloseFunc={this.handleCloseFunc}
 				handleChangeFunc={this.handleChangeFunc}
