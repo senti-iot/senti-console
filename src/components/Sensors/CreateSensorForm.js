@@ -404,7 +404,7 @@ class CreateSensorForm extends Component {
 								<ItemGrid xs={12}>
 									<DSelect
 										label={t('sensors.fields.communication')}
-										handleChange={handleChange('communication')}
+										onChange={handleChange('communication')}
 										value={sensor.communication}
 										menuItems={this.CommunicationTypes()}
 									/>
