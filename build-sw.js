@@ -27,5 +27,5 @@ function build() {
 try {
 	build();
 } catch (e) {
-	;
+	console.log(e);
 }

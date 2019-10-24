@@ -12,13 +12,13 @@ workbox.precaching.precacheAndRoute([])
 //cache JS/CSS
 workbox.routing.registerRoute(
 	/\.(?:css)$/,
-	workbox.strategies.staleWhileRevalidate({
+	new workbox.strategies.StaleWhileRevalidate({
 		cacheName: 'css-cache'
 	})
 );
 workbox.routing.registerRoute(
 	/\.(?:js)$/,
-	workbox.strategies.staleWhileRevalidate({
+	new workbox.strategies.StaleWhileRevalidate({
 		cacheName: 'js-cache'
 	})
 );
@@ -26,7 +26,7 @@ workbox.routing.registerRoute(
 // cache images
 workbox.routing.registerRoute(
 	/\.(?:png|gif|jpg|jpeg|svg)$/,
-	workbox.strategies.cacheFirst({
+	new workbox.strategies.CacheFirst({
 		cacheName: 'images',
 		plugins: [
 			new workbox.expiration.Plugin({
@@ -38,7 +38,7 @@ workbox.routing.registerRoute(
 );
 
 // webfont-cache
-const webFontHandler = workbox.strategies.cacheFirst({
+const webFontHandler = new workbox.strategies.CacheFirst({
 	cacheName: 'webfont-cache',
 	networkTimeoutSeconds: 5,
 	plugins: [
