@@ -14,6 +14,7 @@ ReactDOM.render(<App />, rootEl)
 // var rootUpdate = document.getElementById('update')
 // ReactDOM.render(<NewContent />, rootUpdate)
 //Hello Pavel
+// Pavel says hello
 if (module.hot) {
 	module.hot.accept('./App', function () {
 		var NextApp = require('./App').default
