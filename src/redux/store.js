@@ -11,24 +11,28 @@ import { globalSearch } from './globalSearch'
 import { weather } from './weather'
 import { dsSystem } from './dsSystem'
 // import zendesk from 'lib/stores/ChatStore'
-let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem /* zendesk */ })
+let reducers = combineReducers({
+	settings,
+	localization,
+	favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem /* zendesk */
+})
 /**
 *	 Debugging purposes
-**/ 
+**/
 // const logger = store => next => action => {
 //  console.info('dispatching', action)
 // 	let result = next(action)
 // 	console.info('next state', store.getState())
 // 	return result
-// } 
-const rootReducer = (state, action) => { 
-	if (action.type === 'RESET_APP') { 
+// }
+const rootReducer = (state, action) => {
+	if (action.type === 'RESET_APP') {
 		state = undefined
 	}
 	return reducers(state, action)
 }
 let composeMiddleware = compose(
-	applyMiddleware(thunk, /* logger */),
+	applyMiddleware(thunk),
 	window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
 )
 const store = createStore(rootReducer, composeMiddleware)
