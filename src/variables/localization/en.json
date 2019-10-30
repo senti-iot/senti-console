@@ -235,16 +235,16 @@
 		},
 		"editGraph": "Edit",
 		"fields": {
-			"name": "Name",
-			"description": "Description",
 			"cf": "Cloud Function",
 			"chartType": "Chart type",
 			"dataSource": "Data source",
 			"defaultPeriod": "Default period",
+			"description": "Description",
 			"device": "Device",
 			"difference": "Difference",
 			"general": "General",
 			"label": "Header",
+			"name": "Name",
 			"percDifference": "Percentage Difference:",
 			"unit": "Measuring Unit"
 		},
@@ -366,8 +366,8 @@
 		"dashboards": {
 			"close": {
 				"message": "Are you sure you want to close the dashbord?",
-				"warning": "Any unsaved changes will be discarded!",
-				"title": "Close dashboard?"
+				"title": "Close dashboard?",
+				"warning": "Any unsaved changes will be discarded!"
 			},
 			"share": {
 				"title": "Export dashboard"
@@ -698,6 +698,7 @@
 			"country": "Country",
 			"deviceCount": "Number of devices",
 			"name": "Organisation name",
+			"nickname": "Organisation Id",
 			"org": "Organisation",
 			"parentOrg": "Parent Organisation",
 			"projectCount": "Number of projects",
@@ -1049,7 +1050,6 @@
 		},
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
-		"savedSuccess": "Saved!",
 		"creating": "Creating...",
 		"deletedFail": "Deletion failed!",
 		"deletedSuccess": "Deleted!",
@@ -1082,6 +1082,7 @@
 		"redirect": "Redirecting ...",
 		"repairedOldDashboards": "Some dashboards' graphs have been reordered due to the new drag & drop system!",
 		"resetDeviceSuccess": "Device reset",
+		"savedSuccess": "Saved!",
 		"settingsSaved": "Settings saved!",
 		"unassign": {
 			"collectionFromProject": "Data collection %{collection} unassigned from project %{project}",

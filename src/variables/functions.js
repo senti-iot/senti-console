@@ -340,6 +340,15 @@ export const pF = (phone) => {
 	return phoneNumber.formatInternational()
 }
 /**
+ * Transform Spaces into camelCase
+ * @param {String} str
+ */
+export const camelCase = (str) => {
+	return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+		return index === 0 ? word.toLowerCase() : word.toUpperCase();
+	}).replace(/\s+/g, '');
+}
+/**
  * Date Time Formatter
  * @param {Date} date
  * @param {boolean} withSeconds

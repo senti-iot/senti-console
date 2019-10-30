@@ -235,16 +235,16 @@
 		},
 		"editGraph": "Rediger",
 		"fields": {
-			"name": "Navn",
-			"description": "Beskrivelse",
 			"cf": "Cloud Funktion",
 			"chartType": "Diagramtype",
 			"dataSource": "Datakilde",
 			"defaultPeriod": "Standard periode",
+			"description": "Beskrivelse",
 			"device": "Enhed",
 			"difference": "Difference",
 			"general": "General",
 			"label": "Overskrift",
+			"name": "Navn",
 			"percDifference": "Percentage Difference:",
 			"unit": "Måleenhed"
 		},
@@ -366,8 +366,8 @@
 		"dashboards": {
 			"close": {
 				"message": "Er du sikker på du ønsker at lukker denne Dashboard?",
-				"warning": "Eventuelle ikke-gemte ændringer vil gå tabt!",
-				"title": "Close dashboard?"
+				"title": "Close dashboard?",
+				"warning": "Eventuelle ikke-gemte ændringer vil gå tabt!"
 			},
 			"share": {
 				"title": "Eksporter dashboard"
@@ -698,6 +698,7 @@
 			"country": "Land",
 			"deviceCount": "Antal enheder",
 			"name": "Organisationsnavn",
+			"nickname": "Organisation Id",
 			"org": "Organisation",
 			"parentOrg": "Organisatorisk tilhørsforhold",
 			"projectCount": "Antal projekter",
@@ -1049,7 +1050,6 @@
 		},
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
-		"savedSuccess": "Gemt!",
 		"creating": "Opretter ...",
 		"deletedFail": "Sletning fejlede!",
 		"deletedSuccess": "Slettet!",
@@ -1082,6 +1082,7 @@
 		"redirect": "Omdirigerer ...",
 		"repairedOldDashboards": "Nogle grafikpaneler er blevet omordnet på grund af det nye træk & slip system!",
 		"resetDeviceSuccess": "Enhed er nulstillet",
+		"savedSuccess": "Gemt!",
 		"settingsSaved": "Indstillinger gemt!",
 		"unassign": {
 			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
