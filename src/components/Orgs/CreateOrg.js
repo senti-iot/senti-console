@@ -7,6 +7,7 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
 import { createOrg, getAllOrgs } from 'variables/dataOrgs';
 import { getOrgs } from 'redux/data';
+import { camelCase } from 'variables/functions';
 var countries = require('i18n-iso-countries');
 
 class CreateOrg extends Component {
@@ -17,6 +18,7 @@ class CreateOrg extends Component {
 			org: {
 				id: -1,
 				name: '',
+				nickname: '',
 				address: '',
 				city: '',
 				zip: '',
@@ -157,16 +159,29 @@ class CreateOrg extends Component {
 			}
 		})
 	}
+
 	handleChange = (id) => e => {
 		e.preventDefault()
 		if (e.target.validity.valid) {
-			this.setState({
-				error: false,
-				org: {
-					...this.state.org,
-					[id]: e.target.value
-				}
-			})
+			if (id === 'name') {
+				this.setState({
+					error: false,
+					org: {
+						...this.state.org,
+						name: e.target.value,
+						nickname: camelCase(e.target.value)
+					}
+				})
+			}
+			else {
+				this.setState({
+					error: false,
+					org: {
+						...this.state.org,
+						[id]: e.target.value
+					}
+				})
+			}
 		}
 	}
 	close = (rs) => {
@@ -252,6 +267,17 @@ class CreateOrg extends Component {
 									handleChange={this.handleChange('name')}
 									margin='normal'
 
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+									id={'nickname'}
+									label={t('orgs.fields.nickname')}
+									value={org.nickname}
+									className={classes.textField}
+									handleChange={this.handleChange('nickname')}
+									margin='normal'
 									error={error}
 								/>
 							</ItemGrid>

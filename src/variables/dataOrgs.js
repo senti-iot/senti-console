@@ -29,10 +29,10 @@ export const getOrgUsers = async (orgId) => {
 
 /**
  * @function updateOrg Update an organization
- * @param {object} org 
+ * @param {object} org
  */
 export const updateOrg = async (org) => {
-	var data = async () => { 
+	var data = async () => {
 		let r = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
 		await servicesAPI.put(`/v1/customer`, { name: org.name, ODEUM_org_id: org.id })
 		return r
@@ -42,7 +42,7 @@ export const updateOrg = async (org) => {
 
 /**
  * @function createOrg Create an organization
- * @param {object} org 
+ * @param {object} org
  */
 export const createOrg = async (org) => {
 	var result = await api.post('core/org', org).then(rs => rs.data)
@@ -54,7 +54,7 @@ export const createOrg = async (org) => {
 
 /**
  * @function deleteOrg Delete an Organization
- * @param {object} org 
+ * @param {object} org
  */
 export const deleteOrg = async (org) => {
 	var result = await api.delete(`core/org/${org}`).then(rs => rs)
