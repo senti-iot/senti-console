@@ -1,7 +1,6 @@
 branches:
   except:
     - alpha-react-pdf
-    - alpha-hooks
 addons:
   ssh_known_hosts:
     - rey.webhouse.net
