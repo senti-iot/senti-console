@@ -23,9 +23,11 @@ import { lightTheme } from 'variables/themes';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DndProvider } from 'react-dnd'
+import { StylesProvider } from "@material-ui/styles";
 
 import TouchBackend from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend'
+import LocalizationProvider from 'hooks/providers/LocalizationProvider'
 
 var countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
@@ -36,23 +38,28 @@ export const hist = createBrowserHistory();
 
 function App() {
 	let width = window.ineerWidth
-	return <Provider store={store}>
-		<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
-			<MuiPickersUtilsProvider utils={MomentUtils}>
-				<TProvider>
-					<MuiThemeProvider theme={lightTheme}>
-						<Router history={hist}>
-							<Switch>
-								{indexRoutes.map((prop, key) => {
-									return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
-								})}
-							</Switch>
-						</Router>
-					</MuiThemeProvider>
-				</TProvider>
-			</MuiPickersUtilsProvider>
-		</DndProvider>
-	</Provider>
+	return <StylesProvider injectFirst>
+		<Provider store={store}>
+			<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
+				<MuiPickersUtilsProvider utils={MomentUtils}>
+					<LocalizationProvider>
+						<TProvider>
+							<MuiThemeProvider theme={lightTheme}>
+								<Router history={hist}>
+									<Switch>
+										{indexRoutes.map((prop, key) => {
+											return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+										})}
+									</Switch>
+								</Router>
+							</MuiThemeProvider>
+						</TProvider>
+					</LocalizationProvider>
+				</MuiPickersUtilsProvider>
+			</DndProvider>
+		</Provider>
+	</StylesProvider>
+
 }
 
 // class App extends Component {
