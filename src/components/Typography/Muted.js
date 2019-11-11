@@ -7,7 +7,7 @@ import typographyStyle from 'assets/jss/material-dashboard-react/typographyStyle
 function Muted({ ...props }) {
 	const { classes, children, className } = props;
 	return (
-		<div className={classes.defaultFontStyle + ' ' + classes.mutedText + ' ' + className}>
+		<div title={props.title} className={classes.defaultFontStyle + ' ' + classes.mutedText + ' ' + className}>
 			{children}
 		</div>
 	);

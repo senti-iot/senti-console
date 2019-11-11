@@ -329,9 +329,10 @@ class CreateSensor extends Component {
 	createSensor = async () => {
 		let smtd = this.state.sensorMetadata.metadata
 		let mtd = {}
-		smtd.forEach((m) => {
-			mtd[m.key] = m.value
-		})
+		if (smtd.length > 0)
+			smtd.forEach((m) => {
+				mtd[m.key] = m.value
+			})
 		let newSensor = {
 			...this.state.sensor,
 			tags: [],

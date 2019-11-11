@@ -102,7 +102,7 @@ class CDToolbar extends PureComponent {
 		this.setState({ expand: !this.state.expand })
 	}
 	render() {
-		const { classes, content, dontShow } = this.props
+		const { classes, children, dontShow } = this.props
 		const { expand } = this.state
 		return (
 			dontShow ? null :
@@ -119,14 +119,14 @@ class CDToolbar extends PureComponent {
 					</ItemG>
 					<Divider style={{ width: 2, height: '100%' }} />
 					<ItemG xs>
-						{content ? <ToolBar classes={{
+						{children ? <ToolBar classes={{
 							root:
 								cx({
 									[classes.appBarDrawerOpen]: expand,
 									[classes.contentToolbar]: true,
 								})
 						}}>
-							{content}
+							{children}
 						</ToolBar> : null}
 					</ItemG>
 				</AppBar>

@@ -9,7 +9,6 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"import": "Importer",
 		"accept": "Godkend",
 		"add": "Tilføj",
 		"addFilter": "Tilføj filter",
@@ -39,6 +38,7 @@
 		"goToDevice": "Gå til enhed(er)",
 		"goToLogin": "Gå til log ind",
 		"heatMap": "Heatmap",
+		"import": "Importer",
 		"insertAddress": "Indtast adresse",
 		"learn": "Lær",
 		"learnMore": "Lær mere",
@@ -239,9 +239,13 @@
 			"chartType": "Diagramtype",
 			"dataSource": "Datakilde",
 			"defaultPeriod": "Standard periode",
+			"description": "Beskrivelse",
 			"device": "Enhed",
+			"difference": "Difference",
 			"general": "General",
 			"label": "Overskrift",
+			"name": "Navn",
+			"percDifference": "Percentage Difference:",
 			"unit": "Måleenhed"
 		},
 		"pageTitle": "Senti",
@@ -354,14 +358,19 @@
 		"pageTitle": "Enhedstype"
 	},
 	"dialogs": {
-		"dashboards": {
-			"share": {
-				"title": "Eksporter dashboard"
-			}
-		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."
+			}
+		},
+		"dashboards": {
+			"close": {
+				"message": "Er du sikker på du ønsker at lukker denne Dashboard?",
+				"title": "Close dashboard?",
+				"warning": "Eventuelle ikke-gemte ændringer vil gå tabt!"
+			},
+			"share": {
+				"title": "Eksporter dashboard"
 			}
 		},
 		"delete": {
@@ -689,6 +698,7 @@
 			"country": "Land",
 			"deviceCount": "Antal enheder",
 			"name": "Organisationsnavn",
+			"nickname": "Organisation Id",
 			"org": "Organisation",
 			"parentOrg": "Organisatorisk tilhørsforhold",
 			"projectCount": "Antal projekter",
@@ -1038,7 +1048,6 @@
 			"devicetype": "Enhedstype %{dt} er oprettet!",
 			"registry": "Register %{reg} er oprettet!"
 		},
-		"importedSuccess": "Importeret!",
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
 		"creating": "Opretter ...",
@@ -1060,6 +1069,7 @@
 			"saved": "%{name} (%{type}) er tilføjet til favoritter!",
 			"updated": "Favoritter er opdateret!"
 		},
+		"importedSuccess": "Importeret!",
 		"orgCreated": "Organisation %{org} er  oprettet!",
 		"orgDeleted": "Organisation er slettet!",
 		"orgUpdated": "Organisation %{org} er opdateret!",
@@ -1072,6 +1082,7 @@
 		"redirect": "Omdirigerer ...",
 		"repairedOldDashboards": "Nogle grafikpaneler er blevet omordnet på grund af det nye træk & slip system!",
 		"resetDeviceSuccess": "Enhed er nulstillet",
+		"savedSuccess": "Gemt!",
 		"settingsSaved": "Indstillinger gemt!",
 		"unassign": {
 			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",

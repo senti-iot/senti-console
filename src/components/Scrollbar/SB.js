@@ -4,11 +4,11 @@ import { withStyles } from '@material-ui/core';
 
 const styles = theme => ({
 	scrollbar: {
-		background: theme.palette.type === "light" ? "rgba(128,128,128,0.3)" : "rgba(255,255,255,0.3)",
+		background: theme.palette.type === "light" ? "rgba(128,128,128,0.5)" : "rgba(255,255,255,0.5)",
 		borderRadius: 8,
 		transition: "all 100ms ease",
 		"&:hover": {
-			background: theme.palette.type === "light" ? "rgba(128,128,128,0.7)" : "rgba(255,255,255, 0.7)"
+			background: theme.palette.type === "light" ? "rgba(128,128,128,0.9)" : "rgba(255,255,255, 0.9)"
 		},
 		cursor: "drag"
 	}
@@ -20,7 +20,7 @@ class SB extends Component {
 		return (
 			<div
 				className={classes.scrollbar}
-				style={{ ...style }}
+				style={{ ...style, right: 4 }}
 				{...props} />
 		);
 	}
@@ -39,7 +39,8 @@ class SB extends Component {
 				renderThumbHorizontal={this.renderThumb}
 				renderThumbVertical={this.renderThumb}
 				renderView={this.renderContainer}
-				style={{ maxWidth: '100%' }}>
+			// style={{ maxWidth: '100%' }}
+			>
 				{this.props.children}
 			</Scrollbars>
 		)

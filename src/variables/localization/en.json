@@ -9,7 +9,6 @@
 	"": "",
 	"Senti": "Senti",
 	"actions": {
-		"import": "Import",
 		"accept": "Accept",
 		"add": "Add",
 		"addFilter": "Add filter",
@@ -39,6 +38,7 @@
 		"goToDevice": "Go to device(s)",
 		"goToLogin": "Go to Login Page",
 		"heatMap": "Heatmap",
+		"import": "Import",
 		"insertAddress": "Enter an address",
 		"learn": "Learn",
 		"learnMore": "Learn more",
@@ -239,9 +239,13 @@
 			"chartType": "Chart type",
 			"dataSource": "Data source",
 			"defaultPeriod": "Default period",
+			"description": "Description",
 			"device": "Device",
+			"difference": "Difference",
 			"general": "General",
 			"label": "Header",
+			"name": "Name",
+			"percDifference": "Percentage Difference:",
 			"unit": "Measuring Unit"
 		},
 		"pageTitle": "Senti",
@@ -354,14 +358,19 @@
 		"pageTitle": "Device Type"
 	},
 	"dialogs": {
-		"dashboards": {
-			"share": {
-				"title": "Export dashboard"
-			}
-		},
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
+			}
+		},
+		"dashboards": {
+			"close": {
+				"message": "Are you sure you want to close the dashbord?",
+				"title": "Close dashboard?",
+				"warning": "Any unsaved changes will be discarded!"
+			},
+			"share": {
+				"title": "Export dashboard"
 			}
 		},
 		"delete": {
@@ -689,6 +698,7 @@
 			"country": "Country",
 			"deviceCount": "Number of devices",
 			"name": "Organisation name",
+			"nickname": "Organisation Id",
 			"org": "Organisation",
 			"parentOrg": "Parent Organisation",
 			"projectCount": "Number of projects",
@@ -1038,7 +1048,6 @@
 			"devicetype": "Device Type %{dt} created!",
 			"registry": "Registry %{reg} created!"
 		},
-		"importedSucces": "Imported!",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -1060,6 +1069,7 @@
 			"saved": "%{name} (%{type}) added to favorites!",
 			"updated": "Favorites updated!"
 		},
+		"importedSucces": "Imported!",
 		"orgCreated": "Organisation %{org} created!",
 		"orgDeleted": "Organisation deleted!",
 		"orgUpdated": "Organisation %{org} updated!",
@@ -1072,6 +1082,7 @@
 		"redirect": "Redirecting ...",
 		"repairedOldDashboards": "Some dashboards' graphs have been reordered due to the new drag & drop system!",
 		"resetDeviceSuccess": "Device reset",
+		"savedSuccess": "Saved!",
 		"settingsSaved": "Settings saved!",
 		"unassign": {
 			"collectionFromProject": "Data collection %{collection} unassigned from project %{project}",

@@ -219,7 +219,7 @@ class Dashboard extends React.Component {
 								/>
 							})}
 						</GridContainer>
-
+						<div style={{ height: 80 }} />
 
 						<Hidden xsDown>
 

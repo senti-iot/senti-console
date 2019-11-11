@@ -83,7 +83,8 @@ const TextF = (props) => {
 			type={props.type ? props.type : undefined}
 			pattern={props.pattern ? props.pattern : ''}
 			disabled={props.disabled ? props.disabled : false}
-			margin='normal'
+			margin={props.margin ? props.margin : 'normal'}
+			notched={props.notched}
 			helperText={props.helperText}
 			InputProps={props.InputProps ? {
 				...props.InputProps,

@@ -71,7 +71,6 @@ class AssignSensorDialog extends PureComponent {
 			[' ' + classes['primary']]: 'primary'
 		});
 		return (
-
 			<Dialog
 				fullScreen
 				open={open}

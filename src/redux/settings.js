@@ -159,9 +159,9 @@ export const getSettings = async () => {
 			}
 		})
 		if (user) {
+			dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser ? true : false))
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
-				dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser ? true : false))
 				dispatch({
 					type: GetSettings,
 					settings: {
@@ -171,14 +171,12 @@ export const getSettings = async () => {
 					user
 				})
 			}
-
 			else {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
 					...getState().settings,
 					language: user.aux.odeum.language
 				}
-
 				dispatch({
 					type: NOSETTINGS,
 					loading: false,
@@ -542,13 +540,6 @@ let initialState = {
 		menuId: 0,
 		raw: true,
 		timeType: 1,
-		chartType: 3,
-		hide: false
-	}, {
-		id: 1,
-		menuId: 2,
-		raw: false,
-		timeType: 2,
 		chartType: 3,
 		hide: false
 	}],

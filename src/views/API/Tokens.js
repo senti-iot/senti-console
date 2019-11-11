@@ -96,7 +96,6 @@ class Tokens extends Component {
 	}
 
 	componentDidUpdate = () => {
-
 	}
 	//#endregion
 

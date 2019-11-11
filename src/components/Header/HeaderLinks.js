@@ -44,6 +44,7 @@ class HeaderLinks extends React.Component {
 	}
 	logOut = async () => {
 		try {
+			this.props.resetRedux()
 			await logOut().then(() => { cookie.remove('SESSION', { path: '/' }) })
 		}
 		catch (e) {
@@ -173,8 +174,8 @@ const mapStateToProps = (state) => ({
 	globalSearch: state.settings.globalSearch
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	resetRedux: () => dispatch({ type: "RESET_APP" }) 
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(headerLinksStyle)(HeaderLinks)));

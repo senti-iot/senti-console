@@ -11,6 +11,21 @@ import { Muted, Dropdown, ITB } from 'components';
 import { Share, Airplay, Edit, /* Star, LocalOffer */ } from 'variables/icons';
 
 const styles = theme => ({
+	overlayMedia: {
+		width: '100%',
+		height: '100%',
+		opacity: 0,
+		position: 'absolute',
+		top: '0',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		transition: 'all 300ms ease',
+		background: "rgba(64, 64, 64, 0.4)",
+		'&:hover': {
+			opacity: 1
+		}
+	},
 	smallButton: {
 		padding: 4
 	},
@@ -21,15 +36,31 @@ const styles = theme => ({
 		right: 0
 	},
 	header: {
+		whiteSpace: 'nowrap',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden',
 		fontSize: '1rem',
 	},
 	content: {
-		fontSize: '0.875rem'
+		// whiteSpace: 'nowrap',
+		lineHeight: '1.2em',
+		overflow: 'hidden',
+		position: 'relative',
+		maxHeight: '3.6em',
+		marginRight: '-1em',
+		paddingRight: '1em',
+		height: '3.6em',
+		textOverflow: 'ellipsis',
+		fontSize: '0.875rem',
+		display: '-webkit-box',
+		boxOrient: 'vertical',
+		lineClamp: '3',
+
 	},
 	card: {
 		// width: 250,
 		// height: 300,
-		minHeight: 300,
+		minHeight: '100%',
 		display: 'flex',
 		flexFlow: 'column',
 		// flexGrow: 1,
@@ -158,6 +189,16 @@ class DashboardCard extends Component {
 					src={'ps'}
 					title=''
 				>
+					<div className={classes.overlayMedia}>
+						<ITB
+							size={'medium'}
+							icon={<Airplay />}
+							label={'actions.open'}
+							// buttonClass={classes.smallButton}
+							style={{ color: '#fff' }}
+							onClick={handleOpenDashboard}
+						/>
+					</div>
 					<Dropdown
 						buttonClassName={classes.menuButton}
 						menuItems={[
@@ -171,11 +212,13 @@ class DashboardCard extends Component {
 
 				</CardMedia>
 				<CardContent classes={{ root: classes.cardContent }}>
-					<Typography gutterBottom className={classes.header}>
+					<Typography title={header} gutterBottom className={classes.header}>
 						{header}
 					</Typography>
-					<Muted className={classes.content}>
-						{content}
+					<Muted title={content} className={classes.content}>
+						<span>
+							{content}
+						</span>
 					</Muted>
 				</CardContent>
 				<CardActions>
@@ -193,9 +236,9 @@ class DashboardCard extends Component {
 					/>
 					<div style={{ marginLeft: 'auto' }} />
 					<ITB
-						icon={<Edit/>}
+						icon={<Edit />}
 						label={'actions.edit'}
-						buttonClass={classes.smallButton} 
+						buttonClass={classes.smallButton}
 						onClick={handleEditDashboard} />
 				</CardActions>
 			</Card>

@@ -139,9 +139,10 @@ class CreateSensorForm extends Component {
 
 	renderMetadata = () => {
 		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		console.log(sensorMetadata)
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
-			{sensorMetadata.metadata.map((m, i) => {
+			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
@@ -169,7 +170,7 @@ class CreateSensorForm extends Component {
 						</IconButton>
 					</Tooltip>
 				</ItemGrid>
-			})}
+			}) : null}
 			<ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
 			</ItemGrid>
@@ -404,7 +405,7 @@ class CreateSensorForm extends Component {
 								<ItemGrid xs={12}>
 									<DSelect
 										label={t('sensors.fields.communication')}
-										handleChange={handleChange('communication')}
+										onChange={handleChange('communication')}
 										value={sensor.communication}
 										menuItems={this.CommunicationTypes()}
 									/>

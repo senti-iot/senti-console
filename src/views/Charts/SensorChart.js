@@ -1,35 +1,46 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import {
-	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody, Menu, ListItem, ListItemIcon, ListItemText,
+	Grid, IconButton, Menu, withStyles, ListItem,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
 } from '@material-ui/core';
 import {
+	Timeline, MoreVert,
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment, MoreVert, CloudDownload,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, KeyboardArrowLeft, KeyboardArrowRight,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
-	// ExportModal,
+	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
+	MultiLineChart,
+	DoughnutChart,
+	PieChart,
 	DateFilterMenu,
 	T,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
+import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
-import { changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { handleSetDate } from 'redux/dsSystem';
 import { getSensorDataClean } from 'variables/dataSensors';
-import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
-import TC from 'components/Table/TC'
-import withLocalization from 'components/Localization/T';
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
 
-class ScoreCard extends PureComponent {
+class SensorChart extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			period: {
+				from: moment().subtract(7, "days"),
+				to: moment(),
+				timeType: 1,
+				chartType: 3,
+				menuId: 0
+			},
 			raw: props.raw ? props.raw : false,
 			actionAnchor: null,
 			openDownload: false,
@@ -60,54 +71,61 @@ class ScoreCard extends PureComponent {
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
+		// { id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
+		// { id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 	componentDidMount = async () => {
-		const { period } = this.props
+		const { period } = this.state
 		const { loading } = this.state
 		if (period && loading) {
-			await this.getData(period)
+			await this.getData()
+		}
+	}
+	setData = (data, timeType) => {
+		const { title, color, dataKey } = this.props
+		const { period } = this.state
+		switch (timeType) {
+			case 0:
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: dataKey }], period.from, period.to)
+			case 1:
+				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: dataKey }], period.from, period.to)
+			case 2:
+				return setDailyData([{ data: data, name: title, color: colors[color][500], id: dataKey }], period.from, period.to)
+			default:
+				break;
 		}
 	}
 	getData = async () => {
-		const { g, period } = this.props
-		let newState = {
-			a: { ...g.dataSources.a },
-			b: { ...g.dataSources.b }
-		}
-		Promise.all([
-			getSensorDataClean(g.dataSources.a.deviceId, period.from, period.to, g.dataSources.a.dataKey, g.dataSources.a.cf, g.dataSources.a.deviceType, g.dataSources.a.type),
-			getSensorDataClean(g.dataSources.b.deviceId, period.from, period.to, g.dataSources.b.dataKey, g.dataSources.b.cf, g.dataSources.b.deviceType, g.dataSources.b.type),
-		]).then(rs => {
-			newState.a.data = parseFloat(rs[0])
-			newState.b.data = parseFloat(rs[1])
-			console.log(rs)
+		const { period } = this.state
+		const { deviceId, dataKey, cfId } = this.props
+		if (dataKey && deviceId) {
+			let data = await getSensorDataClean(deviceId, period.from, period.to, dataKey, cfId ? cfId : -1)
+			// let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+			let newState = this.setData(data, period.timeType)
 			this.setState({
 				...newState, loading: false
 			})
-		})
-
-	}
-	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period.menuId !== this.props.period.menuId ||
-			prevProps.period.timeType !== this.props.period.timeType ||
-			prevProps.g !== this.props.g ||
-			prevProps.g.dataSources.a.dataKey !== this.props.g.dataSources.a.dataKey ||
-			prevProps.g.dataSources.b.dataKey !== this.props.g.dataSources.b.dataKey ||
-			prevProps.period.from !== this.props.period.from) {
-			this.setState({ loading: true }, async () => {
-				let newState = await this.getData(this.props.period)
-				this.setState({ ...newState, loading: false })
+		}
+		else {
+			this.setState({
+				loading: false
 			})
 		}
 	}
-	handleSetDate = async (menuId, to, from, defaultT, chartType) => {
-		const { dId, gId, period } = this.props
-		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
+	componentDidUpdate = async (prevProps, prevState) => {
+
+		if (prevState.period.menuId !== this.state.period.menuId ||
+			prevState.period.timeType !== this.state.period.timeType ||
+			prevState.period.from !== this.state.period.from
+		) {
+			this.setState({ loading: true }, async () => {
+				this.getData()
+			})
+		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		this.setState({
@@ -141,15 +159,17 @@ class ScoreCard extends PureComponent {
 		this.setState({ actionAnchor: null });
 	}
 
-	handleVisibility = () => (event) => {
+	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
+		const { period } = this.state
 		// this.props.changeChartType(this.props.period, id)
+		this.handleSetDate(period.menuId, period.to, period.from, period.timeType, id)
 		this.setState({ actionAnchorVisibility: null })
 	}
 
 	handleReverseZoomOnData = async () => {
-		const { period } = this.props
+		const { period } = this.state
 		const { zoomDate } = this.state
 		let startDate = null
 		let endDate = null
@@ -179,7 +199,7 @@ class ScoreCard extends PureComponent {
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
-			const { period } = this.props
+			const { period } = this.state
 			const { lineDataSets } = this.state
 			let date = null
 			let startDate = null
@@ -223,7 +243,7 @@ class ScoreCard extends PureComponent {
 	}
 	futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	handleNextPeriod = () => {
-		const { period } = this.props
+		const { period } = this.state
 		const { initialPeriod } = this.state
 		let from, to, diff;
 		if (!initialPeriod) {
@@ -290,7 +310,7 @@ class ScoreCard extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	handlePreviousPeriod = () => {
-		const { period } = this.props
+		const { period } = this.state
 		const { initialPeriod } = this.state
 		let from, to, diff;
 		if (!initialPeriod) {
@@ -346,7 +366,8 @@ class ScoreCard extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { period, title, t } = this.props
+		const { title, t } = this.props
+		const { period } = this.state
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
@@ -355,7 +376,8 @@ class ScoreCard extends PureComponent {
 					<ItemG xs zeroMinWidth>
 						<Tooltip enterDelay={1000} title={title}>
 							<div>
-								<T noWrap variant={'h6'}>{title}</T>
+								{/* <T noWrap variant={'h6'}>{title}</T> */}
+								{title}
 							</div>
 						</Tooltip>
 					</ItemG>
@@ -417,95 +439,179 @@ class ScoreCard extends PureComponent {
 
 		</ItemG>
 	}
-	relDiff(oldNumber, newNumber) {
-		var decreaseValue = oldNumber - newNumber;
-		let finalValue = ((decreaseValue / oldNumber) * 100).toFixed(3)
-		return !isNaN(finalValue) ? finalValue : '---';
-	}
-	diff(oldNumber, newNumber) {
-		let number = (oldNumber - newNumber).toFixed(3)
-		return !isNaN(number) ? number : '---'
-	}
 	renderType = () => {
-		const { loading, a, b } = this.state
+		const { title, setHoverID, t, device, single, hoverID } = this.props
+		const { loading, period } = this.state
 		if (!loading) {
-			return <Table>
-				<TableBody>
-					<TableRow>
-						<TC label={a.label ? a.label : '---'} />
-						<TC content={
-							<T style={{ fontWeight: 500 }}>
-								{!isNaN(a.data) ? a.data : '---'}
-							</T>
-						} />
-					</TableRow>
-					<TableRow>
-						<TC label={b.label ? b.label : '---'} />
-						<TC content={
-							<T style={{ fontWeight: 500 }}>
-								{!isNaN(b.data) ? b.data : '---'}
-							</T>
-						} />
-					</TableRow>
-					<TableRow>
-						<TC label={'Difference'} />
-						<TC content={
-							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
-								{a.data > b.data ? this.diff(a.data, b.data) : this.diff(b.data, a.data)}
-							</T>
-						} />
-					</TableRow>
-					<TableRow>
-						<TC label={'Percentage Difference:'} />
-						<TC content={
-							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
-								{`${a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)} %`}
-							</T>
-						} />
-					</TableRow>
-				</TableBody>
-			</Table>
+			const { roundDataSets, lineDataSets, barDataSets } = this.state
+			switch (period.chartType) {
+				case 0:
+					return roundDataSets ?
+						<ItemG container >
+							{roundDataSets.map((d, i) => {
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md/* md={roundDataSets.length >= 2 ? period.length > 2 ? 12 : 6 : 12} */ direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 200 }}>
+										<PieChart
+											title={title}
+											single
+											unit={this.timeTypes[period.timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 1:
+					return roundDataSets ?
+						<ItemG container >
+							{roundDataSets.map((d, i) => {
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 200 }}>
+										<DoughnutChart
+											// height={200}
+											title={title}
+											single
+											unit={this.timeTypes[period.timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 2:
+					return barDataSets ?
+						<BarChart
+							chartYAxis={this.state.chartType}
+							single={single}
+							hoverID={hoverID}
+							obj={device}
+							unit={this.timeTypes[period.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={barDataSets}
+							t={t}
+						/> : this.renderNoData()
+				case 3:
+
+					return lineDataSets ?
+						<MultiLineChart
+							chartYAxis={this.state.chartType}
+							single={single}
+							hoverID={this.props.hoverID}
+							handleReverseZoomOnData={this.handleReverseZoomOnData}
+							resetZoom={this.state.resetZoom}
+							obj={device}
+							unit={this.timeTypes[period.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={lineDataSets}
+							t={t}
+						/> : this.renderNoData()
+				default:
+					return null
+			}
 		}
 		else return this.renderNoData()
 	}
 	disableFuture = () => {
-		const { period } = this.props
+		const { period } = this.state
 		if (moment().diff(period.to, 'hour') <= 0) {
 			return true
 		}
 		return false
 	}
+	handleSetDate = async (menuId, to, from, defaultT, chartType) => {
+		// const { dId, gId, period } = this.props
+		this.setState({
+			period: {
+				menuId,
+				to, from, timeType: defaultT, chartType: chartType ? chartType : this.state.period.chartType
+			}
+		})
+		// await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
+	}
 	renderMenu = () => {
-		const { t } = this.props
-		const { actionAnchor } = this.state
+		const { actionAnchor, resetZoom } = this.state
+		const { classes, t, /* period */ } = this.props
 		// let displayTo = dateTimeFormatter(period.to)
 		// let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container>
-			<Tooltip title={t('menus.menu')}>
-				<IconButton
-					aria-label='More'
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup='true'
-					onClick={this.handleOpenActionsDetails}>
-					<MoreVert />
-				</IconButton>
-			</Tooltip>
-			<Menu
-				marginThreshold={24}
-				id='long-menu'
-				anchorEl={actionAnchor}
-				open={Boolean(actionAnchor)}
-				onClose={this.handleCloseActionsDetails}
-				onChange={this.handleVisibility}
-				PaperProps={{ style: { minWidth: 250 } }}>
+		return <ItemG container direction={'column'}>
 
-				<ListItem button onClick={this.handleOpenDownloadModal}>
-					<ListItemIcon><CloudDownload /></ListItemIcon>
-					<ListItemText>{t('menus.export')}</ListItemText>
-				</ListItem>
+			<ItemG container>
+				<Collapse in={resetZoom}>
+					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
+						<IconButton onClick={this.handleReverseZoomOnData}>
+							<ArrowUpward />
+						</IconButton>
+					</Tooltip>
+					}
+				</Collapse>
 
+				<ItemG>
+					<Tooltip title={t('menus.menu')}>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={this.handleOpenActionsDetails}>
+							<MoreVert />
+						</IconButton>
+					</Tooltip>
+				</ItemG>
+				<Menu
+					marginThreshold={24}
+					id='long-menu'
+					anchorEl={actionAnchor}
+					open={Boolean(actionAnchor)}
+					onClose={this.handleCloseActionsDetails}
+					onChange={this.handleVisibility}
+					PaperProps={{ style: { minWidth: 250 } }}>
+					<div>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText primary={t('filters.options.graphType')} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+							<List component='div' disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</div>
+					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
+						<ListItemIcon>
+							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
+						</ListItemIcon>
+						<ListItemText>
+							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
+						</ListItemText>
+					</ListItem>
+					<ListItem button onClick={this.handleOpenDownloadModal}>
+						<ListItemIcon><CloudDownload /></ListItemIcon>
+						<ListItemText>{t('menus.export')}</ListItemText>
+					</ListItem>
 
-			</Menu>
+				</Menu>
+			</ItemG>
 		</ItemG>
 	}
 	renderNoData = () => {
@@ -515,7 +621,19 @@ class ScoreCard extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <Assignment />
+		const { period } = this.state
+		switch (period.chartType) {
+			case 0:
+				return <PieChartRounded />
+			case 1:
+				return <DonutLargeRounded />
+			case 2:
+				return <BarChartIcon />
+			case 3:
+				return <ShowChart />
+			default:
+				break;
+		}
 	}
 	renderSmallTitle = () => {
 		const { title, classes } = this.props
@@ -527,49 +645,52 @@ class ScoreCard extends PureComponent {
 		const { color, classes, g } = this.props
 		const { loading } = this.state
 		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
+
 		return (
-			<Fragment>
-				<InfoCard
-					color={color}
-					title={this.renderTitle(small)}
-					avatar={this.renderIcon()}
-					noExpand
-					headerClasses={{
-						root: small ? classes.smallSubheader : classes.subheader
-					}}
-					bodyClasses={{
-						root: small ? classes.smallBody : classes.body
-					}}
-					topAction={this.renderMenu()}
-					content={
-						<Grid container style={{ height: '100%', width: '100%' }}>
-							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
-								<Fragment>
-									<Hidden xsDown>
-										{small ? this.renderSmallTitle() : null}
-									</Hidden>
-									<Hidden smUp>
-										{this.renderSmallTitle()}
-									</Hidden>
-									{this.renderType()}
-								</Fragment>
-							}
-						</Grid>}
-				/>
-			</Fragment >
+			<InfoCard
+				color={color}
+				title={this.renderTitle(small)}
+				// subheader={`${this.options[period.menuId].label}`}
+				avatar={this.renderIcon()}
+				noExpand
+				dashboard
+				headerClasses={{
+					root: small ? classes.smallSubheader : classes.subheader
+				}}
+				bodyClasses={{
+					root: small ? classes.smallBody : classes.body
+				}}
+				topAction={this.renderMenu()}
+				content={
+					<Grid container style={{ height: 300, width: '100%' }}>
+						{loading ? <div style={{ height: 300, width: '100%', minHeigh: 300 }}><CircularLoader notCentered /></div> :
+							<Fragment>
+								<Hidden xsDown>
+									{small ? this.renderSmallTitle() : null}
+								</Hidden>
+								<Hidden smUp>
+									{this.renderSmallTitle()}
+								</Hidden>
+								{this.renderType()}
+							</Fragment>
+						}
+					</Grid>}
+			/>
 		);
 	}
 }
+
 const mapStateToProps = (state, ownProps) => ({
-	g: getGraph(state, ownProps.gId, ownProps.create),
-	period: getPeriod(state, ownProps.gId, ownProps.create)
+	// g: getGraph(state, ownProps.gId, ownProps.create),
+	// period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({
 	handleSetDate: async (dId, gId, p) => dispatch(await handleSetDate(dId, gId, p)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
 	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
+	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(deviceStyles, { withTheme: true })(ScoreCard)))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(SensorChart))
