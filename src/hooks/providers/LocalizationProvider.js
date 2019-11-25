@@ -5,8 +5,7 @@ import ReactMarkdown from 'react-markdown'
 
 
 export const TProvider = React.createContext(null)
-export const TSetter = React.createContext(null)
-
+TProvider.displayName = 'Localization'
 const LocalizationProvider = ({ children }) => {
 	// const [locState, locDispatch] = useReducer(localization, initialLocState)
 
@@ -55,6 +54,7 @@ const LocalizationProvider = ({ children }) => {
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} */ else {
+			// console.trace()
 			console.info('Missing key: "' + key + '"')
 			result = key
 		}
@@ -65,9 +65,7 @@ const LocalizationProvider = ({ children }) => {
 	}
 	return (
 		<TProvider.Provider value={t}>
-			{/* <TSetter.Provider value={{ dispatch: locDispatch, state: locState }}> */}
 			{children}
-			{/* </TSetter.Provider> */}
 		</TProvider.Provider>
 
 	)

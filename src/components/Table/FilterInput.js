@@ -147,14 +147,14 @@ class FilterInput extends Component {
 		clearTimeout(this.inputBlurTimeout)
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.disabled) {
-			this.setState({ focusedChip: null })
-		}
-		if (nextProps.value && this.props.clearInputValueOnChange && nextProps.value.length !== this.props.value.length) {
-			this.setState({ inputValue: '' })
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	if (nextProps.disabled) {
+	// 		this.setState({ focusedChip: null })
+	// 	}
+	// 	if (nextProps.value && this.props.clearInputValueOnChange && nextProps.value.length !== this.props.value.length) {
+	// 		this.setState({ inputValue: '' })
+	// 	}
+	// }
 
 	/**
 	 * Blurs this component.

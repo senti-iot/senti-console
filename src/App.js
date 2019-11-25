@@ -28,6 +28,7 @@ import { StylesProvider } from "@material-ui/styles";
 import TouchBackend from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend'
 import LocalizationProvider from 'hooks/providers/LocalizationProvider'
+import SnackbarProvider from 'hooks/providers/SnackbarProvider'
 
 var countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
@@ -42,19 +43,23 @@ function App() {
 		<Provider store={store}>
 			<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
 				<MuiPickersUtilsProvider utils={MomentUtils}>
-					<LocalizationProvider>
-						<TProvider>
-							<MuiThemeProvider theme={lightTheme}>
-								<Router history={hist}>
-									<Switch>
-										{indexRoutes.map((prop, key) => {
-											return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
-										})}
-									</Switch>
-								</Router>
-							</MuiThemeProvider>
-						</TProvider>
-					</LocalizationProvider>
+					<SnackbarProvider>
+						<LocalizationProvider>
+							<TProvider>
+								<MuiThemeProvider theme={lightTheme}>
+									<Router history={hist}>
+										<Switch>
+											{indexRoutes.map((prop, key) => {
+												return <Route path={prop.path} /* component={prop.component} */ key={key} exact={prop.exact ? true : false} >
+													<prop.component />
+												</Route>;
+											})}
+										</Switch>
+									</Router>
+								</MuiThemeProvider>
+							</TProvider>
+						</LocalizationProvider>
+					</SnackbarProvider>
 				</MuiPickersUtilsProvider>
 			</DndProvider>
 		</Provider>

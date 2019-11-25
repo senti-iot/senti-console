@@ -6,13 +6,19 @@ import React, { Fragment } from 'react';
 import HeaderLinks from './HeaderLinks';
 import { connect } from 'react-redux'
 import { changeSmallMenu } from 'redux/appState';
+import { useHistory, useSelector } from 'hooks'
+
 // import GlobalSearch from 'components/Search/GlobalSearch';
 
 
 
 
 function Header({ ...props }) {
-	const { classes, goBackButton, gbbFunc, defaultRoute, logo, t, headerBorder, menuPos } = props;
+	const { classes, goBackButton, gbbFunc, logo, t, headerBorder, menuPos } = props;
+
+	const defaultRoute = useSelector(s => s.settings.defaultRoute)
+	const history = useHistory()
+
 	var brand = (
 		<ButtonBase
 			focusRipple
@@ -21,7 +27,7 @@ function Header({ ...props }) {
 			style={{
 				width: '120px'
 			}}
-			onClick={() => props.history.push(defaultRoute ? defaultRoute : '/')}
+			onClick={() => history.push(defaultRoute ? defaultRoute : '/')}
 		>
 			<span
 				className={classes.imageSrc}
@@ -69,7 +75,7 @@ function Header({ ...props }) {
 					</IconButton>}
 					{/* </div> */}
 					<Button className={classes.title}>
-						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) ? t(props.headerTitle.id, props.headerTitle.options) : props.headerTitle.id : ''}
+						{props.headerTitle ? t(props.headerTitle, props.headerOptions) ? t(props.headerTitle, props.headerOptions) : props.headerTitle : ''}
 					</Button>
 				</div>
 				<Hidden mdDown implementation='css'>
