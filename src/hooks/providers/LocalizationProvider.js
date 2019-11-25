@@ -63,7 +63,6 @@ const LocalizationProvider = ({ children }) => {
 		}
 		return result
 	}
-	console.log(t)
 	return (
 		<TProvider.Provider value={t}>
 			{/* <TSetter.Provider value={{ dispatch: locDispatch, state: locState }}> */}

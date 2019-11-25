@@ -6,7 +6,7 @@ import React, { Fragment } from 'react';
 import HeaderLinks from './HeaderLinks';
 import { connect } from 'react-redux'
 import { changeSmallMenu } from 'redux/appState';
-import GlobalSearch from 'components/Search/GlobalSearch';
+// import GlobalSearch from 'components/Search/GlobalSearch';
 
 
 
@@ -32,8 +32,9 @@ function Header({ ...props }) {
 		</ButtonBase>
 	);
 	const renderSearch = () => {
-		const { globalSearch } = props
-		return globalSearch ? <GlobalSearch /> : null
+		// const { globalSearch } = props
+		// return globalSearch ? <GlobalSearch /> : null
+		return null
 	}
 	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
@@ -49,7 +50,7 @@ function Header({ ...props }) {
 					>
 						<Menu />
 					</IconButton>
-				</Hidden> :  null
+				</Hidden> : null
 				}
 				<Hidden mdDown>
 					<IconButton onClick={changeSmallMenu} className={classes.drawerButton}>
@@ -71,9 +72,9 @@ function Header({ ...props }) {
 						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) ? t(props.headerTitle.id, props.headerTitle.options) : props.headerTitle.id : ''}
 					</Button>
 				</div>
-				 <Hidden mdDown implementation='css'>
+				<Hidden mdDown implementation='css'>
 					<HeaderLinks t={t} />
-				</Hidden> 
+				</Hidden>
 				<Hidden lgUp>
 					{menuPos ?
 						<Fragment>
@@ -87,7 +88,7 @@ function Header({ ...props }) {
 								<Menu />
 							</IconButton>
 						</Fragment>
-				 : renderSearch()
+						: renderSearch()
 					}</Hidden>
 			</Toolbar>
 		</AppBar>

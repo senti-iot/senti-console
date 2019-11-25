@@ -13,7 +13,7 @@ import { ItemG, T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
 import cx from 'classnames'
 // import Search from 'components/Search/Search';
-import GlobalSearch from 'components/Search/GlobalSearch';
+// import GlobalSearch from 'components/Search/GlobalSearch';
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -61,7 +61,7 @@ class HeaderLinks extends React.Component {
 	}
 	// renderChristmasIcon = () => {
 	// 	const { classes } = this.props
-	// 	if (moment().format('MM') === '12') { 
+	// 	if (moment().format('MM') === '12') {
 	// 		let today = moment().format('DD')
 	// 		return today
 	// 	}
@@ -77,12 +77,13 @@ class HeaderLinks extends React.Component {
 
 	// }
 	renderSearch = () => {
-		const { globalSearch } = this.props
-		return globalSearch ? <GlobalSearch /> : null
+		// const { globalSearch } = this.props
+		// return globalSearch ? <GlobalSearch /> : null
+		return null
 	}
 	renderNotifications = () => {
-		return <ItemG container style={{ width: 'auto',  alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
-			<Notifications/>
+		return <ItemG container style={{ width: 'auto', alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
+			<Notifications />
 		</ItemG>
 	}
 	renderUserMenu = () => {
@@ -91,7 +92,7 @@ class HeaderLinks extends React.Component {
 		const openProfile = Boolean(anchorProfile)
 
 		return <div>
-			 <Tooltip title={t('menus.user.profile')}>
+			<Tooltip title={t('menus.user.profile')}>
 
 				<Button
 					aria-owns={openProfile ? 'menu-appbar' : null}
@@ -175,7 +176,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	resetRedux: () => dispatch({ type: "RESET_APP" }) 
+	resetRedux: () => dispatch({ type: "RESET_APP" })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(headerLinksStyle)(HeaderLinks)));
