@@ -37,7 +37,7 @@ countries.registerLocale(require('i18n-iso-countries/langs/da.json'))
 export const hist = createBrowserHistory();
 
 
-function App() {
+function Providers() {
 	let width = window.ineerWidth
 	return <StylesProvider injectFirst>
 		<Provider store={store}>
@@ -50,7 +50,7 @@ function App() {
 									<Router history={hist}>
 										<Switch>
 											{indexRoutes.map((prop, key) => {
-												return <Route path={prop.path} /* component={prop.component} */ key={key} exact={prop.exact ? true : false} >
+												return <Route path={prop.path} key={key} exact={prop.exact ? true : false} >
 													<prop.component />
 												</Route>;
 											})}
@@ -67,14 +67,5 @@ function App() {
 
 }
 
-// class App extends Component {
-// 	render() {
-// 		let width = window.innerWidth
-// 		return (
 
-// 		)
-// 	}
-// }
-
-
-export default App
+export default Providers

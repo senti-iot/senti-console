@@ -17,10 +17,10 @@ import Sidebar from 'components/Sidebar/Sidebar';
 import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
-import { useSnackbar, usePrevious, useRef, useDispatch, useSelector, useLocalization } from 'hooks';
+import { useSnackbar, useRef, useDispatch, useSelector, useLocalization } from 'hooks';
 // import _ from 'lodash'
 
-function DashboardLayout(props) {
+function App(props) {
 	//#region State
 
 	const [mobileOpen, setMobileOpen] = useState(false)
@@ -44,7 +44,6 @@ function DashboardLayout(props) {
 
 	const t = useLocalization()
 	const s = useSnackbar()
-	let prevSid = usePrevious(null)
 	//#endregion
 
 
@@ -123,21 +122,10 @@ function DashboardLayout(props) {
 		const getS = async () => {
 			dispatch(await getSettings()).then(async rs => {
 				await dispatch(getDaysOfInterest())
-
 			})
 		}
 		getS()
-		/* CDUP */
-		// if (prevSid !== props.sId) {
-		// 	setOpenSnackbar(true)
-		// }
-		if (theme === 1) {
-			document.body.style = 'background: #2e2e2e'
-		}
-		else {
-			document.body.style = 'backgroubd: #eee'
-		}
-	}, [dispatch, handleSetHeaderTitle, prevSid, defaultRoute, /* props.sId, */ theme])
+	}, [dispatch, handleSetHeaderTitle, defaultRoute])
 
 	return (
 		<MuiThemeProvider theme={theme === 0 ? lightTheme : darkTheme}>
@@ -174,7 +162,11 @@ function DashboardLayout(props) {
 						/>
 						{!loading ?
 							<Fragment>
-								<div className={classes.container} id={'container'}>
+								<div className={cx({
+									[classes.container]: true,
+									[classes.darkBackground]: theme ? true : false
+								})
+								} id={'container'}>
 									<Toolbar history={history} {...tabs} />
 									<BC
 										defaultRoute={defaultRoute}
@@ -250,26 +242,6 @@ function DashboardLayout(props) {
 
 }
 
-// const mapStateToProps = (state) => ({
-// 	loading: state.settings.loading,
-// 	theme: state.settings.theme,
-// 	defaultRoute: state.settings.defaultRoute,
-// 	defaultView: state.settings.defaultView,
-// 	snackbarLocation: state.settings.snackbarLocation,
-// 	smallMenu: state.appState.smallMenu,
-// 	drawer: state.settings.drawer,
-// 	tabs: state.appState.tabs,
-// 	user: state.settings.user,
-// 	cookies: state.settings.cookies
-// })
+App.whyDidYouRender = true
 
-// const mapDispatchToProps = dispatch => ({
-// 	getSettings: async () => dispatch(await getSettings()),
-// 	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
-// 	changeTabs: tabs => dispatch(changeTabs(tabs)),
-// 	getSuggestions: () => dispatch(getSuggestions())
-// 	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
-// })
-
-export default DashboardLayout
-// export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))
+export default App

@@ -1,5 +1,5 @@
 // import React from 'react'
-import DashboardH from 'layouts/Dashboard/DashboardH';
+import App from 'layouts/App/App';
 import ConfirmUser from 'layouts/ConfirmUser/ConfirmUser'
 import ResetPassword from 'layouts/ResetPassword/ResetPassword';
 import LoginPage from 'layouts/Login/LoginPageH'
@@ -15,7 +15,7 @@ const indexRoutes = [
 	{ path: '/password/reset/:lang/:token?', component: ResetPassword },
 	{ path: '/privacy-policy', component: PrivacyPolicy },
 
-	{ path: '/', component: DashboardH },
+	{ path: '/', component: App },
 	// { path: '/', component: Dashboard },
 ];
 
