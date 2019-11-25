@@ -139,8 +139,6 @@ function DashboardLayout(props) {
 		}
 	}, [dispatch, handleSetHeaderTitle, prevSid, defaultRoute, /* props.sId, */ theme])
 
-	console.log(s)
-
 	return (
 		<MuiThemeProvider theme={theme === 0 ? lightTheme : darkTheme}>
 
