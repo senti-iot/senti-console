@@ -1,0 +1,22 @@
+{
+	"webHouseAps": {
+		"domain": [
+			"localhost",
+			"white-label",
+			"surge"
+		],
+		"logo": {
+			"url": "https://www.webhouse.dk/images/logo.svg"
+		},
+		"orgName": "WebHouse",
+		"theme": {
+			"light": {
+				"primary": "#000088",
+				"hover": "#0000DD",
+				"secondary": "#880000",
+				"headerColor": "#EEEEEE",
+				"sidebarColor": "#EEEEEE"
+			}
+		}
+	}
+}

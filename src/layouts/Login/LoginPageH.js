@@ -164,7 +164,7 @@ function LoginPage(props) {
 		let loginData = cookie.load('SESSION')
 		if (loginData) {
 			if (setToken()) {
-				props.history.push('/dashboard')
+				history.push('/dashboard')
 			}
 		}
 	});
