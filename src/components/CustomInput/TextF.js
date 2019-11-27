@@ -5,6 +5,7 @@ import { TextField } from '@material-ui/core';
 import cx from 'classnames'
 import { useTheme } from 'hooks';
 import { makeStyles } from '@material-ui/styles';
+import hexToRgba from 'hex-to-rgba';
 
 const styles = makeStyles(theme => ({
 	leftIcon: {
@@ -15,16 +16,18 @@ const styles = makeStyles(theme => ({
 	},
 	root: {
 		"&:hover:not($disabled):not($focused):not($error) $notchedOutline": {
-			borderColor: "rgb(39,136,129, 0.67)"
+			borderColor: hexToRgba(theme.palette.primary.main, 0.67)
+			// borderColor: "rgb(39,136,129, 0.67)"
 		}
 	},
 	disabled: {},
 	focused: {},
 	error: {},
 	notchedOutline: {
-		borderColor: "rgb(39,136,129, 0.23)",
+		// borderColor: "rgb(39,136,129, 0.23)",
+		borderColor: hexToRgba(theme.palette.primary.main, 0.23),
 		"&:hover": {
-			borderColor: "rgb(39,136,129, 1)"
+			borderColor: theme.palette.hover
 		}
 	},
 	rootReversed: {

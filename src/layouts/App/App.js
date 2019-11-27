@@ -6,11 +6,10 @@ import cx from 'classnames'
 import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 import { MuiThemeProvider, makeStyles } from '@material-ui/core/styles'
-import logo from '../../logo.svg';
 import cookie from 'react-cookies';
 import { getSettings } from 'redux/settings';
 import { Close } from 'variables/icons';
-import { lightTheme, darkTheme } from 'variables/themes'
+import { darkTheme, nLightTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
 import Sidebar from 'components/Sidebar/Sidebar';
@@ -18,7 +17,9 @@ import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { useSnackbar, useRef, useDispatch, useSelector, useLocalization } from 'hooks';
+import { getWL } from 'variables/storage';
 // import _ from 'lodash'
+
 
 function App(props) {
 	//#region State
@@ -33,7 +34,7 @@ function App(props) {
 
 	//#endregion
 	//#region Refs
-
+	const wlTheme = getWL()
 	const mainPanel = useRef(null)
 
 	//#endregion
@@ -128,12 +129,11 @@ function App(props) {
 	}, [dispatch, handleSetHeaderTitle, defaultRoute])
 
 	return (
-		<MuiThemeProvider theme={theme === 0 ? lightTheme : darkTheme}>
+		<MuiThemeProvider theme={theme === 0 ? nLightTheme(wlTheme) : darkTheme}>
 
 			<div className={classes.wrapper + ' ' + (theme === 0 ? '' : classes.darkBackground)}>
 				<Header
 					defaultRoute={defaultRoute}
-					logo={logo}
 					routes={dashboardRoutes}
 					handleDrawerToggle={handleDrawerToggle}
 					goBackButton={goBackButton}
@@ -153,7 +153,6 @@ function App(props) {
 							defaultView={defaultView}
 							defaultRoute={defaultRoute}
 							routes={dashboardRoutes}
-							logo={logo}
 							handleDrawerToggle={handleDrawerToggle}
 							open={mobileOpen}
 							color='senti'

@@ -13,8 +13,9 @@ import { changeSmallMenu } from 'redux/appState';
 // import { Menu } from 'variables/icons';
 import { HeaderLinks } from 'components';
 import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
+import logo from 'logo.svg'
 
-const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref}/>)
+const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref} />)
 class Sidebar extends Component {
 	constructor(props) {
 		super(props)
@@ -79,7 +80,7 @@ class Sidebar extends Component {
 										})
 									}}>
 									{/* <div> */}
-									<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 									{/* </div> */}
 								</ListItem>
@@ -101,7 +102,7 @@ class Sidebar extends Component {
 													[classes.nested]: smallMenu
 												})
 											}}>
-											<ListItemIcon  className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									</Tooltip>)}
@@ -122,7 +123,7 @@ class Sidebar extends Component {
 								[classes.button]: true
 							})
 						}}>
-						<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+						<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 					</ListItem>
 				})}
@@ -196,7 +197,7 @@ class Sidebar extends Component {
 													[classes.nested]: smallMenu
 												})
 											}}>
-											<ListItemIcon  className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									</Tooltip>)}
@@ -218,7 +219,7 @@ class Sidebar extends Component {
 									[classes.button]: true
 								})
 							}}>
-							<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 						</ListItem>
 					</Tooltip>
@@ -269,7 +270,7 @@ class Sidebar extends Component {
 											[classes.button]: true
 										})
 									}}>
-									<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 								<Collapse in={this.state[route.menuRoute]}>
@@ -308,7 +309,7 @@ class Sidebar extends Component {
 									[classes.button]: true
 								})
 							}}>
-							<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 						</ListItem>
 					})}
@@ -317,7 +318,7 @@ class Sidebar extends Component {
 		</Drawer>
 	}
 	smallBrand = () => {
-		const { classes, logo, defaultRoute, handleDrawerToggle, history } = this.props
+		const { classes, defaultRoute, handleDrawerToggle, history } = this.props
 		return <div className={classes.logo}>
 			<ButtonBase
 				focusRipple

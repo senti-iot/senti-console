@@ -105,7 +105,7 @@ class HeaderLinks extends React.Component {
 					<ExpandMore className={cx(classes.expand, {
 						[classes.expandOpen]: openProfile,
 					})} />
-					{user ? <T style={{ /* fontSize: '1rem', */		color: '#fff', textTransform: 'none', margin: 8 }}>{`${user.firstName}`}</T> : null}
+					{user ? <T className={classes.userDropdown}>{`${user.firstName}`}</T> : null}
 					{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
 				</Button>
 			</Tooltip>
@@ -144,7 +144,7 @@ class HeaderLinks extends React.Component {
 				<GoogleLogout
 					// onLogoutSuccess={() => this.logOut()}
 					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }} className={classes.menuItem}>
+					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }}>
 						<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
 					</MenuItem>)}
 				>

@@ -11,28 +11,18 @@ import { setToken } from 'variables/data';
 import { loginUser, loginUserViaGoogle } from 'variables/dataLogin';
 import { getSettings } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
-// import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 import CookiesDialog from 'components/Cookies/CookiesDialog';
 import PrivacyDialog from 'components/Cookies/PrivacyDialog';
 import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles';
-import { useLocalization, /* useSelector, */ useDispatch, useEventListener } from 'hooks';
+import { useLocalization, useDispatch, useEventListener, useTheme } from 'hooks';
 let moment = require('moment');
 
-// const mapStateToProps = (state) => ({
-// 	defaultRoute: state.settings.defaultRoute
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	getSettings: async () => dispatch(await getSettings()),
-// 	setLanguage: (lang) => dispatch(changeLanguage(lang, true))
-// })
 
 function LoginPage(props) {
 	const [error, setEError] = useState(false)
 	const [user, setUser] = useState('')
 	const [pass, setPass] = useState('')
-	// const [language, setLanguage] = useState('da')
 	const [loggingIn, setLoggingIn] = useState(false)
 	const [cookies, setCookies] = useState(false)
 	const [privacy, setPrivacy] = useState(false)
@@ -42,42 +32,25 @@ function LoginPage(props) {
 		console.trace()
 		setEError(val)
 	}
-	// const inputRef = useRef(null)
 	const location = useLocation()
 	const history = useHistory()
 	const dispatch = useDispatch()
+	const theme = useTheme()
+	const t = useLocalization()
 
+	//TODO: This is antipattern React Hooks
+	//Move the dispatch completely under the useEffect
 	const redux = {
 		getSettings: async () => dispatch(await getSettings()),
 		setLanguage: lang => dispatch(changeLanguage(lang, true))
 	}
-	const t = useLocalization()
 
-	// constructor(props) {
-	// 	super(props)
-
-	// 	this.state = {
-	// 		error: false,
-	// 		user: '',
-	// 		pass: '',
-	// 		language: 'da',
-	// 		loggingIn: false,
-	// 		cookies: false,
-	// 		privacy: false,
-	// 		showPassword: false
-	// 	}
-	// 	this.input = React.createRef()
-	// }
 	const handleCloseCookies = () => setCookies(false)
 	const handleOpenCookies = () => setCookies(true)
 	const handleOpenPrivacy = () => setPrivacy(true)
 	const handleClosePrivacy = () => setPrivacy(false)
 
-	// handlePrivacy = () => {
-	// 	this.setState({
-	// 		privacy: !this.state.privacy
-	// 	})
-	// }
+
 	const googleSignIn = async (googleUser) => {
 		if (googleUser.error) {
 			setError(true)
@@ -114,7 +87,6 @@ function LoginPage(props) {
 
 	const logUser = () => {
 		setLoggingIn(true)
-		// this.setState({ loggingIn: true })
 	}
 	const handleLoginUser = async () => {
 		await loginUser(user, pass).then(async rs => {
@@ -146,19 +118,8 @@ function LoginPage(props) {
 			default:
 				break;
 		}
-		// if (error) {
-		// 	setError(false)
-		// }
 	}
-	// let handleKeyPress = (event) => {
-	// 	if (event.key === 'Enter') {
-	// 		this.logUser()
-	// 	}
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// 	window.removeEventListener('keypress', this.handleKeyPress, false)
-	// }
+
 	useEffect(() => {
 		// window.addEventListener('keypress', handleKeyPress, false)
 		let loginData = cookie.load('SESSION')
@@ -168,28 +129,6 @@ function LoginPage(props) {
 			}
 		}
 	});
-	// componentDidMount() {
-	// 	this._isMounted = 1
-	// 	window.addEventListener('keypress', this.handleKeyPress, false)
-	// 	var loginData = cookie.load('SESSION')
-	// 	if (loginData) {
-	// 		if (setToken()) {
-	// 			this.props.history.push('/dashboard')
-	// 		}
-	// 	}
-	// 	if (this.props.location.pathname.includes('en')) {
-	// 		this.props.setLanguage('en')
-	// 		this.setState({ language: 'en' })
-	// 	}
-	// 	// @ts-ignore
-	// 	if (this.inputRef.current) { this.inputRef.current.focus() }
-	// }
-
-	// const IconEndAd = cx({
-	// 	[classes.IconEndAd]: true,
-	// 	[classes.inputIconsColor]: !this.state.error,
-	// 	[classes.iconError]: this.state.error
-	// })
 
 	const handleShowPassword = () => setShowPassword(!showPassword)
 	return (
@@ -203,7 +142,7 @@ function LoginPage(props) {
 
 							{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
 							<ItemG xs={12} container justify={'center'}>
-								<ImgLogo src={logo} alt={'sentiLogo'} />
+								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
 							</ItemG>
 							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} notCentered>
 

@@ -1,52 +1,48 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { Fade } from '@material-ui/core';
 import { CircularLoader } from 'components';
-import { usePrevious } from 'hooks';
 import PropTypes from 'prop-types'
+
 
 function FadeOutLoader(props) {
 	const [loading, setLoading] = useState(false)
-	const [showLoader, setShowLoader] = useState(false)
-
+	const [showLoader, setShowLoader] = useState(props.on ? true : false)
 	const on = props.on
-	const prevOn = usePrevious(on)
 	useEffect(() => {
-		async function loadLoader() {
-			const execute = async (on) => {
-				if (on) {
-					setLoading(true)
-					setTimeout(async () => {
-						setShowLoader(on)
-						setLoading(false)
-						await props.onChange()
-					}, 1000);
-				}
-				else {
-					setLoading(false)
-					setShowLoader(false)
-				}
+		const execute = async (on) => {
+			if (on) {
+				setTimeout(async () => {
+					setShowLoader(on)
+					setLoading(on)
+					await props.onChange()
+					console.log('Done')
+					// nprogress.done(true)
+
+				}, 1000);
 			}
-			if ((prevOn !== on) && on) {
-				await execute(true)
-			}
-			if ((prevOn !== on) && !on) {
-				await execute(false)
+			else {
+				console.log('Done')
+				setLoading(false)
+				setShowLoader(false)
 			}
 		}
-		loadLoader();
-		return () => {
 
+		if (on) {
+			execute(true)
 		}
-	}, [on, prevOn, props])
+		if (!on) {
+			execute(false)
+		}
 
-	const { children, notCentered, CustomLoader } = props
+	}, [on, props])
 
+	const { children, notCentered, CustomLoader, fill, fillView } = props
 	return (
 		<Fragment>
 			<Fade in={!loading}>
 				{!showLoader ?
 					children
-					: CustomLoader ? <CustomLoader notCentered={notCentered} /> : <CircularLoader notCentered={notCentered} />}
+					: CustomLoader ? <CustomLoader notCentered={notCentered} /> : <CircularLoader fillView={fillView} fill={fill} notCentered={notCentered} />}
 			</Fade>
 		</Fragment>
 	)

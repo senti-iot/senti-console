@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade,  Divider, Button, IconButton, Tooltip } from '@material-ui/core';
+import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
@@ -102,7 +102,7 @@ class DeviceTypeHover extends Component {
 									</ItemG>
 									<ItemG xs={12} className={classes.middleContainer}>
 										<ItemG xs={12}>
-											<T className={classes.smallText} noParagraph>
+											<T className={classes.smallText} paragraph={false}>
 												<Business className={classes.smallIcon} />
 												{devicetype.customer_name}
 											</T>

@@ -1,5 +1,4 @@
 import { grey } from '@material-ui/core/colors';
-import * as colors from '@material-ui/core/colors'
 
 const override = color => ({
 	overrides: {
@@ -39,7 +38,7 @@ const override = color => ({
 		MuiMenuItem: {
 			root: {
 				"&$selected": {
-					backgroundColor: `${colors[color][500]} !important`,
+					backgroundColor: `${color} !important`,
 					color: "#fff"
 				}
 			},
@@ -67,7 +66,7 @@ const override = color => ({
 		MuiFormLabel: {
 			root: {
 				'&$focused': {
-					color: colors[color][500],
+					color: color,
 				},
 			},
 		},
@@ -79,10 +78,10 @@ const override = color => ({
 		MuiInput: {
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
-					borderBottom: `2px solid ${colors[color][400]}'` /* + primaryColor */,
+					borderBottom: `2px solid ${color}'` /* + primaryColor */,
 				},
 				'&:after': {
-					borderBottomColor: colors[color][500],
+					borderBottomColor: color,
 				},
 			}
 		},

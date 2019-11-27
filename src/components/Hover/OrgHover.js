@@ -80,10 +80,10 @@ class OrgHover extends Component {
 										</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>{`${org.address}`}</T>
+										<T className={classes.smallText} paragraph={false}>{`${org.address}`}</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>
+										<T className={classes.smallText} paragraph={false}>
 											{`${org.zip} ${org.city}`}
 										</T>
 									</ItemG>

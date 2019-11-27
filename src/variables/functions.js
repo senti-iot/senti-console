@@ -3,16 +3,24 @@ import { parsePhoneNumber } from 'libphonenumber-js'
 import { colors } from '@material-ui/core';
 var moment = require('moment');
 var _ = require('lodash')
-var Crypto = require('crypto-js')
-var key = '0011001100110011'
-export const encrypyAES = (str) => {
 
-	return Crypto.AES.encrypt(str, key).toString()
+
+export function getContrast(hexcolor, reverse) {
+	var r = parseInt(hexcolor.substr(0, 2), 16);
+	var g = parseInt(hexcolor.substr(2, 2), 16);
+	var b = parseInt(hexcolor.substr(4, 2), 16);
+	var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+	let white = 'white'
+	let black = 'black'
+	if (reverse) {
+		return (yiq >= 128) ? black : white;
+	}
+	else {
+		return (yiq >= 128) ? white : black;
+	}
 }
-export const decryptAES = str => {
-	return Crypto.AES.decrypt(str, key).toString(Crypto.enc.Utf8)
-}
-window.decryptAES = decryptAES
+
+
 export const scrollToAnchor = (id) => {
 	let el = document.getElementById(id.substring(1, id.length))
 	if (el) {

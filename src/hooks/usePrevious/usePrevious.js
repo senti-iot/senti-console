@@ -6,11 +6,16 @@ import { useRef, useEffect } from 'react';
  * @param value - Object to store previous and current values
  */
 function usePrevious(value) {
-	const ref = useRef(value);
+	console.log(value)
+	const ref = useRef();
+
+	// Store current value in ref
 	useEffect(() => {
 		ref.current = value;
-	});
+		console.log('Ref', ref.current)
+	}, [value]); // Only re-run if value changes
+
+	// Return previous value (happens before update in useEffect above)
 	return ref.current;
 }
-
 export default usePrevious
