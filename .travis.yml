@@ -33,7 +33,7 @@ deploy:
     provider: surge
     skip_cleanup: true
     on:
-      branch: alpha-hooks
+      branch: white-label
 language: node_js
 node_js:
   - stable
