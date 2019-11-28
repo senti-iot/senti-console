@@ -6,7 +6,7 @@ import {
 	drawerWidth,
 	transition,
 	defaultFont,
-	primaryColor
+	// primaryColor
 } from "assets/jss/material-dashboard-react.js";
 import { getContrast } from 'variables/functions';
 

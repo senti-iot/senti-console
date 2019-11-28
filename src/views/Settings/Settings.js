@@ -14,7 +14,7 @@ import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettin
 import NavigationSettings from './SettingsCards/NavigationSettings';
 import ResetSettings from './SettingsCards/ResetSettings';
 import { Fade } from '@material-ui/core';
-import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, useHistory, useTheme } from 'hooks';
+import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, useHistory } from 'hooks';
 
 const Settings = (props) => {
 
