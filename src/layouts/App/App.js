@@ -4,7 +4,7 @@ import { Snackbar, IconButton } from '@material-ui/core';
 import { Header, /* Sidebar,  */CircularLoader } from 'components';
 import cx from 'classnames'
 import dashboardRoutes from 'routes/dashboard.js';
-import appStyle, { SnackBarCnt } from 'assets/jss/material-dashboard-react/appStyle.js';
+import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 import { makeStyles } from '@material-ui/core/styles'
 import cookie from 'react-cookies';
 import { getSettings } from 'redux/settings';
@@ -211,14 +211,6 @@ function App(props) {
 									touchEvent: false
 								}}
 								autoHideDuration={3000}
-								// children={<SnackBarCnt>
-								// 	<span>{t(s.sId, s.sOpt)}</span>
-
-								// 	<IconButton color={'primary'} size={'small'} onClick={s.sClose} >
-								// 		<Close />
-								// 	</IconButton>
-								// </SnackBarCnt>
-								// }
 								message={<span>{t(s.sId, s.sOpt)}</span>}
 								action={<IconButton color={'primary'} size={'small'} onClick={s.sClose} >
 									<Close />
@@ -238,4 +230,4 @@ function App(props) {
 
 App.whyDidYouRender = true
 
-export default App
+export default React.memo(App)

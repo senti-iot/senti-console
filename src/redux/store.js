@@ -27,7 +27,11 @@ let reducers = combineReducers({
 // }
 const rootReducer = (state, action) => {
 	if (action.type === 'RESET_APP') {
-		state = undefined
+		state = combineReducers({
+			settings,
+			localization,
+			favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem
+		})
 	}
 	return reducers(state, action)
 }

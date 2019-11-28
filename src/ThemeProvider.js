@@ -6,13 +6,14 @@ import { getWL } from 'variables/storage'
 let wl = getWL()
 // console.log(wl)
 // const tOptions = wl.theme
-// const lightTheme = nLightTheme(wl)
-// const darkTheme = nDarkTheme(wl)
+console.log(wl)
+const lightTheme = nLightTheme(wl ? wl : undefined)
+const darkTheme = nDarkTheme(wl ? wl : undefined)
 export const ThemeProvider = (props) => {
 	const sTheme = useSelector(s => s.settings.theme)
 
 	return (
-		<MuiThemeProvider theme={sTheme === 0 ? nLightTheme(wl) : nDarkTheme(wl)}>
+		<MuiThemeProvider theme={sTheme === 0 ? lightTheme : darkTheme}>
 			{props.children}
 		</MuiThemeProvider>
 	)
