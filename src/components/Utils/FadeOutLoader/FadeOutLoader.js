@@ -15,13 +15,11 @@ function FadeOutLoader(props) {
 					setShowLoader(on)
 					setLoading(on)
 					await props.onChange()
-					console.log('Done')
 					// nprogress.done(true)
 
 				}, 1000);
 			}
 			else {
-				console.log('Done')
 				setLoading(false)
 				setShowLoader(false)
 			}

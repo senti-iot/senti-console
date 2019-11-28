@@ -14,7 +14,7 @@ import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettin
 import NavigationSettings from './SettingsCards/NavigationSettings';
 import ResetSettings from './SettingsCards/ResetSettings';
 import { Fade } from '@material-ui/core';
-import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, useHistory } from 'hooks';
+import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, useHistory, useTheme } from 'hooks';
 
 const Settings = (props) => {
 
@@ -66,6 +66,8 @@ const Settings = (props) => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const location = useLocation()
+	// const theme = useTheme()
+	// console.log(theme)
 
 	useEffect(() => {
 		props.setHeader('settings.pageTitle', false, '', 'settings')

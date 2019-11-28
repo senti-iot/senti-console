@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/aria-role */
 import React, { useState } from 'react'
 import { createBrowserHistory } from 'history'
 import { Router, Route, Switch } from 'react-router-dom'
@@ -8,9 +7,6 @@ import indexRoutes from 'routes/index.js'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
 import 'assets/css/leaflet.css'
 
-// import 'react-grid-layout/css/styles.css'
-// import 'react-resizable/css/styles.css'
-
 import TProvider from 'components/Localization/TProvider'
 import 'core-js/es/map';
 import 'core-js/es/set';
@@ -19,8 +15,6 @@ import 'core-js/features/set';
 import 'core-js/features/array/find'
 import 'core-js/features/array/includes';
 import 'core-js/features/number/is-nan';
-import { MuiThemeProvider } from '@material-ui/core';
-import { nLightTheme } from 'variables/themes';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DndProvider } from 'react-dnd'
@@ -33,6 +27,7 @@ import SnackbarProvider from 'hooks/providers/SnackbarProvider'
 import { getWhiteLabel } from 'variables/data'
 import { setWL } from 'variables/storage'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
+import { ThemeProvider } from 'ThemeProvider'
 
 var countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
@@ -40,7 +35,7 @@ countries.registerLocale(require('i18n-iso-countries/langs/da.json'))
 
 
 export const hist = createBrowserHistory();
-let theme = null
+
 function Providers() {
 
 	const [loading, setLoading] = useState(true)
@@ -48,7 +43,6 @@ function Providers() {
 		let getWL = async () => await getWhiteLabel(window.location.hostname)
 		getWL().then(rs => {
 			setWL(rs)
-			theme = nLightTheme(rs)
 			setLoading(false)
 
 		})
@@ -57,13 +51,13 @@ function Providers() {
 	let width = window.innerWidth
 	return <StylesProvider injectFirst>
 		<Provider store={store}>
-			<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
-				<MuiPickersUtilsProvider utils={MomentUtils}>
-					<SnackbarProvider>
-						<LocalizationProvider>
-							<TProvider>
-								<FadeOutLoader on={loading} onChange={loaderFunc} fillView={true}>
-									<MuiThemeProvider theme={theme}>
+			<FadeOutLoader on={loading} onChange={loaderFunc} fillView={true}>
+				<ThemeProvider>
+					<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
+						<MuiPickersUtilsProvider utils={MomentUtils}>
+							<SnackbarProvider>
+								<LocalizationProvider>
+									<TProvider>
 										<Router history={hist}>
 											<Switch>
 												{indexRoutes.map((prop, key) => {
@@ -73,13 +67,13 @@ function Providers() {
 												})}
 											</Switch>
 										</Router>
-									</MuiThemeProvider>
-								</FadeOutLoader>
-							</TProvider>
-						</LocalizationProvider>
-					</SnackbarProvider>
-				</MuiPickersUtilsProvider>
-			</DndProvider>
+									</TProvider>
+								</LocalizationProvider>
+							</SnackbarProvider>
+						</MuiPickersUtilsProvider>
+					</DndProvider>
+				</ThemeProvider>
+			</FadeOutLoader>
 		</Provider>
 	</StylesProvider>
 

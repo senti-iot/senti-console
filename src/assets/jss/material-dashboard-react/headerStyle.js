@@ -10,21 +10,14 @@ import {
 	// successColor,
 	// warningColor,
 	// dangerColor,
-	headerColor,
+	// headerColor,
 } from "assets/jss/material-dashboard-react.js";
+import { getContrast } from 'variables/functions';
 
-
-function getContrastYIQ(hexcolor) {
-	var r = parseInt(hexcolor.substr(0, 2), 16);
-	var g = parseInt(hexcolor.substr(2, 2), 16);
-	var b = parseInt(hexcolor.substr(4, 2), 16);
-	var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-	return (yiq >= 128) ? 'white' : 'black';
-}
 
 const headerStyle = theme => ({
 	drawerButton: {
-		color: getContrastYIQ(theme.palette.header ? theme.palette.header : headerColor),
+		color: getContrast(theme.header),
 		'&:hover': {
 			background: '#FFFFFF22'
 		}
@@ -40,7 +33,7 @@ const headerStyle = theme => ({
 		},
 	},
 	appBar: {
-		backgroundColor: theme.palette.header ? theme.palette.header : headerColor,
+		backgroundColor: theme.header,
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
@@ -51,7 +44,7 @@ const headerStyle = theme => ({
 		},
 		height: "70px",
 		zIndex: "1029",
-		color: getContrastYIQ(theme.palette.header ? theme.palette.header : headerColor),
+		color: getContrast(theme.header),
 		border: "0",
 		// transition: "all 150ms ease 0s",
 		minHeight: "48px",

@@ -28,7 +28,7 @@ const CircularLoader = (props) => {
 		[className]: className ? true : false
 	})
 	return (
-		<Grid container justify={'center'} alignItems='center' className={gridClasses} style={props.style}>
+		<Grid container justify={'center'} alignItems='center' className={gridClasses}>
 			<CircularProgress />
 		</Grid>
 	)

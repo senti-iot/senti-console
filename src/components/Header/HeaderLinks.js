@@ -110,6 +110,7 @@ class HeaderLinks extends React.Component {
 				</Button>
 			</Tooltip>
 			<Menu
+
 				style={{ marginTop: 50 }}
 				id='menu-appbar'
 				anchorEl={anchorProfile}
@@ -117,6 +118,7 @@ class HeaderLinks extends React.Component {
 				// 	// vertical: 'bottom',
 				// 	horizontal: 'right',
 				// }}
+				className={classes.dorpdown}
 				transformOrigin={{
 					vertical: 'bottom',
 					horizontal: 'left',

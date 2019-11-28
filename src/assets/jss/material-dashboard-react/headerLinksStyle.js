@@ -13,7 +13,7 @@ import { getContrast } from 'variables/functions';
 
 const headerLinksStyle = theme => ({
 	userDropdown: {
-		color: getContrast(theme.palette.header ? theme.palette.header : headerColor),
+		color: getContrast(theme.header),
 		textTransform: 'none',
 		margin: 8
 	},
@@ -56,7 +56,7 @@ const headerLinksStyle = theme => ({
 		marginRight: theme.spacing(1)
 	},
 	iconRoot: {
-		color: getContrast(theme.palette.header ? theme.palette.header : headerColor),
+		color: getContrast(theme.header),
 		[theme.breakpoints.down('md')]: {
 			justifyContent: 'left',
 			width: 260

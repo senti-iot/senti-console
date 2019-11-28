@@ -1,34 +1,31 @@
-import { createMuiTheme, lighten } from '@material-ui/core/styles'
-import override from './overrides'
-import * as colors from '@material-ui/core/colors';
+import { createMuiTheme } from '@material-ui/core/styles'
+import { primaryColor, secondaryColor, hoverColor, /* headerColor */ } from 'assets/jss/material-dashboard-react'
+import { teal, red, grey } from '@material-ui/core/colors'
+import override from './overrides';
 
-/*
-headerColor: "#EEEEEE"
-hover: "#0000DD"
-primary: "#000088"
-secondary: "#880000"
-sidebarColor: "#EEEEEE"
- */
 const theme = (options) => createMuiTheme({
-	...override(options.theme.light.primary),
-	logo: options.logoUrl,
+	typography: {
+		useNextVariants: true,
+		suppressDeprecationWarnings: true,
+	},
+	...override(options.theme.light.primary, false),
 	palette: {
-		type: "light",
 		primary: {
-			main: options.theme.light.primary,
-			light: lighten(options.theme.light.primary, 0.3)
+			main: options.theme.light.primary
 		},
 		secondary: {
 			main: options.theme.light.secondary,
-			light: (options.theme.light.secondary, 0.3),
+			light: options.theme.light.hover,
 		},
-		hover: options.theme.light.hover,
-		header: options.theme.light.headerColor,
-		sidebar: options.theme.light.sidebarColor,
 		error: {
-			main: colors.red[400]
-		}
-	}
+			main: red[400]
+		},
+	},
+	hover: options.theme.light.hover,
+	header: options.theme.light.headerColor,
+	sidebar: options.theme.light.sidebarColor,
+	background: options.theme.light.background,
+	logo: options.logoUrl
 });
 
 export default theme

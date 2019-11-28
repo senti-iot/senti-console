@@ -3,13 +3,23 @@
 // #############################
 
 import { transition } from "assets/jss/material-dashboard-react.js";
+import styled from 'styled-components';
+import { Paper } from '@material-ui/core';
+
+export const SnackBarCnt = styled(Paper)`
+	color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    padding: 6px 16px;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 4px;
+    background-color: rgb(250, 250, 250);
+`
 
 const appStyle = theme => ({
-	darkBackground: {
-		background: "#2e2e2e"
-	},
-
 	wrapper: {
+		background: theme.background,
 		position: "relative",
 		top: "0",
 	},
@@ -38,6 +48,7 @@ const appStyle = theme => ({
 
 	container: {
 		minHeight: 'calc(100vh - 70px)',
+		background: theme.background,
 		padding: 0,
 		marginTop: 70,
 		[theme.breakpoints.down('xs')]: {

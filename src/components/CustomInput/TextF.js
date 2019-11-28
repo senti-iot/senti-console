@@ -27,7 +27,7 @@ const styles = makeStyles(theme => ({
 		// borderColor: "rgb(39,136,129, 0.23)",
 		borderColor: hexToRgba(theme.palette.primary.main, 0.23),
 		"&:hover": {
-			borderColor: theme.palette.hover
+			borderColor: theme.hover
 		}
 	},
 	rootReversed: {

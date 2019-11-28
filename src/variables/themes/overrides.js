@@ -1,7 +1,12 @@
 import { grey } from '@material-ui/core/colors';
 
-const override = color => ({
+const override = (color, dark) => ({
 	overrides: {
+		MuiPaper: {
+			root: {
+				background: dark ? '#424242' : '#fff'
+			}
+		},
 		MuiTooltip: {
 			tooltipPlacementRight: {
 				background: grey[700],
@@ -25,7 +30,7 @@ const override = color => ({
 				fontWeight: 500,
 				lineHeight: 1.6,
 				letterSpacing: "0.0075em",
-				backgroundColor: '#434351',
+				backgroundColor: `${color}`,
 				color: 'white',
 				padding: 16
 			}

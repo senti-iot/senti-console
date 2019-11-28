@@ -15,14 +15,14 @@ const sidebarStyle = theme => ({
 		paddingLeft: `${theme.spacing(2)}px !important`,
 	},
 	appBarWrapper: {
-		backgroundColor: theme.palette.sidebar ? theme.palette.sidebar : "#767684"
+		backgroundColor: theme.sidebar
 	},
 	root: {
 		display: 'flex',
 	},
 	drawerPaper: {
-		color: getContrast(theme.palette.sidebar ? theme.palette.sidebar : "#434351"),
-		backgroundColor: theme.palette.sidebar ? theme.palette.sidebar : "#434351",
+		color: getContrast(theme.sidebar),
+		backgroundColor: theme.sidebar,
 		overflowY: 'inherit',
 		top: 70,
 		[theme.breakpoints.down('md')]: {
@@ -77,14 +77,13 @@ const sidebarStyle = theme => ({
 		padding: theme.spacing(3),
 	},
 	button: {
-		// color: getContrast(theme.palette.primary.main ? theme.palette.primary.main : "#434351"),
-		color: getContrast(theme.palette.primary.main),
+		color: getContrast(theme.sidebar),
 		margin: '8px 0px',
 		padding: 10,
 		height: 44,
 		"&:hover": {
-			background: theme.palette.hover,
-			color: getContrast(theme.palette.primary.main, true)
+			background: theme.hover,
+			color: getContrast(theme.palette.primary.main)
 		},
 		transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1), background 0.16s cubic-bezier(0.685, 0.0473, 0.346, 1) "
 	},
@@ -95,11 +94,11 @@ const sidebarStyle = theme => ({
 		borderRadius: "50%"
 	},
 	buttonActiveRoute: {
-		color: getContrast(theme.palette.primary.main, true),
+		color: getContrast(theme.palette.primary.main),
 		// color: getContrast(theme.palette.primary.main ? theme.palette.primary.main : "#fff"),
-		background: theme.palette.primary.main ? theme.palette.primary.main : primaryColor,
+		background: theme.palette.primary.main,
 		"&:focus": {
-			background: theme.palette.primary.main ? theme.palette.primary.main : primaryColor
+			background: theme.palette.primary.main
 		}
 	},
 	logo: {
