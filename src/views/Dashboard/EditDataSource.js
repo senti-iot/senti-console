@@ -322,7 +322,7 @@ export class EditDataSource extends Component {
 								<ItemG container>
 									<ItemG xs={12}>
 										<TextF
-											handleChange={this.handleEditG('name')}
+											onChange={this.handleEditG('name')}
 											autoFocus
 											id={'name'}
 											label={t('dashboard.fields.label')}
@@ -365,7 +365,7 @@ export class EditDataSource extends Component {
 											label={t('dashboard.fields.device')}
 											value={sensor ? sensor.name : t('no.device')}
 											handleClick={this.handleOpenD}
-											handleChange={() => { }}
+											onChange={() => { }}
 										/>
 									</ItemG>
 									<ItemG>
@@ -373,7 +373,7 @@ export class EditDataSource extends Component {
 											id={'scbAB-a-name'}
 											label={t('dashboard.fields.name')}
 											value={g.dataSources.a.label}
-											handleChange={this.handleEditName('a')}
+											onChange={this.handleEditName('a')}
 										/>
 									</ItemG>
 									<Collapse unmountOnExit in={g.dataSources.a.deviceId > 0}>
@@ -394,12 +394,12 @@ export class EditDataSource extends Component {
 														label={t('dashboard.fields.cf')}
 														value={cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)].name : t('no.function')}
 														handleClick={this.handleOpenF}
-														handleChange={() => { }}
+														onChange={() => { }}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
-														handleChange={this.handleEditG('unit')}
+														onChange={this.handleEditG('unit')}
 														autoFocus
 														id={'unit'}
 														label={t('dashboard.fields.unit')}
@@ -444,7 +444,7 @@ export class EditDataSource extends Component {
 											label={t('dashboard.fields.device')}
 											value={sensor ? sensor.name : t('no.device')}
 											handleClick={this.handleOpenD}
-											handleChange={() => { }}
+											onChange={() => { }}
 										/>
 									</ItemG>
 									<ItemG>
@@ -452,7 +452,7 @@ export class EditDataSource extends Component {
 											id={'scbAB-b-name'}
 											label={t('dashboard.fields.name')}
 											value={g.dataSources.b.label}
-											handleChange={this.handleEditName('b')}
+											onChange={this.handleEditName('b')}
 										/>
 									</ItemG>
 									<Collapse unmountOnExit in={g.dataSources.b.deviceId > 0}>
@@ -473,12 +473,12 @@ export class EditDataSource extends Component {
 														label={t('dashboard.fields.cf')}
 														value={cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)].name : t('no.function')}
 														handleClick={this.handleOpenF}
-														handleChange={() => { }}
+														onChange={() => { }}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
-														handleChange={this.handleEditG('unit')}
+														onChange={this.handleEditG('unit')}
 														autoFocus
 														id={'unit'}
 														label={t('dashboard.fields.unit')}

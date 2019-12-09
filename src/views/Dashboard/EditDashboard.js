@@ -279,7 +279,7 @@ class EditDashboard extends React.Component {
 					// margin={'none'}
 					label={t('dashboard.fields.name')}
 					value={d.name}
-					handleChange={this.changeName}
+					onChange={this.changeName}
 					reversed
 				// notched={false}
 				/>
@@ -296,7 +296,7 @@ class EditDashboard extends React.Component {
 					label={t('dashboard.fields.description')}
 					// margin={'none'}
 					value={d.description}
-					handleChange={this.changeDescription}
+					onChange={this.changeDescription}
 					reversed
 				// notched={false}
 				/>
@@ -365,7 +365,7 @@ class EditDashboard extends React.Component {
 										}}
 										margin='none'
 										value={d.name}
-										// handleChange={this.changeName}
+										// onChange={this.changeName}
 										handleClick={this.handleOpenSave}
 										reversed
 									/>

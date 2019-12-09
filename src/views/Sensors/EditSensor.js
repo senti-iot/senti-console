@@ -379,7 +379,7 @@ class EditSensor extends Component {
 
 				handleChangeType={this.handleChangeType}
 
-				handleChange={this.handleChange}
+				onChange={this.handleChange}
 				handleCreate={this.handleCreate}
 
 				handleChangeMetadataKey={this.handleChangeMetadataKey}

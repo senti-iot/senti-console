@@ -376,7 +376,7 @@ class EditUser extends Component {
 					multiline
 					rows={4}
 					className={classes.textField}
-					handleChange={this.handleExtendedChange('bio')}
+					onChange={this.handleExtendedChange('bio')}
 					margin='normal'
 					error={error}
 				/>
@@ -387,7 +387,7 @@ class EditUser extends Component {
 					label={t('users.fields.position')}
 					value={extended.position}
 					className={classes.textField}
-					handleChange={this.handleExtendedChange('position')}
+					onChange={this.handleExtendedChange('position')}
 					margin='normal'
 					error={error}
 				/>
@@ -398,7 +398,7 @@ class EditUser extends Component {
 					label={t('users.fields.location')}
 					value={extended.location}
 					className={classes.textField}
-					handleChange={this.handleExtendedChange('location')}
+					onChange={this.handleExtendedChange('location')}
 					margin='normal'
 					error={error}
 				/>
@@ -409,7 +409,7 @@ class EditUser extends Component {
 					label={t('users.fields.recoveryEmail')}
 					value={extended.recoveryEmail ? extended.recoveryEmail : ""}
 					className={classes.textField}
-					handleChange={this.handleExtendedChange('recoveryEmail')}
+					onChange={this.handleExtendedChange('recoveryEmail')}
 					margin='normal'
 					error={error}
 				/>
@@ -420,7 +420,7 @@ class EditUser extends Component {
 					label={t('users.fields.linkedInURL')}
 					value={extended.linkedInURL}
 					className={classes.textField}
-					handleChange={this.handleExtendedChange('linkedInURL')}
+					onChange={this.handleExtendedChange('linkedInURL')}
 					margin='normal'
 					error={error}
 				/>
@@ -431,7 +431,7 @@ class EditUser extends Component {
 					label={t('users.fields.twitterURL')}
 					value={extended.twitterURL}
 					className={classes.textField}
-					handleChange={this.handleExtendedChange('twitterURL')}
+					onChange={this.handleExtendedChange('twitterURL')}
 					margin='normal'
 					error={error}
 				/>
@@ -484,7 +484,7 @@ class EditUser extends Component {
 								label={t('users.fields.firstName')}
 								value={user.firstName}
 								className={classes.textField}
-								handleChange={this.handleChange('firstName')}
+								onChange={this.handleChange('firstName')}
 								margin='normal'
 								error={error}
 							/>
@@ -495,7 +495,7 @@ class EditUser extends Component {
 								label={t('users.fields.lastName')}
 								value={user.lastName}
 								className={classes.textField}
-								handleChange={this.handleChange('lastName')}
+								onChange={this.handleChange('lastName')}
 								margin='normal'
 								error={error}
 							/>
@@ -506,7 +506,7 @@ class EditUser extends Component {
 								label={t('users.fields.email')}
 								value={user.email}
 								className={classes.textField}
-								handleChange={this.handleChange('email')}
+								onChange={this.handleChange('email')}
 								margin='normal'
 								error={error}
 							/>
@@ -517,7 +517,7 @@ class EditUser extends Component {
 								label={t('users.fields.phone')}
 								value={user.phone}
 								className={classes.textField}
-								handleChange={this.handleChange('phone')}
+								onChange={this.handleChange('phone')}
 								margin='normal'
 								error={error}
 							/>

@@ -380,7 +380,7 @@ class CreateSensor extends Component {
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}
 
-				handleChange={this.handleChange}
+				onChange={this.handleChange}
 				handleCreate={this.handleCreate}
 
 				handleChangeType={this.handleChangeType}

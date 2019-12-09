@@ -182,7 +182,7 @@ class NewLoginPage extends Component {
 													label={t('login.username')}
 													error={this.state.error}
 													fullWidth
-													handleChange={this.handleInput}
+													onChange={this.handleInput}
 													className={classes.loginButton}
 													value={this.state.user}
 													InputProps={{
@@ -202,7 +202,7 @@ class NewLoginPage extends Component {
 													className={classes.loginButton}
 													type={this.state.showPassword ? 'text' : 'password'}
 													fullWidth
-													handleChange={this.handleInput}
+													onChange={this.handleInput}
 													value={this.state.pass}
 													InputProps={{
 														autoComplete: 'on',

@@ -96,7 +96,7 @@ export class ESGauge extends Component {
 							<ItemG container>
 								<ItemG xs={12}>
 									<TextF
-										handleChange={this.handleEditGraph('name')}
+										onChange={this.handleEditGraph('name')}
 										autoFocus
 										id={'name'}
 										label={t('dashboard.fields.label')}
@@ -145,7 +145,7 @@ export class ESGauge extends Component {
 										label={t('dashboard.fields.device')}
 										value={sensor ? sensor.name : t('no.device')}
 										handleClick={this.handleExpand('openSensor', true)}
-										handleChange={() => { }}
+										onChange={() => { }}
 									/>
 								</ItemG>
 								<Collapse unmountOnExit in={g.dataSource.deviceId > 0}>
@@ -171,12 +171,12 @@ export class ESGauge extends Component {
 													label={t('dashboard.fields.cf')}
 													value={cfs[cfs.findIndex(f => f.id === g.dataSource.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSource.cf)].name : t('no.function')}
 													handleClick={this.handleExpand('openCF', true)}
-													handleChange={() => { }}
+													onChange={() => { }}
 												/>
 											</ItemG>
 											<ItemG xs={12}>
 												<TextF
-													handleChange={this.handleEditGraph('unit')}
+													onChange={this.handleEditGraph('unit')}
 													autoFocus
 													id={'unit'}
 													label={t('dashboard.fields.unit')}

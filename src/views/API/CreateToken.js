@@ -239,7 +239,7 @@ class CreateToken extends Component {
 							id={'token-confirmClose'}
 							fullWidth
 							value={confirmClose}
-							handleChange={e => this.setState({ confirmClose: e.target.value })}
+							onChange={e => this.setState({ confirmClose: e.target.value })}
 						/>
 					</ItemG>
 				</ItemG>
@@ -287,7 +287,7 @@ class CreateToken extends Component {
 									id={'tokenName'}
 									value={token.name}
 									fullWidth
-									handleChange={this.handleChange('name')}
+									onChange={this.handleChange('name')}
 								/>
 							</ItemG>
 							<ItemG xs={12}>

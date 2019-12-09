@@ -161,7 +161,7 @@ class Dashboard extends React.Component {
 					fullWidth
 					multiline
 					rows={10}
-					handleChange={this.handleCheckJSON}
+					onChange={this.handleCheckJSON}
 					error={error}
 				/>
 			</DialogContent>
@@ -197,10 +197,9 @@ class Dashboard extends React.Component {
 		return t === 1 ? darkTheme : lightTheme
 	}
 	render() {
-		const { /* discoverSenti, */ t, /* history */ } = this.props
+		const { t } = this.props
 		return (
 			<Fragment>
-				{/* {discoverSenti ? <DiscoverSenti t={t} history={history} /> : null} */}
 				<Fade in={true} style={{
 					transitionDelay: 200,
 				}}>
@@ -241,12 +240,15 @@ class Dashboard extends React.Component {
 									tooltipTitle={`${this.props.t('actions.import')} ${this.props.t('sidebar.dashboard')}`}
 									tooltipOpen
 									onClick={this.handleOpenImport}
+									style={{ whiteSpace: 'nowrap' }}
+
 								/>
 								<SpeedDialAction
 									icon={<Add />}
 									tooltipTitle={`${this.props.t('actions.create')} ${this.props.t('sidebar.dashboard')}`}
 									tooltipOpen
 									onClick={this.handleOpenDT}
+									style={{ whiteSpace: 'nowrap' }}
 								/>
 
 							</SpeedDial>

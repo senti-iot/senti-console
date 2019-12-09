@@ -20,22 +20,22 @@ class EditDeviceDetails extends Component {
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devices/list'
 		props.setHeader({ id: 'devices.editDetailsTitle', options: { deviceId: props.match.params.id } }, true, prevURL, 'devices')
-	}	
+	}
 	keyHandler = (e) => {
 		if (e.key === 'Escape') {
 			this.goToDevice()
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-	  const { device } = this.props
-	  if ((!prevProps.device && device !== prevProps.device) || (this.state.device === null && device)) {
+		const { device } = this.props
+		if ((!prevProps.device && device !== prevProps.device) || (this.state.device === null && device)) {
 			this.props.setBC('editdevicedetails', device.name, device.id)
 			this.setState({
 				device: device,
 			})
 		}
 	}
-	
+
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
 		const { getDevice } = this.props
@@ -103,7 +103,7 @@ class EditDeviceDetails extends Component {
 			{ value: 8, label: t('devices.locationTypes.port') },
 			{ value: 9, label: t('devices.locationTypes.office') }]
 	}
-	handleUpdateFav = () => { 
+	handleUpdateFav = () => {
 		const { isFav, updateFav } = this.props
 		const { device } = this.state
 		let favObj = {
@@ -140,7 +140,7 @@ class EditDeviceDetails extends Component {
 	render() {
 		const { classes, t, loading } = this.props
 		const { device } = this.state
-		return !loading && device ?  (
+		return !loading && device ? (
 			<GridContainer>
 				<Fade in={true}>
 					<Paper className={classes.paper}>
@@ -150,7 +150,7 @@ class EditDeviceDetails extends Component {
 									<TextF
 										id={'name'}
 										label={t('devices.fields.name')}
-										handleChange={this.handleInput('name')}
+										onChange={this.handleInput('name')}
 										value={device.name}
 										autoFocus
 									/>
@@ -169,7 +169,7 @@ class EditDeviceDetails extends Component {
 										label={t('devices.fields.description')}
 										multiline
 										rows={4}
-										handleChange={this.handleInput('description')}
+										onChange={this.handleInput('description')}
 										value={device.description}
 
 									/>

@@ -89,7 +89,7 @@ class CreateCollection extends Component {
 			<CreateFunctionForm
 				cloudfunction={cloudfunction}
 				org={org}
-				handleChange={this.handleChange}
+				onChange={this.handleChange}
 				handleCreate={this.handleCreate}
 				handleCodeChange={this.handleCodeChange}
 				handleOrgChange={this.handleOrgChange}

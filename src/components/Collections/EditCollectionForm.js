@@ -73,7 +73,7 @@ class EditCollectionForm extends Component {
 								<TextF
 									id={'collectionName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={collection.name}
 									autoFocus
 
@@ -83,7 +83,7 @@ class EditCollectionForm extends Component {
 								<TextF
 									id={'collectionDescription'}
 									label={t('collections.fields.description')}
-									handleChange={handleChange('description')}
+									onChange={handleChange('description')}
 									value={collection.description}
 									multiline
 									rows={3}
@@ -97,7 +97,7 @@ class EditCollectionForm extends Component {
 									label={t('collections.fields.org')}
 									value={collection.org.name ? collection.org.name : t('collections.noOrg')}
 									handleClick={handleOpenOrg}
-									handleChange={() => { }}
+									onChange={() => { }}
 
 									InputProps={{
 										onChange: handleOpenOrg,

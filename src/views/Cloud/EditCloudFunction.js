@@ -122,7 +122,7 @@ class EditCloudFunction extends Component {
 			<CreateFunctionForm
 				cloudfunction={cloudfunction}
 				org={org}
-				handleChange={this.handleChange}
+				onChange={this.handleChange}
 				handleCreate={this.handleUpdate}
 				handleCodeChange={this.handleCodeChange}
 				handleOrgChange={this.handleOrgChange}
