@@ -183,7 +183,7 @@ class EditDeviceDetails extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12} container justify={'center'}>
 									<Collapse in={this.state.updating} timeout={100} unmountOnExit>
-										<CircularLoader notCentered />
+										<CircularLoader fill />
 									</Collapse>
 								</ItemGrid>
 								<ItemGrid container style={{ margin: 16 }}>

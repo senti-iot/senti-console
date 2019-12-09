@@ -1,6 +1,6 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { Fragment, Component } from 'react';
 import {
-	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody, Menu, ListItem, ListItemIcon, ListItemText,
+	Grid, IconButton, withStyles, Hidden, Tooltip, Menu, ListItem, ListItemIcon, ListItemText,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
@@ -11,31 +11,24 @@ import {
 import { CircularLoader, Caption, ItemG, InfoCard, T } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 import { getSensor } from 'variables/dataSensors';
-import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
-import TC from 'components/Table/TC'
+import { getGraph, handleSetDate } from 'redux/dsSystem';
+import OpenStreetMapWidget from 'components/Map/OpenStreetMapWidget';
 
-class MapData extends PureComponent {
+class MapData extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			device: {
-				name: ''
-			},
+			device: null,
 			raw: props.raw ? props.raw : false,
 			actionAnchor: null,
-			openDownload: false,
 			visibility: false,
 			resetZoom: false,
 			zoomDate: [],
 			loading: true,
-			chartType: 'linear',
-			initialPeriod: null
 		}
 	}
 
@@ -68,22 +61,11 @@ class MapData extends PureComponent {
 			await this.getData()
 		}
 	}
-	// getDeviceData = async (d, func) => {
-	// 	let nD = d
-	// 	nD.data = func()
-	// 	return nD
-	// }
-	// asyncForEach = async (array, callback) => {
-	// 	for (let index = 0; index < array.length; index++) {
-	// 		await callback(array[index], index, array)
-	// 	}
-	// }
 
 	getData = async () => {
 		const { g } = this.props
 
 		let device = await getSensor(g.dataSource.deviceId)
-		console.log(device)
 		this.setState({
 			device: device, loading: false
 		})
@@ -91,7 +73,12 @@ class MapData extends PureComponent {
 
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.g !== this.props.g || prevProps.g.dataSource !== this.props.g.dataSource ) {
+		console.log('CDU MapData')
+		if (prevProps.g.grid.h !== this.props.g.grid.h) {
+			console.log('Updated grid', this.props.g)
+		}
+		//TODO: Change the if to include also the id of device
+		if (prevProps.g !== this.props.g || prevProps.g.dataSource !== this.props.g.dataSource) {
 			this.setState({ loading: true }, async () => {
 				await this.getData()
 			})
@@ -159,40 +146,27 @@ class MapData extends PureComponent {
 		return ((decreaseValue / oldNumber) * 100).toFixed(3);
 	}
 	renderType = () => {
-		const { loading, data } = this.state
-		if (!loading) {
-			return <div style={{ maxHeight: 300, overflowX: 'auto', width: '100%' }}>
-				<Table>
-					<TableBody >
-						{data.map((a, i) => {
-							return <TableRow key={i}>
-								<TC label={a.label} />
-								<TC content={
-									<T style={{ fontWeight: 500 }}>
-										{`${a.data} ${a.unit}`}
-									</T>
-								} />
-							</TableRow>
-						}
-						)}
-					</TableBody>
-				</Table>
-			</div>
-		}
-		else return this.renderNoData()
+		const { t, mapTheme, g } = this.props
+		const { device } = this.state
+		return <ItemG container>
+			<OpenStreetMapWidget
+				calibrate={this.state.openModalEditLocation}
+				getLatLng={this.getLatLngFromMap}
+				iRef={this.getRef}
+				mapTheme={mapTheme}
+				heatMap={false}
+				heatData={[]}
+				g={g}
+				t={t}
+				markers={[{ lat: device.lat, long: device.lng }]}
+			/>
+		</ItemG>
+		// return <div>Here will be the map</div>
 	}
-	disableFuture = () => {
-		const { period } = this.props
-		if (moment().diff(period.to, 'hour') <= 0) {
-			return true
-		}
-		return false
-	}
+
 	renderMenu = () => {
 		const { t } = this.props
 		const { actionAnchor } = this.state
-		// let displayTo = dateTimeFormatter(period.to)
-		// let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container>
 			<Tooltip title={t('menus.menu')}>
 				<IconButton
@@ -240,15 +214,14 @@ class MapData extends PureComponent {
 
 	render() {
 		const { classes, color, g } = this.props
-		const { loading } = this.state
-		let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
+		const { loading, device } = this.state
+		let small = g ? g.grid ? g.grid.w < 4 ? true : false : false : false
 
 		return (
 			<Fragment>
 				<InfoCard
 					color={color}
 					title={this.renderTitle(small)}
-					// subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
 					headerClasses={{
@@ -257,23 +230,24 @@ class MapData extends PureComponent {
 					bodyClasses={{
 						root: small ? classes.smallBody : classes.body
 					}}
+					flexPaper
 					topAction={this.renderMenu()}
 					background={this.props.color}
 					content={
 						<Grid container style={{ height: '100%', width: '100%' }}>
-							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
+							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader fill /></div> :
+
 								<Fragment>
-									<span>{this.state.device? this.state.device.name : ''}</span> 
-									{/* <Hidden xsDown>
+									<Hidden xsDown>
 										{small ? this.renderSmallTitle() : null}
 									</Hidden>
 									<Hidden smUp>
 										{this.renderSmallTitle()}
 									</Hidden>
-									{this.renderType()} */}
+									{device ? this.renderType() : this.renderNoData()}
 								</Fragment>
 							}
-						
+
 						</Grid>}
 				/>
 			</Fragment >
@@ -282,7 +256,7 @@ class MapData extends PureComponent {
 }
 const mapStateToProps = (state, ownProps) => ({
 	g: getGraph(state, ownProps.gId, ownProps.create),
-	period: getPeriod(state, ownProps.gId, ownProps.create)
+	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme
 })
 
 const mapDispatchToProps = dispatch => ({

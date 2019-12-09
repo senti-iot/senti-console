@@ -124,7 +124,7 @@ class DeviceTypeHover extends Component {
 										</ItemG>
 									</ItemG>
 								</Fragment>
-								: <CircularLoader notCentered />}
+								: <CircularLoader fill />}
 						</Paper>
 					</Fade>
 				)}

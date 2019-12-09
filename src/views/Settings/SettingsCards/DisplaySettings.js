@@ -215,7 +215,7 @@ class DisplaySettings extends Component {
 							</List>
 						</Grid>
 					}
-				/> : <CircularLoader notCentered />
+				/> : <CircularLoader fill />
 		)
 	}
 }

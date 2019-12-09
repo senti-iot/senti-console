@@ -540,7 +540,7 @@ class EditUser extends Component {
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>
 						<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
-							<CircularLoader notCentered />
+							<CircularLoader fill />
 						</Collapse>
 					</ItemGrid>
 					<ItemGrid container style={{ margin: 16 }}>

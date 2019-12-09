@@ -31,7 +31,7 @@ class DeviceImages extends PureComponent {
 		this._isMounted = 1
 		await this.getAllPics(this.props.device.id)
 	}
-	componentWillUnmount = () => { 
+	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 	getPicsCallBack = () => {
@@ -70,7 +70,7 @@ class DeviceImages extends PureComponent {
 			this.setState({ img: null, openDeleteImage: false, openSnackbar: 1 })
 			this.getAllPics(dId)
 		}
-		else { 
+		else {
 			this.setState({ openSnackbar: 2, openDeleteImage: false })
 		}
 	}
@@ -89,7 +89,7 @@ class DeviceImages extends PureComponent {
 		}
 	}
 	renderImageLoader = () => {
-		return <CircularLoader notCentered />
+		return <CircularLoader fill />
 	}
 	renderDeleteDialog = () => {
 		const { t } = this.props
@@ -116,7 +116,7 @@ class DeviceImages extends PureComponent {
 		</Dialog>
 	}
 
-	
+
 	render() {
 		const { openImageUpload, img } = this.state
 		const { classes, device, t  } = this.props

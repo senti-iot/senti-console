@@ -311,6 +311,8 @@
 		"noData": "There is currently no data available!",
 		"noDataFilters": "There is currently no data available for the selected filters!",
 		"noDevices": "There are no available devices",
+		"noPeriodSet": "There is no default period set in Settings->Diagrams!",
+		"noPeriodSetLink": "Click here to set one up",
 		"noImages": "There are no images uploaded!",
 		"noLocType": " No location type set",
 		"noName": "No name",

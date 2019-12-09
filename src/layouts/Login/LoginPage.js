@@ -155,8 +155,8 @@ class NewLoginPage extends Component {
 								<ItemG xs={12} container justify={'center'}>
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
-								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
-									<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => { }} notCentered>
+								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} fill>
+									<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => { }} fill>
 
 										<ItemG xs={12} container justify={'center'}>
 											<ItemG xs={12} container justify={'center'}>

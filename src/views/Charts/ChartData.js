@@ -625,7 +625,7 @@ class ChartData extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
+							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
 
 								<ItemG xs={12}>
 									{this.renderType()}

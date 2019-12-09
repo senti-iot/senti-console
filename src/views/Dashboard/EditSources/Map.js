@@ -83,8 +83,8 @@ export class ESMap extends Component {
 	}
 
 	render() {
-		const { t, classes, sensor, g, cfs } = this.props
-		const { dataSourceExp, generalExp, openSensor, openCF } = this.state
+		const { t, classes, sensor, g } = this.props
+		const { dataSourceExp, generalExp, openSensor } = this.state
 		return (
 			<Fragment>
 				<ItemG xs={12}>
@@ -146,46 +146,6 @@ export class ESMap extends Component {
 										onChange={() => { }}
 									/>
 								</ItemG>
-								<Collapse unmountOnExit in={g.dataSource.deviceId > 0}>
-									{g.dataSource.deviceId > 0 ?
-										<Fragment>
-											<ItemG>
-												<DSelect
-													simple
-													value={g.dataSource.dataKey}
-													onChange={this.handleEditDataKey}
-													menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt => dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
-												/>
-											</ItemG>
-											<ItemG>
-												<AssignCFDialog
-													t={t}
-													open={openCF}
-													handleClose={this.handleExpand('openCF', false)}
-													callBack={this.handleEditCF}
-												/>
-												{/* {this.renderSelectFunction()} */}
-												<TextF
-													id={'cfSelect'}
-													label={t('dashboard.fields.cf')}
-													value={cfs[cfs.findIndex(f => f.id === g.dataSource.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSource.cf)].name : t('no.function')}
-													handleClick={this.handleExpand('openCF', true)}
-													onChange={() => { }}
-												/>
-											</ItemG>
-											<ItemG xs={12}>
-												<TextF
-													onChange={this.handleEditGraph('unit')}
-													autoFocus
-													id={'unit'}
-													label={t('dashboard.fields.unit')}
-													value={g.unit}
-													margin='normal'
-												/>
-											</ItemG>
-										</Fragment>
-										: null}
-								</Collapse>
 							</ItemG>
 						</ExpansionPanelDetails>
 

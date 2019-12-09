@@ -312,6 +312,8 @@
 		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noDevices": "Der er ingen tilgængelige enheder",
 		"noImages": "Der er ikke overført billeder!",
+		"noPeriodSet": "Der er ingen standardperiode indstillet i Indstillinger->Diagrammer!",
+		"noPeriodSetLink": "Klik her for at indstille en",
 		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
 		"notCalibrated": "Enheden er ikke kalibreret! Lokation på kort og vejr data vil ikke være tilgængelige.",

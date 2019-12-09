@@ -21,6 +21,7 @@ import { removeDashboard } from 'redux/dsSystem';
 import { /* encrypyAES, */ copyToClipboard, selectAll } from 'variables/functions';
 import withSnackbar from 'components/Localization/S';
 import SB from 'components/Scrollbar/SB';
+import MapData from 'views/Charts/MapData';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class DashboardPanel extends Component {
@@ -84,6 +85,8 @@ class DashboardPanel extends Component {
 				return 'scorecard'
 			case 4:
 				return 'windcard'
+			case 5:
+				return 'map'
 			default:
 				break;
 		}
@@ -297,6 +300,17 @@ class DashboardPanel extends Component {
 											gId={g.id}
 											dId={d.id}
 											single={true}
+											t={t}
+										/>
+									</Paper>
+								case 5:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										{/* {this.renderPos(grid)} */}
+										<MapData
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
 											t={t}
 										/>
 									</Paper>

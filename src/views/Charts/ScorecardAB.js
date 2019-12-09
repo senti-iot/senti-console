@@ -543,7 +543,7 @@ class ScoreCard extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container style={{ height: '100%', width: '100%' }}>
-							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
+							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader fill /></div> :
 								<Fragment>
 									<Hidden xsDown>
 										{small ? this.renderSmallTitle() : null}

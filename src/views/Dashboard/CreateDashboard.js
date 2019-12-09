@@ -354,8 +354,8 @@ class CreateDashboard extends React.Component {
 										margin={'none'}
 										value={d.name}
 
-										// onChange={this.handleOpenSave}
-										handleClick={this.handleOpenSave}
+										onClick={this.handleOpenSave}
+										// handleClick={this.handleOpenSave}
 										readOnly
 										reversed
 										notched={false}
@@ -414,12 +414,6 @@ const mapStateToProps = (state) => ({
 	d: state.dsSystem.cDash,
 	gs: state.dsSystem.cGraphs,
 	eGraph: state.dsSystem.eGraph,
-	// cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
-	// draggableCancel: ".disableDrag",
-	// draggableHandle: ".dragHandle",
-	// className: "layout",
-	// rowHeight: 25,
-	// preventCollision: false,
 })
 
 const mapDispatchToProps = dispatch => ({

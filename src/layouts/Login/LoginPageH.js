@@ -144,7 +144,7 @@ function LoginPage(props) {
 							<ItemG xs={12} container justify={'center'}>
 								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
 							</ItemG>
-							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} notCentered>
+							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} fill>
 
 								<ItemG xs={12} container justify={'center'}>
 									<ItemG xs={12} container justify={'center'}>

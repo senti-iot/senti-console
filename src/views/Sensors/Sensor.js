@@ -131,11 +131,17 @@ class Sensor extends Component {
 	}
 	getDeviceMessages = async () => {
 		const { sensor, periods } = this.props
-		await getSensorMessages(sensor.id, periods[0]).then(rs => {
-			this.setState({
-				sensorMessages: rs
+		if (periods.length > 0)
+			await getSensorMessages(sensor.id, periods[0]).then(rs => {
+				this.setState({
+					sensorMessages: rs
+				})
 			})
-		})
+		else {
+			this.setState({
+				sensorMessages: []
+			})
+		}
 	}
 	snackBarMessages = (msg) => {
 		// const { s, t, registry } = this.props
@@ -218,13 +224,13 @@ class Sensor extends Component {
 							}
 							if (k.type === 0) {
 								// return null
-								return <ItemGrid xs={12} container noMargin id={'charts'} >
+								return <ItemGrid key={i} xs={12} container noMargin id={'charts'} >
 									<SensorChart
 										deviceId={sensor.id}
 										dataKey={k.key}
 										title={k.key}
 										cfId={k.nId}
-										color={'teal'}
+										chartColor={'teal'}
 										// gId={k}
 										// dId={d.id}
 										// color={d.color}

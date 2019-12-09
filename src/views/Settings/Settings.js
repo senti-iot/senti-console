@@ -78,6 +78,11 @@ const Settings = (props) => {
 			route: 0
 		})
 		props.setBC('settings')
+		if (location.hash.length > 0) {
+			let el = document.getElementById(location.hash.substr(1, location.hash.lenght))
+			let topOfElement = el.offsetTop - 130
+			window.scroll({ top: topOfElement, behavior: 'smooth' })
+		}
 		//eslint-disable-next-line
 	}, [])
 

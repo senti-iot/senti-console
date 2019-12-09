@@ -266,7 +266,7 @@ class CreateProjectForm extends Component {
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>
 						<Collapse in={creating} timeout='auto' unmountOnExit>
-							<CircularLoader notCentered />
+							<CircularLoader fill />
 						</Collapse>
 					</ItemGrid>
 					<ItemGrid container style={{ margin: 16 }}>
