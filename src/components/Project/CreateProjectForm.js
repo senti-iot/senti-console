@@ -198,7 +198,7 @@ class CreateProjectForm extends Component {
 								label={t('projects.fields.name')}
 								value={title}
 								// className={classes.textField}
-								handleChange={handleChange('title')}
+								onChange={handleChange('title')}
 								margin='normal'
 
 								error={error}
@@ -214,7 +214,7 @@ class CreateProjectForm extends Component {
 								color={'secondary'}
 								// className={classes.textField}
 								value={description}
-								handleChange={handleChange('description')}
+								onChange={handleChange('description')}
 								margin='normal'
 
 								error={error}
@@ -243,7 +243,6 @@ class CreateProjectForm extends Component {
 								label={t('projects.contact.title')}
 								value={`${user.firstName} ${user.lastName}`}
 								handleClick={handleOpenUser}
-								handleChange={() => { }}
 								InputProps={{
 									onChange: handleOpenUser,
 									readOnly: true
@@ -257,8 +256,6 @@ class CreateProjectForm extends Component {
 								label={t('collections.fields.org')}
 								value={org.name}
 								handleClick={handleOpenOrg}
-								handleChange={() => { }}
-
 								InputProps={{
 									onChange: handleOpenOrg,
 									readOnly: true

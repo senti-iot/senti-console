@@ -73,7 +73,7 @@ class ConfirmUser extends React.Component {
 			this.setState({
 				error: true,
 				errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-			})	
+			})
 			return false
 		}
 	}
@@ -86,7 +86,7 @@ class ConfirmUser extends React.Component {
 				return t('confirmUser.validation.passwordUnder8')
 			case 2:
 				return t('confirmUser.validation.passwordMismatch')
-			case 404: 
+			case 404:
 				return t('confirmUser.validation.userDoesntExistAnymore')
 			default:
 				return ''
@@ -181,7 +181,7 @@ class ConfirmUser extends React.Component {
 												label={t('confirmUser.password')}
 												value={password}
 												className={classes.loginButton}
-												handleChange={this.handleChange('password')}
+												onChange={this.handleChange('password')}
 												margin='normal'
 												error={error}
 												type={'password'}
@@ -194,7 +194,7 @@ class ConfirmUser extends React.Component {
 												label={t('confirmUser.passwordConfirm')}
 												value={confirmPassword}
 												className={classes.loginButton}
-												handleChange={this.handleChange('confirmPassword')}
+												onChange={this.handleChange('confirmPassword')}
 												margin='normal'
 												error={error}
 												type={'password'}

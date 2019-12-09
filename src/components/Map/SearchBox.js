@@ -8,7 +8,7 @@ const { StandaloneSearchBox } = require('react-google-maps/lib/components/places
 
 export const PlacesWithStandaloneSearchBox = compose(
 	withProps({
-		googleMapURL: 
+		googleMapURL:
 			'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_SENTI_MAPSKEY + '&v=3.exp&libraries=geometry,drawing,places',
 		loadingElement: <div style={{ height: `100%` }} />,
 		containerElement: <div style={{ height: `400px` }} />,
@@ -32,8 +32,8 @@ export const PlacesWithStandaloneSearchBox = compose(
 			})
 		},
 	}),
-	withScriptjs  
-)(props => { 
+	withScriptjs
+)(props => {
 	return <Fragment>
 		<StandaloneSearchBox
 			ref={props.onSearchBoxMounted}
@@ -45,10 +45,10 @@ export const PlacesWithStandaloneSearchBox = compose(
 				id={'calibrate-address'}
 				placeholder={props.t('actions.insertAddress')}
 				label={props.t('devices.fields.address')}
-				handleChange={props.handleChange}
+				onChange={props.handleChange}
 				value={props.address}
 			/>
-		
+
 		</StandaloneSearchBox>
 	</Fragment>
 }

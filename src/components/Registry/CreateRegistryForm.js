@@ -154,7 +154,7 @@ class CreateRegistryForm extends Component {
 								<TextF
 									id={'registryName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={registry.name}
 									autoFocus
 								/>

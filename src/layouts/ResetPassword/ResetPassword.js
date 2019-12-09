@@ -209,7 +209,7 @@ class ResetPassword extends React.Component {
 													autoFocus
 													label={t('users.fields.email')}
 													value={email}
-													handleChange={this.handleChange('email')}
+													onChange={this.handleChange('email')}
 													margin='normal'
 													fullWidth
 													className={classes.loginButton}
@@ -225,7 +225,7 @@ class ResetPassword extends React.Component {
 													label={t('confirmUser.password')}
 													value={password}
 													className={classes.loginButton}
-													handleChange={this.handleChange('password')}
+													onChange={this.handleChange('password')}
 													margin='normal'
 													error={error}
 													type={'password'}
@@ -238,7 +238,7 @@ class ResetPassword extends React.Component {
 													label={t('confirmUser.passwordConfirm')}
 													value={confirmPassword}
 													className={classes.loginButton}
-													handleChange={this.handleChange('confirmPassword')}
+													onChange={this.handleChange('confirmPassword')}
 													margin='normal'
 													error={error}
 													type={'password'}

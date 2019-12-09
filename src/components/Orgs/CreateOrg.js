@@ -264,7 +264,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.name')}
 									value={org.name}
 									className={classes.textField}
-									handleChange={this.handleChange('name')}
+									onChange={this.handleChange('name')}
 									margin='normal'
 
 									error={error}
@@ -276,7 +276,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.nickname')}
 									value={org.nickname}
 									className={classes.textField}
-									handleChange={this.handleChange('nickname')}
+									onChange={this.handleChange('nickname')}
 									margin='normal'
 									error={error}
 								/>
@@ -288,7 +288,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.address')}
 									value={org.address}
 									className={classes.textField}
-									handleChange={this.handleChange('address')}
+									onChange={this.handleChange('address')}
 									margin='normal'
 
 									error={error}
@@ -301,7 +301,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.zip')}
 									value={org.zip}
 									className={classes.textField}
-									handleChange={this.handleChange('zip')}
+									onChange={this.handleChange('zip')}
 									margin='normal'
 
 									error={error}
@@ -316,7 +316,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.city')}
 									value={org.city}
 									className={classes.textField}
-									handleChange={this.handleChange('city')}
+									onChange={this.handleChange('city')}
 									margin='normal'
 
 									error={error}
@@ -330,7 +330,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.region')}
 									value={org.region}
 									className={classes.textField}
-									handleChange={this.handleChange('region')}
+									onChange={this.handleChange('region')}
 									margin='normal'
 
 									error={error}
@@ -354,7 +354,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.url')}
 									value={org.url}
 									className={classes.textField}
-									handleChange={this.handleChange('url')}
+									onChange={this.handleChange('url')}
 									margin='normal'
 
 									error={error}
@@ -369,7 +369,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.CVR')}
 									value={org.aux.cvr}
 									className={classes.textField}
-									handleChange={this.handleAuxChange('cvr')}
+									onChange={this.handleAuxChange('cvr')}
 									margin='normal'
 
 									error={error}
@@ -381,7 +381,7 @@ class CreateOrg extends Component {
 									label={t('orgs.fields.EAN')}
 									value={org.aux.ean}
 									className={classes.textField}
-									handleChange={this.handleAuxChange('ean')}
+									onChange={this.handleAuxChange('ean')}
 									margin='normal'
 
 									error={error}

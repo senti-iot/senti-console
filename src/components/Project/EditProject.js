@@ -307,7 +307,7 @@ class EditProject extends Component {
 										label={t('projects.fields.name')}
 										value={project.title}
 										className={classes.textField}
-										handleChange={this.handleChange('title')}
+										onChange={this.handleChange('title')}
 										margin='normal'
 
 										error={error}
@@ -322,7 +322,7 @@ class EditProject extends Component {
 										color={'secondary'}
 										className={classes.textField}
 										value={project.description}
-										handleChange={this.handleChange('description')}
+										onChange={this.handleChange('description')}
 										margin='normal'
 
 										error={error}
@@ -351,7 +351,7 @@ class EditProject extends Component {
 										label={t('projects.contact.title')}
 										value={`${user.firstName} ${user.lastName}`}
 										handleClick={this.handleOpenUser}
-										handleChange={() => { }}
+										onChange={() => { }}
 										InputProps={{
 											onChange: this.handleOpenUser,
 											readOnly: true

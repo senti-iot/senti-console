@@ -19,7 +19,9 @@ export class ESChart extends Component {
 		}
 	}
 
-	handleExpand = (prop, val) => e => this.setState({ [prop]: val !== undefined ? val : !this.state[prop] })
+	handleExpand = (prop, val) => e => {
+		this.setState({ [prop]: val !== undefined ? val : !this.state[prop] })
+	}
 
 	chartTypes = () => {
 		const { t } = this.props
@@ -101,7 +103,7 @@ export class ESChart extends Component {
 							<ItemG container>
 								<ItemG xs={12}>
 									<TextF
-										handleChange={this.handleEditGraph('name')}
+										onChange={this.handleEditGraph('name')}
 										autoFocus
 										id={'name'}
 										label={t('dashboard.fields.label')}
@@ -156,8 +158,8 @@ export class ESChart extends Component {
 										id={'sensorChart'}
 										label={t('dashboard.fields.device')}
 										value={sensor ? sensor.name : t('no.device')}
-										handleClick={this.handleExpand('openSensor', true)}
-										handleChange={() => { }}
+										onClick={this.handleExpand('openSensor', true)}
+										onChange={() => { }}
 									/>
 								</ItemG>
 								<Collapse unmountOnExit in={g.dataSource.deviceId > 0}>
@@ -184,12 +186,12 @@ export class ESChart extends Component {
 													label={t('dashboard.fields.cf')}
 													value={cfs[cfs.findIndex(f => f.id === g.dataSource.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSource.cf)].name : t('no.function')}
 													handleClick={this.handleExpand('openCF', true)}
-													handleChange={() => { }}
+													onChange={() => { }}
 												/>
 											</ItemG>
 											<ItemG xs={12}>
 												<TextF
-													handleChange={this.handleEditGraph('unit')}
+													onChange={this.handleEditGraph('unit')}
 													autoFocus
 													id={'unit'}
 													label={t('dashboard.fields.unit')}

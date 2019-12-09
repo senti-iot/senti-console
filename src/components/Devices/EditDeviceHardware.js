@@ -34,7 +34,7 @@ class EditDetails extends Component {
 			  })
 		  }
 	  }
-	
+
 	componentDidMount = async () => {
 		const { getDevice } = this.props
 		window.addEventListener('keydown', this.keyHandler, false)
@@ -102,7 +102,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'rpimodel'}
 									label={t('devices.fields.RPImodel')}
-									handleChange={this.handleInput('RPImodel')}
+									onChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
 
 									autoFocus
@@ -112,7 +112,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'memory'}
 									label={t('devices.fields.memory')}
-									handleChange={this.handleInput('memory')}
+									onChange={this.handleInput('memory')}
 									value={device.memory}
 
 								/>
@@ -121,7 +121,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'mm'}
 									label={t('devices.fields.memoryModel')}
-									handleChange={this.handleInput('memoryModel')}
+									onChange={this.handleInput('memoryModel')}
 									value={device.memoryModel}
 
 								/>
@@ -130,7 +130,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'powerAdapter'}
 									label={t('devices.fields.adapter')}
-									handleChange={this.handleInput('adapter')}
+									onChange={this.handleInput('adapter')}
 									value={device.adapter}
 
 								/>
@@ -139,7 +139,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'wifiModule'}
 									label={t('devices.fields.wifiModule')}
-									handleChange={this.handleInput('wifiModule')}
+									onChange={this.handleInput('wifiModule')}
 									value={device.wifiModule}
 
 								/>
@@ -148,7 +148,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'modemModel'}
 									label={t('devices.fields.modemModel')}
-									handleChange={this.handleInput('modemModel')}
+									onChange={this.handleInput('modemModel')}
 									value={device.modemModel}
 
 								/>
@@ -157,7 +157,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'modemIMEI'}
 									label={t('devices.fields.modemIMEI')}
-									handleChange={this.handleInput('modemIMEI')}
+									onChange={this.handleInput('modemIMEI')}
 									value={device.modemIMEI.toString()}
 
 								/>
@@ -166,7 +166,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'cellNumber'}
 									label={t('devices.fields.cellNumber')}
-									handleChange={this.handleInput('cellNumber')}
+									onChange={this.handleInput('cellNumber')}
 									value={device.cellNumber.toString()}
 
 								/>
@@ -175,7 +175,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'SIMID'}
 									label={t('devices.fields.SIMID')}
-									handleChange={this.handleInput('SIMID')}
+									onChange={this.handleInput('SIMID')}
 									value={device.SIMID.toString()}
 
 								/>
@@ -184,7 +184,7 @@ class EditDetails extends Component {
 								<TextF
 									id={'SIMProvider'}
 									label={t('devices.fields.SIMProvider')}
-									handleChange={this.handleInput('SIMProvider')}
+									onChange={this.handleInput('SIMProvider')}
 									value={device.SIMProvider}
 
 								/>
@@ -225,7 +225,7 @@ class EditDetails extends Component {
 					</form>
 				</Paper>
 			</GridContainer>
-		) : <CircularLoader /> 
+		) : <CircularLoader />
 	}
 }
 const mapStateToProps = (state) => ({

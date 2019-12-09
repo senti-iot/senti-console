@@ -324,7 +324,7 @@ class MapCard extends PureComponent {
 							value={m.address}
 							onBlur={this.getLatLng}
 							handleSuggestionSelected={this.getLatLng}
-							handleChange={this.handleChangeAddress} />
+							onChange={this.handleChangeAddress} />
 					</ItemG>) : null
 				}
 			</DialogContent>
