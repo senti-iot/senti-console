@@ -104,7 +104,7 @@ function App(props) {
 		history.push(url)
 		setUrl('')
 	}
-	const setTabs = (tbs) => {
+	const handleSetTabs = (tbs) => {
 		if (tbs.id !== tabs.id) {
 			dispatch(changeTabs(tbs))
 		}
@@ -115,6 +115,7 @@ function App(props) {
 	useEffect(() => {
 		if (defaultRoute === '/')
 			handleSetHeaderTitle('Senti', false, '', 'dashboard')
+
 		const getS = async () => {
 			dispatch(await getSettings()).then(async rs => {
 				await dispatch(getDaysOfInterest())
@@ -172,7 +173,7 @@ function App(props) {
 															<r.component {...rProps}
 																setBC={handleSetBreadCrumb}
 																setHeader={handleSetHeaderTitle}
-																setTabs={setTabs} />
+																setTabs={handleSetTabs} />
 														}
 														key={r.menuRoute + key}
 													/>
@@ -186,7 +187,7 @@ function App(props) {
 													<prop.component {...routeProps}
 														setBC={handleSetBreadCrumb}
 														setHeader={handleSetHeaderTitle}
-														setTabs={setTabs}
+														setTabs={handleSetTabs}
 													/>} key={key} />;
 										})
 										: <Redirect from={window.location.pathname} to={{
