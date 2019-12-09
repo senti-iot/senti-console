@@ -80,7 +80,6 @@ class OpenStreetMapWidget extends React.Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		const { g } = this.props
-		console.log('Widget Updated')
 		if (prevProps.mapTheme !== this.props.mapTheme)
 			this.map.leafletElement.setMaxZoom(layers[this.props.mapTheme].maxZoom)
 		if (this.props.calibrate) {
@@ -126,7 +125,7 @@ class OpenStreetMapWidget extends React.Component {
 	}
 	render() {
 		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
-		const { zoom, height } = this.state
+		const { zoom } = this.state
 		return <Fragment>
 			<Map
 

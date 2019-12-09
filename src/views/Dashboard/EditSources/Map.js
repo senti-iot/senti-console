@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF } from 'components';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
+import { T, ItemG, TextF } from 'components';
 import { ExpandMore } from 'variables/icons';
 import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons';
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
-import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 
 
 export class ESMap extends Component {
