@@ -12,7 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import MapCard from 'views/Charts/Map';
+import MapCard from 'views/Charts/MapData';
 import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout, resetCreateDash } from 'redux/dsSystem';
 // import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';

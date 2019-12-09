@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components';
+import { T, ItemG, DSelect, TextF } from 'components';
 import { ExpandMore } from 'variables/icons';
 import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons';
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 
 
-export class ESChart extends Component {
+export class ESMap extends Component {
 	constructor(props) {
 		super(props)
 
@@ -196,4 +196,4 @@ export class ESChart extends Component {
 	}
 }
 
-export default ESChart
+export default ESMap

@@ -143,30 +143,18 @@ export const graphType = (type) => {
 					h: 12,
 					w: 4
 				},
-				dataSources: [
-					{
-						cf: -1,
-						dataKey: "",
-						deviceId: -1,
-						label: "",
-						type: 0,
-						unit: ""
-					},
-					{
-						cf: -1,
-						dataKey: "",
-						deviceId: -1,
-						label: "",
-						type: 0,
-						unit: ""
-					}
-				],
+				dataSource: {
+					cf: -1,
+					dataKey: "",
+					deviceId: -1,
+					type: 0
+				},
 				id: "",
 				name: "Score Card",
 				periodType: 3,
 				type: 5
 			}
-			default:
+		default:
 			break;
 	}
 }
