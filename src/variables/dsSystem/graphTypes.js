@@ -133,7 +133,40 @@ export const graphType = (type) => {
 				type: 4,
 				unit: ""
 			}
-		default:
+		case "map":
+			return {
+				grid: {
+					minW: 4,
+					minH: 12,
+					x: 0,
+					y: 0,
+					h: 12,
+					w: 4
+				},
+				dataSources: [
+					{
+						cf: -1,
+						dataKey: "",
+						deviceId: -1,
+						label: "",
+						type: 0,
+						unit: ""
+					},
+					{
+						cf: -1,
+						dataKey: "",
+						deviceId: -1,
+						label: "",
+						type: 0,
+						unit: ""
+					}
+				],
+				id: "",
+				name: "Score Card",
+				periodType: 3,
+				type: 5
+			}
+			default:
 			break;
 	}
 }

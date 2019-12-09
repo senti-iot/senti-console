@@ -12,6 +12,7 @@ import DoubleChart from 'views/Charts/DoubleChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
+import MapCard from 'views/Charts/Map';
 import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, generateID, saveDashboard, setLayout, resetCreateDash } from 'redux/dsSystem';
 // import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
@@ -144,6 +145,19 @@ class CreateDashboard extends React.Component {
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					{this.renderPos(g.grid)}
 					<WindCard
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			case 5:
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
+					{this.renderPos(g.grid)}
+					<MapCard
 						create
 						title={g.name}
 						gId={g.id}
@@ -320,6 +334,7 @@ class CreateDashboard extends React.Component {
 										<ToolbarItem type={"chart"} name={'Chart'} />
 										<ToolbarItem type={"gauge"} name={'Gauge'} />
 										<ToolbarItem type={"scorecard"} name={'Scorecard'} />
+										<ToolbarItem type={"map"} name={'Map'} />
 										{/*<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />*/}
 										{/*<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
 									</ItemG>
