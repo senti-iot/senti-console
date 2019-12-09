@@ -157,6 +157,7 @@ class Dashboard extends React.Component {
 			<DialogTitle>{`${t('actions.import')} ${t('sidebar.dashboard')}`}</DialogTitle>
 			<DialogContent>
 				<TextF
+					id={'importDashboard'}
 					fullWidth
 					multiline
 					rows={10}

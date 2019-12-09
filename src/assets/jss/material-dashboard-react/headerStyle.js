@@ -10,12 +10,14 @@ import {
 	// successColor,
 	// warningColor,
 	// dangerColor,
-	headerColor,
+	// headerColor,
 } from "assets/jss/material-dashboard-react.js";
+import { getContrast } from 'variables/functions';
+
 
 const headerStyle = theme => ({
 	drawerButton: {
-		color: '#fff',
+		color: getContrast(theme.header),
 		'&:hover': {
 			background: '#FFFFFF22'
 		}
@@ -31,7 +33,7 @@ const headerStyle = theme => ({
 		},
 	},
 	appBar: {
-		backgroundColor: headerColor,
+		backgroundColor: theme.header,
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
@@ -42,7 +44,7 @@ const headerStyle = theme => ({
 		},
 		height: "70px",
 		zIndex: "1029",
-		color: "#ffffff",
+		color: getContrast(theme.header),
 		border: "0",
 		// transition: "all 150ms ease 0s",
 		minHeight: "48px",
@@ -66,7 +68,7 @@ const headerStyle = theme => ({
 		right: 0,
 		top: 0,
 		bottom: 0,
-		backgroundSize: "100px 50px",
+		backgroundSize: "100px 100px",
 		backgroundRepeat: "no-repeat",
 		backgroundPosition: "50% 50%",
 	},

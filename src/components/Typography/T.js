@@ -1,23 +1,8 @@
-import React from 'react'
-import { Typography, withStyles } from '@material-ui/core';
-import cx from 'classnames'
-const styles = theme =>  ({
-	bold: {
-		fontWeight: 600
-	},
-	reversed: {
-		color: "#fff"
-	}
-})
-const T = (props) => {
-	let classNames = cx({
-		[props.classes.reversed]: props.reversed,
-		[props.classes.bold]: props.b
-	})
-	return (
-		<Typography noWrap={props.noWrap} color={props.color} paragraph={props.paragraph ? props.paragraph : undefined} style={props.style} className={props.className + ' ' + classNames} variant={props.variant ? props.variant : 'body2'}>
-			{props.children}
-		</Typography>
-	)
-}
-export default withStyles(styles)(T)
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+
+
+const T = styled(Typography)`
+	font-weight: ${props => props.bold ? 600 : undefined};
+`
+export default T

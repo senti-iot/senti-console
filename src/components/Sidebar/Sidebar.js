@@ -13,8 +13,9 @@ import { changeSmallMenu } from 'redux/appState';
 // import { Menu } from 'variables/icons';
 import { HeaderLinks } from 'components';
 import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
+import logo from 'logo.svg'
 
-const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref}/>)
+const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref} />)
 class Sidebar extends Component {
 	constructor(props) {
 		super(props)
@@ -79,7 +80,7 @@ class Sidebar extends Component {
 										})
 									}}>
 									{/* <div> */}
-									<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 									{/* </div> */}
 								</ListItem>
@@ -101,7 +102,7 @@ class Sidebar extends Component {
 													[classes.nested]: smallMenu
 												})
 											}}>
-											<ListItemIcon  className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									</Tooltip>)}
@@ -122,7 +123,7 @@ class Sidebar extends Component {
 								[classes.button]: true
 							})
 						}}>
-						<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+						<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 					</ListItem>
 				})}
@@ -196,7 +197,7 @@ class Sidebar extends Component {
 													[classes.nested]: smallMenu
 												})
 											}}>
-											<ListItemIcon  className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
 											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
 										</ListItem>
 									</Tooltip>)}
@@ -218,7 +219,7 @@ class Sidebar extends Component {
 									[classes.button]: true
 								})
 							}}>
-							<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 						</ListItem>
 					</Tooltip>
@@ -269,7 +270,7 @@ class Sidebar extends Component {
 											[classes.button]: true
 										})
 									}}>
-									<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 								<Collapse in={this.state[route.menuRoute]}>
@@ -308,7 +309,7 @@ class Sidebar extends Component {
 									[classes.button]: true
 								})
 							}}>
-							<ListItemIcon  className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 						</ListItem>
 					})}
@@ -316,8 +317,104 @@ class Sidebar extends Component {
 			</div>
 		</Drawer>
 	}
+	renderDrawer = (drawer) => {  //Hide Completely
+		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
+		const pers = drawer === 'persistent' ? true : false
+		return <Drawer
+			variant="permanent"
+			className={classNames(classes.drawer, {
+				[classes.drawerOpen]: smallMenu,
+				[classes.drawerPersClose]: pers && !smallMenu,
+				[classes.drawerClose]: !pers && !smallMenu,
+			})}
+			classes={{
+				paper: classNames({
+					[classes.drawerOpen]: smallMenu,
+					[classes.drawerPersClose]: pers && !smallMenu,
+					[classes.drawerClose]: !pers && !smallMenu,
+					[classes.drawerPaper]: true,
+				}),
+			}}
+			open={smallMenu}
+		>
+			<div className={classes.toolbar} />
+			{headerBorder && !pers && <div className={classes.border} />}
+			<List style={{
+				margin: '8px',
+				paddingTop: 0,
+			}}>
+				{routes.map((route, index) => {
+					if (route.redirect) return null;
+					if (route.hideFromSideBar) return null;
+					if (route.dropdown) {
+						return <Fragment key={index}>
+							<Tooltip key={index}
+								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
+								<ListItem
+									button
+									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
+									to={route.path + (route.defaultView ? defaultView : '')}
+									classes={{
+										button: classNames({
+											[classes.buttonOpen]: smallMenu,
+											[classes.buttonClose]: !smallMenu,
+											[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+											[classes.button]: true
+										})
+									}}>
+									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+								</ListItem>
+							</Tooltip>
+							<Collapse in={this.state[route.menuRoute]} >
+								<div style={{ height: 44 * route.items.length + 88 }}>
+									{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
+										placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
+										<ListItem component={NavLink}
+											button
+											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+											to={i.path + (i.defaultView ? defaultView : '')}
+											classes={{
+												button: classNames({
+													[classes.buttonOpen]: smallMenu,
+													[classes.buttonClose]: !pers && !smallMenu,
+													[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
+													[classes.button]: true,
+													[classes.nested]: smallMenu
+												})
+											}}>
+											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
+										</ListItem>
+									</Tooltip>)}
+								</div>
+							</Collapse>
+						</Fragment>
+					}
+					return <Tooltip key={index}
+						placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
+						<ListItem component={NavLink}
+							button
+							to={route.path + (route.defaultView ? defaultView : '')}
+							onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+							classes={{
+								button: classNames({
+									[classes.buttonOpen]: smallMenu,
+									[classes.buttonClose]: !pers && !smallMenu,
+									[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+									[classes.button]: true
+								})
+							}}>
+							<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+						</ListItem>
+					</Tooltip>
+				})}
+			</List>
+		</Drawer>
+	}
 	smallBrand = () => {
-		const { classes, logo, defaultRoute, handleDrawerToggle, history } = this.props
+		const { classes, defaultRoute, handleDrawerToggle, history } = this.props
 		return <div className={classes.logo}>
 			<ButtonBase
 				focusRipple
@@ -343,7 +440,8 @@ class Sidebar extends Component {
 		return (
 			<Fragment>
 				<Hidden mdDown>
-					{drawer === 'persistent' ? this.renderPersistentDrawer() : this.renderPermanentDrawer()}
+					{this.renderDrawer(drawer)}
+					{/* {drawer === 'persistent' ? this.renderPersistentDrawer() : this.renderPermanentDrawer()} */}
 				</Hidden>
 				<Hidden lgUp>
 					{this.renderMobileDrawer()}

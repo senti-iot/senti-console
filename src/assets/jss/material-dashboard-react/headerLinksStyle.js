@@ -9,8 +9,14 @@ import {
 	primaryBoxShadow,
 	headerColor
 } from "assets/jss/material-dashboard-react.js";
+import { getContrast } from 'variables/functions';
 
 const headerLinksStyle = theme => ({
+	userDropdown: {
+		color: getContrast(theme.header),
+		textTransform: 'none',
+		margin: 8
+	},
 	expand: {
 		[theme.breakpoints.down('md')]: {
 			marginLeft: 18,
@@ -25,7 +31,7 @@ const headerLinksStyle = theme => ({
 		transform: 'rotate(180deg)',
 	},
 	nameAndEmail: {
-		height: 46,
+		height: 60,
 		display: 'flex',
 		flexFlow: 'column',
 		alignItems: 'flex-start',
@@ -50,15 +56,12 @@ const headerLinksStyle = theme => ({
 		marginRight: theme.spacing(1)
 	},
 	iconRoot: {
-		color: "#FFF",
+		color: getContrast(theme.header),
 		[theme.breakpoints.down('md')]: {
 			justifyContent: 'left',
 			width: 260
 		}
 		// padding: "12px 2px"
-	},
-	menuItem: {
-		maxHeight: 20	
 	},
 	menuList: {
 		padding: 0

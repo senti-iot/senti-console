@@ -532,7 +532,7 @@ export const finishedSaving = () => {
 		saved: false
 	}
 }
-let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49) + ' - auto'
+let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 let initialState = {
 	weekendColor: 'red',
 	periods: [{
@@ -579,7 +579,7 @@ export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case autoRowsPerPage:
 			let newRowsPerPage = [...initialState.rowsPerPageOptions]
-			newRowsPerPage[0] = action.payload + ' - auto'
+			newRowsPerPage[0] = action.payload
 			return Object.assign({}, state, { rowsPerPageOptions: [...newRowsPerPage] })
 		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })

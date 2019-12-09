@@ -99,13 +99,13 @@ class RegistryHover extends Component {
 												</T>
 											</ItemG>
 											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${registry.uuid}`}</T>
+												<T className={classes.smallText} paragraph={false}>{`${registry.uuid}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
 									<ItemG xs={12} className={classes.middleContainer}>
 										<ItemG xs={12}>
-											<T className={classes.smallText} noParagraph>
+											<T className={classes.smallText} paragraph={false}>
 												<Business className={classes.smallIcon} />
 												{registry.customer_name}
 											</T>

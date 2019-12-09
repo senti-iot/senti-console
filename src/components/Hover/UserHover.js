@@ -86,17 +86,17 @@ class UserHover extends Component {
 										</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>
+										<T className={classes.smallText} paragraph={false}>
 											{user.email}
 											<Tooltip title={t('actions.copyToClipboard')}>
 												<IconButton onClick={this.copyToClipboard(user.email)} className={classes.copyButton}>
 													<ContentCopy className={classes.copyIcon}/>
 												</IconButton>
 											</Tooltip>
-										</T> 
+										</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>{user.phone ? user.phone : ""}</T>
+										<T className={classes.smallText} paragraph={false}>{user.phone ? user.phone : ""}</T>
 									</ItemG>
 								</ItemG>
 							</ItemG>
