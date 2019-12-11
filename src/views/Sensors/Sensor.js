@@ -5,7 +5,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
-import { DataUsage, InsertChart, Wifi } from 'variables/icons';
+import { DataUsage, InsertChart, Wifi, Map } from 'variables/icons';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getSensorLS, unassignSensor } from 'redux/data';
@@ -17,6 +17,7 @@ import { deleteSensor } from 'variables/dataSensors';
 // import DoubleChart from 'views/Charts/DoubleChart';
 // import SensorData from './SensorCards/SensorData';
 import SensorChart from 'views/Charts/SensorChart';
+import Maps from 'views/Maps/MapCard';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -32,6 +33,7 @@ class Sensor extends Component {
 			//Map
 			loadingMap: true,
 			heatData: null,
+			weather: null,
 			value: 0
 			//End Map
 		}
@@ -45,7 +47,8 @@ class Sensor extends Component {
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
 			{ id: 1, title: t('sidebar.messages'), label: <InsertChart />, url: `#messages` },
-			{ id: 2, title: t('registries.fields.protocol'), label: <Wifi />, url: `#protocol` }
+			{ id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
+			{ id: 3, title: t('registries.fields.protocol'), label: <Wifi />, url: `#protocol` }
 			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
 			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
 			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
@@ -191,7 +194,13 @@ class Sensor extends Component {
 	}
 
 	render() {
+		const { weather, heatData } = this.state
 		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
+
+		if (sensor) {
+			sensor.long = sensor.lng;
+		}
+
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
@@ -218,6 +227,20 @@ class Sensor extends Component {
 								getData={this.getDeviceMessages}
 							/>
 						</ItemGrid>
+						{sensor.lat && sensor.long ?
+							<ItemGrid xs={12} noMargin id={'map'}>
+								<Maps
+									single
+									reload={this.reload}
+									device={sensor}
+									markers={sensor ? [sensor] : []}
+									loading={loading}
+									weather={weather}
+									heatData={heatData}
+									t={this.props.t}
+								/>
+							</ItemGrid>
+							: null}
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return null
