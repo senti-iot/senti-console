@@ -165,7 +165,7 @@ class CreateSensorForm extends Component {
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 						<IconButton
 							style={{ marginTop: 6 }}
-							onClick={handleRemoveMtdKey(i)}						>
+							onClick={handleRemoveMtdKey(i)}>
 							<Close />
 						</IconButton>
 					</Tooltip>
@@ -190,7 +190,7 @@ class CreateSensorForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(i, 'outbound')}
+						onClick={handleOpenFunc(i, 'outbound')}
 						onChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
@@ -240,7 +240,7 @@ class CreateSensorForm extends Component {
 				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						handleClick={handleOpenFunc(i, 'inbound')}
+						onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
 						InputProps={{
@@ -329,7 +329,7 @@ class CreateSensorForm extends Component {
 										label={t('sensors.fields.registry')}
 										value={select.reg.name}
 										readOnly
-										handleClick={handleOpenReg}
+										onClick={handleOpenReg}
 										onChange={() => { }}
 										InputProps={{
 											onChange: handleOpenReg,
@@ -353,7 +353,7 @@ class CreateSensorForm extends Component {
 										label={t('sensors.fields.deviceType')}
 										value={select.dt.name ? select.dt.name : ''}
 										readOnly
-										handleClick={handleOpenDT}
+										onClick={handleOpenDT}
 										onChange={() => { }}
 										InputProps={{
 											onChange: handleOpenDT,

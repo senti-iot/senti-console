@@ -367,7 +367,13 @@ export const saveDashboard = (edit) => {
 			user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
 		}
 		else {
-			user.aux.senti.dashboards.push(newD)
+			if (user.aux.senti.dashboards) {
+				user.aux.senti.dashboards.push(newD)
+			}
+			else {
+				user.aux.senti.dashboards = []
+				user.aux.senti.dashboards.push(newD)
+			}
 		}
 		// dispatch()
 		dispatch(saveOnServ(user))
