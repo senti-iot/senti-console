@@ -224,7 +224,7 @@ class Dashboard extends React.Component {
 						<Hidden xsDown>
 
 							<SpeedDial
-								ariaLabel="SpeedDial tooltip example"
+								ariaLabel="Create Dashboard"
 								className={this.props.classes.speedDial}
 								icon={<SpeedDialIcon />}
 								onBlur={this.handleCloseSpeed}

@@ -78,11 +78,12 @@ export const getPeriod = (state, id, create) => {
 	if (create) {
 		let gs = state.dsSystem.cGraphs
 		let g = gs[gs.findIndex(r => r.id === id)]
-		return g.period
+		if (g)
+			return g.period
 	}
 	let gs = state.dsSystem.graphs
 	let g = gs[gs.findIndex(r => r.id === id)]
-	if (g.period)
+	if (g)
 		return g.period
 }
 
