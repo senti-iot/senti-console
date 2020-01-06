@@ -154,6 +154,29 @@ export const graphType = (type) => {
 				periodType: 3,
 				type: 5
 			}
+		case "msChart": //Charts
+			return {
+				grid: {
+					minW: 4,
+					minH: 12,
+					x: 0,
+					y: 0,
+					h: 12,
+					w: 6
+				},
+				chartType: 3, //Line Graph
+				dataSource: {
+					cf: -1,
+					dataKey: "",
+					deviceId: -1,
+					type: 0
+				},
+				id: "",
+				name: "Chart",
+				periodType: 3,
+				type: 0,
+				unit: ""
+			}
 		default:
 			break;
 	}

@@ -10,6 +10,7 @@ import { useSelector, useDispatch, useLocalization } from 'hooks'
 
 import GaugeSData from 'views/Charts/GaugeSData';
 import DoubleChart from 'views/Charts/DoubleChart';
+import MultiSourceChart from 'views/Charts/MultiSourceChart';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
@@ -21,18 +22,7 @@ import { red } from '@material-ui/core/colors';
 import ToolbarItem from './ToolbarItem';
 import DropZone from './DropZone';
 import { weekendColorsDropdown } from 'variables/functions';
-/*
-const mapDispatchToProps = dispatch => ({
-	createDash: () => dispatch(createDash()),
-	createGraph: (type) => dispatch(createGraph(type)),
-	editGraphPos: (g) => dispatch(editGraphPos(g)),
-	editDashboard: (d) => dispatch(editDash(d)),
-	setGE: g => dispatch(setGE(g)),
-	removeGE: g => dispatch(removeGE(g)),
-	saveDashboard: () => dispatch(saveDashboard()),
-	setLayout: (l) => dispatch(setLayout(l)),
-	resetCreateDash: () => dispatch(resetCreateDash())
-}) */
+
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const RenderPos = (props) => {
@@ -191,7 +181,6 @@ const CreateDashboard = (props) => {
 					/>
 				</Paper>
 			case 0:
-				console.log(g, d)
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					<RenderPos l={g.grid} editGraphOpen={editGraphOpen} removeGraph={removeGraph} />
 					<DoubleChart
@@ -247,6 +236,19 @@ const CreateDashboard = (props) => {
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={g.grid}>
 					<RenderPos l={g.grid} editGraphOpen={editGraphOpen} removeGraph={removeGraph} />
 					<MapCard
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			case 6:
+				return <Paper style={{ background: 'inherid' }} key={g.id} data-grid={g.grid}>
+					<RenderPos l={g.grid} editGraphOpen={editGraphOpen} removeGraph={removeGraph} />
+					<MultiSourceChart
 						create
 						title={g.name}
 						gId={g.id}

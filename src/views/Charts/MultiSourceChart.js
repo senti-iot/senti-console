@@ -27,7 +27,7 @@ import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
 import multiSourceChartStyles from 'assets/jss/components/dashboards/multiSourceChartStyles'
 
-const DoubleChart = (props) => {
+const MultiSourceChart = (props) => {
 
 	//Hooks
 	const dispatch = useDispatch()
@@ -675,4 +675,4 @@ const DoubleChart = (props) => {
 
 
 
-export default DoubleChart
+export default MultiSourceChart
