@@ -77,7 +77,7 @@ class CreateFunctionForm extends Component {
 								<TextF
 									id={'cfOrgId'}
 									value={org.name}
-									handleClick={() => this.setState({ openOrg: true })}
+									onClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
 								<AssignOrgDialog

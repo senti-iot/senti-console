@@ -96,7 +96,7 @@ class EditCollectionForm extends Component {
 									id={'collectionOrg'}
 									label={t('collections.fields.org')}
 									value={collection.org.name ? collection.org.name : t('collections.noOrg')}
-									handleClick={handleOpenOrg}
+									onClick={handleOpenOrg}
 									onChange={() => { }}
 
 									InputProps={{

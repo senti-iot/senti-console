@@ -48,10 +48,9 @@ const DoubleChart = (props) => {
 	const [zoomDate, setZoomDate] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [chartType, setChartType] = useState('linear')
-	// const [timeType, setTimeType] = useState(0)
-	const [lineDataSets, setLineDataSets] = useState([])
-	const [roundDataSets, setRoundDataSets] = useState([])
-	const [barDataSets, setBarDataSets] = useState([])
+	const [lineDataSets, setLineDataSets] = useState(null)
+	const [roundDataSets, setRoundDataSets] = useState(null)
+	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
 	//Consts
 
@@ -73,8 +72,6 @@ const DoubleChart = (props) => {
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	const visibilityOptions = [
-		// { id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
-		// { id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
 		{ id: 2, icon: <BarChartIcon />, label: t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: t('charts.type.line') }
 	]
@@ -86,13 +83,7 @@ const DoubleChart = (props) => {
 		}
 		// eslint-disable-next-line
 	}, [])
-	// componentDidMount = async () => {
-	// 	const { period } = this.props
-	// 	const { loading } = this.state
-	// 	if (period && loading) {
-	// 		await this.getData()
-	// 	}
-	// }
+
 	const setData = useCallback((data, timeType) => {
 		switch (timeType) {
 			case 0:
@@ -110,7 +101,6 @@ const DoubleChart = (props) => {
 		if (g.dataSource.dataKey && g.dataSource.deviceId) {
 			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 			let newState = setData(data, period.timeType)
-			// setTimeType(newState.timeType)
 			setLineDataSets(newState.lineDataSets)
 			setRoundDataSets(newState.roundDataSets)
 			setBarDataSets(newState.barDataSets)
@@ -126,60 +116,22 @@ const DoubleChart = (props) => {
 		const gData = async () => await getData()
 		gData()
 	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData])
-	// componentDidUpdate = async (prevProps, prevState) => {
 
-	// 	if (prevProps.period.menuId !== this.props.period.menuId ||
-	// 		prevProps.period.timeType !== this.props.period.timeType ||
-	// 		prevProps.g !== this.props.g ||
-	// 		prevProps.g.dataSource.dataKey !== this.props.g.dataSource.dataKey ||
-	// 		prevProps.period.from !== this.props.period.from
-	// 	) {
-	// 		this.setState({ loading: true }, async () => {
-	// 			this.getData()
-	// 		})
-	// 	}
-	// }
-
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// 	this.setState({
-	// 		raw: this.props.raw ? this.props.raw : false,
-	// 		actionAnchor: null,
-	// 		openDownload: false,
-	// 		visibility: false,
-	// 		resetZoom: false,
-	// 		zoomDate: [],
-	// 		loading: true,
-	// 		chartType: 'linear',
-	// 		initialPeriod: null
-	// 	})
-	// }
 	const handleChangeChartType = () => {
 		setChartType(chartType === 'linear' ? 'logarithmic' : 'linear')
-
 	}
-	// const handleCloseDownloadModal = () => {
-	// 	setOpenDownload(false)
-	// }
-	// const handleOpenDownloadModal = () => {
-	// 	setOpenDownload(true)
-	// 	setActionAnchor(null)
-	// }
+
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
-		// this.setState({ actionAnchor: event.currentTarget });
 	}
 
 	const handleCloseActionsDetails = () => {
 		setActionAnchor(null)
-		// this.setState({ actionAnchor: null });
 	}
 
 	const handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		// this.props.changeChartType(this.props.period, id)
-
 		handleSetDate(period.menuId, period.to, period.from, period.timeType, id)
 	}
 
@@ -230,15 +182,6 @@ const DoubleChart = (props) => {
 								from: period.from,
 								to: period.to
 							}])
-						// this.setState({
-						// 	resetZoom: true,
-						// 	zoomDate: [
-						// 		...this.state.zoomDate,
-						// 		{
-						// 			from: period.from,
-						// 			to: period.to
-						// 		}]
-						// })
 						handleSetDate(6, endDate, startDate, 0, period.id)
 						break
 					case 2:
@@ -643,7 +586,6 @@ const DoubleChart = (props) => {
 		<InfoCard
 			color={color}
 			title={renderTitle(small)}
-			// subheader={`${this.options[period.menuId].label}`}
 			avatar={renderIcon()}
 			noExpand
 			dashboard

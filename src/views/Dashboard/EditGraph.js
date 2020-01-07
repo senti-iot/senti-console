@@ -18,6 +18,7 @@ import { editGraph } from 'redux/dsSystem';
 import { getSensorLS } from 'redux/data';
 import EditDataSource from './EditDataSource';
 import MapData from 'views/Charts/MapData';
+import MultiSourceChart from 'views/Charts/MultiSourceChart';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -63,7 +64,6 @@ class EditGraph extends Component {
 							gId={g.id}
 							dId={d.id}
 							single={true}
-							t={t}
 						/>
 					</Paper>
 				case 2:
@@ -116,8 +116,20 @@ class EditGraph extends Component {
 							t={t}
 						/>
 					</Paper>
+				case 6:
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={this.getCoords(g.grid)}>
+						<MultiSourceChart
+							create
+							color={d.color}
+							title={g.name}
+							gId={g.id}
+							dId={d.id}
+							single={true}
+						/>
+					</Paper>
 				default:
 					return null;
+
 			}
 		else {
 			return null

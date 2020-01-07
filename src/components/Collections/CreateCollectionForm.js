@@ -216,7 +216,7 @@ class CreateCollectionForm extends Component {
 									id={'collectionOrg'}
 									label={t('collections.fields.org')}
 									value={org.name}
-									handleClick={handleOpenOrg}
+									onClick={handleOpenOrg}
 									onChange={() => { }}
 									InputProps={{
 										onChange: handleOpenOrg,
@@ -231,7 +231,7 @@ class CreateCollectionForm extends Component {
 									label={t('collections.fields.activeDevice')}
 									helperText={t('collections.helper.availableDevicesForOrg')}
 									value={device.name}
-									handleClick={handleOpenDevice}
+									onClick={handleOpenDevice}
 									onChange={() => { }}
 									InputProps={{
 										onChange: handleOpenDevice,

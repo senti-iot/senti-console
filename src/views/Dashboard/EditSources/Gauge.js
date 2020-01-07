@@ -144,7 +144,7 @@ export class ESGauge extends Component {
 										id={'sensorChart'}
 										label={t('dashboard.fields.device')}
 										value={sensor ? sensor.name : t('no.device')}
-										handleClick={this.handleExpand('openSensor', true)}
+										onClick={this.handleExpand('openSensor', true)}
 										onChange={() => { }}
 									/>
 								</ItemG>
@@ -170,7 +170,7 @@ export class ESGauge extends Component {
 													id={'cfSelect'}
 													label={t('dashboard.fields.cf')}
 													value={cfs[cfs.findIndex(f => f.id === g.dataSource.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSource.cf)].name : t('no.function')}
-													handleClick={this.handleExpand('openCF', true)}
+													onClick={this.handleExpand('openCF', true)}
 													onChange={() => { }}
 												/>
 											</ItemG>

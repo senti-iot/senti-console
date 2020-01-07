@@ -383,7 +383,7 @@ class EditDashboard extends React.Component {
 										margin='none'
 										value={d.name}
 										// onChange={this.changeName}
-										handleClick={this.handleOpenSave}
+										onClick={this.handleOpenSave}
 										reversed
 									/>
 									{this.renderColorPicker()}

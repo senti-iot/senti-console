@@ -185,7 +185,7 @@ export class ESChart extends Component {
 													id={'cfSelect'}
 													label={t('dashboard.fields.cf')}
 													value={cfs[cfs.findIndex(f => f.id === g.dataSource.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSource.cf)].name : t('no.function')}
-													handleClick={this.handleExpand('openCF', true)}
+													onClick={this.handleExpand('openCF', true)}
 													onChange={() => { }}
 												/>
 											</ItemG>

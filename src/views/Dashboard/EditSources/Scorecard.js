@@ -194,7 +194,7 @@ class ESScorecard extends Component {
 										id={'sensorChart'}
 										label={t('dashboard.fields.device')}
 										value={sensor ? sensor.name : t('no.device')}
-										handleClick={this.handleExpand('openSensor' + i, true)}
+										onClick={this.handleExpand('openSensor' + i, true)}
 										onChange={() => { }}
 									/>
 								</ItemG>
@@ -241,7 +241,7 @@ class ESScorecard extends Component {
 													id={'cfSelect'}
 													label={t('dashboard.fields.cf')}
 													value={cfs[cfs.findIndex(f => f.id === ds.cf)] ? cfs[cfs.findIndex(f => f.id === ds.cf)].name : t('no.function')}
-													handleClick={this.handleExpand('openCF' + i, true)}
+													onClick={this.handleExpand('openCF' + i, true)}
 													onChange={() => { }}
 												/>
 											</ItemG>

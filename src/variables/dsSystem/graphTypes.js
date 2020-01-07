@@ -168,7 +168,7 @@ export const graphType = (type) => {
 				dataSource: {
 					cf: -1,
 					dataKey: "",
-					deviceId: -1,
+					deviceIds: [],
 					type: 0
 				},
 				id: "",

@@ -77,7 +77,7 @@ const TextF = (props) => {
 			id={props.id}
 			label={props.label}
 			value={props.value}
-			onClick={props.onClick}
+			onClick={props.onClick || props.handleClick}
 			onChange={props.onChange}
 			fullWidth={props.fullWidth !== undefined ? props.fullWidth : mobile ? true : false}
 			// fullWidth={props.fullWidth || mobile ? true : false}

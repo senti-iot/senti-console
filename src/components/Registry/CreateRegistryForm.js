@@ -169,7 +169,7 @@ class CreateRegistryForm extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									value={org.name}
-									handleClick={() => this.setState({ openOrg: true })}
+									onClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
 								<AssignOrgDialog

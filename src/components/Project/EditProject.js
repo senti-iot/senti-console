@@ -350,7 +350,7 @@ class EditProject extends Component {
 										id={'contactPerson'}
 										label={t('projects.contact.title')}
 										value={`${user.firstName} ${user.lastName}`}
-										handleClick={this.handleOpenUser}
+										onClick={this.handleOpenUser}
 										onChange={() => { }}
 										InputProps={{
 											onChange: this.handleOpenUser,

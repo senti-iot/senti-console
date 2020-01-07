@@ -242,7 +242,7 @@ class CreateProjectForm extends Component {
 								id={'contactPerson'}
 								label={t('projects.contact.title')}
 								value={`${user.firstName} ${user.lastName}`}
-								handleClick={handleOpenUser}
+								onClick={handleOpenUser}
 								InputProps={{
 									onChange: handleOpenUser,
 									readOnly: true
@@ -255,7 +255,7 @@ class CreateProjectForm extends Component {
 								id={'collectionOrg'}
 								label={t('collections.fields.org')}
 								value={org.name}
-								handleClick={handleOpenOrg}
+								onClick={handleOpenOrg}
 								InputProps={{
 									onChange: handleOpenOrg,
 									readOnly: true

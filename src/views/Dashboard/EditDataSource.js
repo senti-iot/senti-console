@@ -365,7 +365,7 @@ export class EditDataSource extends Component {
 											id={'sensorChart'}
 											label={t('dashboard.fields.device')}
 											value={sensor ? sensor.name : t('no.device')}
-											handleClick={this.handleOpenD}
+											onClick={this.handleOpenD}
 											onChange={() => { }}
 										/>
 									</ItemG>
@@ -394,7 +394,7 @@ export class EditDataSource extends Component {
 														id={'cfSelect'}
 														label={t('dashboard.fields.cf')}
 														value={cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)].name : t('no.function')}
-														handleClick={this.handleOpenF}
+														onClick={this.handleOpenF}
 														onChange={() => { }}
 													/>
 												</ItemG>
@@ -444,7 +444,7 @@ export class EditDataSource extends Component {
 											id={'sensorChart'}
 											label={t('dashboard.fields.device')}
 											value={sensor ? sensor.name : t('no.device')}
-											handleClick={this.handleOpenD}
+											onClick={this.handleOpenD}
 											onChange={() => { }}
 										/>
 									</ItemG>
@@ -473,7 +473,7 @@ export class EditDataSource extends Component {
 														id={'cfSelect'}
 														label={t('dashboard.fields.cf')}
 														value={cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)].name : t('no.function')}
-														handleClick={this.handleOpenF}
+														onClick={this.handleOpenF}
 														onChange={() => { }}
 													/>
 												</ItemG>

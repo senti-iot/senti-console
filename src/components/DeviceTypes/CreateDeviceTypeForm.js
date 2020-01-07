@@ -82,7 +82,7 @@ class CreateDeviceTypeForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(i, 'outbound')}
+						onClick={handleOpenFunc(i, 'outbound')}
 						onChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
@@ -131,7 +131,7 @@ class CreateDeviceTypeForm extends Component {
 				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						handleClick={handleOpenFunc(i, 'inbound')}
+						onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
 						InputProps={{
@@ -323,7 +323,7 @@ class CreateDeviceTypeForm extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									value={org.name}
-									handleClick={() => this.setState({ openOrg: true })}
+									onClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
 								<AssignOrgDialog
