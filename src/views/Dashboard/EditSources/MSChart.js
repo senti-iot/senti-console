@@ -1,15 +1,17 @@
 import React, { useState, Fragment } from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core';
 import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components';
 import { ExpandMore } from 'variables/icons';
-import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons';
-import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
+import { /* PieChartRounded, DonutLargeRounded,  */BarChart, ShowChart } from 'variables/icons';
+// import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import { useLocalization } from 'hooks';
+import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
+import AssignSensorsDialog from 'components/AssignComponents/AssignSensorsDialog';
 
 
 const ESMSChart = (props) => {
-	const { classes, sensor, g, cfs } = props
+	const { classes, g, cfs, deviceType } = props
 
 	//Hooks
 	const t = useLocalization()
@@ -17,14 +19,14 @@ const ESMSChart = (props) => {
 	//State
 	const [dataSourceExp, setDataSourceExp] = useState(false)
 	const [generalExp, setGeneralExp] = useState(false)
-	const [openSensor, setOpenSensor] = useState(false)
+	const [openSensorType, setOpenSensorType] = useState(false)
 	const [openCF, setOpenCF] = useState(false)
-
+	const [openSensors, setOpenSensors] = useState(false)
 	//Constants
 	const chartTypes = () => {
 		return [
-			{ value: 0, icon: <PieChartRounded />, label: t('charts.type.pie') },
-			{ value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut') },
+			// { value: 0, icon: <PieChartRounded />, label: t('charts.type.pie') },
+			// { value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut') },
 			{ value: 2, icon: <BarChart />, label: t('charts.type.bar') },
 			{ value: 3, icon: <ShowChart />, label: t('charts.type.line') },
 		]
@@ -40,8 +42,8 @@ const ESMSChart = (props) => {
 			case 'generalExp':
 				setGeneralExp(val ? val : !generalExp)
 				break;
-			case 'openSensor':
-				setOpenSensor(val ? val : !openSensor)
+			case 'openSensorType':
+				setOpenSensorType(val ? val : !openSensorType)
 				break;
 			case 'openCF':
 				setOpenCF(val ? val : !openCF)
@@ -77,6 +79,13 @@ const ESMSChart = (props) => {
 		newG.periodType = menuId
 		props.handleEditGraph(newG)
 	}
+	const handleEditSensors = selectedSensors => {
+		let newG = { ...props.g }
+		newG.dataSource.deviceIds = selectedSensors
+		props.handleEditGraph(newG)
+		setOpenSensors(false)
+	}
+
 	const handleEditCF = d => {
 		let newG = { ...props.g }
 		newG.dataSource.cf = d.id
@@ -85,12 +94,13 @@ const ESMSChart = (props) => {
 	}
 
 
-	const handleEditDevice = d => {
+	const handleEditDeviceType = d => {
 		let newG = { ...props.g }
-		newG.dataSource.deviceId = d.id
-		props.getSensor(d.id)
+		newG.dataSource.deviceTypeId = d.id
+		// props.getSensor(d.id)
+		props.getDeviceType(d.id)
 		props.handleEditGraph(newG)
-		handleExpand('openSensor', false)()
+		handleExpand('openSensorType', false)()
 	}
 
 	const handleEditDataKey = e => {
@@ -99,7 +109,7 @@ const ESMSChart = (props) => {
 		props.handleEditGraph(newG)
 	}
 
-
+	console.log(deviceType)
 	return (
 		<Fragment>
 			<ItemG xs={12}>
@@ -163,29 +173,39 @@ const ESMSChart = (props) => {
 									period={g.period} />
 							</ItemG>
 							<ItemG xs={12}>
-								<AssignSensorDialog
+								<AssignDeviceTypeDialog
 									t={t}
-									open={openSensor}
-									handleClose={handleExpand('openSensor', false)}
-									callBack={handleEditDevice}
+									open={openSensorType}
+									handleClose={handleExpand('openSensorType', false)}
+									callBack={handleEditDeviceType}
 								/>
 								<TextF
 									id={'sensorChart'}
-									label={t('dashboard.fields.device')}
-									value={sensor ? sensor.name : t('no.device')}
-									onClick={handleExpand('openSensor', true)}
+									label={t('sensors.fields.deviceType')}
+									value={deviceType ? deviceType.name : t('no.device')}
+									onClick={handleExpand('openSensorType', true)}
 									onChange={() => { }}
 								/>
 							</ItemG>
-							<Collapse unmountOnExit in={g.dataSource.deviceId > 0}>
-								{g.dataSource.deviceId > 0 ?
+							<Collapse unmountOnExit in={g.dataSource.deviceTypeId > 0}>
+								{g.dataSource.deviceTypeId > 0 ?
 									<Fragment>
+										<ItemG>
+											<AssignSensorsDialog
+												open={openSensors}
+												handleClose={() => setOpenSensors(false)}
+												handleSave={handleEditSensors}
+											/>
+											<Button onClick={() => setOpenSensors(true)}>
+												{g.dataSource.deviceIds.length > 0 ? t('dashboards.messages.selectedDevices', { nr: g.dataSource.deviceIds.length }) : t('actions.selectDevices')}
+											</Button>
+										</ItemG>
 										<ItemG>
 											<DSelect
 												simple
 												value={g.dataSource.dataKey}
 												onChange={handleEditDataKey}
-												menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt => dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
+												menuItems={deviceType ? deviceType.outbound ? deviceType.outbound.map(dt => dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
 											/>
 										</ItemG>
 										<ItemG>

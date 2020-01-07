@@ -1,7 +1,6 @@
-import { AppBar, Button, Hidden, IconButton, Toolbar, withStyles, /* Link, */ ButtonBase } from '@material-ui/core';
+import { AppBar, Button, Hidden, IconButton, Toolbar, /* Link, */ ButtonBase } from '@material-ui/core';
 import { KeyboardArrowLeft, Menu } from 'variables/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle.js';
-import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import HeaderLinks from './HeaderLinks';
 import { useDispatch } from 'react-redux'
@@ -17,7 +16,7 @@ const Brand = (props) => {
 	const history = useHistory()
 
 	const { classes } = props
-	console.log(theme)
+
 	return <ButtonBase
 		focusRipple
 		className={classes.image}
@@ -41,8 +40,8 @@ function Header({ ...props }) {
 	const headerBorder = useSelector(s => s.settings.headerBorder)
 	const menuPos = useSelector(s => s.settings.sideBar)
 	const smallMenu = useSelector(s => s.appState.smallMenu)
-	const { classes, goBackButton, gbbFunc } = props;
-
+	const { goBackButton, gbbFunc } = props;
+	const classes = headerStyle()
 	const t = useLocalization()
 	const dispatch = useDispatch()
 
@@ -109,10 +108,4 @@ function Header({ ...props }) {
 	);
 }
 
-Header.propTypes = {
-	classes: PropTypes.object.isRequired,
-	color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger'])
-};
-
-
-export default withStyles(headerStyle)(Header)
+export default Header

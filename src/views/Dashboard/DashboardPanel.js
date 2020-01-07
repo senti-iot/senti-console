@@ -22,6 +22,7 @@ import { /* encrypyAES, */ copyToClipboard, selectAll } from 'variables/function
 import withSnackbar from 'components/Localization/S';
 import SB from 'components/Scrollbar/SB';
 import MapData from 'views/Charts/MapData';
+import MultiSourceChart from 'views/Charts/MultiSourceChart';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class DashboardPanel extends Component {
@@ -312,6 +313,16 @@ class DashboardPanel extends Component {
 											gId={g.id}
 											dId={d.id}
 											t={t}
+										/>
+									</Paper>
+								case 6:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										<MultiSourceChart
+											single={true}
+											color={d.color}
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
 										/>
 									</Paper>
 								default:

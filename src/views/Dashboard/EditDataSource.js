@@ -9,7 +9,7 @@ import withLocalization from 'components/Localization/T';
 import { suggestionGen, filterItems } from 'variables/functions';
 import Search from 'components/Search/Search';
 import { editGraph } from 'redux/dsSystem';
-import { getSensorLS, unassignSensor } from 'redux/data';
+import { getSensorLS, unassignSensor, getDeviceTypeLS } from 'redux/data';
 import ESChart from './EditSources/Chart'
 import ESGauge from './EditSources/Gauge';
 import ESScorecard from './EditSources/Scorecard';
@@ -283,7 +283,7 @@ export class EditDataSource extends Component {
 		this.props.editGraph(newG)
 	}
 	render() {
-		const { t, classes, sensor, g, cfs, getSensor } = this.props
+		const { t, classes, sensor, deviceType, g, cfs, getSensor, getDeviceType } = this.props
 		const { generalExp, dataSourceA, dataSourceB } = this.state
 		switch (g.type) {
 			case 0:
@@ -300,9 +300,11 @@ export class EditDataSource extends Component {
 				return <ESMSChart
 					handleEditGraph={this.handleEditGraph}
 					getSensor={getSensor}
+					getDeviceType={getDeviceType}
 					t={t}
 					classes={classes}
 					sensor={sensor}
+					deviceType={deviceType}
 					g={g}
 					cfs={cfs}
 				/>
@@ -540,12 +542,14 @@ const mapStateToProps = (state, props) => ({
 	g: state.dsSystem.eGraph,
 	sensor: state.data.sensor,
 	cfs: [...state.data.functions, { id: -1, name: props.t('no.cloudfunction') }],
-	sensors: state.data.sensors
+	sensors: state.data.sensors,
+	deviceType: state.data.deviceType
 })
 
 const mapDispatchToProps = dispatch => ({
 	editGraph: (newG) => dispatch(editGraph(newG)),
 	getSensor: async id => dispatch(await getSensorLS(id)),
+	getDeviceType: async id => dispatch(await getDeviceTypeLS(id)),
 	unassignSensor: () => dispatch(unassignSensor())
 })
 

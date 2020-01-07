@@ -2,20 +2,11 @@
 // // // Header styles
 // #############################
 
-import {
-	// defaultFont,
-	// primaryColor,
-	// defaultBoxShadow,
-	// infoColor,
-	// successColor,
-	// warningColor,
-	// dangerColor,
-	// headerColor,
-} from "assets/jss/material-dashboard-react.js";
 import { getContrast } from 'variables/functions';
+import { makeStyles } from '@material-ui/core';
 
 
-const headerStyle = theme => ({
+const headerStyle = makeStyles(theme => ({
 	drawerButton: {
 		color: getContrast(theme.header),
 		'&:hover': {
@@ -134,6 +125,6 @@ const headerStyle = theme => ({
 	// 	color: "#FFFFFF",
 	// 	...defaultBoxShadow
 	// }
-});
+}))
 
 export default headerStyle;

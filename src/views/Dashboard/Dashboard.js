@@ -14,13 +14,18 @@ import DashboardPanel from './DashboardPanel.js';
 import CreateDashboard from './CreateDashboard.js';
 import { Add, ImportExport } from 'variables/icons.js';
 import { ThemeProvider } from '@material-ui/styles';
-import { darkTheme, lightTheme } from 'variables/themes/index.js';
 import EditDashboard from './EditDashboard.js';
 import { reset, importDashboard } from 'redux/dsSystem.js';
 import { finishedSaving } from 'redux/dsSystem';
 import withSnackbar from 'components/Localization/S.js';
 import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab';
 import { TextF } from 'components/index.js';
+import { nLightTheme, nDarkTheme } from 'variables/themes'
+import { getWL } from 'variables/storage'
+let wl = getWL()
+
+const lightTheme = nLightTheme(wl ? wl : undefined)
+const darkTheme = nDarkTheme(wl ? wl : undefined)
 
 class Dashboard extends React.Component {
 	constructor(props) {

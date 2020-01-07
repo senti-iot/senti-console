@@ -51,6 +51,8 @@ const MultiSourceChart = (props) => {
 	const [roundDataSets, setRoundDataSets] = useState(null)
 	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
+	const [selectedDevice, setSelectedDevice] = useState(0)
+
 	//Consts
 	let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 
@@ -96,8 +98,8 @@ const MultiSourceChart = (props) => {
 	}, [color, g.id, g.period.from, g.period.to, title])
 
 	const getData = useCallback(async () => {
-		if (g.dataSource.dataKey && g.dataSource.deviceId) {
-			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+		if (g.dataSource.dataKey && g.dataSource.deviceIds.length > 0) {
+			let data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice], period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 			let newState = setData(data, period.timeType)
 			setLineDataSets(newState.lineDataSets)
 			setRoundDataSets(newState.roundDataSets)
@@ -108,7 +110,7 @@ const MultiSourceChart = (props) => {
 		else {
 			setLoading(false)
 		}
-	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceId, g.dataSource.deviceType, g.dataSource.type, period.from, period.timeType, period.to, setData])
+	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceIds, g.dataSource.deviceType, g.dataSource.type, period.from, period.timeType, period.to, selectedDevice, setData])
 
 	useEffect(() => {
 		setLoading(true)

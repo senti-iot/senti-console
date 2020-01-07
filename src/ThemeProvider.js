@@ -6,7 +6,7 @@ import { getWL } from 'variables/storage'
 let wl = getWL()
 // console.log(wl)
 // const tOptions = wl.theme
-console.log(wl)
+// console.log(wl)
 const lightTheme = nLightTheme(wl ? wl : undefined)
 const darkTheme = nDarkTheme(wl ? wl : undefined)
 
