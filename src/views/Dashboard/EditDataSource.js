@@ -14,6 +14,7 @@ import ESChart from './EditSources/Chart'
 import ESGauge from './EditSources/Gauge';
 import ESScorecard from './EditSources/Scorecard';
 import ESMap from './EditSources/Map';
+import ESMSChart from './EditSources/MSChart';
 
 export class EditDataSource extends Component {
 	constructor(props) {
@@ -287,6 +288,16 @@ export class EditDataSource extends Component {
 		switch (g.type) {
 			case 0:
 				return <ESChart
+					handleEditGraph={this.handleEditGraph}
+					getSensor={getSensor}
+					t={t}
+					classes={classes}
+					sensor={sensor}
+					g={g}
+					cfs={cfs}
+				/>
+			case 6:
+				return <ESMSChart
 					handleEditGraph={this.handleEditGraph}
 					getSensor={getSensor}
 					t={t}

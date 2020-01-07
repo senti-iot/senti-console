@@ -174,7 +174,7 @@ export const graphType = (type) => {
 				id: "",
 				name: "Chart",
 				periodType: 3,
-				type: 0,
+				type: 6, //DataSource Type
 				unit: ""
 			}
 		default:
