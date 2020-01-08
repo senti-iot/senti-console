@@ -6,41 +6,27 @@ import PropTypes from 'prop-types'
 
 function FadeOutLoader(props) {
 	const [loading, setLoading] = useState(false)
-	const [showLoader, setShowLoader] = useState(props.on ? true : false)
+	// const [showLoader, setShowLoader] = useState(props.on ? true : false)
 	const on = props.on
 	useEffect(() => {
-		const execute = async (on) => {
+		const execute = async () => {
 			if (on) {
-				setTimeout(async () => {
-					setShowLoader(on)
-					setLoading(on)
-					await props.onChange()
-					// nprogress.done(true)
-
-				}, 1000);
-			}
-			else {
+				setLoading(true)
+				await props.onChange()
 				setLoading(false)
-				setShowLoader(false)
 			}
 		}
-
-		if (on) {
-			execute(true)
-		}
-		if (!on) {
-			execute(false)
-		}
+		execute()
 
 	}, [on, props])
 
 	const { children, notCentered, CustomLoader, fill, fillView } = props
 	return (
 		<Fragment>
-			<Fade in={!loading} unmountOnExit mountOnEnter>
-				{!showLoader ?
-					!loading ? children : <div></div>
-					: CustomLoader ? <CustomLoader notCentered={notCentered} /> : <CircularLoader fillView={fillView} fill={fill} notCentered={notCentered} />}
+			<Fade in={!loading}>
+				{/* {!showLoader ? */}
+				{!loading ? children : CustomLoader ? <CustomLoader notCentered={notCentered} /> : <CircularLoader fillView={fillView} fill={fill} notCentered={notCentered} />}
+
 			</Fade>
 		</Fragment>
 	)

@@ -17,8 +17,6 @@ let defaultOptions = {
 	}
 }
 const theme = (options = defaultOptions) => {
-
-	console.log(options)
 	return createMuiTheme({
 		typography: {
 			useNextVariants: true,

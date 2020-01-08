@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 const assignStylesH = makeStyles(theme => ({
 	appBar: {
 		position: 'sticky',
-		backgroundColor: () => { console.log(theme); return theme.header },
+		backgroundColor: theme.header,
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",

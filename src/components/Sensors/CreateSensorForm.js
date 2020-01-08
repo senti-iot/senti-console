@@ -139,7 +139,6 @@ class CreateSensorForm extends Component {
 
 	renderMetadata = () => {
 		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
-		console.log(sensorMetadata)
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {

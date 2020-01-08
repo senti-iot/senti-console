@@ -230,7 +230,6 @@ class EditOrg extends Component {
 		this.props.history.push(location.prevURL ? location.prevURL : '/management/org/' + this.props.match.params.id)
 	}
 	handleOrgChange = e => {
-		console.log(e.target.value)
 		this.setState({
 			selectedOrg: e.target.value,
 			org: {
@@ -242,9 +241,8 @@ class EditOrg extends Component {
 		})
 	}
 	renderOrgs = () => {
-		const { t, org, orgs, accessLevel } = this.props
+		const { t, orgs, accessLevel } = this.props
 		// const {  } = this.state
-		console.log(org.org.id)
 		return <DSelect
 			label={t('orgs.fields.parentOrg')}
 			value={this.state.org.org.id}
