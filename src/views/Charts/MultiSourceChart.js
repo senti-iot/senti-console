@@ -17,6 +17,7 @@ import {
 	PieChart,
 	DateFilterMenu,
 	T,
+	DSelect,
 } from 'components';
 import classNames from 'classnames';
 import moment from 'moment'
@@ -39,6 +40,7 @@ const MultiSourceChart = (props) => {
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
+	const sensors = useSelector(s => s.data.sensors)
 
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
@@ -129,6 +131,9 @@ const MultiSourceChart = (props) => {
 	// 	setOpenDownload(true)
 	// 	setActionAnchor(null)
 	// }
+	const handleGetDeviceName = dId => {
+		return sensors[sensors.findIndex(f => f.id === dId)].name
+	}
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
 	}
@@ -330,6 +335,9 @@ const MultiSourceChart = (props) => {
 		}
 		handleSetDate(6, to, from, period.timeType, period.id)
 	}
+	const handleChangeSelectedDevice = e => {
+		setSelectedDevice(e.target.value)
+	}
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -337,15 +345,23 @@ const MultiSourceChart = (props) => {
 			{small ? null :
 				<Hidden xsDown>
 					<ItemG xs zeroMinWidth>
-						<Tooltip enterDelay={1000} title={title}>
+						<DSelect
+							value={selectedDevice}
+							menuItems={g.dataSource.deviceIds.map((dId, i) => ({ label: handleGetDeviceName(dId), value: i }))}
+							onChange={handleChangeSelectedDevice}
+						/>
+						{/* <Tooltip enterDelay={1000} title={title}>
 							<div>
 								<T noWrap variant={'h6'}>{title}</T>
 							</div>
-						</Tooltip>
+						</Tooltip> */}
 					</ItemG>
 				</Hidden>
 			}
 			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+				<ItemG>
+
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={() => handlePreviousPeriod(period)}>

@@ -20,6 +20,7 @@ import DropZone from './DropZone';
 import { weekendColorsDropdown } from 'variables/functions';
 import { graphType } from 'variables/dsSystem/graphTypes';
 import MapData from 'views/Charts/MapData';
+import MultiSourceChart from 'views/Charts/MultiSourceChart';
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -200,6 +201,18 @@ class EditDashboard extends React.Component {
 						dId={d.id}
 						single={true}
 						t={t}
+					/>
+				</Paper>
+			case 6:
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+					{this.renderPos(g.grid)}
+					<MultiSourceChart
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
+						single={true}
 					/>
 				</Paper>
 			default:

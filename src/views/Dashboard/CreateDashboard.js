@@ -255,7 +255,6 @@ const CreateDashboard = (props) => {
 						dId={d.id}
 						color={d.color}
 						single={true}
-						t={t}
 					/>
 				</Paper>
 			default:
