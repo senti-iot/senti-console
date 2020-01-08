@@ -92,13 +92,13 @@ class ProjectHover extends Component {
 										</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>{`${project.id}`}</T>
+										<T className={classes.smallText} paragraph={false}>{`${project.id}`}</T>
 									</ItemG>
 								</ItemG>
 							</ItemG>
 							<ItemG xs={12} className={classes.middleContainer}>
 								<ItemG xs={12}>
-									<T className={classes.smallText} noParagraph>
+									<T className={classes.smallText} paragraph={false}>
 										<Business className={classes.smallIcon}/>
 										{`${project.org.name ? project.org.name : t('no.org')}`}
 									</T>

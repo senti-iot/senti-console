@@ -2,7 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { primaryColor, secondaryColor, hoverColor, /* headerColor */ } from 'assets/jss/material-dashboard-react'
 import { teal, red, grey } from '@material-ui/core/colors'
 
-const theme = createMuiTheme({
+const theme = () => createMuiTheme({
 	typography: {
 		useNextVariants: true,
 		suppressDeprecationWarnings: true,

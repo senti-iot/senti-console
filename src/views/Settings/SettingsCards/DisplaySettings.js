@@ -59,7 +59,7 @@ class DisplaySettings extends Component {
 			{ value: 0, label: t('settings.themes.light') }
 		]
 		// rowsPerPageOptions: [autoheight, 5, 7, 8, 10, 15, 20, 25, 50, 100],
-		let autoheightStr = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49) + ' - auto'
+		let autoheightStr = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 		let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 		let trps = [
 			{ value: autoheight, label: autoheightStr },
@@ -215,7 +215,7 @@ class DisplaySettings extends Component {
 							</List>
 						</Grid>
 					}
-				/> : <CircularLoader notCentered />
+				/> : <CircularLoader fill />
 		)
 	}
 }

@@ -155,7 +155,7 @@ class ExportUsers extends Component {
 								/>
 							</ItemG>
 							<ItemG xs container alignItems={'center'}>
-								<Info noParagraph>
+								<Info paragraph={false}>
 									{t('exports.standardColumns')}
 								</Info>
 							</ItemG>
@@ -178,7 +178,7 @@ class ExportUsers extends Component {
 								/>
 							</ItemG>
 							<ItemG xs container alignItems={'center'}>
-								<Info noParagraph>
+								<Info paragraph={false}>
 									{t('exports.customColumns')}
 								</Info>
 							</ItemG>

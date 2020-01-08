@@ -198,7 +198,7 @@ class CreateProjectForm extends Component {
 								label={t('projects.fields.name')}
 								value={title}
 								// className={classes.textField}
-								handleChange={handleChange('title')}
+								onChange={handleChange('title')}
 								margin='normal'
 
 								error={error}
@@ -214,7 +214,7 @@ class CreateProjectForm extends Component {
 								color={'secondary'}
 								// className={classes.textField}
 								value={description}
-								handleChange={handleChange('description')}
+								onChange={handleChange('description')}
 								margin='normal'
 
 								error={error}
@@ -242,8 +242,7 @@ class CreateProjectForm extends Component {
 								id={'contactPerson'}
 								label={t('projects.contact.title')}
 								value={`${user.firstName} ${user.lastName}`}
-								handleClick={handleOpenUser}
-								handleChange={() => { }}
+								onClick={handleOpenUser}
 								InputProps={{
 									onChange: handleOpenUser,
 									readOnly: true
@@ -256,9 +255,7 @@ class CreateProjectForm extends Component {
 								id={'collectionOrg'}
 								label={t('collections.fields.org')}
 								value={org.name}
-								handleClick={handleOpenOrg}
-								handleChange={() => { }}
-
+								onClick={handleOpenOrg}
 								InputProps={{
 									onChange: handleOpenOrg,
 									readOnly: true
@@ -269,7 +266,7 @@ class CreateProjectForm extends Component {
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>
 						<Collapse in={creating} timeout='auto' unmountOnExit>
-							<CircularLoader notCentered />
+							<CircularLoader fill />
 						</Collapse>
 					</ItemGrid>
 					<ItemGrid container style={{ margin: 16 }}>

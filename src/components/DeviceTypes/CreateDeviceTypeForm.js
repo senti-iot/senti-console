@@ -38,7 +38,7 @@ class CreateDeviceTypeForm extends Component {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
-						handleChange={handleChangeMetadataKey(i)}
+						onChange={handleChangeMetadataKey(i)}
 						value={m.key}
 						readOnly
 						InputProps={{
@@ -47,7 +47,7 @@ class CreateDeviceTypeForm extends Component {
 					/>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.value')}
-						handleChange={handleChangeMetadata(i)}
+						onChange={handleChangeMetadata(i)}
 						value={m.value}
 						readOnly
 						InputProps={{
@@ -71,7 +71,7 @@ class CreateDeviceTypeForm extends Component {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
-						handleChange={handleChangeKey(p, i)}
+						onChange={handleChangeKey(p, i)}
 						value={p.key}
 						readOnly
 						InputProps={{
@@ -82,8 +82,8 @@ class CreateDeviceTypeForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(i, 'outbound')}
-						handleChange={() => { }}
+						onClick={handleOpenFunc(i, 'outbound')}
+						onChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
@@ -131,7 +131,7 @@ class CreateDeviceTypeForm extends Component {
 				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						handleClick={handleOpenFunc(i, 'inbound')}
+						onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
 						InputProps={{
@@ -310,7 +310,7 @@ class CreateDeviceTypeForm extends Component {
 								<TextF
 									id={'deviceTypeName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={deviceType.name}
 								// autoFocus
 								/>
@@ -323,7 +323,7 @@ class CreateDeviceTypeForm extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									value={org.name}
-									handleClick={() => this.setState({ openOrg: true })}
+									onClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
 								<AssignOrgDialog

@@ -57,7 +57,7 @@ class CreateFunctionForm extends Component {
 								<TextF
 									id={'functionName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={cloudfunction.name}
 									autoFocus
 								/>
@@ -66,7 +66,7 @@ class CreateFunctionForm extends Component {
 								<TextF
 									id={'functionDesc'}
 									label={t('collections.fields.description')}
-									handleChange={handleChange('description')}
+									onChange={handleChange('description')}
 									value={cloudfunction.description}
 								/>
 							</ItemGrid>
@@ -77,7 +77,7 @@ class CreateFunctionForm extends Component {
 								<TextF
 									id={'cfOrgId'}
 									value={org.name}
-									handleClick={() => this.setState({ openOrg: true })}
+									onClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
 								<AssignOrgDialog

@@ -37,7 +37,6 @@ function PrivacyPolicy(props) {
 }
 
 function Dialog(props) {
-	// const [count, setCount] = useState(0);
 	const t = props.t
 	const classes = props.classes
 	return <Paper className={classes.paper}>

@@ -154,7 +154,7 @@ class CreateRegistryForm extends Component {
 								<TextF
 									id={'registryName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={registry.name}
 									autoFocus
 								/>
@@ -169,7 +169,7 @@ class CreateRegistryForm extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									value={org.name}
-									handleClick={() => this.setState({ openOrg: true })}
+									onClick={() => this.setState({ openOrg: true })}
 									readonly
 								/>
 								<AssignOrgDialog

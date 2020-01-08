@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core';
+import { withStyles, Link as MuiLink } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
 import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -56,11 +56,7 @@ class SensorDetails extends Component {
 			<InfoCard
 				title={sensor.name ? sensor.name : sensor.id}
 				avatar={<DataUsage />}
-				// noPadding
-				// noRightExpand
-				// menuExpand
 				noExpand
-				// expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
@@ -87,9 +83,9 @@ class SensorDetails extends Component {
 						<ItemG xs={12}>
 							<Caption>{t('registries.fields.registry')}</Caption>
 							<Info>
-								<Link to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
+								<MuiLink component={Link} to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
 									{sensor.regName}
-								</Link>
+								</MuiLink>
 							</Info>
 						</ItemG>
 					</ItemG>

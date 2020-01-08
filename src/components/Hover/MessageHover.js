@@ -99,13 +99,13 @@ class MessageHover extends Component {
 												</T>
 											</ItemG>
 											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${message.id}`}</T>
+												<T className={classes.smallText} paragraph={false}>{`${message.id}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
 									<ItemG xs={12} className={classes.middleContainer}>
 										<ItemG xs={12}>
-											<T className={classes.smallText} noParagraph>
+											<T className={classes.smallText} paragraph={false}>
 												<Business className={classes.smallIcon} />
 												{`${message.org.name ? message.org.name : t('devices.fields.free')}`}
 											</T>
@@ -146,7 +146,7 @@ class MessageHover extends Component {
 										</ItemG>
 									</ItemG> */}
 								</Fragment>
-								: <CircularLoader notCentered />}
+								: <CircularLoader fill />}
 						</Paper>
 					</Fade>
 				)}

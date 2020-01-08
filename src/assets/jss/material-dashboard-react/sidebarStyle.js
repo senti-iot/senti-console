@@ -6,23 +6,23 @@ import {
 	drawerWidth,
 	transition,
 	defaultFont,
-	primaryColor,
-	hoverColor
+	// primaryColor
 } from "assets/jss/material-dashboard-react.js";
+import { getContrast } from 'variables/functions';
 
 const sidebarStyle = theme => ({
 	nested: {
 		paddingLeft: `${theme.spacing(2)}px !important`,
-	  },
+	},
 	appBarWrapper: {
-		backgroundColor: "#767684"
+		backgroundColor: theme.sidebar
 	},
 	root: {
 		display: 'flex',
 	},
 	drawerPaper: {
-		color: '#fff',
-		backgroundColor: "#434351",
+		color: getContrast(theme.sidebar),
+		backgroundColor: theme.sidebar,
 		overflowY: 'inherit',
 		top: 70,
 		[theme.breakpoints.down('md')]: {
@@ -36,7 +36,7 @@ const sidebarStyle = theme => ({
 		width: drawerWidth,
 		flexShrink: 0,
 		whiteSpace: 'nowrap',
-			
+
 	},
 	drawerOpen: {
 		width: drawerWidth,
@@ -54,7 +54,8 @@ const sidebarStyle = theme => ({
 		width: 0
 	},
 	whiteFont: {
-		color: "#FFFFFF",
+		color: 'inherit',
+		// color: ,
 		...defaultFont,
 		margin: "0",
 		lineHeight: "30px",
@@ -76,12 +77,13 @@ const sidebarStyle = theme => ({
 		padding: theme.spacing(3),
 	},
 	button: {
-		color: '#fff',
+		color: getContrast(theme.sidebar),
 		margin: '8px 0px',
 		padding: 10,
 		height: 44,
 		"&:hover": {
-			background: hoverColor
+			background: theme.hover,
+			color: getContrast(theme.palette.primary.main)
 		},
 		transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1), background 0.16s cubic-bezier(0.685, 0.0473, 0.346, 1) "
 	},
@@ -92,9 +94,11 @@ const sidebarStyle = theme => ({
 		borderRadius: "50%"
 	},
 	buttonActiveRoute: {
-		background: primaryColor,
+		color: getContrast(theme.palette.primary.main),
+		// color: getContrast(theme.palette.primary.main ? theme.palette.primary.main : "#fff"),
+		background: theme.palette.primary.main,
 		"&:focus": {
-			background: primaryColor
+			background: theme.palette.primary.main
 		}
 	},
 	logo: {
@@ -108,7 +112,7 @@ const sidebarStyle = theme => ({
 			content: '""',
 			position: "absolute",
 			bottom: "0",
-	
+
 			height: "0px",
 			right: "15px",
 			width: "calc(100% - 30px)",

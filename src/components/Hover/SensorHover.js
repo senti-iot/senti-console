@@ -59,15 +59,15 @@ class SensorHover extends Component {
 		switch (val) {
 			case 0:
 				return <ItemG container>
-					<Block className={classes.blocked + ' ' + classes.smallIcon} /> 
-					<T className={classes.smallText} noParagraph>
-						{t('sensors.fields.communications.blocked')}	
+					<Block className={classes.blocked + ' ' + classes.smallIcon} />
+					<T className={classes.smallText} paragraph={false}>
+						{t('sensors.fields.communications.blocked')}
 					</T>
 				</ItemG>
 			case 1:
 				return <ItemG container>
 					<CheckCircle className={classes.allowed + ' ' + classes.smallIcon} />
-					<T className={classes.smallText} noParagraph>
+					<T className={classes.smallText} paragraph={false}>
 						{t('sensors.fields.communications.allowed')}
 					</T>
 				</ItemG>
@@ -116,13 +116,13 @@ class SensorHover extends Component {
 												</T>
 											</ItemG>
 											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${device.uuid}`}</T>
+												<T className={classes.smallText} paragraph={false}>{`${device.uuid}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
 									<ItemG xs={12} className={classes.middleContainer}>
 										<ItemG xs={12}>
-											<T className={classes.smallText} noParagraph>
+											<T className={classes.smallText} paragraph={false}>
 												<InputIcon className={classes.smallIcon} />
 												<Link to={{ pathname: `/registry/${device.reg_id}` }}>{device.reg_name}</Link>
 											</T>
@@ -148,7 +148,7 @@ class SensorHover extends Component {
 										</ItemG>
 									</ItemG>
 								</Fragment>
-								: <CircularLoader notCentered />}
+								: <CircularLoader fill />}
 						</Paper>
 					</Fade>
 				)}

@@ -63,7 +63,7 @@ class Device extends Component {
 			// 	await this.getDataCollection(rs.dataCollection)
 			// }
 			// await this.getHeatMapData()
-			
+
 		})
 	}
 	//#region Data Table func
@@ -246,7 +246,7 @@ class Device extends Component {
 		}
 	}
 	getWifiSummary = async (p) => {
-		const { hoverID } = this.state 	
+		const { hoverID } = this.state
 		const { device } = this.props
 		let newState = await getWifiSummary('device', [{
 			name: device.name,
@@ -259,7 +259,7 @@ class Device extends Component {
 		return newState
 	}
 	getWifiHourly = async (p) => {
-		const { hoverID } = this.state 	
+		const { hoverID } = this.state
 		const { device } = this.props
 		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('device', [{
@@ -273,7 +273,7 @@ class Device extends Component {
 		return newState
 	}
 	getWifiMinutely = async (p) => {
-		const { hoverID } = this.state 		
+		const { hoverID } = this.state
 		const { device } = this.props
 		let newState = await getWifiMinutely('device', [{
 			name: device.name,
@@ -418,7 +418,7 @@ class Device extends Component {
 
 
 	renderImageLoader = () => {
-		return <CircularLoader notCentered />
+		return <CircularLoader fill />
 	}
 
 	renderLoader = () => {

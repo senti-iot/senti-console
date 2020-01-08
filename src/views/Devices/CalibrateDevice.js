@@ -198,7 +198,7 @@ class CalibrateDevice extends Component {
 					id={'name'}
 					required={true}
 					label={t('devices.fields.name')}
-					handleChange={this.handleInput('name')}
+					onChange={this.handleInput('name')}
 					value={this.state.name}
 					InputProps={{
 						classes: {
@@ -213,7 +213,7 @@ class CalibrateDevice extends Component {
 					multiline
 					rows={4}
 					label={t('devices.fields.description')}
-					handleChange={this.handleInput('description')}
+					onChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
 						classes: {
@@ -241,7 +241,7 @@ class CalibrateDevice extends Component {
 		})
 
 	}
-	setMapCoords = (data) => { 
+	setMapCoords = (data) => {
 		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
 		if (coords) {
 			this.setState({
@@ -278,7 +278,7 @@ class CalibrateDevice extends Component {
 				</Button>
 			</ItemG>
 			<ItemG xs={12}>
-				<AddressInput onBlur={this.getLatLng} handleSuggestionSelected={this.getLatLng} value={this.state.address} handleChange={this.handleSetAddress} />
+				<AddressInput onBlur={this.getLatLng} handleSuggestionSelected={this.getLatLng} value={this.state.address} onChange={this.handleSetAddress} />
 			</ItemG>
 			<ItemG xs={12}>
 				<DSelect
@@ -288,7 +288,7 @@ class CalibrateDevice extends Component {
 					menuItems={this.LocationTypes().map(m => ({
 						value: m.id,
 						label: m.label
-					}))} 
+					}))}
 				/>
 				<div className={this.props.classes.latlong}>
 					<Caption>
@@ -465,7 +465,7 @@ class CalibrateDevice extends Component {
 						</Button>
 					</ItemG>
 					{/* <ItemG xs={12} md={9} lg={6} xl={10}>
-						
+
 					</ItemG> */}
 					<ItemG xs={12}>
 						<Button variant={'outlined'} onClick={this.handleReset} className={classes.buttonMargin} >

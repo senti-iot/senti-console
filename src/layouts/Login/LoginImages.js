@@ -33,7 +33,8 @@ const styles = theme => ({
 	message: {
 		padding: 25,
 		maxWidth: 615,
-		marginBottom: 30
+		marginBottom: 30,
+		color: '#fff'
 	},
 	overcomplicatedButtonTextLight: {
 		fontWeight: 300,
@@ -105,7 +106,7 @@ class LoginImages extends Component {
 		const { number } = this.state
 		return (
 			<div className={classes.container}>
-				<div className={classes.contentWrapper}>				
+				<div className={classes.contentWrapper}>
 					{/* {t('markdown.test', { type: 'markdown' })} */}
 					<T reversed variant={'h5'} className={classes.message}>
 						{t(`login.cards.${number}`, { type: 'markdown' })}
@@ -118,9 +119,9 @@ class LoginImages extends Component {
 						<span className={classes.overcomplicatedButtonTextRegular}>
 							{t('actions.more')}
 						</span>
-					</Button>					
+					</Button>
 					<img src={loginImages[number]} className={classes.img} alt="" />
-					<img src={sentiDots} className={classes.sentiDots} alt=''/>
+					<img src={sentiDots} className={classes.sentiDots} alt='' />
 				</div>
 			</div>
 		)

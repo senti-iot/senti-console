@@ -133,6 +133,51 @@ export const graphType = (type) => {
 				type: 4,
 				unit: ""
 			}
+		case "map":
+			return {
+				grid: {
+					minW: 4,
+					minH: 12,
+					x: 0,
+					y: 0,
+					h: 12,
+					w: 4
+				},
+				dataSource: {
+					cf: -1,
+					dataKey: "",
+					deviceId: -1,
+					type: 0
+				},
+				id: "",
+				name: "Score Card",
+				periodType: 3,
+				type: 5
+			}
+		case "msChart": //Charts
+			return {
+				grid: {
+					minW: 4,
+					minH: 12,
+					x: 0,
+					y: 0,
+					h: 12,
+					w: 6
+				},
+				chartType: 3, //Line Graph
+				dataSource: {
+					cf: -1,
+					dataKey: "",
+					deviceTypeId: -1,
+					deviceIds: [],
+					type: 0
+				},
+				id: "",
+				name: "Chart",
+				periodType: 3,
+				type: 6, //DataSource Type
+				unit: ""
+			}
 		default:
 			break;
 	}

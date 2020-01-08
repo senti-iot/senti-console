@@ -1,10 +1,10 @@
 import React from 'react';
-import {  Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 function Info({ ...props }) {
-	const { paragraphCell, noWrap, children, rest, noParagraph } = props;
+	const { paragraphCell, noWrap, children, rest, paragraph } = props;
 	return (
-		<Typography {...rest} noWrap={noWrap ? true : false} paragraph={noParagraph ? false : true} classes={{ root: paragraphCell }}>{children}</Typography>
+		<Typography {...rest} noWrap={noWrap ? true : false} paragraph={paragraph} classes={{ root: paragraphCell }}>{children}</Typography>
 	);
 }
 

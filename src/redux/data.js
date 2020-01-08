@@ -6,7 +6,7 @@ import { getAllDevices, getDevice } from 'variables/dataDevices';
 import { getAllOrgs, getOrg } from 'variables/dataOrgs';
 import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
-import { hist } from 'App';
+import { hist } from 'Providers';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
 import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry';

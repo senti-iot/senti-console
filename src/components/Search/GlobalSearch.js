@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { changeEH } from 'redux/appState';
 import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles';
 import { setSearchValue } from 'redux/globalSearch';
-import { hist } from 'App';
+import { hist } from 'Providers';
 import { T, ItemG } from 'components';
 import { Grow, Hidden } from '@material-ui/core';
 import { teal } from '@material-ui/core/colors';
@@ -57,10 +57,10 @@ class GlobalSearch extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		if (nextProps.suggestions !== this.props.suggestions) {
 			return true
-		}		
+		}
 		return false
 	}
-	
+
 	componentDidMount() {
 		// if (this.props.focusOnMount && this.inputRef.current)
 		// this.focusInput()
@@ -75,7 +75,7 @@ class GlobalSearch extends React.Component {
 				return {
 					title: section.title,
 					suggestions: section.suggestions.filter(l => {
-						let keep2 = false 
+						let keep2 = false
 						l.values.forEach(v => {
 							if (v.value.toLowerCase().includes(inputValue.toLowerCase())) {
 								keep2 = true
@@ -204,7 +204,7 @@ class GlobalSearch extends React.Component {
 	getSectionSuggestions = (section) => {
 		return section.suggestions;
 	  }
-	  
+
 	onFocusInput = () => {
 		this.props.disableEH()
 	}

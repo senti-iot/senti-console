@@ -62,7 +62,8 @@ class InfoCard extends PureComponent {
 		const cardClasses = cx({
 			[classes.card]: true,
 			[classes.plainCardCalsses]: true,
-			[classes['']]: color
+			[classes['']]: color,
+			[classes.flexPaper]: this.props.flexPaper,
 		})
 		return (
 			<Card className={cardClasses}>
@@ -86,6 +87,7 @@ class InfoCard extends PureComponent {
 						...bodyClasses
 					}}
 					className={classnames(
+						{ [classes.flexPaper]: this.props.flexPaper },
 						{ [classes.dashboard]: dashboard },
 						{ [classes.transition]: true },
 						{ [classes.contentMedia]: this.props.noPadding },

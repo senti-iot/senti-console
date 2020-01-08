@@ -72,7 +72,6 @@ class Dropdown extends Component {
 							</ItemG>
 						</MenuItem>
 					})}
-					))}
 				</Menu>
 			</Fragment>
 		)

@@ -9,10 +9,12 @@ import withLocalization from 'components/Localization/T';
 import { suggestionGen, filterItems } from 'variables/functions';
 import Search from 'components/Search/Search';
 import { editGraph } from 'redux/dsSystem';
-import { getSensorLS, unassignSensor } from 'redux/data';
+import { getSensorLS, unassignSensor, getDeviceTypeLS } from 'redux/data';
 import ESChart from './EditSources/Chart'
 import ESGauge from './EditSources/Gauge';
 import ESScorecard from './EditSources/Scorecard';
+import ESMap from './EditSources/Map';
+import ESMSChart from './EditSources/MSChart';
 
 export class EditDataSource extends Component {
 	constructor(props) {
@@ -281,7 +283,7 @@ export class EditDataSource extends Component {
 		this.props.editGraph(newG)
 	}
 	render() {
-		const { t, classes, sensor, g, cfs, getSensor } = this.props
+		const { t, classes, sensor, deviceType, g, cfs, getSensor, getDeviceType } = this.props
 		const { generalExp, dataSourceA, dataSourceB } = this.state
 		switch (g.type) {
 			case 0:
@@ -291,6 +293,18 @@ export class EditDataSource extends Component {
 					t={t}
 					classes={classes}
 					sensor={sensor}
+					g={g}
+					cfs={cfs}
+				/>
+			case 6:
+				return <ESMSChart
+					handleEditGraph={this.handleEditGraph}
+					getSensor={getSensor}
+					getDeviceType={getDeviceType}
+					t={t}
+					classes={classes}
+					sensor={sensor}
+					deviceType={deviceType}
 					g={g}
 					cfs={cfs}
 				/>
@@ -322,7 +336,7 @@ export class EditDataSource extends Component {
 								<ItemG container>
 									<ItemG xs={12}>
 										<TextF
-											handleChange={this.handleEditG('name')}
+											onChange={this.handleEditG('name')}
 											autoFocus
 											id={'name'}
 											label={t('dashboard.fields.label')}
@@ -364,8 +378,8 @@ export class EditDataSource extends Component {
 											id={'sensorChart'}
 											label={t('dashboard.fields.device')}
 											value={sensor ? sensor.name : t('no.device')}
-											handleClick={this.handleOpenD}
-											handleChange={() => { }}
+											onClick={this.handleOpenD}
+											onChange={() => { }}
 										/>
 									</ItemG>
 									<ItemG>
@@ -373,7 +387,7 @@ export class EditDataSource extends Component {
 											id={'scbAB-a-name'}
 											label={t('dashboard.fields.name')}
 											value={g.dataSources.a.label}
-											handleChange={this.handleEditName('a')}
+											onChange={this.handleEditName('a')}
 										/>
 									</ItemG>
 									<Collapse unmountOnExit in={g.dataSources.a.deviceId > 0}>
@@ -393,13 +407,13 @@ export class EditDataSource extends Component {
 														id={'cfSelect'}
 														label={t('dashboard.fields.cf')}
 														value={cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.a.cf)].name : t('no.function')}
-														handleClick={this.handleOpenF}
-														handleChange={() => { }}
+														onClick={this.handleOpenF}
+														onChange={() => { }}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
-														handleChange={this.handleEditG('unit')}
+														onChange={this.handleEditG('unit')}
 														autoFocus
 														id={'unit'}
 														label={t('dashboard.fields.unit')}
@@ -443,8 +457,8 @@ export class EditDataSource extends Component {
 											id={'sensorChart'}
 											label={t('dashboard.fields.device')}
 											value={sensor ? sensor.name : t('no.device')}
-											handleClick={this.handleOpenD}
-											handleChange={() => { }}
+											onClick={this.handleOpenD}
+											onChange={() => { }}
 										/>
 									</ItemG>
 									<ItemG>
@@ -452,7 +466,7 @@ export class EditDataSource extends Component {
 											id={'scbAB-b-name'}
 											label={t('dashboard.fields.name')}
 											value={g.dataSources.b.label}
-											handleChange={this.handleEditName('b')}
+											onChange={this.handleEditName('b')}
 										/>
 									</ItemG>
 									<Collapse unmountOnExit in={g.dataSources.b.deviceId > 0}>
@@ -472,13 +486,13 @@ export class EditDataSource extends Component {
 														id={'cfSelect'}
 														label={t('dashboard.fields.cf')}
 														value={cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)] ? cfs[cfs.findIndex(f => f.id === g.dataSources.b.cf)].name : t('no.function')}
-														handleClick={this.handleOpenF}
-														handleChange={() => { }}
+														onClick={this.handleOpenF}
+														onChange={() => { }}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
-														handleChange={this.handleEditG('unit')}
+														onChange={this.handleEditG('unit')}
 														autoFocus
 														id={'unit'}
 														label={t('dashboard.fields.unit')}
@@ -509,6 +523,16 @@ export class EditDataSource extends Component {
 				return <ItemG>
 					WindCard
 				</ItemG>
+			case 5:
+				return <ESMap
+					handleEditGraph={this.handleEditGraph}
+					getSensor={getSensor}
+					t={t}
+					classes={classes}
+					sensor={sensor}
+					g={g}
+					cfs={cfs}
+				/>
 			default:
 				break;
 		}
@@ -518,12 +542,14 @@ const mapStateToProps = (state, props) => ({
 	g: state.dsSystem.eGraph,
 	sensor: state.data.sensor,
 	cfs: [...state.data.functions, { id: -1, name: props.t('no.cloudfunction') }],
-	sensors: state.data.sensors
+	sensors: state.data.sensors,
+	deviceType: state.data.deviceType
 })
 
 const mapDispatchToProps = dispatch => ({
 	editGraph: (newG) => dispatch(editGraph(newG)),
 	getSensor: async id => dispatch(await getSensorLS(id)),
+	getDeviceType: async id => dispatch(await getDeviceTypeLS(id)),
 	unassignSensor: () => dispatch(unassignSensor())
 })
 

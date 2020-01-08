@@ -99,13 +99,13 @@ class RegistryHover extends Component {
 												</T>
 											</ItemG>
 											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${collection.id}`}</T>
+												<T className={classes.smallText} paragraph={false}>{`${collection.id}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
 									<ItemG xs={12} className={classes.middleContainer}>
 										<ItemG xs={12}>
-											<T className={classes.smallText} noParagraph>
+											<T className={classes.smallText} paragraph={false}>
 												<Business className={classes.smallIcon} />
 												{`${collection.org.name ? collection.org.name : t('devices.fields.free')}`}
 											</T>
@@ -146,7 +146,7 @@ class RegistryHover extends Component {
 										</ItemG>
 									</ItemG> */}
 								</Fragment>
-								: <CircularLoader notCentered />}
+								: <CircularLoader fill />}
 						</Paper>
 					</Fade>
 				)}

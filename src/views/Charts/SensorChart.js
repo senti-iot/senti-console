@@ -84,15 +84,15 @@ class SensorChart extends PureComponent {
 		}
 	}
 	setData = (data, timeType) => {
-		const { title, color, dataKey } = this.props
+		const { title, chartColor, dataKey } = this.props
 		const { period } = this.state
 		switch (timeType) {
 			case 0:
-				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: dataKey }], period.from, period.to)
+				return setMinutelyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
 			case 1:
-				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: dataKey }], period.from, period.to)
+				return setHourlyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
 			case 2:
-				return setDailyData([{ data: data, name: title, color: colors[color][500], id: dataKey }], period.from, period.to)
+				return setDailyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
 			default:
 				break;
 		}
@@ -663,7 +663,7 @@ class SensorChart extends PureComponent {
 				topAction={this.renderMenu()}
 				content={
 					<Grid container style={{ height: 300, width: '100%' }}>
-						{loading ? <div style={{ height: 300, width: '100%', minHeigh: 300 }}><CircularLoader notCentered /></div> :
+						{loading ? <div style={{ height: 300, width: '100%', minHeigh: 300 }}><CircularLoader fill /></div> :
 							<Fragment>
 								<Hidden xsDown>
 									{small ? this.renderSmallTitle() : null}

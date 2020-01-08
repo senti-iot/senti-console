@@ -94,15 +94,15 @@ class DeviceHover extends Component {
 										</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>{`${device.id}`}</T>
+										<T className={classes.smallText} paragraph={false}>{`${device.id}`}</T>
 									</ItemG>
-						
+
 								</ItemG>
 							</ItemG>
 							<ItemG xs={12} className={classes.middleContainer}>
 								<ItemG xs={12}>
-									<T className={classes.smallText} noParagraph>
-										<Business className={classes.smallIcon}/>
+									<T className={classes.smallText} paragraph={false}>
+										<Business className={classes.smallIcon} />
 										{`${device.org.name ? device.org.name : t('devices.fields.free')}`}
 									</T>
 								</ItemG>
@@ -115,7 +115,7 @@ class DeviceHover extends Component {
 								{device.address ?
 									<ItemG xs={12}>
 										<T className={classes.smallText}>
-											<LocationOn className={classes.smallIcon}/>
+											<LocationOn className={classes.smallIcon} />
 											{device.address}
 										</T>
 									</ItemG>

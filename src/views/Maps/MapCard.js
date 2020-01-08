@@ -170,20 +170,6 @@ class MapCard extends PureComponent {
 		const { t, mapTheme } = this.props
 		const { actionAnchorVisibility } = this.state
 		return <Fragment>
-			{/* {device && <Collapse in={this.state.editLocation}>
-				<ItemG container>
-					<ItemG>
-						<IconButton onClick={this.handleOpenConfirmEditLocation}>
-							<Save style={{ color: teal[500] }} />
-						</IconButton>
-					</ItemG>
-					<ItemG>
-						<IconButton onClick={this.handleCancelEditLocation}>
-							<Clear style={{ color: red[400] }} />
-						</IconButton>
-					</ItemG>
-				</ItemG>
-			</Collapse>} */}
 			{this.props.heatMap && <Collapse in={this.props.heatMap}>
 				<DateFilterMenu
 					heatmap
@@ -324,7 +310,7 @@ class MapCard extends PureComponent {
 							value={m.address}
 							onBlur={this.getLatLng}
 							handleSuggestionSelected={this.getLatLng}
-							handleChange={this.handleChangeAddress} />
+							onChange={this.handleChangeAddress} />
 					</ItemG>) : null
 				}
 			</DialogContent>
