@@ -39,9 +39,10 @@ const rootReducer = (state, action) => {
 		state = combineReducers({
 			settings,
 			localization,
-			favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem
+			favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem, serviceWorkerReducer
 		})
 	}
+	// return state
 	return reducers(state, action)
 }
 let composeMiddleware = compose(

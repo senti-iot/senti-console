@@ -114,6 +114,12 @@ function App(props) {
 		}
 	}
 	useEffect(() => {
+		if (!cookie.load('SESSION')) {
+			history.push('/login')
+		}
+		// eslint-disable-next-line
+	}, [])
+	useEffect(() => {
 		if (defaultRoute === '/')
 			handleSetHeaderTitle('', false, '', 'dashboard')
 

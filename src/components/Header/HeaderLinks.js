@@ -44,13 +44,13 @@ class HeaderLinks extends React.Component {
 	}
 	logOut = async () => {
 		try {
-			this.props.resetRedux()
-			await logOut().then(() => { cookie.remove('SESSION', { path: '/' }) })
+			await logOut().then(() => { })
 		}
 		catch (e) {
 		}
 		if (!cookie.load('SESSION')) {
 			this.props.history.push('/login')
+			this.props.resetRedux()
 		}
 		this.setState({ anchorProfile: null })
 	}
