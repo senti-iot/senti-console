@@ -159,7 +159,7 @@ class CreateCollection extends Component {
 			loading ? <CircularLoader /> :
 				<CreateCollectionForm
 					collection={collection}
-					onChange={this.handleChange}
+					handleChange={this.handleChange}
 					openDevice={openDevice}
 					devices={devices}
 					device={device}

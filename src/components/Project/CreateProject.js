@@ -231,7 +231,7 @@ class CreateProject extends Component {
 				creating={creating}
 				errorMessage
 				title={title}
-				onChange={this.handleChange}
+				handleChange={this.handleChange}
 				handleDateChange={this.handleDateChange}
 				description={description}
 				startDate={startDate}

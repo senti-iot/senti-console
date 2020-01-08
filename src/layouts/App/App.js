@@ -115,7 +115,7 @@ function App(props) {
 	}
 	useEffect(() => {
 		if (defaultRoute === '/')
-			handleSetHeaderTitle('Senti', false, '', 'dashboard')
+			handleSetHeaderTitle('', false, '', 'dashboard')
 
 		const getS = async () => {
 			dispatch(await getSettings()).then(async rs => {

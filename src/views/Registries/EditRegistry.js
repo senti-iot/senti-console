@@ -109,7 +109,7 @@ class UpdateRegistry extends Component {
 				org={org}
 				handleOrgChange={this.handleOrgChange}
 				registry={registry}
-				onChange={this.handleChange}
+				handleChange={this.handleChange}
 				handleCreate={this.handleUpdate}
 				goToRegistries={this.goToRegistries}
 				t={t}

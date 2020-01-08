@@ -94,7 +94,7 @@ class App extends React.Component {
 		this._isMounted = 1
 		if (this._isMounted) {
 			if (this.props.defaultRoute === '/')
-				this.handleSetHeaderTitle('Senti', false, '', 'dashboard')
+				this.handleSetHeaderTitle('', false, '', 'dashboard')
 		}
 
 		await this.props.getSettings().then(async rs => {
