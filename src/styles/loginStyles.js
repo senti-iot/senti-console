@@ -15,7 +15,9 @@ export const LoginWrapper = styled.div`
 	}
 `
 export const MobileContainer = styled.div`
+	width: 100%;
 	@media ${size.down.sm} {
+		width: calc(100% - 48px);
 		padding: 24px;
 	}
 	@media ${size.down.xs} {
@@ -23,7 +25,10 @@ export const MobileContainer = styled.div`
 	}
 `
 export const ImgLogo = styled.img`
-	height: 100px;
+	/* height: 100px; */
+	width: 100%;
+	max-height:100px;
+	height: auto;
 	margin: 8px;
 `
 export const LeftPanel = styled(Paper)`
@@ -44,10 +49,12 @@ export const LeftPanel = styled(Paper)`
 `
 export const InputContainer = styled.div`
 	padding: 24px;
+	width: calc(100% - 48px);
 	@media ${size.down.md} {
 		padding: 24px;
 	}
 	@media ${size.down.xs} {
+		width: calc(100% - 16px);
 		padding: 8px;
 	}
 `

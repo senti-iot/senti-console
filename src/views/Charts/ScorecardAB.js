@@ -84,7 +84,6 @@ class ScoreCard extends PureComponent {
 		]).then(rs => {
 			newState.a.data = parseFloat(rs[0])
 			newState.b.data = parseFloat(rs[1])
-			console.log(rs)
 			this.setState({
 				...newState, loading: false
 			})

@@ -42,7 +42,6 @@ function Providers() {
 	const loaderFunc = async () => {
 		let getWL = async () => await getWhiteLabel(window.location.hostname)
 		getWL().then(rs => {
-			console.log("RS", rs)
 			setWL(rs)
 
 			// window.location.reload()
