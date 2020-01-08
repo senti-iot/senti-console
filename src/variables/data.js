@@ -175,7 +175,7 @@ export const devServicesAPI = create({
 
 })
 export const getWhiteLabel = async (host) => {
-	let res = await devServicesAPI.get(`/orgMetadata/${host}`).then(rs => rs.ok ? rs.data : rs.ok)
+	let res = await servicesAPI.get(`/orgMetadata/${host}`).then(rs => rs.ok ? rs.data : rs.ok)
 	return res
 }
 export const servicesAPI = create({
