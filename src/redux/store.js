@@ -10,11 +10,20 @@ import thunk from 'redux-thunk';
 import { globalSearch } from './globalSearch'
 import { weather } from './weather'
 import { dsSystem } from './dsSystem'
+import { serviceWorkerReducer } from './serviceWorkerRedux'
 // import zendesk from 'lib/stores/ChatStore'
 let reducers = combineReducers({
 	settings,
 	localization,
-	favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem /* zendesk */
+	favorites,
+	doi,
+	appState,
+	dateTime,
+	data,
+	globalSearch,
+	weather,
+	dsSystem,
+	serviceWorkerReducer /* zendesk */
 })
 /**
 *	 Debugging purposes

@@ -16,6 +16,7 @@ import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { useSnackbar, useRef, useDispatch, useSelector, useLocalization } from 'hooks';
+import NewContent from 'layouts/404/NewContent';
 // import _ from 'lodash'
 
 
@@ -127,6 +128,7 @@ function App(props) {
 	return (
 
 		<div className={classes.wrapper}>
+			<NewContent />
 			<Header
 				defaultRoute={defaultRoute}
 				routes={dashboardRoutes}
