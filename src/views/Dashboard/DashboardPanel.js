@@ -23,10 +23,6 @@ import MultiSourceChart from 'views/Charts/MultiSourceChart';
 import { useSnackbar, useLocalization, useSelector, useDispatch } from 'hooks';
 import { nLightTheme, nDarkTheme } from 'variables/themes'
 import { getWL } from 'variables/storage'
-let wl = getWL()
-
-const lightTheme = nLightTheme(wl ? wl : undefined)
-const darkTheme = nDarkTheme(wl ? wl : undefined)
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -47,54 +43,18 @@ const DashboardPanel = (props) => {
 	//State
 	const [openDashboard, setOpenDashboard] = useState(false)
 	const [openShare, setOpenShare] = useState(false)
-	// const [initialLayout, setInitialLayout] = useState(props.initialLayout)
 
-	// constructor(props) {
-	// 	super(props)
+	//Const
+	let wl = getWL()
 
-	// 	this.state = {
-	// 		openDashboard: false,
-	// 		openShare: false,
-	// 		initialLayout: props.initialLayout
-	// 	}
-	// }
+	const lightTheme = nLightTheme(wl ? wl : undefined)
+	const darkTheme = nDarkTheme(wl ? wl : undefined)
+
 
 	const handleOpenDashboard = () => setOpenDashboard(true)
 
 	const handleCloseDashboard = () => setOpenDashboard(false)
 
-	// const renderPos = (l) => {
-	// 	return <div style={{
-	// 		position: 'absolute',
-	// 		top: '50%',
-	// 		left: '50%',
-	// 		zIndex: '9999',
-	// 		background: 'white',
-	// 		fontSize: '24px',
-	// 		padding: '20px',
-	// 		transformOrigin: 'center',
-	// 		transform: 'translate(-50%, -50%)', backgroundColor: "#000"
-	// 	}}>
-	// 		[{l.x}, {l.y}, {l.w}, {l.h}]
-	// 	</div>
-	// }
-	// componentDidMount() {
-	// 	this.setState({
-	// 		initialLayout: this.props.initialLayout
-	// 	})
-	// }
-
-	// const handleLayoutChange = (args) => {
-	// 	setInitialLayout({ lg: args })
-	// 	// this.setState({
-	// 	// 	initialLayout: {
-	// 	// 		lg: args
-	// 	// 	}
-	// 	// })
-	// }
-	// onBreakpointChange = (args) => {
-	// 	// console.log(args)
-	// }
 
 	const gridCoords = (type) => {
 		switch (type) {
@@ -239,7 +199,7 @@ const DashboardPanel = (props) => {
 				loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'hidden', WebkitOverflowScrolling: 'touch' }}>
 					<ResponsiveReactGridLayout
 						{...props}
-						// onLayoutChange={handleLayoutChange}
+
 						useCSSTransforms={false}
 						isResizable={false}
 						isDraggable={false}

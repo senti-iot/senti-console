@@ -22,10 +22,7 @@ import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab';
 import { TextF } from 'components/index.js';
 import { nLightTheme, nDarkTheme } from 'variables/themes'
 import { getWL } from 'variables/storage'
-let wl = getWL()
 
-const lightTheme = nLightTheme(wl ? wl : undefined)
-const darkTheme = nDarkTheme(wl ? wl : undefined)
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -46,6 +43,7 @@ class Dashboard extends React.Component {
 
 
 	componentDidMount = async () => {
+
 		this.props.setHeader('Senti', false, '', 'dashboard')
 		this.props.setBC('dashboard', '', '', true)
 		this.props.setTabs({
@@ -199,6 +197,9 @@ class Dashboard extends React.Component {
 
 	}
 	renderTheme = t => {
+		let wl = getWL()
+		const lightTheme = nLightTheme(wl ? wl : undefined)
+		const darkTheme = nDarkTheme(wl ? wl : undefined)
 		return t === 1 ? darkTheme : lightTheme
 	}
 	render() {

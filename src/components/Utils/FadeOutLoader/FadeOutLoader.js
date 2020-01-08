@@ -37,9 +37,9 @@ function FadeOutLoader(props) {
 	const { children, notCentered, CustomLoader, fill, fillView } = props
 	return (
 		<Fragment>
-			<Fade in={!loading}>
+			<Fade in={!loading} unmountOnExit mountOnEnter>
 				{!showLoader ?
-					children
+					!loading ? children : <div></div>
 					: CustomLoader ? <CustomLoader notCentered={notCentered} /> : <CircularLoader fillView={fillView} fill={fill} notCentered={notCentered} />}
 			</Fade>
 		</Fragment>

@@ -94,7 +94,7 @@ const dashboardStyle = makeStyles(theme => ({
 		right: 0,
 		top: 0,
 		bottom: 0,
-		backgroundSize: "100px 100px",
+		backgroundSize: "contain",
 		backgroundRepeat: "no-repeat",
 		backgroundPosition: "50% 50%",
 	},
