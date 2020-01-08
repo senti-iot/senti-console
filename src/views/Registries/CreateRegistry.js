@@ -84,7 +84,7 @@ class CreateCollection extends Component {
 				org={org}
 				handleOrgChange={this.handleOrgChange}
 				registry={registry}
-				onChange={this.handleChange}
+				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
 				goToRegistries={this.goToRegistries}
 				t={t}

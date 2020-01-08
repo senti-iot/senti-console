@@ -114,8 +114,14 @@ function App(props) {
 		}
 	}
 	useEffect(() => {
+		if (!cookie.load('SESSION')) {
+			history.push('/login')
+		}
+		// eslint-disable-next-line
+	}, [])
+	useEffect(() => {
 		if (defaultRoute === '/')
-			handleSetHeaderTitle('Senti', false, '', 'dashboard')
+			handleSetHeaderTitle('', false, '', 'dashboard')
 
 		const getS = async () => {
 			dispatch(await getSettings()).then(async rs => {

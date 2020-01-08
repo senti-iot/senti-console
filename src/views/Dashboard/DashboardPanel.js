@@ -29,7 +29,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const DashboardPanel = (props) => {
 
 	//Hooks
-	const s = useSnackbar()
+	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
 	const theme = useTheme()

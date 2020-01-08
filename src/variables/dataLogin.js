@@ -2,15 +2,15 @@ import { loginApi, api } from './data';
 import cookie from 'react-cookies';
 
 /**
- * 
- * @param {String} username 
- * @param {String} password 
+ *
+ * @param {String} username
+ * @param {String} password
  */
 export const loginUser = async (username, password) => {
 	var session = await loginApi.post('odeum/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
 	return session
 }
-export const loginUserViaGoogle = async (token) => { 
+export const loginUserViaGoogle = async (token) => {
 	var session = await api.post('senti/googleauth', { id_token: token }).then(rs => rs.data)
 	return session
 }
@@ -20,21 +20,21 @@ export const loginUserViaGoogle = async (token) => {
 export const logOut = async () => {
 	var session = cookie.load('SESSION')
 	var data = await loginApi.delete(`odeum/auth/${session.sessionID}`)
-	cookie.remove('SESSION')
+	cookie.remove('SESSION', { path: '/' })
 	return data
 }
 /**
- * 
- * @param {object} obj 
+ *
+ * @param {object} obj
  * @param {String} obj.email User's e-mail
  */
-export const resetPassword = async(obj) => {
+export const resetPassword = async (obj) => {
 	let response = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs)
 	return response.ok ? response.data : response.status
 }
 /**
- * 
- * @param {object} obj 
+ *
+ * @param {object} obj
  * @param {String} obj.newPassword New Password
  * @param {String} obj.passwordToken Confirm new password token
  */
@@ -43,8 +43,8 @@ export const confirmPassword = async (obj) => {
 	return response.ok ? response.data : response.status
 }
 /**
- * 
- * @param {object} obj 
+ *
+ * @param {object} obj
  * @param {String} obj.id User ID
  * @param {String} obj.oldPassword Old Password - Not required
  * @param {String} obj.newPassword New Password
@@ -54,8 +54,8 @@ export const setPassword = async (obj) => {
 	return data
 }
 /**
- * 
- * @param {object} user 
+ *
+ * @param {object} user
  * @param {object} user.aux - Required
  * @param {object} user.aux.senti
  * @param {object} user.aux.odeum

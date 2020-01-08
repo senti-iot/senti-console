@@ -132,7 +132,7 @@ class EditCollection extends Component {
 				collection ? <Fade in={true}>
 					<EditCollectionForm
 						collection={collection}
-						onChange={this.handleChange}
+						handleChange={this.handleChange}
 						open={openOrg}
 						orgs={orgs}
 						handleCloseOrg={this.handleCloseOrg}
