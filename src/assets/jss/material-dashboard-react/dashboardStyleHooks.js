@@ -6,8 +6,9 @@ import { successColor, transition, drawerWidth } from "assets/jss/material-dashb
 // import { bgColors } from './backgroundColors';
 // import { bgColorsDark } from './bgColorsDark';
 import { bgColorsLight } from './bgColorsLight';
+import { makeStyles } from '@material-ui/styles';
 
-const dashboardStyle = theme => ({
+const dashboardStyle = makeStyles(theme => ({
 	...bgColorsLight(theme),
 	exportTArea: {
 		border: '1px solid black',
@@ -75,7 +76,6 @@ const dashboardStyle = theme => ({
 		width: 0
 	},
 	image: {
-		backgroundColor: '#1a1b32',
 		position: "relative",
 		height: 48,
 		// marginLeft: 48,
@@ -94,13 +94,12 @@ const dashboardStyle = theme => ({
 		right: 0,
 		top: 0,
 		bottom: 0,
-		backgroundSize: "100px 50px",
+		backgroundSize: "100px 100px",
 		backgroundRepeat: "no-repeat",
 		backgroundPosition: "50% 50%",
 	},
 	logo: {
 		minWidth: 120,
-		backgroundColor: '#1a1b32',
 		position: "relative",
 		padding: "8px 16px",
 		minHeight: "40px",
@@ -253,6 +252,6 @@ const dashboardStyle = theme => ({
 		fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 		marginTop: '10px'
 	}
-})
+}))
 
 export default dashboardStyle;
