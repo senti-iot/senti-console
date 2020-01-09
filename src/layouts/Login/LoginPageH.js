@@ -15,11 +15,13 @@ import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 import CookiesDialog from 'components/Cookies/CookiesDialog';
 import PrivacyDialog from 'components/Cookies/PrivacyDialog';
 import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles';
-import { useLocalization, useDispatch, useEventListener, useTheme } from 'hooks';
+import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks';
 let moment = require('moment');
 
 
 function LoginPage(props) {
+
+	//State
 	const [error, setEError] = useState(false)
 	const [user, setUser] = useState('')
 	const [pass, setPass] = useState('')
@@ -33,12 +35,15 @@ function LoginPage(props) {
 		// console.trace()
 		setEError(val)
 	}
+	//Hooks
 	const location = useLocation()
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const theme = useTheme()
 	const t = useLocalization()
 
+	//Redux
+	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 	//TODO: This is antipattern React Hooks
 	//Move the dispatch completely under the useEffect
 	const redux = {
@@ -68,7 +73,7 @@ function LoginPage(props) {
 						if (setToken()) {
 							await redux.getSettings()
 							var prevURL = location.state ? location.state.prevURL : null
-							history.push(prevURL ? prevURL : this.props.defaultRoute)
+							history.push(prevURL ? prevURL : defaultRoute)
 						}
 					}
 				}
