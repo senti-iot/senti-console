@@ -80,10 +80,10 @@ class SensorMessages extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
-			this.setState({ loading: true }, async () => {
-				await this.props.getData()
-			})
+		if ((prevProps.period.from !== this.props.period.from) || (prevProps.period.to !== this.props.period.to) /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
+			this.setState({ loading: true })
+			await this.props.getData()
+			this.setState({ loading: false })
 		}
 	}
 
@@ -555,7 +555,6 @@ class SensorMessages extends PureComponent {
 		const { loading } = this.state
 		// let displayTo = dateTimeFormatter(period.to)
 		// let displayFrom = dateTimeFormatter(period.from)
-		console.log(period)
 		return (
 			<Fragment>
 				<InfoCard
