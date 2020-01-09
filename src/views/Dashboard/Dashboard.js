@@ -36,7 +36,8 @@ class Dashboard extends React.Component {
 			openEditDash: false,
 			eDash: null,
 			openSpeed: false,
-			openImport: false
+			openImport: false,
+			importValue: ''
 		}
 
 	}
@@ -120,18 +121,18 @@ class Dashboard extends React.Component {
 	handleCloseImport = () => {
 		this.setState({
 			openImport: false,
-			error: false
+			error: false,
+			importValue: ''
 		})
 	}
+	handleSetImportValue = e => this.setState({ importValue: e.target.value, error: false })
 	handleCheckJSON = e => {
 		try {
-			let newD = JSON.parse(e.target.value)
-			console.log(newD)
+			let newD = JSON.parse(this.state.importValue)
 			this.setState({ newD: newD })
 		} catch (error) {
-			console.log(error.message)
 			this.setState({
-				error: true
+				error: true,
 			})
 		}
 	}
@@ -160,11 +161,13 @@ class Dashboard extends React.Component {
 			<DialogTitle>{`${t('actions.import')} ${t('sidebar.dashboard')}`}</DialogTitle>
 			<DialogContent>
 				<TextF
+					value={this.state.importValue}
 					id={'importDashboard'}
 					fullWidth
 					multiline
 					rows={10}
-					onChange={this.handleCheckJSON}
+					onChange={this.handleSetImportValue}
+					onBlur={this.handleCheckJSON}
 					error={error}
 				/>
 			</DialogContent>

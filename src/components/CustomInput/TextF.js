@@ -79,6 +79,7 @@ const TextF = (props) => {
 			value={props.value}
 			onClick={props.onClick || props.handleClick}
 			onChange={props.onChange}
+			onBlur={props.onBlur}
 			fullWidth={props.fullWidth !== undefined ? props.fullWidth : mobile ? true : false}
 			// fullWidth={props.fullWidth || mobile ? true : false}
 			multiline={props.multiline ? props.multiline : undefined}

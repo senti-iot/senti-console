@@ -10,7 +10,7 @@ import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
 import { loginUser, loginUserViaGoogle } from 'variables/dataLogin';
 import { getSettings } from 'redux/settings';
-import { changeLanguage } from 'redux/localization';
+// import { changeLanguage } from 'redux/localization';
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 import CookiesDialog from 'components/Cookies/CookiesDialog';
 import PrivacyDialog from 'components/Cookies/PrivacyDialog';
@@ -45,10 +45,6 @@ function LoginPage(props) {
 	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 	//TODO: This is antipattern React Hooks
 	//Move the dispatch completely under the useEffect
-	const redux = {
-		getSettings: async () => dispatch(await getSettings()),
-		setLanguage: lang => dispatch(changeLanguage(lang, true))
-	}
 
 	const handleCloseCookies = () => setCookies(false)
 	const handleOpenCookies = () => setCookies(true)
@@ -70,7 +66,7 @@ function LoginPage(props) {
 					cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
 					if (rs.isLoggedIn) {
 						if (setToken()) {
-							await redux.getSettings()
+							await dispatch(await getSettings())
 							var prevURL = location.state ? location.state.prevURL : null
 							history.push(prevURL ? prevURL : defaultRoute)
 						}
@@ -101,8 +97,9 @@ function LoginPage(props) {
 				cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
 				if (rs.isLoggedIn) {
 					if (setToken()) {
-						await redux.getSettings()
+						await dispatch(await getSettings())
 						var prevURL = location.state ? location.state.prevURL : null
+						setLoggingIn(false)
 						history.push(prevURL ? prevURL : /* defaultRoute */ '/')
 					}
 				}
@@ -135,7 +132,14 @@ function LoginPage(props) {
 			}
 		}
 	});
-
+	// useEffect(() => {
+	// 	if (loggingIn) {
+	// 		handleLoginUser()
+	// 	}
+	// 	return () => {
+	// 		cleanup
+	// 	};
+	// }, [input])
 	const handleShowPassword = () => setShowPassword(!showPassword)
 	return (
 		<LoginWrapper>
@@ -151,7 +155,7 @@ function LoginPage(props) {
 								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
 							</ItemG>
 							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} fill>
-
+								{/* {loggingIn ? <LoginLoader /> : */}
 								<ItemG xs={12} container justify={'center'}>
 									<ItemG xs={12} container justify={'center'}>
 										<NeedAccountT>
@@ -269,5 +273,5 @@ function LoginPage(props) {
 	)
 }
 // }
-
-export default LoginPage
+LoginPage.whyDidYouRender = true
+export default React.memo(LoginPage)

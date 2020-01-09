@@ -1,5 +1,5 @@
 import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
-import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, Notifications } from 'variables/icons';
+import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, /* Notifications */ } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
 import cookie from 'react-cookies';
@@ -9,7 +9,7 @@ import Gravatar from 'react-gravatar'
 import { logOut } from 'variables/dataLogin';
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'
-import { ItemG, T, Muted } from 'components';
+import { /* ItemG, */ T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
 import cx from 'classnames'
 // import Search from 'components/Search/Search';
@@ -49,10 +49,11 @@ class HeaderLinks extends React.Component {
 		catch (e) {
 		}
 		if (!cookie.load('SESSION')) {
+			this.setState({ anchorPofile: null })
 			this.props.history.push('/login')
 			this.props.resetRedux()
 		}
-		this.setState({ anchorProfile: null })
+		// this.setState({ anchorProfile: null })
 	}
 	handleSettingsOpen = () => {
 		this.handleProfileClose()
@@ -81,11 +82,11 @@ class HeaderLinks extends React.Component {
 		// return globalSearch ? <GlobalSearch /> : null
 		return null
 	}
-	renderNotifications = () => {
-		return <ItemG container style={{ width: 'auto', alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
-			<Notifications />
-		</ItemG>
-	}
+	// renderNotifications = () => {
+	// 	return <ItemG container style={{ width: 'auto', alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
+	// 		<Notifications />
+	// 	</ItemG>
+	// }
 	renderUserMenu = () => {
 		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
