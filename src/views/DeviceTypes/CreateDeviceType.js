@@ -296,7 +296,7 @@ class CreateDeviceType extends Component {
 				handleRemoveMtdKey={this.handleRemoveMtdKey}
 				handleAddMetadataKey={this.handleAddMetadataKey}
 
-				onChange={this.handleChange}
+				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
 				handleAddKeyToStructure={this.handleAddKeyToStructure}
 				keyName={keyName}

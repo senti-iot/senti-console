@@ -310,7 +310,7 @@ class CreateDeviceTypeForm extends Component {
 								<TextF
 									id={'deviceTypeName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={deviceType.name}
 								// autoFocus
 								/>
