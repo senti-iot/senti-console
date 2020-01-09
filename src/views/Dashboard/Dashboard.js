@@ -212,7 +212,7 @@ const Dashboard = (props) => {
 							<SpeedDialAction
 								icon={<ImportExport />}
 								tooltipTitle={`${t('actions.import')} ${t('sidebar.dashboard')}`}
-								tooltipOpen
+								// tooltipOpen
 								onClick={handleOpenImport}
 								style={{ whiteSpace: 'nowrap' }}
 
@@ -220,7 +220,7 @@ const Dashboard = (props) => {
 							<SpeedDialAction
 								icon={<Add />}
 								tooltipTitle={`${t('actions.create')} ${t('sidebar.dashboard')}`}
-								tooltipOpen
+								// tooltipOpen
 								onClick={handleOpenDT}
 								style={{ whiteSpace: 'nowrap' }}
 							/>
