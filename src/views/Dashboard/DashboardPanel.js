@@ -5,7 +5,7 @@ import { Dialog, AppBar, Toolbar, Hidden, IconButton, ButtonBase, Paper, DialogC
 import { ItemG, T, CircularLoader, SlideT } from 'components';
 import { Close, Edit, ContentCopy } from 'variables/icons';
 import cx from 'classnames'
-import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyleHooks';
+import dashboardStyle from 'assets/jss/components/dashboards/dashboardStyles';
 import GaugeSData from 'views/Charts/GaugeSData';
 import DoubleChart from 'views/Charts/DoubleChart';
 import logo from '../../logo.svg'
