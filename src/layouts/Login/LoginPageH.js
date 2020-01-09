@@ -26,7 +26,6 @@ function LoginPage(props) {
 	const [user, setUser] = useState('')
 	const [pass, setPass] = useState('')
 	const [loggingIn, setLoggingIn] = useState(false)
-	const [googleLoggingIn, setGoogleLoggingIn] = useState(false)
 	const [cookies, setCookies] = useState(false)
 	const [privacy, setPrivacy] = useState(false)
 	const [showPassword, setShowPassword] = useState(false)
@@ -152,92 +151,97 @@ function LoginPage(props) {
 								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
 							</ItemG>
 							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} fill>
-								<FadeOutLoader CustomLoader={LoginLoader} on={googleLoggingIn} onChange={googleSignIn} fill>
 
+								<ItemG xs={12} container justify={'center'}>
 									<ItemG xs={12} container justify={'center'}>
-										<ItemG xs={12} container justify={'center'}>
-											<NeedAccountT>
+										<NeedAccountT>
+											<span style={{ marginRight: 4 }}>
 												<span style={{ marginRight: 4 }}>
 													{t('login.needAnAccount1')}
-													<span style={{ fontWeight: 600 }}> Senti </span>
-													<span>{t('login.needAnAccount2')}</span>?
 												</span>
-												<span>
-
-													<Link to={'/login'}>
-														{t('login.createAccount')}
-													</Link>
+												<span style={{ fontWeight: 600, marginRight: 4 }}>
+													Senti
 												</span>
-											</NeedAccountT>
-										</ItemG>
+												<span style={{ marginRight: 4 }}>
+													{t('login.needAnAccount2')}?
+												</span>
 
-										<ItemG container xs={12} >
+											</span>
+											<span>
 
-											{/* <ItemG container xs={12}> */}
-											<LoginTF
-												id={'user'}
-												autoFocus
-												label={t('login.username')}
-												error={error}
-												fullWidth
-												type={'email'}
-												onChange={handleInput}
-												value={user}
-												InputProps={{
-													endAdornment: <InputAdornment style={{ marginLeft: 8 }}>
-														<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
-													</InputAdornment>
-												}}
-											/>
-											{/* </ItemG> */}
-											{/* <ItemG container xs={12}> */}
-											<LoginTF
-												id={'pass'}
-												label={t('login.pass')}
-												error={error}
-												type={showPassword ? 'text' : 'password'}
-												fullWidth
-												onChange={handleInput}
-												value={pass}
-												InputProps={{
-													endAdornment: <InputAdornment style={{ marginLeft: 8 }}>
-														<SmallActionButton
-															onClick={handleShowPassword}
-														>
-															{showPassword ? <Visibility /> : <VisibilityOff />}
-														</SmallActionButton>
-													</InputAdornment>
-												}}
-											/>
-											{/* </ItemG> */}
-										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<LoginButton variant={'outlined'} fullWidth color={'primary'} onClick={logUser}>
-												{t('actions.login')}
-											</LoginButton>
-										</ItemG>
-										<ItemG xs={12} container justify={'center'} style={{ margin: "8px 0px" }}>
-											<ItemG xs={12} container justify={'space-around'}>
-												<Link to={`/password/reset/da`}>
-													{t('login.forgotPassword')}
+												<Link to={'/login'}>
+													{t('login.createAccount')}
 												</Link>
-											</ItemG>
-										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<GoogleLogin
-												clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-												render={renderProps => (
-													<LoginButton fullWidth variant={'outlined'} color={'primary'} onClick={() => { renderProps.onClick(); setGoogleLoggingIn(false) }}>
-														<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
-														{t('actions.loginWithGoogle')}
-													</LoginButton>)}
-												buttonText="Login"
-												onSuccess={googleSignIn}
-												onFailure={googleSignIn}
-											/>
+											</span>
+										</NeedAccountT>
+									</ItemG>
+
+									<ItemG container xs={12} >
+
+										{/* <ItemG container xs={12}> */}
+										<LoginTF
+											id={'user'}
+											autoFocus
+											label={t('login.username')}
+											error={error}
+											fullWidth
+											type={'email'}
+											onChange={handleInput}
+											value={user}
+											InputProps={{
+												endAdornment: <InputAdornment style={{ marginLeft: 8 }}>
+													<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
+												</InputAdornment>
+											}}
+										/>
+										{/* </ItemG> */}
+										{/* <ItemG container xs={12}> */}
+										<LoginTF
+											id={'pass'}
+											label={t('login.pass')}
+											error={error}
+											type={showPassword ? 'text' : 'password'}
+											fullWidth
+											onChange={handleInput}
+											value={pass}
+											InputProps={{
+												endAdornment: <InputAdornment style={{ marginLeft: 8 }}>
+													<SmallActionButton
+														onClick={handleShowPassword}
+													>
+														{showPassword ? <Visibility /> : <VisibilityOff />}
+													</SmallActionButton>
+												</InputAdornment>
+											}}
+										/>
+										{/* </ItemG> */}
+									</ItemG>
+									<ItemG xs={12} container justify={'center'}>
+										<LoginButton variant={'outlined'} fullWidth color={'primary'} onClick={logUser}>
+											{t('actions.login')}
+										</LoginButton>
+									</ItemG>
+									<ItemG xs={12} container justify={'center'} style={{ margin: "8px 0px" }}>
+										<ItemG xs={12} container justify={'space-around'}>
+											<Link to={`/password/reset/da`}>
+												{t('login.forgotPassword')}
+											</Link>
 										</ItemG>
 									</ItemG>
-								</FadeOutLoader>
+									<ItemG xs={12} container justify={'center'}>
+										<GoogleLogin
+											clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+											render={renderProps => (
+												<LoginButton fullWidth variant={'outlined'} color={'primary'} onClick={() => { renderProps.onClick(); }}>
+													<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
+													{t('actions.loginWithGoogle')}
+												</LoginButton>)}
+											buttonText="Login"
+											onSuccess={googleSignIn}
+											onFailure={googleSignIn}
+										/>
+									</ItemG>
+								</ItemG>
 							</FadeOutLoader>
 						</InputContainer>
 						<Footer xs={12} container alignItems={'flex-end'} justify={'center'}>
