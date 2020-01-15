@@ -28,12 +28,12 @@ deploy:
     skip_cleanup: true
     on:
       branch: alpha
-  - domain: https://alphahooks.surge.sh
+  - domain: https://sentidev.surge.sh
     project: "./build"
     provider: surge
     skip_cleanup: true
     on:
-      branch: white-label
+      branch: alpha-dev
 language: node_js
 node_js:
   - stable
