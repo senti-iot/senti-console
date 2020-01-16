@@ -36,6 +36,7 @@ class EditDashboard extends React.Component {
 			openEditGraph: false,
 			openToolbox: true,
 			openClose: false,
+			openSave: false
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}

@@ -10,15 +10,20 @@ function FadeOutLoader(props) {
 	const on = props.on
 	useEffect(() => {
 		const execute = async () => {
-			if (on) {
+			if (on && !loading) {
+				console.log(on)
+				console.log('Executing')
 				setLoading(true)
 				await props.onChange()
-				setLoading(false)
+			}
+			else {
+				if (!on)
+					setLoading(false)
 			}
 		}
 		execute()
 
-	}, [on, props])
+	}, [loading, on, props])
 
 	const { children, notCentered, CustomLoader, fill, fillView } = props
 	return (

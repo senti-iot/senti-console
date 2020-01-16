@@ -197,7 +197,7 @@ class Sensor extends Component {
 		const { weather, heatData } = this.state
 		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
 
-		if (sensor) {
+		if (sensor) {
 			sensor.long = sensor.lng;
 		}
 

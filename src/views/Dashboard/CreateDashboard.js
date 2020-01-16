@@ -123,9 +123,7 @@ const CreateDashboard = (props) => {
 	const classes = createDashboardStyle()
 
 	//State
-	// const [graphs, setGraphs] = useState([])
 	const [openEditGraph, setOpenEditGraph] = useState(false)
-	// const [openToolbox, setOpenToolbox] = useState(false)
 	const [openClose, setOpenClose] = useState(false)
 	const [openSave, setOpenSave] = useState(false)
 
@@ -151,11 +149,6 @@ const CreateDashboard = (props) => {
 			dispatch(createDash())
 	}, [openAddDash, dispatch])
 
-	// componentDidUpdate(prevProps, prevState) {
-	// 	if ((this.props.openAddDash !== prevProps.openAddDash) && this.props.openAddDash) {
-	// 		this.props.createDash()
-	// 	}
-	// }
 	const editGraphOpen = l => e => {
 		dispatch(setGE(l))
 		setOpenEditGraph(true)
@@ -290,13 +283,9 @@ const CreateDashboard = (props) => {
 	const handleCloseEG = () => {
 		dispatch(setGE(null))
 		setOpenEditGraph(false)
-		// this.props.setGE(null)
-		// this.setState({ openEditGraph: false })
-
 	}
 	const onLayoutChange = (layout) => {
 		dispatch(setLayout(layout))
-		// this.props.setLayout(layout)
 	}
 
 	const handleOpenConfirmClose = () => setOpenClose(true)
@@ -313,7 +302,6 @@ const CreateDashboard = (props) => {
 
 
 	const handleSave = () => {
-		// this.props.saveDashboard()
 		dispatch(saveDashboard())
 		props.handleCloseDT()
 	}

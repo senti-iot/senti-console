@@ -5,7 +5,7 @@
 import { successColor, transition, drawerWidth } from "assets/jss/material-dashboard-react.js";
 // import { bgColors } from './backgroundColors';
 // import { bgColorsDark } from './bgColorsDark';
-import { bgColorsLight } from './bgColorsLight';
+import { bgColorsLight } from '../../material-dashboard-react/bgColorsLight';
 import { makeStyles } from '@material-ui/styles';
 
 const dashboardStyle = makeStyles(theme => ({

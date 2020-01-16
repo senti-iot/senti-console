@@ -2,6 +2,7 @@ import React from 'react'
 // import { localization, initialLocState } from 'Redux/localization';
 import { useSelector } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
+var has = require('has')
 
 
 export const TProvider = React.createContext(null)
@@ -15,7 +16,6 @@ const LocalizationProvider = ({ children }) => {
 	var dollarRegex = /\$/g
 	var dollarBillsYall = '$$'
 	var defaultTokenRegex = /%\{(.*?)\}/g
-	var has = require('has')
 
 	const transformPhrase = (phrase, substitutions, tokenRegex) => {
 		if (typeof phrase !== 'string') {
@@ -71,4 +71,4 @@ const LocalizationProvider = ({ children }) => {
 	)
 }
 
-export default LocalizationProvider
+export default React.memo(LocalizationProvider)
