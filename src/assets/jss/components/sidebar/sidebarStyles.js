@@ -103,7 +103,7 @@ const sidebarStyle = makeStyles(theme => ({
 		}
 	},
 	logo: {
-		backgroundColor: '#1a1b32',
+		backgroundColor: theme.header,
 		position: "relative",
 		padding: "8px 16px",
 		minHeight: "40px",
@@ -152,7 +152,6 @@ const sidebarStyle = makeStyles(theme => ({
 		border: "0"
 	},
 	image: {
-		backgroundColor: '#1a1b32',
 		position: "relative",
 		height: 48,
 		// marginLeft: 48,

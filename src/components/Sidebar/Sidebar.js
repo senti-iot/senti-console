@@ -57,6 +57,7 @@ const Sidebar = (props) => {
 
 	//Render
 	const SmallBrand = () => {
+		console.log("Theme.logo", theme.logo)
 		return <div className={classes.logo}>
 			<ButtonBase
 				focusRipple
