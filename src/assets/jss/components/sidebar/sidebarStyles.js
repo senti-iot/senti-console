@@ -106,7 +106,7 @@ const sidebarStyle = makeStyles(theme => ({
 		backgroundColor: theme.header,
 		position: "relative",
 		padding: "8px 16px",
-		minHeight: "40px",
+		minHeight: "48px",
 		zIndex: "4",
 		display: 'flex',
 		"&:after": {
@@ -170,7 +170,7 @@ const sidebarStyle = makeStyles(theme => ({
 		right: 0,
 		top: 0,
 		bottom: 0,
-		backgroundSize: "100px 50px",
+		backgroundSize: "contain",
 		backgroundRepeat: "no-repeat",
 		backgroundPosition: "50% 50%",
 	},
