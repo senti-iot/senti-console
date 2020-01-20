@@ -10,73 +10,80 @@ import { transition } from 'assets/jss/material-dashboard-react';
 import cx from 'classnames'
 // import inView from 'in-view'
 
-const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref}/>)
+const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref} />)
 
-const styles = theme => ({
-	appBarDrawerOpen: {
-		[theme.breakpoints.up('lg')]: {
-			left: 260,
-			width: "calc(100vw - 260px)",
-		}
-	},
-	appBarDrawerPermClosed: {
-		[theme.breakpoints.up('lg')]: {
-
-			width: 'calc(100vw - 60px)',
-			left: 60
-		}
-	},
-	appBarDrawerPersClosed: {
-
-		[theme.breakpoints.up('lg')]: {
-			width: 'calc(100vw)',
-			left: 0
-		}
-	},
-	appBar: {
-		padding: "0 !important",
-		position: "fixed",
-		top: 70,
-		[theme.breakpoints.down('xs')]: {
-			top: 48
+const styles = theme => {
+	console.log(theme);
+	return ({
+		appBarDrawerOpen: {
+			[theme.breakpoints.up('lg')]: {
+				left: 260,
+				width: "calc(100vw - 260px)",
+			}
 		},
-		// [theme.breakpoints.up('lg')]: {
+		appBarDrawerPermClosed: {
+			[theme.breakpoints.up('lg')]: {
 
-		// },
-		display: 'flex',
-		flexFlow: 'row',
-		justifyContent: 'space-between',
-		maxWidth: '100%',
-		overflow: 'visible',
-		minHeight: 48,
-		height: 48,
-		zIndex: 900,
-		boxShadow: 'none',
-		...transition
-	},
-	contentToolbar: {
-		height: 41,
-		minHeight: 41,
-		maxHeight: 41,
-		paddingLeft: 0,
-		marginLeft: 'auto',
-	},
-	dividerContainer: {
-		marginLeft: 'auto',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		height: 48,
-	},
-	divider: {
-		width: 2,
-		height: 32,
-		background: 'rgb(255, 255, 255, 0.5)',
-	},
-	noOverflow: {
-		overflow: 'hidden'
-	},
-})
+				width: 'calc(100vw - 60px)',
+				left: 60
+			}
+		},
+		appBarDrawerPersClosed: {
+
+			[theme.breakpoints.up('lg')]: {
+				width: 'calc(100vw)',
+				left: 0
+			}
+		},
+		appBar: {
+			padding: "0 !important",
+			position: "fixed",
+			top: 70,
+			background: theme.toolbarBackground ? theme.toolbarBackground : undefined,
+			[theme.breakpoints.down('xs')]: {
+				top: 48
+			},
+			// [theme.breakpoints.up('lg')]: {
+
+			// },
+			display: 'flex',
+			flexFlow: 'row',
+			justifyContent: 'space-between',
+			maxWidth: '100%',
+			overflow: 'visible',
+			minHeight: 48,
+			height: 48,
+			zIndex: 900,
+			boxShadow: 'none',
+			...transition
+		},
+		contentToolbar: {
+			height: 41,
+			minHeight: 41,
+			maxHeight: 41,
+			paddingLeft: 0,
+			marginLeft: 'auto',
+		},
+		dividerContainer: {
+			marginLeft: 'auto',
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: 48,
+		},
+		divider: {
+			width: 2,
+			height: 32,
+			background: 'rgb(255, 255, 255, 0.5)',
+		},
+		noOverflow: {
+			overflow: 'hidden'
+		},
+		indicator: {
+			background: theme.toolbarIndicator ? theme.toolbarIndicator : undefined
+		}
+	})
+}
 
 class Toolbar extends PureComponent {
 	constructor(props) {
@@ -129,13 +136,14 @@ class Toolbar extends PureComponent {
 							[classes.appBarDrawerOpen]: smallMenu,
 						})
 					}}>
-						{tabs ? <Tabs TabIndicatorProps={{ style: { /* opacity: hashLinks ? 0 : 1 */ } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+						{tabs ? <Tabs
+							id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow, indicator: classes.indicator }}>
 							{tabs ? tabs.map((t, i) => {
 								return <Tab
 									key={i}
 									onMouseEnter={e => this.setState({ tooltip: t.id })}
 									onMouseLeave={() => this.setState({ tooltip: -1 })}
-									component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={this.handleScroll} style={{ color: '#fff' }} />)}
+									component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={this.handleScroll} /* style={{ color: '#fff' }} */ />)}
 									value={t.id}
 									smooth
 									onClick={this.handleTooltipClose}
