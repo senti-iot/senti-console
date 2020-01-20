@@ -367,7 +367,7 @@
 		},
 		"dashboards": {
 			"close": {
-				"message": "Er du sikker på du ønsker at lukker denne Dashboard?",
+				"message": "Er du sikker på du ønsker at lukke dette Dashboard?",
 				"title": "Close dashboard?",
 				"warning": "Eventuelle ikke-gemte ændringer vil gå tabt!"
 			},
