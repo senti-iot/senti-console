@@ -29,18 +29,19 @@ const AssignSensorsDialog = (props) => {
 	const [selectedSensors, setSelectedSensors] = useState([])
 	const [page, setPage] = useState(0)
 	const [filterWord, setFilterWord] = useState('')
-	const handleSelectSensor = (sId) => e => {
+	const handleSelectSensor = (sId, sName) => e => {
 		// e.preventDefault()
-		selectSensor(sId)
+		selectSensor(sId, sName)
 	}
-	const selectSensor = sId => {
+	const selectSensor = (sId, sName) => {
+		let sS = [...selectedSensors]
 		if (selectedSensors.indexOf(sId) > -1) {
-			selectedSensors.splice(selectedSensors.indexOf(sId), 1)
+			sS.splice(selectedSensors.findIndex(s => s.id === sId), 1)
 		}
 		else {
-			selectedSensors.push(sId)
+			sS.push({ id: sId, name: sName })
 		}
-		setSelectedSensors(selectedSensors)
+		setSelectedSensors(sS)
 	}
 	const handleClose = () => {
 		props.handleClose(false)
@@ -131,7 +132,7 @@ const AssignSensorsDialog = (props) => {
 					<Fragment key={i}>
 						<ListItem
 							button
-							onClick={handleSelectSensor(s.id)}
+							onClick={handleSelectSensor(s.id, s.name)}
 							value={s.id}
 							selected={selectedSensors.indexOf(s.id) > -1}
 						// classes={{

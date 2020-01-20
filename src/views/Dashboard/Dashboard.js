@@ -114,7 +114,7 @@ const Dashboard = (props) => {
 		if (newD) {
 			dispatch(importDashboard(newD))
 			setNewD(null)
-			openImport(false)
+			setOpenImport(false)
 		}
 	}
 

@@ -40,7 +40,7 @@ const MultiSourceChart = (props) => {
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
-	const sensors = useSelector(s => s.data.sensors)
+	// const sensors = useSelector(s => s.data.sensors)
 
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
@@ -101,7 +101,15 @@ const MultiSourceChart = (props) => {
 
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceIds.length > 0) {
-			let data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice], period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+			//TODO HACK
+			let data = null
+			if (g.dataSource.deviceIds[selectedDevice].id) {
+				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice].id, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+			}
+			else {
+				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice], period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+			}
+			//END HACK
 			let newState = setData(data, period.timeType)
 			setLineDataSets(newState.lineDataSets)
 			setRoundDataSets(newState.roundDataSets)
@@ -131,8 +139,10 @@ const MultiSourceChart = (props) => {
 	// 	setOpenDownload(true)
 	// 	setActionAnchor(null)
 	// }
-	const handleGetDeviceName = dId => {
-		return sensors[sensors.findIndex(f => f.id === dId)].name
+	const handleGetDeviceName = d => {
+		console.log(d)
+		return d.name ? d.name : d.id
+		// return sensors[sensors.findIndex(f => f.id === dId)].name
 	}
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
@@ -347,7 +357,7 @@ const MultiSourceChart = (props) => {
 					<ItemG xs zeroMinWidth>
 						<DSelect
 							value={selectedDevice}
-							menuItems={g.dataSource.deviceIds.map((dId, i) => ({ label: handleGetDeviceName(dId), value: i }))}
+							menuItems={g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i }))}
 							onChange={handleChangeSelectedDevice}
 						/>
 						{/* <Tooltip enterDelay={1000} title={title}>
