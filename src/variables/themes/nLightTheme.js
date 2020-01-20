@@ -38,6 +38,8 @@ const theme = (options = defaultOptions) => {
 		header: options.theme.light.headerColor,
 		sidebar: options.theme.light.sidebarColor,
 		background: options.theme.light.background,
+		toolbarBackground: options.theme.light.toolbarBackground,
+		toolbarIndicator: options.theme.light.toolbarIndicator,
 		logo: options.logoUrl
 	});
 }
