@@ -206,9 +206,6 @@ class DashboardCard extends Component {
 						]}>
 
 					</Dropdown>
-					{/* <IconButton >
-						<MoreVert/>
-					</IconButton> */}
 
 				</CardMedia>
 				<CardContent classes={{ root: classes.cardContent }}>

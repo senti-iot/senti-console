@@ -103,7 +103,7 @@ class CreateToken extends Component {
 						id={'token-sensor'}
 						label={t('tokens.fields.types.device')}
 						value={sensor.name}
-						handleClick={this.handleOpenSensor}
+						onClick={this.handleOpenSensor}
 						readonly
 						fullWidth
 					/>
@@ -129,7 +129,7 @@ class CreateToken extends Component {
 						id={'token-registry'}
 						label={t('tokens.fields.types.registry')}
 						value={registry.name}
-						handleClick={() => this.setState({ openRegistry: true })}
+						onClick={() => this.setState({ openRegistry: true })}
 						readonly
 						fullWidth
 					/>
@@ -156,7 +156,7 @@ class CreateToken extends Component {
 						id={'token-dt'}
 						label={t('tokens.fields.types.devicetype')}
 						value={deviceType.name}
-						handleClick={() => this.setState({ openDeviceType: true })}
+						onClick={() => this.setState({ openDeviceType: true })}
 						readonly
 						fullWidth
 					/>
@@ -239,7 +239,7 @@ class CreateToken extends Component {
 							id={'token-confirmClose'}
 							fullWidth
 							value={confirmClose}
-							handleChange={e => this.setState({ confirmClose: e.target.value })}
+							onChange={e => this.setState({ confirmClose: e.target.value })}
 						/>
 					</ItemG>
 				</ItemG>
@@ -287,7 +287,7 @@ class CreateToken extends Component {
 									id={'tokenName'}
 									value={token.name}
 									fullWidth
-									handleChange={this.handleChange('name')}
+									onChange={this.handleChange('name')}
 								/>
 							</ItemG>
 							<ItemG xs={12}>

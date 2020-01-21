@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { InfoCard, ItemGrid, Caption, Info, Dropdown, ItemG, SlideT } from 'components';
-import { Grid, Typography, IconButton, Hidden, Toolbar, AppBar, Dialog, List, ListItem, ListItemText, Button } from '@material-ui/core';
+import { Grid, Typography, IconButton, Hidden, Toolbar, AppBar, Dialog, List, ListItem, ListItemText, Button, Link } from '@material-ui/core';
 import { Person, Edit, Close } from 'variables/icons'
-import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 import { suggestionGen, filterItems } from 'variables/functions';
 import { getAllUsers } from 'variables/dataUsers';
 import Gravatar from 'react-gravatar'
@@ -12,17 +12,17 @@ import { updateProject } from 'variables/dataProjects';
 
 export class ProjectContact extends Component {
 	constructor(props) {
-	  super(props)
+		super(props)
 
-	  this.state = {
-		 openEditContact: false,
-		  filters: {
-			  keyword: ""
-		  },
-		  selectedUser: {
-			  id: -1
-		  }
-	  }
+		this.state = {
+			openEditContact: false,
+			filters: {
+				keyword: ""
+			},
+			selectedUser: {
+				id: -1
+			}
+		}
 	}
 	componentDidMount = async () => {
 		await getAllUsers().then(rs => this.setState({ users: rs }))
@@ -179,9 +179,9 @@ export class ProjectContact extends Component {
 								{t('projects.contact.email')}
 							</Caption>
 							<Info>
-								<a title={t('links.mailTo')} href={`mailto:${project.user.email}`}>
+								<Link title={t('links.mailTo')} href={`mailto:${project.user.email}`}>
 									{project.user.email}
-								</a>
+								</Link>
 							</Info>
 						</ItemGrid>
 						<ItemGrid>
@@ -189,9 +189,9 @@ export class ProjectContact extends Component {
 								{t('projects.contact.phone')}
 							</Caption>
 							<Info>
-								<a title={t('links.phoneTo')} href={`tel:${project.user.phone}`}>
+								<Link title={t('links.phoneTo')} href={`tel:${project.user.phone}`}>
 									{project.user.phone}
-								</a>
+								</Link>
 							</Info>
 						</ItemGrid>
 						<ItemGrid>
@@ -199,7 +199,7 @@ export class ProjectContact extends Component {
 								{t('projects.contact.organisation')}
 							</Caption>
 							<Info>
-								{project.user.org ? <Link to={{ pathname: `/management/org/${project.user.org.id}`, prevURL: `/project/${project.id}` }} >
+								{project.user.org ? <Link component={RLink} to={{ pathname: `/management/org/${project.user.org.id}`, prevURL: `/project/${project.id}` }} >
 									{project.user.org.name}
 								</Link> : t('users.fields.noOrg')}
 							</Info>

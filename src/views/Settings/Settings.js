@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { GridContainer, ItemGrid } from 'components';
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
@@ -14,24 +14,26 @@ import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettin
 import NavigationSettings from './SettingsCards/NavigationSettings';
 import ResetSettings from './SettingsCards/ResetSettings';
 import { Fade } from '@material-ui/core';
+import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, useHistory } from 'hooks';
 
-class Settings extends Component {
-	constructor(props) {
-		super(props)
+const Settings = (props) => {
 
-		this.state = {
+	// constructor(props) {
+	// 	super(props)
 
-		}
-		props.setHeader('settings.pageTitle', false, '', 'settings')
-		props.setTabs({
-			id: 'settings',
-			tabs: this.tabs,
-			hashLinks: true,
-			route: 0
-		})
-		props.setBC('settings')
-	}
-	tabs = [
+	// 	this.state = {
+
+	// 	}
+	// 	props.setHeader('settings.pageTitle', false, '', 'settings')
+	// 	props.setTabs({
+	// 		id: 'settings',
+	// 		tabs: this.tabs,
+	// 		hashLinks: true,
+	// 		route: 0
+	// 	})
+	// 	props.setBC('settings')
+	// }
+	const tabs = [
 		{ id: 0, title: '', label: <Laptop />, url: `#display` },
 		{ id: 1, title: '', label: <Public />, url: `#navigation` },
 		{ id: 2, title: '', label: <Build />, url: `#calibration` },
@@ -39,27 +41,83 @@ class Settings extends Component {
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
 		{ id: 4, title: '', label: <Assignment />, url: '#termsAndConditions' }
 	]
-	componentDidUpdate = () => {
-		if (this.props.saved === true) {
-			this.props.s('snackbars.settingsSaved')
-			this.props.finishedSaving()
-		}
-	}
+	/*	const s = state.settings
+	return {
+		saved: s.saved,
 
-	render() {
-		const { t } = this.props
-		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, history } = this.props
-		const { tcount } = this.props
-		const reset = this.props.location.pathname.includes('reset') ? true : false
-		return (
-			<Fade in={true}>
-				<GridContainer>
-					{reset ? <ItemGrid xs={12} noMargin>
-						<ResetSettings history={history} t={t}/>
+		calibration: s.calibration,
+		count: s.count,
+		tcount: s.tcount,
+		calNotifications: s.calNotifications,
+
+		alerts: s.alerts,
+		didKnow: s.didKnow
+	}*/
+	const saved = useSelector(s => s.settings.saved)
+	const calibration = useSelector(s => s.settings.calibration)
+	const count = useSelector(s => s.settings.count)
+	const tcount = useSelector(s => s.settings.tcount)
+	const calNotifications = useSelector(s => s.settings.calNotifications)
+	// const alerts = useSelector(s => s.settings.alerts)
+	// const didKnow = useSelector(s => s.settings.didKnow)
+
+	const t = useLocalization()
+	const s = useSnackbar()
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const location = useLocation()
+	// const theme = useTheme()
+	// console.log(theme)
+
+	useEffect(() => {
+		props.setHeader('settings.pageTitle', false, '', 'settings')
+		props.setTabs({
+			id: 'settings',
+			tabs: tabs,
+			hashLinks: true,
+			route: 0
+		})
+		props.setBC('settings')
+		if (location.hash.length > 0) {
+			let el = document.getElementById(location.hash.substr(1, location.hash.lenght))
+			let topOfElement = el.offsetTop - 130
+			window.scroll({ top: topOfElement, behavior: 'smooth' })
+		}
+		//eslint-disable-next-line
+	}, [])
+
+	useEffect(() => {
+		if (saved === true) {
+			s.s('snackbars.settingsSaved')
+			dispatch(finishedSaving())
+		}
+	}, [dispatch, s, saved])
+	// componentDidUpdate = () => {
+	// 	console.log(this.props.s)
+	// 	if (this.props.saved === true) {
+	// 		this.props.s('snackbars.settingsSaved')
+	// 		this.props.finishedSaving()
+	// 	}
+	// }
+
+	// render() {
+	const dispCalType = (type) => dispatch(changeCalType(type))
+	const dispCount = (count) => dispatch(changeCount(count))
+	const dispTCount = (tcount) => dispatch(changeTCount(tcount))
+	const dispCalNotif = (type) => dispatch(changeCalNotif(type))
+
+	// const { changeCalType, changeCount, changeTCount, changeCalNotif } = this.props
+	const reset = location.pathname.includes('reset') ? true : false
+	return (
+		<Fade in={true}>
+			<GridContainer>
+				{reset ?
+					<ItemGrid xs={12} noMargin>
+						<ResetSettings history={history} t={t} />
 					</ItemGrid> : <Fragment>
 						<ItemGrid xs={12} noMargin id={'display'}>
 							<DisplaySettings
-								t={t}/>
+								t={t} />
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={'navigation'}>
 							<NavigationSettings
@@ -69,13 +127,13 @@ class Settings extends Component {
 						<ItemGrid xs={12} noMargin id={'calibration'}>
 							<CalibrationSettings
 								calibration={calibration}
-								changeCalType={changeCalType}
+								changeCalType={dispCalType}
 								count={count}
 								tcount={tcount}
-								changeCount={changeCount}
-								changeTCount={changeTCount}
+								changeCount={dispCount}
+								changeTCount={dispTCount}
 								calNotifications={calNotifications}
-								changeCalNotif={changeCalNotif}
+								changeCalNotif={dispCalNotif}
 								t={t} />
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={'charts'}>
@@ -84,15 +142,15 @@ class Settings extends Component {
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
-							<TermsAndConditionsSettings history={history} t={t}/>
+							<TermsAndConditionsSettings history={history} t={t} />
 						</ItemGrid>
 					</Fragment>}
-				</GridContainer>
-			</Fade>
+			</GridContainer>
+		</Fade>
 
-		)
-	}
+	)
 }
+// }
 
 const mapStateToProps = state => {
 	const s = state.settings
@@ -129,7 +187,7 @@ const mapDispatchToProps = (dispatch) => {
 
 		// changeChartType: type => dispatch(changeChartType(type)),
 		// changeChartDataType: type => dispatch(changeChartDataType(type)),
-		
+
 		// removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
 		// updateChartPeriod: p => dispatch(updateChartPeriod(p)),
 

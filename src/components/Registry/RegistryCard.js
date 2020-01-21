@@ -83,7 +83,7 @@ class RegistryCard extends Component {
 				}
 				content={<ItemG container>
 					<ItemG xs={12}>
-						<T className={classes.smallText} noParagraph>
+						<T className={classes.smallText} paragraph={false}>
 							{`${t('registries.fields.protocol')}: ${this.renderProtocol(p.protocol)}`}
 						</T>
 					</ItemG>

@@ -495,7 +495,7 @@ class GaugeComponent extends PureComponent {
 					content={
 						<Grid container>
 							{loading ? <div style={{ height: 300, width: '100%' }}>
-								<CircularLoader notCentered />
+								<CircularLoader fill />
 							</div> :
 								<Fragment>
 									<Hidden xsDown>

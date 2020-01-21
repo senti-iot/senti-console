@@ -1,51 +1,46 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Fade } from '@material-ui/core';
 import { CircularLoader } from 'components';
+import PropTypes from 'prop-types'
 
-class FadeOutLoader extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			loading: false,
-			showLoader: false
+function FadeOutLoader(props) {
+	const [loading, setLoading] = useState(false)
+	// const [showLoader, setShowLoader] = useState(props.on ? true : false)
+	const on = props.on
+	useEffect(() => {
+		const execute = async () => {
+			if (on && !loading) {
+				console.log(on)
+				console.log('Executing')
+				setLoading(true)
+				await props.onChange()
+			}
+			else {
+				if (!on)
+					setLoading(false)
+			}
 		}
-	}
-	componentDidUpdate = async (prevProps, prevState) => {
-		if ((prevProps.on !== this.props.on) && this.props.on) {
-			await  this.execute(true)
-		}
-		if ((prevProps.on !== this.props.on) && !this.props.on) {
-			await this.execute(false)
-		 }
-	}
-	execute = async (on) => {
-		if (on) {
-			this.setState({ loading: true })
-			setTimeout(async () => {
-				this.setState({ showLoader: on })
-				await this.props.onChange()
-				this.setState({ loading: false })
-			}, 1000);
-		}
-		else { 
-			this.setState({ loading: false, showLoader: false })
-		}
-		// this.setState({ loading: false })
-	}
-	render() {
-		const { children, notCentered, circularClasses } = this.props
-		const { loading, showLoader } = this.state
-		return (
-			<Fragment>
-				<Fade in={!loading}>
-					{!showLoader ? 
-						 children 
-						: <CircularLoader notCentered={notCentered} className={circularClasses}/>}
-				</Fade>
-			</Fragment>
-		)
-	}
+		execute()
+
+	}, [loading, on, props])
+
+	const { children, notCentered, CustomLoader, fill, fillView } = props
+	return (
+		<Fragment>
+			<Fade in={!loading}>
+				{/* {!showLoader ? */}
+				{!loading ? children : CustomLoader ? <CustomLoader notCentered={notCentered} /> : <CircularLoader fillView={fillView} fill={fill} notCentered={notCentered} />}
+
+			</Fade>
+		</Fragment>
+	)
 }
 
+FadeOutLoader.propTypes = {
+	on: PropTypes.bool.isRequired,
+	notCentered: PropTypes.bool,
+	circularClasses: PropTypes.object,
+	onChange: PropTypes.func.isRequired,
+}
 export default FadeOutLoader

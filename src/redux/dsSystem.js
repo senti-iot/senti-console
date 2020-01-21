@@ -78,11 +78,12 @@ export const getPeriod = (state, id, create) => {
 	if (create) {
 		let gs = state.dsSystem.cGraphs
 		let g = gs[gs.findIndex(r => r.id === id)]
-		return g.period
+		if (g)
+			return g.period
 	}
 	let gs = state.dsSystem.graphs
 	let g = gs[gs.findIndex(r => r.id === id)]
-	if (g.period)
+	if (g)
 		return g.period
 }
 
@@ -367,7 +368,13 @@ export const saveDashboard = (edit) => {
 			user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
 		}
 		else {
-			user.aux.senti.dashboards.push(newD)
+			if (user.aux.senti.dashboards) {
+				user.aux.senti.dashboards.push(newD)
+			}
+			else {
+				user.aux.senti.dashboards = []
+				user.aux.senti.dashboards.push(newD)
+			}
 		}
 		// dispatch()
 		dispatch(saveOnServ(user))

@@ -30,6 +30,7 @@ if (hostname === 'console.senti.cloud') {
 	backendHost = 'https://betabackend.senti.cloud/rest/';
 	sentiAPI = 'https://dev.api.senti.cloud/'
 }
+
 export const loginApi = create({
 	baseURL: backendHost,
 	timout: 30000,
@@ -163,6 +164,20 @@ setToken()
 
 //#region Senti Services
 
+export const devServicesAPI = create({
+	baseURL: 'https://dev.services.senti.cloud/databroker',
+	timeout: 30000,
+	headers: {
+		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+
+})
+export const getWhiteLabel = async (host) => {
+	let res = await servicesAPI.get(`/orgMetadata/${host}`).then(rs => rs.ok ? rs.data : rs.ok)
+	return res
+}
 export const servicesAPI = create({
 	baseURL: 'https://services.senti.cloud/databroker',
 	timeout: 30000,

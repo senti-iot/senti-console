@@ -12,7 +12,7 @@ export default class Geolocation extends React.Component {
 		}
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if (typeof window !== 'object') {
 			return
 		}

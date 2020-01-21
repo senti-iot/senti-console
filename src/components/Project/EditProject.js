@@ -307,7 +307,7 @@ class EditProject extends Component {
 										label={t('projects.fields.name')}
 										value={project.title}
 										className={classes.textField}
-										handleChange={this.handleChange('title')}
+										onChange={this.handleChange('title')}
 										margin='normal'
 
 										error={error}
@@ -322,7 +322,7 @@ class EditProject extends Component {
 										color={'secondary'}
 										className={classes.textField}
 										value={project.description}
-										handleChange={this.handleChange('description')}
+										onChange={this.handleChange('description')}
 										margin='normal'
 
 										error={error}
@@ -350,8 +350,8 @@ class EditProject extends Component {
 										id={'contactPerson'}
 										label={t('projects.contact.title')}
 										value={`${user.firstName} ${user.lastName}`}
-										handleClick={this.handleOpenUser}
-										handleChange={() => { }}
+										onClick={this.handleOpenUser}
+										onChange={() => { }}
 										InputProps={{
 											onChange: this.handleOpenUser,
 											readOnly: true
@@ -361,7 +361,7 @@ class EditProject extends Component {
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
-									<CircularLoader notCentered />
+									<CircularLoader fill />
 								</Collapse>
 							</ItemGrid>
 							<ItemGrid container style={{ margin: 16 }}>

@@ -122,7 +122,7 @@ class ESScorecard extends Component {
 							<ItemG container>
 								<ItemG xs={12}>
 									<TextF
-										handleChange={this.handleEditGraph('name')}
+										onChange={this.handleEditGraph('name')}
 										autoFocus
 										id={'name'}
 										label={t('dashboard.fields.label')}
@@ -194,8 +194,8 @@ class ESScorecard extends Component {
 										id={'sensorChart'}
 										label={t('dashboard.fields.device')}
 										value={sensor ? sensor.name : t('no.device')}
-										handleClick={this.handleExpand('openSensor' + i, true)}
-										handleChange={() => { }}
+										onClick={this.handleExpand('openSensor' + i, true)}
+										onChange={() => { }}
 									/>
 								</ItemG>
 								<Collapse unmountOnExit in={ds.deviceId > 0}>
@@ -204,7 +204,7 @@ class ESScorecard extends Component {
 										<Fragment>
 											<ItemG xs={12}>
 												<TextF
-													handleChange={this.handleEditLabel(i)}
+													onChange={this.handleEditLabel(i)}
 													autoFocus
 													id={'label' + i}
 													label={t('dashboard.fields.label')}
@@ -214,7 +214,7 @@ class ESScorecard extends Component {
 											</ItemG>
 											<ItemG xs={12}>
 												<TextF
-													handleChange={this.handleEditUnit(i)}
+													onChange={this.handleEditUnit(i)}
 													autoFocus
 													id={'unit' + i}
 													label={t('dashboard.fields.unit')}
@@ -241,8 +241,8 @@ class ESScorecard extends Component {
 													id={'cfSelect'}
 													label={t('dashboard.fields.cf')}
 													value={cfs[cfs.findIndex(f => f.id === ds.cf)] ? cfs[cfs.findIndex(f => f.id === ds.cf)].name : t('no.function')}
-													handleClick={this.handleExpand('openCF' + i, true)}
-													handleChange={() => { }}
+													onClick={this.handleExpand('openCF' + i, true)}
+													onChange={() => { }}
 												/>
 											</ItemG>
 

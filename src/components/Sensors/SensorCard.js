@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 class SensorCard extends Component {
 	constructor(props) {
 	  super(props)
-	
+
 	  this.state = {
 		 actionAnchor: null,
 		 img: null
@@ -34,15 +34,15 @@ class SensorCard extends Component {
 		switch (val) {
 			case 0:
 				return <ItemG container>
-					<Block className={classes.blocked + ' ' + classes.icon} /> 
-					<T className={classes.smallText} noParagraph>
-						{t('sensors.fields.communications.blocked')}	
+					<Block className={classes.blocked + ' ' + classes.icon} />
+					<T className={classes.smallText} paragraph={false}>
+						{t('sensors.fields.communications.blocked')}
 					</T>
 				</ItemG>
 			case 1:
 				return <ItemG container>
 					<CheckCircle className={classes.allowed + ' ' + classes.icon} />
-					<T className={classes.smallText} noParagraph>
+					<T className={classes.smallText} paragraph={false}>
 						{t('sensors.fields.communications.allowed')}
 					</T>
 				</ItemG>
@@ -54,7 +54,7 @@ class SensorCard extends Component {
 		const { p, classes, t } = this.props
 		const { actionAnchor } = this.state
 		return (
-			
+
 			<SmallCard
 				avatar={<DeviceHub className={classes.bigIcon} />}
 				key={p.id}
@@ -81,14 +81,14 @@ class SensorCard extends Component {
 								}
 							}}>
 							<MenuItem onClick={() => this.props.history.push(`/sensor/${p.id}/edit`)}>
-								<Edit className={classes.leftIcon} />{t('menus.edit')}									
+								<Edit className={classes.leftIcon} />{t('menus.edit')}
 							</MenuItem>
 						</Menu>
 					</ItemGrid>
 				}
 				content={<ItemG container>
 					<ItemG xs={12}>
-						<T className={classes.smallText} noParagraph>
+						<T className={classes.smallText} paragraph={false}>
 							<InputIcon className={classes.icon} />
 							<Link to={{ pathname: `/sensor/${p.reg_id}` }}>{p.reg_name}</Link>
 						</T>

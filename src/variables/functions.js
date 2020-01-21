@@ -3,16 +3,28 @@ import { parsePhoneNumber } from 'libphonenumber-js'
 import { colors } from '@material-ui/core';
 var moment = require('moment');
 var _ = require('lodash')
-var Crypto = require('crypto-js')
-var key = '0011001100110011'
-export const encrypyAES = (str) => {
 
-	return Crypto.AES.encrypt(str, key).toString()
+
+export function getContrast(hexcolor, reverse) {
+	if (hexcolor) {
+
+		var r = parseInt(hexcolor.substr(1, 2), 16);
+		var g = parseInt(hexcolor.substr(3, 2), 16);
+		var b = parseInt(hexcolor.substr(5, 2), 16);
+		var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+		let white = 'white'
+		let black = 'black'
+		if (reverse) {
+			return (yiq >= 128) ? white : black;
+		}
+		else {
+			return (yiq >= 128) ? black : white;
+		}
+	}
+	return 'inherit'
 }
-export const decryptAES = str => {
-	return Crypto.AES.decrypt(str, key).toString(Crypto.enc.Utf8)
-}
-window.decryptAES = decryptAES
+
+
 export const scrollToAnchor = (id) => {
 	let el = document.getElementById(id.substring(1, id.length))
 	if (el) {
@@ -50,7 +62,7 @@ export const copyToClipboard = str => {
 		document.getSelection().rangeCount > 0        // Check if there is any content selected previously
 			? document.getSelection().getRangeAt(0)     // Store selection if found
 			: false;                                    // Mark as false to know no selection existed before
-	el.focus()
+	// el.focus()
 	el.select();                                    // Select the <textarea> content
 	document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
 	document.body.removeChild(el);                  // Remove the <textarea> element
@@ -338,6 +350,15 @@ export const pF = (phone) => {
 		return phone
 	}
 	return phoneNumber.formatInternational()
+}
+/**
+ * Transform Spaces into camelCase
+ * @param {String} str
+ */
+export const camelCase = (str) => {
+	return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+		return index === 0 ? word.toLowerCase() : word.toUpperCase();
+	}).replace(/\s+/g, '');
 }
 /**
  * Date Time Formatter

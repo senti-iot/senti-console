@@ -2,7 +2,7 @@
 // // // Dashboard styles
 // #############################
 
-import { successColor, headerColor, transition, drawerWidth, hoverColor } from "assets/jss/material-dashboard-react.js";
+import { successColor, transition, drawerWidth } from "assets/jss/material-dashboard-react.js";
 // import { bgColors } from './backgroundColors';
 // import { bgColorsDark } from './bgColorsDark';
 import { bgColorsLight } from './bgColorsLight';
@@ -17,7 +17,7 @@ const dashboardStyle = theme => ({
 		height: 300,
 		margin: 8,
 		'&:hover': {
-			border: `4px solid ${hoverColor}`,
+			border: `4px solid ${theme.hover}`,
 			margin: 5
 		}
 	},
@@ -164,7 +164,7 @@ const dashboardStyle = theme => ({
 	// },
 	cAppBar: {
 		position: 'sticky',
-		backgroundColor: headerColor,
+		backgroundColor: theme.header,
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
@@ -183,7 +183,7 @@ const dashboardStyle = theme => ({
 	},
 	appBar: {
 		WebkitOverflowScrolling: "touch",
-		backgroundColor: headerColor,
+		backgroundColor: theme.header,
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
@@ -253,6 +253,6 @@ const dashboardStyle = theme => ({
 		fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 		marginTop: '10px'
 	}
-});
+})
 
 export default dashboardStyle;

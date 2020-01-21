@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Caption, Info, Dropdown } from 'components';
-import { Grid } from '@material-ui/core';
+import { InfoCard, ItemGrid, Caption, Info, Dropdown, Muted } from 'components';
+import { Grid, Link } from '@material-ui/core';
 import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
-import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 var countries = require('i18n-iso-countries')
 
 class OrgDetails extends Component {
@@ -24,7 +24,7 @@ class OrgDetails extends Component {
 		this.handleCloseActionsDetails()
 		this.props.deleteOrg()
 	}
-	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/org/${this.props.org.id}`  })
+	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/org/${this.props.org.id}` })
 
 	options = () => {
 		const { t, accessLevel, classes, isFav, addToFav, removeFromFav } = this.props
@@ -45,7 +45,13 @@ class OrgDetails extends Component {
 	render() {
 		const { t, org, devices } = this.props
 		return (
-			<InfoCard title={org.name} avatar={<Business />} subheader={''}
+			<InfoCard
+				title={org.name}
+				avatar={<Business />}
+				subheader={
+					<Muted>
+						{org.nickname}
+					</Muted>}
 				noExpand
 				topAction={this.options().length > 0 ? <Dropdown
 					menuItems={
@@ -77,7 +83,7 @@ class OrgDetails extends Component {
 								{org.city}
 							</Info>
 						</ItemGrid>
-						
+
 						<ItemGrid xs={12} />
 						<ItemGrid>
 							<Caption>
@@ -101,9 +107,9 @@ class OrgDetails extends Component {
 								{t('orgs.fields.url')}
 							</Caption>
 							<Info>
-								<a href={org.url} target={'_blank'}>
+								<Link href={org.url} target={'_blank'}>
 									{org.url}
-								</a>
+								</Link>
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12}>
@@ -115,16 +121,16 @@ class OrgDetails extends Component {
 							</Info>
 						</ItemGrid>
 						{org.org.id > 0 ?
-    						<ItemGrid xs={12}>
-    							<Caption>
-    								{t('orgs.fields.parentOrg')}
-    							</Caption>
-    							<Info>
-    								<Link to={{ pathname: `/management/org/${org.org.id}`, prevURL: `/management/org/${org.id}` }}>
-    									{org.org.name}
-    								</Link>
-    							</Info>
-    						</ItemGrid> : null}
+							<ItemGrid xs={12}>
+								<Caption>
+									{t('orgs.fields.parentOrg')}
+								</Caption>
+								<Info>
+									<Link component={RLink} to={{ pathname: `/management/org/${org.org.id}`, prevURL: `/management/org/${org.id}` }}>
+										{org.org.name}
+									</Link>
+								</Info>
+							</ItemGrid> : null}
 						<ItemGrid>
 							<Caption>
 								{t('orgs.fields.CVR')}

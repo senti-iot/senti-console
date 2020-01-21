@@ -1,7 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider
+	ListItemIcon, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
 } from '@material-ui/core';
 import {
 	MoreVert,
@@ -23,6 +23,7 @@ import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
 import TP from 'components/Table/TP';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import { Link } from 'react-router-dom'
 import AceEditor from 'react-ace';
 
 import 'brace/mode/json';
@@ -72,19 +73,17 @@ class SensorMessages extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 	componentDidMount = async () => {
-		const { period } = this.props
 		const { loading } = this.state
-		if (period && loading) {
+		if (loading) {
 			await this.props.getData()
 			this.setState({ loading: false })
 		}
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
-			this.setState({ loading: true }, async () => {
-				let newState = await this.props.getData()
-				this.setState({ ...newState, loading: false })
-			})
+		if ((prevProps.period.from !== this.props.period.from) || (prevProps.period.to !== this.props.period.to) /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
+			this.setState({ loading: true })
+			await this.props.getData()
+			this.setState({ loading: false })
 		}
 	}
 
@@ -440,91 +439,95 @@ class SensorMessages extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor } = this.state
 		const { t, period } = this.props
-		// const {  } = this.props
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container alignItems={'center'}>
-			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+		let displayTo = ''
+		let displayFrom = ''
+		if (period) {
+			displayTo = dateTimeFormatter(period.to)
+			displayFrom = dateTimeFormatter(period.from)
+
+			return <ItemG container alignItems={'center'}>
+				<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.previousPeriod')}>
+							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+								<KeyboardArrowLeft />
+							</IconButton>
+						</Tooltip>
+					</ItemG>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.period')}>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${this.options[period ? period.menuId : 0].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
-
-								</ItemG>
-							}
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
-					</Tooltip>
+								}
+								customSetDate={this.handleSetDate}
+								period={period}
+								t={t} />
+						</Tooltip>
+					</ItemG>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.nextPeriod')}>
+							<div>
+								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+									<KeyboardArrowRight />
+								</IconButton>
+							</div>
+						</Tooltip>
+					</ItemG>
 				</ItemG>
+
 				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
+					<Tooltip title={t('menus.menu')}>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={this.handleOpenActionsDetails}>
+							<MoreVert />
+						</IconButton>
 					</Tooltip>
 				</ItemG>
+				<Menu
+					marginThreshold={24}
+					id='long-menu'
+					anchorEl={actionAnchor}
+					open={Boolean(actionAnchor)}
+					onClose={this.handleCloseActionsDetails}
+					onChange={this.handleVisibility}
+					PaperProps={{ style: { minWidth: 250 } }}>
+
+					<ListItem button onClick={this.handleOpenDownloadModal}>
+						<ListItemIcon><CloudDownload /></ListItemIcon>
+						<ListItemText>{t('menus.export')}</ListItemText>
+					</ListItem>
+
+				</Menu>
 			</ItemG>
-
-			<ItemG>
-				<Tooltip title={t('menus.menu')}>
-					<IconButton
-						aria-label='More'
-						aria-owns={actionAnchor ? 'long-menu' : null}
-						aria-haspopup='true'
-						onClick={this.handleOpenActionsDetails}>
-						<MoreVert />
-					</IconButton>
-				</Tooltip>
-			</ItemG>
-			<Menu
-				marginThreshold={24}
-				id='long-menu'
-				anchorEl={actionAnchor}
-				open={Boolean(actionAnchor)}
-				onClose={this.handleCloseActionsDetails}
-				onChange={this.handleVisibility}
-				PaperProps={{ style: { minWidth: 250 } }}>
-
-				<ListItem button onClick={this.handleOpenDownloadModal}>
-					<ListItemIcon><CloudDownload /></ListItemIcon>
-					<ListItemText>{t('menus.export')}</ListItemText>
-				</ListItem>
-
-			</Menu>
-		</ItemG>
+		}
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
@@ -532,10 +535,23 @@ class SensorMessages extends PureComponent {
 		</ItemG>
 	}
 
-
+	renderNoPeriod = () => {
+		return <ItemG container justify={'center'}>
+			<ItemG xs={12} container justify={'center'}>
+				<Caption>{this.props.t('devices.noPeriodSet')}</Caption>
+			</ItemG>
+			<ItemG xs={12} container justify={'center'}>
+				<MuiLink component={Link} to={'/settings/#charts'}>
+					<Caption>
+						{this.props.t('devices.noPeriodSetLink')}
+					</Caption>
+				</MuiLink>
+			</ItemG>
+		</ItemG>
+	}
 
 	render() {
-		const { t } = this.props
+		const { t, period } = this.props
 		const { loading } = this.state
 		// let displayTo = dateTimeFormatter(period.to)
 		// let displayFrom = dateTimeFormatter(period.from)
@@ -549,12 +565,13 @@ class SensorMessages extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-
-								<ItemG xs={12}>
-									{this.renderMessage()}
-									{this.renderType()}
-								</ItemG>
+							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
+								period ?
+									<ItemG xs={12}>
+										{this.renderMessage()}
+										{this.renderType()}
+									</ItemG> :
+									this.renderNoPeriod()
 							}
 						</Grid>}
 				/>

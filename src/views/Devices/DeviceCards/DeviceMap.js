@@ -182,7 +182,7 @@ class DeviceMap extends PureComponent {
 					return <ItemG key={m.id} container direction={'column'}>
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
 						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
-						<AddressInput value={m.address} handleChange={this.handleChangeAddress} />
+						<AddressInput value={m.address} onChange={this.handleChangeAddress} />
 					</ItemG>
 				}) : null
 				}

@@ -50,7 +50,7 @@ class DeviceTypeCloudFunctions extends Component {
 										return <TableRow key={i + 'outbound'}>
 											<TableCell>
 												<Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
-													{cf[cf.findIndex(f => f.id === s.nId)].name}
+													{cf[cf.findIndex(f => f.id === s.nId)] ? cf[cf.findIndex(f => f.id === s.nId)].name : s.nId}
 												</Link>
 											</TableCell>
 

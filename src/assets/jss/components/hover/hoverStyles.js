@@ -20,8 +20,8 @@ const hoverStyles = theme => ({
 		height: 20
 	},
 	copyIcon: {
-		width: 14, 
-		height: 14, 
+		width: 14,
+		height: 14,
 		color: theme.palette.type === 'light' ? '#000' : '#fff'
 	},
 	redSignal: {
@@ -66,7 +66,7 @@ const hoverStyles = theme => ({
 		color: primaryColor,
 		"&:hover": {
 			background: 'initial',
-			color: hoverColor
+			color: theme.palette.hover ? theme.palette.hover : hoverColor
 		}
 	},
 	smallActionLink: {

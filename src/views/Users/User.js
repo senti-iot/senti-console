@@ -252,7 +252,7 @@ class User extends Component {
 						id={'current'}
 						label={t('users.fields.currentPass')}
 						type={'password'}
-						handleChange={this.handleInputChange}
+						onChange={this.handleInputChange}
 						value={pw.current}
 					/>
 				</ItemG>}
@@ -261,7 +261,7 @@ class User extends Component {
 						id={'newP'}
 						label={t('users.fields.newPass')}
 						type={'password'}
-						handleChange={this.handleInputChange}
+						onChange={this.handleInputChange}
 						value={pw.newP}
 					/>
 				</ItemG>
@@ -270,7 +270,7 @@ class User extends Component {
 						id={'confirm'}
 						label={t('users.fields.confirmPass')}
 						type={'password'}
-						handleChange={this.handleInputChange}
+						onChange={this.handleInputChange}
 						value={pw.confirm}
 					/>
 				</ItemG>

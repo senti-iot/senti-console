@@ -141,11 +141,11 @@ class CreateSensorForm extends Component {
 		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
-			{sensorMetadata.metadata.map((m, i) => {
+			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
-						handleChange={handleChangeMetadataKey(i)}
+						onChange={handleChangeMetadataKey(i)}
 						value={m.key}
 						readOnly
 						InputProps={{
@@ -154,7 +154,7 @@ class CreateSensorForm extends Component {
 					/>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.value')}
-						handleChange={handleChangeMetadata(i)}
+						onChange={handleChangeMetadata(i)}
 						value={m.value}
 						readOnly
 						InputProps={{
@@ -164,12 +164,12 @@ class CreateSensorForm extends Component {
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 						<IconButton
 							style={{ marginTop: 6 }}
-							onClick={handleRemoveMtdKey(i)}						>
+							onClick={handleRemoveMtdKey(i)}>
 							<Close />
 						</IconButton>
 					</Tooltip>
 				</ItemGrid>
-			})}
+			}) : null}
 			<ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
 			</ItemGrid>
@@ -178,7 +178,7 @@ class CreateSensorForm extends Component {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
-						handleChange={handleChangeKey(p, i)}
+						onChange={handleChangeKey(p, i)}
 						value={p.key}
 						readOnly
 						InputProps={{
@@ -189,8 +189,8 @@ class CreateSensorForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(i, 'outbound')}
-						handleChange={() => { }}
+						onClick={handleOpenFunc(i, 'outbound')}
+						onChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
@@ -239,7 +239,7 @@ class CreateSensorForm extends Component {
 				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						handleClick={handleOpenFunc(i, 'inbound')}
+						onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
 						InputProps={{
@@ -296,7 +296,7 @@ class CreateSensorForm extends Component {
 									<TextF
 										id={'sensorName'}
 										label={t('devices.fields.name')}
-										handleChange={handleChange('name')}
+										onChange={handleChange('name')}
 										value={sensor.name}
 										autoFocus
 									/>
@@ -306,7 +306,7 @@ class CreateSensorForm extends Component {
 									<TextF
 										id={'sensorDescription'}
 										label={t('devices.fields.description')}
-										handleChange={handleChange('description')}
+										onChange={handleChange('description')}
 										value={sensor.description}
 										multiline
 										rows={3}
@@ -328,8 +328,8 @@ class CreateSensorForm extends Component {
 										label={t('sensors.fields.registry')}
 										value={select.reg.name}
 										readOnly
-										handleClick={handleOpenReg}
-										handleChange={() => { }}
+										onClick={handleOpenReg}
+										onChange={() => { }}
 										InputProps={{
 											onChange: handleOpenReg,
 											readOnly: true
@@ -352,8 +352,8 @@ class CreateSensorForm extends Component {
 										label={t('sensors.fields.deviceType')}
 										value={select.dt.name ? select.dt.name : ''}
 										readOnly
-										handleClick={handleOpenDT}
-										handleChange={() => { }}
+										onClick={handleOpenDT}
+										onChange={() => { }}
 										InputProps={{
 											onChange: handleOpenDT,
 											readOnly: true
@@ -385,7 +385,7 @@ class CreateSensorForm extends Component {
 									<TextF
 										id={'sensorName'}
 										label={t('devices.fields.address')}
-										handleChange={handleChange('address')}
+										onChange={handleChange('address')}
 										value={sensor.address}
 									/>
 								</ItemGrid>

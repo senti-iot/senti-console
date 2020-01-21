@@ -1,41 +1,58 @@
-import { AppBar, Button, Hidden, IconButton, Toolbar, withStyles, /* Link, */ ButtonBase } from '@material-ui/core';
+import { AppBar, Button, Hidden, IconButton, Toolbar, /* Link, */ ButtonBase } from '@material-ui/core';
 import { KeyboardArrowLeft, Menu } from 'variables/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle.js';
-import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import HeaderLinks from './HeaderLinks';
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { changeSmallMenu } from 'redux/appState';
-import GlobalSearch from 'components/Search/GlobalSearch';
+import { useHistory, useSelector, useTheme, useLocalization } from 'hooks'
+import logo from 'logo.svg';
 
+const Brand = (props) => {
 
+	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 
+	const theme = useTheme()
+	const history = useHistory()
+
+	const { classes } = props
+
+	return <ButtonBase
+		focusRipple
+		className={classes.image}
+		focusVisibleClassName={classes.focusVisible}
+		style={{
+			width: '120px'
+		}}
+		onClick={() => history.push(defaultRoute ? defaultRoute : '/')}
+	>
+		<span
+			className={classes.imageSrc}
+			style={{
+				backgroundImage: `url(${theme.logo ? theme.logo : logo})`
+			}}
+		/>
+	</ButtonBase>
+}
 
 function Header({ ...props }) {
-	const { classes, goBackButton, gbbFunc, defaultRoute, logo, t, headerBorder, menuPos } = props;
-	var brand = (
-		<ButtonBase
-			focusRipple
-			className={classes.image}
-			focusVisibleClassName={classes.focusVisible}
-			style={{
-				width: '120px'
-			}}
-			onClick={() => props.history.push(defaultRoute ? defaultRoute : '/')}
-		>
-			<span
-				className={classes.imageSrc}
-				style={{
-					backgroundImage: `url(${logo})`
-				}}
-			/>
-		</ButtonBase>
-	);
+
+	const headerBorder = useSelector(s => s.settings.headerBorder)
+	const menuPos = useSelector(s => s.settings.sideBar)
+	const smallMenu = useSelector(s => s.appState.smallMenu)
+	const { goBackButton, gbbFunc } = props;
+	const classes = headerStyle()
+	const t = useLocalization()
+	const dispatch = useDispatch()
+
+	const changeMenu = () => dispatch(changeSmallMenu(!smallMenu))
+
+
 	const renderSearch = () => {
-		const { globalSearch } = props
-		return globalSearch ? <GlobalSearch /> : null
+		// const { globalSearch } = props
+		// return globalSearch ? <GlobalSearch /> : null
+		return null
 	}
-	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
 		<AppBar className={classes.appBar} >
 
@@ -49,31 +66,28 @@ function Header({ ...props }) {
 					>
 						<Menu />
 					</IconButton>
-				</Hidden> :  null
+				</Hidden> : null
 				}
 				<Hidden mdDown>
-					<IconButton onClick={changeSmallMenu} className={classes.drawerButton}>
+					<IconButton onClick={changeMenu} className={classes.drawerButton}>
 						<Menu />
 					</IconButton>
 					<div className={classes.logoContainer}>
-						{brand}
+						<Brand classes={classes} />
 					</div>
 					{headerBorder && <div style={{ height: 'calc(100% - 30%)', width: 1, background: '#555555' }} />}
 				</Hidden>
 				<div className={classes.flex}>
-
-					{/* <div style={{ minWidth: 53, display: 'flex', alignItems: 'center' }}> */}
 					{goBackButton && <IconButton onClick={gbbFunc} variant={'fab'} className={classes.goBackButton}>
 						<KeyboardArrowLeft width={40} height={40} />
 					</IconButton>}
-					{/* </div> */}
 					<Button className={classes.title}>
-						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) ? t(props.headerTitle.id, props.headerTitle.options) : props.headerTitle.id : ''}
+						{props.headerTitle ? t(props.headerTitle, props.headerOptions) ? t(props.headerTitle, props.headerOptions) : props.headerTitle : ''}
 					</Button>
 				</div>
-				 <Hidden mdDown implementation='css'>
+				<Hidden mdDown implementation='css'>
 					<HeaderLinks t={t} />
-				</Hidden> 
+				</Hidden>
 				<Hidden lgUp>
 					{menuPos ?
 						<Fragment>
@@ -87,26 +101,11 @@ function Header({ ...props }) {
 								<Menu />
 							</IconButton>
 						</Fragment>
-				 : renderSearch()
+						: renderSearch()
 					}</Hidden>
 			</Toolbar>
 		</AppBar>
 	);
 }
 
-Header.propTypes = {
-	classes: PropTypes.object.isRequired,
-	color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger'])
-};
-const mapStateToProps = (state) => ({
-	smallMenu: state.appState.smallMenu,
-	headerBorder: state.settings.headerBorder,
-	menuPos: state.settings.sideBar,
-	globalSearch: state.settings.globalSearch
-})
-
-const mapDispatchToProps = dispatch => ({
-	changeSmallMenu: smallMenu => dispatch(changeSmallMenu(smallMenu))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(headerStyle)(Header))
+export default Header

@@ -9,6 +9,7 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 import { updateFav, isFav } from 'redux/favorites';
 import { getOrgLS, getOrgs } from 'redux/data';
+import { camelCase } from 'variables/functions';
 
 var countries = require('i18n-iso-countries');
 
@@ -167,13 +168,25 @@ class EditOrg extends Component {
 	handleChange = (id) => e => {
 		e.preventDefault()
 		if (e.target.validity.valid) {
-			this.setState({
-				error: false,
-				org: {
-					...this.state.org,
-					[id]: e.target.value
-				}
-			})
+			if (id === 'name') {
+				this.setState({
+					error: false,
+					org: {
+						...this.state.org,
+						name: e.target.value,
+						nickname: camelCase(e.target.value)
+					}
+				})
+			}
+			else {
+				this.setState({
+					error: false,
+					org: {
+						...this.state.org,
+						[id]: e.target.value
+					}
+				})
+			}
 		}
 	}
 	close = () => {
@@ -228,11 +241,11 @@ class EditOrg extends Component {
 		})
 	}
 	renderOrgs = () => {
-		const { t, org, orgs, accessLevel } = this.props
+		const { t, orgs, accessLevel } = this.props
 		// const {  } = this.state
 		return <DSelect
 			label={t('orgs.fields.parentOrg')}
-			value={org.org.id}
+			value={this.state.org.org.id}
 			onChange={this.handleOrgChange}
 			menuItems={accessLevel.apisuperuser ? [{ value: -1, label: t('orgs.fields.topLevelOrg') }, ...orgs.map(org => ({ value: org.id, label: org.name }))] : orgs.map(org => ({ value: org.id, label: org.name }))}
 		/>
@@ -265,9 +278,20 @@ class EditOrg extends Component {
 										label={t('orgs.fields.name')}
 										value={org.name}
 										className={classes.textField}
-										handleChange={this.handleChange('name')}
+										onChange={this.handleChange('name')}
 										margin='normal'
 
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+										id={'nickname'}
+										label={t('orgs.fields.nickname')}
+										value={org.nickname}
+										className={classes.textField}
+										onChange={this.handleChange('nickname')}
+										margin='normal'
 										error={error}
 									/>
 								</ItemGrid>
@@ -279,7 +303,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.address')}
 										value={org.address}
 										className={classes.textField}
-										handleChange={this.handleChange('address')}
+										onChange={this.handleChange('address')}
 										margin='normal'
 
 										error={error}
@@ -291,7 +315,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.zip')}
 										value={org.zip}
 										className={classes.textField}
-										handleChange={this.handleChange('zip')}
+										onChange={this.handleChange('zip')}
 										margin='normal'
 
 										error={error}
@@ -306,7 +330,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.city')}
 										value={org.city}
 										className={classes.textField}
-										handleChange={this.handleChange('city')}
+										onChange={this.handleChange('city')}
 										margin='normal'
 
 										error={error}
@@ -320,7 +344,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.region')}
 										value={org.region}
 										className={classes.textField}
-										handleChange={this.handleChange('region')}
+										onChange={this.handleChange('region')}
 										margin='normal'
 
 										error={error}
@@ -330,7 +354,7 @@ class EditOrg extends Component {
 									<EditOrgAutoSuggest
 										t={t}
 										country={this.state.country.label}
-										handleChange={this.handleCountryChange}
+										onChange={this.handleCountryChange}
 										suggestions={
 											Object.entries(countries.getNames(this.props.language)).map(
 												country => ({ value: country[1], label: country[1] }))
@@ -343,7 +367,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.url')}
 										value={org.url}
 										className={classes.textField}
-										handleChange={this.handleChange('url')}
+										onChange={this.handleChange('url')}
 										margin='normal'
 
 										error={error}
@@ -358,7 +382,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.CVR')}
 										value={org.aux.cvr}
 										className={classes.textField}
-										handleChange={this.handleAuxChange('cvr')}
+										onChange={this.handleAuxChange('cvr')}
 										margin='normal'
 										error={error}
 									/>
@@ -370,7 +394,7 @@ class EditOrg extends Component {
 										label={t('orgs.fields.EAN')}
 										value={org.aux.ean}
 										className={classes.textField}
-										handleChange={this.handleAuxChange('ean')}
+										onChange={this.handleAuxChange('ean')}
 										margin='normal'
 
 										error={error}
@@ -379,7 +403,7 @@ class EditOrg extends Component {
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
-									<CircularLoader notCentered />
+									<CircularLoader fill />
 								</Collapse>
 							</ItemGrid>
 							<ItemGrid container style={{ margin: 16 }}>

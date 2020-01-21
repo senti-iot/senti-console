@@ -26,11 +26,16 @@ export const getAll = (key) => {
 export function set(key, value) {
 	return store.set(PREFIX + key, value);
 }
-
+export function setWL(value) {
+	return store.set('whiteLabel', value)
+}
+export function getWL() {
+	return store.get('whiteLabel')
+}
 function init() {
 	if (!store.enabled) {
-		get = function() {};
-		set = function() {};
+		get = function () { };
+		set = function () { };
 	}
 }
 

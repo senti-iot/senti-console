@@ -26,7 +26,7 @@ class ExportModal extends Component {
 		{ label: 'End Date', key: 'endDate' },
 		{ label: 'Count', key: 'count' }
 	]
-	exportToJson = () => { 
+	exportToJson = () => {
 		var data = this.props.data
 		var json = JSON.stringify(data);
 		var blob = new Blob([json], { type: "application/json" });
@@ -64,12 +64,12 @@ class ExportModal extends Component {
 				<GridContainer>
 					{data &&
 						<Fragment>
-							
+
 							<ItemG xs={12}>
 								<Info>{t('dialogs.export.message')}</Info>
 							</ItemG>
 							<ItemG xs={12}>
-								<Info noParagraph>
+								<Info paragraph={false}>
 									{raw ? t('collections.rawData') : t('collections.calibratedData')}
 								</Info>
 								<Info>

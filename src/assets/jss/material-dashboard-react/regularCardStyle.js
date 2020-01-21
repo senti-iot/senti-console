@@ -21,6 +21,11 @@ import { red, green } from '@material-ui/core/colors';
 import { bgColorsLight } from './bgColorsLight';
 
 const regularCardStyle = theme => ({
+	flexPaper: {
+		display: 'flex !important',
+		flexFlow: 'column',
+		height: '100%'
+	},
 	transition: {
 		transition: 'all 300ms ease',
 	},

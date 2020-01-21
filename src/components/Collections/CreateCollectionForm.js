@@ -193,7 +193,7 @@ class CreateCollectionForm extends Component {
 								<TextF
 									id={'collectionName'}
 									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
+									onChange={handleChange('name')}
 									value={collection.name}
 									autoFocus
 
@@ -203,7 +203,7 @@ class CreateCollectionForm extends Component {
 								<TextF
 									id={'collectionDescription'}
 									label={t('collections.fields.description')}
-									handleChange={handleChange('description')}
+									onChange={handleChange('description')}
 									value={collection.description}
 									multiline
 									rows={3}
@@ -216,8 +216,8 @@ class CreateCollectionForm extends Component {
 									id={'collectionOrg'}
 									label={t('collections.fields.org')}
 									value={org.name}
-									handleClick={handleOpenOrg}
-									handleChange={() => { }}
+									onClick={handleOpenOrg}
+									onChange={() => { }}
 									InputProps={{
 										onChange: handleOpenOrg,
 										readOnly: true
@@ -231,8 +231,8 @@ class CreateCollectionForm extends Component {
 									label={t('collections.fields.activeDevice')}
 									helperText={t('collections.helper.availableDevicesForOrg')}
 									value={device.name}
-									handleClick={handleOpenDevice}
-									handleChange={() => { }}
+									onClick={handleOpenDevice}
+									onChange={() => { }}
 									InputProps={{
 										onChange: handleOpenDevice,
 										readOnly: true

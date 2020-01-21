@@ -78,13 +78,13 @@ class FilterCard extends Component {
 			if (type === 'diff') {
 				obj = options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)]
 			}
-			if (type === 'dropDown') { 
+			if (type === 'dropDown') {
 				obj = options[options.findIndex(d => d.value === 0 || d.value === false)]
 			}
 			this.setState({
 				diff: {
 					value: type === 'diff' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
-					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null, 
+					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null,
 					label: type === 'diff' ? obj ? obj.label ? obj.label : null : null : null
 				},
 				dropdown: {
@@ -273,7 +273,7 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF fullWidth id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
+				return <TextF fullWidth id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} onChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}

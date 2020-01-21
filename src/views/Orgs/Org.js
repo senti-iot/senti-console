@@ -59,18 +59,18 @@ class Org extends Component {
 						tabs: this.tabs(),
 						route: 0
 					})
-					
+
 					setBC('org', this.props.org.name)
 					if (this.props.location.hash !== '')
 					{
 						scrollToAnchor(this.props.location.hash)
 					}
-					
+
 				})
 				await getOrgUsers(this.props.match.params.id).then(rs => {
 					this.setState({ users: rs, loadingUsers: false })
 				})
-				await getAllDevices().then(rs => { 
+				await getAllDevices().then(rs => {
 					let devices = rs.filter(f => f.org.id === this.props.org.id)
 					this.setState({ devices: devices, loadingDevices: false })
 				})
@@ -176,7 +176,7 @@ class Org extends Component {
 		return (
 			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<ItemGrid xs={12} noMargin id={'details'}> 
+					<ItemGrid xs={12} noMargin id={'details'}>
 						<OrgDetails
 							isFav={this.props.isFav({ id: org.id, type: 'org' })}
 							addToFav={this.addToFav}
@@ -199,7 +199,7 @@ class Org extends Component {
 							users={users ? users : []}
 							history={history}
 						/> :
-							<CircularLoader notCentered />}
+							<CircularLoader fill />}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'projects'}>
 						{!loadingProjects ? <OrgProjects
@@ -208,7 +208,7 @@ class Org extends Component {
 							projects={projects ? projects : []}
 							history={history} />
 							:
-							<CircularLoader notCentered />
+							<CircularLoader fill />
 						}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'collections'}>
@@ -218,7 +218,7 @@ class Org extends Component {
 							collections={collections ? collections : []}
 							history={history} />
 							:
-							<CircularLoader notCentered />
+							<CircularLoader fill />
 						}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'devices'}>
@@ -228,7 +228,7 @@ class Org extends Component {
 							devices={devices ? devices : []}
 							history={history} />
 							:
-							<CircularLoader notCentered />
+							<CircularLoader fill />
 						}
 					</ItemGrid>
 					{this.renderDeleteDialog()}
@@ -250,7 +250,7 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getOrg: async id => dispatch(await getOrgLS(id)) 
+	getOrg: async id => dispatch(await getOrgLS(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(Org))

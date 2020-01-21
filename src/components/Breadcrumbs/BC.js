@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import breadcrumbs from 'routes/breadcrumbs';
 import { Link } from 'react-router-dom'
-import { Typography, withStyles, /* IconButton */ } from '@material-ui/core';
+import { Typography, withStyles, /* IconButton */ Link as MuiLink } from '@material-ui/core';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
@@ -55,20 +55,18 @@ class BC extends Component {
 		return (
 
 			bc.dontShow || !globalBC ? null : <Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
-				<Link color="inherit" to={defaultRoute}>
+				<MuiLink component={Link} color="inherit" to={defaultRoute}>
 					{t(`sidebar.home`)}
-				</Link>}
+				</MuiLink>
 				{bcs && bcs.map((bc, index) => {
 					const last = bcs.length - 1 === index
 					return last ? (
 						<Typography color="textPrimary" key={index}>
 							{bc.label}
 						</Typography>
-					) : (
-						<Link color="inherit" to={bc.path} key={index}>
-							{bc.label}
-						</Link>
-					);
+					) : (<MuiLink component={Link} color="inherit" to={bc.path} key={index}>
+						{bc.label}
+					</MuiLink>);
 				})}
 			</Breadcrumbs>
 			// 		<div style={{ paddingRight: 0, marginLeft: 'auto', color: '#fff', padding: '0px !important' }}>

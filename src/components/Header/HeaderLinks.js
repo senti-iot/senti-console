@@ -1,5 +1,5 @@
 import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
-import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, Notifications } from 'variables/icons';
+import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, /* Notifications */ } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
 import cookie from 'react-cookies';
@@ -9,11 +9,11 @@ import Gravatar from 'react-gravatar'
 import { logOut } from 'variables/dataLogin';
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'
-import { ItemG, T, Muted } from 'components';
+import { /* ItemG, */ T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
 import cx from 'classnames'
 // import Search from 'components/Search/Search';
-import GlobalSearch from 'components/Search/GlobalSearch';
+// import GlobalSearch from 'components/Search/GlobalSearch';
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -44,15 +44,16 @@ class HeaderLinks extends React.Component {
 	}
 	logOut = async () => {
 		try {
-			this.props.resetRedux()
-			await logOut().then(() => { cookie.remove('SESSION', { path: '/' }) })
+			await logOut().then(() => { })
 		}
 		catch (e) {
 		}
 		if (!cookie.load('SESSION')) {
+			this.setState({ anchorPofile: null })
 			this.props.history.push('/login')
+			this.props.resetRedux()
 		}
-		this.setState({ anchorProfile: null })
+		// this.setState({ anchorProfile: null })
 	}
 	handleSettingsOpen = () => {
 		this.handleProfileClose()
@@ -61,7 +62,7 @@ class HeaderLinks extends React.Component {
 	}
 	// renderChristmasIcon = () => {
 	// 	const { classes } = this.props
-	// 	if (moment().format('MM') === '12') { 
+	// 	if (moment().format('MM') === '12') {
 	// 		let today = moment().format('DD')
 	// 		return today
 	// 	}
@@ -77,21 +78,22 @@ class HeaderLinks extends React.Component {
 
 	// }
 	renderSearch = () => {
-		const { globalSearch } = this.props
-		return globalSearch ? <GlobalSearch /> : null
+		// const { globalSearch } = this.props
+		// return globalSearch ? <GlobalSearch /> : null
+		return null
 	}
-	renderNotifications = () => {
-		return <ItemG container style={{ width: 'auto',  alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
-			<Notifications/>
-		</ItemG>
-	}
+	// renderNotifications = () => {
+	// 	return <ItemG container style={{ width: 'auto', alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
+	// 		<Notifications />
+	// 	</ItemG>
+	// }
 	renderUserMenu = () => {
 		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
 
 		return <div>
-			 <Tooltip title={t('menus.user.profile')}>
+			<Tooltip title={t('menus.user.profile')}>
 
 				<Button
 					aria-owns={openProfile ? 'menu-appbar' : null}
@@ -104,11 +106,12 @@ class HeaderLinks extends React.Component {
 					<ExpandMore className={cx(classes.expand, {
 						[classes.expandOpen]: openProfile,
 					})} />
-					{user ? <T style={{ /* fontSize: '1rem', */		color: '#fff', textTransform: 'none', margin: 8 }}>{`${user.firstName}`}</T> : null}
+					{user ? <T className={classes.userDropdown}>{`${user.firstName}`}</T> : null}
 					{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
 				</Button>
 			</Tooltip>
 			<Menu
+
 				style={{ marginTop: 50 }}
 				id='menu-appbar'
 				anchorEl={anchorProfile}
@@ -116,6 +119,7 @@ class HeaderLinks extends React.Component {
 				// 	// vertical: 'bottom',
 				// 	horizontal: 'right',
 				// }}
+				className={classes.dorpdown}
 				transformOrigin={{
 					vertical: 'bottom',
 					horizontal: 'left',
@@ -143,7 +147,7 @@ class HeaderLinks extends React.Component {
 				<GoogleLogout
 					// onLogoutSuccess={() => this.logOut()}
 					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }} className={classes.menuItem}>
+					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }}>
 						<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
 					</MenuItem>)}
 				>
@@ -175,7 +179,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	resetRedux: () => dispatch({ type: "RESET_APP" }) 
+	resetRedux: () => dispatch({ type: "RESET_APP" })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(headerLinksStyle)(HeaderLinks)));

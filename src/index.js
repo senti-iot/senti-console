@@ -1,23 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App'
-import registerServiceWorker from './serviceWorker';
-// import NewContent from 'layouts/404/NewContent';
+import Providers from './Providers'
+import * as serviceWorker from './serviceWorker';
 
-registerServiceWorker()
+import store from 'redux/store';
+import { updateServiceworker } from 'redux/serviceWorkerRedux';
+
+import whyDidYouRender from "@welldone-software/why-did-you-render";
+
+if (process.env.NODE_ENV !== 'production') {
+	whyDidYouRender(React, {
+		collapseGroups: true,
+		trackHooks: true,
+		onlyLogs: true,
+		titleColor: "green",
+		diffNameColor: "darkturquoise"
+	});
+}
+
+const onUpdate = () => {
+	store.dispatch(updateServiceworker())
+}
+serviceWorker.register({ onUpdate: onUpdate });
+
 var rootEl = document.getElementById('root')
-ReactDOM.render(<App />, rootEl)
-// if (process.env.NODE_ENV !== 'production') {
-// 	const { whyDidYouUpdate } = require('why-did-you-update');
-// 	whyDidYouUpdate(React);
-// }
+ReactDOM.render(<Providers />, rootEl)
+
 // var rootUpdate = document.getElementById('update')
 // ReactDOM.render(<NewContent />, rootUpdate)
 //Hello Pavel
 // Pavel says hello
 if (module.hot) {
-	module.hot.accept('./App', function () {
-		var NextApp = require('./App').default
+	module.hot.accept('./Providers', function () {
+		var NextApp = require('./Providers').default
 		ReactDOM.render(<NextApp />, rootEl)
 	})
 }

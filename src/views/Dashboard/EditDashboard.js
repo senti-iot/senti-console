@@ -19,6 +19,8 @@ import ToolbarItem from './ToolbarItem';
 import DropZone from './DropZone';
 import { weekendColorsDropdown } from 'variables/functions';
 import { graphType } from 'variables/dsSystem/graphTypes';
+import MapData from 'views/Charts/MapData';
+import MultiSourceChart from 'views/Charts/MultiSourceChart';
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -34,6 +36,7 @@ class EditDashboard extends React.Component {
 			openEditGraph: false,
 			openToolbox: true,
 			openClose: false,
+			openSave: false
 		};
 		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 	}
@@ -118,6 +121,7 @@ class EditDashboard extends React.Component {
 				...grid
 			}
 		}
+		console.log(g)
 		switch (g.type) {
 			case 1:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
@@ -183,6 +187,33 @@ class EditDashboard extends React.Component {
 						dId={d.id}
 						single={true}
 						t={t}
+					/>
+				</Paper>
+			case 5:
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+					{this.renderPos(g.grid)}
+					<MapData
+						create
+						title={g.name}
+						color={d.color}
+						g={g}
+						// gId={g.id}
+
+						dId={d.id}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			case 6:
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+					{this.renderPos(g.grid)}
+					<MultiSourceChart
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
+						single={true}
 					/>
 				</Paper>
 			default:
@@ -279,7 +310,7 @@ class EditDashboard extends React.Component {
 					// margin={'none'}
 					label={t('dashboard.fields.name')}
 					value={d.name}
-					handleChange={this.changeName}
+					onChange={this.changeName}
 					reversed
 				// notched={false}
 				/>
@@ -296,7 +327,7 @@ class EditDashboard extends React.Component {
 					label={t('dashboard.fields.description')}
 					// margin={'none'}
 					value={d.description}
-					handleChange={this.changeDescription}
+					onChange={this.changeDescription}
 					reversed
 				// notched={false}
 				/>
@@ -365,8 +396,8 @@ class EditDashboard extends React.Component {
 										}}
 										margin='none'
 										value={d.name}
-										// handleChange={this.changeName}
-										handleClick={this.handleOpenSave}
+										// onChange={this.changeName}
+										onClick={this.handleOpenSave}
 										reversed
 									/>
 									{this.renderColorPicker()}
@@ -382,7 +413,11 @@ class EditDashboard extends React.Component {
 					</AppBar>
 					{this.renderConfirmClose()}
 					{this.renderSaveDialog()}
-					<EditGraph d={this.props.d} g={this.props.eGraph} handleCloseEG={this.handleCloseEG} openEditGraph={this.state.openEditGraph} />
+					<EditGraph
+						d={this.props.d}
+						g={this.props.eGraph}
+						handleCloseEG={this.handleCloseEG}
+						openEditGraph={this.state.openEditGraph} />
 					<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
 						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
 							<ResponsiveReactGridLayout
