@@ -17,8 +17,9 @@ export const ThemeProvider = (props) => {
 	return (
 		<MuiThemeProvider theme={sTheme === 0 ? lightTheme : darkTheme}>
 			<Helmet>
-				{wl ? wl.pageTitle ? <title>{wl.pageTitle}</title> : "Senti" : "Senti"}
+				{wl ? wl.pageTitle ? <title>{wl.pageTitle}</title> : <title>Senti</title> : <title>Senti</title>}
 				<link rel="icon" type="image/png" href={wl ? wl.favicon ? wl.favicon : sentiIco : sentiIco} sizes="16x16" />
+				<link rel="shortcut icon" href={wl ? wl.favicon ? wl.favicon : sentiIco : sentiIco} />
 			</Helmet>
 			{props.children}
 		</MuiThemeProvider>

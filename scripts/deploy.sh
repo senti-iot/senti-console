@@ -31,7 +31,7 @@ if [[ "$1" == "alpha" ]]; then
 	# rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/beta.senti.cloud
 	echo
 	# Senti Workspace
-	curl -X POST -H 'Content-type: application/json' --data '{"text":"Senti App BETA updated!"}' $SLACK_HOOK
+	curl -X POST -H 'Content-type: application/json' --data '{"text":"Senti App BETA updated!"}' $2
 	echo Deployment to beta done!
 	exit 0
 fi

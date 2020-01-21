@@ -165,7 +165,7 @@ function LoginPage(props) {
 													{t('login.needAnAccount1')}
 												</span>
 												<span style={{ fontWeight: 600, marginRight: 4 }}>
-													{wl.pageTitle ? wl.pageTitle : 'Senti'}
+													{wl ? wl.pageTitle ? wl.pageTitle : 'Senti' : 'Senti'}
 												</span>
 												<span style={{ marginRight: 4 }}>
 													{t('login.needAnAccount2')}?

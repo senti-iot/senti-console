@@ -40,8 +40,8 @@ const theme = (options = defaultOptions) => {
 		header: options.theme.dark.headerColor,
 		sidebar: options.theme.dark.sidebarColor,
 		background: options.theme.dark.background,
-		toolbarBackground: options.theme.light.toolbarBackground,
-		toolbarIndicator: options.theme.light.toolbarIndicator,
+		toolbarBackground: options.theme.dark.toolbarBackground,
+		toolbarIndicator: options.theme.dark.toolbarIndicator,
 		logo: options.logoUrl
 	})
 };

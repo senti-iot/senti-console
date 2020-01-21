@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
+import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip, Link } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 import Gravatar from 'react-gravatar'
 import { Business, Call, LocationOn, Mail, Star, StarBorder, ContentCopy } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
@@ -90,7 +90,7 @@ class UserHover extends Component {
 											{user.email}
 											<Tooltip title={t('actions.copyToClipboard')}>
 												<IconButton onClick={this.copyToClipboard(user.email)} className={classes.copyButton}>
-													<ContentCopy className={classes.copyIcon}/>
+													<ContentCopy className={classes.copyIcon} />
 												</IconButton>
 											</Tooltip>
 										</T>
@@ -103,7 +103,7 @@ class UserHover extends Component {
 							<ItemG container className={classes.middleContainer}>
 								<ItemG xs={12}>
 									<T className={classes.smallText}>
-										<Business className={classes.smallIcon}/>
+										<Business className={classes.smallIcon} />
 										{user.org.name}
 									</T>
 								</ItemG>
@@ -118,28 +118,28 @@ class UserHover extends Component {
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `user/${user.id}/edit`, prevURL: '/management/users' }}>
+									<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `user/${user.id}/edit`, prevURL: '/management/users' }}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>
 								<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
 									<Tooltip placement="top" title={t('actions.sendEmail')}>
 										<IconButton className={classes.smallAction}>
-											<a className={classes.smallActionLink} href={`mailto:${user.email}`}>
-												<Mail/>
-											</a>
+											<Link className={classes.smallActionLink} href={`mailto:${user.email}`}>
+												<Mail />
+											</Link>
 										</IconButton>
 									</Tooltip>
 									<Tooltip placement="top" title={t('actions.call')}>
 										<IconButton className={classes.smallAction}>
-											<a className={classes.smallActionLink} href={`tel:${user.phone}`}>
-												<Call/>
-											</a>
+											<Link className={classes.smallActionLink} href={`tel:${user.phone}`}>
+												<Call />
+											</Link>
 										</IconButton>
 									</Tooltip>
 									<Tooltip placement="top" title={isFav({ id: user.id, type: 'user' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
 										<IconButton className={classes.smallAction} onClick={isFav({ id: user.id, type: 'user' }) ? this.removeFromFav : this.addToFav}>
-											{isFav({ id: user.id, type: 'user' }) ?  <Star/> : <StarBorder/> }
+											{isFav({ id: user.id, type: 'user' }) ? <Star /> : <StarBorder />}
 										</IconButton>
 									</Tooltip>
 								</ItemG>
