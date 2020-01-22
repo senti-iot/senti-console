@@ -100,6 +100,9 @@ const override = (color, dark) => ({
 				padding: '12px 14px'
 			},
 		},
+		MuiLink: {
+			color: 'primary'
+		}
 
 	}
 })

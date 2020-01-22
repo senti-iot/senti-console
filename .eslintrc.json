@@ -24,7 +24,9 @@
 			"tab",
 			{
 				"SwitchCase": 1,
-				"ignoredNodes": ["TemplateLiteral"]
+				"ignoredNodes": [
+					"TemplateLiteral"
+				]
 			}
 		],
 		"comma-spacing": [

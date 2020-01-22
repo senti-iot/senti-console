@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, withStyles } from '@material-ui/core';
+import { Paper, withStyles, Link } from '@material-ui/core';
 import withLocalization from 'components/Localization/T';
 import { T, Caption } from 'components';
 import logo from '../../logo.svg'
@@ -70,7 +70,7 @@ function Dialog(props) {
 		<T className={classes.p}>{t('privacy.p13')}</T>
 		<T className={classes.p}>{t('privacy.p14')}</T>
 		<T className={classes.p}>{t('privacy.p15')}</T>
-		<T className={classes.p}>{`${t('privacy.p16')} `}<a target="_blank" rel="noopener noreferrer" href={t('privacy.p16.a')}>{t('privacy.p16.c')}</a> {` ${t('privacy.p16.b')}`}</T>
+		<T className={classes.p}>{`${t('privacy.p16')} `}<Link target="_blank" rel="noopener noreferrer" href={t('privacy.p16.a')}>{t('privacy.p16.c')}</Link> {` ${t('privacy.p16.b')}`}</T>
 		<T b>{t('privacy.b2')}</T>
 		<T className={classes.p}>{t('privacy.p17')}</T>
 		<T className={classes.p}>{t('privacy.p18')}</T>
@@ -78,7 +78,7 @@ function Dialog(props) {
 		<T className={classes.p}>{t('privacy.p20')}</T>
 		<T className={classes.p}>{t('privacy.p21')}</T>
 		<T className={classes.p}>{t('privacy.p22')}</T>
-		<T className={classes.p}>{`${t('privacy.p23')} `} <a target="_blank" rel="noopener noreferrer" href={t('privacy.p23.a')}>{t('privacy.p23.a')}</a></T>
+		<T className={classes.p}>{`${t('privacy.p23')} `} <Link target="_blank" rel="noopener noreferrer" href={t('privacy.p23.a')}>{t('privacy.p23.a')}</Link></T>
 		<T b>{t('privacy.b3')}</T>
 		<T className={classes.p}>{t('privacy.p24')}</T>
 		<T className={classes.p}>{t('privacy.p25')}</T>
