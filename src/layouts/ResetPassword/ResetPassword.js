@@ -11,7 +11,7 @@ import { changeLanguage } from 'redux/localization'
 import { resetPassword, confirmPassword as bConfirmPass } from 'variables/dataLogin'
 // import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 import LoginImages from 'layouts/Login/LoginImages'
-import { Link, useParams, /* useHistory */ } from 'react-router-dom'
+import { Link, useParams, useHistory, /* useHistory */ } from 'react-router-dom'
 import logo from 'logo.svg'
 import { useLocalization, useEventListener } from 'hooks'
 
@@ -24,7 +24,7 @@ const ResetPassword = props => {
 	const params = useParams()
 	const t = useLocalization()
 	const classes = loginPageStyles()
-	// const history = useHistory()
+	const history = useHistory()
 	//Redux
 	const dispatch = useDispatch()
 
@@ -87,7 +87,7 @@ const ResetPassword = props => {
 		} else {
 			setError(true)
 			setErrorMessage(errorCode.map(c => (
-				<Danger key={c}>{this.errorMessages(c)}</Danger>
+				<Danger key={c}>{errorMessages(c)}</Danger>
 			)))
 			// this.setState({
 			// 	error: true,
@@ -97,7 +97,7 @@ const ResetPassword = props => {
 			// })
 			return false
 		}
-	}, [confirmPassword, password])
+	}, [confirmPassword, errorMessages, password])
 
 	const confirmPass = useCallback(async () => {
 		if (handleValidation()) {
@@ -272,7 +272,6 @@ const ResetPassword = props => {
 											</Success>
 										) : null}
 									</Collapse>
-									<Collapse in={!error}></Collapse>
 									<Collapse in={error}>
 										{errorMessage}
 									</Collapse>
@@ -372,7 +371,7 @@ const ResetPassword = props => {
 											variant={'outlined'}
 											color={'primary'}
 											onClick={() =>
-												props.history.push('/login')
+												history.push('/login')
 											}
 										>
 											{t('actions.goToLogin')}

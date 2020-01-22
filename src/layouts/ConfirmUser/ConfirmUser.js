@@ -1,61 +1,95 @@
-import React from 'react';
-import { withStyles, Collapse, Button, Paper, Hidden } from '@material-ui/core';
-import { Danger, ItemG, Success, Muted, T } from 'components';
-import loginPageStyle from 'assets/jss/material-dashboard-react/loginPageStyle.js';
-import withLocalization from 'components/Localization/T';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Collapse, Button, Paper, Hidden } from '@material-ui/core';
+import { Danger, ItemG, /* Success, */ Muted, T, CircularLoader } from 'components';
+import loginPageStyles from 'assets/jss/components/login/loginPageStyles';
 import { getSettings } from 'redux/settings';
 import TextF from 'components/CustomInput/TextF';
 import { changeLanguage } from 'redux/localization';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
 import LoginImages from 'layouts/Login/LoginImages';
-import { Link } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import logo from 'logo.svg'
-import { confirmUser } from 'variables/dataUsers';
+import { confirmUser as confirmSUser } from 'variables/dataUsers';
+import { useLocalization, useDispatch, useEventListener } from 'hooks';
 
-class ConfirmUser extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			password: '',
-			confirmPassword: '',
-			loggingIn: false,
-			error: false,
-			errorMessage: [],
-			score: 0,
-			minScore: 2,
-			minLength: 8,
-		};
-		this.input = React.createRef()
-	}
-	handleKeyPress = (event) => {
+// const mapDispatchToProps = dispatch => ({
+// 	getSettings: async () => dispatch(await getSettings()),
+// 	changeLanguage: l => dispatch(changeLanguage(l, true))
+// })
+
+const ConfirmUser = (props) => {
+	//Hooks
+	const params = useParams()
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const classes = loginPageStyles()
+	const history = useHistory()
+	//Redux
+
+	//State
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
+	const [loggingIn, setLoggingIn] = useState(false)
+	const [error, setError] = useState(false)
+	const [errorMessage, setErrorMessage] = useState([])
+	// const [score, setScore] = useState(0)
+	// const [passwordReset, setPasswordReset] = useState(false)
+	// const [passwordRequest, setPasswordRequest] = useState(false)
+	//Const
+	// const minScore = 2;
+	// const minLength = 8;
+
+	// constructor(props) {
+	// 	super(props);
+	// 	this.state = {
+	// 		password: '',
+	// 		confirmPassword: '',
+	// 		loggingIn: false,
+	// 		error: false,
+	// 		errorMessage: [],
+	// 		score: 0,
+
+	// 	};
+	// 	this.input = React.createRef()
+	// }
+	const handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
-			this.confirmUser()
+			confirmUser()
 		}
 	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
-		window.removeEventListener('keypress', this.handleKeyPress, false)
-	}
+	useEventListener('keypress', handleKeyPress);
 
-	componentDidMount() {
-		this._isMounted = 1
-		window.addEventListener('keypress', this.handleKeyPress, false)
-		let lang = this.props.match.params.lang
-		this.token = this.props.match.params.token
+	// componentWillUnmount = () => {
+	// 	this._isMounted = 0
+	// 	window.removeEventListener('keypress', this.handleKeyPress, false)
+	// }
+	useEffect(() => {
+		let lang = params.lang
 		if (lang) {
-			this.props.changeLanguage(lang)
+			dispatch(changeLanguage(lang, true))
 		}
-	}
+		return () => {
 
-	createRef = (ref) => {
-		this.input = ref
-		return this.input
-	}
-	handleValidation = () => {
+		};
+		//eslint-disable-next-line
+	}, [])
+	// componentDidMount() {
+	// 	this._isMounted = 1
+	// 	window.addEventListener('keypress', this.handleKeyPress, false)
+	// 	let lang = this.props.match.params.lang
+	// 	this.token = this.props.match.params.token
+	// 	if (lang) {
+	// 		this.props.changeLanguage(lang)
+	// 	}
+	// }
+
+	// const createRef = (ref) => {
+	// 	this.input = ref
+	// 	return this.input
+	// }
+	const handleValidation = () => {
 		let errorCode = [];
-		const { password, confirmPassword } = this.state
 		if (password === '' && confirmPassword === '') {
 			errorCode.push(0)
 		}
@@ -65,19 +99,20 @@ class ConfirmUser extends React.Component {
 		if (password !== confirmPassword) {
 			errorCode.push(2)
 		}
-		if (errorCode.length === 0)
-		{
+		if (errorCode.length === 0) {
 			return true
 		}
 		else {
-			this.setState({
-				error: true,
-				errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-			})
+			setError(true)
+			setErrorMessage(error.code.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))
+			// this.setState({
+			// 	error: true,
+			// 	errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
+			// })
 			return false
 		}
 	}
-	errorMessages = code => {
+	const errorMessages = code => {
 		const { t } = this.props
 		switch (code) {
 			case 0:
@@ -93,157 +128,161 @@ class ConfirmUser extends React.Component {
 		}
 	}
 
-	confirmUser = async () => {
-		if (this.handleValidation()) {
-			const { password } = this.state
-			let session = await confirmUser({ newPassword: password, passwordToken: this.token })
+	const confirmUser = async () => {
+		if (handleValidation()) {
+			let session = await confirmSUser({ newPassword: password, passwordToken: params.token })
 			if (session !== 404 && session)
-				this.loginUser(session)
+				loginUser(session)
 			else {
-				this.setState({
-					error: true,
-					errorMessage: [<Danger >{this.errorMessages(session)}</Danger>]
-				})
+				setError(true)
+				setErrorMessage([<Danger >{errorMessages(session)}</Danger>])
+				// this.setState({
+				// 	error: true,
+				// 	errorMessage: []
+				// })
 			}
 		}
 	}
-	loginUser = async (session) => {
-		const { t } = this.props
-		this.setState({ loggingIn: true })
+	const loginUser = async (session) => {
+		setLoggingIn(true)
 		setTimeout(
 			async () => {
 
 				cookie.save('SESSION', session, { path: '/' })
 				if (session.isLoggedIn) {
 					if (setToken()) {
-						await this.props.getSettings()
-						this.props.history.push('/dashboard')
+						await dispatch(await getSettings())
+						history.push('/dashboard')
 					}
 				}
 
 				else {
-					this.setState({
-						error: true,
-						errorMessage: t('confirmUser.networkError'),
-						loggingIn: false
-					})
+					setError(true)
+					setErrorMessage([<Danger >{t('confirmUser.networkError')}</Danger>])
+					setLoggingIn(false)
+					// this.setState({
+					// 	error: true,
+					// 	errorMessage: ,
+					// 	loggingIn: false
+					// })
 				}
 			}, 1000)
 	}
 
-
-	handleChange = prop => e => {
-
-		this.setState({
-			...this.state,
-			[prop]: e.target.value
-		})
-		if (this.state.error)
-			this.setState({
-				error: false,
-				errorMessage: []
-			})
+	const handlePasswordChange = e => {
+		setPassword(e.target.value)
+		if (error) {
+			setError(false)
+			setErrorMessage([])
+		}
 	}
-	render() {
-		const { classes, t } = this.props;
-		const { error, errorMessage, password, confirmPassword, passwordRequested, passwordReset } = this.state
-		return (
-			<div className={classes.wrapper}>
-				<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
-					<div className={classes.mobileContainer}>
+	const handleConfirmPasswordChange = e => {
+		setConfirmPassword(e.target.value)
+		if (error) {
+			setError(false)
+			setErrorMessage([])
+		}
+	}
 
-						<Paper className={classes.paper}>
-							<div className={classes.paperContainer}>
+	// const handleChange = prop => e => {
 
-								<ItemG xs={12} container justify={'center'}>
-									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
+	// 	this.setState({
+	// 		...this.state,
+	// 		[prop]: e.target.value
+	// 	})
+	// 	if (this.state.error)
+	// 		this.setState({
+	// 			error: false,
+	// 			errorMessage: []
+	// 		})
+	// }
+	return (
+		<div className={classes.wrapper}>
+			<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
+				<div className={classes.mobileContainer}>
+
+					<Paper className={classes.paper}>
+						<div className={classes.paperContainer}>
+
+							<ItemG xs={12} container justify={'center'}>
+								<img className={classes.logo} src={logo} alt={'sentiLogo'} />
+							</ItemG>
+							<ItemG xs={12} container justify={'center'}>
+								<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T>
+								<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.lastStep')}</T>
+							</ItemG>
+							<ItemG xs={12} container justify={'center'}>
+								<ItemG container justify={'center'} xs={12}>
+									<Collapse in={loggingIn}>
+										<CircularLoader />
+									</Collapse>
+									<Collapse in={error}>
+										{errorMessage.map(m => m)}
+									</Collapse>
 								</ItemG>
-								<ItemG xs={12} container justify={'center'}>
-									<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T>
-									<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.lastStep')}</T>
-								</ItemG>
-								<ItemG xs={12} container justify={'center'}>
-									<ItemG container justify={'center'} xs={12}>
-										<Collapse in={passwordReset}>
-											{this.token ? <Success className={classes.loginButton + ' ' + classes.needAccount}>{t('dialogs.login.passwordReseted')}</Success> : null}
-										</Collapse>
-										<Collapse in={error}>
-											{errorMessage.map(m => m)}
-										</Collapse>
-									</ItemG>
+
+								<ItemG container xs={12}>
 
 									<ItemG container xs={12}>
-
-										<ItemG container xs={12}>
-											<TextF
-												fullWidth
-												id={'password'}
-												label={t('confirmUser.password')}
-												value={password}
-												className={classes.loginButton}
-												onChange={this.handleChange('password')}
-												margin='normal'
-												error={error}
-												type={'password'}
-											/>
-										</ItemG>
-										<ItemG container xs={12}>
-											<TextF
-												fullWidth
-												id={'confirmpassword'}
-												label={t('confirmUser.passwordConfirm')}
-												value={confirmPassword}
-												className={classes.loginButton}
-												onChange={this.handleChange('confirmPassword')}
-												margin='normal'
-												error={error}
-												type={'password'}
-											/>
-										</ItemG>
-										<Collapse in={passwordRequested}>
-											<ItemG xs={12} className={classes.loginButton}>
-												<Success>{t('dialogs.login.resetPassRequestMessage')}</Success>
-											</ItemG>
-										</Collapse>
+										<TextF
+											fullWidth
+											id={'password'}
+											label={t('confirmUser.password')}
+											value={password}
+											className={classes.loginButton}
+											onChange={handlePasswordChange}
+											margin='normal'
+											error={error}
+											type={'password'}
+										/>
 									</ItemG>
-									<ItemG xs={12} container justify={'center'}>
-										<Button variant={'outlined'} color={'primary'} size='large' className={classes.loginButton} onClick={this.confirmUser}>
-											{t('confirmUser.button')}
-										</Button>
+									<ItemG container xs={12}>
+										<TextF
+											fullWidth
+											id={'confirmpassword'}
+											label={t('confirmUser.passwordConfirm')}
+											value={confirmPassword}
+											className={classes.loginButton}
+											onChange={handleConfirmPasswordChange}
+											margin='normal'
+											error={error}
+											type={'password'}
+										/>
 									</ItemG>
-									<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
-										<ItemG xs={12} container justify={'space-around'}>
-											<Collapse in={!passwordReset}>
-												<Link to={`/login`}>
-													{t('actions.goToLogin')}
-												</Link>
-											</Collapse>
+									{/* <Collapse in={passwordRequest}>
+										<ItemG xs={12} className={classes.loginButton}>
+											<Success>{t('dialogs.login.resetPassRequestMessage')}</Success>
 										</ItemG>
+									</Collapse> */}
+								</ItemG>
+								<ItemG xs={12} container justify={'center'}>
+									<Button variant={'outlined'} color={'primary'} size='large' className={classes.loginButton} onClick={confirmUser}>
+										{t('confirmUser.button')}
+									</Button>
+								</ItemG>
+								<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
+									<ItemG xs={12} container justify={'space-around'}>
+										<Link to={`/login`}>
+											{t('actions.goToLogin')}
+										</Link>
 									</ItemG>
 								</ItemG>
-							</div>
-							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
-								<Muted className={classes.footerText}>{t('login.footer')}</Muted>
 							</ItemG>
-						</Paper>
-					</div>
+						</div>
+						<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
+							<Muted className={classes.footerText}>{t('login.footer')}</Muted>
+						</ItemG>
+					</Paper>
+				</div>
+			</ItemG>
+			<Hidden smDown>
+				<ItemG md={8} lg={8} xl={9}>
+					<LoginImages t={t} />
 				</ItemG>
-				<Hidden smDown>
-					<ItemG md={8} lg={8} xl={9}>
-						<LoginImages t={t} />
-					</ItemG>
-				</Hidden>
-			</div>
-		);
-	}
+			</Hidden>
+		</div>
+	);
 }
-const mapStateToProps = () => ({
 
-})
 
-const mapDispatchToProps = dispatch => ({
-	getSettings: async () => dispatch(await getSettings()),
-	changeLanguage: l => dispatch(changeLanguage(l, true))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(loginPageStyle)(ConfirmUser)));
+export default ConfirmUser;
