@@ -294,14 +294,9 @@ export const loadDash = d => {
 }
 export const editDash = (d) => {
 	return (dispatch, getState) => {
-		// let
-		// let newGraphs = getState().dsSystem.cGraphs
-		// console.log(newGraphs)
+
 		dispatch({ type: eDash, payload: d })
-		// 	if (d.graphs.length > 0)
-		// 		//old d.graphs
-		// 		dispatch({ type: cGraph, payload: newGraphs })
-		// }
+
 	}
 }
 

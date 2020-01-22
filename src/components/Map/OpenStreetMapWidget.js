@@ -65,7 +65,7 @@ class OpenStreetMapWidget extends React.Component {
 			this.props.iRef(this.map)
 		}
 		// this.map.leafletElement.on('viewreset', e => {
-		// 	console.log('View Reset Event')
+		//
 		// })
 		this.map.leafletElement.on('popupopen', (e) => {
 			var px = this.map.leafletElement.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is

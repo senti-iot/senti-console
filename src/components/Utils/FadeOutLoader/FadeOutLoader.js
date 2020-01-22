@@ -11,8 +11,6 @@ function FadeOutLoader(props) {
 	useEffect(() => {
 		const execute = async () => {
 			if (on && !loading) {
-				console.log(on)
-				console.log('Executing')
 				setLoading(true)
 				await props.onChange()
 			}

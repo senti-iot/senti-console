@@ -121,7 +121,6 @@ class EditDashboard extends React.Component {
 				...grid
 			}
 		}
-		console.log(g)
 		switch (g.type) {
 			case 1:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>

@@ -140,9 +140,7 @@ const MultiSourceChart = (props) => {
 	// 	setActionAnchor(null)
 	// }
 	const handleGetDeviceName = d => {
-		console.log(d)
 		return d.name ? d.name : d.id
-		// return sensors[sensors.findIndex(f => f.id === dId)].name
 	}
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
