@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Collapse, Button, Paper, Hidden } from '@material-ui/core';
 import { Danger, ItemG, /* Success, */ Muted, T, CircularLoader } from 'components';
 import loginPageStyles from 'assets/jss/components/login/loginPageStyles';
@@ -53,17 +53,8 @@ const ConfirmUser = (props) => {
 	// 	};
 	// 	this.input = React.createRef()
 	// }
-	const handleKeyPress = (event) => {
-		if (event.key === 'Enter') {
-			confirmUser()
-		}
-	}
-	useEventListener('keypress', handleKeyPress);
 
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// 	window.removeEventListener('keypress', this.handleKeyPress, false)
-	// }
+
 	useEffect(() => {
 		let lang = params.lang
 		if (lang) {
@@ -74,21 +65,8 @@ const ConfirmUser = (props) => {
 		};
 		//eslint-disable-next-line
 	}, [])
-	// componentDidMount() {
-	// 	this._isMounted = 1
-	// 	window.addEventListener('keypress', this.handleKeyPress, false)
-	// 	let lang = this.props.match.params.lang
-	// 	this.token = this.props.match.params.token
-	// 	if (lang) {
-	// 		this.props.changeLanguage(lang)
-	// 	}
-	// }
 
-	// const createRef = (ref) => {
-	// 	this.input = ref
-	// 	return this.input
-	// }
-	const handleValidation = () => {
+	const handleValidation = useCallback(() => {
 		let errorCode = [];
 		if (password === '' && confirmPassword === '') {
 			errorCode.push(0)
@@ -105,13 +83,10 @@ const ConfirmUser = (props) => {
 		else {
 			setError(true)
 			setErrorMessage(error.code.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))
-			// this.setState({
-			// 	error: true,
-			// 	errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-			// })
 			return false
 		}
-	}
+	}, [confirmPassword, error.code, password])
+
 	const errorMessages = code => {
 		const { t } = this.props
 		switch (code) {
@@ -127,23 +102,7 @@ const ConfirmUser = (props) => {
 				return ''
 		}
 	}
-
-	const confirmUser = async () => {
-		if (handleValidation()) {
-			let session = await confirmSUser({ newPassword: password, passwordToken: params.token })
-			if (session !== 404 && session)
-				loginUser(session)
-			else {
-				setError(true)
-				setErrorMessage([<Danger >{errorMessages(session)}</Danger>])
-				// this.setState({
-				// 	error: true,
-				// 	errorMessage: []
-				// })
-			}
-		}
-	}
-	const loginUser = async (session) => {
+	const loginUser = useCallback(async (session) => {
 		setLoggingIn(true)
 		setTimeout(
 			async () => {
@@ -167,7 +126,25 @@ const ConfirmUser = (props) => {
 					// })
 				}
 			}, 1000)
-	}
+	}, [dispatch, history, t])
+
+	const confirmUser = useCallback(async () => {
+		if (handleValidation()) {
+			let session = await confirmSUser({ newPassword: password, passwordToken: params.token })
+			if (session !== 404 && session)
+				loginUser(session)
+			else {
+				setError(true)
+				setErrorMessage([<Danger >{errorMessages(session)}</Danger>])
+			}
+		}
+	}, [handleValidation, loginUser, params.token, password])
+	const handleKeyPress = useCallback((event) => {
+		if (event.key === 'Enter') {
+			confirmUser()
+		}
+	}, [confirmUser])
+	useEventListener('keypress', handleKeyPress);
 
 	const handlePasswordChange = e => {
 		setPassword(e.target.value)
