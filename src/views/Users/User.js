@@ -151,7 +151,7 @@ class User extends Component {
 	}
 	handleConfirmUser = async () => {
 		const { user } = this.props
-		await confirmUser(user).then(rs => console.log(rs))
+		await confirmUser(user)
 		this.handleCloseConfirmDialog()
 	}
 	handleDeleteUser = async () => {

@@ -51,7 +51,6 @@ export const copyToClipboard = str => {
 	let el = document.createElement('textarea');  // Create a <textarea> element
 	el.value = str;                                 // Set its value to the string that you want copied
 	// el.value = 'andrei@webhouse.dk'
-	console.log(str, el.value)
 	el.setAttribute('readonly', '');                // Make it readonly to be tamper-proof
 	el.style.position = 'absolute';
 	// el.style.left = '-9999px';
