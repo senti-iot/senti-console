@@ -1,8 +1,8 @@
 import { withStyles, Fade } from '@material-ui/core';
 import deviceTypeStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Fragment, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 // import { getProject } from 'variables/dataProjects';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
@@ -15,25 +15,47 @@ import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
 import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
 import { deleteDeviceType } from 'variables/dataDeviceTypes';
+import { useLocalization } from 'hooks';
 
+// const mapStateToProps = (state) => ({
+// 	accessLevel: state.settings.user.privileges,
+// 	language: state.settings.language,
+// 	saved: state.favorites.saved,
+// 	mapTheme: state.settings.mapTheme,
+// 	periods: state.dateTime.periods,
+// 	deviceType: state.data.deviceType,
+// 	loading: !state.data.gotDeviceType
+// })
 
-class DeviceType extends Component {
-	constructor(props) {
-		super(props)
+// const mapDispatchToProps = (dispatch) => ({
+// 	isFav: (favObj) => dispatch(isFav(favObj)),
+// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
+// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+// 	finishedSaving: () => dispatch(finishedSaving()),
+// 	getDeviceType: async (id) => dispatch(await getDeviceTypeLS(id))
+// })
 
-		this.state = {
-			loading: true,
-			openDelete: false
-			//Ma
-			//End Map
-		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
-		props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
-	}
+const DeviceType = props => {
+	const dispatch = useDispatch()
+	const t = useLocalization()
 
-	format = 'YYYY-MM-DD+HH:mm'
-	tabs = () => {
-		const { t } = this.props
+	const accessLevel = useSelector(store => store.settings.user.privileges)
+	const language = useSelector(store => store.settings.language)
+	const saved = useSelector(store => store.favorites.saved)
+	const mapTheme = useSelector(store => store.settings.mapTheme)
+	const periods = useSelector(store => sessionStorage.dateTime.periods)
+	const deviceType = useSelector(store => store.data.deviceType)
+	const loading = useSelector(store => !store.data.gotDeviceType)
+
+	const [stateLoading, setStateLoading] = useState(true)
+	const [openDelete, setOpenDelete] = useState(false)
+	const [weather, setWeather] = useState(null)
+
+	let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
+	props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
+
+	const format = 'YYYY-MM-DD+HH:mm'
+	const tabs = () => {
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
 			{ id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
@@ -45,191 +67,211 @@ class DeviceType extends Component {
 		]
 	}
 
-	reload = (msgId) => {
-		this.snackBarMessages(msgId)
-		this.getDeviceType(this.props.match.params.id)
+	const reload = (msgId) => {
+		snackBarMessages(msgId)
+		getDeviceType(props.match.params.id)
 	}
 
-	getDeviceType = async (id) => {
-		const { getDeviceType } = this.props
+	const getDeviceType = async (id) => {
 		await getDeviceType(id)
 	}
-	componentDidUpdate = async (prevProps) => {
-		const { deviceType } = this.props
-		if (prevProps.match.params.id !== this.props.match.params.id)
-			await this.componentDidMount()
-		if (deviceType && !prevProps.deviceType) {
 
+	useEffect(() => {
+		const asyncFunc = async () => {
 			if (deviceType.activeDevice) {
-				let data = await getWeather(deviceType.activeDevice, moment(), this.props.language)
-				this.setState({ weather: data })
+				let data = await getWeather(deviceType.activeDevice, moment(), props.language)
+				setWeather(data)
 			}
-		}
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			// this.handleSwitchDayHourSummary()
-			// this.getHeatMapData()
-		}
-		if (this.props.saved === true) {
-			const { deviceType } = this.props
-			if (this.props.isFav({ id: deviceType.id, type: 'deviceType' })) {
-				this.props.s('snackbars.favorite.saved', { name: deviceType.name, type: this.props.t('favorites.types.deviceType') })
-				this.props.finishedSaving()
-			}
-			if (!this.props.isFav({ id: deviceType.id, type: 'deviceType' })) {
-				this.props.s('snackbars.favorite.removed', { name: deviceType.name, type: this.props.t('favorites.types.deviceType') })
-				this.props.finishedSaving()
-			}
-		}
-	}
-	componentDidMount = async () => {
-		if (this.props.match) {
-			let id = this.props.match.params.id
-			if (id) {
-				await this.getDeviceType(id).then(() => {
-					this.props.setBC('devicetype', this.props.deviceType.name)
-				})
-				this.props.setTabs({
-					route: 0,
-					id: 'deviceType',
-					tabs: this.tabs(),
-					hashLinks: true
-				})
-				if (this.props.location.hash !== '') {
-					scrollToAnchor(this.props.location.hash)
+
+			if (props.saved === true) {
+				if (dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
+					props.s('snackbars.favorite.saved', { name: deviceType.name, type: t('favorites.types.deviceType') })
+					dispatch(finishedSaving())
+				}
+				if (!dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
+					props.s('snackbars.favorite.removed', { name: deviceType.name, type: t('favorites.types.deviceType') })
+					dispatch(finishedSaving())
 				}
 			}
 		}
-		else {
-			this.props.history.push({
-				pathname: '/404',
-				prevURL: window.location.pathname
-			})
+		asyncFunc()
+	}, [props.match.params.id, deviceType])
+	// const componentDidUpdate = async (prevProps) => {
+	// 	if (prevProps.match.params.id !== props.match.params.id)
+	// 		// await componentDidMount()
+	// 		if (deviceType && !prevProps.deviceType) {
+
+	// 			if (deviceType.activeDevice) {
+	// 				let data = await getWeather(deviceType.activeDevice, moment(), props.language)
+	// 				setWeather(data)
+	// 			}
+	// 		}
+	// 	if (props.id !== prevProps.id || props.to !== prevProps.to || props.timeType !== prevProps.timeType || props.from !== prevProps.from) {
+	// 		// this.handleSwitchDayHourSummary()
+	// 		// this.getHeatMapData()
+	// 	}
+	// 	if (props.saved === true) {
+	// 		if (dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
+	// 			props.s('snackbars.favorite.saved', { name: deviceType.name, type: t('favorites.types.deviceType') })
+	// 			dispatch(finishedSaving())
+	// 		}
+	// 		if (!dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
+	// 			props.s('snackbars.favorite.removed', { name: deviceType.name, type: t('favorites.types.deviceType') })
+	// 			dispatch(finishedSaving())
+	// 		}
+	// 	}
+	// }
+
+	useEffect(() => {
+		const asyncFunc = async () => {
+			if (props.match) {
+				let id = props.match.params.id
+				if (id) {
+					await getDeviceType(id).then(() => {
+						props.setBC('devicetype', deviceType.name)
+					})
+					props.setTabs({
+						route: 0,
+						id: 'deviceType',
+						tabs: tabs(),
+						hashLinks: true
+					})
+					if (props.location.hash !== '') {
+						scrollToAnchor(props.location.hash)
+					}
+				}
+			}
+			else {
+				props.history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
+			}
 		}
-	}
-	addToFav = () => {
-		const { deviceType } = this.props
+		asyncFunc()
+	}, [])
+	// const componentDidMount = async () => {
+	// 	if (props.match) {
+	// 		let id = props.match.params.id
+	// 		if (id) {
+	// 			await getDeviceType(id).then(() => {
+	// 				props.setBC('devicetype', deviceType.name)
+	// 			})
+	// 			props.setTabs({
+	// 				route: 0,
+	// 				id: 'deviceType',
+	// 				tabs: tabs(),
+	// 				hashLinks: true
+	// 			})
+	// 			if (props.location.hash !== '') {
+	// 				scrollToAnchor(props.location.hash)
+	// 			}
+	// 		}
+	// 	}
+	// 	else {
+	// 		props.history.push({
+	// 			pathname: '/404',
+	// 			prevURL: window.location.pathname
+	// 		})
+	// 	}
+	// }
+
+	const addToFav = () => {
 		let favObj = {
 			id: deviceType.id,
 			name: deviceType.name,
 			type: 'deviceType',
-			path: this.props.match.url
+			path: props.match.url
 		}
-		this.props.addToFav(favObj)
-	}
-	removeFromFav = () => {
-		const { deviceType } = this.props
-		let favObj = {
-			id: deviceType.id,
-			name: deviceType.name,
-			type: 'deviceType',
-			path: this.props.match.url
-		}
-		this.props.removeFromFav(favObj)
+		dispatch(addToFav(favObj))
 	}
 
-	snackBarMessages = (msg) => {
+	const removeFromFav = () => {
+		let favObj = {
+			id: deviceType.id,
+			name: deviceType.name,
+			type: 'deviceType',
+			path: props.match.url
+		}
+		dispatch(removeFromFav(favObj))
+	}
+
+	const snackBarMessages = (msg) => {
 		switch (msg) {
 			default:
 				break
 		}
 	}
 
-	handleOpenDeleteDialog = () => {
-		this.setState({
-			openDelete: true
-		})
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
 	}
-	handleCloseDeleteDialog = () => {
-		this.setState({
-			openDelete: false
-		})
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
 	}
-	handleDeleteDT = async () => {
-		const { deviceType } = this.props
-		if (this.props.isFav(deviceType.id))
-			this.removeFromFav()
+	const handleDeleteDT = async () => {
+		if (dispatch(isFav(deviceType.id)))
+			removeFromFav()
 		await deleteDeviceType(deviceType.id).then(() => {
-			this.handleCloseDeleteDialog()
-			this.snackBarMessages(1)
-			this.props.history.push('/devicetypes/list')
+			handleCloseDeleteDialog()
+			snackBarMessages(1)
+			props.history.push('/devicetypes/list')
 		})
 	}
-	renderDeleteDialog = () => {
-		const { openDelete } = this.state
-		const { t } = this.props
+
+	const renderDeleteDialog = () => {
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.deviceType'}
 			message={'dialogs.delete.message.deviceType'}
-			messageOpts={{ deviceType: this.props.deviceType.name }}
+			messageOpts={{ deviceType: deviceType.name }}
 			open={openDelete}
 			single
-			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-			handleDelete={this.handleDeleteDT}
+			handleCloseDeleteDialog={handleCloseDeleteDialog}
+			handleDelete={handleDeleteDT}
 		/>
 	}
 
 
-	renderLoader = () => {
+	const renderLoader = () => {
 		return <CircularLoader />
 	}
 
-
-	render() {
-		const { history, match, t, accessLevel, deviceType, loading } = this.props
-		return (
-			<Fragment>
-				{!loading ? <Fade in={true}>
-					<GridContainer justify={'center'} alignContent={'space-between'}>
-						{this.renderDeleteDialog()}
-						<ItemGrid xs={12} noMargin id='details'>
-							<DeviceTypeDetails
-								isFav={this.props.isFav({ id: deviceType.id, type: 'deviceType' })}
-								addToFav={this.addToFav}
-								removeFromFav={this.removeFromFav}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								deviceType={deviceType}
-								history={history}
-								match={match}
-								t={t}
-								accessLevel={accessLevel}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'metadata'}>
-							<DeviceTypeMetadata
-								deviceType={deviceType}
-								t={t}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'cloudfunctions'}>
-							<DeviceTypeCloudFunctions
-								deviceType={deviceType}
-								t={t}
-							/>
-						</ItemGrid>
-					</GridContainer></Fade>
-					: this.renderLoader()}
-			</Fragment>
-		)
-	}
+	const { history, match } = props
+	return (
+		<Fragment>
+			{!loading ? <Fade in={true}>
+				<GridContainer justify={'center'} alignContent={'space-between'}>
+					{renderDeleteDialog()}
+					<ItemGrid xs={12} noMargin id='details'>
+						<DeviceTypeDetails
+							isFav={dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))}
+							addToFav={addToFav}
+							removeFromFav={removeFromFav}
+							handleOpenDeleteDialog={handleOpenDeleteDialog}
+							deviceType={deviceType}
+							history={history}
+							match={match}
+							t={t}
+							accessLevel={accessLevel}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'metadata'}>
+						<DeviceTypeMetadata
+							deviceType={deviceType}
+							t={t}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'cloudfunctions'}>
+						<DeviceTypeCloudFunctions
+							deviceType={deviceType}
+							t={t}
+						/>
+					</ItemGrid>
+				</GridContainer></Fade>
+				: renderLoader()}
+		</Fragment>
+	)
 }
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	language: state.settings.language,
-	saved: state.favorites.saved,
-	mapTheme: state.settings.mapTheme,
-	periods: state.dateTime.periods,
-	deviceType: state.data.deviceType,
-	loading: !state.data.gotDeviceType
-})
 
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getDeviceType: async (id) => dispatch(await getDeviceTypeLS(id))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceTypeStyles)(DeviceType))
+export default withStyles(deviceTypeStyles)(DeviceType)
