@@ -58,16 +58,12 @@ const Settings = (props) => {
 	const count = useSelector(s => s.settings.count)
 	const tcount = useSelector(s => s.settings.tcount)
 	const calNotifications = useSelector(s => s.settings.calNotifications)
-	// const alerts = useSelector(s => s.settings.alerts)
-	// const didKnow = useSelector(s => s.settings.didKnow)
 
 	const t = useLocalization()
 	const s = useSnackbar()
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const location = useLocation()
-	// const theme = useTheme()
-	// console.log(theme)
 
 	useEffect(() => {
 		props.setHeader('settings.pageTitle', false, '', 'settings')
@@ -93,7 +89,6 @@ const Settings = (props) => {
 		}
 	}, [dispatch, s, saved])
 	// componentDidUpdate = () => {
-	// 	console.log(this.props.s)
 	// 	if (this.props.saved === true) {
 	// 		this.props.s('snackbars.settingsSaved')
 	// 		this.props.finishedSaving()

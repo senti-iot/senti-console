@@ -9,9 +9,6 @@ import sentiIco from 'assets/icons/senti.ico'
 export const ThemeProvider = (props) => {
 	const sTheme = useSelector(s => s.settings.theme)
 	let wl = getWL()
-	// console.log(wl)
-	// const tOptions = wl.theme
-	// console.log(wl)
 	const lightTheme = nLightTheme(wl ? wl : undefined)
 	const darkTheme = nDarkTheme(wl ? wl : undefined)
 	return (

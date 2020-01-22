@@ -142,7 +142,6 @@ const ResetPassword = props => {
 	// }
 
 	// componentDidMount() {
-	// 	console.log(props)
 	// 	_isMounted = 1
 	// 	window.addEventListener('keypress', handleKeyPress, false)
 	// 	let lang = props.match.params.lang

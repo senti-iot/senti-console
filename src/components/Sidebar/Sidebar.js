@@ -57,7 +57,6 @@ const Sidebar = (props) => {
 
 	//Render
 	const SmallBrand = () => {
-		console.log("Theme.logo", theme.logo)
 		return <div className={classes.logo}>
 			<ButtonBase
 				focusRipple
@@ -123,7 +122,7 @@ const Sidebar = (props) => {
 									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
-								<Collapse in={() => { console.log(dropdown.indexOf(route.menuRoute) > -1); return dropdown.indexOf(route.menuRoute) > -1 ? true : false }}>
+								<Collapse in={dropdown.indexOf(route.menuRoute) > -1 ? true : false}>
 									{route.items.map((i, ind) =>
 										<ListItem component={NavLink}
 											key={ind}

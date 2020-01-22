@@ -73,9 +73,9 @@ class MapData extends Component {
 
 	}
 	componentDidUpdate = async (prevProps) => {
-		console.log('CDU MapData')
+		// console.log('CDU MapData')
 		if (prevProps.g.grid.h !== this.props.g.grid.h) {
-			console.log('Updated grid', this.props.g)
+			// console.log('Updated grid', this.props.g)
 		}
 		//TODO: Change the if to include also the id of device
 		if (prevProps.g !== this.props.g || prevProps.g.dataSource !== this.props.g.dataSource) {

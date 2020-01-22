@@ -109,7 +109,6 @@ const ESMSChart = (props) => {
 		props.handleEditGraph(newG)
 	}
 
-	console.log(deviceType)
 	return (
 		<Fragment>
 			<ItemG xs={12}>
