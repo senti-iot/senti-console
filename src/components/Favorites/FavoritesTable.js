@@ -61,34 +61,34 @@ class FavoriteTable extends React.Component {
 				return <Tooltip title={t('tooltips.project')}>
 					<LibraryBooks />
 				</Tooltip>
-			case 'sensor': 
-			case 'device': 
+			case 'sensor':
+			case 'device':
 				return <Tooltip title={t('tooltips.device')}>
 					<DeviceHub />
 				</Tooltip>
-			case 'user': 
+			case 'user':
 				return <Tooltip title={t('tooltips.user')}>
 					<Person />
 				</Tooltip>
-			case 'org': 
+			case 'org':
 				return <Tooltip title={t('tooltips.org')}>
 					<Business />
 				</Tooltip>
-			case 'collection': 
+			case 'collection':
 				return <Tooltip title={t('tooltips.collection')}>
 					<DataUsage />
 				</Tooltip>
-			case 'devicetype': 
+			case 'deviceType':
 				return <Tooltip title={t('tooltips.devicetype')}>
 					<Memory />
 				</Tooltip>
-			case 'registry': 
+			case 'registry':
 				return <Tooltip title={t('tooltips.registry')}>
 					<InputIcon />
 				</Tooltip>
 			case 'function':
 				return <Tooltip title={t('tooltips.function')}>
-					<CloudDownload/>
+					<CloudDownload />
 				</Tooltip>
 			default:
 				break;
@@ -116,7 +116,7 @@ class FavoriteTable extends React.Component {
 							customColumn={[
 								{
 									id: 'type',
-									label: <div style={{ width: 40 }}/>
+									label: <div style={{ width: 40 }} />
 								},
 								{
 									id: 'id',
@@ -124,11 +124,11 @@ class FavoriteTable extends React.Component {
 										{this.props.t("sidebar.favorites")}
 									</Typography>
 								}
-							
+
 							]}
 						/>
 						<TableBody>
-							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {								
+							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
@@ -148,7 +148,7 @@ class FavoriteTable extends React.Component {
 												<ItemG container alignItems={'center'}>
 													<ItemG xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
-															 {n.name}
+															{n.name}
 														</Info>
 													</ItemG>
 													<ItemG xs={12}>

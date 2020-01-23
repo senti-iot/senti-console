@@ -3,13 +3,11 @@ import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemTe
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, DSelect, T, SlideT } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, /* DSelect, */ T, SlideT } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
-/**
-* @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
-*/
+
 class CreateDeviceTypeForm extends Component {
 	constructor(props) {
 		super(props)
@@ -31,10 +29,14 @@ class CreateDeviceTypeForm extends Component {
 	}
 
 	renderMetadata = () => {
-		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey,
+			handleChangeKey, handleOpenFunc, /*  handleChangeType, */ cfunctions, classes, handleRemoveKey, handleRemoveFunction,
+			handleAddKey } = this.props
+
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.map((m, i) => {
+				console.log(m)
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
@@ -68,6 +70,7 @@ class CreateDeviceTypeForm extends Component {
 			</ItemGrid>
 			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
+				console.log(p)
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
@@ -98,14 +101,14 @@ class CreateDeviceTypeForm extends Component {
 							style: { marginRight: 8 }
 						}}
 					/>
-					<DSelect
+					{/* 			<DSelect
 						onChange={handleChangeType(i)}
 						value={p.type}
 						menuItems={[
 							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
 							{ value: 1, label: t('cloudfunctions.datatypes.average') }
 						]}
-					/>
+					/> */}
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 
 						<IconButton
@@ -128,7 +131,8 @@ class CreateDeviceTypeForm extends Component {
 		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
-				return <ItemGrid xs={12} container alignItems={'center'}>
+				console.log(p)
+				return <ItemGrid key={i} xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
 						onClick={handleOpenFunc(i, 'inbound')}
