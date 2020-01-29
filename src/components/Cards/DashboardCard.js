@@ -201,7 +201,7 @@ const DashboardCard = props => {
 				<Dropdown
 					buttonClassName={classes.menuButton}
 					menuItems={[
-						{ label: t('actions.delete'), func: this.props.deleteDashboard },
+						{ label: t('actions.delete'), func: props.deleteDashboard },
 					]}>
 
 				</Dropdown>
