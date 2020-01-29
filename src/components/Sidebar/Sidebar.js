@@ -1,240 +1,89 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import classNames from 'classnames'
-import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase, Tooltip, Collapse } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { NavLink as Link } from 'react-router-dom';
+import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase, Tooltip, Collapse, useTheme } from '@material-ui/core';
+import { NavLink as Link, useHistory } from 'react-router-dom';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changeSmallMenu } from 'redux/appState';
 // import { Menu } from 'variables/icons';
 import { HeaderLinks } from 'components';
-import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
+import sidebarStyles from 'assets/jss/components/sidebar/sidebarStyles';
 import logo from 'logo.svg'
+import { useLocalization } from 'hooks';
 
 const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref} />)
-class Sidebar extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
+const Sidebar = (props) => {
+	//Hooks
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const t = useLocalization()
+	const theme = useTheme()
+	//Redux
+	const smallMenu = useSelector(s => s.appState.smallMenu)
+	const drawer = useSelector(s => s.settings.drawer)
+	const drawerCloseOnNav = useSelector(s => s.settings.drawerCloseOnNav)
+	const headerBorder = useSelector(s => s.settings.headerBorder)
+	const sideBar = useSelector(s => s.settings.sideBar)
 
+	//State
+	const [dropdown, setDropdown] = useState([])
+
+	//Const
+	const { defaultRoute, defaultView, routes, handleDrawerToggle, open, menuRoute } = props
+	const classes = sidebarStyles()
+	//Handlers
+
+	const isActiveRoute = (routeName) => menuRoute === routeName ? true : false;
+
+	const handleDropdown = e => key => {
+		let nDropdown = [...dropdown]
+		if (dropdown.indexOf(key) > -1) {
+			nDropdown.splice(dropdown.indexOf(key), 1)
 		}
+		else {
+			nDropdown.push(key)
+		}
+		setDropdown(nDropdown)
 	}
-	dropdown = e => key => {
-		this.setState({
-			[key]: !this.state[key]
-		})
-	}
-	activeRoute = (routeName) => this.props.menuRoute === routeName ? true : false;
 
-	changeSmallMenu = () => {
-		this.props.changeSmallMenu(!this.props.smallMenu)
+	const handleCloseDrawer = () => {
+		dispatch(changeSmallMenu(false))
 	}
-	closeDrawer = () => {
-		this.props.changeSmallMenu(false)
-	}
-	renderPersistentDrawer = () => {  //Hide Completely
-		const { classes, smallMenu, routes, defaultView, t } = this.props
-		return <Drawer
-			variant="permanent"
-			className={classNames(classes.drawer, {
-				[classes.drawerOpen]: smallMenu,
-				[classes.drawerPersClose]: !smallMenu,
-			})}
-			classes={{
-				paper: classNames({
-					[classes.drawerOpen]: smallMenu,
-					[classes.drawerPersClose]: !smallMenu,
-					[classes.drawerPaper]: true,
-				}),
-			}}
-			open={smallMenu}
-		>
-			<div className={classes.toolbar}>
-			</div>
-			<List style={{
-				margin: '8px',
-				paddingTop: 0,
-			}}>
-				{routes.map((route, index) => {
-					if (route.redirect) return null;
-					if (route.hideFromSideBar) return null;
-					if (route.dropdown) {
-						return <Fragment key={index}>
-							<Tooltip key={index}
-								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
-								<ListItem
-									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
-									to={route.path + (route.defaultView ? defaultView : '')}
-									classes={{
-										button: classNames({
-											[classes.buttonOpen]: smallMenu,
-											[classes.buttonClose]: !smallMenu,
-											[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
-											[classes.button]: true
-										})
-									}}>
-									{/* <div> */}
-									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
-									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
-									{/* </div> */}
-								</ListItem>
-							</Tooltip>
-							<Collapse in={this.state[route.menuRoute]} >
-								<div style={{ height: 44 * route.items.length + 88 }}>
-									{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
-										placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
-										<ListItem component={NavLink}
-											button
-											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-											to={i.path + (i.defaultView ? defaultView : '')}
-											classes={{
-												button: classNames({
-													[classes.buttonOpen]: smallMenu,
-													// [classes.buttonClose]: !smallMenu,
-													[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
-													[classes.button]: true,
-													[classes.nested]: smallMenu
-												})
-											}}>
-											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
-											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
-										</ListItem>
-									</Tooltip>)}
-								</div>
-							</Collapse>
-						</Fragment>
-					}
-					return <ListItem component={NavLink}
-						button
-						to={route.path + (route.defaultView ? defaultView : '')}
-						key={index}
-						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-						classes={{
-							button: classNames({
-								[classes.buttonOpen]: smallMenu,
-								// [classes.buttonClose]: !smallMenu,
-								[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
-								[classes.button]: true
-							})
-						}}>
-						<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
-						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
-					</ListItem>
-				})}
-			</List>
-		</Drawer>
-	}
-	renderPermanentDrawer = () => {
-		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
-		return <Drawer
-			variant="permanent"
-			className={classNames(classes.drawer, {
-				[classes.drawerOpen]: smallMenu,
-				[classes.drawerClose]: !smallMenu,
-			})}
 
-			classes={{
-				paper: classNames({
-					[classes.drawerOpen]: smallMenu,
-					[classes.drawerClose]: !smallMenu,
-					[classes.drawerPaper]: true,
-				}),
-			}}
-			open={smallMenu}
-		>
-			<div className={classes.toolbar} />
-			{headerBorder && <div className={classes.border} />}
-			<List
+	//Render
+	const SmallBrand = () => {
+		return <div className={classes.logo}>
+			<ButtonBase
+				focusRipple
+				className={classes.image}
+				focusVisibleClassName={classes.focusVisible}
 				style={{
-					margin: '8px',
-					paddingTop: 0,
-				}}>
-				{routes.map((route, index) => {
+					width: '120px'
+				}}
+				onClick={() => { handleDrawerToggle(); history.push(defaultRoute ? defaultRoute : '/') }}
+			>
+				<span
+					className={classes.imageSrc}
+					style={{
+						backgroundImage: `url(${theme.logo ? theme.logo : logo})`
+					}}
+				/>
+			</ButtonBase>
+		</div>
 
-					if (route.redirect) return null;
-					if (route.hideFromSideBar) return null;
-					if (route.dropdown) {
-						return <Fragment key={index}>
-							<Tooltip key={index}
-								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
-								<ListItem /* component={Button */
-									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
-									to={route.path + (route.defaultView ? defaultView : '')}
-									classes={{
-										button: classNames({
-											[classes.buttonOpen]: smallMenu,
-											[classes.buttonClose]: !smallMenu,
-											[classes.buttonActiveRoute]: this.props.menuRoute.includes(route.menuRoute) ? true : false,
-											[classes.button]: true
-										})
-									}}>
-									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
-									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
-								</ListItem>
-							</Tooltip>
-							<Collapse in={this.state[route.menuRoute]}>
-								<div style={{ height: 44 * route.items.length + 88 }}>
-
-									{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
-										placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
-										<ListItem component={NavLink}
-											button
-											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-											to={i.path + (i.defaultView ? defaultView : '')}
-											classes={{
-												button: classNames({
-													[classes.buttonOpen]: smallMenu,
-													[classes.buttonClose]: !smallMenu,
-													[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
-													[classes.button]: true,
-													[classes.nested]: smallMenu
-												})
-											}}>
-											<ListItemIcon className={classes.whiteFont}><i.icon /></ListItemIcon>
-											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
-										</ListItem>
-									</Tooltip>)}
-								</div>
-							</Collapse>
-						</Fragment>
-					}
-					return <Tooltip key={index}
-						placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
-						<ListItem component={NavLink}
-							button
-							onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-							to={route.path + (route.defaultView ? defaultView : '')}
-							classes={{
-								button: classNames({
-									[classes.buttonOpen]: smallMenu,
-									[classes.buttonClose]: !smallMenu,
-									[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
-									[classes.button]: true
-								})
-							}}>
-							<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
-							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
-						</ListItem>
-					</Tooltip>
-				})}
-			</List>
-		</Drawer>
 	}
-	renderMobileDrawer = () => {
-		const { open, classes, handleDrawerToggle, t, routes, defaultView, sideBar } = this.props
+
+	const renderMobileDrawer = () => {
 		return <Drawer
 			variant='temporary'
 			anchor={sideBar ? 'right' : 'left'}
 			open={open}
 			classes={{
-				// paper: classes.drawerPaper
 				paper: classNames({ [classes.drawerPaper]: true, [classes.drawerOpen]: true })
 			}}
 			onClose={handleDrawerToggle}
@@ -242,10 +91,10 @@ class Sidebar extends Component {
 				keepMounted: true
 			}}
 		>
-			{this.smallBrand()}
+			{SmallBrand()}
 			<div className={classes.sidebarWrapper}>
 				<div className={classes.appBarWrapper}>
-					<HeaderLinks t={t} onClose={this.props.handleDrawerToggle} />
+					<HeaderLinks t={t} onClose={handleDrawerToggle} />
 				</div>
 				<Divider />
 				<List style={{
@@ -260,31 +109,31 @@ class Sidebar extends Component {
 
 								<ListItem /* component={Button */
 									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
+									onClick={(e) => { handleDropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
 									classes={{
 										button: classNames({
 											[classes.buttonOpen]: true,
 											[classes.buttonClose]: !true,
-											[classes.buttonActiveRoute]: this.props.menuRoute.includes(route.menuRoute) ? true : false,
+											[classes.buttonActiveRoute]: menuRoute.includes(route.menuRoute) ? true : false,
 											[classes.button]: true
 										})
 									}}>
 									<ListItemIcon className={classes.whiteFont}><route.icon /></ListItemIcon>
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
-								<Collapse in={this.state[route.menuRoute]}>
+								<Collapse in={dropdown.indexOf(route.menuRoute) > -1 ? true : false}>
 									{route.items.map((i, ind) =>
 										<ListItem component={NavLink}
 											key={ind}
 											button
-											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+											onClick={drawerCloseOnNav ? handleCloseDrawer : undefined}
 											to={i.path + (i.defaultView ? defaultView : '')}
 											classes={{
 												button: classNames({
 													[classes.buttonOpen]: true,
 													[classes.buttonClose]: !true,
-													[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
+													[classes.buttonActiveRoute]: isActiveRoute(i.menuRoute),
 													[classes.button]: true,
 													[classes.nested]: true
 												})
@@ -299,13 +148,13 @@ class Sidebar extends Component {
 						return <ListItem component={NavLink}
 							button
 							to={route.path + (route.defaultView ? defaultView : '')}
-							onClick={this.props.handleDrawerToggle}
+							onClick={handleDrawerToggle}
 							key={index}
 							classes={{
 								button: classNames({
 									[classes.buttonOpen]: true,
 									// [classes.buttonClose]: true,
-									[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+									[classes.buttonActiveRoute]: isActiveRoute(route.menuRoute),
 									[classes.button]: true
 								})
 							}}>
@@ -317,8 +166,7 @@ class Sidebar extends Component {
 			</div>
 		</Drawer>
 	}
-	renderDrawer = (drawer) => {  //Hide Completely
-		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
+	const renderDrawer = (drawer) => {  //Hide Completely
 		const pers = drawer === 'persistent' ? true : false
 		return <Drawer
 			variant="permanent"
@@ -352,13 +200,13 @@ class Sidebar extends Component {
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
 								<ListItem
 									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
+									onClick={(e) => { handleDropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
 									classes={{
 										button: classNames({
 											[classes.buttonOpen]: smallMenu,
 											[classes.buttonClose]: !smallMenu,
-											[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+											[classes.buttonActiveRoute]: isActiveRoute(route.menuRoute),
 											[classes.button]: true
 										})
 									}}>
@@ -366,19 +214,19 @@ class Sidebar extends Component {
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 							</Tooltip>
-							<Collapse in={this.state[route.menuRoute]} >
+							<Collapse in={dropdown.indexOf(route.menuRoute) > -1 ? true : false} >
 								<div style={{ height: 44 * route.items.length + 88 }}>
 									{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
 										placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
 										<ListItem component={NavLink}
 											button
-											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+											onClick={drawerCloseOnNav ? handleCloseDrawer : undefined}
 											to={i.path + (i.defaultView ? defaultView : '')}
 											classes={{
 												button: classNames({
 													[classes.buttonOpen]: smallMenu,
 													[classes.buttonClose]: !pers && !smallMenu,
-													[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
+													[classes.buttonActiveRoute]: isActiveRoute(i.menuRoute),
 													[classes.button]: true,
 													[classes.nested]: smallMenu
 												})
@@ -396,12 +244,12 @@ class Sidebar extends Component {
 						<ListItem component={NavLink}
 							button
 							to={route.path + (route.defaultView ? defaultView : '')}
-							onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+							onClick={drawerCloseOnNav ? handleCloseDrawer : undefined}
 							classes={{
 								button: classNames({
 									[classes.buttonOpen]: smallMenu,
 									[classes.buttonClose]: !pers && !smallMenu,
-									[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+									[classes.buttonActiveRoute]: isActiveRoute(route.menuRoute),
 									[classes.button]: true
 								})
 							}}>
@@ -413,53 +261,19 @@ class Sidebar extends Component {
 			</List>
 		</Drawer>
 	}
-	smallBrand = () => {
-		const { classes, defaultRoute, handleDrawerToggle, history } = this.props
-		return <div className={classes.logo}>
-			<ButtonBase
-				focusRipple
-				className={classes.image}
-				focusVisibleClassName={classes.focusVisible}
-				style={{
-					width: '120px'
-				}}
-				onClick={() => { handleDrawerToggle(); history.push(defaultRoute ? defaultRoute : '/') }}
-			>
-				<span
-					className={classes.imageSrc}
-					style={{
-						backgroundImage: `url(${logo})`
-					}}
-				/>
-			</ButtonBase>
-		</div>
 
-	}
-	render() {
-		const { drawer } = this.props
-		return (
-			<Fragment>
-				<Hidden mdDown>
-					{this.renderDrawer(drawer)}
-					{/* {drawer === 'persistent' ? this.renderPersistentDrawer() : this.renderPermanentDrawer()} */}
-				</Hidden>
-				<Hidden lgUp>
-					{this.renderMobileDrawer()}
-				</Hidden>
-			</Fragment>
-		);
-	}
+
+	return (
+		<Fragment>
+			<Hidden mdDown>
+				{renderDrawer(drawer)}
+			</Hidden>
+			<Hidden lgUp>
+				{renderMobileDrawer()}
+			</Hidden>
+		</Fragment>
+	);
+
 }
-const mapStateToProps = (state) => ({
-	smallMenu: state.appState.smallMenu,
-	drawer: state.settings.drawer,
-	drawerCloseOnNav: state.settings.drawerCloseOnNav,
-	headerBorder: state.settings.headerBorder,
-	sideBar: state.settings.sideBar
-})
 
-const mapDispatchToProps = dispatch => ({
-	changeSmallMenu: val => dispatch(changeSmallMenu(val))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(sidebarStyle)(Sidebar))
+export default Sidebar

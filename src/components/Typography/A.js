@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Link } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import typographyStyle from 'assets/jss/material-dashboard-react/typographyStyle.js';
@@ -7,9 +7,9 @@ import typographyStyle from 'assets/jss/material-dashboard-react/typographyStyle
 function A({ ...props }) {
 	const { classes, children, ...rest } = props;
 	return (
-		<a {...rest} className={classes.defaultFontStyle + ' ' + classes.aStyle}>
+		<Link {...rest} className={classes.defaultFontStyle + ' ' + classes.aStyle}>
 			{children}
-		</a>
+		</Link>
 	);
 }
 

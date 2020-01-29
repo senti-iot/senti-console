@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
+import { Typography, withStyles, Button, CircularProgress, Link } from '@material-ui/core';
 import { ItemG, Warning, P, Info, Caption, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, Build, Star, StarBorder, Edit, /* DeviceHub, */ LayersClear, Business, DataUsage } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
-import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
 import { connect } from 'react-redux'
@@ -146,8 +146,8 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={12} md={6} lg={6}>
 							<Caption>{t('devices.fields.coords')}:</Caption>
-							<Info><a title={t('links.googleMaps')} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
-								{ConvertDDToDMS(device.lat, false) + ' ' + ConvertDDToDMS(device.long, true)}</a>
+							<Info><Link title={t('links.googleMaps')} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+								{ConvertDDToDMS(device.lat, false) + ' ' + ConvertDDToDMS(device.long, true)}</Link>
 							</Info>
 						</ItemG>
 
@@ -155,7 +155,7 @@ class DeviceDetails extends Component {
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.org')}:</Caption>
 							<Info>{device.org ?
-								<Link to={{ pathname: `/management/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
+								<Link component={RLink} to={{ pathname: `/management/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
 									{device.org.name}
 								</Link>
 								: t('no.org')}</Info>
@@ -164,7 +164,7 @@ class DeviceDetails extends Component {
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('collections.fields.id')}:</Caption>
 							<Info>{device.dataCollection ? device.dataCollection.id > 0 ?
-								<Link to={{
+								<Link component={RLink} to={{
 									pathname: `/collection/${device.dataCollection.id}`,
 									prevURL: `/device/${device.id}`
 								}}>

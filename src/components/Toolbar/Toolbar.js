@@ -10,7 +10,7 @@ import { transition } from 'assets/jss/material-dashboard-react';
 import cx from 'classnames'
 // import inView from 'in-view'
 
-const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref}/>)
+const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref} />)
 
 const styles = theme => ({
 	appBarDrawerOpen: {
@@ -37,6 +37,7 @@ const styles = theme => ({
 		padding: "0 !important",
 		position: "fixed",
 		top: 70,
+		background: theme.toolbarBackground ? theme.toolbarBackground : undefined,
 		[theme.breakpoints.down('xs')]: {
 			top: 48
 		},
@@ -76,7 +77,11 @@ const styles = theme => ({
 	noOverflow: {
 		overflow: 'hidden'
 	},
+	indicator: {
+		background: theme.toolbarIndicator ? theme.toolbarIndicator : undefined
+	}
 })
+
 
 class Toolbar extends PureComponent {
 	constructor(props) {
@@ -129,13 +134,14 @@ class Toolbar extends PureComponent {
 							[classes.appBarDrawerOpen]: smallMenu,
 						})
 					}}>
-						{tabs ? <Tabs TabIndicatorProps={{ style: { /* opacity: hashLinks ? 0 : 1 */ } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+						{tabs ? <Tabs
+							id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow, indicator: classes.indicator }}>
 							{tabs ? tabs.map((t, i) => {
 								return <Tab
 									key={i}
 									onMouseEnter={e => this.setState({ tooltip: t.id })}
 									onMouseLeave={() => this.setState({ tooltip: -1 })}
-									component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={this.handleScroll} style={{ color: '#fff' }} />)}
+									component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={this.handleScroll} /* style={{ color: '#fff' }} */ />)}
 									value={t.id}
 									smooth
 									onClick={this.handleTooltipClose}

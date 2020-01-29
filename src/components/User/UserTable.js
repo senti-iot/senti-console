@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, withStyles, Typography,
+	TableRow, withStyles, Typography, Link,
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
@@ -159,8 +159,8 @@ class UserTable extends React.Component {
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
 												FirstC label={`${n.firstName} ${n.lastName}`} />
-											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
-											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
+											<TC label={<Link onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</Link>} />
+											<TC label={<Link onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</Link>} />
 											<TC label={n.org ? n.org.name : t('users.noOrg')} />
 											<TC label={t(n.group)} />
 											<TC label={lastLoggedIn} />

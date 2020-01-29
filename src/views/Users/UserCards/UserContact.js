@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemG, Caption, Info } from 'components';
-import { Hidden } from '@material-ui/core';
+import { Hidden, Link } from '@material-ui/core';
 import { pF, dateFormatter } from 'variables/functions';
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
-import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
 import Dropdown from 'components/Dropdown/Dropdown';
@@ -82,23 +82,23 @@ class UserContact extends Component {
 							<ItemG>
 								<Caption>{t('users.fields.email')}</Caption>
 								<Info>
-									<a title={t('links.mailTo')} href={`mailto:${user.email}`}>
+									<Link title={t('links.mailTo')} href={`mailto:${user.email}`}>
 										{user.email}
-									</a>
+									</Link>
 								</Info>
 							</ItemG>
 							<ItemG>
 								<Caption>{t('users.fields.phone')}</Caption>
 								<Info>
-									<a title={t('links.phoneTo')} href={`tel:${user.phone}`}>
+									<Link title={t('links.phoneTo')} href={`tel:${user.phone}`}>
 										{user.phone ? pF(user.phone) : user.phone}
-									</a>
+									</Link>
 								</Info>
 							</ItemG>
 							<ItemG>
 								<Caption>{t('users.fields.organisation')}</Caption>
 								<Info>
-									<Link to={{ pathname: `/management/org/${user.org.id}`, prevURL: `/management/user/${user.id}` }}>
+									<Link component={RLink} to={{ pathname: `/management/org/${user.org.id}`, prevURL: `/management/user/${user.id}` }}>
 										{user.org ? user.org.name : t('users.noOrg')}
 									</Link>
 								</Info>
@@ -144,9 +144,9 @@ class UserContact extends Component {
 							<Caption>{t('users.fields.linkedInURL')}</Caption>
 							<Info>
 								{extended ? extended.linkedInURL ?
-									<a target='_blank' rel="noopener noreferrer" href={`${extended.linkedInURL}`}>
+									<Link target='_blank' rel="noopener noreferrer" href={`${extended.linkedInURL}`}>
 										{`${user.firstName} ${user.lastName}`}
-									</a>
+									</Link>
 									: null : null}
 							</Info>
 						</ItemG>
@@ -154,9 +154,9 @@ class UserContact extends Component {
 							<Caption>{t('users.fields.twitterURL')}</Caption>
 							<Info>
 								{extended ? extended.twitterURL ?
-									<a target='_blank' rel="noopener noreferrer" href={`${extended.twitterURL}`}>
+									<Link target='_blank' rel="noopener noreferrer" href={`${extended.twitterURL}`}>
 										{`${user.firstName} ${user.lastName}`}
-									</a>
+									</Link>
 									: null : null}
 							</Info>
 						</ItemG>

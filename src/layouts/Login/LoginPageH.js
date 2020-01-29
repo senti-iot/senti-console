@@ -16,6 +16,7 @@ import CookiesDialog from 'components/Cookies/CookiesDialog';
 import PrivacyDialog from 'components/Cookies/PrivacyDialog';
 import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles';
 import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks';
+import { getWL } from 'variables/storage';
 let moment = require('moment');
 
 
@@ -29,7 +30,7 @@ function LoginPage(props) {
 	const [cookies, setCookies] = useState(false)
 	const [privacy, setPrivacy] = useState(false)
 	const [showPassword, setShowPassword] = useState(false)
-
+	const wl = getWL()
 	const setError = val => {
 		// console.trace()
 		setEError(val)
@@ -164,7 +165,7 @@ function LoginPage(props) {
 													{t('login.needAnAccount1')}
 												</span>
 												<span style={{ fontWeight: 600, marginRight: 4 }}>
-													Senti
+													{wl ? wl.pageTitle ? wl.pageTitle : 'Senti' : 'Senti'}
 												</span>
 												<span style={{ marginRight: 4 }}>
 													{t('login.needAnAccount2')}?

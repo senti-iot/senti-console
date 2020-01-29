@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info, Dropdown, Muted } from 'components';
-import { Grid } from '@material-ui/core';
+import { Grid, Link } from '@material-ui/core';
 import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
-import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 var countries = require('i18n-iso-countries')
 
 class OrgDetails extends Component {
@@ -107,9 +107,9 @@ class OrgDetails extends Component {
 								{t('orgs.fields.url')}
 							</Caption>
 							<Info>
-								<a href={org.url} target={'_blank'}>
+								<Link href={org.url} target={'_blank'}>
 									{org.url}
-								</a>
+								</Link>
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12}>
@@ -126,7 +126,7 @@ class OrgDetails extends Component {
 									{t('orgs.fields.parentOrg')}
 								</Caption>
 								<Info>
-									<Link to={{ pathname: `/management/org/${org.org.id}`, prevURL: `/management/org/${org.id}` }}>
+									<Link component={RLink} to={{ pathname: `/management/org/${org.org.id}`, prevURL: `/management/org/${org.id}` }}>
 										{org.org.name}
 									</Link>
 								</Info>
