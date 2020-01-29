@@ -173,74 +173,72 @@ const styles = theme => ({
 	},
 })
 
-class DashboardCard extends Component {
-	render() {
-		const { classes, header, content, c, handleOpenDashboard, t, handleEditDashboard, handleOpenShare } = this.props;
-		return (
-			<Card className={classes.card}>
+const DashboardCard = props => {
+	const { classes, header, content, c, handleOpenDashboard, t, handleEditDashboard, handleOpenShare } = props;
+	return (
+		<Card className={classes.card}>
 
-				<CardMedia
-					className={cx({
-						[classes.media]: true,
-						[classes.cardImg]: true,
-						[classes[c]]: true
-					})}
-					// image={null}
-					src={'ps'}
-					title=''
-				>
-					<div className={classes.overlayMedia}>
-						<ITB
-							size={'medium'}
-							icon={<Airplay />}
-							label={'actions.open'}
-							// buttonClass={classes.smallButton}
-							style={{ color: '#fff' }}
-							onClick={handleOpenDashboard}
-						/>
-					</div>
-					<Dropdown
-						buttonClassName={classes.menuButton}
-						menuItems={[
-							{ label: t('actions.delete'), func: this.props.deleteDashboard },
-						]}>
-
-					</Dropdown>
-
-				</CardMedia>
-				<CardContent classes={{ root: classes.cardContent }}>
-					<Typography title={header} gutterBottom className={classes.header}>
-						{header}
-					</Typography>
-					<Muted title={content} className={classes.content}>
-						<span>
-							{content}
-						</span>
-					</Muted>
-				</CardContent>
-				<CardActions>
+			<CardMedia
+				className={cx({
+					[classes.media]: true,
+					[classes.cardImg]: true,
+					[classes[c]]: true
+				})}
+				// image={null}
+				src={'ps'}
+				title=''
+			>
+				<div className={classes.overlayMedia}>
 					<ITB
+						size={'medium'}
 						icon={<Airplay />}
 						label={'actions.open'}
-						buttonClass={classes.smallButton}
+						// buttonClass={classes.smallButton}
+						style={{ color: '#fff' }}
 						onClick={handleOpenDashboard}
 					/>
-					<ITB
-						icon={<Share />}
-						label={'actions.share'}
-						buttonClass={classes.smallButton}
-						onClick={handleOpenShare}
-					/>
-					<div style={{ marginLeft: 'auto' }} />
-					<ITB
-						icon={<Edit />}
-						label={'actions.edit'}
-						buttonClass={classes.smallButton}
-						onClick={handleEditDashboard} />
-				</CardActions>
-			</Card>
-		);
-	}
+				</div>
+				<Dropdown
+					buttonClassName={classes.menuButton}
+					menuItems={[
+						{ label: t('actions.delete'), func: this.props.deleteDashboard },
+					]}>
+
+				</Dropdown>
+
+			</CardMedia>
+			<CardContent classes={{ root: classes.cardContent }}>
+				<Typography title={header} gutterBottom className={classes.header}>
+					{header}
+				</Typography>
+				<Muted title={content} className={classes.content}>
+					<span>
+						{content}
+					</span>
+				</Muted>
+			</CardContent>
+			<CardActions>
+				<ITB
+					icon={<Airplay />}
+					label={'actions.open'}
+					buttonClass={classes.smallButton}
+					onClick={handleOpenDashboard}
+				/>
+				<ITB
+					icon={<Share />}
+					label={'actions.share'}
+					buttonClass={classes.smallButton}
+					onClick={handleOpenShare}
+				/>
+				<div style={{ marginLeft: 'auto' }} />
+				<ITB
+					icon={<Edit />}
+					label={'actions.edit'}
+					buttonClass={classes.smallButton}
+					onClick={handleEditDashboard} />
+			</CardActions>
+		</Card>
+	);
 }
 
 
