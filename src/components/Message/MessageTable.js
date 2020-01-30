@@ -25,7 +25,7 @@ const MessageTable = props => {
 	const t = useLocalization()
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	// const hoverTime = useSelector(state => state.settings.hoverTime)
-	const [page] = useState(0)
+	const [page, setPage] = useState(0)
 	const [, setRowHover] = useState(null) // added
 	// const [hoverMessage, setHoverMessage] = useState(null) // added
 	// constructor(props) {
@@ -38,13 +38,13 @@ const MessageTable = props => {
 	// let timer = null
 
 	const handleRequestSort = (event, property) => {
-		this.props.handleRequestSort(event, property)
+		props.handleRequestSort(event, property)
 	}
 
-	// const handleChangePage = (event, newPage) => {
-	// 	setPage(page)
-	// 	// this.setState({ page });
-	// }
+	const handleChangePage = (event, newPage) => {
+		setPage(page)
+		// this.setState({ page });
+	}
 
 	const isSelectedFunc = id => props.selected.indexOf(id) !== -1
 
@@ -194,7 +194,7 @@ const MessageTable = props => {
 				classes={classes}
 				page={page}
 				t={t}
-				handleChangePage={this.handleChangePage}
+				handleChangePage={handleChangePage}
 			/>
 		</Fragment>
 	)
