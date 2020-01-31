@@ -35,12 +35,14 @@ const AssignSensorsDialog = (props) => {
 	}
 	const selectSensor = (sId, sName) => {
 		let sS = [...selectedSensors]
-		if (selectedSensors.indexOf(sId) > -1) {
+		if (selectedSensors.findIndex(s => s.id === sId) > -1) {
 			sS.splice(selectedSensors.findIndex(s => s.id === sId), 1)
 		}
 		else {
 			sS.push({ id: sId, name: sName })
 		}
+		console.log('Updated sensor list')
+
 		setSelectedSensors(sS)
 	}
 	const handleClose = () => {
@@ -61,6 +63,7 @@ const AssignSensorsDialog = (props) => {
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
+
 	return (
 		<Dialog
 			fullScreen
@@ -128,31 +131,36 @@ const AssignSensorsDialog = (props) => {
 				</Toolbar>
 			</AppBar>
 			<List>
-				{sensors ? filterItems(sensors, { keyword: filterWord }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((s, i) => (
-					<Fragment key={i}>
-						<ListItem
-							button
-							onClick={handleSelectSensor(s.id, s.name)}
-							value={s.id}
-							selected={selectedSensors.indexOf(s.id) > -1}
-						// classes={{
-						// 	root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItem : null
-						// }}
-						>
-							<ListItemText
+				{sensors ? filterItems(sensors, { keyword: filterWord }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((s, i) => {
+					const listItemClass = cx({
+						[classes.selectedItem]: selectedSensors.findIndex(a => a.id === s.id) > -1 ? true : false
+					})
+					return (
+						<Fragment key={i}>
+							<ListItem
+								button
+								onClick={handleSelectSensor(s.id, s.name)}
+								value={s.id}
+								className={listItemClass}
+								selected={selectedSensors.indexOf(s.id) > -1}
+							// classes={{
+							// 	root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItem : null
+							// }}
+							>
+								<ListItemText
 
-								// primaryTypographyProps={{
-								// 	className: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null
-								// }}
-								// secondaryTypographyProps={{
-								// 	classes: { root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null }
-								// }}
-								primary={s.name} />
-						</ListItem>
-						<Divider />
-					</Fragment>
-				)
-				) : <CircularLoader />}
+									// primaryTypographyProps={{
+									// 	className: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null
+									// }}
+									// secondaryTypographyProps={{
+									// 	classes: { root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null }
+									// }}
+									primary={s.name} />
+							</ListItem>
+							<Divider />
+						</Fragment>
+					)
+				}) : <CircularLoader />}
 				<TP
 					disableRowsPerPage
 					count={sensors ? sensors.length : 0}
