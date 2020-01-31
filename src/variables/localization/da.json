@@ -1111,6 +1111,8 @@
 		"selected": "valgt"
 	},
 	"tabs": {
+		"metadata": "Enhedsmetadata",
+		"cloudfunctions": "Cloud Funktioner",
 		"activeDevice": "Aktiv enhed",
 		"code": "Kildekode",
 		"collections": "Datasamlinger",

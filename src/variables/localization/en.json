@@ -1111,6 +1111,8 @@
 		"selected": "selected"
 	},
 	"tabs": {
+		"metadata": "Metadata",
+		"cloudfunctions": "Cloud Functions",
 		"activeDevice": "Active Device",
 		"code": "Source Code",
 		"collections": "Data Collections",
