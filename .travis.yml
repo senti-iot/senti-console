@@ -14,30 +14,25 @@ before_deploy:
 deploy:
 - provider: script
   script: bash scripts/deploy.sh master $TRAVIS_BUILD_DIR
-  skip_cleanup: true
   on:
     branch: master
 - provider: script
   script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR
-  skip_cleanup: true
   on:
     branch: beta
 - domain: https://alphasenti.surge.sh
   project: "./build"
   provider: surge
-  skip_cleanup: true
   on:
     branch: alpha
 - domain: https://alphahooks.surge.sh
   project: "./build"
   provider: surge
-  skip_cleanup: true
   on:
     branch: white-label
 - domain: https://sentidev.surge.sh
   project: "./build"
   provider: surge
-  skip_cleanup: true
   on:
     branch: alpha-dev
 language: node_js
