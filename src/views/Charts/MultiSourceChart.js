@@ -417,9 +417,11 @@ const MultiSourceChart = (props) => {
 					</ItemG>
 					<ItemG>
 						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
+							<div>
+								<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+									<KeyboardArrowRight />
+								</IconButton>
+							</div>
 						</Tooltip>
 					</ItemG>
 

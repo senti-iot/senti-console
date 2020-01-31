@@ -594,6 +594,10 @@
 			"deviceToCollection": "Assign Device to Data Collection",
 			"deviceToOrg": "Assign Device to Organisation"
 		},
+		"select": {
+			"devices": "Select devices",
+			"selectedDevices": " %{count} selected devices"
+		},
 		"calibrate": "Calibrate",
 		"changePassword": "Change Password",
 		"charts": {
