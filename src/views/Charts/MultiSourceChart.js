@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback } from 'react';
 import {
 	Grid, IconButton, Menu, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
+	ListItemIcon, ListItemText, Collapse, List, Typography, Tooltip, colors,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -349,27 +349,18 @@ const MultiSourceChart = (props) => {
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
-			{small ? null :
-				<Hidden xsDown>
-					<ItemG xs zeroMinWidth>
-						<DSelect
-							value={selectedDevice}
-							menuItems={g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i }))}
-							onChange={handleChangeSelectedDevice}
-						/>
-						{/* <Tooltip enterDelay={1000} title={title}>
-							<div>
-								<T noWrap variant={'h6'}>{title}</T>
-							</div>
-						</Tooltip> */}
-					</ItemG>
-				</Hidden>
-			}
+		return <ItemG container alignItems={'center'} justify={'center'}>
+			<ItemG zeroMinWidth>
+				<DSelect
+					value={selectedDevice}
+					menuItems={g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i }))}
+					onChange={handleChangeSelectedDevice}
+				/>
+			</ItemG>
+			{small ? null : <ItemG xs style={{ width: 'auto' }} container justify={'center'}>
+				<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+			</ItemG>}
 			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
-				<ItemG>
-
-				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={() => handlePreviousPeriod(period)}>
@@ -629,12 +620,7 @@ const MultiSourceChart = (props) => {
 				<Grid container style={{ height: '100%', width: '100%' }}>
 					{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
 						<Fragment>
-							<Hidden xsDown>
-								{small ? renderSmallTitle() : null}
-							</Hidden>
-							<Hidden smUp>
-								{renderSmallTitle()}
-							</Hidden>
+							{small ? renderSmallTitle() : null}
 							{renderType()}
 						</Fragment>
 					}

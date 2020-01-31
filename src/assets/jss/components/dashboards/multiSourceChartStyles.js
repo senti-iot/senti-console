@@ -24,8 +24,8 @@ const multiSourceChartStyles = makeStyles(theme => ({
 			paddingTop: 8
 		},
 		[theme.breakpoints.up('xs')]: {
-			paddingBottom: 16,
-			paddingTop: 16
+			paddingBottom: 8,
+			paddingTop: 8
 		}
 	},
 	subheader: {
