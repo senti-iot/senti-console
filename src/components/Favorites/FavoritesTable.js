@@ -98,7 +98,7 @@ const FavoriteTable = props => {
 				return <Tooltip title={t('tooltips.collection')}>
 					<DataUsage />
 				</Tooltip>
-			case 'deviceType':
+			case 'devicetype':
 				return <Tooltip title={t('tooltips.devicetype')}>
 					<Memory />
 				</Tooltip>

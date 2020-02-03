@@ -151,10 +151,10 @@ const AddressInput = props => {
 						<span key={String(index)} style={{ fontWeight: 500, color: props.theme.palette.type === 'dark' ? '#fff' : 'inherit' }}>
 							{part.text}
 						</span>
-					) : (
-							<strong key={String(index)} style={{ fontWeight: 300, color: props.theme.palette.type === 'dark' ? '#fff' : 'inherit' }}>
-								{part.text}
-							</strong>
+					) :
+						(<strong key={String(index)} style={{ fontWeight: 300, color: props.theme.palette.type === 'dark' ? '#fff' : 'inherit' }}>
+							{part.text}
+						</strong>
 						);
 				})}
 			</Paper>
