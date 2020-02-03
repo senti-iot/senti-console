@@ -10,6 +10,7 @@ import DMultiSelect from 'components/CustomInput/DMultiSelect';
 import { CSVLink } from 'react-csv'
 import { useLocalization } from 'hooks'
 
+// CSVHeaders is not defined (throws error)
 const ExportUsers = props => {
 	const t = useLocalization()
 	const [custom, setCustom] = useState(false)
