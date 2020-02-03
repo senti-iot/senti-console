@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Scrollbars } from 'react-custom-scrollbars';
 import { withStyles } from '@material-ui/core';
 
@@ -14,9 +14,9 @@ const styles = theme => ({
 	}
 })
 
-class SB extends Component {
-	renderThumb = ({ style, ...props }) => {
-		const { classes } = this.props
+const SB = props => {
+	const renderThumb = ({ style, ...props }) => {
+		const { classes } = props
 		return (
 			<div
 				className={classes.scrollbar}
@@ -24,7 +24,7 @@ class SB extends Component {
 				{...props} />
 		);
 	}
-	renderContainer = ({ style, ...props }) => {
+	const renderContainer = ({ style, ...other }) => {
 		const viewStyle = {
 			display: 'inline-flex'
 		}
@@ -33,18 +33,17 @@ class SB extends Component {
 				style={{ ...style, ...viewStyle }}
 			/>)
 	}
-	render() {
-		return (
-			<Scrollbars
-				renderThumbHorizontal={this.renderThumb}
-				renderThumbVertical={this.renderThumb}
-				renderView={this.renderContainer}
-			// style={{ maxWidth: '100%' }}
-			>
-				{this.props.children}
-			</Scrollbars>
-		)
-	}
+
+	return (
+		<Scrollbars
+			renderThumbHorizontal={renderThumb}
+			renderThumbVertical={renderThumb}
+			renderView={renderContainer}
+		// style={{ maxWidth: '100%' }}
+		>
+			{props.children}
+		</Scrollbars>
+	)
 }
 
 export default withStyles(styles)(SB)
