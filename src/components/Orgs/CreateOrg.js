@@ -194,9 +194,9 @@ class CreateOrg extends Component {
 		if (this.handleValidation()) {
 			let newOrg = {
 				...this.state.org,
-				org: {
-					id: this.state.selectedOrg ? this.state.selectedOrg : -1
-				}
+				// org: {
+				// 	id: this.state.selectedOrg ? this.state.selectedOrg : -1
+				// }
 			}
 			return await createOrg(newOrg).then(rs =>
 				rs ?
@@ -223,11 +223,13 @@ class CreateOrg extends Component {
 				}
 			}
 		})
+		console.log(this.state.org.org)
 	}
 
 	renderOrgs = () => {
 		const { t } = this.props
 		const { orgs, org } = this.state
+		console.log(org)
 		return <DSelect
 			label={t('orgs.fields.parentOrg')}
 			value={org.org.id}
