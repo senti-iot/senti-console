@@ -58,7 +58,7 @@ const styles = theme => ({
 
 const AddressInput = props => {
 	const [suggestions, setSuggestions] = useState([])
-	const [query, setQuery] = useState(null) // added
+	// const [query, setQuery] = useState(null) // added
 
 	const getSuggestionValue = s => s.value
 	const handleGetAdresses = async (query) => {
@@ -103,10 +103,10 @@ const AddressInput = props => {
 	}
 	const handleChange = (event, { newValue, method }) => {
 		// TODO
-		setQuery(typeof newValue !== undefined ? newValue : '', async () => {
-			if (method !== 'down' && method !== 'up' && method !== null && method !== undefined)
-				handleGetAdresses(newValue)
-		})
+		if (method !== 'down' && method !== 'up' && method !== null && method !== undefined)
+			handleGetAdresses(newValue)
+		// setQuery(typeof newValue !== undefined ? newValue : '', async () => {
+		// })
 		// TODO
 		// this.setState({
 		// 	query: typeof newValue !== 'undefined' ? newValue : '',
