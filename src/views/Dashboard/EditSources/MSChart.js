@@ -33,7 +33,6 @@ const ESMSChart = (props) => {
 	}
 
 	useEffect(() => {
-		// console.log(g)
 		props.getDeviceType(g.dataSource.deviceTypeId)
 
 		//eslint-disable-next-line

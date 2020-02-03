@@ -223,13 +223,11 @@ class CreateOrg extends Component {
 				}
 			}
 		})
-		console.log(this.state.org.org)
 	}
 
 	renderOrgs = () => {
 		const { t } = this.props
 		const { orgs, org } = this.state
-		console.log(org)
 		return <DSelect
 			label={t('orgs.fields.parentOrg')}
 			value={org.org.id}

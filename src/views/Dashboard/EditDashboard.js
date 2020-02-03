@@ -51,7 +51,6 @@ class EditDashboard extends React.Component {
 			this.props.loadDashboard(this.props.eDash)
 		}
 		if (prevProps.gs !== this.props.gs) {
-			console.log('Update because of GS')
 			// this.setState({
 			// 	layout: {
 			// 		lg: this.props.gs.map((g) => ({
@@ -122,7 +121,6 @@ class EditDashboard extends React.Component {
 				...grid
 			}
 		}
-		console.log('Rerendered')
 		switch (g.type) {
 			case 1:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
