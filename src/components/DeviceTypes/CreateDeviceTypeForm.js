@@ -1,40 +1,47 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, DSelect, T, SlideT } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, /* DSelect, */ T, SlideT } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
-/**
-* @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
-*/
-class CreateDeviceTypeForm extends Component {
-	constructor(props) {
-		super(props)
+import { useLocalization } from 'hooks'
 
-		this.state = {
-			filters: {
-				keyword: ''
-			},
-			openOrg: false
-		}
+const CreateDeviceTypeForm = props => {
+	const t = useLocalization()
+	const [filters, setFilters] = useState({ keyword: '' })
+	const [openOrg, setOpenOrg] = useState(false)
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		filters: {
+	// 			keyword: ''
+	// 		},
+	// 		openOrg: false
+	// 	}
+	// }
+
+	const handleFilterKeyword = value => {
+		setFilters({ ...filters, keyword: value })
+		// this.setState({
+		// 	filters: {
+		// 		keyword: value
+		// 	}
+		// })
 	}
 
-	handleFilterKeyword = value => {
-		this.setState({
-			filters: {
-				keyword: value
-			}
-		})
-	}
+	const renderMetadata = () => {
+		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
+			handleChangeKey, handleOpenFunc, /*  handleChangeType, */ cfunctions, classes, handleRemoveKey, handleRemoveFunction,
+			handleAddKey } = props
 
-	renderMetadata = () => {
-		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.map((m, i) => {
+				console.log(m)
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
@@ -68,6 +75,7 @@ class CreateDeviceTypeForm extends Component {
 			</ItemGrid>
 			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
+				console.log(p)
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
@@ -98,14 +106,14 @@ class CreateDeviceTypeForm extends Component {
 							style: { marginRight: 8 }
 						}}
 					/>
-					<DSelect
+					{/* 			<DSelect
 						onChange={handleChangeType(i)}
 						value={p.type}
 						menuItems={[
 							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
 							{ value: 1, label: t('cloudfunctions.datatypes.average') }
 						]}
-					/>
+					/> */}
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 
 						<IconButton
@@ -124,11 +132,12 @@ class CreateDeviceTypeForm extends Component {
 			</ItemGrid>
 		</Fragment>
 	}
-	renderMetadataInbound = () => {
-		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
+	const renderMetadataInbound = () => {
+		const { sensorMetadata, cfunctions, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = props
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
-				return <ItemGrid xs={12} container alignItems={'center'}>
+				console.log(p)
+				return <ItemGrid key={i} xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
 						onClick={handleOpenFunc(i, 'inbound')}
@@ -155,9 +164,9 @@ class CreateDeviceTypeForm extends Component {
 		</Fragment>
 	}
 
-	renderSelectOrg = () => {
-		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
-		const { filters } = this.state
+	// eslint-disable-next-line no-unused-vars
+	const renderSelectOrg = () => {
+		const { openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -184,7 +193,7 @@ class CreateDeviceTypeForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -206,7 +215,7 @@ class CreateDeviceTypeForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -225,9 +234,8 @@ class CreateDeviceTypeForm extends Component {
 			</List>
 		</Dialog>
 	}
-	renderSelectFunction = () => {
-		const { t, openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = this.props
-		const { filters } = this.state
+	const renderSelectFunction = () => {
+		const { openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -254,7 +262,7 @@ class CreateDeviceTypeForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -276,7 +284,7 @@ class CreateDeviceTypeForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -296,67 +304,65 @@ class CreateDeviceTypeForm extends Component {
 		</Dialog>
 	}
 
-	render() {
-		const { t, handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
-		return (
-			<GridContainer>
-				<ItemGrid xs={12}>
-					<InfoCard
-						noHeader
-						noExpand
-						content={<ItemG>
-							{this.renderSelectFunction()}
-							<ItemGrid xs={12}>
-								<TextF
-									id={'deviceTypeName'}
-									label={t('collections.fields.name')}
-									onChange={handleChange('name')}
-									value={deviceType.name}
-								// autoFocus
-								/>
-							</ItemGrid>
-							<Divider style={{ margin: "16px" }} />
-							{this.renderMetadata()}
-							<Divider style={{ margin: "16px" }} />
-							{this.renderMetadataInbound()}
-							<Divider style={{ margin: "16px" }} />
-							<ItemGrid xs={12}>
-								<TextF
-									value={org.name}
-									onClick={() => this.setState({ openOrg: true })}
-									readonly
-								/>
-								<AssignOrgDialog
-									t={t}
-									open={this.state.openOrg}
-									handleClose={() => this.setState({ openOrg: false })}
-									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
-								/>
-							</ItemGrid>
-							<Divider style={{ margin: "16px" }} />
-							<ItemGrid container>
-								<div className={classes.wrapper}>
-									<Button
-										variant='outlined'
-										onClick={goToDeviceTypes}
-										className={classes.redButton}
-									>
-										{t('actions.cancel')}
-									</Button>
-								</div>
-								<div className={classes.wrapper}>
-									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-										{t('actions.save')}
-									</Button>
-								</div>
-							</ItemGrid>
-						</ItemG>}
-					/>
-				</ItemGrid>
+	const { handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = props
+	return (
+		<GridContainer>
+			<ItemGrid xs={12}>
+				<InfoCard
+					noHeader
+					noExpand
+					content={<ItemG>
+						{renderSelectFunction()}
+						<ItemGrid xs={12}>
+							<TextF
+								id={'deviceTypeName'}
+								label={t('collections.fields.name')}
+								onChange={handleChange('name')}
+								value={deviceType.name}
+							// autoFocus
+							/>
+						</ItemGrid>
+						<Divider style={{ margin: "16px" }} />
+						{renderMetadata()}
+						<Divider style={{ margin: "16px" }} />
+						{renderMetadataInbound()}
+						<Divider style={{ margin: "16px" }} />
+						<ItemGrid xs={12}>
+							<TextF
+								value={org.name}
+								onClick={() => setOpenOrg(true)}
+								readonly
+							/>
+							<AssignOrgDialog
+								t={t}
+								open={openOrg}
+								handleClose={() => setOpenOrg(false)}
+								callBack={org => { setOpenOrg(false); handleOrgChange(org) }}
+							/>
+						</ItemGrid>
+						<Divider style={{ margin: "16px" }} />
+						<ItemGrid container>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
+									onClick={goToDeviceTypes}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
+							<div className={classes.wrapper}>
+								<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+									{t('actions.save')}
+								</Button>
+							</div>
+						</ItemGrid>
+					</ItemG>}
+				/>
+			</ItemGrid>
 
-			</GridContainer>
-		)
-	}
+		</GridContainer>
+	)
 }
 
 
