@@ -1,64 +1,84 @@
 import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
 import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, /* Notifications */ } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
-import React from 'react';
+import React, { useState } from 'react';
 import cookie from 'react-cookies';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Gravatar from 'react-gravatar'
+// eslint-disable-next-line no-unused-vars
 import { logOut } from 'variables/dataLogin';
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'
 import { /* ItemG, */ T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
 import cx from 'classnames'
+import { useLocalization } from 'hooks';
 // import Search from 'components/Search/Search';
 // import GlobalSearch from 'components/Search/GlobalSearch';
 
-class HeaderLinks extends React.Component {
-	state = {
-		anchorProfile: null
-	};
+// const mapStateToProps = (state) => ({
+// 	user: state.settings.user,
+// 	globalSearch: state.settings.globalSearch
+// })
 
-	handleProfileOpen = e => {
-		this.setState({ anchorProfile: e.currentTarget })
+// const mapDispatchToProps = dispatch => ({
+// 	resetRedux: () => dispatch({ type: "RESET_APP" })
+// })
+
+const HeaderLinks = props => {
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const user = useSelector(state => state.settings.user)
+	// const globalSearch = useSelector(state => state.settings.globalSearch)
+
+	const [anchorProfile, setAnchorProfile] = useState(null)
+	// state = {
+	// 	anchorProfile: null
+	// };
+
+	const handleProfileOpen = e => {
+		setAnchorProfile(e.currentTarget)
+		// this.setState({ anchorProfile: e.currentTarget })
 	}
-	handleRedirectToChristmas = () => {
-		this.props.history.push(`/holiday`)
-	}
-	handleRedirectToOwnProfile = () => {
-		this.handleProfileClose()
-		if (this.props.user)
-			this.props.history.push(`/management/user/${this.props.user.id}`)
+	// const handleRedirectToChristmas = () => {
+	// 	props.history.push(`/holiday`)
+	// }
+	const handleRedirectToOwnProfile = () => {
+		handleProfileClose()
+		if (props.user)
+			props.history.push(`/management/user/${props.user.id}`)
 
 	}
-	handleRedirectToOwnOrg = () => {
-		this.handleProfileClose()
-		if (this.props.user)
-			this.props.history.push(`/management/org/${this.props.user.org.id}`)
+	const handleRedirectToOwnOrg = () => {
+		handleProfileClose()
+		if (props.user)
+			props.history.push(`/management/org/${props.user.org.id}`)
 	}
-	handleProfileClose = () => {
-		this.setState({ anchorProfile: null })
-		if (this.props.onClose)
-			this.props.onClose()
+	const handleProfileClose = () => {
+		setAnchorProfile(null)
+		// this.setState({ anchorProfile: null })
+		if (props.onClose)
+			props.onClose()
 	}
-	logOut = async () => {
+	const logOut = async () => {
 		try {
 			await logOut().then(() => { })
 		}
 		catch (e) {
 		}
 		if (!cookie.load('SESSION')) {
-			this.setState({ anchorPofile: null })
-			this.props.history.push('/login')
-			this.props.resetRedux()
+			setAnchorProfile(null)
+			// this.setState({ anchorPofile: null })
+			props.history.push('/login')
+			dispatch({ type: "RESET_APP" })
 		}
 		// this.setState({ anchorProfile: null })
 	}
-	handleSettingsOpen = () => {
-		this.handleProfileClose()
-		if (this.props.user)
-			this.props.history.push(`/settings`)
+	const handleSettingsOpen = () => {
+		handleProfileClose()
+		if (props.user)
+			props.history.push(`/settings`)
 	}
 	// renderChristmasIcon = () => {
 	// 	const { classes } = this.props
@@ -77,7 +97,7 @@ class HeaderLinks extends React.Component {
 	// 	}
 
 	// }
-	renderSearch = () => {
+	const renderSearch = () => {
 		// const { globalSearch } = this.props
 		// return globalSearch ? <GlobalSearch /> : null
 		return null
@@ -87,9 +107,8 @@ class HeaderLinks extends React.Component {
 	// 		<Notifications />
 	// 	</ItemG>
 	// }
-	renderUserMenu = () => {
-		const { classes, t, user } = this.props;
-		const { anchorProfile } = this.state;
+	const renderUserMenu = () => {
+		const { classes } = props;
 		const openProfile = Boolean(anchorProfile)
 
 		return <div>
@@ -98,7 +117,7 @@ class HeaderLinks extends React.Component {
 				<Button
 					aria-owns={openProfile ? 'menu-appbar' : null}
 					aria-haspopup='true'
-					onClick={this.handleProfileOpen}
+					onClick={handleProfileOpen}
 					classes={{
 						root: classes.iconRoot
 					}}
@@ -125,7 +144,7 @@ class HeaderLinks extends React.Component {
 					horizontal: 'left',
 				}}
 				open={openProfile}
-				onClose={this.handleProfileClose}
+				onClose={handleProfileClose}
 				disableAutoFocusItem
 			>
 				{user ?
@@ -135,19 +154,19 @@ class HeaderLinks extends React.Component {
 					</MenuItem>
 					: null}
 				<Divider />
-				<MenuItem onClick={this.handleRedirectToOwnProfile}>
+				<MenuItem onClick={handleRedirectToOwnProfile}>
 					<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
 				</MenuItem>
-				{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
+				{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={handleRedirectToOwnOrg}>
 					<Business className={classes.leftIcon} />{t('menus.user.account')}
 				</MenuItem> : null : null}
-				<MenuItem onClick={this.handleSettingsOpen}>
+				<MenuItem onClick={handleSettingsOpen}>
 					<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 				</MenuItem>
 				<GoogleLogout
 					// onLogoutSuccess={() => this.logOut()}
 					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }}>
+					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); logOut() }}>
 						<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
 					</MenuItem>)}
 				>
@@ -156,30 +175,20 @@ class HeaderLinks extends React.Component {
 			</Menu>
 		</div>
 	}
-	render() {
-		const { classes } = this.props;
+	const { classes } = props;
 
-		return (
-			<Grid container justify={'center'} classes={{ container: classes.headerMargin }}>
-				{/* <ItemG>
+	return (
+		<Grid container justify={'center'} classes={{ container: classes.headerMargin }}>
+			{/* <ItemG>
 					{this.renderChristmasIcon()}
 				</ItemG> */}
-				<Hidden mdDown>
-					{this.renderSearch()}
-				</Hidden>
-				{this.renderUserMenu()}
-				{/* {this.renderNotifications()} */}
-			</Grid>
-		);
-	}
+			<Hidden mdDown>
+				{renderSearch()}
+			</Hidden>
+			{renderUserMenu()}
+			{/* {this.renderNotifications()} */}
+		</Grid>
+	);
 }
-const mapStateToProps = (state) => ({
-	user: state.settings.user,
-	globalSearch: state.settings.globalSearch
-})
 
-const mapDispatchToProps = dispatch => ({
-	resetRedux: () => dispatch({ type: "RESET_APP" })
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(headerLinksStyle)(HeaderLinks)));
+export default withRouter(withStyles(headerLinksStyle)(HeaderLinks))
