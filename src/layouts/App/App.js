@@ -239,4 +239,4 @@ function App(props) {
 
 App.whyDidYouRender = true
 
-export default React.memo(App)
+export default App
