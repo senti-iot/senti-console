@@ -37,8 +37,7 @@ const DeviceType = props => {
 
 	//Const
 
-	let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
-	props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
+
 
 	const tabs = useCallback(() => {
 		return [
@@ -91,10 +90,11 @@ const DeviceType = props => {
 				hashLinks: true
 			})
 			props.setBC('devicetype', deviceType.name)
+			let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
+			props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
 		}
-
-
 	}, [deviceType, props, tabs])
+
 	const addToFavFunc = () => {
 		let favObj = {
 			id: deviceType.id,

@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
 import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core'
-import { ItemGrid, SmallCard, ItemG, T } from 'components'
+import { ItemGrid, SmallCard, ItemG, T, Link } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
 import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
 import { withRouter } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 
 class SensorCard extends Component {
 	constructor(props) {
-	  super(props)
+		super(props)
 
-	  this.state = {
-		 actionAnchor: null,
-		 img: null
-	  }
+		this.state = {
+			actionAnchor: null,
+			img: null
+		}
 	}
 
 	handleOpenActionsDetails = event => {

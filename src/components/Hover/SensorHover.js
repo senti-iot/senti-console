@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
-import T from 'components/Typography/T';
-import ItemG from 'components/Grid/ItemG';
+// import T from 'components/Typography/T';
+// import ItemG from 'components/Grid/ItemG';
+import { T, ItemG, Link } from 'components'
 // import Gravatar from 'react-gravatar'
 import { Star, StarBorder, Block, CheckCircle, DeviceHub, InputIcon } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';

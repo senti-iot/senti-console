@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip, Link } from '@material-ui/core';
+import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
+import { Link } from 'components'
 import Gravatar from 'react-gravatar'
 import { Business, Call, LocationOn, Mail, Star, StarBorder, ContentCopy } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-import { Link as RLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 import { copyToClipboard } from 'variables/functions';
+import { Link as RLink } from 'react-router-dom'
 
 class UserHover extends Component {
 	componentDidUpdate = () => {

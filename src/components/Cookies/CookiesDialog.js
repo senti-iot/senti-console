@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles, Link } from '@material-ui/core';
-import { T } from 'components';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles } from '@material-ui/core';
+import { T, Link } from 'components';
 
 const styles = theme => ({
 	p: {
@@ -42,11 +42,11 @@ const CookiesDialog = (props) => {
 				<T className={classes.p}>{t('cookies.p.6')}</T>
 				<T>{t('cookies.p.7')}</T>
 				<T className={classes.p}>
-					<Link target="_blank" rel="noopener noreferrer" href={'https://policies.google.com/privacy '}>https://policies.google.com/privacy.</Link>
+					<Link component={'a'} target="_blank" rel="noopener noreferrer" href={'https://policies.google.com/privacy '}>https://policies.google.com/privacy.</Link>
 				</T>
 				<T className={classes.p}>
 					{`${t('cookies.p.8')} `}
-					<Link target="_blank" rel="noopener noreferrer" href={'https://aboutcookies.org/'}>https://aboutcookies.org/</Link>
+					<Link component={'a'} target="_blank" rel="noopener noreferrer" href={'https://aboutcookies.org/'}>https://aboutcookies.org/</Link>
 					{`. ${t('cookies.p.9')}`}
 				</T>
 				<T className={classes.p}>{t('cookies.p.10')}</T>
