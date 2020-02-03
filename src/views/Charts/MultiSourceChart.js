@@ -58,14 +58,9 @@ const MultiSourceChart = (props) => {
 	const [initialPeriod, setInitialPeriod] = useState(null)
 	const [selectedDevice, setSelectedDevice] = useState(0)
 
-	useEffect(() => {
-		console.log(g)
-		// f = gs[gs.findIndex(r => r.id === gId)]
-	}, [g, g.grid])
 
 	//Consts
 	let small = g ? g.grid ? g.grid.w <= 5 ? true : false : false : false
-	console.log(small)
 	const options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
 		{ id: 1, label: t('filters.dateOptions.yesterday') },

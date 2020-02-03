@@ -79,7 +79,6 @@ const LoginImages = (props) => {
 	const [number] = useState(getRndInteger())
 	//Const
 	const wl = getWL() ? getWL() : {}
-	console.log(wl)
 	return (
 		<div className={classes.container}>
 			<div className={classes.contentWrapper}>
