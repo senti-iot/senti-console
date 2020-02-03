@@ -37,6 +37,7 @@ class CreateDeviceTypeForm extends Component {
 			{sensorMetadata.metadata.map((m, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
+						id={'metadata-key' + i}
 						label={t('cloudfunctions.fields.metadata.key')}
 						onChange={handleChangeMetadataKey(i)}
 						value={m.key}
@@ -46,6 +47,7 @@ class CreateDeviceTypeForm extends Component {
 						}}
 					/>
 					<TextF
+						id={'metadata-value' + i}
 						label={t('cloudfunctions.fields.metadata.value')}
 						onChange={handleChangeMetadata(i)}
 						value={m.value}
@@ -68,8 +70,9 @@ class CreateDeviceTypeForm extends Component {
 			</ItemGrid>
 			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
-				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
+				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'}>
 					<TextF
+						id={'outbound-key' + i}
 						label={t('cloudfunctions.fields.key')}
 						onChange={handleChangeKey(p, i)}
 						value={p.key}
@@ -79,6 +82,7 @@ class CreateDeviceTypeForm extends Component {
 						}}
 					/>
 					<TextF
+						id={'outbound-value' + i}
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
@@ -128,8 +132,9 @@ class CreateDeviceTypeForm extends Component {
 		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
-				return <ItemGrid xs={12} container alignItems={'center'}>
+				return <ItemGrid key={i + "inbound"} xs={12} container alignItems={'center'}>
 					<TextF
+						id={'inbound-function' + i}
 						label={t("cloudfunctions.fields.inboundfunc")}
 						onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
@@ -322,6 +327,7 @@ class CreateDeviceTypeForm extends Component {
 							<Divider style={{ margin: "16px" }} />
 							<ItemGrid xs={12}>
 								<TextF
+									id={'org'}
 									value={org.name}
 									onClick={() => this.setState({ openOrg: true })}
 									readonly
