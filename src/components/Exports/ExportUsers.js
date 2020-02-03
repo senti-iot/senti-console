@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+/* eslint-disable indent */
+/* eslint-disable no-undef */
+import React, { useState } from 'react'
 import { Dialog, Collapse, Radio, Button, DialogTitle, DialogActions, Typography, DialogContent } from '@material-ui/core'
 import { ItemG, Info, Caption } from 'components'
 import moment from 'moment'
@@ -6,18 +8,21 @@ import zipcelx from 'zipcelx'
 import _ from 'lodash'
 import DMultiSelect from 'components/CustomInput/DMultiSelect';
 import { CSVLink } from 'react-csv'
+import { useLocalization } from 'hooks'
 
-class ExportUsers extends Component {
-	constructor(props) {
-		super(props)
+const ExportUsers = props => {
+	const t = useLocalization()
+	const [custom, setCustom] = useState(false)
+	const [customHeaders, setCustomHeaders] = useState([])
+	// constructor(props) {
+	// 	super(props)
 
-		this.state = {
-			custom: false,
-			customHeaders: [],
-		}
-	}
-	defaultUserHeaders = () => {
-		const { t } = this.props
+	// 	this.state = {
+	// 		custom: false,
+	// 		customHeaders: [],
+	// 	}
+	// }
+	const defaultUserHeaders = () => {
 		return [
 			// { id: 0, label: t('users.fields.id'), key: 'id' },
 			{ id: 0, label: t('users.fields.name'), keys: ['firstName', 'lastName'] },
@@ -29,21 +34,20 @@ class ExportUsers extends Component {
 			{ id: 6, label: t('users.fields.lastName'), key: 'lastName' },
 		]
 	}
-	exportToJson = () => {
-		var data = this.props.data
+	const exportToJson = () => {
+		var data = props.data
 		var json = JSON.stringify(data);
 		var blob = new Blob([json], { type: "application/json" });
 		var url = URL.createObjectURL(blob);
 		return url
 	}
-	exportToCSV = () => {
-		const { data } = this.props
-		const { custom, customHeaders } = this.state
+	const exportToCSV = () => {
+		const { data } = props
 		let result = []
 		if (!custom) {
 			data.forEach(u => {
 				let obj = {}
-				this.defaultUserHeaders().forEach(h => {
+				defaultUserHeaders().forEach(h => {
 					obj[h.label] = h.keys ? h.keys.map(k => _.get(u, k)).join(' ') : _.get(u, h.key)
 				})
 				result.push(obj)
@@ -54,7 +58,7 @@ class ExportUsers extends Component {
 			data.forEach(u => {
 				let obj = {}
 				customHeaders.forEach(ch => {
-					let h = this.defaultUserHeaders()[this.defaultUserHeaders().findIndex(h => h.id === ch)]
+					let h = defaultUserHeaders()[defaultUserHeaders().findIndex(h => h.id === ch)]
 					obj[h.label] = h.keys ? h.keys.map(k => _.get(u, k)).join(' ') : _.get(u, h.key)
 				})
 				result.push(obj)
@@ -62,19 +66,18 @@ class ExportUsers extends Component {
 			return result
 		}
 	}
-	exportToXLSX = () => {
+	const exportToXLSX = () => {
 		// var data = this.props.data
-		const { data } = this.props
-		const { custom, customHeaders } = this.state
+		const { data } = props
 		if (!custom) {
 			let config = {
 				filename: `senti.cloud-users-${moment().format('DD-MM-YYYY')}`,
 				sheet: {
 					data: [
-						this.defaultUserHeaders().map(d => ({
+						defaultUserHeaders().map(d => ({
 							type: 'string', value: d.label
 						}))
-						, ...data.map(d => this.defaultUserHeaders().map(h => {
+						, ...data.map(d => defaultUserHeaders().map(h => {
 
 							if (h.keys) {
 								let array = []
@@ -96,13 +99,13 @@ class ExportUsers extends Component {
 				sheet: {
 					data: [
 						customHeaders.map(d => {
-							let header = this.defaultUserHeaders()[this.defaultUserHeaders().findIndex(f => f.id === d)]
+							let header = defaultUserHeaders()[defaultUserHeaders().findIndex(f => f.id === d)]
 							return ({
 								type: 'string', value: header.label
 							})
 						})
 						, ...data.map(d => customHeaders.map(h => {
-							let header = this.defaultUserHeaders()[this.defaultUserHeaders().findIndex(f => f.id === h)]
+							let header = defaultUserHeaders()[defaultUserHeaders().findIndex(f => f.id === h)]
 
 							if (header.keys) {
 								let array = []
@@ -119,107 +122,105 @@ class ExportUsers extends Component {
 			zipcelx(config)
 		}
 	}
-	changeHeader = e => {
-		this.setState({ custom: parseInt(e.target.value, 10) })
+	const changeHeader = e => {
+		setCustom(parseInt(e.target.value, 10))
+		// this.setState({ custom: parseInt(e.target.value, 10) })
 	}
-	handleChangeMultiple = event => {
+	const handleChangeMultiple = event => {
 		const options = event.target.value;
-
-		this.setState({
-			customHeaders: options,
-		});
+		setCustomHeaders(options)
+		// this.setState({
+		// 	customHeaders: options,
+		// });
 	};
-	render() {
-		const { open, handleClose, t } = this.props
-		const { custom, customHeaders } = this.state
-		return (
-			<Dialog
-				open={open}
-				onClose={handleClose}
-			>
-				<DialogTitle disableTypography>
-					<Typography variant={'h6'} style={{ color: 'inherit' }}>
-						{t('menus.exportUsers')}
-					</Typography>
+	const { open, handleClose } = props
+	return (
+		<Dialog
+			open={open}
+			onClose={handleClose}
+		>
+			<DialogTitle disableTypography>
+				<Typography variant={'h6'} style={{ color: 'inherit' }}>
+					{t('menus.exportUsers')}
+				</Typography>
 
-				</DialogTitle>
+			</DialogTitle>
 
-				<DialogContent>
-					<ItemG container>
-						<ItemG xs={12} container justify={'center'}>
-							<ItemG>
-								<Radio
-									checked={Boolean(!custom)}
-									value={0}
-									onChange={this.changeHeader}
-								/>
-							</ItemG>
-							<ItemG xs container alignItems={'center'}>
-								<Info paragraph={false}>
-									{t('exports.standardColumns')}
-								</Info>
-							</ItemG>
-							<ItemG xs={12}>
-								<Collapse in={Boolean(!custom)}>
-									<div style={{ marginLeft: 48 }}>
-										<Caption>
-											{this.defaultUserHeaders().map((d, i) => i === this.defaultUserHeaders().length - 1 ? d.label : `${d.label}, `)}
-										</Caption>
-									</div>
-								</Collapse>
-							</ItemG>
+			<DialogContent>
+				<ItemG container>
+					<ItemG xs={12} container justify={'center'}>
+						<ItemG>
+							<Radio
+								checked={Boolean(!custom)}
+								value={0}
+								onChange={changeHeader}
+							/>
 						</ItemG>
-						<ItemG xs={12} container justify={'center'}>
-							<ItemG>
-								<Radio
-									checked={Boolean(custom)}
-									value={1}
-									onChange={this.changeHeader}
-								/>
-							</ItemG>
-							<ItemG xs container alignItems={'center'}>
-								<Info paragraph={false}>
-									{t('exports.customColumns')}
-								</Info>
-							</ItemG>
-							<ItemG xs={12}>
-								<Collapse in={Boolean(custom)}>
-									<div style={{ marginLeft: 48 }}>
-										<ItemG>
-											<DMultiSelect
-												label={t('exports.columns')}
-												checkbox
-												value={customHeaders}
-												onChange={this.handleChangeMultiple}
-												menuItems={this.defaultUserHeaders().map(d => ({
-													value: d.id, label: d.label
-												}))}
-											/>
-
-										</ItemG>
-									</div>
-								</Collapse>
-							</ItemG>
+						<ItemG xs container alignItems={'center'}>
+							<Info paragraph={false}>
+								{t('exports.standardColumns')}
+							</Info>
+						</ItemG>
+						<ItemG xs={12}>
+							<Collapse in={Boolean(!custom)}>
+								<div style={{ marginLeft: 48 }}>
+									<Caption>
+										{defaultUserHeaders().map((d, i) => i === defaultUserHeaders().length - 1 ? d.label : `${d.label}, `)}
+									</Caption>
+								</div>
+							</Collapse>
 						</ItemG>
 					</ItemG>
-				</DialogContent>
-				<DialogActions>
-					<ItemG container justify={'flex-end'}>
-						<Button style={{ margin: 8 }} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={this.exportToCSV()} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'outlined'}>
-							CSV
-						</Button>
-						<Button style={{ margin: 8 }} component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'outlined'}>
-							JSON
-						</Button>
-						<Button style={{ margin: 8 }} color={'primary'} variant={'outlined'} onClick={this.exportToXLSX}>
-							XLSX
-						</Button>
-					</ItemG>
-				</DialogActions>
+					<ItemG xs={12} container justify={'center'}>
+						<ItemG>
+							<Radio
+								checked={Boolean(custom)}
+								value={1}
+								onChange={changeHeader}
+							/>
+						</ItemG>
+						<ItemG xs container alignItems={'center'}>
+							<Info paragraph={false}>
+								{t('exports.customColumns')}
+							</Info>
+						</ItemG>
+						<ItemG xs={12}>
+							<Collapse in={Boolean(custom)}>
+								<div style={{ marginLeft: 48 }}>
+									<ItemG>
+										<DMultiSelect
+											label={t('exports.columns')}
+											checkbox
+											value={customHeaders}
+											onChange={handleChangeMultiple}
+											menuItems={defaultUserHeaders().map(d => ({
+												value: d.id, label: d.label
+											}))}
+										/>
 
-			</Dialog>
-		)
-	}
+									</ItemG>
+								</div>
+							</Collapse>
+						</ItemG>
+					</ItemG>
+				</ItemG>
+			</DialogContent>
+			<DialogActions>
+				<ItemG container justify={'flex-end'}>
+					<Button style={{ margin: 8 }} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={exportToCSV()} headers={CSVHeaders} component={CSVLink} color={'primary'} variant={'outlined'}>
+						CSV
+						</Button>
+					<Button style={{ margin: 8 }} component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={exportToJson()} target={'_blank'} color={'primary'} variant={'outlined'}>
+						JSON
+						</Button>
+					<Button style={{ margin: 8 }} color={'primary'} variant={'outlined'} onClick={exportToXLSX}>
+						XLSX
+						</Button>
+				</ItemG>
+			</DialogActions>
+
+		</Dialog>
+	)
 }
 
 export default ExportUsers
