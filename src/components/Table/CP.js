@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { TablePagination, withWidth } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
 import { changeCardsPerPage } from 'redux/appState';
 import { useLocalization } from 'hooks';
-
-
-// const mapStateToProps = (state) => ({
-// 	cardsPerPageOptions: state.settings.cardsPerPageOptions,
-// 	rowsPerPage: state.appState.CPP
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	changeCardsPerPage: (value) => dispatch(changeCardsPerPage(value)),
-// })
+import tpStyles from 'assets/jss/components/table/tpStyles';
+import { useWidth } from 'components/WidthProvider/Width';
 
 const CP = props => {
+	//Hooks
 	const t = useLocalization()
 	const dispatch = useDispatch()
-	const cardsPerPageOptions = useState(state => state.settings.cardsPerPageOptions)
+	const classes = tpStyles()
+	const width = useWidth()
+	//Redux
+
+	const cardsPerPageOptions = useSelector(state => state.settings.cardsPerPageOptions)
 	const rowsPerPage = useSelector(state => state.appState.CPP)
 
+	//State
+
+	//Const
+	const { count, page } = props
+
+	//Handlers
 	const handleChangeRowsPerPage = e => {
 		dispatch(changeCardsPerPage(e.target.value))
 	}
@@ -28,7 +31,6 @@ const CP = props => {
 		props.handleChangePage(e, page)
 	}
 
-	const { count, classes, page, width } = props
 	return (
 		<TablePagination
 			component='div'
@@ -53,7 +55,7 @@ const CP = props => {
 			rowsPerPageOptions={cardsPerPageOptions}
 			SelectProps={{
 				classes: {
-					select: classes.SelectIcon
+					select: classes.selectIcon
 				}
 			}}
 		/>

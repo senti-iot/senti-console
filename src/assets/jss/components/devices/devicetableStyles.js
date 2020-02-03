@@ -5,9 +5,6 @@ const devicetableStyles = theme => ({
 	noCheckbox: {
 		padding: 10
 	},
-	noRows: {
-		display: 'none'
-	},
 	blocked: {
 		color: red[500],
 		marginRight: 8
@@ -38,21 +35,6 @@ const devicetableStyles = theme => ({
 	},
 	tableCellNoWidth: {
 		width: 0
-	},
-	SelectIcon: {
-		marginLeft: 4,
-		paddingLeft: 4,
-		paddingRight: 18,
-	},
-	spaceBetween: {
-		marginRight: "auto",
-		fontSize: "0.875rem"
-	},
-	tablePaginationCaption: {
-		fontSize: "0.875rem"
-	},
-	spacer: {
-		flex: 0,
 	},
 	noMargin: {
 		whiteSpace: "pre-line",

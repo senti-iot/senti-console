@@ -1,34 +1,38 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { TablePagination, withWidth, withStyles } from '@material-ui/core'
+import { TablePagination } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
 import { changeTableRows } from 'redux/appState';
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 import cx from 'classnames'
 import { useLocalization } from 'hooks';
-
-// const mapStateToProps = (state) => ({
-// 	rowsPerPageOptions: state.settings.rowsPerPageOptions,
-// 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	handleChangeRowsPerPage: (value) => dispatch(changeTableRows(value)),
-// })
+import tpStyles from 'assets/jss/components/table/tpStyles';
+import { useWidth } from 'components/WidthProvider/Width';
 
 const TP = props => {
+	//Hooks
 	const dispatch = useDispatch()
 	const t = useLocalization()
+	const classes = tpStyles()
+	const width = useWidth()
+	//Redux
 	const rowsPerPageOptions = useSelector(state => state.settings.rowsPerPageOptions)
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
 
+	//State
+
+	//Const
+	const { count, page, disableRowsPerPage } = props
+
+
+	//Handlers
 	const handleChangeRowsPerPage = e => {
 		dispatch(changeTableRows(e.target.value))
 	}
 	const handleChangePage = (e, page) => {
 		props.handleChangePage(e, page)
 	}
-	const { count, classes, page, width, disableRowsPerPage } = props
+
+	//Classes
 	const selectClasses = cx({
 		[classes.SelectIcon]: disableRowsPerPage,
 		[classes.noRows]: disableRowsPerPage
@@ -69,4 +73,4 @@ const TP = props => {
 	)
 }
 
-export default withStyles(devicetableStyles)(withWidth()(TP))
+export default TP
