@@ -6,7 +6,7 @@ import { T, ItemG, Link } from 'components'
 // import Gravatar from 'react-gravatar'
 import { Star, StarBorder, Block, CheckCircle, DeviceHub, InputIcon } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-// import { Link } from 'react-router-dom'
+import { Link as RLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
@@ -136,7 +136,7 @@ class SensorHover extends Component {
 									<Divider />
 									<ItemG container style={{ marginTop: '8px' }}>
 										<ItemG>
-											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/sensor/${device.id}/edit`, prevURL: '/sensors' }}>
+											<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `/sensor/${device.id}/edit`, prevURL: '/sensors' }}>
 												{t('menus.edit')}
 											</Button>
 										</ItemG>
