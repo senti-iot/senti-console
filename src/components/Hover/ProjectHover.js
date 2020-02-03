@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
@@ -6,51 +6,82 @@ import ItemG from 'components/Grid/ItemG';
 import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, Business } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
+import { useSnackbar, useLocalization } from 'hooks';
 
-class ProjectHover extends Component {
-	componentDidUpdate = () => {
-		if (this.props.saved === true) {
-			const { project } = this.props
-			if (this.props.isFav({ id: project.id, type: 'project' })) {
-				this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
-				this.props.finishedSaving()
+// const mapStateToProps = (state) => ({
+// 	saved: state.favorites.saved
+// })
+
+// const mapDispatchToProps = dispatch => ({
+// 	isFav: (favObj) => dispatch(isFav(favObj)),
+// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
+// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+// 	finishedSaving: () => dispatch(finishedSaving())
+// })
+
+const ProjectHover = props => {
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const saved = useSelector(state => state.favorites.saved)
+
+	useEffect(() => {
+		if (saved === true) {
+			const { project } = props
+			if (dispatch(isFav({ id: project.id, type: 'project' }))) {
+				s('snackbars.favorite.saved', { name: project.title, type: t('favorites.types.project') })
+				dispatch(finishedSaving())
 			}
-			if (!this.props.isFav({ id: project.id, type: 'project' })) {
-				this.props.s('snackbars.favorite.removed', { name: project.title, type: this.props.t('favorites.types.project') })
-				this.props.finishedSaving()
+			if (!dispatch(isFav({ id: project.id, type: 'project' }))) {
+				s('snackbars.favorite.removed', { name: project.title, type: t('favorites.types.project') })
+				dispatch(finishedSaving())
 			}
 		}
-	}
-	addToFav = () => {
-		const { project } = this.props
+	}, [dispatch, props, s, saved, t])
+	// componentDidUpdate = () => {
+	// 	if (this.props.saved === true) {
+	// 		const { project } = this.props
+	// 		if (this.props.isFav({ id: project.id, type: 'project' })) {
+	// 			this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
+	// 			this.props.finishedSaving()
+	// 		}
+	// 		if (!this.props.isFav({ id: project.id, type: 'project' })) {
+	// 			this.props.s('snackbars.favorite.removed', { name: project.title, type: this.props.t('favorites.types.project') })
+	// 			this.props.finishedSaving()
+	// 		}
+	// 	}
+	// }
+	const addToFavorites = () => {
+		const { project } = props
 		let favObj = {
 			id: project.id,
 			name: project.title,
 			type: 'project',
 			path: `/project/${project.id}`
 		}
-		this.props.addToFav(favObj)
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = () => {
-		const { project } = this.props
+	const removeFromFavorites = () => {
+		const { project } = props
 		let favObj = {
 			id: project.id,
 			name: project.title,
 			type: 'project',
 			path: `/project/${project.id}`
 		}
-		this.props.removeFromFav(favObj)
+		dispatch(removeFromFav(favObj))
 
 	}
-	handleClose = () => {
-		this.props.handleClose()
+	const handleClose = () => {
+		props.handleClose()
 	};
-	renderIcon = (status) => {
-		const { classes } = this.props
+	// eslint-disable-next-line no-unused-vars
+	const renderIcon = (status) => {
+		const { classes } = props
 		switch (status) {
 			case 1:
 				return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
@@ -59,92 +90,81 @@ class ProjectHover extends Component {
 			case 0:
 				return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
 			case null:
-				return <SignalWifi2Bar className={classes.smallIcon}/>
+				return <SignalWifi2Bar className={classes.smallIcon} />
 			default:
 				break;
 		}
 	}
-	render() {
-		const { t, anchorEl, classes, project, isFav } = this.props
-		return (
-			<Popper
-				style={{ zIndex: 1040 }}
-				disablePortal
-				id="simple-popover"
-				open={Boolean(anchorEl)}
-				anchorEl={anchorEl}
-				onClose={this.handleClose}
-				placement={'top-start'}
-				onMouseLeave={this.handleClose}
-				transition
-			>
-				{({ TransitionProps }) => (
-					<Fade {...TransitionProps} timeout={250}>
-						<Paper className={classes.paper}>
-							<ItemG container style={{ margin: "8px 0" }}>
-								<ItemG xs={3} container justify={'center'} alignItems={'center'}>
-									<LibraryBooks className={classes.img} />
-								</ItemG>
-								<ItemG xs={9} container justify={'center'}>
-									<ItemG xs={12}>
-										<T variant={'h6'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-											{project.title}
-										</T>
-									</ItemG>
-									<ItemG xs={12}>
-										<T className={classes.smallText} paragraph={false}>{`${project.id}`}</T>
-									</ItemG>
-								</ItemG>
+
+	const { anchorEl, classes, project } = props
+	return (
+		<Popper
+			style={{ zIndex: 1040 }}
+			disablePortal
+			id="simple-popover"
+			open={Boolean(anchorEl)}
+			anchorEl={anchorEl}
+			onClose={handleClose}
+			placement={'top-start'}
+			onMouseLeave={handleClose}
+			transition
+		>
+			{({ TransitionProps }) => (
+				<Fade {...TransitionProps} timeout={250}>
+					<Paper className={classes.paper}>
+						<ItemG container style={{ margin: "8px 0" }}>
+							<ItemG xs={3} container justify={'center'} alignItems={'center'}>
+								<LibraryBooks className={classes.img} />
 							</ItemG>
-							<ItemG xs={12} className={classes.middleContainer}>
+							<ItemG xs={9} container justify={'center'}>
 								<ItemG xs={12}>
-									<T className={classes.smallText} paragraph={false}>
-										<Business className={classes.smallIcon}/>
-										{`${project.org.name ? project.org.name : t('no.org')}`}
+									<T variant={'h6'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+										{project.title}
 									</T>
 								</ItemG>
 								<ItemG xs={12}>
-									<T className={classes.smallText}>
-										{project.description}
-									</T>
+									<T className={classes.smallText} paragraph={false}>{`${project.id}`}</T>
 								</ItemG>
 							</ItemG>
-							<Divider />
-							<ItemG container style={{ marginTop: '8px' }}>
-								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/project/${project.id}/edit`, prevURL: '/projects' }}>
-										{t('menus.edit')}
-									</Button>
-								</ItemG>
-								<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-									{/* <Tooltip placement="top" title={t('actions.visitWebsite')}>
+						</ItemG>
+						<ItemG xs={12} className={classes.middleContainer}>
+							<ItemG xs={12}>
+								<T className={classes.smallText} paragraph={false}>
+									<Business className={classes.smallIcon} />
+									{`${project.org.name ? project.org.name : t('no.org')}`}
+								</T>
+							</ItemG>
+							<ItemG xs={12}>
+								<T className={classes.smallText}>
+									{project.description}
+								</T>
+							</ItemG>
+						</ItemG>
+						<Divider />
+						<ItemG container style={{ marginTop: '8px' }}>
+							<ItemG>
+								<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/project/${project.id}/edit`, prevURL: '/projects' }}>
+									{t('menus.edit')}
+								</Button>
+							</ItemG>
+							<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
+								{/* <Tooltip placement="top" title={t('actions.visitWebsite')}>
 										<IconButton component={'a'} className={classes.smallAction} href={device.url} rel="noopener noreferrer" target="_blank">
 											<Language />
 										</IconButton>
 									</Tooltip> */}
-									<Tooltip placement="top" title={isFav({ id: project.id, type: 'project' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-										<IconButton className={classes.smallAction} onClick={isFav({ id: project.id, type: 'project' }) ? this.removeFromFav : this.addToFav}>
-											{isFav({ id: project.id, type: 'project' }) ? <Star /> : <StarBorder />}
-										</IconButton>
-									</Tooltip>
-								</ItemG>
+								<Tooltip placement="top" title={dispatch(isFav({ id: project.id, type: 'project' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+									<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: project.id, type: 'project' })) ? removeFromFavorites : addToFavorites}>
+										{dispatch(isFav({ id: project.id, type: 'project' })) ? <Star /> : <StarBorder />}
+									</IconButton>
+								</Tooltip>
 							</ItemG>
-						</Paper>
-					</Fade>
-				)}
-			</Popper>
-		)
-	}
+						</ItemG>
+					</Paper>
+				</Fade>
+			)}
+		</Popper>
+	)
 }
-const mapStateToProps = (state) => ({
-	saved: state.favorites.saved
-})
 
-const mapDispatchToProps = dispatch => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()((withLocalization()(withStyles(hoverStyles)(ProjectHover)))))
+export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(ProjectHover))))
