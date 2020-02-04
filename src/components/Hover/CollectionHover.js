@@ -6,7 +6,7 @@ import { T, ItemG, Link } from 'components'
 // import Gravatar from 'react-gravatar'
 import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage, Business } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-import { connect } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'

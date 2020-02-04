@@ -307,68 +307,67 @@ const CreateDeviceTypeForm = props => {
 		</Dialog>
 	}
 
-	render() {
-		const { t, handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
-		return (
-			<GridContainer>
-				<ItemGrid xs={12}>
-					<InfoCard
-						noHeader
-						noExpand
-						content={<ItemG>
-							{this.renderSelectFunction()}
-							<ItemGrid xs={12}>
-								<TextF
-									id={'deviceTypeName'}
-									label={t('collections.fields.name')}
-									onChange={handleChange('name')}
-									value={deviceType.name}
-								// autoFocus
-								/>
-							</ItemGrid>
-							<Divider style={{ margin: "16px" }} />
-							{this.renderMetadata()}
-							<Divider style={{ margin: "16px" }} />
-							{this.renderMetadataInbound()}
-							<Divider style={{ margin: "16px" }} />
-							<ItemGrid xs={12}>
-								<TextF
-									id={'org'}
-									value={org.name}
-									onClick={() => this.setState({ openOrg: true })}
-									readonly
-								/>
-								<AssignOrgDialog
-									t={t}
-									open={this.state.openOrg}
-									handleClose={() => this.setState({ openOrg: false })}
-									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
-								/>
-							</ItemGrid>
-							<Divider style={{ margin: "16px" }} />
-							<ItemGrid container>
-								<div className={classes.wrapper}>
-									<Button
-										variant='outlined'
-										onClick={goToDeviceTypes}
-										className={classes.redButton}
-									>
-										{t('actions.cancel')}
-									</Button>
-								</div>
-								<div className={classes.wrapper}>
-									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-										{t('actions.save')}
-									</Button>
-								</div>
-							</ItemGrid>
-						</ItemG>}
-					/>
-				</ItemGrid>
+	const { handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = props
+	return (
+		<GridContainer>
+			<ItemGrid xs={12}>
+				<InfoCard
+					noHeader
+					noExpand
+					content={<ItemG>
+						{this.renderSelectFunction()}
+						<ItemGrid xs={12}>
+							<TextF
+								id={'deviceTypeName'}
+								label={t('collections.fields.name')}
+								onChange={handleChange('name')}
+								value={deviceType.name}
+							// autoFocus
+							/>
+						</ItemGrid>
+						<Divider style={{ margin: "16px" }} />
+						{this.renderMetadata()}
+						<Divider style={{ margin: "16px" }} />
+						{this.renderMetadataInbound()}
+						<Divider style={{ margin: "16px" }} />
+						<ItemGrid xs={12}>
+							<TextF
+								id={'org'}
+								value={org.name}
+								onClick={() => this.setState({ openOrg: true })}
+								readonly
+							/>
+							<AssignOrgDialog
+								t={t}
+								open={this.state.openOrg}
+								handleClose={() => this.setState({ openOrg: false })}
+								callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
+							/>
+						</ItemGrid>
+						<Divider style={{ margin: "16px" }} />
+						<ItemGrid container>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
+									onClick={goToDeviceTypes}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
+							<div className={classes.wrapper}>
+								<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+									{t('actions.save')}
+								</Button>
+							</div>
+						</ItemGrid>
+					</ItemG>}
+				/>
+			</ItemGrid>
 
-			</GridContainer>
-		)
-	}
+		</GridContainer>
+	)
+}
 
 
-	export default withStyles(createprojectStyles)(CreateDeviceTypeForm)
+export default withStyles(createprojectStyles)(CreateDeviceTypeForm)

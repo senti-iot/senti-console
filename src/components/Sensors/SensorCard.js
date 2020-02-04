@@ -19,17 +19,17 @@ class SensorCard extends Component {
 		this.setState({ actionAnchor: event.currentTarget });
 	}
 
-	const handleOpenActionsDetails = event => {
+	handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
 		// this.setState({ actionAnchor: event.currentTarget });
 	}
 
-	const handleCloseActionsDetails = () => {
+	handleCloseActionsDetails = () => {
 		setActionAnchor(null)
 		// this.setState({ actionAnchor: null });
 	}
 
-	const renderCommunication = (val) => {
+	renderCommunication = (val) => {
 		const { classes } = props
 		switch (val) {
 			case 0:
@@ -50,57 +50,60 @@ class SensorCard extends Component {
 				break;
 		}
 	}
-	const { p, classes } = props
-return (
-	<SmallCard
-		avatar={<DeviceHub className={classes.bigIcon} />}
-		key={p.id}
-		title={p.name}
-		subheader={p.uuid}
-		img={img}
-		topAction={
-			<ItemGrid noMargin noPadding>
-				<IconButton
-					aria-label='More'
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup='true'
-					onClick={handleOpenActionsDetails}>
-					<MoreVert />
-				</IconButton>
-				<Menu
-					id='long-menu'
-					anchorEl={actionAnchor}
-					open={Boolean(actionAnchor)}
-					onClose={handleCloseActionsDetails}
-					PaperProps={{
-						style: {
-							minWidth: 200
-						}
-					}}>
-					<MenuItem onClick={() => props.history.push(`/sensor/${p.id}/edit`)}>
-						<Edit className={classes.leftIcon} />{t('menus.edit')}
-					</MenuItem>
-				</Menu>
-			</ItemGrid>
-		}
-		content={<ItemG container>
-			<ItemG xs={12}>
-				<T className={classes.smallText} paragraph={false}>
-					<InputIcon className={classes.icon} />
-					<Link to={{ pathname: `/sensor/${p.reg_id}` }}>{p.reg_name}</Link>
-				</T>
-			</ItemG>
-			<ItemG xs={12}>
-				{renderCommunication(p.communication)}
-			</ItemG>
-		</ItemG>}
-		rightActions={
-			<Button variant={'text'} color={'primary'} onClick={() => props.history.push(`/sensor/${p.id}`)}>
-				{t('menus.seeMore')}
-			</Button>
-		}
-	/>
-)
+	render() {
+		const { p, classes } = this.props
+
+		return (
+			< SmallCard
+				avatar={< DeviceHub className={classes.bigIcon} />}
+				key={p.id}
+				title={p.name}
+				subheader={p.uuid}
+				img={img}
+				topAction={
+					< ItemGrid noMargin noPadding>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={handleOpenActionsDetails}>
+							<MoreVert />
+						</IconButton>
+						<Menu
+							id='long-menu'
+							anchorEl={actionAnchor}
+							open={Boolean(actionAnchor)}
+							onClose={handleCloseActionsDetails}
+							PaperProps={{
+								style: {
+									minWidth: 200
+								}
+							}}>
+							<MenuItem onClick={() => props.history.push(`/sensor/${p.id}/edit`)}>
+								<Edit className={classes.leftIcon} />{t('menus.edit')}
+							</MenuItem>
+						</Menu>
+					</ItemGrid >
+				}
+				content={< ItemG container >
+					<ItemG xs={12}>
+						<T className={classes.smallText} paragraph={false}>
+							<InputIcon className={classes.icon} />
+							<Link to={{ pathname: `/sensor/${p.reg_id}` }}>{p.reg_name}</Link>
+						</T>
+					</ItemG>
+					<ItemG xs={12}>
+						{renderCommunication(p.communication)}
+					</ItemG>
+				</ItemG >}
+				rightActions={
+					< Button variant={'text'} color={'primary'} onClick={() => props.history.push(`/sensor/${p.id}`)}>
+						{t('menus.seeMore')}
+					</Button >
+				}
+			/>
+		)
+	}
 }
 
 export default withRouter(withStyles(regularCardStyle)(SensorCard))
