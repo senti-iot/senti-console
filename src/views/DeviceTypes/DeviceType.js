@@ -15,7 +15,8 @@ import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
 import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
 import { deleteDeviceType } from 'variables/dataDeviceTypes';
-import { useLocalization, useSnackbar } from 'hooks';
+import { useLocalization, useSnackbar, useHistory } from 'hooks';
+import { useRouteMatch } from 'react-router-dom';
 
 const DeviceType = props => {
 	//Hooks
@@ -23,7 +24,8 @@ const DeviceType = props => {
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const s = useSnackbar().s
-
+	const history = useHistory()
+	const match = useRouteMatch()
 	//Redux
 
 	const accessLevel = useSelector(store => store.settings.user.privileges)
@@ -95,11 +97,7 @@ const DeviceType = props => {
 		}
 	}, [deviceType, props, tabs])
 
-<<<<<<< HEAD
-	const addToFavorite = () => {
-=======
 	const addToFavFunc = () => {
->>>>>>> 14bc69624e1552b0a6371abab49cb65e6a20f461
 		let favObj = {
 			id: deviceType.id,
 			name: deviceType.name,
@@ -109,11 +107,7 @@ const DeviceType = props => {
 		dispatch(addToFav(favObj))
 	}
 
-<<<<<<< HEAD
-	const removeFromFavorite = () => {
-=======
 	const removeFromFavFunc = () => {
->>>>>>> 14bc69624e1552b0a6371abab49cb65e6a20f461
 		let favObj = {
 			id: deviceType.id,
 			name: deviceType.name,

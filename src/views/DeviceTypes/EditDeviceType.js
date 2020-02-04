@@ -6,7 +6,7 @@ import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 import { useLocalization, useHistory, useSnackbar, useEventListener } from 'hooks';
-import { useCallback } from 'react';
+// import { useCallback } from 'react';
 
 
 const EditDeviceType = props => {

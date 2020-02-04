@@ -1,11 +1,9 @@
-
-
-import React, { PureComponent } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, Tooltip, /*  Grow */ } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
 import { NavHashLink } from 'react-router-hash-link';
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { transition } from 'assets/jss/material-dashboard-react';
 import cx from 'classnames'
 // import inView from 'in-view'
@@ -82,98 +80,107 @@ const styles = theme => ({
 	}
 })
 
+// const mapStateToProps = (state) => ({
+// 	smallMenu: state.appState.smallMenu,
+// 	drawer: state.settings.drawer
+// })
 
-class Toolbar extends PureComponent {
-	constructor(props) {
-		super(props)
+// @Andrei
+// please check if my useEffect deps are correct
+const Toolbar = React.memo(props => {
+	const smallMenu = useSelector(state => state.appState.smallMenu)
+	const drawer = useSelector(state => state.settings.drawer)
 
-		this.state = {
-			route: props.route ? props.route : 0,
-			tooltip: -1
-		}
-	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
+	const [route, setRoute] = useState(props.route ? props.route : 0)
+	const [tooltip, setTooltip] = useState(-1)
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		route: props.route ? props.route : 0,
+	// 		tooltip: -1
+	// 	}
+	// }
+	// componentWillUnmount = () => {
+	// 	this._isMounted = 0
+	// }
+
+	// componentDidMount = () => {
+
+	// 	this._isMounted = 1
+	// }
+	useEffect(() => {
+		setRoute(props.route)
+		setTooltip(-1)
+	}, [props.route])
+	// componentDidUpdate = (prevProps) => {
+	// 	if (this.props.route !== prevProps.route && this.props.route !== undefined) {
+	// 		this.setState({ route: this.props.route, tooltip: -1 })
+	// 	}
+	// }
+	const handleTabsChange = (e, value) => {
+		setRoute(value)
+		// this.setState({ route: value })
 	}
 
-	componentDidMount = () => {
-
-		this._isMounted = 1
-	}
-	componentDidUpdate = (prevProps) => {
-		if (this.props.route !== prevProps.route && this.props.route !== undefined) {
-			this.setState({ route: this.props.route, tooltip: -1 })
-		}
-	}
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-
-	handleScroll = el => {
+	const handleScroll = el => {
 		let topOfElement = el.offsetTop - 130
 		window.scroll({ top: topOfElement, behavior: 'smooth' })
 	}
-	handleTooltipClose = () => {
-		this.setState({ tooltip: false });
+	const handleTooltipClose = () => {
+		setTooltip(false)
+		// this.setState({ tooltip: false });
 	};
 
-	handleTooltipOpen = (id) => {
-		this.setState({ tooltip: id });
+	// eslint-disable-next-line no-unused-vars
+	const handleTooltipOpen = (id) => {
+		setTooltip(id)
+		// this.setState({ tooltip: id });
 	};
 
-	render() {
-		const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ smallMenu, drawer } = this.props
-		return (
-			dontShow ? null :
-				<div style={{ height: 48 }}>
-					<AppBar classes={{
-						root: cx({
-							[classes.appBar]: true,
-							[classes.appBarDrawerPermClosed]: !smallMenu && drawer === 'permanent',
-							[classes.appBarDrawerPersClosed]: !smallMenu && drawer === 'persistent',
-							[classes.appBarDrawerOpen]: smallMenu,
-						})
-					}}>
-						{tabs ? <Tabs
-							id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow, indicator: classes.indicator }}>
-							{tabs ? tabs.map((t, i) => {
-								return <Tab
-									key={i}
-									onMouseEnter={e => this.setState({ tooltip: t.id })}
-									onMouseLeave={() => this.setState({ tooltip: -1 })}
-									component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={this.handleScroll} /* style={{ color: '#fff' }} */ />)}
-									value={t.id}
-									smooth
-									onClick={this.handleTooltipClose}
-									classes={{ root: classes.tab }}
-									label={<Tooltip open={this.state.tooltip === t.id ? true : false}
-										disableFocusListener
-										title={t.title}
-										interactive
-										enterDelay={500}
-										leaveDelay={0}
-									><div>{t.label}</div></Tooltip>}
-									to={`${t.url}`} />
+
+	const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ } = props
+	return (
+		dontShow ? null :
+			<div style={{ height: 48 }}>
+				<AppBar classes={{
+					root: cx({
+						[classes.appBar]: true,
+						[classes.appBarDrawerPermClosed]: !smallMenu && drawer === 'permanent',
+						[classes.appBarDrawerPersClosed]: !smallMenu && drawer === 'persistent',
+						[classes.appBarDrawerOpen]: smallMenu,
+					})
+				}}>
+					{tabs ? <Tabs
+						id={'tabs'} value={route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow, indicator: classes.indicator }}>
+						{tabs ? tabs.map((t, i) => {
+							return <Tab
+								key={i}
+								onMouseEnter={e => setTooltip(t.id)}
+								onMouseLeave={() => setTooltip(-1)}
+								component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={handleScroll} /* style={{ color: '#fff' }} */ />)}
+								value={t.id}
+								smooth
+								onClick={handleTooltipClose}
+								classes={{ root: classes.tab }}
+								label={<Tooltip open={tooltip === t.id ? true : false}
+									disableFocusListener
+									title={t.title}
+									interactive
+									enterDelay={500}
+									leaveDelay={0}
+								><div>{t.label}</div></Tooltip>}
+								to={`${t.url}`} />
 
 
-							}) : null}
-						</Tabs> : null}
-						{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
-							{content}
-						</ToolBar> : null}
-					</AppBar>
-				</div>
-
-		)
-	}
-}
-const mapStateToProps = (state) => ({
-	smallMenu: state.appState.smallMenu,
-	drawer: state.settings.drawer
+						}) : null}
+					</Tabs> : null}
+					{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
+						{content}
+					</ToolBar> : null}
+				</AppBar>
+			</div>
+	)
 })
 
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withWidth()(withStyles(styles)(Toolbar)))
+export default withWidth()(withStyles(styles)(Toolbar))

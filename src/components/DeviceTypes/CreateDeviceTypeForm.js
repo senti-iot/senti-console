@@ -12,7 +12,7 @@ import { useLocalization } from 'hooks'
 const CreateDeviceTypeForm = props => {
 	const t = useLocalization()
 	const [filters, setFilters] = useState({ keyword: '' })
-	const [openOrg, setOpenOrg] = useState(false)
+	// const [openOrg, setOpenOrg] = useState(false)
 	// constructor(props) {
 	// 	super(props)
 
@@ -315,7 +315,7 @@ const CreateDeviceTypeForm = props => {
 					noHeader
 					noExpand
 					content={<ItemG>
-						{this.renderSelectFunction()}
+						{renderSelectFunction()}
 						<ItemGrid xs={12}>
 							<TextF
 								id={'deviceTypeName'}
@@ -326,9 +326,9 @@ const CreateDeviceTypeForm = props => {
 							/>
 						</ItemGrid>
 						<Divider style={{ margin: "16px" }} />
-						{this.renderMetadata()}
+						{renderMetadata()}
 						<Divider style={{ margin: "16px" }} />
-						{this.renderMetadataInbound()}
+						{renderMetadataInbound()}
 						<Divider style={{ margin: "16px" }} />
 						<ItemGrid xs={12}>
 							<TextF
