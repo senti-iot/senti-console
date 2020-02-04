@@ -7,7 +7,7 @@ import { T, ItemG, Link } from 'components'
 import { Star, StarBorder, Block, CheckCircle, DeviceHub, InputIcon } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link as RLink } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
