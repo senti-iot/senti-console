@@ -383,7 +383,7 @@ export const setLayout = (l) => {
 	return (dispatch, getState) => {
 		let graphs = []
 		// let g = {}
-		graphs = getState().dsSystem.cGraphs
+		graphs = [...getState().dsSystem.cGraphs]
 		graphs.forEach(g => {
 			let grid = l[l.findIndex(r => r.i === g.id)]
 			g.grid = grid

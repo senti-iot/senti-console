@@ -179,7 +179,7 @@ export const getWhiteLabel = async (host) => {
 	return res
 }
 export const servicesAPI = create({
-	baseURL: 'https://dev.services.senti.cloud/databroker',
+	baseURL: 'https://services.senti.cloud/databroker',
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -189,7 +189,7 @@ export const servicesAPI = create({
 })
 
 export const cloudAPI = create({
-	baseURL: 'https://dev.services.senti.cloud/functions',
+	baseURL: 'https://services.senti.cloud/functions',
 	// baseURL: 'http://localhost:3011',
 	timeout: 30000,
 	headers: {
@@ -200,7 +200,7 @@ export const cloudAPI = create({
 })
 
 export const externalAPI = create({
-	baseURL: 'https://dev.services.senti.cloud/api',
+	baseURL: 'https://services.senti.cloud/api',
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),

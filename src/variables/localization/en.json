@@ -594,6 +594,10 @@
 			"deviceToCollection": "Assign Device to Data Collection",
 			"deviceToOrg": "Assign Device to Organisation"
 		},
+		"select": {
+			"devices": "Select devices",
+			"selectedDevices": " %{count} selected devices"
+		},
 		"calibrate": "Calibrate",
 		"changePassword": "Change Password",
 		"charts": {
@@ -1111,6 +1115,8 @@
 		"selected": "selected"
 	},
 	"tabs": {
+		"metadata": "Metadata",
+		"cloudfunctions": "Cloud Functions",
 		"activeDevice": "Active Device",
 		"code": "Source Code",
 		"collections": "Data Collections",

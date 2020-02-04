@@ -178,7 +178,6 @@ class Tokens extends Component {
 	}
 	handleDeleteToken = async () => {
 		const { token } = this.state
-		// console.log(token)
 		let r = await deleteTokens([token.id])
 		if (r) {
 			this.setState({

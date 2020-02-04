@@ -594,6 +594,10 @@
 			"deviceToCollection": "Tilknyt enhed til datasamling",
 			"deviceToOrg": "Tilknyt enhed til organisation"
 		},
+		"select": {
+			"devices": "Vælg enheder",
+			"selectedDevices": " %{count} valgte enheder"
+		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
 		"charts": {
@@ -1111,6 +1115,8 @@
 		"selected": "valgt"
 	},
 	"tabs": {
+		"metadata": "Enhedsmetadata",
+		"cloudfunctions": "Cloud Funktioner",
 		"activeDevice": "Aktiv enhed",
 		"code": "Kildekode",
 		"collections": "Datasamlinger",

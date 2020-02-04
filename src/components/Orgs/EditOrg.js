@@ -31,22 +31,22 @@ class EditOrg extends Component {
 	}
 	handleValidation = () => {
 		let errorCode = [];
-		const { name, address, city, zip, country } = this.state.org
+		const { name, /* address, city, zip, country  */ } = this.state.org
 		if (name === '') {
 			errorCode.push(0)
 		}
-		if (address === '') {
-			errorCode.push(1)
-		}
-		if (city === '') {
-			errorCode.push(2)
-		}
-		if (zip === '') {
-			errorCode.push(3)
-		}
-		if (country === '') {
-			errorCode.push(4)
-		}
+		// if (address === '') {
+		// 	errorCode.push(1)
+		// }
+		// if (city === '') {
+		// 	errorCode.push(2)
+		// }
+		// if (zip === '') {
+		// 	errorCode.push(3)
+		// }
+		// if (country === '') {
+		// 	errorCode.push(4)
+		// }
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
 		})
@@ -354,7 +354,7 @@ class EditOrg extends Component {
 									<EditOrgAutoSuggest
 										t={t}
 										country={this.state.country.label}
-										onChange={this.handleCountryChange}
+										handleChange={this.handleCountryChange}
 										suggestions={
 											Object.entries(countries.getNames(this.props.language)).map(
 												country => ({ value: country[1], label: country[1] }))
