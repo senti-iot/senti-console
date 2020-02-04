@@ -34,31 +34,31 @@ const Registry = props => {
 	const dispatch = useDispatch()
 
 	const accessLevel = useSelector(store => store.settings.user.privileges)
-	const language = useSelector(store => store.settings.language)
-	const saved = useSelector(store => store.favorites.saved)
-	const mapTheme = useSelector(store => store.settings.mapTheme)
-	const periods = useSelector(store => store.dateTime.periods)
+	// const language = useSelector(store => store.settings.language)
+	// const saved = useSelector(store => store.favorites.saved)
+	// const mapTheme = useSelector(store => store.settings.mapTheme)
+	// const periods = useSelector(store => store.dateTime.periods)
 	const registry = useSelector(store => store.data.registry)
 	const loading = useSelector(store => !store.data.gotRegistry)
 
-	const [stateRegistry, setStateRegistry] = useState(null)
-	const [activeDevice, setActiveDevice] = useState(null)
+	// const [stateRegistry, setStateRegistry] = useState(null)
+	// const [activeDevice, setActiveDevice] = useState(null)
 	// const [loading, setLoading] = useState(true) // another one coming from Redux
-	const [anchorElHardware, setAnchorElHardware] = useState(null)
-	const [openAssign, setOpenAssign] = useState(false)
-	const [openUnassignDevice, setOpenUnassignDevice] = useState(false)
-	const [openAssignOrg, setOpenAssignOrg] = useState(false)
-	const [openAssignDevice, setOpenAssignDevice] = useState(false)
+	// const [anchorElHardware, setAnchorElHardware] = useState(null)
+	// const [openAssign, setOpenAssign] = useState(false)
+	// const [openUnassignDevice, setOpenUnassignDevice] = useState(false)
+	// const [openAssignOrg, setOpenAssignOrg] = useState(false)
+	// const [openAssignDevice, setOpenAssignDevice] = useState(false)
 	const [openDelete, setOpenDelete] = useState(false)
-	const [loadingMap, setLoadingMap] = useState(true)
-	const [heatData, setHeatData] = useState(null)
+	// const [loadingMap, setLoadingMap] = useState(true)
+	// const [heatData, setHeatData] = useState(null)
 
 	const t = useLocalization()
 
 	let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
 	props.setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
 
-	const format = 'YYYY-MM-DD+HH:mm'
+	// const format = 'YYYY-MM-DD+HH:mm'
 	const tabs = () => {
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
@@ -66,10 +66,10 @@ const Registry = props => {
 		]
 	}
 
-	const reload = (msgId) => {
-		snackBarMessages(msgId)
-		getRegistry(props.match.params.id)
-	}
+	// const reload = (msgId) => {
+	// 	snackBarMessages(msgId)
+	// 	getRegistry(props.match.params.id)
+	// }
 
 	const getRegistry = async (id) => {
 		dispatch(await getRegistryLS(id))
@@ -88,7 +88,7 @@ const Registry = props => {
 			}
 		}
 		asyncFunc()
-	}, [props.match.params.id])
+	}, [dispatch, props, props.match.params.id, registry, t])
 
 	// const componentDidUpdate = async (prevProps) => {
 	// 	if (prevProps.match.params.id !== props.match.params.id)
@@ -133,6 +133,7 @@ const Registry = props => {
 			}
 		}
 		asyncFunc()
+		//eslint-disable-next-line
 	}, [])
 	// const componentDidMount = async () => {
 	// 	if (props.match) {

@@ -117,7 +117,7 @@ const TextF = (props) => {
 	)
 }
 TextF.propTypes = {
-	id: PropTypes.string.isRequired,
+	// id: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
 	onChange: PropTypes.func,
 	onClick: PropTypes.func,

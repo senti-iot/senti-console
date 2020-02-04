@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 // import CreateDeviceTypeForm from 'components/Collections/CreateDeviceTypeForm';
 import { getDeviceTypeLS, getDeviceTypes } from 'redux/data';
@@ -24,14 +24,18 @@ import { useLocalization } from 'hooks';
 // })
 
 const CreateDeviceType = props => {
+	//Hooks
 	const dispatch = useDispatch()
+	const t = useLocalization()
 
+	//Redux
 	const accessLevel = useSelector(store => store.settings.user.privileges)
 	const orgId = useSelector(store => store.settings.user.org.id)
 	const cloudfunctions = useSelector(store => store.data.functions)
 	const devicetype = useSelector(store => store.data.deviceType)
 	const orgs = useSelector(store => store.data.orgs)
 
+	//State
 	const [loading, setLoading] = useState(true)
 	const [openCF, setOpenCF] = useState({ open: false, where: null })
 	const [deviceType, setDeviceType] = useState(null)
@@ -41,8 +45,11 @@ const CreateDeviceType = props => {
 	const [sensorMetadata, setSensorMetadata] = useState(null)
 	const [select, setSelect] = useState(null)
 
-	const t = useLocalization()
-	const id = props.match.params.id
+	//Const
+	const { setTabs, setBC, location, setHeader, match } = props
+	const id = match.params.id
+
+	// const id = props.match.params.id
 	// constructor(props) {
 	// 	super(props)
 
@@ -58,15 +65,23 @@ const CreateDeviceType = props => {
 	// 		org: null
 	// 	}
 	// 	this.id = props.match.params.id
-	// 	// let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
 
 	// }
 
-	props.setBC('createdevicetype')
-	props.setTabs({
-		id: 'createDT',
-		tabs: []
-	})
+	useEffect(() => {
+		if (devicetype) {
+			let prevURL = location.prevURL ? location.prevURL : '/devicetypes/list'
+
+			setHeader('menus.edits.devicetype', true, prevURL, 'manage.devicetypes')
+
+			setBC('createdevicetype')
+			setTabs({
+				id: 'createDT',
+				tabs: []
+			})
+		}
+	}, [devicetype, location.prevURL, setBC, setHeader, setTabs])
+
 
 	const keyHandler = (e) => {
 		if (e.key === 'Escape') {
@@ -74,20 +89,24 @@ const CreateDeviceType = props => {
 			// goToRegistries()
 		}
 	}
-	const getData = async () => {
-		dispatch(await getDeviceTypeLS(id))
-	}
+	const getData = useCallback(async () => {
+		await dispatch(await getDeviceTypeLS(id))
+	}, [dispatch, id])
 
 	useEffect(() => {
-		setDeviceType(devicetype)
-		setSensorMetadata({
-			metadata: devicetype.metadata ? Object.keys(devicetype.metadata).map(m => ({ key: m, value: devicetype.metadata[m] })) : [],
-			outbound: devicetype.outbound ? devicetype.outbound : [],
-			inbound: devicetype.inbound ? devicetype.inbound : []
-		})
-		setOrg(orgs[orgs.findIndex(o => o.id === devicetype.orgId)])
-		setLoading(false)
-	}, [deviceType, devicetype])
+		if (devicetype && orgs && orgs.length > 0) {
+			console.log(devicetype)
+			setDeviceType(devicetype)
+			setSensorMetadata({
+				metadata: devicetype.metadata ? Object.keys(devicetype.metadata).map(m => ({ key: m, value: devicetype.metadata[m] })) : [],
+				outbound: devicetype.outbound ? devicetype.outbound : [],
+				inbound: devicetype.inbound ? devicetype.inbound : []
+			})
+			console.log(orgs)
+			setOrg(orgs[orgs.findIndex(o => o.id === devicetype.orgId)])
+			setLoading(false)
+		}
+	}, [devicetype, orgs])
 
 	// const componentDidUpdate = (prevProps, prevState) => {
 	// 	const { location, setHeader, setBC, devicetype, orgs } = props
@@ -110,20 +129,21 @@ const CreateDeviceType = props => {
 	// 	org: orgs[orgs.findIndex(o => o.id === devicetype.orgId)],
 	// 	loading: false
 	// })
-	const { location, setHeader, setBC } = props
 
-	let prevURL = location.prevURL ? location.prevURL : `/devicetype/${id}`
-	setHeader('menus.edits.devicetype', true, prevURL, 'manage.devicetypes')
-	setBC('editdevicetype', devicetype.name, devicetype.id)
+	// let prevURL = location.prevURL ? location.prevURL : `/devicetype/${id}`
+	// setBC('editdevicetype', devicetype.name, devicetype.id)
 
-	useEffect(() => {
-		getData()
-		window.addEventListener('keydown', keyHandler, false)
+
+	//TODO
+	/* 		window.addEventListener('keydown', keyHandler, false)
 
 		return () => {
 			window.removeEventListener('keydown', keyHandler, false)
-		}
-	}, [])
+		} */
+	useEffect(() => {
+		getData()
+
+	}, [getData])
 	// const componentDidMount = async () => {
 	// 	getData()
 	// 	window.addEventListener('keydown', keyHandler, false)

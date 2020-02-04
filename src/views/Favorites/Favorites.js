@@ -40,7 +40,7 @@ class Favorites extends Component {
 			{ label: t('menus.favorites.remove'), icon: StarBorder, func: this.removeFromFavs }
 		]
 	}
-	removeFromFavs = () => { 
+	removeFromFavs = () => {
 		const { selected } = this.state
 		const { favorites } = this.props
 		selected.forEach(f => {
@@ -49,7 +49,7 @@ class Favorites extends Component {
 		})
 		this.setState({ anchorElMenu: null })
 	}
-	favoritesHeaders = () => { 
+	favoritesHeaders = () => {
 		const { t } = this.props
 		return [
 			{ id: 'type', label: '' },
@@ -60,14 +60,15 @@ class Favorites extends Component {
 	tabs = () => {
 		return [{ id: 0, title: this.props.t('tooltips.listView'), label: <ViewList />, url: `${this.props.match.path}/list` }]
 	}
-	dTypes = () => { 
+	dTypes = () => {
 		const { t } = this.props
 		return [
-			{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks/> },
-			{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage/> },
-			{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub/> },
-			{ value: 'user', label: t('favorites.types.user'), icon: <Person/> },
-			{ value: 'org', label: t('favorites.types.org'), icon: <Business/> },
+			{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks /> },
+			{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage /> },
+			{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub /> },
+			{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
+			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
+			{ value: 'registry', label: t('favorites.types.registry'), icon: <DataUsage /> }
 		]
 	}
 	ft = () => {

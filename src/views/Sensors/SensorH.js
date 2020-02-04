@@ -1,15 +1,12 @@
-import { withStyles, Fade } from "@material-ui/core"
-import registryStyles from "assets/jss/views/deviceStyles"
+import { Fade } from "@material-ui/core"
 import {
 	CircularLoader,
 	GridContainer,
 	ItemGrid,
 	DeleteDialog
 } from "components"
-import React, { Component, Fragment, useState, useEffect } from "react"
-import { connect, useDispatch, useSelector } from "react-redux"
-import { getWeather } from "variables/dataDevices"
-import moment from "moment"
+import React, { Fragment, useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { DataUsage, InsertChart, Wifi } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
@@ -23,7 +20,7 @@ import { deleteSensor } from "variables/dataSensors"
 // import SensorData from './SensorCards/SensorData';
 import SensorChart from "views/Charts/SensorChart"
 import { useLocalization, useSnackbar } from "hooks"
-import { useRouteMatch, useHistory, useParams } from "react-router-dom"
+import { useRouteMatch, useHistory } from "react-router-dom"
 
 // const mapDispatchToProps = dispatch => ({
 // 	isFav: favObj => dispatch(isFav(favObj)),
@@ -40,37 +37,37 @@ const Sensor = props => {
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const match = useRouteMatch()
-	const params = useParams()
+	// const params = useParams()
 	const history = useHistory()
 	//Redux
 	const accessLevel = useSelector(s => s.settings.user.privileges)
-	const language = useSelector(state => state.settings.language)
+	// const language = useSelector(state => state.settings.language)
 	const saved = useSelector(state => state.favorites.saved)
-	const mapTheme = useSelector(state => state.settings.mapTheme)
+	// const mapTheme = useSelector(state => state.settings.mapTheme)
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
 	const loading = useSelector(state => !state.data.gotSensor)
 
 	//State
-	const [registry, setRegistry] = useState(null)
-	const [activeDevice, setActiveDevice] = useState(null)
+	// const [registry, setRegistry] = useState(null)
+	// const [activeDevice, setActiveDevice] = useState(null)
 	// const [loading, setLoading] = useState(true)
-	const [anchorElHardware, setanchorElHardware] = useState(null)
-	const [openAssign, setopenAssign] = useState(false)
+	// const [anchorElHardware, setanchorElHardware] = useState(null)
+	// const [openAssign, setopenAssign] = useState(false)
 	const [openDelete, setopenDelete] = useState(false)
-	const [loadingMap, setloadingMap] = useState(true)
-	const [heatData, setheatData] = useState(null)
-	const [value, setvalue] = useState(0)
-	const [weather, setWeather] = useState(null) // added
+	// const [loadingMap, setloadingMap] = useState(true)
+	// const [heatData, setheatData] = useState(null)
+	// const [value, setvalue] = useState(0)
+	// const [weather, setWeather] = useState(null) // added
 	const [sensorMessages, setSensorMessages] = useState(null) // added
-	const [assignDevice, setAssignDevice] = useState(false) // added
-	const [assignProject, setAssignProject] = useState(false) // added
-	const [unassignDevice, setUnassignDevice] = useState(false) // added
+	// const [assignDevice, setAssignDevice] = useState(false) // added
+	// const [assignProject, setAssignProject] = useState(false) // added
+	// const [unassignDevice, setUnassignDevice] = useState(false) // added
 	//Const
 
 	/* 	constructor(props) {
 		  super(props)
-  
+
 		  this.state = {
 			  registry: null,
 			  activeDevice: null,
@@ -88,9 +85,8 @@ const Sensor = props => {
 		  props.setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 	  } */
 
-	const format = "YYYY-MM-DD+HH:mm"
+	// const format = "YYYY-MM-DD+HH:mm"
 	const tabs = () => {
-		const { t } = props
 		return [
 			{
 				id: 0,
@@ -117,10 +113,10 @@ const Sensor = props => {
 		]
 	}
 
-	const reload = msgId => {
-		snackBarMessages(msgId)
-		getSensor(props.match.params.id)
-	}
+	// const reload = msgId => {
+	// 	snackBarMessages(msgId)
+	// 	getSensor(props.match.params.id)
+	// }
 	const getSensor = async id => {
 		// const { getSensor } = props
 		await dispatch(await getSensorLS(id))
@@ -183,6 +179,7 @@ const Sensor = props => {
 		return () => {
 			dispatch(unassignSensor())
 		}
+		//eslint-disable-next-line
 	}, [])
 
 	const isFavorite = (favObj) => dispatch(isFav(favObj))
@@ -278,8 +275,8 @@ const Sensor = props => {
 			props.history.push("/sensors/list")
 		})
 	}
-	const handleOpenAssignDevice = () => setopenAssign(true)
-	const handleOpenAssignProject = () => setAssignProject(true)
+	// const handleOpenAssignDevice = () => setopenAssign(true)
+	// const handleOpenAssignProject = () => setAssignProject(true)
 
 	const renderDeleteDialog = () => {
 		const { t } = props
@@ -313,7 +310,7 @@ const Sensor = props => {
 								history={history}
 								match={match}
 								handleOpenDeleteDialog={handleOpenDeleteDialog}
-								handleOpenAssignDevice={handleOpenAssignDevice}
+								// handleOpenAssignDevice={handleOpenAssignDevice}
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
@@ -339,10 +336,7 @@ const Sensor = props => {
 												dataKey={k.key}
 												title={k.key}
 												cfId={k.nId}
-												color={"teal"}
-												// gId={k}
-												// dId={d.id}
-												// color={d.color}
+												chartColor={"teal"}
 												single={true}
 												t={t}
 											/>
@@ -395,31 +389,29 @@ const Sensor = props => {
 						{renderDeleteDialog()}
 					</GridContainer>
 				</Fade>
-			) : (
-					renderLoader()
-				)}
+			) : (renderLoader())}
 		</Fragment>
 	)
 }
 
-const mapStateToProps = state => ({
-	accessLevel: state.settings.user.privileges,
-	language: state.settings.language,
-	saved: state.favorites.saved,
-	mapTheme: state.settings.mapTheme,
-	periods: state.dateTime.periods,
-	sensor: state.data.sensor,
-	loading: !state.data.gotSensor
-})
+// const mapStateToProps = state => ({
+// 	accessLevel: state.settings.user.privileges,
+// 	language: state.settings.language,
+// 	saved: state.favorites.saved,
+// 	mapTheme: state.settings.mapTheme,
+// 	periods: state.dateTime.periods,
+// 	sensor: state.data.sensor,
+// 	loading: !state.data.gotSensor
+// })
 
-const mapDispatchToProps = dispatch => ({
-	isFav: favObj => dispatch(isFav(favObj)),
-	addToFav: favObj => dispatch(addToFav(favObj)),
-	removeFromFav: favObj => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getSensor: async id => dispatch(await getSensorLS(id)),
-	unassignSensor: () => dispatch(unassignSensor())
-})
+// const mapDispatchToProps = dispatch => ({
+// 	isFav: favObj => dispatch(isFav(favObj)),
+// 	addToFav: favObj => dispatch(addToFav(favObj)),
+// 	removeFromFav: favObj => dispatch(removeFromFav(favObj)),
+// 	finishedSaving: () => dispatch(finishedSaving()),
+// 	getSensor: async id => dispatch(await getSensorLS(id)),
+// 	unassignSensor: () => dispatch(unassignSensor())
+// })
 
 // export default connect(
 // 	mapStateToProps,
