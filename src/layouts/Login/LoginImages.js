@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { /* ItemG, */ T } from 'components';
 import loginImages from 'variables/loginImages'
 import { Button, withStyles } from '@material-ui/core';
@@ -6,6 +6,7 @@ import { sideBarColor, /* primaryColor */ } from 'assets/jss/material-dashboard-
 // import ImgDevices from 'assets/img/devices.png'
 import ImgTexture from 'assets/img/texture_inverted2.png'
 import sentiDots from 'assets/img/senti_dots.svg'
+import { useLocalization } from 'hooks'
 
 const styles = theme => ({
 	container: {
@@ -58,22 +59,28 @@ const styles = theme => ({
 	}
 })
 
-class LoginImages extends Component {
-	constructor(props) {
-		super(props)
+// @Andrei
+const LoginImages = props => {
+	// constructor(props) {
+	// 	super(props)
 
-		this.state = {
-			number: this.getRndInteger()
-		}
-	}
+	// 	this.state = {
+	// 		number: this.getRndInteger()
+	// 	}
+	// }
 
-	getRndInteger = (min, max) => {
+	const getRndInteger = (min, max) => {
 		min = 0
 		max = loginImages.length
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
-	generateString = (number) => {
-		const { t } = this.props
+
+	const t = useLocalization()
+	const [number, /* setNumber */] = useState(getRndInteger())
+
+	// eslint-disable-next-line no-unused-vars
+	const generateString = (number) => {
+		// const { t } = this.props
 		let string = t(`login.cards.${number}`)
 		var rx = />(.*?)</g
 		let arr = []
@@ -101,31 +108,30 @@ class LoginImages extends Component {
 		}
 		return arr
 	}
-	render() {
-		const { t, classes } = this.props
-		const { number } = this.state
-		return (
-			<div className={classes.container}>
-				<div className={classes.contentWrapper}>
-					{/* {t('markdown.test', { type: 'markdown' })} */}
-					<T reversed variant={'h5'} className={classes.message}>
-						{t(`login.cards.${number}`, { type: 'markdown' })}
-						{/* {this.generateString(number).map((a, i) => <span key={i}>{a}</span>)} */}
-					</T>
-					<Button color='primary' variant={'contained'} component={'a'} target={'_blank'} href={"https://senti.io"} className={classes.button}>
-						<span className={classes.overcomplicatedButtonTextLight}>
-							{t('actions.learn')}
-						</span>
-						<span className={classes.overcomplicatedButtonTextRegular}>
-							{t('actions.more')}
-						</span>
-					</Button>
-					<img src={loginImages[number]} className={classes.img} alt="" />
-					<img src={sentiDots} className={classes.sentiDots} alt='' />
-				</div>
+
+	const { classes } = props
+	// const { number } = this.state
+	return (
+		<div className={classes.container}>
+			<div className={classes.contentWrapper}>
+				{/* {t('markdown.test', { type: 'markdown' })} */}
+				<T reversed variant={'h5'} className={classes.message}>
+					{t(`login.cards.${number}`, { type: 'markdown' })}
+					{/* {this.generateString(number).map((a, i) => <span key={i}>{a}</span>)} */}
+				</T>
+				<Button color='primary' variant={'contained'} component={'a'} target={'_blank'} href={"https://senti.io"} className={classes.button}>
+					<span className={classes.overcomplicatedButtonTextLight}>
+						{t('actions.learn')}
+					</span>
+					<span className={classes.overcomplicatedButtonTextRegular}>
+						{t('actions.more')}
+					</span>
+				</Button>
+				<img src={loginImages[number]} className={classes.img} alt="" />
+				<img src={sentiDots} className={classes.sentiDots} alt='' />
 			</div>
-		)
-	}
+		</div>
+	)
 }
 
 export default withStyles(styles)(LoginImages)
