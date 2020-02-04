@@ -189,13 +189,12 @@ const SensorHover = props => {
 										</IconButton>
 									</Tooltip>
 								</ItemG>
-								</ItemG>
 							</Fragment>
-					: <CircularLoader fill />}
+							: <CircularLoader fill />}
 					</Paper>
 				</Fade>
-	)
-}
+			)
+			}
 		</Popper >
 	)
 }
