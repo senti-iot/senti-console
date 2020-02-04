@@ -134,7 +134,7 @@ const ExportUsers = props => {
 		// 	customHeaders: options,
 		// });
 	};
-	const { open, handleClose } = props
+	const { open, handleClose, CSVHeaders } = props
 	return (
 		<Dialog
 			open={open}
