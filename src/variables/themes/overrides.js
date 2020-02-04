@@ -99,11 +99,7 @@ const override = (color, dark) => ({
 			input: {
 				padding: '12px 14px'
 			},
-		},
-		MuiLink: {
-			color: 'primary'
 		}
-
 	}
 })
 export default override

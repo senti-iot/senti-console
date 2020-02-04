@@ -131,7 +131,7 @@ const SensorProtocol = (props) => {
 							/>
 						</ItemG> : null}
 					</ItemG>
-					<ItemG xs={12}>
+					{/* <ItemG xs={12}>
 						<Caption>{t('sensors.fields.protocols.state')}</Caption>
 						{sensor.protocol === 1 || sensor.protocol === 3 ? <ItemG xs={12}>
 							<Caption>{t('registries.fields.protocols.mqtt')}</Caption>
@@ -178,7 +178,7 @@ const SensorProtocol = (props) => {
 								}
 							/>
 						</ItemG> : null}
-					</ItemG>
+					</ItemG> */}
 					<ItemG xs={12}>
 						<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
 						<ItemG xs={12}>

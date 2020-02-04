@@ -67,8 +67,7 @@ class Favorites extends Component {
 			{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage /> },
 			{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub /> },
 			{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
-			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
-			{ value: 'registry', label: t('favorites.types.registry'), icon: <DataUsage /> }
+			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> }
 		]
 	}
 	ft = () => {

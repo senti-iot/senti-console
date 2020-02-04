@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core'
-import { ItemGrid, SmallCard, ItemG, T } from 'components'
+import { ItemGrid, SmallCard, ItemG, T, Link } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
 import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
 import { withRouter } from 'react-router-dom'
+<<<<<<< HEAD
 import { Link } from 'react-router-dom'
 import { useLocalization } from 'hooks'
 
@@ -19,6 +20,22 @@ const SensorCard = props => {
 	// 	 img: null
 	//   }
 	// }
+=======
+
+class SensorCard extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			actionAnchor: null,
+			img: null
+		}
+	}
+
+	handleOpenActionsDetails = event => {
+		this.setState({ actionAnchor: event.currentTarget });
+	}
+>>>>>>> 14bc69624e1552b0a6371abab49cb65e6a20f461
 
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)

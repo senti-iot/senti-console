@@ -1,6 +1,7 @@
+import { ItemGrid, Info, Caption, Link } from 'components'
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, withStyles, Typography, Link,
+	TableRow, withStyles, Typography,
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
@@ -8,7 +9,6 @@ import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import TableHeader from 'components/Table/TableHeader'
-import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
@@ -159,8 +159,8 @@ class UserTable extends React.Component {
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
 												FirstC label={`${n.firstName} ${n.lastName}`} />
-											<TC label={<Link onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</Link>} />
-											<TC label={<Link onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</Link>} />
+											<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</Link>} />
+											<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`mailto:${n.email}`}>{n.email}</Link>} />
 											<TC label={n.org ? n.org.name : t('users.noOrg')} />
 											<TC label={t(n.group)} />
 											<TC label={lastLoggedIn} />

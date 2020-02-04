@@ -1,7 +1,7 @@
 import { withStyles, Fade } from '@material-ui/core';
 import deviceTypeStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import { getProject } from 'variables/dataProjects';
 // import { getWeather } from 'variables/dataDevices';
@@ -16,196 +16,108 @@ import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
 import { deleteDeviceType } from 'variables/dataDeviceTypes';
 import { useLocalization, useSnackbar } from 'hooks';
-import { useCallback } from 'react';
-
-// const mapStateToProps = (state) => ({
-// 	accessLevel: state.settings.user.privileges,
-// 	language: state.settings.language,
-// 	saved: state.favorites.saved,
-// 	mapTheme: state.settings.mapTheme,
-// 	periods: state.dateTime.periods,
-// 	deviceType: state.data.deviceType,
-// 	loading: !state.data.gotDeviceType
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving()),
-// 	getDeviceType: async (id) => dispatch(await getDeviceTypeLS(id))
-// })
 
 const DeviceType = props => {
-
 	//Hooks
+
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const s = useSnackbar().s
+
 	//Redux
+
 	const accessLevel = useSelector(store => store.settings.user.privileges)
-	// const language = useSelector(store => store.settings.language)
 	const saved = useSelector(store => store.favorites.saved)
-	// const mapTheme = useSelector(store => store.settings.mapTheme)
-	// const periods = useSelector(store => sessionStorage.dateTime.periods)
 	const deviceType = useSelector(store => store.data.deviceType)
 	const loading = useSelector(store => !store.data.gotDeviceType)
 
 	//State
 
-	// const [stateLoading, setStateLoading] = useState(true)
 	const [openDelete, setOpenDelete] = useState(false)
-	// const [weather, setWeather] = useState(null)
 
 	//Const
-	const { history, match, setBC, setTabs } = props
-	let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
 
-	useEffect(() => {
-		props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
-		const asyncFunc = async () => {
-			if (props.match) {
-				let id = props.match.params.id
-				if (id) {
-					await dispatch(await getDeviceTypeLS(id))
 
-					if (props.location.hash !== '') {
-						scrollToAnchor(props.location.hash)
-					}
-				}
-			}
-			else {
-				props.history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			}
-		}
-		asyncFunc()
 
-		//eslint-disable-next-line
-	}, [])
 	const tabs = useCallback(() => {
 		return [
 			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
 			{ id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
 			{ id: 2, title: t('tabs.cloudfunctions'), label: <CloudUpload />, url: `#cloudfunctions` },
-			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
-			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
-			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
-			// { id: 4, title: t('tabs.history'), label: <History />, url: `#history` }
 		]
 	}, [t])
-	useEffect(() => {
-		if (deviceType) {
-			setBC('devicetype', deviceType.name)
-			setTabs({
-				route: 0,
-				id: 'deviceType',
-				tabs: tabs(),
-				hashLinks: true
-			})
-		}
-
-	}, [deviceType, setBC, setTabs, tabs])
-	// const format = 'YYYY-MM-DD+HH:mm'
-
-
-	// const reload = (msgId) => {
-	// 	snackBarMessages(msgId)
-	// 	getDeviceType(props.match.params.id)
-	// }
 
 	// const getDeviceType = async (id) => {
-	// 	await getDeviceType(id)
+	// 	await getDeviceTypeLS(id)
 	// }
 
 	useEffect(() => {
 		const asyncFunc = async () => {
-
 			if (saved === true) {
 				if (dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
-					s('snackbars.favorite.saved', { name: deviceType.name, type: t('favorites.types.deviceType') })
+					s('snackbars.favorite.saved', { name: deviceType.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 				}
 				if (!dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
-					s('snackbars.favorite.removed', { name: deviceType.name, type: t('favorites.types.deviceType') })
+					s('snackbars.favorite.removed', { name: deviceType.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 				}
 			}
 		}
 		asyncFunc()
-	}, [props.match.params.id, deviceType, saved, dispatch, s, t])
-	// const componentDidUpdate = async (prevProps) => {
-	// 	if (prevProps.match.params.id !== props.match.params.id)
-	// 		// await componentDidMount()
-	// 		if (deviceType && !prevProps.deviceType) {
-
-	// 			if (deviceType.activeDevice) {
-	// 				let data = await getWeather(deviceType.activeDevice, moment(), props.language)
-	// 				setWeather(data)
-	// 			}
-	// 		}
-	// 	if (props.id !== prevProps.id || props.to !== prevProps.to || props.timeType !== prevProps.timeType || props.from !== prevProps.from) {
-	// 		// this.handleSwitchDayHourSummary()
-	// 		// this.getHeatMapData()
-	// 	}
-	// 	if (props.saved === true) {
-	// 		if (dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
-	// 			props.s('snackbars.favorite.saved', { name: deviceType.name, type: t('favorites.types.deviceType') })
-	// 			dispatch(finishedSaving())
-	// 		}
-	// 		if (!dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
-	// 			props.s('snackbars.favorite.removed', { name: deviceType.name, type: t('favorites.types.deviceType') })
-	// 			dispatch(finishedSaving())
-	// 		}
-	// 	}
-	// }
+	}, [props.match.params.id, deviceType, saved, dispatch, t, s])
 
 	useEffect(() => {
-
+		const getDT = async () => {
+			if (props.match) {
+				let id = props.match.params.id
+				await dispatch(await getDeviceTypeLS(id))
+			}
+		}
+		getDT()
+		if (props.location.hash !== '') {
+			scrollToAnchor(props.location.hash)
+		}
+		//eslint-disable-next-line
 	}, [])
-	// const componentDidMount = async () => {
-	// 	if (props.match) {
-	// 		let id = props.match.params.id
-	// 		if (id) {
-	// 			await getDeviceType(id).then(() => {
-	// 				props.setBC('devicetype', deviceType.name)
-	// 			})
-	// 			props.setTabs({
-	// 				route: 0,
-	// 				id: 'deviceType',
-	// 				tabs: tabs(),
-	// 				hashLinks: true
-	// 			})
-	// 			if (props.location.hash !== '') {
-	// 				scrollToAnchor(props.location.hash)
-	// 			}
-	// 		}
-	// 	}
-	// 	else {
-	// 		props.history.push({
-	// 			pathname: '/404',
-	// 			prevURL: window.location.pathname
-	// 		})
-	// 	}
-	// }
+	useEffect(() => {
+		if (deviceType) {
 
+			props.setTabs({
+				route: 0,
+				id: 'deviceType',
+				tabs: tabs(),
+				hashLinks: true
+			})
+			props.setBC('devicetype', deviceType.name)
+			let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
+			props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
+		}
+	}, [deviceType, props, tabs])
+
+<<<<<<< HEAD
 	const addToFavorite = () => {
+=======
+	const addToFavFunc = () => {
+>>>>>>> 14bc69624e1552b0a6371abab49cb65e6a20f461
 		let favObj = {
 			id: deviceType.id,
 			name: deviceType.name,
-			type: 'deviceType',
+			type: 'devicetype',
 			path: props.match.url
 		}
 		dispatch(addToFav(favObj))
 	}
 
+<<<<<<< HEAD
 	const removeFromFavorite = () => {
+=======
+	const removeFromFavFunc = () => {
+>>>>>>> 14bc69624e1552b0a6371abab49cb65e6a20f461
 		let favObj = {
 			id: deviceType.id,
 			name: deviceType.name,
-			type: 'deviceType',
+			type: 'devicetype',
 			path: props.match.url
 		}
 		dispatch(removeFromFav(favObj))
@@ -260,8 +172,8 @@ const DeviceType = props => {
 					<ItemGrid xs={12} noMargin id='details'>
 						<DeviceTypeDetails
 							isFav={dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))}
-							addToFav={addToFavorite}
-							removeFromFav={removeFromFavorite}
+							addToFav={addToFavFunc}
+							removeFromFav={removeFromFavFunc}
 							handleOpenDeleteDialog={handleOpenDeleteDialog}
 							deviceType={deviceType}
 							history={history}

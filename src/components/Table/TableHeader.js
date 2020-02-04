@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TableCell, TableHead, TableRow, TableSortLabel, Checkbox, Hidden, Typography } from '@material-ui/core'
 import classNames from 'classnames'
+import thStyles from 'assets/jss/components/table/thStyles';
 
 const TableHeader = props => {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
-
-	const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes, mdDown, customColumn, noCheckbox } = props;
+	const classes = thStyles()
+	const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, mdDown, customColumn, noCheckbox } = props;
 	return (
 		<TableHead>
 			<TableRow>
@@ -43,7 +44,7 @@ const TableHeader = props => {
 									disabled={rowCount === 0}
 									onClick={createSortHandler(column.id)}
 									classes={{
-										root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
+										root: classes.headerLabelActive, active: classes.headerLabelActive, icon: classNames({
 											[classes.hideIcon]: !(orderBy === column.id) ? true : false
 										}),
 
@@ -68,7 +69,7 @@ const TableHeader = props => {
 									direction={order}
 									onClick={createSortHandler(columnData[c].id)}
 									classes={{
-										root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
+										root: classes.headerLabelActive, active: classes.headerLabelActive, icon: classNames({
 											[classes.hideIcon]: !(orderBy === columnData[c].id) ? true : false
 										})
 									}}>
@@ -86,7 +87,7 @@ const TableHeader = props => {
 									direction={order}
 									onClick={createSortHandler(c.id)}
 									classes={{
-										root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
+										root: classes.headerLabelActive, active: classes.headerLabelActive, icon: classNames({
 											[classes.hideIcon]: !(orderBy === c.id) ? true : false
 										})
 									}}>
@@ -109,8 +110,7 @@ TableHeader.propTypes = {
 	order: PropTypes.string.isRequired,
 	orderBy: PropTypes.string.isRequired,
 	rowCount: PropTypes.number.isRequired,
-	columnData: PropTypes.array.isRequired,
-	classes: PropTypes.object.isRequired
+	columnData: PropTypes.array.isRequired
 };
 
 export default TableHeader

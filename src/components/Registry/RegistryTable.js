@@ -1,11 +1,8 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
-import React, { Fragment, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { Fragment, useState, useEffect } from 'react'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption } from 'components'
@@ -15,6 +12,7 @@ import TC from 'components/Table/TC';
 import RegistryHover from 'components/Hover/RegistryHover';
 import { dateFormatter } from 'variables/functions';
 import { useLocalization } from 'hooks'
+import registryTableStyles from 'assets/jss/components/registries/registryTableStyles'
 
 // const mapStateToProps = (state) => ({
 // 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
@@ -22,20 +20,27 @@ import { useLocalization } from 'hooks'
 // })
 
 const RegistryTable = props => {
+	//Hooks
 	const t = useLocalization()
+	const classes = registryTableStyles()
+	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	const hoverTime = useSelector(state => state.settings.hoverTime)
-	const [page, setPage] = useState(0)
-	const [hoverRegistry, setHoverRegistry] = useState(null) // added
-	const [rowHover, setRowHover] = useState(null) // added
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		page: 0,
-	// 	}
-	// }
 
+	//State
+	const [page, setPage] = useState(0)
+	const [hoverRegistry, setHoverRegistry] = useState(null)
+	const [rowHover, setRowHover] = useState(null)
+
+	//Const
+	const { handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
 	let timer = null
+
+	useEffect(() => {
+		return () => {
+			clearTimeout(timer)
+		};
+	}, [timer])
 
 	const handleRequestSort = (event, property) => {
 		props.handleRequestSort(event, property)
@@ -43,7 +48,6 @@ const RegistryTable = props => {
 
 	const handleChangePage = (event, newpage) => {
 		setPage(newpage)
-		// this.setState({ page });
 	}
 
 	const handleSelectAllClick = (event, checked) => {
@@ -60,19 +64,15 @@ const RegistryTable = props => {
 			timer = setTimeout(() => {
 				if (rowHover) {
 					setRowHover(null)
-					// this.setState({
-					// 	rowHover: null
-					// })
+
 					setTimeout(() => {
-						setRowHover(e.target)
 						setHoverRegistry(n)
-						// this.setState({ rowHover: e.target, hoverRegistry: n })
+						setRowHover(e.target)
 					}, 200);
 				}
 				else {
-					setRowHover(e.target)
 					setHoverRegistry(n)
-					// this.setState({ rowHover: e.target, hoverRegistry: n })
+					setRowHover(e.target)
 				}
 			}, hoverTime);
 	}
@@ -81,9 +81,6 @@ const RegistryTable = props => {
 	}
 	const unsetHover = () => {
 		setRowHover(null)
-		// this.setState({
-		// 	rowHover: null
-		// })
 	}
 	const renderHover = () => {
 		return <RegistryHover anchorEl={rowHover} handleClose={unsetHover} registry={hoverRegistry} />
@@ -103,7 +100,6 @@ const RegistryTable = props => {
 		}
 	}
 
-	const { classes, handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
 	let emptyRows;
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -122,7 +118,6 @@ const RegistryTable = props => {
 						rowCount={data ? data.length : 0}
 						columnData={props.tableHead}
 						t={t}
-						classes={classes}
 						customColumn={[
 							{
 								id: 'name',
@@ -137,8 +132,6 @@ const RegistryTable = props => {
 							const isSelected = isSelectedFunc(n.id);
 							return (
 								<TableRow
-									// onMouseEnter={e => { this.setHover(e, n) }}
-									// onMouseLeave={this.unsetTimeout}
 									hover
 									onClick={handleClick(n.id)}
 									role='checkbox'
@@ -198,7 +191,6 @@ const RegistryTable = props => {
 			</div>
 			<TP
 				count={data ? data.length : 0}
-				classes={classes}
 				page={page}
 				t={t}
 				handleChangePage={handleChangePage}
@@ -207,8 +199,5 @@ const RegistryTable = props => {
 	)
 }
 
-RegistryTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(RegistryTable))
+export default RegistryTable

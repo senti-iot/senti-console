@@ -1,11 +1,11 @@
 import React, { useState, Fragment } from 'react'
 import { Table, TableHead, TableRow, TableCell, TableBody, withStyles } from '@material-ui/core';
 import TP from 'components/Table/TP';
-import { InfoCard, ItemG } from 'components';
+import { InfoCard, ItemG, Link } from 'components';
 import { DeviceHub, CheckCircle, Block, SignalWifi2Bar } from 'variables/icons';
 import { red, green } from '@material-ui/core/colors';
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { useLocalization } from 'hooks';
 
 // const mapStateToProps = (state) => ({
@@ -26,7 +26,7 @@ const styles = (theme) => ({
 
 const RegistryDevices = props => {
 	const rowsPerPage = useSelector(store => store.appState.trp ? store.appState.trp : store.settings.trp)
-	const hoverTime = useSelector(store => store.settings.hoverTime)
+	// const hoverTime = useSelector(store => store.settings.hoverTime)
 
 	const [page, setPage] = useState(0)
 	const t = useLocalization()

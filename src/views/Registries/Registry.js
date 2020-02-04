@@ -11,130 +11,77 @@ import { getRegistryLS } from 'redux/data';
 import RegistryDetails from './RegistryCards/RegistryDetails';
 import RegistryDevices from './RegistryCards/RegistryDevices';
 import { deleteRegistry } from 'variables/dataRegistry';
-import { useLocalization } from 'hooks';
-
-// const mapStateToProps = (state) => ({
-// 	accessLevel: state.settings.user.privileges,
-// 	language: state.settings.language,
-// 	saved: state.favorites.saved,
-// 	mapTheme: state.settings.mapTheme,
-// 	periods: state.dateTime.periods,
-// 	registry: state.data.registry,
-// 	loading: !state.data.gotRegistry
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	getRegistry: async id => dispatch(await getRegistryLS(id))
-// })
+import { useLocalization, useSnackbar } from 'hooks';
 
 
 const Registry = props => {
+	//Hooks
 	const dispatch = useDispatch()
+	const s = useSnackbar().s
+	const t = useLocalization()
 
+	//Redux
 	const accessLevel = useSelector(store => store.settings.user.privileges)
-	// const language = useSelector(store => store.settings.language)
-	// const saved = useSelector(store => store.favorites.saved)
-	// const mapTheme = useSelector(store => store.settings.mapTheme)
-	// const periods = useSelector(store => store.dateTime.periods)
+	const saved = useSelector(store => store.favorites.saved)
 	const registry = useSelector(store => store.data.registry)
 	const loading = useSelector(store => !store.data.gotRegistry)
 
-	// const [stateRegistry, setStateRegistry] = useState(null)
-	// const [activeDevice, setActiveDevice] = useState(null)
-	// const [loading, setLoading] = useState(true) // another one coming from Redux
-	// const [anchorElHardware, setAnchorElHardware] = useState(null)
-	// const [openAssign, setOpenAssign] = useState(false)
-	// const [openUnassignDevice, setOpenUnassignDevice] = useState(false)
-	// const [openAssignOrg, setOpenAssignOrg] = useState(false)
-	// const [openAssignDevice, setOpenAssignDevice] = useState(false)
+	//State
 	const [openDelete, setOpenDelete] = useState(false)
-	// const [loadingMap, setLoadingMap] = useState(true)
-	// const [heatData, setHeatData] = useState(null)
 
-	const t = useLocalization()
+	//Const
 
-	let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-	props.setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
-
-	// const format = 'YYYY-MM-DD+HH:mm'
-	const tabs = () => {
-		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			{ id: 1, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
-		]
-	}
-
-	// const reload = (msgId) => {
-	// 	snackBarMessages(msgId)
-	// 	getRegistry(props.match.params.id)
-	// }
-
-	const getRegistry = async (id) => {
-		dispatch(await getRegistryLS(id))
-	}
 	useEffect(() => {
-		const asyncFunc = async () => {
-			if (props.saved === true) {
-				if (dispatch(isFav({ id: registry.id, type: 'registry' }))) {
-					props.s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
-					dispatch(finishedSaving())
-				}
-				if (!dispatch(isFav({ id: registry.id, type: 'registry' }))) {
-					props.s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
-					dispatch(finishedSaving())
-				}
+		if (saved === true) {
+			if (dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+				s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
+				dispatch(finishedSaving())
+			}
+			if (!dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+				s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
+				dispatch(finishedSaving())
 			}
 		}
-		asyncFunc()
-	}, [dispatch, props, props.match.params.id, registry, t])
 
-	// const componentDidUpdate = async (prevProps) => {
-	// 	if (prevProps.match.params.id !== props.match.params.id)
-	// 		await componentDidMount()
-	// 	if (props.saved === true) {
-	// 		if (dispatch(isFav({ id: registry.id, type: 'registry' }))) {
-	// 			props.s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
-	// 			dispatch(finishedSaving())
-	// 		}
-	// 		if (!dispatch(isFav({ id: registry.id, type: 'registry' }))) {
-	// 			props.s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
-	// 			dispatch(finishedSaving())
-	// 		}
-	// 	}
+	}, [saved, props.match, dispatch, registry, s, t])
 
-	// if (!this.props.registry) {
-	// 	this.props.history.push('/404')
-	// }
 	useEffect(() => {
-		const asyncFunc = async () => {
+		const getReg = async () => {
 			if (props.match) {
 				let id = props.match.params.id
 				if (id) {
-					await getRegistry(id).then(() => props.registry ? props.setBC('registry', props.registry.name) : null
-					)
-					props.setTabs({
-						route: 0,
-						id: 'registry',
-						tabs: tabs(),
-						hashLinks: true
-					})
-					if (props.location.hash !== '') {
-						scrollToAnchor(props.location.hash)
-					}
+					await dispatch(await getRegistryLS(id))
+
 				}
 			}
-			else {
-				props.history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			}
 		}
-		asyncFunc()
+		getReg()
+		if (props.location.hash !== '') {
+			scrollToAnchor(props.location.hash)
+		}
 		//eslint-disable-next-line
 	}, [])
+
+	useEffect(() => {
+		if (registry) {
+			const tabs = () => {
+				return [
+					{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+					{ id: 1, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
+				]
+			}
+			props.setBC('registry', registry.name)
+			props.setTabs({
+				route: 0,
+				id: 'registry',
+				tabs: tabs(),
+				hashLinks: true
+			})
+			let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
+			props.setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
+		}
+
+	})
 	// const componentDidMount = async () => {
 	// 	if (props.match) {
 	// 		let id = props.match.params.id

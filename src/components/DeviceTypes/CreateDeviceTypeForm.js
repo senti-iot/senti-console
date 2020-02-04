@@ -44,6 +44,7 @@ const CreateDeviceTypeForm = props => {
 				console.log(m)
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
+						id={'metadata-key' + i}
 						label={t('cloudfunctions.fields.metadata.key')}
 						onChange={handleChangeMetadataKey(i)}
 						value={m.key}
@@ -53,6 +54,7 @@ const CreateDeviceTypeForm = props => {
 						}}
 					/>
 					<TextF
+						id={'metadata-value' + i}
 						label={t('cloudfunctions.fields.metadata.value')}
 						onChange={handleChangeMetadata(i)}
 						value={m.value}
@@ -75,9 +77,9 @@ const CreateDeviceTypeForm = props => {
 			</ItemGrid>
 			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
-				console.log(p)
-				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
+				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'}>
 					<TextF
+						id={'outbound-key' + i}
 						label={t('cloudfunctions.fields.key')}
 						onChange={handleChangeKey(p, i)}
 						value={p.key}
@@ -87,6 +89,7 @@ const CreateDeviceTypeForm = props => {
 						}}
 					/>
 					<TextF
+						id={'outbound-value' + i}
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
@@ -136,9 +139,9 @@ const CreateDeviceTypeForm = props => {
 		const { sensorMetadata, cfunctions, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = props
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
-				console.log(p)
-				return <ItemGrid key={i} xs={12} container alignItems={'center'}>
+				return <ItemGrid key={i + "inbound"} xs={12} container alignItems={'center'}>
 					<TextF
+						id={'inbound-function' + i}
 						label={t("cloudfunctions.fields.inboundfunc")}
 						onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
@@ -304,66 +307,68 @@ const CreateDeviceTypeForm = props => {
 		</Dialog>
 	}
 
-	const { handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = props
-	return (
-		<GridContainer>
-			<ItemGrid xs={12}>
-				<InfoCard
-					noHeader
-					noExpand
-					content={<ItemG>
-						{renderSelectFunction()}
-						<ItemGrid xs={12}>
-							<TextF
-								id={'deviceTypeName'}
-								label={t('collections.fields.name')}
-								onChange={handleChange('name')}
-								value={deviceType.name}
-							// autoFocus
-							/>
-						</ItemGrid>
-						<Divider style={{ margin: "16px" }} />
-						{renderMetadata()}
-						<Divider style={{ margin: "16px" }} />
-						{renderMetadataInbound()}
-						<Divider style={{ margin: "16px" }} />
-						<ItemGrid xs={12}>
-							<TextF
-								value={org.name}
-								onClick={() => setOpenOrg(true)}
-								readonly
-							/>
-							<AssignOrgDialog
-								t={t}
-								open={openOrg}
-								handleClose={() => setOpenOrg(false)}
-								callBack={org => { setOpenOrg(false); handleOrgChange(org) }}
-							/>
-						</ItemGrid>
-						<Divider style={{ margin: "16px" }} />
-						<ItemGrid container>
-							<div className={classes.wrapper}>
-								<Button
-									variant='outlined'
-									onClick={goToDeviceTypes}
-									className={classes.redButton}
-								>
-									{t('actions.cancel')}
-								</Button>
-							</div>
-							<div className={classes.wrapper}>
-								<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-									{t('actions.save')}
-								</Button>
-							</div>
-						</ItemGrid>
-					</ItemG>}
-				/>
-			</ItemGrid>
+	render() {
+		const { t, handleChange, org, handleOrgChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
+		return (
+			<GridContainer>
+				<ItemGrid xs={12}>
+					<InfoCard
+						noHeader
+						noExpand
+						content={<ItemG>
+							{this.renderSelectFunction()}
+							<ItemGrid xs={12}>
+								<TextF
+									id={'deviceTypeName'}
+									label={t('collections.fields.name')}
+									onChange={handleChange('name')}
+									value={deviceType.name}
+								// autoFocus
+								/>
+							</ItemGrid>
+							<Divider style={{ margin: "16px" }} />
+							{this.renderMetadata()}
+							<Divider style={{ margin: "16px" }} />
+							{this.renderMetadataInbound()}
+							<Divider style={{ margin: "16px" }} />
+							<ItemGrid xs={12}>
+								<TextF
+									id={'org'}
+									value={org.name}
+									onClick={() => this.setState({ openOrg: true })}
+									readonly
+								/>
+								<AssignOrgDialog
+									t={t}
+									open={this.state.openOrg}
+									handleClose={() => this.setState({ openOrg: false })}
+									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
+								/>
+							</ItemGrid>
+							<Divider style={{ margin: "16px" }} />
+							<ItemGrid container>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										onClick={goToDeviceTypes}
+										className={classes.redButton}
+									>
+										{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+										{t('actions.save')}
+									</Button>
+								</div>
+							</ItemGrid>
+						</ItemG>}
+					/>
+				</ItemGrid>
 
-		</GridContainer>
-	)
-}
+			</GridContainer>
+		)
+	}
 
 
-export default withStyles(createprojectStyles)(CreateDeviceTypeForm)
+	export default withStyles(createprojectStyles)(CreateDeviceTypeForm)

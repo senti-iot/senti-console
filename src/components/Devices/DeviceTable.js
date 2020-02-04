@@ -20,6 +20,10 @@ import { useLocalization } from 'hooks';
 // 	accessLevel: state.settings.user.privileges,
 // 	hoverTime: state.settings.hoverTime
 // })
+/**
+ * TODO @Andrei
+ * DeviceTable/Devices are rerendering multiple times
+ */
 
 const DeviceTable = props => {
 	const t = useLocalization()
@@ -65,15 +69,15 @@ const DeviceTable = props => {
 						// 	rowHover: null
 						// })
 						setTimeout(() => {
-							setRowHover(target)
 							setHoverDevice(n)
+							setRowHover(target)
 							// this.setState({ rowHover: target, hoverDevice: n })
 						}, 200);
 					}
 				}
 				else {
-					setRowHover(target)
 					setHoverDevice(n)
+					setRowHover(target)
 					// this.setState({ rowHover: target, hoverDevice: n })
 				}
 			}, hoverTime);

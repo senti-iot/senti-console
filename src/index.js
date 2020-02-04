@@ -10,12 +10,11 @@ import whyDidYouRender from "@welldone-software/why-did-you-render";
 
 if (process.env.NODE_ENV !== 'production') {
 	whyDidYouRender(React, {
-		collapseGroups: true,
-		trackHooks: true,
 		onlyLogs: true,
 		titleColor: "green",
 		diffNameColor: "darkturquoise"
 	});
+
 }
 
 const onUpdate = () => {

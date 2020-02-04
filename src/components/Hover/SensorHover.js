@@ -1,12 +1,13 @@
 import React, { useEffect, Fragment } from 'react'
 import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
-import T from 'components/Typography/T';
-import ItemG from 'components/Grid/ItemG';
+// import T from 'components/Typography/T';
+// import ItemG from 'components/Grid/ItemG';
+import { T, ItemG, Link } from 'components'
 // import Gravatar from 'react-gravatar'
 import { Star, StarBorder, Block, CheckCircle, DeviceHub, InputIcon } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { Link as RLink } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
@@ -169,24 +170,33 @@ const SensorHover = props => {
 								<Divider />
 								<ItemG container style={{ marginTop: '8px' }}>
 									<ItemG>
-										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/sensor/${device.id}/edit`, prevURL: '/sensors' }}>
+										<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `/sensor/${device.id}/edit`, prevURL: '/sensors' }}>
 											{t('menus.edit')}
 										</Button>
 									</ItemG>
 									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-										<Tooltip placement="top" title={dispatch(isFav({ id: device.id, type: 'device' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-											<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: device.id, type: 'device' })) ? removeFromFavorites : addToFavorites}>
-												{dispatch(isFav({ id: device.id, type: 'device' })) ? <Star /> : <StarBorder />}
+										<Tooltip placement="top" title={isFav({ id: device.id, type: 'device' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={isFav({ id: device.id, type: 'device' }) ? this.removeFromFav : this.addToFav}>
+												{isFav({ id: device.id, type: 'device' }) ? <Star /> : <StarBorder />}
 											</IconButton>
 										</Tooltip>
 									</ItemG>
 								</ItemG>
+								<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
+									<Tooltip placement="top" title={dispatch(isFav({ id: device.id, type: 'device' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+										<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: device.id, type: 'device' })) ? removeFromFavorites : addToFavorites}>
+											{dispatch(isFav({ id: device.id, type: 'device' })) ? <Star /> : <StarBorder />}
+										</IconButton>
+									</Tooltip>
+								</ItemG>
+								</ItemG>
 							</Fragment>
-							: <CircularLoader fill />}
+					: <CircularLoader fill />}
 					</Paper>
 				</Fade>
-			)}
-		</Popper>
+	)
+}
+		</Popper >
 	)
 }
 
