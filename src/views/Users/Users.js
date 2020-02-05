@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
+import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
 import UserTable from 'components/User/UserTable';
 import GridContainer from 'components/Grid/GridContainer';
 import { deleteUser } from 'variables/dataUsers';
@@ -13,6 +12,7 @@ import ExportUsers from 'components/Exports/ExportUsers';
 import { useLocalization, useHistory, useEffect, useSnackbar, useSelector, useDispatch } from 'hooks';
 import usersStyles from 'assets/jss/components/users/usersStyles';
 import { isFav, addToFav, removeFromFav } from 'redux/favorites';
+import { finishedSaving } from 'redux/dsSystem';
 
 const Users = props => {
 	//Hooks
@@ -23,6 +23,8 @@ const Users = props => {
 	const dispatch = useDispatch()
 	//Redux
 	const filters = useSelector(state => state.appState.filters.users)
+	const saved = useSelector(state => state.favorites.saved)
+
 	//State
 	const [selected, setSelected] = useState([])
 	const [openDelete, setOpenDelete] = useState(false)
@@ -86,7 +88,7 @@ const Users = props => {
 	}
 
 	const options = () => {
-		let user = users[users.findIndex(d => d.id === selected[0])]
+		let user = users[users.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
 		if (user) {
@@ -126,6 +128,28 @@ const Users = props => {
 		//eslint-disable-next-line
 	}, [])
 
+	useEffect(() => {
+		console.log('Saved', saved)
+		if (saved === true) {
+			let user = users[users.findIndex(d => d.uuid === selected[0])]
+			if (user) {
+				console.log('entered')
+				console.log('isFav', dispatch(isFav({ id: user.uuid, type: 'user' })))
+				console.log('!isFav', !dispatch(isFav({ id: user.uuid, type: 'user' })))
+				if (dispatch(isFav({ id: user.uuid, type: 'user' }))) {
+					console.log('ENTERED')
+					dispatch(finishedSaving())
+					s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
+				}
+				if (!dispatch(isFav({ id: user.uuid, type: 'user' }))) {
+					console.log('ENTERED2')
+					dispatch(finishedSaving())
+					s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
+				}
+			}
+		}
+
+	}, [saved, selected, dispatch, users, s, t])
 	//Handlers
 
 	const handleEdit = () => {
@@ -148,7 +172,6 @@ const Users = props => {
 		s('snackbars.emailsCopied')
 	}
 	const handleCheckboxClick = (event, id) => {
-		console.log(id)
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
@@ -317,4 +340,4 @@ const Users = props => {
 	)
 }
 
-export default withStyles(projectStyles)(Users)
+export default Users

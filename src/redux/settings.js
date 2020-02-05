@@ -1,5 +1,5 @@
 import cookie from 'react-cookies';
-import { getUser, getValidSession,/*  getNUser, */ getLoginUser, setSettings } from 'variables/dataUsers'
+import { getUser, getValidSession,/*  getNUser, */ getLoginUser, setInternal } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
@@ -120,7 +120,7 @@ export const saveSettingsOnServ = () => {
 		// user.aux.senti = user.aux.senti ? user.aux.senti : {}
 		// user.aux.senti.settings = settings
 		// user.aux.odeum.language = s.language
-		var saved = await setSettings(internal, user.uuid);
+		var saved = await setInternal(internal, user.uuid);
 		dispatch({
 			type: SAVESETTINGS,
 			saved: saved ? true : false
@@ -139,7 +139,8 @@ export const getNSettings = async () => {
 				let internal = {}
 				internal.senti = {}
 				internal.senti.settings = { ...getState().settings }
-				let SSettings = await setSettings(internal, user.uuid)
+				let SSettings = await setInternal(internal, user.uuid)
+				user.internal = internal
 				console.log(SSettings)
 				if (SSettings)
 					dispatch({
@@ -166,7 +167,15 @@ export const getNSettings = async () => {
 				}
 			})
 			moment.locale(settings.language === 'en' ? 'en-gb' : settings.language)
+			let favorites = user.internal.senti.favorites
+			if (favorites) {
+				dispatch({
+					type: GETFAVS,
+					payload:
+						[...favorites]
 
+				})
+			}
 			return true
 		}
 		else {

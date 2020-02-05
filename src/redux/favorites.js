@@ -1,4 +1,5 @@
-import { saveSettings } from 'variables/dataLogin';
+// import { saveSettings } from 'variables/dataLogin';
+import { setInternal } from 'variables/dataUsers';
 
 const SETFAV = 'setFavorites'
 const GETFAVS = 'getFavorites'
@@ -64,13 +65,19 @@ const saveFavorites = (noConfirm) => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
 		let f = getState().data.favorites
-		user.aux = user.aux ? user.aux : {}
-		user.aux.senti = user.aux.senti ? user.aux.senti : {}
-		user.aux.senti.favorites = f
-		var saved = await saveSettings(user)
+		let internal = user.internal || {}
+		internal.senti = internal.senti || {}
+		internal.senti.favorites = f
+		// user.internal = user.internal || {}
+		// user.internal.senti = user.internal.senti || {}
+		// user.aux = user.aux ? user.aux : {}
+		// user.aux.senti = user.aux.senti ? user.aux.senti : {}
+		// user.aux.senti.favorites = f
+
+		var saved = await setInternal(internal, user.uuid)
 		dispatch({
 			type: SAVEFAVORITES,
-			saved: noConfirm ? false : saved ? true : false 
+			saved: noConfirm ? false : saved ? true : false
 		})
 	}
 }
@@ -81,16 +88,12 @@ const initialState = {
 
 export const favorites = (state = initialState, action) => {
 	switch (action.type) {
-		case SETFAV: {
+		case SETFAV:
 			return Object.assign({}, state, { favorites: action.payload })
-		}
-		case GETFAVS: {
+		case GETFAVS:
 			return Object.assign({}, state, { ...action.favorites })
-		}
 		case SAVEFAVORITES:
-		{ 
 			return Object.assign({}, state, { saved: action.saved })
-		}
 		default:
 			return state
 	}

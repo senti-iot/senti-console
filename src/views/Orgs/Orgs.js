@@ -11,6 +11,7 @@ import { customFilterItems } from 'variables/Filters';
 import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks';
 import { isFav, addToFav, removeFromFav } from 'redux/favorites';
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles';
+import { finishedSaving } from 'redux/dsSystem';
 
 const Orgs = props => {
 	//Hooks
@@ -21,6 +22,7 @@ const Orgs = props => {
 	const classes = orgsStyles()
 	//Redux
 	const filters = useSelector(state => state.appState.filters.orgs)
+	const saved = useSelector(state => state.favorites.saved)
 
 	//State
 	const [selected, setSelected] = useState([])
@@ -58,6 +60,23 @@ const Orgs = props => {
 		setBC('orgs')
 		//eslint-disable-next-line
 	}, [])
+
+	useEffect(() => {
+		if (saved === true) {
+			let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
+			if (org) {
+				if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+					s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
+					dispatch(finishedSaving())
+				}
+				if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+					s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
+					dispatch(finishedSaving())
+				}
+			}
+		}
+
+	}, [saved, selected, dispatch, orgs, s, t])
 
 	//Handlers
 	const handleAddToFav = (favObj) => {

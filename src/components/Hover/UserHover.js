@@ -108,11 +108,11 @@ class UserHover extends Component {
 									</T>
 								</ItemG>
 								<ItemG xs={12}>
-									{user.aux.senti ? user.aux.senti.extendedProfile ?
+									{user.aux ? user.aux.senti ? user.aux.senti.extendedProfile ?
 										user.aux.senti.extendedProfile.location ? <T className={classes.smallText}>
 											<LocationOn className={classes.smallIcon} />
 											{user.aux.senti.extendedProfile.location}
-										</T> : null : null : null}
+										</T> : null : null : null : null}
 								</ItemG>
 							</ItemG>
 							<Divider />

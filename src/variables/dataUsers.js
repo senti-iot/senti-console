@@ -7,7 +7,7 @@ import { del } from './storage';
  * @param {Object} s
  * @param {String} uuid
  */
-export const setSettings = async (s, uuid) => {
+export const setInternal = async (s, uuid) => {
 	let data = await coreServicesAPI.put(`/entity/user/${uuid}/internal`, s).then(rs => rs.ok)
 	return data
 }
