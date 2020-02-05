@@ -128,28 +128,6 @@ const Users = props => {
 		//eslint-disable-next-line
 	}, [])
 
-	useEffect(() => {
-		console.log('Saved', saved)
-		if (saved === true) {
-			let user = users[users.findIndex(d => d.uuid === selected[0])]
-			if (user) {
-				console.log('entered')
-				console.log('isFav', dispatch(isFav({ id: user.uuid, type: 'user' })))
-				console.log('!isFav', !dispatch(isFav({ id: user.uuid, type: 'user' })))
-				if (dispatch(isFav({ id: user.uuid, type: 'user' }))) {
-					console.log('ENTERED')
-					dispatch(finishedSaving())
-					s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
-				}
-				if (!dispatch(isFav({ id: user.uuid, type: 'user' }))) {
-					console.log('ENTERED2')
-					dispatch(finishedSaving())
-					s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
-				}
-			}
-		}
-
-	}, [saved, selected, dispatch, users, s, t])
 	//Handlers
 
 	const handleEdit = () => {

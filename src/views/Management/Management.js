@@ -12,7 +12,7 @@ import Orgs from 'views/Orgs/Orgs';
 import { CircularLoader, GridContainer } from 'components';
 import { People, Business, StarBorder, Star, Person } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { /*  finishedSaving, */ removeFromFav, /* addToFav, isFav */ } from 'redux/favorites';
+import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites';
 import { /* connect, */ useSelector, useDispatch } from 'react-redux'
 import FavoritesTable from 'components/Favorites/FavoritesTable';
 import { Paper/* , withStyles  */ } from '@material-ui/core';
@@ -20,7 +20,7 @@ import TableToolbar from 'components/Table/TableToolbar';
 // import projectStyles from 'assets/jss/views/projects';
 import { customFilterItems } from 'variables/Filters';
 import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data';
-import { useLocalization } from 'hooks';
+import { useLocalization, useSnackbar } from 'hooks';
 import { useCallback } from 'react';
 
 
@@ -43,11 +43,11 @@ const Management = props => {
 	const location = useLocation()
 	const dispatch = useDispatch()
 	const history = useHistory()
-
+	const s = useSnackbar().s
 	//Redux
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 	const favorites = useSelector(state => state.data.favorites)
-	// const saved = useSelector(state => state.favorites.saved)
+	const saved = useSelector(state => state.favorites.saved)
 	const filtersFavorites = useSelector(state => state.appState.filters.favorites)
 	const loadingUsers = useSelector(state => !state.data.gotusers)
 	const loadingOrgs = useSelector(state => !state.data.gotorgs)
@@ -63,7 +63,7 @@ const Management = props => {
 	// const [loading, setLoading] = useState(true)
 
 	//Const
-	const { setHeader, setTabs, ...rest } = props
+	const { setHeader, setTabs } = props
 
 	const favoritesHeaders = [
 		{ id: 'type', label: "" },
@@ -83,6 +83,14 @@ const Management = props => {
 	]
 
 	//Effects
+	useEffect(() => {
+		if (saved === true) {
+			s('snackbars.favorite.updated')
+			dispatch(finishedSaving())
+
+		}
+
+	}, [saved, dispatch, s])
 	useEffect(() => {
 		const tabs = [
 			{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },

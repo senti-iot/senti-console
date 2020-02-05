@@ -434,7 +434,6 @@ const setState = (key, payload, state) => Object.assign({}, state, { [key]: payl
 export const dsSystem = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case snackBar:
-			console.log(payload)
 			return setState('saved', payload, state)
 		case setGraphE:
 			return setState('eGraph', payload, state)

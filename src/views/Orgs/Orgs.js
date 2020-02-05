@@ -61,22 +61,22 @@ const Orgs = props => {
 		//eslint-disable-next-line
 	}, [])
 
-	useEffect(() => {
-		if (saved === true) {
-			let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
-			if (org) {
-				if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
-					s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
-					dispatch(finishedSaving())
-				}
-				if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
-					s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
-					dispatch(finishedSaving())
-				}
-			}
-		}
+	// useEffect(() => {
+	// 	if (saved === true) {
+	// 		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
+	// 		if (org) {
+	// 			if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+	// 				s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
+	// 				dispatch(finishedSaving())
+	// 			}
+	// 			if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+	// 				s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
+	// 				dispatch(finishedSaving())
+	// 			}
+	// 		}
+	// 	}
 
-	}, [saved, selected, dispatch, orgs, s, t])
+	// }, [saved, selected, dispatch, orgs, s, t])
 
 	//Handlers
 	const handleAddToFav = (favObj) => {
