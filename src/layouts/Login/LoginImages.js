@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { /* ItemG, */ T } from 'components';
 import loginImages from 'variables/loginImages'
-import { Button, withStyles } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { sideBarColor, /* primaryColor */ } from 'assets/jss/material-dashboard-react';
 // import ImgDevices from 'assets/img/devices.png'
 import ImgTexture from 'assets/img/texture_inverted2.png'
 import sentiDots from 'assets/img/senti_dots.svg'
-import { useLocalization } from 'hooks'
+import { useLocalization } from 'hooks';
+import { makeStyles } from '@material-ui/styles';
+import { getWL } from 'variables/storage';
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	container: {
 		backgroundImage: `url(${ImgTexture})`,
 		backgroundRepeat: "no-repeat",
@@ -57,69 +59,34 @@ const styles = theme => ({
 		marginTop: '100',
 		margin: 50
 	}
-})
+}))
+const getRndInteger = (min, max) => {
+	min = 0
+	max = loginImages.length
+	return Math.floor(Math.random() * (max - min)) + min;
+}
 
-// @Andrei
-const LoginImages = props => {
-	// constructor(props) {
-	// 	super(props)
+const LoginImages = (props) => {
 
-	// 	this.state = {
-	// 		number: this.getRndInteger()
-	// 	}
-	// }
-
-	const getRndInteger = (min, max) => {
-		min = 0
-		max = loginImages.length
-		return Math.floor(Math.random() * (max - min)) + min;
-	}
-
+	//Hooks
 	const t = useLocalization()
-	const [number, /* setNumber */] = useState(getRndInteger())
+	const classes = styles()
 
-	// eslint-disable-next-line no-unused-vars
-	const generateString = (number) => {
-		// const { t } = this.props
-		let string = t(`login.cards.${number}`)
-		var rx = />(.*?)</g
-		let arr = []
-		let length = string.match(rx) ? string.match(rx).length : null
-		if (length) {
+	//Redux
 
-			for (let index = 0; index < length; index++) {
-				let substr = string.substr(string.indexOf('>') + 1, string.indexOf('<') - 1)
-				arr.push(<span style={{ fontWeight: 600 }}>{substr}</span>)
+	//State
 
-				string = string.slice(string.indexOf('<') + 1)
-				let sub2str = string.substr(0, string.indexOf('>'))
-				if (sub2str === '') {
-					arr.push(string)
-					string = ''
-				}
-				else {
-					arr.push(sub2str)
-					string = string.slice(string.indexOf('>'))
-				}
-			}
-		}
-		else {
-			arr.push(string)
-		}
-		return arr
-	}
-
-	const { classes } = props
-	// const { number } = this.state
+	const [number] = useState(getRndInteger())
+	//Const
+	const wl = getWL() ? getWL() : {}
 	return (
 		<div className={classes.container}>
 			<div className={classes.contentWrapper}>
-				{/* {t('markdown.test', { type: 'markdown' })} */}
 				<T reversed variant={'h5'} className={classes.message}>
-					{t(`login.cards.${number}`, { type: 'markdown' })}
-					{/* {this.generateString(number).map((a, i) => <span key={i}>{a}</span>)} */}
+
+					{wl.loginSettings ? wl.loginSettings.text : t(`login.cards.${number}`, { type: 'markdown' })}
 				</T>
-				<Button color='primary' variant={'contained'} component={'a'} target={'_blank'} href={"https://senti.io"} className={classes.button}>
+				<Button color='primary' variant={'contained'} component={'a'} target={'_blank'} href={wl.loginSettings ? wl.loginSettings.url : "https://senti.io"} className={classes.button}>
 					<span className={classes.overcomplicatedButtonTextLight}>
 						{t('actions.learn')}
 					</span>
@@ -134,4 +101,5 @@ const LoginImages = props => {
 	)
 }
 
-export default withStyles(styles)(LoginImages)
+
+export default LoginImages
