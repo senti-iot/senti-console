@@ -10,8 +10,9 @@ import TableToolbar from 'components/Table/TableToolbar';
 import { Info } from 'components';
 import { customFilterItems } from 'variables/Filters';
 import ExportUsers from 'components/Exports/ExportUsers';
-import { useLocalization, useHistory, useEffect, useSnackbar, useSelector } from 'hooks';
+import { useLocalization, useHistory, useEffect, useSnackbar, useSelector, useDispatch } from 'hooks';
 import usersStyles from 'assets/jss/components/users/usersStyles';
+import { isFav, addToFav, removeFromFav } from 'redux/favorites';
 
 const Users = props => {
 	//Hooks
@@ -19,6 +20,7 @@ const Users = props => {
 	const s = useSnackbar().s
 	const history = useHistory()
 	const classes = usersStyles()
+	const dispatch = useDispatch()
 	//Redux
 	const filters = useSelector(state => state.appState.filters.users)
 	//State
@@ -29,7 +31,7 @@ const Users = props => {
 	const [openDownload, setOpenDownload] = useState(false)
 
 	//Const
-	const { users, isFav, addToFav, removeFromFav, setHeader, setBC, reload } = props
+	const { users, setHeader, setBC, reload } = props
 
 	const dUserGroup = [
 		{ value: 136550100000143, label: t("users.groups.superUser") },
@@ -94,7 +96,7 @@ const Users = props => {
 				type: 'user',
 				path: `/management/user/${user.uuid}`
 			}
-			isFavorite = isFav(favObj)
+			isFavorite = dispatch(isFav(favObj))
 		}
 		return [
 			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
@@ -130,10 +132,10 @@ const Users = props => {
 		history.push(`/management/user/${selected[0]}/edit`)
 	}
 	const handleAddToFav = (favObj) => {
-		addToFav(favObj)
+		dispatch(addToFav(favObj))
 	}
 	const handleRemoveFromFav = (favObj) => {
-		removeFromFav(favObj)
+		dispatch(removeFromFav(favObj))
 	}
 	const handleCopyEmailsSelected = () => {
 		let fUsers = users.filter((el) => {
@@ -146,6 +148,7 @@ const Users = props => {
 		s('snackbars.emailsCopied')
 	}
 	const handleCheckboxClick = (event, id) => {
+		console.log(id)
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];

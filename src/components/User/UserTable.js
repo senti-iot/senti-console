@@ -118,7 +118,7 @@ class UserTable extends React.Component {
 						/>
 						<TableBody >
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-								const isSelected = this.isSelected(n.id);
+								const isSelected = this.isSelected(n.uuid);
 								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
 								return (
 									<TableRow
@@ -134,7 +134,7 @@ class UserTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.uuid)} />} />
 											<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 
 											<TC content={
@@ -153,7 +153,7 @@ class UserTable extends React.Component {
 											} />
 										</Hidden>
 										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.uuid)} />} />
 											<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 											<TC
 												onMouseEnter={e => { this.setHover(e, n) }}

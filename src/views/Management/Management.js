@@ -279,9 +279,9 @@ const Management = props => {
 	return (
 		<Fragment>
 			<Switch>
-				<Route path={`${match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
+				<Route path={`${match.url}/users/new`} render={(rp) => <CreateUser {...props} />} />
 				<Route path={`${match.url}/users`} render={(rp) => loadingUsers ? <CircularLoader /> : <Users {...props} reload={handleReload} users={handleFilterItems(users)} />} />
-				<Route path={`${match.url}/orgs/new`} component={(rp) => <CreateOrg {...rest} />} />
+				<Route path={`${match.url}/orgs/new`} component={(rp) => <CreateOrg {...props} />} />
 				<Route path={`${match.url}/orgs`} render={(rp) => loadingOrgs ? <CircularLoader /> : <Orgs {...props} reload={handleReload} orgs={handleFilterItems(orgs)} />} />
 				<Route path={`${match.url}/favorites`} render={() => renderFavorites()} />
 				<Redirect from={'/management'} to={'/management/users'} />
