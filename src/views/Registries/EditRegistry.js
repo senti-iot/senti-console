@@ -1,135 +1,188 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 // import UpdateRegistryForm from 'components/Collections/UpdateRegistryForm';
 import { getRegistryLS, getRegistries } from 'redux/data';
 import { updateRegistry } from 'variables/dataRegistry';
 import UpdateRegistryForm from 'components/Registry/CreateRegistryForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
+import { useSnackbar, useLocalization } from 'hooks';
 
-class UpdateRegistry extends Component {
-	constructor(props) {
-		super(props)
+// const mapStateToProps = (state) => ({
+// 	accessLevel: state.settings.user.privileges,
+// 	orgId: state.settings.user.org.id,
+// 	orgs: state.data.orgs,
+// 	registry: state.data.registry
+// })
 
-		this.state = {
-			loading: true,
-			registry: null,
-			org: null
-		}
-		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
-		props.setBC('updateregistry')
-		props.setTabs({
-			id: 'editRegistry',
-			tabs: []
-		})
-	}
+// const mapDispatchToProps = dispatch => ({
+// 	isFav: (favObj) => dispatch(isFav(favObj)),
+// 	updateFav: (favObj) => dispatch(updateFav(favObj)),
+// 	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
+// 	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua))
+// })
 
-	keyHandler = (e) => {
+// @Andrei, view line 77
+const UpdateRegistry = props => {
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const orgId = useSelector(state => state.settings.user.org.id)
+	const orgs = useSelector(state => state.data.orgs)
+	const registry = useSelector(state => state.data.registry)
+
+	const [loading, setLoading] = useState(true)
+	const [stateRegistry, setStateRegistry] = useState(null)
+	const [org, setOrg] = useState(null)
+
+	let id = props.match.params.id
+	let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
+	props.setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
+	props.setBC('updateregistry')
+	props.setTabs({
+		id: 'editRegistry',
+		tabs: []
+	})
+
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		loading: true,
+	// 		registry: null,
+	// 		org: null
+	// 	}
+	// 	this.id = props.match.params.id
+	// 	let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
+	// 	props.setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
+	// 	props.setBC('updateregistry')
+	// 	props.setTabs({
+	// 		id: 'editRegistry',
+	// 		tabs: []
+	// 	})
+	// }
+
+	const keyHandler = (e) => {
 		if (e.key === 'Escape') {
-			this.goToRegistries()
+			goToRegistries()
 		}
 	}
-	getData = async () => {
-		const { getRegistry } = this.props
-		await getRegistry(this.id)
+	const getData = async () => {
+		// const { getRegistry } = this.props
+		dispatch(await getRegistryLS(1, id))
+		// await getRegistry(this.id)
 	}
-	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, setBC, registry } = this.props
-		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
-			let orgs = this.props.orgs
-			this.setState({
-				registry: registry,
-				org: orgs[orgs.findIndex(o => o.id === registry.orgId)],
-				loading: false
-			})
-			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
-			setBC('editregistry', registry.name, registry.id)
-		}
-	}
-	componentDidMount = async () => {
-		this.getData()
-		window.addEventListener('keydown', this.keyHandler, false)
 
+	// TODO: I messed something up in this useEffect
+	useEffect(() => {
+		const { location } = props
+
+		if (registry || (stateRegistry === null && registry)) {
+			setStateRegistry(registry)
+			setOrg(orgs[orgs.findIndex(o => o.id === registry.orgId)])
+			setLoading(false)
+			let prevURL = location.prevURL ? location.prevURL : `/registry/${id}`
+			props.setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
+			props.setBC('editregistry', registry.name, registry.id)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [registry, stateRegistry])
+	// componentDidUpdate = (prevProps, prevState) => {
+	// 	const { location, setHeader, setBC, registry } = this.props
+	// 	if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
+	// 		let orgs = this.props.orgs
+	// 		this.setState({
+	// 			registry: registry,
+	// 			org: orgs[orgs.findIndex(o => o.id === registry.orgId)],
+	// 			loading: false
+	// 		})
+	// 		let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
+	// 		setHeader('menus.edits.registry', true, prevURL, 'manage.registries')
+	// 		setBC('editregistry', registry.name, registry.id)
+	// 	}
+	// }
+
+	useEffect(() => {
+		getData()
+		window.addEventListener('keydown', keyHandler, false)
+
+		return () => {
+			window.removeEventListener('keydown', keyHandler, false)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+	// componentDidMount = async () => {
+	// 	this.getData()
+	// 	window.addEventListener('keydown', this.keyHandler, false)
+
+	// }
+	// componentWillUnmount = () => {
+	// 	window.removeEventListener('keydown', this.keyHandler, false)
+	// }
+	const handleOrgChange = newOrg => {
+		setOrg(newOrg)
+		setStateRegistry({ ...stateRegistry, orgId: newOrg.id })
+		// this.setState({
+		// 	org,
+		// 	registry: {
+		// 		...this.state.registry,
+		// 		orgId: org.id
+		// 	}
+		// })
 	}
-	componentWillUnmount = () => {
-		window.removeEventListener('keydown', this.keyHandler, false)
+	const handleChange = (what) => e => {
+		setStateRegistry({ ...stateRegistry, [what]: e.target.value })
+		// this.setState({
+		// 	registry: {
+		// 		...this.state.registry,
+		// 		[what]: e.target.value
+		// 	}
+		// })
 	}
-	handleOrgChange = org => {
-		this.setState({
-			org,
-			registry: {
-				...this.state.registry,
-				orgId: org.id
-			}
-		})
+	const updateRegistryFunc = async () => {
+		return await updateRegistry(stateRegistry)
 	}
-	handleChange = (what) => e => {
-		this.setState({
-			registry: {
-				...this.state.registry,
-				[what]: e.target.value
-			}
-		})
-	}
-	updateRegistry = async () => {
-		return await updateRegistry(this.state.registry)
-	}
-	handleUpdate = async () => {
-		const { s, history, orgId, accessLevel } = this.props
-		let rs = await this.updateRegistry()
+	const handleUpdate = async () => {
+		const { history } = props
+		// const { s, history, orgId, accessLevel } = this.props
+		let rs = await updateRegistryFunc()
 		if (rs) {
-			const { isFav, updateFav } = this.props
-			const { registry } = this.state
+			// const { isFav, updateFav } = this.props
+			// const { registry } = this.state
 			let favObj = {
-				id: registry.id,
-				name: registry.name,
+				id: stateRegistry.id,
+				name: stateRegistry.name,
 				type: 'registry',
-				path: `/registry/${registry.id}`
+				path: `/registry/${stateRegistry.id}`
 			}
-			if (isFav(favObj)) {
-				updateFav(favObj)
+			if (dispatch(isFav(favObj))) {
+				dispatch(updateFav(favObj))
 			}
-			s('snackbars.edit.registry', { reg: registry.name })
-			this.props.getRegistries(true, orgId, accessLevel.apisuperuser ? true : false)
-			history.push(`/registry/${this.id}`)
+			s('snackbars.edit.registry', { reg: stateRegistry.name })
+			dispatch(await getRegistries(true, orgId, accessLevel.apisuperuser ? true : false))
+			// this.props.getRegistries(true, orgId, accessLevel.apisuperuser ? true : false)
+			history.push(`/registry/${id}`)
 		}
 		else
 			s('snackbars.failed')
 	}
-	goToRegistries = () => this.props.history.push('/registries')
-	render() {
-		const { t } = this.props
-		const { loading, registry, org } = this.state
-		return (loading ? <CircularLoader /> :
+	const goToRegistries = () => props.history.push('/registries')
 
-			<UpdateRegistryForm
-				org={org}
-				handleOrgChange={this.handleOrgChange}
-				registry={registry}
-				handleChange={this.handleChange}
-				handleCreate={this.handleUpdate}
-				goToRegistries={this.goToRegistries}
-				t={t}
-			/>
-		)
-	}
+	// const { t } = this.props
+	// const { loading, registry, org } = this.state
+	return (loading ? <CircularLoader /> :
+
+		<UpdateRegistryForm
+			org={org}
+			handleOrgChange={handleOrgChange}
+			registry={stateRegistry}
+			handleChange={handleChange}
+			handleCreate={handleUpdate}
+			goToRegistries={goToRegistries}
+			t={t}
+		/>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	orgId: state.settings.user.org.id,
-	orgs: state.data.orgs,
-	registry: state.data.registry
-})
-
-const mapDispatchToProps = dispatch => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj)),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
-	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateRegistry)
+export default UpdateRegistry
