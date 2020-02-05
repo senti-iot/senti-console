@@ -1,11 +1,12 @@
-import { api, servicesAPI } from './data'
+import { api, servicesAPI, coreServicesAPI } from './data'
 import { del } from './storage';
 
 /**
  * @function getAllOrgs Get all organizations
  */
 export const getAllOrgs = async () => {
-	var data = await api.get(`core/orgs`).then(rs => rs.data)
+	// var data = await api.get(`core/orgs`).then(rs => rs.data)
+	var data = await coreServicesAPI.get('/entity/organisations').then(rs => rs.data)
 	return data
 }
 

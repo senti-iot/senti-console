@@ -1,5 +1,5 @@
 import cookie from 'react-cookies';
-import { getUser, getValidSession } from 'variables/dataUsers'
+import { getUser, getValidSession,/*  getNUser, */ getLoginUser, setSettings } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
@@ -84,7 +84,10 @@ export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
 		let s = getState().settings
-		let settings = {
+		let internal = user.internal || {}
+		internal.senti = internal.senti || {}
+		internal.senti.settings = {
+			language: s.language,
 			weekendColor: s.weekendColor,
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
@@ -113,18 +116,76 @@ export const saveSettingsOnServ = () => {
 			globalSearch: s.globalSearch,
 			dsTheme: s.dsTheme
 		}
-		user.aux = user.aux ? user.aux : {}
-		user.aux.senti = user.aux.senti ? user.aux.senti : {}
-		user.aux.senti.settings = settings
-		user.aux.odeum.language = s.language
-		var saved = await saveSettings(user);
+		// user.aux = user.aux ? user.aux : {}
+		// user.aux.senti = user.aux.senti ? user.aux.senti : {}
+		// user.aux.senti.settings = settings
+		// user.aux.odeum.language = s.language
+		var saved = await setSettings(internal, user.uuid);
 		dispatch({
 			type: SAVESETTINGS,
 			saved: saved ? true : false
 		})
 	}
 }
-export const getSettings = async () => {
+export const getNSettings = async () => {
+	return async (dispatch, getState) => {
+		// let userUUID = uuid
+		let user = await getLoginUser()
+		if (user) {
+			user.internal = user.internal || {}
+			user.internal.senti = user.internal.senti || {}
+			// user.internal.senti.settings = user.internal.senti.settings || { ...getState().settings }
+			if (!user.internal.senti.settings) {
+				let internal = {}
+				internal.senti = {}
+				internal.senti.settings = { ...getState().settings }
+				let SSettings = await setSettings(internal, user.uuid)
+				console.log(SSettings)
+				if (SSettings)
+					dispatch({
+						type: NOSETTINGS,
+						user,
+						settings: internal.senti.settings
+					})
+				else {
+					alert('Shit hit the fan')
+				}
+			}
+			else {
+
+				let settings = user.internal.senti.settings
+				dispatch({
+					type: GetSettings,
+					settings: settings,
+					user: user
+				})
+			}
+			moment.updateLocale('en-gb', {
+				week: {
+					dow: 1
+				}
+			})
+			moment.locale(settings.language === 'en' ? 'en-gb' : settings.language)
+
+			return true
+		}
+		else {
+			moment.locale('da')
+			let s = {
+				...getState().settings,
+			}
+			dispatch({
+				type: NOSETTINGS,
+				user,
+				settings: s
+			})
+			return false
+		}
+		// dispatch(await getAllData(true, user.org.id, true))
+
+	}
+}
+export const getSettings = async (uuid) => {
 	return async (dispatch, getState) => {
 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
 		if (sessionCookie) {

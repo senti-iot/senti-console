@@ -7,9 +7,9 @@ import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 import { makeStyles } from '@material-ui/core/styles'
 import cookie from 'react-cookies';
-import { getSettings } from 'redux/settings';
+import { /* getSettings, */ getNSettings } from 'redux/settings';
 import { Close } from 'variables/icons';
-import { getDaysOfInterest } from 'redux/doi';
+// import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
 import Sidebar from 'components/Sidebar/Sidebar';
 import BC from 'components/Breadcrumbs/BC';
@@ -122,13 +122,18 @@ function App(props) {
 	useEffect(() => {
 		if (defaultRoute === '/')
 			handleSetHeaderTitle('', false, '', 'dashboard')
-
 		const getS = async () => {
-			dispatch(await getSettings()).then(async rs => {
-				await dispatch(getDaysOfInterest())
+			dispatch(await getNSettings()).then(async rs => {
+
 			})
 		}
 		getS()
+		// const getS = async () => {
+		// 	dispatch(await getSettings()).then(async rs => {
+		// 		await dispatch(getDaysOfInterest())
+		// 	})
+		// }
+		// getS()
 	}, [dispatch, handleSetHeaderTitle, defaultRoute])
 
 	return (

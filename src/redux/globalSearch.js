@@ -17,7 +17,7 @@ export const setSearchValue = (value) => {
 		})
 	}
 }
-export const getSuggestions = () => 
+export const getSuggestions = () =>
 	(dispatch, getState) => {
 		let projects = getState().data.projects
 		let devices = getState().data.devices
@@ -57,8 +57,8 @@ export const getSuggestions = () =>
 			})
 		})
 		users.forEach(p => {
-			delete p.aux.senti
-			delete p.groups
+			// delete p.aux.senti
+			// delete p.groups
 			uSuggestions.push({
 				label: `${p.firstName} ${p.lastName}`,
 				path: `/management/user/${p.id}`,
@@ -74,30 +74,30 @@ export const getSuggestions = () =>
 				values: globalSuggestionGen(p)
 			})
 		})
-		
+
 		// suggestions.push(...globalSuggestionGen(projects))
 		// suggestions.push(...globalSuggestionGen(devices))
 		// suggestions.push(...globalSuggestionGen(collections))
 		// suggestions.push(...globalSuggestionGen(users))
 		// suggestions.push(...globalSuggestionGen(orgs))
 		suggestions = [
-			{ 
+			{
 				title: 'sidebar.projects',
-				suggestions: pSuggestions 
+				suggestions: pSuggestions
 			},
-			{ 
+			{
 				title: 'sidebar.devices',
 				suggestions: dSuggestions
 			},
-			{ 
+			{
 				title: 'sidebar.collections',
 				suggestions: cSuggestions
 			},
-			{ 
+			{
 				title: 'sidebar.users',
 				suggestions: uSuggestions
 			},
-			{ 
+			{
 				title: 'sidebar.orgs',
 				suggestions: oSuggestions
 			},
@@ -116,7 +116,7 @@ const initialState = {
 
 export const globalSearch = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case setVal: 
+		case setVal:
 			return Object.assign({}, state, { searchVal: payload })
 		case getS:
 			return Object.assign({}, state, { suggestions: payload })

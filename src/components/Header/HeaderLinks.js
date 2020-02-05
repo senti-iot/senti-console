@@ -91,7 +91,7 @@ class HeaderLinks extends React.Component {
 		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
-
+		console.log(user)
 		return <div>
 			<Tooltip title={t('menus.user.profile')}>
 
@@ -138,9 +138,10 @@ class HeaderLinks extends React.Component {
 				<MenuItem onClick={this.handleRedirectToOwnProfile}>
 					<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
 				</MenuItem>
-				{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
+				{/* user ? user.privileges.apiorg.editusers ? */}
+				<MenuItem onClick={this.handleRedirectToOwnOrg}>
 					<Business className={classes.leftIcon} />{t('menus.user.account')}
-				</MenuItem> : null : null}
+				</MenuItem> {/* : null : null} */}
 				<MenuItem onClick={this.handleSettingsOpen}>
 					<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 				</MenuItem>

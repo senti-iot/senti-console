@@ -1,4 +1,4 @@
-import { loginApi, api } from './data';
+import { loginApi, api, coreServicesAPI } from './data';
 import cookie from 'react-cookies';
 
 /**
@@ -8,6 +8,11 @@ import cookie from 'react-cookies';
  */
 export const loginUser = async (username, password) => {
 	var session = await loginApi.post('odeum/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
+	return session
+}
+export const nLoginUser = async (username, password) => {
+	var session = await coreServicesAPI.post('/auth/basic', { username, password }).then(rs => rs.data)
+	console.log(session)
 	return session
 }
 export const loginUserViaGoogle = async (token) => {
