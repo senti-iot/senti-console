@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { getAllPictures, deletePicture } from 'variables/dataDevices';
 import { Grid, withStyles, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
@@ -8,75 +8,102 @@ import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Caption, Dropdown } from 'components';
 import DeviceImageUpload from 'views/Devices/ImageUpload';
+import { useLocalization, useSnackbar } from 'hooks';
 
-class DeviceImages extends PureComponent {
-	constructor(props) {
-		super(props)
+const DeviceImages = props => {
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const [activeStep, setActiveStep] = useState(0)
+	const [img, setImg] = useState(null)
+	const [openImageUpload, setOpenImageUpload] = useState(false)
+	const [openDeleteImage, setOpenDeleteImage] = useState(false)
+	const [/* deletingPicture */, setDeletingPicture] = useState(false)
+	// const [deleted, setDeleted] = useState(null)
+	const [openSnackbar, setOpenSnackbar] = useState(0)
+	// constructor(props) {
+	// 	super(props)
 
-		this.state = {
-			activeStep: 0,
-			img: null,
-			openImageUpload: false,
-			openDeleteImage: false,
-			deletingPicture: false,
-			deleted: null,
-			openSnackbar: 0
-		}
-	}
+	// 	this.state = {
+	// 		activeStep: 0,
+	// 		img: null,
+	// 		openImageUpload: false,
+	// 		openDeleteImage: false,
+	// 		deletingPicture: false,
+	// 		deleted: null,
+	// 		openSnackbar: 0
+	// 	}
+	// }
 
-	handleStepChange = activeStep => {
-		this.setState({ activeStep });
+	const handleStepChange = newActiveStep => {
+		setActiveStep(newActiveStep)
+		// this.setState({ activeStep });
 	};
-	componentDidMount = async () => {
-		this._isMounted = 1
-		await this.getAllPics(this.props.device.id)
+	useEffect(() => {
+		const asyncFunc = async () => {
+			await getAllPics(props.device.id)
+		}
+		asyncFunc()
+	}, [props.device.id])
+	// componentDidMount = async () => {
+	// 	this._isMounted = 1
+	// 	await this.getAllPics(this.props.device.id)
+	// }
+	// componentWillUnmount = () => {
+	// 	this._isMounted = 0
+	// }
+	const getPicsCallBack = () => {
+		getAllPics(props.device.id)
 	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
-	}
-	getPicsCallBack = () => {
-		this.getAllPics(this.props.device.id)
-	}
-	renderImageUpload = (dId) => {
-
+	const renderImageUpload = (dId) => {
 		return <DeviceImageUpload
-			t={this.props.t}
+			t={t}
 			dId={dId}
-			imgUpload={this.getAllPics}
-			callBack={this.getPicsCallBack}
+			imgUpload={getAllPics}
+			callBack={getPicsCallBack}
 		/>
 	}
-	getAllPics = (id) => {
-		getAllPictures(id).then(rs => { return this._isMounted ? this.setState({ img: rs }) : null})
+	const getAllPics = (id) => {
+		getAllPictures(id).then(rs => { return setImg(rs) })
 	}
-	handleOpenImageUpload = () => {
-		this.setState({ openImageUpload: true })
+	const handleOpenImageUpload = () => {
+		setOpenImageUpload(true)
+		// this.setState({ openImageUpload: true })
 	}
-	handleOpenDeletePictureDialog = () => {
-		this.setState({ openDeleteImage: true })
+	const handleOpenDeletePictureDialog = () => {
+		setOpenDeleteImage(true)
+		// this.setState({ openDeleteImage: true })
 	}
-	handleCloseDeletePictureDialog = () => {
-		this.setState({ openDeleteImage: false })
+	const handleCloseDeletePictureDialog = () => {
+		setOpenDeleteImage(false)
+		// this.setState({ openDeleteImage: false })
 	}
-	handleCloseImageUpload = () => {
-		this.setState({ openImageUpload: false })
+	const handleCloseImageUpload = () => {
+		setOpenImageUpload(false)
+		// this.setState({ openImageUpload: false })
 	}
-	handleDeletePicture = async () => {
-		const { img, activeStep } = this.state
-		const dId = this.props.device.id
-		this.setState({ deletingPicture: true })
+	const handleDeletePicture = async () => {
+		// const { img, activeStep } = this.state
+		const dId = props.device.id
+		setDeletingPicture(true)
+		// this.setState({ deletingPicture: true })
 		var deleted = await deletePicture(dId, img[activeStep].filename).then(rs => rs)
 		if (deleted) {
-			this.setState({ img: null, openDeleteImage: false, openSnackbar: 1 })
-			this.getAllPics(dId)
+			setImg(null)
+			setOpenDeleteImage(false)
+			setOpenSnackbar(1)
+			// this.setState({ img: null, openDeleteImage: false, openSnackbar: 1 })
+			getAllPics(dId)
 		}
 		else {
-			this.setState({ openSnackbar: 2, openDeleteImage: false })
+			setOpenSnackbar(2)
+			setOpenDeleteImage(false)
+			// this.setState({ openSnackbar: 2, openDeleteImage: false })
 		}
 	}
-	snackBarMessages = () => {
-		const { s } = this.props
-		let msg = this.state.openSnackbar
+	// eslint-disable-next-line no-unused-vars
+	const snackBarMessages = () => {
+		// const { s } = this.props
+		let msg = openSnackbar
 		switch (msg) {
 			case 1:
 				s('snackbars.pictureDeleted')
@@ -88,14 +115,14 @@ class DeviceImages extends PureComponent {
 				break;
 		}
 	}
-	renderImageLoader = () => {
+	const renderImageLoader = () => {
 		return <CircularLoader fill />
 	}
-	renderDeleteDialog = () => {
-		const { t } = this.props
+	const renderDeleteDialog = () => {
+		// const { t } = this.props
 		return <Dialog
-			open={this.state.openDeleteImage}
-			onClose={this.handleCloseImageDelete}
+			open={openDeleteImage}
+			// onClose={handleCloseImageDelete}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -106,10 +133,10 @@ class DeviceImages extends PureComponent {
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeletePictureDialog} color='primary'>
+				<Button onClick={handleCloseDeletePictureDialog} color='primary'>
 					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeletePicture} color='primary' autoFocus>
+				<Button onClick={handleDeletePicture} color='primary' autoFocus>
 					{t('actions.yes')}
 				</Button>
 			</DialogActions>
@@ -117,49 +144,47 @@ class DeviceImages extends PureComponent {
 	}
 
 
-	render() {
-		const { openImageUpload, img } = this.state
-		const { classes, device, t  } = this.props
-		return (
-			<InfoCard
-				noHiddenPadding
-				noPadding
-				title={t('devices.cards.pictures')}
-				avatar={<Image />}
-				topAction={
-					<Dropdown menuItems={
-						[
-							{ label: t('actions.uploadImages'), icon: <CloudUpload className={classes.leftIcon} />, func: this.handleOpenImageUpload },
-							{ label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
-						]
-					} />
-				}
-				hiddenContent={
-					<Fragment>
-						{img !== null ? img !== 0 ?
-							<Fragment>
-								{this.renderDeleteDialog()}
-								<Grid container justify={'center'}>
-									<DeviceImage
-										t={this.props.t}
-										useParent
-										handleStep={this.handleStepChange}
-										images={img ? img.map(m => m.image) : null} />
-								</Grid>
-							</Fragment>
-							: <Grid container justify={'center'}> <Caption>{t('devices.noImages')}</Caption></Grid> : this.renderImageLoader()}
-						<Modal
-							aria-labelledby='simple-modal-title'
-							aria-describedby='simple-modal-description'
-							open={openImageUpload}
-							onClose={this.handleCloseImageUpload}>
-							<div className={classes.modal}>
-								{this.renderImageUpload(device.id)}
-							</div>
-						</Modal>
-					</Fragment>}
-			/>
-		)
-	}
+	// const { openImageUpload, img } = this.state
+	const { classes, device } = props
+	return (
+		<InfoCard
+			noHiddenPadding
+			noPadding
+			title={t('devices.cards.pictures')}
+			avatar={<Image />}
+			topAction={
+				<Dropdown menuItems={
+					[
+						{ label: t('actions.uploadImages'), icon: <CloudUpload className={classes.leftIcon} />, func: handleOpenImageUpload },
+						{ label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeletePictureDialog },
+					]
+				} />
+			}
+			hiddenContent={
+				<Fragment>
+					{img !== null ? img !== 0 ?
+						<Fragment>
+							{renderDeleteDialog()}
+							<Grid container justify={'center'}>
+								<DeviceImage
+									t={t}
+									useParent
+									handleStep={handleStepChange}
+									images={img ? img.map(m => m.image) : null} />
+							</Grid>
+						</Fragment>
+						: <Grid container justify={'center'}> <Caption>{t('devices.noImages')}</Caption></Grid> : renderImageLoader()}
+					<Modal
+						aria-labelledby='simple-modal-title'
+						aria-describedby='simple-modal-description'
+						open={openImageUpload}
+						onClose={handleCloseImageUpload}>
+						<div className={classes.modal}>
+							{renderImageUpload(device.id)}
+						</div>
+					</Modal>
+				</Fragment>}
+		/>
+	)
 }
 export default withStyles(deviceStyles)(DeviceImages)

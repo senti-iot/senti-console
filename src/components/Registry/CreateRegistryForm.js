@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react'
+/* eslint-disable no-unused-vars */
+import React, { useState, Fragment } from 'react'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
@@ -8,31 +9,38 @@ import { GridContainer, ItemGrid, TextF, ItemG, DSelect, SlideT } from 'componen
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
+import { useLocalization } from 'hooks'
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
-class CreateRegistryForm extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			filters: {
-				keyword: ''
-			},
-			openOrg: false
-		}
-	}
+// @Andrei
+const CreateRegistryForm = props => {
+	const t = useLocalization()
+	const [filters, setFilters] = useState({ keyword: '' })
+	const [openOrg, setOpenOrg] = useState(false)
+	// constructor(props) {
+	// 	super(props)
 
-	handleFilterKeyword = value => {
-		this.setState({
-			filters: {
-				keyword: value
-			}
-		})
+	// 	this.state = {
+	// 		filters: {
+	// 			keyword: ''
+	// 		},
+	// 		openOrg: false
+	// 	}
+	// }
+
+	const handleFilterKeyword = value => {
+		setFilters({ ...filters, keyword: value })
+		// this.setState({
+		// 	filters: {
+		// 		keyword: value
+		// 	}
+		// })
 	}
-	renderSelectDevice = () => {
-		const { t, openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = this.props
-		const { filters } = this.state
+	const renderSelectDevice = () => {
+		const { openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = props
+		// const { filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -59,7 +67,7 @@ class CreateRegistryForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -81,7 +89,7 @@ class CreateRegistryForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -100,8 +108,8 @@ class CreateRegistryForm extends Component {
 			</List>
 		</Dialog>
 	}
-	renderProtocol = () => {
-		const { t, registry, handleChange } = this.props
+	const renderProtocol = () => {
+		const { registry, handleChange } = props
 		return <DSelect
 			margin={'normal'}
 			label={t('registries.fields.protocol')}
@@ -115,8 +123,8 @@ class CreateRegistryForm extends Component {
 			]}
 		/>
 	}
-	renderRegion = () => {
-		const { t, registry, handleChange } = this.props
+	const renderRegion = () => {
+		const { registry, handleChange } = props
 		return <DSelect
 			margin={'normal'}
 			label={t('registries.fields.region')}
@@ -130,8 +138,8 @@ class CreateRegistryForm extends Component {
 			]}
 		/>
 	}
-	renderSelectState = () => {
-		const { t, collection, handleChange } = this.props
+	const renderSelectState = () => {
+		const { collection, handleChange } = props
 		return <DSelect
 			margin={'normal'}
 			label={t('collections.fields.status')}
@@ -143,65 +151,64 @@ class CreateRegistryForm extends Component {
 			]}
 		/>
 	}
-	render() {
-		const { t, org, handleOrgChange, handleChange, registry, classes, handleCreate, goToRegistries } = this.props
-		return (
-			<GridContainer>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<Grid container>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'registryName'}
-									label={t('collections.fields.name')}
-									onChange={handleChange('name')}
-									value={registry.name}
-									autoFocus
-								/>
-							</ItemGrid>
 
-							<ItemGrid xs={12}>
-								{this.renderRegion()}
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderProtocol()}
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									value={org.name}
-									onClick={() => this.setState({ openOrg: true })}
-									readonly
-								/>
-								<AssignOrgDialog
-									t={t}
-									open={this.state.openOrg}
-									handleClose={() => this.setState({ openOrg: false })}
-									callBack={org => { this.setState({ openOrg: false }); handleOrgChange(org) }}
-								/>
-							</ItemGrid>
+	const { org, handleOrgChange, handleChange, registry, classes, handleCreate, goToRegistries } = props
+	return (
+		<GridContainer>
+			<Paper className={classes.paper}>
+				<form className={classes.form}>
+					<Grid container>
+						<ItemGrid xs={12}>
+							<TextF
+								id={'registryName'}
+								label={t('collections.fields.name')}
+								onChange={handleChange('name')}
+								value={registry.name}
+								autoFocus
+							/>
+						</ItemGrid>
 
-							<ItemGrid container style={{ margin: 16 }}>
-								<div className={classes.wrapper}>
-									<Button
-										variant='outlined'
-										onClick={goToRegistries}
-										className={classes.redButton}
-									>
-										{t('actions.cancel')}
-									</Button>
-								</div>
-								<div className={classes.wrapper}>
-									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-										{t('actions.save')}
-									</Button>
-								</div>
-							</ItemGrid>
-						</Grid>
-					</form>
-				</Paper>
-			</GridContainer>
-		)
-	}
+						<ItemGrid xs={12}>
+							{renderRegion()}
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{renderProtocol()}
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<TextF
+								value={org.name}
+								onClick={() => setOpenOrg(true)}
+								readonly
+							/>
+							<AssignOrgDialog
+								t={t}
+								open={openOrg}
+								handleClose={() => setOpenOrg(false)}
+								callBack={org => { setOpenOrg(false); handleOrgChange(org) }}
+							/>
+						</ItemGrid>
+
+						<ItemGrid container style={{ margin: 16 }}>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
+									onClick={goToRegistries}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
+							<div className={classes.wrapper}>
+								<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+									{t('actions.save')}
+								</Button>
+							</div>
+						</ItemGrid>
+					</Grid>
+				</form>
+			</Paper>
+		</GridContainer>
+	)
 }
 
 
