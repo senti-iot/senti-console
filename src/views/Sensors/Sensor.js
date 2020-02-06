@@ -21,7 +21,7 @@ import { getSensorMessages } from "variables/dataSensors"
 import { deleteSensor } from "variables/dataSensors"
 import SensorChart from "views/Charts/SensorChart"
 import { useLocalization, useSnackbar } from "hooks"
-import { useRouteMatch, useHistory } from "react-router-dom"
+import { useRouteMatch, useHistory, useLocation } from "react-router-dom"
 
 const Sensor = props => {
 	//Hooks
@@ -29,7 +29,7 @@ const Sensor = props => {
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const match = useRouteMatch()
-	// const params = useParams()
+	const location = useLocation()
 	const history = useHistory()
 	//Redux
 	const accessLevel = useSelector(s => s.settings.user.privileges)
@@ -65,11 +65,13 @@ const Sensor = props => {
 				hashLinks: true
 			})
 			props.setBC('sensor', sensor.name)
-
+			let prevURL = location.state ? location.prevURL : `/devices/list`
+			props.setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
-	}, [props, sensor, t])
+	}, [location, props, sensor, t])
+
 	useEffect(() => {
-		const getSensors = async () => {
+		const gSensor = async () => {
 			if (props.match) {
 				let id = props.match.params.id
 				if (id) {
@@ -81,8 +83,7 @@ const Sensor = props => {
 				}
 			}
 		}
-
-		getSensors()
+		gSensor()
 		//eslint-disable-next-line
 	}, [])
 
