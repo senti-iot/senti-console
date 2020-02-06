@@ -15,26 +15,16 @@ import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 import { CircularLoader } from 'components';
 import { useSnackbar, useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	saved: state.favorites.saved
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
 
 const SensorHover = props => {
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
 	const saved = useSelector(state => state.favorites.saved)
+	const { anchorEl, classes, device } = props
 
 	useEffect(() => {
 		if (saved === true) {
-			const { device } = props
 			if (device) {
 
 				if (dispatch(isFav({ id: device.id, type: 'sensor' }))) {
@@ -47,7 +37,7 @@ const SensorHover = props => {
 				}
 			}
 		}
-	}, [dispatch, props, s, saved, t])
+	}, [dispatch, s, saved, t, device])
 	// componentDidUpdate = () => {
 	// 	if (this.props.saved === true) {
 	// 		const { device } = this.props
@@ -65,7 +55,6 @@ const SensorHover = props => {
 	// 	}
 	// }
 	const addToFavorites = () => {
-		const { device } = props
 		let favObj = {
 			id: device.id,
 			name: device.name,
@@ -75,7 +64,6 @@ const SensorHover = props => {
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
-		const { device } = props
 		let favObj = {
 			id: device.id,
 			name: device.name,
@@ -83,13 +71,15 @@ const SensorHover = props => {
 			path: `/sensor/${device.id}`
 		}
 		dispatch(removeFromFav(favObj))
-
+	}
+	const isFavorite = () => {
+		console.log(device.id, dispatch(isFav({ id: device.id, type: 'sensor' })))
+		return dispatch(isFav({ id: device.id, type: 'sensor' }))
 	}
 	const handleClose = () => {
 		props.handleClose()
 	};
 	const renderCommunication = (val) => {
-		const { classes } = props
 		switch (val) {
 			case 0:
 				return <ItemG container>
@@ -109,20 +99,17 @@ const SensorHover = props => {
 				break;
 		}
 	}
-	// eslint-disable-next-line no-unused-vars
-	const renderSmallCommunication = (val) => {
-		const { classes } = props
-		switch (val) {
-			case 0:
-				return <ItemG container><Block className={classes.blocked + ' ' + classes.smallIcon} /></ItemG>
-			case 1:
-				return <ItemG container><CheckCircle className={classes.allowed + ' ' + classes.smallIcon} /></ItemG>
-			default:
-				break;
-		}
-	}
+	// const renderSmallCommunication = (val) => {
+	// 	switch (val) {
+	// 		case 0:
+	// 			return <ItemG container><Block className={classes.blocked + ' ' + classes.smallIcon} /></ItemG>
+	// 		case 1:
+	// 			return <ItemG container><CheckCircle className={classes.allowed + ' ' + classes.smallIcon} /></ItemG>
+	// 		default:
+	// 			break;
+	// 	}
+	// }
 
-	const { anchorEl, classes, device } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}
@@ -175,19 +162,12 @@ const SensorHover = props => {
 										</Button>
 									</ItemG>
 									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-										<Tooltip placement="top" title={isFav({ id: device.id, type: 'device' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-											<IconButton className={classes.smallAction} onClick={isFav({ id: device.id, type: 'device' }) ? this.removeFromFav : this.addToFav}>
-												{isFav({ id: device.id, type: 'device' }) ? <Star /> : <StarBorder />}
+										<Tooltip placement="top" title={isFavorite() ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={isFavorite() ? removeFromFavorites : addToFavorites}>
+												{isFavorite() ? <Star /> : <StarBorder />}
 											</IconButton>
 										</Tooltip>
 									</ItemG>
-								</ItemG>
-								<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-									<Tooltip placement="top" title={dispatch(isFav({ id: device.id, type: 'device' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-										<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: device.id, type: 'device' })) ? removeFromFavorites : addToFavorites}>
-											{dispatch(isFav({ id: device.id, type: 'device' })) ? <Star /> : <StarBorder />}
-										</IconButton>
-									</Tooltip>
 								</ItemG>
 							</Fragment>
 							: <CircularLoader fill />}

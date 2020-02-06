@@ -153,7 +153,7 @@ class Sensors extends Component {
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	snackBarMessages = (msg) => {
-		const {/*  devices, */ s } = this.props
+		const { /*  devices, */ s } = this.props
 		// const { selected } = this.state
 		switch (msg) {
 			case 1:

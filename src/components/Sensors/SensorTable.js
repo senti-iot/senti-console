@@ -5,7 +5,6 @@ import {
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment, useState } from 'react'
-import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption, ItemG } from 'components'
@@ -23,19 +22,18 @@ import { useLocalization } from 'hooks'
 // })
 
 const SensorTable = props => {
+	//Hooks
 	const t = useLocalization()
+
+	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	const hoverTime = useSelector(state => state.settings.hoverTime)
 
+	//State
 	const [page, setPage] = useState(0)
 	const [rowHover, setRowHover] = useState(null) // added
 	const [hoverSensor, setHoverSensor] = useState(null) // added
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		page: 0,
-	// 	}
-	// }
+	//Const
 
 	let timer = null
 
@@ -60,14 +58,14 @@ const SensorTable = props => {
 					// 	rowHover: null
 					// })
 					setTimeout(() => {
-						setRowHover(e.target)
 						setHoverSensor(n)
+						setRowHover(e.target)
 						// this.setState({ rowHover: e.target, hoverSensor: n })
 					}, 200);
 				}
 				else {
-					setRowHover(e.target)
 					setHoverSensor(n)
+					setRowHover(e.target)
 					// this.setState({ rowHover: e.target, hoverSensor: n })
 				}
 			}, hoverTime);
@@ -230,4 +228,4 @@ SensorTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(SensorTable))
+export default withStyles(devicetableStyles, { withTheme: true })(SensorTable)
