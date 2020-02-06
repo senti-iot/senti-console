@@ -15,16 +15,12 @@ import TC from 'components/Table/TC';
 import SensorHover from 'components/Hover/SensorHover';
 import { dateFormatter } from 'variables/functions';
 import { useLocalization } from 'hooks'
-
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-// 	hoverTime: state.settings.hoverTime
-// })
+import sensorsStyles from 'assets/jss/components/devices/sensorsStyles'
 
 const SensorTable = props => {
 	//Hooks
 	const t = useLocalization()
-
+	const classes = sensorsStyles()
 	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	const hoverTime = useSelector(state => state.settings.hoverTime)
@@ -34,6 +30,7 @@ const SensorTable = props => {
 	const [rowHover, setRowHover] = useState(null) // added
 	const [hoverSensor, setHoverSensor] = useState(null) // added
 	//Const
+	const { handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
 
 	let timer = null
 
@@ -97,7 +94,6 @@ const SensorTable = props => {
 	// 	}
 	// }
 	const renderSmallCommunication = (val) => {
-		const { classes } = props
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /></ItemG>
@@ -108,7 +104,6 @@ const SensorTable = props => {
 		}
 	}
 	const renderCommunication = (val) => {
-		const { classes } = props
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /> {t('sensors.fields.communications.blocked')}</ItemG>
@@ -119,11 +114,9 @@ const SensorTable = props => {
 		}
 	}
 	const handleSelectAllClick = (event, checked) => {
-		const { data } = props
 		let selected = data.map(d => d.id)
 		props.handleSelectAllClick(selected, checked)
 	}
-	const { classes, handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
 	let emptyRows;
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -142,7 +135,6 @@ const SensorTable = props => {
 						rowCount={data ? data.length : 0}
 						columnData={props.tableHead}
 						t={t}
-						classes={classes}
 						customColumn={[
 							{
 								id: 'communication',
@@ -215,7 +207,6 @@ const SensorTable = props => {
 			</div>
 			<TP
 				count={data ? data.length : 0}
-				classes={classes}
 				page={page}
 				t={t}
 				handleChangePage={handleChangePage}

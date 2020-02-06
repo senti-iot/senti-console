@@ -7,7 +7,7 @@ import { compose } from "recompose"
 // import EditRegistry from 'views/Registries/EditRegistry';
 // import Registry from 'views/Registries/Registry';
 // import Sensor from 'views/Sensors/Sensor';
-import Sensor from "views/Sensors/SensorH"
+import Sensor from "views/Sensors/Sensor"
 import EditSensor from "views/Sensors/EditSensor"
 
 const registry = props => {
