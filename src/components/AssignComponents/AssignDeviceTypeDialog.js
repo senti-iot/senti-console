@@ -1,30 +1,23 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-// import { getAllDeviceTypes } from 'variables/dataDeviceTypes';
 import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
-import assignStyles from 'assets/jss/components/assign/assignStyles';
+import assignStyles from 'assets/jss/components/assign/assignStylesHooks';
 import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP';
 import { useLocalization } from 'hooks'
 
-// const mapStateToProps = (state, props) => ({
-// 	deviceTypes: state.data.deviceTypes,
-// 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-// })
-
-// this used to be a PureComponent, so hopefully the usage of memo is correct here
-const AssignDeviceTypeDialog = React.memo(props => {
+const AssignDeviceTypeDialog = props => {
+	//Hooks
 	const t = useLocalization()
+	const classes = assignStyles()
+	//Redux
 	const deviceTypes = useSelector(state => state.data.deviceTypes)
-	// const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 
-	// const [stateDeviceTypes, setStateDeviceTypes] = useState([])
-	const [selectedDeviceType, /*setSelectedDeviceType*/] = useState(null)
+	//State
 	const [page, setPage] = useState(0)
 	const [filters, setFilters] = useState({
 		keyword: '',
@@ -32,57 +25,29 @@ const AssignDeviceTypeDialog = React.memo(props => {
 		endDate: null,
 		activeDateFilter: false
 	})
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		deviceTypes: [],
-	// 		selectedDeviceType: null,
-	// 		page: 0,
-	// 		filters: {
-	// 			keyword: '',
-	// 			startDate: null,
-	// 			endDate: null,
-	// 			activeDateFilter: false
-	// 		}
-	// 	}
-	// }
-	// componentDidMount = async () => {
-	// 	this._isMounted = 1
-	// 	// await getAllDeviceTypes().then(rs => this._isMounted ? this.setState({ deviceTypes: rs }) : null)
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
+	//Const
+	const { open } = props;
+
+	//Handlers
+
 	const assignDeviceType = sId => e => {
-		// let sId = this.state.selectedDeviceType
-		let deviceTypes = props.deviceTypes
 		let org = deviceTypes[deviceTypes.findIndex(o => o.id === sId)]
 		props.callBack(org)
 	}
-	// const selectDeviceType = pId => e => {
-	// 	e.preventDefault()
-	// 	setSelectedDeviceType(pId)
-	// 	// this.setState({ selectedDeviceType: pId })
-	// }
+
 	const closeDialog = () => {
 		props.handleClose(false)
 	}
 	const handleFilterKeyword = value => {
 		setFilters({ ...filters, keyword: value })
-		// this.setState({
-		// 	filters: {
-		// 		...this.state.filters,
-		// 		keyword: value
-		// 	}
-		// })
+
 	}
 	const handleChangePage = (event, newpage) => {
 		setPage(newpage)
 		// this.setState({ page });
 	}
 
-	const { classes, open } = props;
 
 	let height = window.innerHeight
 	let rows = Math.round((height - 85 - 49 - 49) / 49)
@@ -152,19 +117,8 @@ const AssignDeviceTypeDialog = React.memo(props => {
 			<List>
 				{deviceTypes ? filterItems(deviceTypes, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={assignDeviceType(p.id)} value={p.id}
-							classes={{
-								root: selectedDeviceType === p.id ? classes.selectedItem : null
-							}}
-						>
-							<ListItemText
-								primaryTypographyProps={{
-									className: selectedDeviceType === p.id ? classes.selectedItemText : null
-								}}
-								secondaryTypographyProps={{
-									classes: { root: selectedDeviceType === p.id ? classes.selectedItemText : null }
-								}}
-								primary={p.name} />
+						<ListItem button onClick={assignDeviceType(p.id)} value={p.id}>
+							<ListItemText primary={p.name} />
 						</ListItem>
 						<Divider />
 					</Fragment>
@@ -181,10 +135,7 @@ const AssignDeviceTypeDialog = React.memo(props => {
 		</Dialog>
 
 	);
-})
+}
 
-AssignDeviceTypeDialog.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
 
-export default withStyles(assignStyles)(AssignDeviceTypeDialog)
+export default React.memo(AssignDeviceTypeDialog)
