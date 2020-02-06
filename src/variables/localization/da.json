@@ -475,8 +475,8 @@
 		"types": {
 			"collection": "Datasamling",
 			"device": "Enhed",
-			"deviceType": "Enhedstype",
-			"function": "Cloud funktion",
+			"devicetype": "Enhedstype",
+			"cloudfunction": "Cloud funktion",
 			"org": "Organisation",
 			"project": "Projekt",
 			"registry": "Register",

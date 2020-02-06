@@ -12,27 +12,7 @@ import FunctionCode from './CloudCards/FunctionCode';
 import FunctionDetails from './CloudCards/FunctionDetails';
 import { deleteCFunction } from 'variables/dataFunctions';
 import { useLocalization, useSnackbar } from 'hooks'
-// import FunctionDetails from './FunctionCards/FunctionDetails';
-// import FunctionDevices from './FunctionCards/FunctionDevices';
 
-// const mapStateToProps = (state) => ({
-// 	accessLevel: state.settings.user.privileges,
-// 	language: state.settings.language,
-// 	saved: state.favorites.saved,
-// 	mapTheme: state.settings.mapTheme,
-// 	periods: state.dateTime.periods,
-// 	cloudfunction: state.data.cloudfunction,
-// 	loading: !state.data.gotFunction,
-
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving()),
-// 	getFunction: async (id, customerID, ua) => dispatch(await getFunctionLS(id, customerID, ua))
-// })
 
 // @Andrei
 const Function = props => {
@@ -87,32 +67,15 @@ const Function = props => {
 		dispatch(await getFunctionLS(id))
 		// await getFunction(id)
 	}
-	// componentDidUpdate = async (prevProps) => {
-	// 	if (prevProps.match.params.id !== this.props.match.params.id)
-	// 		await this.componentDidMount()
-	// 	if (this.props.saved === true) {
-	// 		const { cloudfunction } = this.props
-	// 		if (this.props.isFav({ id: cloudfunction.id, type: 'function' })) {
-	// 			this.props.s('snackbars.favorite.saved', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
-	// 			this.props.finishedSaving()
-	// 		}
-	// 		if (!this.props.isFav({ id: cloudfunction.id, type: 'function' })) {
-	// 			this.props.s('snackbars.favorite.removed', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
-	// 			this.props.finishedSaving()
-	// 		}
-	// 	}
-	// 	// if (!this.props.cloudfunction) {
-	// 	// 	this.props.history.push('/404')
-	// 	// }
-	// }
+
 	useEffect(() => {
 		if (saved === true) {
 			// const { cloudfunction } = this.props
-			if (dispatch(isFav({ id: cloudfunction.id, type: 'function' }))) {
+			if (dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))) {
 				s('snackbars.favorite.saved', { name: cloudfunction.name, type: t('favorites.types.cloudfunction') })
 				dispatch(finishedSaving())
 			}
-			if (!dispatch(isFav({ id: cloudfunction.id, type: 'function' }))) {
+			if (!dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))) {
 				s('snackbars.favorite.removed', { name: cloudfunction.name, type: t('favorites.types.cloudfunction') })
 				dispatch(finishedSaving())
 			}
@@ -177,7 +140,7 @@ const Function = props => {
 		let favObj = {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
-			type: 'function',
+			type: 'cloudfunction',
 			path: props.match.url
 		}
 		dispatch(addToFav(favObj))
@@ -187,7 +150,7 @@ const Function = props => {
 		let favObj = {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
-			type: 'function',
+			type: 'cloudfunction',
 			path: props.match.url
 		}
 		dispatch(removeFromFav(favObj))
@@ -253,7 +216,7 @@ const Function = props => {
 						<FunctionDetails
 							cloudfunction={cloudfunction}
 							handleOpenDeleteDialog={handleOpenDeleteDialog}
-							isFav={dispatch(isFav({ id: cloudfunction.id, type: 'function' }))}
+							isFav={dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))}
 							addToFav={addToFavorites}
 							removeFromFav={removeFromFavorites}
 							history={history}

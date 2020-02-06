@@ -168,7 +168,7 @@ const EditCloudFunction = props => {
 			let favObj = {
 				id: stateCloudfunction.id,
 				name: stateCloudfunction.name,
-				type: 'function',
+				type: 'cloudfunction',
 				path: `/function/${stateCloudfunction.id}`
 			}
 			if (dispatch(isFav(favObj))) {

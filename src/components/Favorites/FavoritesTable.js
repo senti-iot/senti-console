@@ -106,7 +106,7 @@ const FavoriteTable = props => {
 				return <Tooltip title={t('tooltips.registry')}>
 					<InputIcon />
 				</Tooltip>
-			case 'function':
+			case 'cloudfunction':
 				return <Tooltip title={t('tooltips.function')}>
 					<CloudDownload />
 				</Tooltip>

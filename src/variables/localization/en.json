@@ -475,8 +475,8 @@
 		"types": {
 			"collection": "Data collection",
 			"device": "Device",
-			"deviceType": "Device Type",
-			"function": "Cloud Function",
+			"devicetype": "Device Type",
+			"cloudfunction": "Cloud Function",
 			"org": "Organisation",
 			"project": "Project",
 			"registry": "Registry",
