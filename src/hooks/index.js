@@ -5,7 +5,7 @@ import useSnackbar from './useSnackbar/useSnackbar'
 
 import { useState, useContext, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory, useLocation, useRouteMatch as useMatch } from 'react-router'
 import { useTheme } from '@material-ui/styles'
 
 
@@ -15,6 +15,7 @@ import { useTheme } from '@material-ui/styles'
 import useWhyDidYouUpdate from './useWhyDidYouUpdate/useWhyDidYouUpdate'
 
 export {
+	useMatch,
 	useWhyDidYouUpdate,
 	useRef,
 	//Dev

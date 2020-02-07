@@ -67,7 +67,7 @@ const SnackbarProvider = ({ children }) => {
 				}}
 				autoHideDuration={3000}
 				message={<span>{t(sMessage, sOpt)}</span>}
-				action={<IconButton color={'primary'} size={'small'} onClick={s.sClose} >
+				action={<IconButton color={'primary'} size={'small'} onClick={sClose} >
 					<Close />
 				</IconButton>}
 			/>
