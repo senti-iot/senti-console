@@ -100,7 +100,7 @@ const DeviceImages = props => {
 			// this.setState({ openSnackbar: 2, openDeleteImage: false })
 		}
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const snackBarMessages = () => {
 		// const { s } = this.props
 		let msg = openSnackbar

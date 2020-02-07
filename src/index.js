@@ -6,14 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import store from 'redux/store';
 import { updateServiceworker } from 'redux/serviceWorkerRedux';
 
-import whyDidYouRender from "@welldone-software/why-did-you-render";
+// import whyDidYouRender from "@welldone-software/why-did-you-render";
 
 if (process.env.NODE_ENV !== 'production') {
-	whyDidYouRender(React, {
-		onlyLogs: true,
-		titleColor: "green",
-		diffNameColor: "darkturquoise"
-	});
+	// whyDidYouRender(React, {
+	// 	onlyLogs: true,
+	// 	titleColor: "green",
+	// 	diffNameColor: "darkturquoise"
+	// });
 
 }
 

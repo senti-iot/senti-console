@@ -1,4 +1,8 @@
 import React, { useState } from 'react'
+import { Snackbar, IconButton } from '@material-ui/core'
+import { Close } from 'variables/icons'
+import useLocalization from 'hooks/useLocalization/useLocalization'
+import { useSelector } from 'react-redux'
 
 export const SProvider = React.createContext(null)
 SProvider.displayName = 'Snackbar'
@@ -7,12 +11,18 @@ const SnackbarProvider = ({ children }) => {
 	const [sOpen, setSOpen] = useState(false)
 	const [sMessage, setSMessage] = useState('')
 	const [sOpt, setSOpt] = useState(null)
+	const snackbarLocation = useSelector(s => s.settings.snackbarLocation)
+	const t = useLocalization()
 
 	let queue = []
 	const s = (sId, sOpt) => {
+
 		queue.push({ sId, sOpt })
 		if (sOpen) {
 			setSOpen(false);
+			setTimeout(() => {
+				processQueue();
+			}, 300);
 		} else {
 			processQueue();
 		}
@@ -43,6 +53,24 @@ const SnackbarProvider = ({ children }) => {
 			handleNextS: handleNextS,
 		}}>
 			{children}
+			<Snackbar
+				anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
+				open={sOpen}
+				onClose={sClose}
+				onExited={handleNextS}
+				ContentProps={{
+					'aria-describedby': 'message-id',
+				}}
+				ClickAwayListenerProps={{
+					mouseEvent: false,
+					touchEvent: false
+				}}
+				autoHideDuration={3000}
+				message={<span>{t(sMessage, sOpt)}</span>}
+				action={<IconButton color={'primary'} size={'small'} onClick={s.sClose} >
+					<Close />
+				</IconButton>}
+			/>
 		</SProvider.Provider>
 
 	)

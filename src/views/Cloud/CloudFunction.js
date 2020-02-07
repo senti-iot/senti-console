@@ -55,7 +55,7 @@ const Function = props => {
 		]
 	}
 
-	// eslint-disable-next-line no-unused-vars
+
 	const reload = async (msgId) => {
 		snackBarMessages(msgId)
 		dispatch(await getFunctionLS(props.match.params.id))

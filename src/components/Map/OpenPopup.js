@@ -62,7 +62,7 @@ const OpenPopup = props => {
 	//   }
 	// }
 
-	// eslint-disable-next-line no-unused-vars
+
 	const renderIcon = (status) => {
 		const { classes } = props
 		switch (status) {

@@ -1,55 +1,34 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography, IconButton } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import { ExpandMore } from 'variables/icons';
-import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
-import withLocalization from 'components/Localization/T';
+import React, { useState } from 'react';
 import { ItemG } from 'components';
-import { compose } from 'recompose';
 import cx from 'classnames'
 import { useLocalization } from 'hooks';
+import infoCardStyles from 'assets/jss/components/infocard/infocardStyles';
 
 // @Andrei
 const InfoCard = React.memo(props => {
+	//Hooks
 	const t = useLocalization()
-	const [cardExpanded, setCardExpanded] = useState(false) // added
-	const [expanded, setExpanded] = useState(props.expanded ? props.expanded : false)
-	// const [stateLeftActions, setStateLeftActions] = useState(false)
-	// constructor(props) {
-	// 	super(props)
+	const classes = infoCardStyles()
+	//Redux
 
-	// 	this.state = {
-	// 		expanded: props.expanded ? props.expanded : false,
-	// 		leftActions: false,
-	// 	}
-	// }
+	//State
+
+	// const [cardExpanded, setCardExpanded] = useState(false) // added
+	const [expanded, setExpanded] = useState(props.expanded ? props.expanded : false)
+	//Const
+	const { title, subheader,
+		content, hiddenContent, avatar,
+		noAvatar, leftActions, leftActionContent, color, noRightExpand,
+		whiteAvatar, noHeader, dashboard, headerClasses, bodyClasses } = props;
+	//Handlers
 	const handleExpandClick = () => {
 		setExpanded(!expanded)
-		// this.setState({ expanded: !this.state.expanded });
 	};
-	// const hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
-	// eslint-disable-next-line no-unused-vars
-	const renderSubHeader = () => {
-		const { subheader, subheaderTitle } = props
-		return subheader ? subheader.toString().length > 200 ?
-			<Fragment>
-				<Typography variant={'caption'}>
-					{subheaderTitle ? subheaderTitle : null}
-				</Typography>
-				<Typography>
-					{subheader ? subheader : null}
-				</Typography>
-			</Fragment>
-			: null : null
 
-	}
-	// eslint-disable-next-line no-unused-vars
-	const handleExpandCardClick = () => {
-		setCardExpanded(!cardExpanded)
-		// this.setState({ cardExpanded: !this.state.cardExpanded })
-	}
 	const renderTopAction = () => {
 		const { menuExpand, classes } = props
 		return <ItemG container justify={'flex-end'}>
@@ -66,13 +45,10 @@ const InfoCard = React.memo(props => {
 		</ItemG>
 	}
 
-	const { classes, title, subheader,
-		content, hiddenContent, avatar,
-		noAvatar, leftActions, leftActionContent, color, noRightExpand,
-		whiteAvatar, noHeader, dashboard, headerClasses, bodyClasses } = props;
+
 	const cardClasses = cx({
 		[classes.card]: true,
-		[classes.plainCardCalsses]: true,
+		[classes.plainCardClasses]: true,
 		[classes['']]: color,
 		[classes.flexPaper]: props.flexPaper,
 	})
@@ -141,7 +117,6 @@ const InfoCard = React.memo(props => {
 })
 
 InfoCard.propTypes = {
-	classes: PropTypes.object.isRequired,
 	topAction: PropTypes.any,
 	content: PropTypes.any,
 	avatar: PropTypes.any,
@@ -155,5 +130,5 @@ InfoCard.propTypes = {
 	hideFacts: PropTypes.bool,
 };
 
-let InfoCardComposed = compose(withLocalization(), withStyles(regularCardStyle))(InfoCard)
-export default InfoCardComposed;
+// let InfoCardComposed = compose(withLocalization(), withStyles(regularCardStyle))(InfoCard)
+export default InfoCard;

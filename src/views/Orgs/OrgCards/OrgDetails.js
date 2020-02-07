@@ -16,7 +16,7 @@ const OrgDetails = props => {
 	// 		actionAnchor: null
 	// 	}
 	// }
-	// eslint-disable-next-line no-unused-vars
+
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
 		// this.setState({ actionAnchor: event.currentTarget });

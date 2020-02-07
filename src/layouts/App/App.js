@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import { Snackbar, IconButton } from '@material-ui/core';
 import { Header, /* Sidebar,  */CircularLoader } from 'components';
 import cx from 'classnames'
 import dashboardRoutes from 'routes/dashboard.js';
@@ -8,14 +7,13 @@ import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 import { makeStyles } from '@material-ui/core/styles'
 import cookie from 'react-cookies';
 import { getSettings } from 'redux/settings';
-import { Close } from 'variables/icons';
 import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
 import Sidebar from 'components/Sidebar/Sidebar';
 import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
-import { useSnackbar, useRef, useDispatch, useSelector, useLocalization } from 'hooks';
+import { useRef, useDispatch, useSelector, useLocalization } from 'hooks';
 import NewContent from 'layouts/404/NewContent';
 // import _ from 'lodash'
 
@@ -42,7 +40,6 @@ function App(props) {
 	const dispatch = useDispatch()
 
 	const t = useLocalization()
-	const s = useSnackbar()
 	//#endregion
 
 
@@ -51,7 +48,6 @@ function App(props) {
 	const loading = useSelector(s => s.settings.loading)
 	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 	const defaultView = useSelector(s => s.settings.defaultView)
-	const snackbarLocation = useSelector(s => s.settings.snackbarLocation)
 	const smallMenu = useSelector(s => s.appState.smallMenu)
 	const drawer = useSelector(s => s.settings.drawer)
 	const tabs = useSelector(s => s.appState.tabs)
@@ -205,27 +201,7 @@ function App(props) {
 										}} />}
 								</Switch>
 							</div>
-
 							{!cookies && <Cookies />}
-							<Snackbar
-								anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
-								open={s.sOpen}
-								onClose={s.sClose}
-								onExited={s.handleNextS}
-								ContentProps={{
-									'aria-describedby': 'message-id',
-								}}
-								ClickAwayListenerProps={{
-									mouseEvent: false,
-									touchEvent: false
-								}}
-								autoHideDuration={3000}
-								message={<span>{t(s.sId, s.sOpt)}</span>}
-								action={<IconButton color={'primary'} size={'small'} onClick={s.sClose} >
-									<Close />
-								</IconButton>}
-							/>
-
 						</Fragment>
 						: <CircularLoader />}
 				</Fragment>
