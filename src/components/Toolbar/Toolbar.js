@@ -110,8 +110,10 @@ const Toolbar = React.memo(props => {
 	// 	this._isMounted = 1
 	// }
 	useEffect(() => {
-		setRoute(props.route)
-		setTooltip(-1)
+		if (props.route) {
+			setRoute(props.route)
+			setTooltip(-1)
+		}
 	}, [props.route])
 	// componentDidUpdate = (prevProps) => {
 	// 	if (this.props.route !== prevProps.route && this.props.route !== undefined) {
@@ -133,10 +135,10 @@ const Toolbar = React.memo(props => {
 	};
 
 
-	const handleTooltipOpen = (id) => {
-		setTooltip(id)
-		// this.setState({ tooltip: id });
-	};
+	// const handleTooltipOpen = (id) => {
+	// 	setTooltip(id)
+	// 	// this.setState({ tooltip: id });
+	// };
 
 
 	const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ } = props

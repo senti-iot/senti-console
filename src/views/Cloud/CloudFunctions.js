@@ -40,6 +40,7 @@ const Functions = props => {
 
 
 	//Const
+	const { setHeader, setBC, setTabs } = props
 
 	const dTypes = [
 		{ value: 0, label: t("cloudfunctions.fields.types.function") },
@@ -94,15 +95,15 @@ const Functions = props => {
 				}
 			}
 		}
-		props.setHeader('cloudfunctions.pageTitle', false, '', 'manage.cloudfunctions')
-		props.setBC('cloudfunctions')
-		props.setTabs({
+		setHeader('cloudfunctions.pageTitle', false, '', 'manage.cloudfunctions')
+		setBC('cloudfunctions')
+		setTabs({
 			id: 'functions',
 			tabs: tabs,
 			route: handleTabs()
 		})
 
-	}, [location.pathname, match.url, props, t])
+	}, [location.pathname, match.url, setBC, setHeader, setTabs, t])
 
 
 
@@ -196,12 +197,12 @@ const Functions = props => {
 	}
 	const handleFunctionClick = id => e => {
 		e.stopPropagation()
-		props.history.push('/function/' + id)
+		history.push('/function/' + id)
 	}
 
 	const handleFavClick = id => e => {
 		e.stopPropagation()
-		props.history.push({ pathname: '/function/' + id, prevURL: '/functions/favorites' })
+		history.push({ pathname: '/function/' + id, prevURL: '/functions/favorites' })
 	}
 
 	const handleSelectAllClick = (arr, checked) => {

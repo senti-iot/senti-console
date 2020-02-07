@@ -21,7 +21,7 @@ import { getSensorMessages } from "variables/dataSensors"
 import { deleteSensor } from "variables/dataSensors"
 import SensorChart from "views/Charts/SensorChart"
 import { useLocalization, useSnackbar } from "hooks"
-import { useRouteMatch, useHistory, useLocation } from "react-router-dom"
+import { useRouteMatch, useHistory, useLocation, useParams } from "react-router-dom"
 
 const Sensor = props => {
 	//Hooks
@@ -29,6 +29,7 @@ const Sensor = props => {
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const match = useRouteMatch()
+	const params = useParams()
 	const location = useLocation()
 	const history = useHistory()
 	//Redux
@@ -44,6 +45,7 @@ const Sensor = props => {
 	const [openDelete, setopenDelete] = useState(false)
 	const [sensorMessages, setSensorMessages] = useState(null) // added
 	//Const
+	const { setTabs, setBC, setHeader } = props
 
 	const getSensor = async id => {
 		await dispatch(await getSensorLS(id))
@@ -58,28 +60,28 @@ const Sensor = props => {
 				]
 			}
 
-			props.setTabs({
+			setTabs({
 				route: 0,
 				id: "sensor",
 				tabs: tabs(),
 				hashLinks: true
 			})
-			props.setBC('sensor', sensor.name)
+			setBC('sensor', sensor.name)
 			let prevURL = location.state ? location.prevURL : `/devices/list`
-			props.setHeader('sidebar.device', true, prevURL, 'manage.sensors')
+			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
-	}, [location, props, sensor, t])
+	}, [location, sensor, setBC, setHeader, setTabs, t])
 
 	useEffect(() => {
 		const gSensor = async () => {
-			if (props.match) {
-				let id = props.match.params.id
+			if (params) {
+				let id = params.id
 				if (id) {
 					await getSensor(id)
 				}
 
-				if (props.location.hash !== "") {
-					scrollToAnchor(props.location.hash)
+				if (location.hash !== "") {
+					scrollToAnchor(location.hash)
 				}
 			}
 		}
@@ -113,7 +115,7 @@ const Sensor = props => {
 			id: sensor.id,
 			name: sensor.name,
 			type: "sensor",
-			path: props.match.url
+			path: match.url
 		}
 		dispatch(addToFav(favObj))
 	}
@@ -122,7 +124,7 @@ const Sensor = props => {
 			id: sensor.id,
 			name: sensor.name,
 			type: "sensor",
-			path: props.match.url
+			path: match.url
 		}
 		dispatch(removeFromFav(favObj))
 	}
@@ -208,7 +210,7 @@ const Sensor = props => {
 								if (k.type === 0) {
 									// return null
 									return (
-										<ItemGrid xs={12} container noMargin id={"charts"}>
+										<ItemGrid xs={12} key={i} container noMargin id={"charts"}>
 											<SensorChart
 												deviceId={sensor.id}
 												dataKey={k.key}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 // import Toolbar from 'components/Toolbar/Toolbar'
 import { ViewList, StarBorder } from 'variables/icons'
@@ -12,7 +12,7 @@ import { filterItems, handleRequestSort } from 'variables/functions'
 import { finishedSaving, removeFromFav, /* addToFav, */ /* isFav */ } from 'redux/favorites'
 import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
 import { customFilterItems } from 'variables/Filters';
-import { useSnackbar, useLocalization } from 'hooks'
+import { useSnackbar, useLocalization, useMatch } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	accessLevel: state.settings.user.privileges,
@@ -28,10 +28,14 @@ import { useSnackbar, useLocalization } from 'hooks'
 // 	finishedSaving: () => dispatch(finishedSaving())
 // })
 
+//@Andrei
+
 const Favorites = props => {
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
+	const match = useMatch()
+	const history = useHistory()
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 	const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
@@ -46,7 +50,7 @@ const Favorites = props => {
 	const [loading /* ,setLoading */] = useState(false) // added
 
 	const tabs = () => {
-		return [{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${props.match.path}/list` }]
+		return [{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.path}/list` }]
 	}
 
 	props.setBC('favorites')
@@ -254,7 +258,7 @@ const Favorites = props => {
 
 	const handleClick = id => e => {
 		e.stopPropagation()
-		props.history.push({ pathname: id, prevURL: props.match.path })
+		history.push({ pathname: id, prevURL: match.path })
 	}
 	const renderTableToolBar = () => {
 		// const { t } = this.props
@@ -313,15 +317,15 @@ const Favorites = props => {
 			{/* <Toolbar
 					data={favorites}
 					filters={filters}
-					history={this.props.history}
+					history={this.history}
 					route={route}
-					match={this.props.match}
+					match={this.match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs()}
 				/> */}
 			<Switch>
-				<Route path={`${props.match.path}/list`} render={() => renderFavorites()} />
-				<Redirect path={`${props.match.path}`} to={`${props.match.path}/list`} />
+				<Route path={`${match.path}/list`} render={() => renderFavorites()} />
+				<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 			</Switch>
 		</Fragment>
 	)

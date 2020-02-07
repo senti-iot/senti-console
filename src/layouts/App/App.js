@@ -168,7 +168,7 @@ function App(props) {
 									t={t}
 								/>
 								<Switch>
-									{cookie.load('SESSION') ?
+									{/* {cookie.load('SESSION') ?
 										dashboardRoutes.map((prop, key) => {
 											if (prop.dropdown) {
 												return prop.items.map((r, key) => {
@@ -193,6 +193,37 @@ function App(props) {
 														setHeader={handleSetHeaderTitle}
 														setTabs={handleSetTabs}
 													/>} key={key} />;
+										})
+										: <Redirect from={window.location.pathname} to={{
+											pathname: '/login', state: {
+												prevURL: window.location.pathname
+											}
+										}} />} */}
+									{cookie.load('SESSION') ?
+										dashboardRoutes.map((prop, key) => {
+											if (prop.dropdown) {
+												return prop.items.map((r, key) => {
+													return <Route path={r.path} key={r.menuRoute + key}>
+
+														<r.component
+															path={r.path}
+															setBC={handleSetBreadCrumb}
+															setHeader={handleSetHeaderTitle}
+															setTabs={handleSetTabs} />
+													</Route>
+												})
+											}
+											if (prop.redirect) {
+												return <Redirect from={prop.path} to={prop.to} key={key} />;
+											}
+											return <Route path={prop.path} key={key}>
+												<prop.component
+													path={prop.path}
+													setBC={handleSetBreadCrumb}
+													setHeader={handleSetHeaderTitle}
+													setTabs={handleSetTabs}
+												/>
+											</Route>
 										})
 										: <Redirect from={window.location.pathname} to={{
 											pathname: '/login', state: {

@@ -7,10 +7,10 @@ import CloudFunction from 'views/Cloud/CloudFunction';
 const cloudfunction = (props) => {
 	return (
 		<Switch>
-			<Route path={`${props.match.url}/edit`}>
+			<Route path={`${props.path}/edit`}>
 				<EditCloudFunction {...props} />
 			</Route>
-			<Route path={`${props.match.url}`}>
+			<Route path={`${props.path}`}>
 				<CloudFunction {...props} />
 			</Route>
 		</Switch>

@@ -9,7 +9,8 @@ import { getFunctionLS } from 'redux/data';
 import FunctionCode from './CloudCards/FunctionCode';
 import FunctionDetails from './CloudCards/FunctionDetails';
 import { deleteCFunction } from 'variables/dataFunctions';
-import { useLocalization, useSnackbar, useHistory, useLocation } from 'hooks'
+import { useLocalization, useSnackbar, useHistory, useLocation, useMatch } from 'hooks'
+import { useParams } from 'react-router-dom';
 
 const CloudFunction = props => {
 	//Hooks
@@ -18,6 +19,8 @@ const CloudFunction = props => {
 	const t = useLocalization()
 	const dispatch = useDispatch()
 	const location = useLocation()
+	const params = useParams()
+	const match = useMatch()
 
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -44,22 +47,22 @@ const CloudFunction = props => {
 				dispatch(finishedSaving())
 			}
 		}
-	}, [cloudfunction, dispatch, props.match.params.id, s, saved, t])
+	}, [cloudfunction, dispatch, s, saved, t])
 
 	useEffect(() => {
 		const asyncFunc = async () => {
-			if (props.match) {
-				let id = props.match.params.id
+			if (params) {
+				let id = params.id
 				if (id) {
 					await dispatch(await getFunctionLS(id))
 
-					if (props.location.hash !== '') {
-						scrollToAnchor(props.location.hash)
+					if (location.hash !== '') {
+						scrollToAnchor(location.hash)
 					}
 				}
 			}
 			else {
-				props.history.push({
+				history.push({
 					pathname: '/404',
 					prevURL: window.location.pathname
 				})
@@ -92,7 +95,7 @@ const CloudFunction = props => {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
 			type: 'cloudfunction',
-			path: props.match.url
+			path: match.url
 		}
 		dispatch(addToFav(favObj))
 	}
@@ -101,7 +104,7 @@ const CloudFunction = props => {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
 			type: 'cloudfunction',
-			path: props.match.url
+			path: match.url
 		}
 		dispatch(removeFromFav(favObj))
 	}
@@ -166,7 +169,6 @@ const CloudFunction = props => {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id='code'>
 						<FunctionCode
-							theme={props.theme}
 							cloudfunction={cloudfunction}
 						/>
 					</ItemGrid>

@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react'
 import { Typography, Paper, Button } from '@material-ui/core';
 import { GridContainer, ItemG } from 'components';
-import withLocalization from 'components/Localization/T';
 import Img404 from 'assets/img/404/404.svg'
-import { useLocalization } from 'hooks';
+import { useLocalization, useLocation } from 'hooks';
+
 
 // @Andrei
 const NotFound = props => {
 	const t = useLocalization()
+	const location = useLocation()
 	useEffect(() => {
 		props.setHeader('404.title', true, '', '')
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [])
 	// componentDidMount = () => {
 	// 	this.props.setHeader('404.title', true, '', '')
 	// }
 
-	const { location } = props
 	let prevURL = location.prevURL ? location.prevURL : ""
 	return (
 		<GridContainer>
@@ -50,4 +50,4 @@ const NotFound = props => {
 	)
 }
 
-export default withLocalization()(NotFound)
+export default NotFound

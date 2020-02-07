@@ -73,7 +73,6 @@ const SensorHover = props => {
 		dispatch(removeFromFav(favObj))
 	}
 	const isFavorite = () => {
-		console.log(device.id, dispatch(isFav({ id: device.id, type: 'sensor' })))
 		return dispatch(isFav({ id: device.id, type: 'sensor' }))
 	}
 	const handleClose = () => {

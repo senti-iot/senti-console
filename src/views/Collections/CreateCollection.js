@@ -7,7 +7,7 @@ import { CircularLoader } from 'components';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
 
-import { getCollections, setDevices, setOrgs } from 'redux/data';
+import { getCollections, /* setDevices, setOrgs  */ } from 'redux/data';
 import { useLocalization, useSnackbar, useHistory } from 'hooks';
 
 // const mapStateToProps = (state) => ({
@@ -18,6 +18,7 @@ import { useLocalization, useSnackbar, useHistory } from 'hooks';
 // const mapDispatchToProps = dispatch => ({
 // 	getCollections: (reload) => dispatch(getCollections(reload))
 // })
+//@Andrei
 
 const CreateCollection = props => {
 	const t = useLocalization()
@@ -245,7 +246,7 @@ const CreateCollection = props => {
 }
 
 CreateCollection.propTypes = {
-	match: PropTypes.object.isRequired,
+	// match: PropTypes.object.isRequired,
 	accessLevel: PropTypes.object.isRequired,
 }
 

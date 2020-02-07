@@ -6,10 +6,10 @@ import EditSensor from "views/Sensors/EditSensor"
 const sensor = props => {
 	return (
 		<Switch>
-			<Route path={`${props.match.url}/edit`}>
+			<Route path={`${props.path}/edit`}>
 				<EditSensor {...props} />
 			</Route>
-			<Route path={`${props.match.url}`} >
+			<Route path={`${props.path}`} >
 				<Sensor {...props} />
 			</Route>
 		</Switch>
