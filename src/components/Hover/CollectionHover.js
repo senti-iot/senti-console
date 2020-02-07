@@ -1,68 +1,50 @@
-import React, { Fragment, useEffect } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
+import React, { Fragment, useEffect, useCallback } from 'react'
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import { T, ItemG, Link } from 'components'
-// import T from 'components/Typography/T';
-// import ItemG from 'components/Grid/ItemG';
-// import Gravatar from 'react-gravatar'
-import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage, Business } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
+import { Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage, Business } from 'variables/icons';
 import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
-import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
 import { useSnackbar, useLocalization } from 'hooks';
+import hoverStyles from 'assets/jss/components/hover/hoverHStyles';
 
-// const mapStateToProps = (state) => ({
-// 	saved: state.favorites.saved
-// })
 
-// const mapDispatchToProps = dispatch => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
+
 
 const CollectionHover = props => {
+	//Hooks
 	const s = useSnackbar().s
 	const t = useLocalization()
-	const saved = useSelector(state => state.favorites.saved)
 	const dispatch = useDispatch()
+	const classes = hoverStyles()
+	//Redux
+	const saved = useSelector(state => state.favorites.saved)
+
+	//State
+
+	//Const
+	const { anchorEl, collection } = props
+
+	//useEffect
+	const isFavorite = useCallback(id => dispatch(isFav({ id: id, type: 'collection' })), [dispatch])
 
 	useEffect(() => {
 		if (saved === true) {
-			const { collection } = props
 			if (collection) {
 
-				if (dispatch(isFav({ id: collection.id, type: 'collection' }))) {
+				if (isFavorite(collection.id)) {
 					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: collection.id, type: 'collection' }))) {
+				if (!isFavorite(collection.id)) {
 					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
 					dispatch(finishedSaving())
 				}
 			}
 		}
-	}, [dispatch, props, s, saved, t])
-	// const componentDidUpdate = () => {
-	// 	if (saved === true) {
-	// 		const { collection } = props
-	// 		if (collection) {
+	}, [collection, dispatch, props, s, saved, t, isFavorite])
 
-	// 			if (dispatch(isFav({ id: collection.id, type: 'collection' }))) {
-	// 				s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
-	// 				dispatch(finishedSaving())
-	// 			}
-	// 			if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
-	// 				this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 		}
-	// 	}
-	// }
 	const addToFavorites = () => {
 		const { collection } = props
 		let favObj = {
@@ -84,11 +66,11 @@ const CollectionHover = props => {
 		dispatch(removeFromFav(favObj))
 
 	}
+
 	const handleClose = () => {
 		props.handleClose()
 	};
 	const renderIcon = (status) => {
-		const { classes } = props
 		switch (status) {
 			case 1:
 				return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
@@ -103,7 +85,6 @@ const CollectionHover = props => {
 		}
 	}
 
-	const { anchorEl, classes, collection } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}
@@ -171,9 +152,9 @@ const CollectionHover = props => {
 										</Button>
 									</ItemG>
 									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-										<Tooltip placement="top" title={dispatch(isFav({ id: collection.id, type: 'collection' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-											<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: collection.id, type: 'collection' })) ? removeFromFavorites : addToFavorites}>
-												{dispatch(isFav({ id: collection.id, type: 'collection' })) ? <Star /> : <StarBorder />}
+										<Tooltip placement="top" title={isFavorite(collection.id) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={isFavorite(collection.id) ? removeFromFavorites : addToFavorites}>
+												{isFavorite(collection.id) ? <Star /> : <StarBorder />}
 											</IconButton>
 										</Tooltip>
 									</ItemG>
@@ -187,4 +168,4 @@ const CollectionHover = props => {
 	)
 }
 
-export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(CollectionHover))))
+export default CollectionHover

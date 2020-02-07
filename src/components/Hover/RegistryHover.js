@@ -1,68 +1,56 @@
-import React, { useEffect, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
+import React, { useEffect, Fragment, useCallback } from 'react'
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
-// import Gravatar from 'react-gravatar'
-import { Star, StarBorder, SignalWifi2Bar, Business, InputIcon } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
+import { Star, StarBorder, Business, InputIcon } from 'variables/icons';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
-import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
 import { useLocalization, useSnackbar } from 'hooks';
+import hoverStyles from 'assets/jss/components/hover/hoverHStyles';
 
-// const mapStateToProps = (state) => ({
-// 	saved: state.favorites.saved
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
 
 const RegistryHover = props => {
+	//Hooks
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
+	const classes = hoverStyles()
+
+	//Redux
 	const saved = useSelector(state => state.favorites.saved)
+
+	//State
+
+	//Const
+	const { anchorEl, registry } = props
+
+	//useCallbacks
+	const isFavorite = useCallback(id => dispatch(isFav({ id: id, type: 'registry' })), [dispatch])
+
+	//useEffects
 
 	useEffect(() => {
 		if (saved === true) {
 			const { registry } = props
 			if (registry) {
 
-				if (dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+				if (isFavorite(registry.id)) {
 					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+				if (!isFavorite(registry.id)) {
 					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
 					dispatch(finishedSaving())
 				}
 			}
 		}
-	}, [dispatch, props, s, saved, t])
-	// componentDidUpdate = () => {
-	// 	if (this.props.saved === true) {
-	// 		const { registry } = this.props
-	// 		if (registry) {
+	}, [dispatch, props, s, saved, t, isFavorite])
 
-	// 			if (this.props.isFav({ id: registry.id, type: 'registry' })) {
-	// 				this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 			if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
-	// 				this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 		}
-	// 	}
-	// }
+	//Handlers
+
 	const addToFavorites = () => {
 		const { registry } = props
 		let favObj = {
@@ -87,24 +75,6 @@ const RegistryHover = props => {
 	const handleClose = () => {
 		props.handleClose()
 	};
-
-	const renderIcon = (status) => {
-		const { classes } = props
-		switch (status) {
-			case 1:
-				return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
-			case 2:
-				return <SignalWifi2Bar className={classes.greenSignal + ' ' + classes.smallIcon} />
-			case 0:
-				return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
-			case null:
-				return <SignalWifi2Bar className={classes.smallIcon} />
-			default:
-				break;
-		}
-	}
-
-	const { anchorEl, classes, registry } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}
@@ -148,14 +118,14 @@ const RegistryHover = props => {
 								<Divider />
 								<ItemG container style={{ marginTop: '8px' }}>
 									<ItemG>
-										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.id}/edit`, prevURL: '/registrys' }}>
+										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.id}/edit`, prevURL: '/registries' }}>
 											{t('menus.edit')}
 										</Button>
 									</ItemG>
 									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-										<Tooltip placement="top" title={dispatch(isFav({ id: registry.id, type: 'registry' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-											<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: registry.id, type: 'registry' })) ? removeFromFavorites : addToFavorites}>
-												{dispatch(isFav({ id: registry.id, type: 'registry' })) ? <Star /> : <StarBorder />}
+										<Tooltip placement="top" title={isFavorite(registry.id) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={isFavorite(registry.id) ? removeFromFavorites : addToFavorites}>
+												{isFavorite(registry.id) ? <Star /> : <StarBorder />}
 											</IconButton>
 										</Tooltip>
 									</ItemG>
@@ -169,4 +139,4 @@ const RegistryHover = props => {
 	)
 }
 
-export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(RegistryHover))))
+export default RegistryHover
