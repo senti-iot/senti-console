@@ -18,7 +18,7 @@ const DeviceTypeDetails = props => {
 	const t = useLocalization()
 	const detailsPanel = useSelector(state => state.settings.detailsPanel)
 
-	const { classes, handleOpenDeleteDialog, deviceType,
+	const { handleOpenDeleteDialog, deviceType,
 		isFav, addToFav, removeFromFav, history
 	} = props
 	return (
@@ -29,9 +29,9 @@ const DeviceTypeDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
 				]
 			} />
 			}

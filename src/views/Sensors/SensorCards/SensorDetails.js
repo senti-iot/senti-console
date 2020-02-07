@@ -53,9 +53,9 @@ const SensorDetails = (props) => {
 		}
 	}
 
-	const { classes, sensor, isFav, addToFav, removeFromFav,
+	const { sensor, isFav, addToFav, removeFromFav,
 		handleOpenDeleteDialog,
-			/* accessLevel ,*/ history } = props;
+		/* accessLevel ,*/ history } = props;
 	return (
 		<InfoCard
 			title={sensor.name ? sensor.name : sensor.id}
@@ -63,9 +63,9 @@ const SensorDetails = (props) => {
 			noExpand
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog }
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
 
 				]
 			} />

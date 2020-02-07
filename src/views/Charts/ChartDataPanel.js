@@ -44,7 +44,7 @@ class ChartDataPanel extends Component {
 							menuItems={
 								periods.map(p => ({
 									label: <T style={{ whiteSpace: 'normal' }}>{`${dateTimeFormatter(p.from)} - ${dateTimeFormatter(p.to)}`}</T>,
-									icon: p.hide ? <VisibilityOff className={classes.icon} /> : <Visibility className={classes.icon} />,
+									icon: p.hide ? VisibilityOff : Visibility,
 									func: () => this.props.hideShowPeriod(p.id)
 								}))}
 						/>

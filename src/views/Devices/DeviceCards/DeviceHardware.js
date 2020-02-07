@@ -41,7 +41,7 @@ const DeviceHardware = React.memo(props => {
 					[
 						{
 							label: t('menus.edit'),
-							icon: <Edit className={classes.leftIcon} />,
+							icon: Edit,
 							func: () => props.history.push(`${props.match.url}/edit-hardware`)
 						},
 					]

@@ -1,12 +1,12 @@
-import { Button, withStyles } from '@material-ui/core';
-import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
+import { Button } from '@material-ui/core';
 import { Caption, Dropdown, Info, ItemG, ItemGrid, SmallCard } from 'components';
 import React, { Fragment } from 'react';
 import { dateFormat, dateFormatter } from 'variables/functions';
 import { DataUsage, Edit } from 'variables/icons';
 
+//@andrei
 const CollectionCard = props => {
-	const { d, classes, t, history } = props
+	const { d, t, history } = props
 
 	return (
 		<SmallCard
@@ -19,7 +19,7 @@ const CollectionCard = props => {
 			topAction={
 				<Dropdown menuItems={
 					[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${d.id}/edit`, prevURL: `/collections/grid` }) },
+						{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/collection/${d.id}/edit`, prevURL: `/collections/grid` }) },
 					]
 				} />
 
@@ -63,4 +63,4 @@ const CollectionCard = props => {
 	)
 }
 
-export default withStyles(regularCardStyle)(CollectionCard)
+export default CollectionCard

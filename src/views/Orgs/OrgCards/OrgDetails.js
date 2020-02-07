@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { InfoCard, ItemGrid, Caption, Info, Dropdown, Muted } from 'components';
 import { Grid, Link } from '@material-ui/core';
 import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
@@ -6,50 +6,31 @@ import { Link as RLink } from 'react-router-dom'
 import { useLocalization } from 'hooks'
 var countries = require('i18n-iso-countries')
 
+//@Andrei
 const OrgDetails = props => {
 	const t = useLocalization()
-	const [/* actionAnchor */, setActionAnchor] = useState(null)
-	// constructor(props) {
-	// 	super(props)
+	const { org, devices, accessLevel, isFav, addToFav, removeFromFav } = props
 
-	// 	this.state = {
-	// 		actionAnchor: null
-	// 	}
-	// }
-
-	const handleOpenActionsDetails = event => {
-		setActionAnchor(event.currentTarget)
-		// this.setState({ actionAnchor: event.currentTarget });
-	}
-
-	const handleCloseActionsDetails = () => {
-		setActionAnchor(null)
-		// this.setState({ actionAnchor: null });
-	}
 	const handleDeleteOrg = () => {
-		handleCloseActionsDetails()
 		props.deleteOrg()
 	}
 	const handleEdit = () => props.history.push({ pathname: `${props.match.url}/edit`, prevURL: `/management/org/${props.org.id}` })
 
 	const options = () => {
-		const { accessLevel, classes, isFav, addToFav, removeFromFav } = props
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: <Edit className={classes.leftIcon} /> },
-			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
-			{ label: t('menus.delete'), func: handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+			{ label: t('menus.delete'), func: handleDeleteOrg, icon: Delete },
 
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions
 		else return [
-			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 
 		]
 	}
 
-
-	const { org, devices } = props
 	return (
 		<InfoCard
 			title={org.name}
@@ -59,10 +40,7 @@ const OrgDetails = props => {
 					{org.nickname}
 				</Muted>}
 			noExpand
-			topAction={options().length > 0 ? <Dropdown
-				menuItems={
-					options()
-				} /> : null}
+			topAction={options().length > 0 ? <Dropdown menuItems={options()} /> : null}
 			content={
 				<Grid container>
 					<ItemGrid>

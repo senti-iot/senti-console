@@ -1,27 +1,18 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core';
 import { InfoCard, ItemG } from 'components';
 import { Code } from 'variables/icons';
-import { red, green } from '@material-ui/core/colors';
 // import brace from 'brace';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 import 'brace/theme/monokai';
-import { useLocalization } from 'hooks';
+import { useLocalization, useTheme } from 'hooks';
+import { makeStyles } from '@material-ui/styles';
 
-const styles = (theme) => ({
-	blocked: {
-		color: red[500],
-		marginRight: 8
-	},
-	allowed: {
-		color: green[500],
-		marginRight: 8
-	},
+const styles = makeStyles((theme) => ({
 	editor: {
-		// width: 'calc(100% - 36px)', 
+		// width: 'calc(100% - 36px)',
 		border: '1px solid rgba(100, 100, 100, 0.25)',
 		padding: 4,
 		borderRadius: 4,
@@ -29,11 +20,20 @@ const styles = (theme) => ({
 			boder: '1px solid #000'
 		}
 	}
-})
+}))
 
 const FunctionCode = props => {
+	//Hooks
 	const t = useLocalization()
-	const { cloudfunction, classes } = props
+	const classes = styles()
+	const theme = useTheme()
+	//Redux
+
+	//State
+
+	//Const
+	const { cloudfunction } = props
+
 	return (
 		<InfoCard
 			title={t('cloudfunctions.fields.code')}
@@ -45,7 +45,7 @@ const FunctionCode = props => {
 						<div className={classes.editor}>
 							<AceEditor
 								mode={'javascript'}
-								theme={props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
+								theme={theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 								onChange={() => { }}
 								value={cloudfunction.js}
 								highlightActiveLine={false}
@@ -62,4 +62,4 @@ const FunctionCode = props => {
 	)
 }
 
-export default withStyles(styles)(FunctionCode)
+export default FunctionCode

@@ -58,17 +58,17 @@ const UserContact = props => {
 		return dontShow
 	}
 	const renderTopAction = () => {
-		const { classes, user, history, isFav, addToFav, removeFromFav } = props
+		const { user, history, isFav, addToFav, removeFromFav } = props
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${props.match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
-				{ label: t('menus.changePassword'), icon: <LockOpen className={classes.leftIcon} />, func: props.changePass },
-				{ label: t('menus.userResendEmail'), icon: <Email className={classes.leftIcon} />, func: props.resendConfirmEmail, dontShow: user.suspended !== 2 },
-				// { label: t('menus.confirmUser'), icon: <Email className={classes.leftIcon} />, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },
-				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${props.match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
+				{ label: t('menus.changePassword'), icon: LockOpen, func: props.changePass },
+				{ label: t('menus.userResendEmail'), icon: Email, func: props.resendConfirmEmail, dontShow: user.suspended !== 2 },
+				// { label: t('menus.confirmUser'), icon: Email, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },
+				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 				{
 					label: t('menus.delete'),
-					icon: <Delete className={classes.leftIcon} />,
+					icon: Delete,
 					func: deleteUser,
 					dontShow: canDelete()
 				},
