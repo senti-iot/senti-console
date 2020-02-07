@@ -55,13 +55,6 @@ const Function = props => {
 		]
 	}
 
-
-	const reload = async (msgId) => {
-		snackBarMessages(msgId)
-		dispatch(await getFunctionLS(props.match.params.id))
-		// getFunction(props.match.params.id)
-	}
-
 	const getFunctionFunc = async (id) => {
 		// const { getFunction } = props
 		dispatch(await getFunctionLS(id))
@@ -80,8 +73,7 @@ const Function = props => {
 				dispatch(finishedSaving())
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.match.params.id])
+	}, [cloudfunction, dispatch, props.match.params.id, s, saved, t])
 
 	useEffect(() => {
 		const asyncFunc = async () => {
