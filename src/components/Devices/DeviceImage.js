@@ -2,91 +2,101 @@ import { Button, MobileStepper, withStyles } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ExifOrientationImg from 'react-exif-orientation-img';
 import SwipeableViews from 'react-swipeable-views';
 import { Caption } from 'components';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 import ItemG from 'components/Grid/ItemG';
+import { useLocalization } from 'hooks';
 
-class DeviceImage extends React.Component {
-	state = {
-		activeStep: 0,
-	};
-	handleCallBack = () => {
-		return this.props.handleStep ? this.props.handleStep(this.state.activeStep) : null
+const DeviceImage = props => {
+	const t = useLocalization()
+	const swipeHeight = useRef(null)
+	const [activeStep, setActiveStep] = useState(0)
+	// state = {
+	// 	activeStep: 0,
+	// };
+	const handleCallBack = () => {
+		return props.handleStep ? props.handleStep(activeStep) : null
 	}
-	handleNext = () => {
-		this.setState(prevState => ({
-			activeStep: prevState.activeStep + 1,
-		}), this.handleCallBack);
+
+	useEffect(() => {
+		handleCallBack()
+	})
+	const handleNext = () => {
+		setActiveStep(prevStep => prevStep + 1)
+		// this.setState(prevState => ({
+		// 	activeStep: prevState.activeStep + 1,
+		// }), this.handleCallBack);
 	};
 
-	handleBack = () => {
-		this.setState(prevState => ({
-			activeStep: prevState.activeStep - 1,
-		}), this.handleCallBack);
+	const handleBack = () => {
+		setActiveStep(prevStep => prevStep - 1)
+		// this.setState(prevState => ({
+		// 	activeStep: prevState.activeStep - 1,
+		// }), this.handleCallBack);
 	};
 
-	handleStepChange = activeStep => {
-		this.setState({ activeStep }, this.handleCallBack);
+	const handleStepChange = newActiveStep => {
+		setActiveStep(newActiveStep)
+		// this.setState({ activeStep }, this.handleCallBack);
 	};
-	getRef = e => {
-		this.swipeHeight = e
+	const getRef = e => {
+		swipeHeight.current = e
+		// this.swipeHeight = e
 	}
-	fixHeight = () => {
-		if (this.swipeHeight)
-		{
-			this.swipeHeight.updateHeight()
+	const fixHeight = () => {
+		if (swipeHeight) {
+			swipeHeight.current.updateHeight()
 		}
 	}
-	render() {
-		const { classes, theme, images, t } = this.props;
-		const { activeStep } = this.state;
-		
-		const maxSteps = images ? images.length ? images.length : 0 : 0;
-		return (
-			<div className={classes.root}>
-				{images ? <ItemG container justify={'center'} >
-					{images.length > 0 ? <SwipeableViews
-						axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-						index={this.state.activeStep}
-						onChangeIndex={this.handleStepChange}
-						enableMouseEvents
-						animateHeight={true}
-						action={this.getRef}>
-						{images.map((step, i) => {
-							let blob = step
-							if (typeof step === 'object') { blob = URL.createObjectURL(step) }
-							return <ExifOrientationImg className={classNames(classes.deviceImg, {
-								[classes.activeImage]: this.state.activeStep === i ? false : true
-							})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight} />
-						})}
-					</SwipeableViews> :
-						<Caption>{t('devices.noImages')}</Caption>
-					}
-				</ItemG> : null}
-				<MobileStepper
-					steps={maxSteps}
-					position='static'
-					activeStep={activeStep}
-					className={classes.mobileStepper}
-					nextButton={
-						<Button size='small' onClick={this.handleNext} disabled={activeStep === maxSteps - 1 || maxSteps === 0}>
-							{t('actions.next')}
-							{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-						</Button>
-					}
-					backButton={
-						<Button size='small' onClick={this.handleBack} disabled={activeStep === 0}>
-							{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-							{t('actions.back')}
-						</Button>
-					}
-				/>
-			</div>
-		);
-	}
+
+	const { classes, theme, images } = props;
+	// const { activeStep } = this.state;
+
+	const maxSteps = images ? images.length ? images.length : 0 : 0;
+	return (
+		<div className={classes.root}>
+			{images ? <ItemG container justify={'center'} >
+				{images.length > 0 ? <SwipeableViews
+					axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+					index={activeStep}
+					onChangeIndex={handleStepChange}
+					enableMouseEvents
+					animateHeight={true}
+					action={getRef}>
+					{images.map((step, i) => {
+						let blob = step
+						if (typeof step === 'object') { blob = URL.createObjectURL(step) }
+						return <ExifOrientationImg className={classNames(classes.deviceImg, {
+							[classes.activeImage]: activeStep === i ? false : true
+						})} src={blob} alt={'Senti Device'} onLoad={fixHeight} />
+					})}
+				</SwipeableViews> :
+					<Caption>{t('devices.noImages')}</Caption>
+				}
+			</ItemG> : null}
+			<MobileStepper
+				steps={maxSteps}
+				position='static'
+				activeStep={activeStep}
+				className={classes.mobileStepper}
+				nextButton={
+					<Button size='small' onClick={handleNext} disabled={activeStep === maxSteps - 1 || maxSteps === 0}>
+						{t('actions.next')}
+						{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+					</Button>
+				}
+				backButton={
+					<Button size='small' onClick={handleBack} disabled={activeStep === 0}>
+						{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+						{t('actions.back')}
+					</Button>
+				}
+			/>
+		</div>
+	);
 }
 
 DeviceImage.propTypes = {
