@@ -358,8 +358,4 @@ const Sensors = props => {
 }
 
 
-
-
-
-
 export default Sensors

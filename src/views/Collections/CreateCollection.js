@@ -6,7 +6,7 @@ import { CircularLoader } from 'components';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
 
-import { getCollections, /* setDevices, setOrgs  */ } from 'redux/data';
+import { getCollections, /* setDevices, setOrgs */ } from 'redux/data';
 import { useLocalization, useSnackbar, useHistory } from 'hooks';
 
 // const mapStateToProps = (state) => ({

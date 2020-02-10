@@ -1,7 +1,8 @@
-
+import { makeStyles } from '@material-ui/core'
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
-const devicetableStyles = theme => ({
+
+const devicetableStyles = makeStyles(theme => ({
 	noCheckbox: {
 		padding: 10
 	},
@@ -135,6 +136,6 @@ const devicetableStyles = theme => ({
 	paddingLeft: {
 		paddingLeft: 16
 	}
-});
+}));
 
 export default devicetableStyles

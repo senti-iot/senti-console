@@ -1,12 +1,12 @@
 // ##############################
 // // // Projects View Styles
 // #############################
-
+import { makeStyles } from '@material-ui/core'
 import { primaryColor, deviceStatus } from "assets/jss/material-dashboard-react.js";
 // import regularCardStyle from "../material-dashboard-react/regularCardStyle";
 import { red, green } from '@material-ui/core/colors'
 
-const projectStyles = theme => ({
+const projectStyles = makeStyles(theme => ({
 	...deviceStatus,
 	redButton: {
 		color: red[700],
@@ -92,6 +92,6 @@ const projectStyles = theme => ({
 		marginRight: 8
 	},
 
-});
+}));
 
 export default projectStyles;

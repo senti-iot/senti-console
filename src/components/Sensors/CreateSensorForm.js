@@ -1,12 +1,12 @@
-import React, { useState, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import React, { Fragment } from 'react'
+import { /* Dialog, AppBar, Toolbar, Typography, */ Button, /* List, ListItem, ListItemText, */ Divider, withStyles, /*  Hidden, */ IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close, CheckCircle, Block } from 'variables/icons';
-import cx from 'classnames'
+// import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 // import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T, SlideT } from 'components'
-import Search from 'components/Search/Search';
-import { suggestionGen, filterItems } from 'variables/functions';
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T, /* SlideT */ } from 'components'
+// import Search from 'components/Search/Search';
+// import { suggestionGen, filterItems } from 'variables/functions';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import Info from 'components/Typography/Info';
 import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
@@ -14,14 +14,11 @@ import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDial
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import { useLocalization } from 'hooks';
 
-/**
-* @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
-*/
 
 // @Andrei
 const CreateSensorForm = props => {
 	const t = useLocalization()
-	const [filters, setFilters] = useState({ keyword: '' })
+	// const [filters, setFilters] = useState({ keyword: '' })
 	// constructor(props) {
 	// 	super(props)
 
@@ -32,24 +29,24 @@ const CreateSensorForm = props => {
 	// 	}
 	// }
 
-	const handleFilterKeyword = value => {
-		setFilters({ ...filters, keyword: value })
-		// this.setState({
-		// 	filters: {
-		// 		keyword: value
-		// 	}
-		// })
-	}
+	// const handleFilterKeyword = value => {
+	// 	setFilters({ ...filters, keyword: value })
+	// 	// this.setState({
+	// 	// 	filters: {
+	// 	// 		keyword: value
+	// 	// 	}
+	// 	// })
+	// }
 
-	const ProtocolTypes = () => {
-		// const { t } = this.props
-		return [
-			{ value: 0, label: t('sensors.fields.protocols.none') },
-			{ value: 1, label: t('sensors.fields.protocols.mqtt') },
-			{ value: 2, label: t('sensors.fields.protocols.http') },
-			{ value: 3, label: `${t('sensors.fields.protocols.mqtt')} & ${t('sensors.fields.protocols.http')}` }
-		]
-	}
+	// const ProtocolTypes = () => {
+	// 	// const { t } = this.props
+	// 	return [
+	// 		{ value: 0, label: t('sensors.fields.protocols.none') },
+	// 		{ value: 1, label: t('sensors.fields.protocols.mqtt') },
+	// 		{ value: 2, label: t('sensors.fields.protocols.http') },
+	// 		{ value: 3, label: `${t('sensors.fields.protocols.mqtt')} & ${t('sensors.fields.protocols.http')}` }
+	// 	]
+	// }
 
 	const CommunicationTypes = () => {
 		const { classes } = props
@@ -74,76 +71,76 @@ const CreateSensorForm = props => {
 	}
 
 
-	const renderSelectFunction = () => {
-		const { openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = props
-		// const { filters } = this.state
-		const appBarClasses = cx({
-			[' ' + classes['primary']]: 'primary'
-		});
-		return <Dialog
-			fullScreen
-			open={openCF.open}
-			onClose={handleCloseFunc}
-			TransitionComponent={SlideT}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
-				<Toolbar>
-					<Hidden mdDown>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={2} container alignItems={'center'}>
-								<IconButton color='inherit' onClick={handleCloseFunc} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('sidebar.cloudfunctions')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8}>
-								<Search
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
-									handleFilterKeyword={handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-					<Hidden lgUp>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={handleCloseFunc} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
-								<Search
-									noAbsolute
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
-									handleFilterKeyword={handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-				</Toolbar>
-			</AppBar>
-			<List>
-				{cfunctions ? filterItems(cfunctions, filters).map((o, i) => {
-					return <Fragment key={i}>
-						<ListItem button onClick={handleChangeFunc(o, openCF.where)}>
-							<ListItemText primary={o.name} />
-						</ListItem>
-						<Divider />
-					</Fragment>
-				}) : null}
-			</List>
-		</Dialog>
-	}
+	// const renderSelectFunction = () => {
+	// 	const { openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = props
+	// 	// const { filters } = this.state
+	// 	const appBarClasses = cx({
+	// 		[' ' + classes['primary']]: 'primary'
+	// 	});
+	// 	return <Dialog
+	// 		fullScreen
+	// 		open={openCF.open}
+	// 		onClose={handleCloseFunc}
+	// 		TransitionComponent={SlideT}>
+	// 		<AppBar className={classes.appBar + ' ' + appBarClasses}>
+	// 			<Toolbar>
+	// 				<Hidden mdDown>
+	// 					<ItemG container alignItems={'center'}>
+	// 						<ItemG xs={2} container alignItems={'center'}>
+	// 							<IconButton color='inherit' onClick={handleCloseFunc} aria-label='Close'>
+	// 								<Close />
+	// 							</IconButton>
+	// 							<Typography variant='h6' color='inherit' className={classes.flex}>
+	// 								{t('sidebar.cloudfunctions')}
+	// 							</Typography>
+	// 						</ItemG>
+	// 						<ItemG xs={8}>
+	// 							<Search
+	// 								fullWidth
+	// 								open={true}
+	// 								focusOnMount
+	// 								suggestions={cfunctions ? suggestionGen(cfunctions) : []}
+	// 								handleFilterKeyword={handleFilterKeyword}
+	// 								searchValue={filters.keyword} />
+	// 						</ItemG>
+	// 					</ItemG>
+	// 				</Hidden>
+	// 				<Hidden lgUp>
+	// 					<ItemG container alignItems={'center'}>
+	// 						<ItemG xs={4} container alignItems={'center'}>
+	// 							<IconButton color={'inherit'} onClick={handleCloseFunc} aria-label='Close'>
+	// 								<Close />
+	// 							</IconButton>
+	// 							<Typography variant='h6' color='inherit' className={classes.flex}>
+	// 								{t('orgs.pageTitle')}
+	// 							</Typography>
+	// 						</ItemG>
+	// 						<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+	// 							<Search
+	// 								noAbsolute
+	// 								fullWidth
+	// 								open={true}
+	// 								focusOnMount
+	// 								suggestions={cfunctions ? suggestionGen(cfunctions) : []}
+	// 								handleFilterKeyword={handleFilterKeyword}
+	// 								searchValue={filters.keyword} />
+	// 						</ItemG>
+	// 					</ItemG>
+	// 				</Hidden>
+	// 			</Toolbar>
+	// 		</AppBar>
+	// 		<List>
+	// 			{cfunctions ? filterItems(cfunctions, filters).map((o, i) => {
+	// 				return <Fragment key={i}>
+	// 					<ListItem button onClick={handleChangeFunc(o, openCF.where)}>
+	// 						<ListItemText primary={o.name} />
+	// 					</ListItem>
+	// 					<Divider />
+	// 				</Fragment>
+	// 			}) : null}
+	// 		</List>
+	// 	</Dialog>
+	// }
 
 	const renderMetadata = () => {
 		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = props

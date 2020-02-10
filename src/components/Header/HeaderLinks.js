@@ -61,7 +61,7 @@ const HeaderLinks = props => {
 		if (props.onClose)
 			props.onClose()
 	}
-	const logOut = async () => {
+	const logOutFunc = async () => {
 		try {
 			await logOut().then(() => { })
 		}
@@ -166,7 +166,7 @@ const HeaderLinks = props => {
 				<GoogleLogout
 					// onLogoutSuccess={() => this.logOut()}
 					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); logOut() }}>
+					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); logOutFunc() }}>
 						<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
 					</MenuItem>)}
 				>

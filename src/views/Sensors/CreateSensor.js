@@ -1,22 +1,27 @@
-import React, { Component, useEffect, useState, useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState, useCallback } from 'react'
 // import CreateSensorForm from 'components/Collections/CreateSensorForm';
 import { createSensor } from 'variables/dataSensors';
 import CreateSensorForm from 'components/Sensors/CreateSensorForm';
 import { getAddressByLocation } from 'variables/dataDevices';
 import { getSensors } from 'redux/data';
-import { useLocalization, useMatch, useHistory, useLocation, useEventListener } from 'hooks';
+import { useLocalization, useHistory, useLocation, useEventListener, useDispatch, useSnackbar, useSelector } from 'hooks';
 
 const CreateSensor = props => {
 	//Hooks
 	const t = useLocalization()
-	const match = useMatch()
+	// const match = useMatch()
 	const location = useLocation()
 	const history = useHistory()
+	const dispatch = useDispatch()
+	const s = useSnackbar().s
 	//Redux
-
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const orgId = useSelector(state => state.settings.user.org.id)
+	const registries = useSelector(state => state.data.registries)
+	const deviceTypes = useSelector(state => state.data.deviceTypes)
+	const cloudfunctions = useSelector(state => state.data.function)
 	//State
-	const [loading, setLoading] = useState(true)
+	// const [loading, setLoading] = useState(true)
 	const [openReg, setOpenReg] = useState(false)
 	const [openDT, setOpenDT] = useState(false)
 	const [openCF, setOpenCF] = useState({ open: false, where: null })
@@ -188,25 +193,24 @@ const CreateSensor = props => {
 	const handleAddMetadataKey = e => {
 		let mtd = sensorMetadata.metadata
 		mtd.push({ key: "", value: "" })
-		setSensorMetadata({
-			...sensorMetadata,
-			metadata: mtd
-		})
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				metadata: mtd
-			}
-		})
+		setSensorMetadata({ ...sensorMetadata, metadata: mtd })
+		// this.setState({
+		// 	sensorMetadata: {
+		// 		...this.state.sensorMetadata,
+		// 		metadata: mtd
+		// 	}
+		// })
 	}
 
 	const handleRemoveMtdKey = index => e => {
-		let mtd = sensorMetadata.metadata
-		let newMetadata = mtd.filter((v, i) => i !== index)
-		setSensorMetadata({
-			...sensorMetadata,
-			metadata: newMetadata
-		})
+		let newMetadata = sensorMetadata.metadata.filter((v, i) => i !== index)
+		setSensorMetadata({ ...sensorMetadata, metadata: newMetadata })
+		// this.setState({
+		// 	sensorMetadata: {
+		// 		...this.state.sensorMetadata,
+		// 		metadata: newMetadata
+		// 	}
+		// })
 	}
 
 	const handleChangeMetadataKey = (i) => e => {
@@ -264,27 +268,21 @@ const CreateSensor = props => {
 
 	//#region Registry selector
 
-	handleOpenReg = () => {
-		this.setState({
-			openReg: true
-		})
+	const handleOpenReg = () => {
+		setOpenReg(true)
 	}
-	handleCloseReg = () => {
-		this.setState({
-			openReg: false
-		})
+	const handleCloseReg = () => {
+		setOpenReg(false)
 	}
-	handleChangeReg = (o) => {
-		this.setState({
-			sensor: {
-				...this.state.sensor,
-				reg_id: o.id
-			},
-			openReg: false,
-			select: {
-				...this.state.select,
-				reg: o
-			}
+	const handleChangeReg = (o) => {
+		setSensor({
+			...stateSensor,
+			reg_id: o.id
+		})
+		setOpenReg(false)
+		setSelect({
+			...select,
+			reg: o
 		})
 	}
 
@@ -293,29 +291,22 @@ const CreateSensor = props => {
 
 
 	//#region Create Sensor
-	createSensor = async () => {
-		let smtd = this.state.sensorMetadata.metadata
-		let mtd = {}
-		if (smtd.length > 0)
-			smtd.forEach((m) => {
-				mtd[m.key] = m.value
-			})
+	const createSensorFunc = async () => {
 		let newSensor = {
-			...this.state.sensor,
+			...stateSensor,
 			tags: [],
 			metadata: {
-				...this.state.sensorMetadata,
-				metadata: mtd
+				...sensorMetadata,
 			}
 		}
 		return await createSensor(newSensor)
 	}
-	handleCreate = async () => {
-		const { s, history, orgId, accessLevel } = this.props
-		let rs = await this.createSensor()
+	const handleCreate = async () => {
+		// const { s, history, orgId, accessLevel } = this.props
+		let rs = await createSensorFunc()
 		if (rs) {
-			s('snackbars.create.device', { device: this.state.sensor.name })
-			this.props.getSensors(true, orgId, accessLevel.apisuperuser ? true : false)
+			s('snackbars.create.device', { device: stateSensor.name })
+			dispatch(getSensors(true, orgId, accessLevel.apisuperuser ? true : false))
 			history.push(`/sensor/${rs}`)
 		}
 		else
@@ -329,64 +320,56 @@ const CreateSensor = props => {
 	return (
 
 		<CreateSensorForm
-			sensor={sensor}
+			sensor={stateSensor}
 			sensorMetadata={sensorMetadata}
 			cfunctions={cloudfunctions}
-			handleOpenFunc={this.handleOpenFunc}
-			handleCloseFunc={this.handleCloseFunc}
-			handleChangeFunc={this.handleChangeFunc}
-			handleRemoveFunction={this.handleRemoveFunction}
-			handleRemoveInboundFunction={this.handleRemoveInboundFunction}
-			handleAddInboundFunction={this.handleAddInboundFunction}
-			openCF={this.state.openCF}
+			handleOpenFunc={handleOpenFunc}
+			handleCloseFunc={handleCloseFunc}
+			handleChangeFunc={handleChangeFunc}
+			handleRemoveFunction={handleRemoveFunction}
+			handleRemoveInboundFunction={handleRemoveInboundFunction}
+			handleAddInboundFunction={handleAddInboundFunction}
+			openCF={openCF}
 
-			handleAddKey={this.handleAddKey}
-			handleRemoveKey={this.handleRemoveKey}
-			handleChangeKey={this.handleChangeKey}
+			handleAddKey={handleAddKey}
+			handleRemoveKey={handleRemoveKey}
+			handleChangeKey={handleChangeKey}
 
-			handleChange={this.handleChange}
-			handleCreate={this.handleCreate}
+			handleChange={handleChange}
+			handleCreate={handleCreate}
 
-			handleChangeType={this.handleChangeType}
+			handleChangeType={handleChangeType}
 
-			handleChangeMetadataKey={this.handleChangeMetadataKey}
-			handleChangeMetadata={this.handleChangeMetadata}
-			handleRemoveMtdKey={this.handleRemoveMtdKey}
-			handleAddMetadataKey={this.handleAddMetadataKey}
+			handleChangeMetadataKey={handleChangeMetadataKey}
+			handleChangeMetadata={handleChangeMetadata}
+			handleRemoveMtdKey={handleRemoveMtdKey}
+			handleAddMetadataKey={handleAddMetadataKey}
 
-			handleOpenDT={this.handleOpenDT}
-			handleCloseDT={this.handleCloseDT}
-			handleChangeDT={this.handleChangeDT}
-			openDT={this.state.openDT}
-			deviceTypes={this.props.deviceTypes}
+			handleOpenDT={handleOpenDT}
+			handleCloseDT={handleCloseDT}
+			handleChangeDT={handleChangeDT}
+			openDT={openDT}
+			deviceTypes={deviceTypes}
 
-			registries={this.props.registries}
-			handleOpenReg={this.handleOpenReg}
-			handleCloseReg={this.handleCloseReg}
-			handleChangeReg={this.handleChangeReg}
-			openReg={this.state.openReg}
+			registries={registries}
+			handleOpenReg={handleOpenReg}
+			handleCloseReg={handleCloseReg}
+			handleChangeReg={handleChangeReg}
+			openReg={openReg}
 
 
-			goToSensors={this.goToSensors}
-			select={this.state.select}
-			getLatLngFromMap={this.getLatLngFromMap}
+			goToSensors={goToSensors}
+			select={select}
+			getLatLngFromMap={getLatLngFromMap}
 			t={t}
 		/>
 	)
 }
+// const mapStateToProps = (state) => ({
 
+// })
 
-
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	orgId: state.settings.user.org.id,
-	registries: state.data.registries,
-	deviceTypes: state.data.deviceTypes,
-	cloudfunctions: state.data.functions
-})
-
-const mapDispatchToProps = dispatch => ({
-	getSensors: async (reload, orgId, ua) => dispatch(await getSensors(reload, orgId, ua))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateSensor)
+// const mapDispatchToProps = dispatch => ({
+// 	getSensors: async (reload, orgId, ua) => dispatch(await getSensors(reload, orgId, ua))
+// })
+export default CreateSensor

@@ -1,11 +1,9 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
 import React, { Fragment, useState } from 'react'
-import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption, /* Caption */ } from 'components'
@@ -21,8 +19,11 @@ import { useLocalization } from 'hooks'
 // })
 
 // @Andrei
+//TODO Move to own classes
 const DeviceTypeTable = props => {
 	const t = useLocalization()
+	//TODO
+	const classes = devicetableStyles()
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	const hoverTime = useSelector(state => state.settings.hoverTime)
 	const [page, setPage] = useState(0)
@@ -89,7 +90,7 @@ const DeviceTypeTable = props => {
 		return <DeviceTypeHover anchorEl={rowHover} handleClose={unsetHover} devicetype={hoverDeviceType} />
 	}
 
-	const { classes, handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
+	const { handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
 	// const { page } = this.state
 	let emptyRows;
 	if (data)
@@ -185,8 +186,4 @@ const DeviceTypeTable = props => {
 	)
 }
 
-DeviceTypeTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
-
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(DeviceTypeTable))
+export default DeviceTypeTable

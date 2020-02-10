@@ -53,10 +53,10 @@ const Collections = props => {
 	const [openAssignProject, setOpenAssignProject] = useState(false)
 	const [openUnassignDevice, setOpenUnassignDevice] = useState(false)
 	const [openDelete, setOpenDelete] = useState(false)
-	const [/* route */, setRoute] = useState(0)
+	// const [route, setRoute] = useState(0)
 	const [stateOrder, setStateOrder] = useState('asc')
 	const [orderBy, setOrderBy] = useState('id')
-	const [stateFilters, setStateFilters] = useState({ keyword: '' })
+	const [stateFilters, /* setStateFilters */] = useState({ keyword: '' })
 	const [/* anchorElMenu */, setAnchorElMenu] = useState(null) // added
 	const [/* anchorEl */, setAnchorEl] = useState(null) // added
 
@@ -283,9 +283,9 @@ const Collections = props => {
 		}
 	}
 
-	const reload = async () => {
-		await getData(true)
-	}
+	// const reload = async () => {
+	// 	await getData(true)
+	// }
 	const getData = async (reload) => {
 		// const { getCollections, setCollections } = this.props
 		dispatch(setCollections())
@@ -322,21 +322,21 @@ const Collections = props => {
 		props.history.push({ pathname: '/collection/' + id, prevURL: '/collections/favorites' })
 	}
 
-	const handleFilterKeyword = (value) => {
-		setStateFilters({ ...stateFilters, keyword: value })
-		// this.setState({
-		// 	filters: {
-		// 		...this.state.filters,
-		// 		keyword: value
-		// 	}
-		// })
-	}
+	// const handleFilterKeyword = (value) => {
+	// 	setStateFilters({ ...stateFilters, keyword: value })
+	// 	// this.setState({
+	// 	// 	filters: {
+	// 	// 		...this.state.filters,
+	// 	// 		keyword: value
+	// 	// 	}
+	// 	// })
+	// }
 
 
-	const handleTabsChange = (e, value) => {
-		setRoute(value)
-		// this.setState({ route: value })
-	}
+	// const handleTabsChange = (e, value) => {
+	// 	setRoute(value)
+	// 	// this.setState({ route: value })
+	// }
 	const handleDeleteCollections = async () => {
 		// const { selected } = this.state
 		Promise.all([selected.map(u => {

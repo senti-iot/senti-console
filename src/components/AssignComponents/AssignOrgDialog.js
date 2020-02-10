@@ -21,7 +21,7 @@ const AssignOrgDialog = React.memo(props => {
 	const t = useLocalization()
 	const orgs = useSelector(state => state.data.orgs)
 	// const [stateOrgs, setStateOrgs] = useState([])
-	const [selectedOrg, setSelectedOrg] = useState(null)
+	const [selectedOrg, /* setSelectedOrg */] = useState(null)
 	const [filters, setFilters] = useState({
 		keyword: '',
 		startDate: null,
@@ -55,11 +55,11 @@ const AssignOrgDialog = React.memo(props => {
 		props.callBack(org)
 	}
 
-	const selectOrg = pId => e => {
-		e.preventDefault()
-		setSelectedOrg(pId)
-		// this.setState({ selectedOrg: pId })
-	}
+	// const selectOrg = pId => e => {
+	// 	e.preventDefault()
+	// 	setSelectedOrg(pId)
+	// 	// this.setState({ selectedOrg: pId })
+	// }
 	const closeDialog = () => {
 		props.handleClose(false)
 	}
