@@ -13,7 +13,7 @@ import { customFilterItems } from 'variables/Filters';
 import { getRegistries, sortData } from 'redux/data';
 import RegistryCards from 'components/Registry/RegistryCards';
 import { deleteRegistry } from 'variables/dataRegistry';
-import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector, useMatch } from 'hooks';
+import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector } from 'hooks';
 import registriesStyles from 'assets/jss/components/registries/registriesStyles';
 import { handleRequestSort } from 'variables/functions';
 
@@ -25,11 +25,9 @@ const Registries = props => {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const classes = registriesStyles()
-	const match = useMatch()
-	console.log(match)
-	//Redux
 
-	const accessLevel = useSelector(s => s.settings.user.priviledges)
+	//Redux
+	const accessLevel = useSelector(s => s.settings.user.privileges)
 	const favorites = useSelector(s => s.data.favorites)
 	const saved = useSelector(s => s.favorites.saved)
 	const registries = useSelector(s => s.data.registries)
@@ -96,7 +94,12 @@ const Registries = props => {
 			}
 		}
 	}, [location])
-
+	const getData = useCallback(async () => {
+		if (user && accessLevel) {
+			dispatch(await getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false))
+		}
+		//eslint-disable-next-line
+	}, [])
 	//useEffects
 	useEffect(() => {
 		if (saved === true) {
@@ -118,14 +121,11 @@ const Registries = props => {
 	}, [registries, s, saved, selected, t, dispatch])
 
 	useEffect(() => {
-		if (user && accessLevel) {
+		const getRegs = async () => await getData()
+		getRegs()
 
-			const getRegs = async () => dispatch(await getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false))
+	}, [dispatch, getData])
 
-			getRegs()
-		}
-
-	}, [accessLevel, dispatch, user])
 	useEffect(() => {
 		if (registries) {
 
@@ -184,11 +184,9 @@ const Registries = props => {
 		}
 	}
 
-
 	const handleEdit = () => {
 		history.push({ pathname: `/registry/${selected[0]}/edit`, prevURL: `/registries/list` })
 	}
-
 
 	const handleRequestSortRegistries = key => (event, property, way) => {
 		let nOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
@@ -216,6 +214,7 @@ const Registries = props => {
 			setOpenDelete(false)
 			setSelected([])
 			snackBarMessages(1)
+			await getData()
 			// await this.getData(true).then(
 			// 	() =>
 			// )
