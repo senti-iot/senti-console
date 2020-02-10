@@ -11,7 +11,6 @@ import RegistryDetails from './RegistryCards/RegistryDetails';
 import RegistryDevices from './RegistryCards/RegistryDevices';
 import { deleteRegistry } from 'variables/dataRegistry';
 import { useLocalization, useSnackbar, useHistory, useMatch, useLocation } from 'hooks';
-import { useParams } from 'react-router-dom';
 
 
 const Registry = props => {
@@ -22,8 +21,6 @@ const Registry = props => {
 	const history = useHistory()
 	const match = useMatch()
 	const location = useLocation()
-	const params = useParams()
-	console.log(params)
 	//Redux
 	const accessLevel = useSelector(store => store.settings.user.privileges)
 	const saved = useSelector(store => store.favorites.saved)
@@ -56,7 +53,6 @@ const Registry = props => {
 	}, [saved, match, dispatch, registry, s, t, isFavorite])
 
 	useEffect(() => {
-		console.log(match)
 		const getReg = async () => {
 			if (match) {
 				let id = match.params.id

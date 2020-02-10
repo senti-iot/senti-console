@@ -94,12 +94,14 @@ const Registries = props => {
 			}
 		}
 	}, [location])
+
 	const getData = useCallback(async () => {
 		if (user && accessLevel) {
 			dispatch(await getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false))
 		}
 		//eslint-disable-next-line
 	}, [])
+
 	//useEffects
 	useEffect(() => {
 		if (saved === true) {
