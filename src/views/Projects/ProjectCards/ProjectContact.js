@@ -147,7 +147,7 @@ export class ProjectContact extends Component {
 		</Dialog> : null
 	}
 	render() {
-		const { t, project, classes } = this.props
+		const { t, project } = this.props
 		return (
 			<InfoCard
 				title={t('projects.contact.title')}
@@ -156,7 +156,7 @@ export class ProjectContact extends Component {
 				noExpand
 				topAction={<Dropdown
 					menuItems={[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.handleOpenEditContact },
+						{ label: t('menus.edit'), icon: Edit, func: this.handleOpenEditContact },
 					]
 					}
 				/>

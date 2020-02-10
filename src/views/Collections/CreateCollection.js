@@ -6,7 +6,7 @@ import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
 import { CircularLoader } from 'components';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
-// eslint-disable-next-line no-unused-vars
+
 import { getCollections, setDevices, setOrgs } from 'redux/data';
 import { useLocalization, useSnackbar, useHistory } from 'hooks';
 

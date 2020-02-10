@@ -44,7 +44,7 @@ const CollectionActiveDevice = props => {
 			{ id: 0, label: t('devices.locationTypes.unspecified') }]
 	}
 
-	// eslint-disable-next-line no-unused-vars
+
 	const renderDeviceLocType = () => {
 		const { device } = props
 		let deviceLoc = LocationTypes()[LocationTypes().findIndex(r => r.id === device.locationType)]

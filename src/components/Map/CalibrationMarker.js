@@ -22,7 +22,7 @@ const styles = theme => ({
 const CalibrationMarker = props => {
 	const t = useLocalization()
 	const [isOpen, setIsOpen] = useState(false)
-	// eslint-disable-next-line no-unused-vars
+
 	const [liveCount, setLiveCount] = useState(0)
 	const [weather, setWeather] = useState(null)
 	// constructor(props) {
@@ -35,7 +35,7 @@ const CalibrationMarker = props => {
 	//   }
 	// }
 
-	// eslint-disable-next-line no-unused-vars
+
 	const onToggleOpen = async () => {
 		const { m, lang } = props
 		// const { isOpen } = this.state
@@ -56,7 +56,7 @@ const CalibrationMarker = props => {
 			// this.setState({ isOpen: !isOpen })
 		}
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const renderIcon = (status) => {
 		const { classes } = props
 		switch (status) {

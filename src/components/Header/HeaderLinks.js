@@ -6,7 +6,7 @@ import cookie from 'react-cookies';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Gravatar from 'react-gravatar'
-// eslint-disable-next-line no-unused-vars
+
 import { logOut } from 'variables/dataLogin';
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'

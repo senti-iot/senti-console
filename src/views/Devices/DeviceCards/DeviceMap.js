@@ -124,9 +124,9 @@ class DeviceMap extends PureComponent {
 
 			<Dropdown menuItems={
 				[
-					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
-					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleEditLocation() }]
+					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: WhatsHot, func: () => this.props.changeHeatMap(!this.props.heatMap) },
+					{ label: t('actions.goToDevice'), icon: Smartphone, func: () => this.flyToMarkers() },
+					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: EditLocation, func: () => this.handleEditLocation() }]
 			} />
 
 		</Fragment>

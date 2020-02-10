@@ -63,7 +63,7 @@ const MessageHover = props => {
 	// 		}
 	// 	}
 	// }
-	// eslint-disable-next-line no-unused-vars
+
 	const addToFavorites = () => {
 		const { message } = props
 		let favObj = {
@@ -74,7 +74,7 @@ const MessageHover = props => {
 		}
 		dispatch(addToFav(favObj))
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const removeFromFavorites = () => {
 		const { message } = props
 		let favObj = {
@@ -89,7 +89,7 @@ const MessageHover = props => {
 	const handleClose = () => {
 		props.handleClose()
 	};
-	// eslint-disable-next-line no-unused-vars
+
 	const renderIcon = (status) => {
 		const { classes } = props
 		switch (status) {

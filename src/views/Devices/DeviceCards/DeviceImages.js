@@ -8,18 +8,18 @@ import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Caption, Dropdown } from 'components';
 import DeviceImageUpload from 'views/Devices/ImageUpload';
-import { useLocalization, useSnackbar } from 'hooks';
+import { useLocalization, /* useSnackbar */ } from 'hooks';
 
 const DeviceImages = props => {
 	const t = useLocalization()
-	const s = useSnackbar().s
+	// const s = useSnackbar().s
 	const [activeStep, setActiveStep] = useState(0)
 	const [img, setImg] = useState(null)
 	const [openImageUpload, setOpenImageUpload] = useState(false)
 	const [openDeleteImage, setOpenDeleteImage] = useState(false)
 	const [/* deletingPicture */, setDeletingPicture] = useState(false)
 	// const [deleted, setDeleted] = useState(null)
-	const [openSnackbar, setOpenSnackbar] = useState(0)
+	// const [openSnackbar, setOpenSnackbar] = useState(0)
 	// constructor(props) {
 	// 	super(props)
 
@@ -90,31 +90,31 @@ const DeviceImages = props => {
 		if (deleted) {
 			setImg(null)
 			setOpenDeleteImage(false)
-			setOpenSnackbar(1)
+			// setOpenSnackbar(1)
 			// this.setState({ img: null, openDeleteImage: false, openSnackbar: 1 })
 			getAllPics(dId)
 		}
 		else {
-			setOpenSnackbar(2)
+			// setOpenSnackbar(2)
 			setOpenDeleteImage(false)
 			// this.setState({ openSnackbar: 2, openDeleteImage: false })
 		}
 	}
-	// eslint-disable-next-line no-unused-vars
-	const snackBarMessages = () => {
-		// const { s } = this.props
-		let msg = openSnackbar
-		switch (msg) {
-			case 1:
-				s('snackbars.pictureDeleted')
-				break
-			case 2:
-				s('snackbars.pictureNotDeleted')
-				break
-			default:
-				break;
-		}
-	}
+
+	// const snackBarMessages = () => {
+	// 	// const { s } = this.props
+	// 	let msg = openSnackbar
+	// 	switch (msg) {
+	// 		case 1:
+	// 			s('snackbars.pictureDeleted')
+	// 			break
+	// 		case 2:
+	// 			s('snackbars.pictureNotDeleted')
+	// 			break
+	// 		default:
+	// 			break;
+	// 	}
+	// }
 	const renderImageLoader = () => {
 		return <CircularLoader fill />
 	}
@@ -155,8 +155,8 @@ const DeviceImages = props => {
 			topAction={
 				<Dropdown menuItems={
 					[
-						{ label: t('actions.uploadImages'), icon: <CloudUpload className={classes.leftIcon} />, func: handleOpenImageUpload },
-						{ label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeletePictureDialog },
+						{ label: t('actions.uploadImages'), icon: CloudUpload, func: handleOpenImageUpload },
+						{ label: t('actions.deletePicture'), icon: Delete, func: handleOpenDeletePictureDialog },
 					]
 				} />
 			}

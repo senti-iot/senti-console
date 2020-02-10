@@ -1,18 +1,24 @@
-import { withStyles } from '@material-ui/core';
-import cloudfunctionStyles from 'assets/jss/views/deviceStyles';
 import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React from 'react';
-// import { Link } from 'react-router-dom';
-import { DataUsage, Edit, Delete, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, /* Delete */ } from 'variables/icons';
+import { DataUsage, Edit, Delete, Star, StarBorder } from 'variables/icons';
 import { useSelector } from 'react-redux'
-import { useLocalization } from 'hooks'
+import { useLocalization, useHistory } from 'hooks'
 
 // @Andrei
-const RegistryDetails = props => {
+const FunctionDetails = props => {
+	//Hooks
 	const t = useLocalization()
+	const history = useHistory()
+	//Redux
 	const detailsPanel = useSelector(state => state.settings.detailsPanel)
+
+	//State
+
+	//Const
+	const { handleOpenDeleteDialog, cloudfunction, isFav, addToFav, removeFromFav } = props
+
 
 	const renderProtocol = (id) => {
 		// const { t } = this.props
@@ -26,7 +32,6 @@ const RegistryDetails = props => {
 		}
 	}
 
-	const { handleOpenDeleteDialog, classes, cloudfunction, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history } = props
 	return (
 		<InfoCard
 			title={cloudfunction.name ? cloudfunction.name : cloudfunction.uuid}
@@ -35,9 +40,9 @@ const RegistryDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/function/${cloudfunction.id}/edit`, prevURL: `/function/${cloudfunction.id}` }) },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/function/${cloudfunction.id}/edit`, prevURL: `/function/${cloudfunction.id}` }) },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
 
 				]
 			} />
@@ -61,4 +66,4 @@ const RegistryDetails = props => {
 	)
 }
 
-export default withStyles(cloudfunctionStyles)(RegistryDetails)
+export default FunctionDetails

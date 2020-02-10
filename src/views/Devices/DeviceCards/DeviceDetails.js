@@ -61,7 +61,7 @@ const DeviceDetails = props => {
 		return deviceLoc ? deviceLoc.label : t('devices.noLocType')
 	}
 
-	const { classes, device, accessLevel, history, weather, isFav, addToFav, removeFromFav } = props
+	const { device, accessLevel, history, weather, isFav, addToFav, removeFromFav } = props
 	return (
 		<InfoCard
 			whiteAvatar
@@ -72,12 +72,12 @@ const DeviceDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
-					{ label: t('menus.assign.deviceToCollection'), icon: <DataUsage className={classes.leftIcon} />, func: props.handleOpenAssign },
-					{ label: device.org.id > 0 ? t('menus.reassign.deviceToOrg') : t('menus.assign.deviceToOrg'), icon: <Business className={classes.leftIcon} />, func: props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
-					{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: props.handleOpenUnassign, dontShow: device.dataCollection ? device.dataCollection.id > 0 ? false : true : true },
-					{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: <Build className={classes.leftIcon} />, /* dontShow: device.liveStatus === 0, */ func: () => props.history.push(`${props.match.url}/setup`) },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
+					{ label: t('menus.assign.deviceToCollection'), icon: DataUsage, func: props.handleOpenAssign },
+					{ label: device.org.id > 0 ? t('menus.reassign.deviceToOrg') : t('menus.assign.deviceToOrg'), icon: Business, func: props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
+					{ label: t('menus.unassign.deviceFromCollection'), icon: LayersClear, func: props.handleOpenUnassign, dontShow: device.dataCollection ? device.dataCollection.id > 0 ? false : true : true },
+					{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: Build, /* dontShow: device.liveStatus === 0, */ func: () => props.history.push(`${props.match.url}/setup`) },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav }
 				]
 			} />
 

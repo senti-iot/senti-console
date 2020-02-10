@@ -54,7 +54,7 @@ const AssignOrgDialog = React.memo(props => {
 		let org = orgs[orgs.findIndex(o => o.id === sId)]
 		props.callBack(org)
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const selectOrg = pId => e => {
 		e.preventDefault()
 		setSelectedOrg(pId)

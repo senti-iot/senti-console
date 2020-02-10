@@ -30,7 +30,7 @@ const DeviceDetails = props => {
 		}
 	}
 
-	const { classes, collection, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = props
+	const { collection, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = props
 	return (
 		<InfoCard
 			title={collection.name ? collection.name : collection.id}
@@ -41,12 +41,12 @@ const DeviceDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, prevURL: `/collection/${collection.id}` }) },
-					{ label: t('menus.assign.deviceToCollection'), icon: <DeviceHub className={classes.leftIcon} />, func: props.handleOpenAssignDevice },
-					{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: props.handleOpenUnassignDevice, dontShow: collection.activeDeviceStats ? false : true },
-					{ label: collection.project ? collection.project.id ? t('menus.reassign.collectionToProject') : t('menus.assign.collectionToProject') : t('menus.assign.collectionToProject'), icon: <LibraryBooks className={classes.leftIcon} />, func: props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
-					{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, prevURL: `/collection/${collection.id}` }) },
+					{ label: t('menus.assign.deviceToCollection'), icon: DeviceHub, func: props.handleOpenAssignDevice },
+					{ label: t('menus.unassign.deviceFromCollection'), icon: LayersClear, func: props.handleOpenUnassignDevice, dontShow: collection.activeDeviceStats ? false : true },
+					{ label: collection.project ? collection.project.id ? t('menus.reassign.collectionToProject') : t('menus.assign.collectionToProject') : t('menus.assign.collectionToProject'), icon: LibraryBooks, func: props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
+					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav }
 
 				]
 			} />

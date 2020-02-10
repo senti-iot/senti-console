@@ -58,7 +58,7 @@ const AssignRegistryDialog = props => {
 		let org = registries[registries.findIndex(o => o.id === sId)]
 		props.callBack(org)
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const selectRegistry = pId => e => {
 		e.preventDefault()
 		setSelectedRegistry(pId)

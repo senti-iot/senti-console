@@ -1,5 +1,4 @@
-import { Paper, withStyles, IconButton, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
+import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,6 +12,7 @@ import { getFunctions, /* setFunctions, */ sortData } from 'redux/data';
 import FunctionTable from 'components/Cloud/FunctionTable';
 import { deleteCFunction } from 'variables/dataFunctions';
 import { useSnackbar, useLocalization } from 'hooks'
+import cloudfunctionsStyles from 'assets/jss/components/cloudfunctions/cloudfunctionsStyles';
 
 const Functions = props => {
 	//Hooks
@@ -22,7 +22,7 @@ const Functions = props => {
 	const history = useHistory()
 	const match = useRouteMatch()
 	const location = useLocation()
-
+	const classes = cloudfunctionsStyles()
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const favorites = useSelector(state => state.data.favorites)
@@ -48,15 +48,11 @@ const Functions = props => {
 
 	const ft = [
 		{ key: 'name', name: t('cloudfunctions.fields.name'), type: 'string' },
-		// { key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-		// { key: 'devices[0].start', name: t('cloudfunctions.fields.activeDeviceStartDate'), type: 'date' },
-		// { key: 'created', name: t('cloudfunctions.fields.created'), type: 'date' },
-		{ key: 'type', name: t('cloudfunctions.fields.type'), type: 'dropDown', options: dTypes() },
+		{ key: 'type', name: t('cloudfunctions.fields.type'), type: 'dropDown', options: dTypes },
 		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 	]
 
 	const functionsHeader = [
-		// { id: 'id', label: t('functions.fields.id') },
 		{ id: 'name', label: t('cloudfunctions.fields.name') },
 		{ id: 'type', label: t('cloudfunctions.fields.type') },
 	]
@@ -186,8 +182,7 @@ const Functions = props => {
 	//#region Handlers
 
 	const handleEdit = () => {
-		// const { selected } = this.state
-		props.history.push({ pathname: `/function/${selected[0]}/edit`, prevURL: `/functions/list` })
+		history.push({ pathname: `/function/${selected[0]}/edit`, prevURL: `/functions/list` })
 	}
 
 	const handleRequestSortFunc = key => (event, property, way) => {
@@ -198,7 +193,6 @@ const Functions = props => {
 		dispatch(sortData(key, property, order))
 		setOrder(newOrder)
 		setOrderBy(property)
-		// this.setState({ order, orderBy: property })
 	}
 	const handleFunctionClick = id => e => {
 		e.stopPropagation()
@@ -213,16 +207,13 @@ const Functions = props => {
 	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			setSelected(arr)
-			// this.setState({ selected: arr })
 			return;
 		}
 		setSelected([])
-		// this.setState({ selected: [] })
 	}
 
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		// const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -240,28 +231,23 @@ const Functions = props => {
 		}
 
 		setSelected(newSelected)
-		// this.setState({ selected: newSelected })
 	}
 
 	const handleOpenDeleteDialog = () => {
 		setOpenDelete(true)
-		// this.setState({ openDelete: true, anchorElMenu: null })
 	}
 
 
 	const handleCloseDeleteDialog = () => {
 		setOpenDelete(false)
-		// this.setState({ openDelete: false })
 	}
 
 	const handleDeleteCloudFunctions = () => {
-		// const { selected } = this.state
 		Promise.all([selected.map(u => {
 			return deleteCFunction(u)
 		})]).then(async () => {
 			setOpenDelete(false)
 			setSelected([])
-			// this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
 			await getData(true).then(
 				() => snackBarMessages(1)
 			)
@@ -269,8 +255,6 @@ const Functions = props => {
 	}
 
 	const renderDeleteDialog = () => {
-		// const { openDelete, selected } = this.state
-		// const { t, functions } = this.props
 		let data = selected.map(s => functions[functions.findIndex(d => d.id === s)])
 		return <DeleteDialog
 			t={t}
@@ -286,7 +270,6 @@ const Functions = props => {
 	}
 
 	const renderTableToolBarContent = () => {
-		// const { t } = this.props
 		return <Fragment>
 			<Tooltip title={t('menus.create.cloudfunction')}>
 				<IconButton aria-label='Add new cloud function' onClick={addNewFunction}>
@@ -298,7 +281,7 @@ const Functions = props => {
 
 	const renderTableToolBar = () => {
 		return <TableToolbar
-			ft={ft()}
+			ft={ft}
 			reduxKey={'functions'}
 			numSelected={selected.length}
 			options={options}
@@ -318,7 +301,7 @@ const Functions = props => {
 			orderBy={orderBy}
 			selected={selected}
 			t={t}
-			tableHead={functionsHeader()}
+			tableHead={functionsHeader}
 		/>
 	}
 
@@ -329,7 +312,6 @@ const Functions = props => {
 	}
 
 	const renderFavorites = () => {
-		const { classes } = props
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{renderTableToolBar()}
@@ -341,7 +323,6 @@ const Functions = props => {
 	}
 
 	const renderFunctions = () => {
-		const { classes } = props
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{renderTableToolBar()}
@@ -365,4 +346,4 @@ const Functions = props => {
 	)
 }
 
-export default withStyles(projectStyles)(Functions)
+export default Functions

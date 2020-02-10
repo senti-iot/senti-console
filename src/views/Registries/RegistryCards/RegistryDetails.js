@@ -12,7 +12,7 @@ import { useLocalization } from 'hooks';
 // const mapStateToProps = (state) => ({
 // 	detailsPanel: state.settings.detailsPanel
 // })
-
+//@Andrei
 const RegistryDetails = props => {
 	const detailsPanel = useSelector(store => store.settings.detailsPanel)
 	const t = useLocalization()
@@ -45,7 +45,7 @@ const RegistryDetails = props => {
 		}
 	}
 
-	const { classes, registry, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
+	const { registry, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
 	return (
 		<InfoCard
 			title={registry.name ? registry.name : registry.uuid}
@@ -56,9 +56,9 @@ const RegistryDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/registry/${registry.id}/edit`, prevURL: `/registry/${registry.id}` }) },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog }
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.id}/edit`, prevURL: `/registry/${registry.id}` }) },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
 
 
 				]

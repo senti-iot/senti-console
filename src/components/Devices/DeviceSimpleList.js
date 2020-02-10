@@ -127,7 +127,7 @@ const DeviceSimpleList = props => {
 	const isSelectedFunc = id => selected.indexOf(id) !== -1;
 
 	// TODO
-	// eslint-disable-next-line no-unused-vars
+
 	const renderIcon = (status) => {
 		const { classes } = props
 		switch (status) {

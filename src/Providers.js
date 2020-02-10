@@ -57,8 +57,8 @@ function Providers() {
 				<ThemeProvider>
 					<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
 						<MuiPickersUtilsProvider utils={MomentUtils}>
-							<SnackbarProvider>
-								<LocalizationProvider>
+							<LocalizationProvider>
+								<SnackbarProvider>
 									<TProvider>
 										<Router history={hist}>
 											<Switch>
@@ -70,8 +70,8 @@ function Providers() {
 											</Switch>
 										</Router>
 									</TProvider>
-								</LocalizationProvider>
-							</SnackbarProvider>
+								</SnackbarProvider>
+							</LocalizationProvider>
 						</MuiPickersUtilsProvider>
 					</DndProvider>
 				</ThemeProvider>

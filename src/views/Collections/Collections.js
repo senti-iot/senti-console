@@ -282,7 +282,7 @@ const Collections = props => {
 				break;
 		}
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const reload = async () => {
 		await getData(true)
 	}
@@ -321,7 +321,7 @@ const Collections = props => {
 		e.stopPropagation()
 		props.history.push({ pathname: '/collection/' + id, prevURL: '/collections/favorites' })
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const handleFilterKeyword = (value) => {
 		setStateFilters({ ...stateFilters, keyword: value })
 		// this.setState({
@@ -332,7 +332,7 @@ const Collections = props => {
 		// })
 	}
 
-	// eslint-disable-next-line no-unused-vars
+
 	const handleTabsChange = (e, value) => {
 		setRoute(value)
 		// this.setState({ route: value })

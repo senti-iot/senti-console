@@ -23,7 +23,7 @@ const AssignSensorDialog = React.memo(props => {
 	// const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 
 	// const [stateSensors, setStateSensors] = useState([])
-	// eslint-disable-next-line no-unused-vars
+
 	const [selectedSensor, setSelectedSensor] = useState(null)
 	const [page, setPage] = useState(0)
 	const [filters, setFilters] = useState({

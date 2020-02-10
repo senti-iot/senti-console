@@ -275,6 +275,7 @@ const CreateDashboard = (props) => {
 	}
 	const renderColorPicker = () => {
 		return <Dropdown
+			cIcon
 			icon={<Palette style={{ color: "#FFF" }} />}
 			menuItems={weekendColorsDropdown(t)}
 			onChange={changeColor}

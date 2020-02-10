@@ -167,7 +167,7 @@ const CreateDeviceTypeForm = props => {
 		</Fragment>
 	}
 
-	// eslint-disable-next-line no-unused-vars
+
 	const renderSelectOrg = () => {
 		const { openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = props
 		const appBarClasses = cx({

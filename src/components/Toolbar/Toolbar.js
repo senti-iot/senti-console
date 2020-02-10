@@ -132,7 +132,7 @@ const Toolbar = React.memo(props => {
 		// this.setState({ tooltip: false });
 	};
 
-	// eslint-disable-next-line no-unused-vars
+
 	const handleTooltipOpen = (id) => {
 		setTooltip(id)
 		// this.setState({ tooltip: id });

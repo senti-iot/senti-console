@@ -2,12 +2,27 @@ import React, { useState, Fragment } from 'react'
 import { IconButton, Menu, MenuItem, Button, Tooltip } from '@material-ui/core';
 import { ItemG } from 'components';
 import { MoreVert } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
 import { useLocalization } from 'hooks';
+import { makeStyles } from '@material-ui/styles';
 
+const styles = makeStyles(theme => ({
+	leftIcon: {
+		marginRight: 8
+	}
+}))
+
+//@andrei
 const Dropdown = props => {
+	//Hooks
 	const t = useLocalization()
+	const classes = styles()
+	//Redux
+
+	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
+
+	//Const
+
 	// constructor(props) {
 	// 	super(props)
 
@@ -35,7 +50,7 @@ const Dropdown = props => {
 		handleCloseActionsDetails()
 	}
 	// const { actionAnchor } = this.state
-	const { menuItems, icon, button, divider, tooltip, buttonClassName } = props
+	const { menuItems, icon, button, divider, tooltip, buttonClassName, cIcon } = props
 	return (
 		<Fragment>
 			{button && <Button
@@ -71,7 +86,7 @@ const Dropdown = props => {
 					return <MenuItem divider={divider ? i === menuItems.length - 1 ? false : true : false} selected={m.selected} key={i}
 						onClick={handleMenuItemClick(m)}>
 						<ItemG container justify={'space-between'} alignItems={'center'}>
-							{m.icon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon}</ItemG> : null}
+							{m.icon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{cIcon ? m.icon : <m.icon className={classes.leftIcon} />}</ItemG> : null}
 							<ItemG xs>{m.label}</ItemG>
 						</ItemG>
 					</MenuItem>
@@ -81,4 +96,4 @@ const Dropdown = props => {
 	)
 }
 
-export default withLocalization()(Dropdown)
+export default Dropdown

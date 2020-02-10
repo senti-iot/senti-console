@@ -40,7 +40,7 @@ const CreateSensorForm = props => {
 		// 	}
 		// })
 	}
-	// eslint-disable-next-line no-unused-vars
+
 	const ProtocolTypes = () => {
 		// const { t } = this.props
 		return [
@@ -73,7 +73,7 @@ const CreateSensorForm = props => {
 			{ id: 0, label: t('devices.locationTypes.unspecified') }]
 	}
 
-	// eslint-disable-next-line no-unused-vars
+
 	const renderSelectFunction = () => {
 		const { openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = props
 		// const { filters } = this.state

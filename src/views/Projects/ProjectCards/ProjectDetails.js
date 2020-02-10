@@ -18,7 +18,7 @@ class ProjectDetails extends Component {
 		this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/project/${this.props.project.id}` })
 	}
 	render() {
-		const { project, classes, t, isFav, addToFav, removeFromFav, detailsPanel } = this.props
+		const { project, t, isFav, addToFav, removeFromFav, detailsPanel } = this.props
 		return (
 			<InfoCard
 				title={project.title}
@@ -26,14 +26,14 @@ class ProjectDetails extends Component {
 				// noExpand
 				noPadding
 				// noRightExpand
-				// menuExpand			
+				// menuExpand
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown
 					menuItems={[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
-						{ label: t('menus.assign.collectionsToProject'), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssignCollection },
-						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject },
-						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+						{ label: t('menus.edit'), icon: Edit, func: this.editProject },
+						{ label: t('menus.assign.collectionsToProject'), icon: DataUsage, func: this.props.handleOpenAssignCollection },
+						{ label: t('menus.delete'), icon: Delete, func: this.deleteProject },
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav }
 
 					]
 					}
