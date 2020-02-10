@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react'
-import { Table, TableHead, TableRow, TableCell, TableBody, withStyles } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles } from '@material-ui/core';
 import TP from 'components/Table/TP';
 import { InfoCard, ItemG, Link } from 'components';
 import { DeviceHub, CheckCircle, Block, SignalWifi2Bar } from 'variables/icons';
@@ -13,7 +13,7 @@ import { useLocalization } from 'hooks';
 // 	hoverTime: state.settings.hoverTime
 // })
 
-const styles = (theme) => ({
+const useStyles = makeStyles(theme => ({
 	blocked: {
 		color: red[500],
 		marginRight: 8
@@ -22,9 +22,10 @@ const styles = (theme) => ({
 		color: green[500],
 		marginRight: 8
 	}
-})
+}))
 
 const RegistryDevices = props => {
+	const classes = useStyles()
 	const rowsPerPage = useSelector(store => store.appState.trp ? store.appState.trp : store.settings.trp)
 	// const hoverTime = useSelector(store => store.settings.hoverTime)
 
@@ -36,7 +37,7 @@ const RegistryDevices = props => {
 	}
 
 	const renderCommunication = (val) => {
-		const { classes } = props
+		// const { classes } = props
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /> {t('sensors.fields.communications.blocked')}</ItemG>
@@ -97,4 +98,4 @@ const RegistryDevices = props => {
 	)
 }
 
-export default withStyles(styles)(RegistryDevices)
+export default RegistryDevices
