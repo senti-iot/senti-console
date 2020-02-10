@@ -1,35 +1,28 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
-import { withStyles } from '@material-ui/core';
+import React from 'react'
 import { ItemG, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
-import deviceStyles from 'assets/jss/views/deviceStyles';
-import { useLocalization } from 'hooks'
+import { useLocalization, useHistory } from 'hooks'
 
-// @Andrei
-// 3 functions never used
+
 const DeviceHardware = React.memo(props => {
+	//Hooks
 	const t = useLocalization()
-	const [actionAnchor, setActionAnchor] = useState(null)
-	// constructor(props) {
-	//   super(props)
+	const history = useHistory()
+	//Redux
 
-	//   this.state = {
-	// 	 actionAnchor: null
-	//   }
-	// }
-	const handleOpenActionsHardware = e => {
-		setActionAnchor(e.currentTarget)
-		// this.setState({ actionAnchor: e.currentTarget })
-	}
-	const handleCloseActionsHardware = () => {
-		setActionAnchor(null)
-		// this.setState({ actionAnchor: null });
-	}
+	//State
 
-	const { classes, device } = props
+	//Const
+	const { device } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	return (
 		<InfoCard
 			title={t('devices.cards.hardware')}
@@ -37,15 +30,8 @@ const DeviceHardware = React.memo(props => {
 			subheader={''}
 			haveMargin
 			topAction={
-				<Dropdown menuItems={
-					[
-						{
-							label: t('menus.edit'),
-							icon: Edit,
-							func: () => props.history.push(`${props.match.url}/edit-hardware`)
-						},
-					]
-				} />
+				<Dropdown
+					menuItems={[{ label: t('menus.edit'), icon: Edit, func: () => history.push(`${props.match.url}/edit-hardware`) }]} />
 			}
 			content={
 				<ItemG container spacing={3}>
@@ -97,4 +83,4 @@ const DeviceHardware = React.memo(props => {
 	)
 })
 
-export default withStyles(deviceStyles)(DeviceHardware)
+export default DeviceHardware
