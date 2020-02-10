@@ -1,34 +1,30 @@
-import { withStyles } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
 import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React from 'react';
-// import { Link } from 'react-router-dom';
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Delete } from 'variables/icons';
+import { DataUsage, Edit, Star, StarBorder, Delete } from 'variables/icons';
 import { useSelector } from 'react-redux'
-import { useLocalization } from 'hooks';
+import { useLocalization, useHistory } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	detailsPanel: state.settings.detailsPanel
-// })
-//@Andrei
 const RegistryDetails = props => {
-	const detailsPanel = useSelector(store => store.settings.detailsPanel)
+	//Hooks
 	const t = useLocalization()
+	const history = useHistory()
 
-	// TODO
-	// const registryState = () => {
-	// 	const { registry } = props
-	// 	switch (registry.state) {
-	// 		case 1:
-	// 			return t('registries.fields.state.active')
-	// 		case 2:
-	// 			return t('registries.fields.state.inactive')
-	// 		default:
-	// 			break;
-	// 	}
-	// }
+	//Redux
+	const detailsPanel = useSelector(store => store.settings.detailsPanel)
+
+	//State
+
+	//Const
+	const { registry, isFav, addToFav, removeFromFav, handleOpenDeleteDialog } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 
 	const renderProtocol = (id) => {
 		switch (id) {
@@ -45,14 +41,11 @@ const RegistryDetails = props => {
 		}
 	}
 
-	const { registry, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
 	return (
 		<InfoCard
 			title={registry.name ? registry.name : registry.uuid}
 			avatar={<DataUsage />}
 			noExpand
-			// noRightExpand
-			// menuExpand
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
@@ -91,4 +84,4 @@ const RegistryDetails = props => {
 	)
 }
 
-export default withStyles(registryStyles)(RegistryDetails)
+export default RegistryDetails

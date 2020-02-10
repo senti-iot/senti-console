@@ -43,7 +43,7 @@ const UpdateRegistry = props => {
 
 	//useEventListener
 
-	useEventListener('keypress', handleKeyPress)
+	useEventListener('keydown', handleKeyPress)
 
 
 	//useEffects
@@ -64,7 +64,7 @@ const UpdateRegistry = props => {
 			tabs: []
 		})
 
-	}, [location.prevURL, props])
+	}, [location, props])
 
 	useEffect(() => {
 		const getReg = async () => await getData()

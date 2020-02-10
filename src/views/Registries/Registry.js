@@ -22,7 +22,7 @@ const Registry = props => {
 	const match = useMatch()
 	const location = useLocation()
 	//Redux
-	const accessLevel = useSelector(store => store.settings.user.privileges)
+	// const accessLevel = useSelector(store => store.settings.user.privileges)
 	const saved = useSelector(store => store.favorites.saved)
 	const registry = useSelector(store => store.data.registry)
 	const loading = useSelector(store => !store.data.gotRegistry)
@@ -127,8 +127,8 @@ const Registry = props => {
 		setOpenDelete(false)
 	}
 	const handleDeleteRegistry = async () => {
-		if (dispatch(isFav(registry.id)))
-			removeFromFav()
+		if (dispatch(isFav({ id: registry.id, type: 'registry' })))
+			removeFromFavorites()
 		await deleteRegistry(registry.id).then(() => {
 			handleCloseDeleteDialog()
 			// snackBarMessages(1)
@@ -163,11 +163,7 @@ const Registry = props => {
 							addToFav={addToFavorites}
 							removeFromFav={removeFromFavorites}
 							registry={registry}
-							history={history}
-							match={match}
 							handleOpenDeleteDialog={handleOpenDeleteDialog}
-							t={t}
-							accessLevel={accessLevel}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'devices'}>
