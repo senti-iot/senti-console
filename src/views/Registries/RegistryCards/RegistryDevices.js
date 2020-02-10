@@ -1,19 +1,13 @@
 import React, { useState, Fragment } from 'react'
-import { Table, TableHead, TableRow, TableCell, TableBody, withStyles } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles } from '@material-ui/core';
 import TP from 'components/Table/TP';
 import { InfoCard, ItemG, Link } from 'components';
 import { DeviceHub, CheckCircle, Block, SignalWifi2Bar } from 'variables/icons';
 import { red, green } from '@material-ui/core/colors';
 import { useSelector } from 'react-redux'
-// import { Link } from 'react-router-dom'
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-// 	hoverTime: state.settings.hoverTime
-// })
-
-const styles = (theme) => ({
+const styles = makeStyles(theme => ({
 	blocked: {
 		color: red[500],
 		marginRight: 8
@@ -22,21 +16,33 @@ const styles = (theme) => ({
 		color: green[500],
 		marginRight: 8
 	}
-})
+}))
 
 const RegistryDevices = props => {
-	const rowsPerPage = useSelector(store => store.appState.trp ? store.appState.trp : store.settings.trp)
-	// const hoverTime = useSelector(store => store.settings.hoverTime)
-
-	const [page, setPage] = useState(0)
+	//Hooks
 	const t = useLocalization()
+	const classes = styles()
+
+	//Redux
+	const rowsPerPage = useSelector(store => store.appState.trp ? store.appState.trp : store.settings.trp)
+
+	//State
+	const [page, setPage] = useState(0)
+
+	//Const
+	const { devices } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
 
 	const handleChangePage = (event, page) => {
 		setPage(page)
 	}
 
 	const renderCommunication = (val) => {
-		const { classes } = props
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /> {t('sensors.fields.communications.blocked')}</ItemG>
@@ -47,7 +53,6 @@ const RegistryDevices = props => {
 		}
 	}
 
-	const { devices } = props
 	return (
 		<InfoCard
 			title={t('sidebar.devices')}
@@ -97,4 +102,4 @@ const RegistryDevices = props => {
 	)
 }
 
-export default withStyles(styles)(RegistryDevices)
+export default RegistryDevices
