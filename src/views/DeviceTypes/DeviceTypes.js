@@ -1,75 +1,147 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core';
+import { Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TableToolbar from 'components/Table/TableToolbar';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Edit, ViewList, Add, Star, StarBorder, SignalWifi2Bar, Memory, Delete } from 'variables/icons';
+import { Edit, ViewList, Add, Star, StarBorder, /* SignalWifi2Bar, */ Memory, Delete } from 'variables/icons';
 import { GridContainer, CircularLoader } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { getDeviceTypes, setDeviceTypes, sortData } from 'redux/data';
+import { getDeviceTypes, /* setDeviceTypes, */ sortData } from 'redux/data';
 import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable';
 import { deleteDeviceType } from 'variables/dataDeviceTypes';
+import { useSnackbar, useLocalization, useMatch, useLocation, useHistory } from 'hooks';
 
-class DeviceTypes extends Component {
-	constructor(props) {
-		super(props)
+// const mapStateToProps = (state) => ({
+// 	accessLevel: state.settings.user.privileges,
+// 	favorites: state.data.favorites,
+// 	saved: state.favorites.saved,
+// 	devicetypes: state.data.deviceTypes,
+// 	loading: false, //!state.data.gotdevicetypes,
+// 	filters: state.appState.filters.devicetypes,
+// 	user: state.settings.user
+// })
 
-		this.state = {
-			selected: [],
-			openDelete: false,
-			route: 0,
-			order: 'asc',
-			orderBy: 'id',
-			filters: {
-				keyword: '',
-			}
-		}
-		props.setHeader('devicetypes.pageTitle', false, '', 'manage.devicetypes')
-		props.setBC('devicetypes')
-		props.setTabs({
-			id: 'devicetypes',
-			tabs: this.tabs(),
-			route: this.handleTabs()
-		})
-	}
-	//#region Constants
-	tabs = () => {
-		const { t, match } = this.props
+// const mapDispatchToProps = (dispatch) => ({
+// 	isFav: (favObj) => dispatch(isFav(favObj)),
+// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
+// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+// 	finishedSaving: () => dispatch(finishedSaving()),
+// 	getDeviceTypes: (reload, customerID, ua) => dispatch(getDeviceTypes(reload, customerID, ua)),
+// 	setDeviceTypes: () => dispatch(setDeviceTypes()),
+// 	sortData: (key, property, order) => dispatch(sortData(key, property, order))
+// })
+
+// @Andrei
+const DeviceTypes = props => {
+	const classes = projectStyles()
+	const dispatch = useDispatch()
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const match = useMatch()
+	const location = useLocation()
+	const history = useHistory()
+
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const favorites = useSelector(state => state.data.favorites)
+	const saved = useSelector(state => state.favorites.saved)
+	const devicetypes = useSelector(state => state.data.deviceTypes)
+	const loading = false
+	const filters = useSelector(state => state.appState.filters.devicetypes)
+	const user = useSelector(state => state.settings.user)
+
+	const [selected, setSelected] = useState([])
+	const [openDelete, setOpenDelete] = useState(false)
+	// const [route, setRoute] = useState(0)
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('id')
+	const [stateFilters, /* setStateFilters */] = useState({ keyword: '' })
+	const [/* anchorElMenu */, setAnchorElMenu] = useState(null) // added
+
+	const tabs = () => {
+		// const { t, match } = this.props
 		return [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
 			// { id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
-	dLiveStatus = () => {
-		const { t, classes } = this.props
-		return [
-			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
-			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
-			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
-		]
+
+	const handleTabs = () => {
+		// const { location } = this.props
+		if (location.pathname.includes('grid'))
+			// this.setState({ route: 1 })
+			return 1
+		else {
+			if (location.pathname.includes('favorites'))
+				// this.setState({ route: 2 })
+				return 2
+			else {
+				// this.setState({ route: 0 })
+				return 0
+			}
+		}
 	}
-	ft = () => {
-		const { t } = this.props
+
+	props.setHeader('devicetypes.pageTitle', false, '', 'manage.devicetypes')
+	props.setBC('devicetypes')
+	props.setTabs({
+		id: 'devicetypes',
+		tabs: tabs(),
+		route: handleTabs()
+	})
+
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		selected: [],
+	// 		openDelete: false,
+	// 		route: 0,
+	// 		order: 'asc',
+	// 		orderBy: 'id',
+	// 		filters: {
+	// 			keyword: '',
+	// 		}
+	// 	}
+	// 	props.setHeader('devicetypes.pageTitle', false, '', 'manage.devicetypes')
+	// 	props.setBC('devicetypes')
+	// 	props.setTabs({
+	// 		id: 'devicetypes',
+	// 		tabs: this.tabs(),
+	// 		route: this.handleTabs()
+	// 	})
+	// }
+	//#region Constants
+
+	// const dLiveStatus = () => {
+	// 	// const { t, classes } = this.props
+	// 	return [
+	// 		{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
+	// 		{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
+	// 		{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
+	// 	]
+	// }
+	const ft = () => {
+		// const { t } = this.props
 		return [
 			{ key: 'name', name: t('devicetypes.fields.name'), type: 'string' },
 			{ key: 'customer_name', name: t('devices.fields.org'), type: 'string' },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
-	devicetypesHeader = () => {
-		const { t } = this.props
+	const devicetypesHeader = () => {
+		// const { t } = this.props
 		return [
 			{ id: 'name', label: t('devicetypes.fields.name') },
 			{ id: 'customer_name', label: t('devices.fields.org') }
 		]
 	}
-	options = () => {
-		const { t, isFav, devicetypes } = this.props
-		const { selected } = this.state
+	const options = () => {
+		// const { t, isFav, devicetypes } = this.props
+		// const { selected } = this.state
 		let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
 		let favObj = {
 			id: devicetype.id,
@@ -77,59 +149,84 @@ class DeviceTypes extends Component {
 			type: 'devicetype',
 			path: `/devicetype/${devicetype.id}`
 		}
-		let isFavorite = isFav(favObj)
+		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
 			// { label: t('menus.assign.devicetypeToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
 			// { label: t('menus.assign.deviceToDeviceType'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			// { label: t('menus.unassign.deviceFromDeviceType'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
 	//#endregion
 
 	//#region Life Cycle
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.handleTabs()
-		this.getData(true)
+	useEffect(() => {
+		handleTabs()
+		getData(true)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+	// componentDidMount = async () => {
+	// 	this._isMounted = 1
+	// 	this.handleTabs()
+	// 	this.getData(true)
 
-	}
-
-	componentDidUpdate = () => {
-		const { t, saved, s, isFav, finishedSaving } = this.props
+	// }
+	useEffect(() => {
 		if (saved === true) {
-			const { devicetypes } = this.props
-			const { selected } = this.state
+			// const { devicetypes } = this.props
+			// const { selected } = this.state
 			let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
 			if (devicetype) {
-				if (isFav({ id: devicetype.id, type: 'devicetype' })) {
+				if (dispatch(isFav({ id: devicetype.id, type: 'devicetype' }))) {
 					s('snackbars.favorite.saved', { name: devicetype.name, type: t('favorites.types.devicetype') })
-					finishedSaving()
-					this.setState({ selected: [] })
+					dispatch(finishedSaving())
+					setSelected([])
+					// this.setState({ selected: [] })
 				}
-				if (!isFav({ id: devicetype.id, type: 'devicetype' })) {
+				if (!dispatch(isFav({ id: devicetype.id, type: 'devicetype' }))) {
 					s('snackbars.favorite.removed', { name: devicetype.name, type: t('favorites.types.devicetype') })
-					finishedSaving()
-					this.setState({ selected: [] })
+					dispatch(finishedSaving())
+					setSelected([])
+					// this.setState({ selected: [] })
 				}
 			}
 		}
-	}
-	componentWillUnmount = () => {
-		// this._isMounted = 0
-	}
+	}, [devicetypes, dispatch, s, saved, selected, t])
+	// componentDidUpdate = () => {
+	// 	const { t, saved, s, isFav, finishedSaving } = this.props
+	// 	if (saved === true) {
+	// 		const { devicetypes } = this.props
+	// 		const { selected } = this.state
+	// 		let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
+	// 		if (devicetype) {
+	// 			if (isFav({ id: devicetype.id, type: 'devicetype' })) {
+	// 				s('snackbars.favorite.saved', { name: devicetype.name, type: t('favorites.types.devicetype') })
+	// 				finishedSaving()
+	// 				this.setState({ selected: [] })
+	// 			}
+	// 			if (!isFav({ id: devicetype.id, type: 'devicetype' })) {
+	// 				s('snackbars.favorite.removed', { name: devicetype.name, type: t('favorites.types.devicetype') })
+	// 				finishedSaving()
+	// 				this.setState({ selected: [] })
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// componentWillUnmount = () => {
+	// 	// this._isMounted = 0
+	// }
 	//#endregion
 
 	//#region Functions
-	addNewDeviceType = () => this.props.history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
+	const addNewDeviceType = () => history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
 
-	getFavs = () => {
-		const { order, orderBy } = this.state
-		const { favorites, devicetypes } = this.props
+	const getFavs = () => {
+		// const { order, orderBy } = this.state
+		// const { favorites, devicetypes } = this.props
 		let favs = favorites.filter(f => f.type === 'devicetype')
 		let favDeviceTypes = favs.map(f => {
 			return devicetypes[devicetypes.findIndex(d => d.id === f.id)]
@@ -137,22 +234,24 @@ class DeviceTypes extends Component {
 		favDeviceTypes = handleRequestSort(orderBy, order, favDeviceTypes)
 		return favDeviceTypes
 	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const addToFavorites = (favObj) => {
+		dispatch(addToFav(favObj))
+		setAnchorElMenu(null)
+		// this.setState({ anchorElMenu: null })
 	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const removeFromFavorites = (favObj) => {
+		dispatch(removeFromFav(favObj))
+		setAnchorElMenu(null)
+		// this.setState({ anchorElMenu: null })
 	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
+	const filterItemsFunc = (data) => {
+		// const rFilters = this.props.filters
+		// const { filters } = this.state
+		return customFilterItems(filterItems(data, stateFilters), filters)
 	}
-	snackBarMessages = (msg, display) => {
-		const { devicetypes, s } = this.props
-		const { selected } = this.state
+	const snackBarMessages = (msg, display) => {
+		// const { devicetypes, s } = this.props
+		// const { selected } = this.state
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -170,81 +269,72 @@ class DeviceTypes extends Component {
 				break;
 		}
 	}
-	reload = async () => {
-		await this.getData(true)
-	}
-	getData = async (reload) => {
-		const { getDeviceTypes/*  setDeviceTypes */, accessLevel, user } = this.props
+	// const reload = async () => {
+	// 	await getData(true)
+	// }
+	const getData = async (reload) => {
+		// const { getDeviceTypes/*  setDeviceTypes */, accessLevel, user } = this.props
 		if (accessLevel || user) {
 			if (reload)
-				getDeviceTypes(true, user.org.id, accessLevel.apisuperuser ? true : false)
+				dispatch(getDeviceTypes(true, user.org.id, accessLevel.apisuperuser ? true : false))
 		}
 	}
 	//#endregion
 
 	//#region Handlers
 
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/devicetype/${selected[0]}/edit`, prevURL: `/devicetypes/list` })
+	const handleEdit = () => {
+		// const { selected } = this.state
+		history.push({ pathname: `/devicetype/${selected[0]}/edit`, prevURL: `/devicetypes/list` })
 	}
 
-	handleTabs = () => {
-		const { location } = this.props
-		if (location.pathname.includes('grid'))
-			// this.setState({ route: 1 })
-			return 1
-		else {
-			if (location.pathname.includes('favorites'))
-				// this.setState({ route: 2 })
-				return 2
-			else {
-				// this.setState({ route: 0 })
-				return 0
-			}
+	const handleRequestSortFunc = key => (event, property, way) => {
+		let newOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			newOrder = 'asc'
 		}
+		dispatch(sortData(key, property, order))
+		setOrder(newOrder)
+		setOrderBy(property)
+		// this.setState({ order, orderBy: property })
 	}
-	handleRequestSort = key => (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
-		}
-		this.props.sortData(key, property, order)
-		this.setState({ order, orderBy: property })
-	}
-	handleDeviceTypeClick = id => e => {
+	const handleDeviceTypeClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/devicetype/' + id)
+		history.push('/devicetype/' + id)
 	}
 
-	handleFavClick = id => e => {
+	const handleFavClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: '/devicetype/' + id, prevURL: '/devicetypes/favorites' })
+		history.push({ pathname: '/devicetype/' + id, prevURL: '/devicetypes/favorites' })
 	}
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
-	}
+	// const handleFilterKeyword = (value) => {
+	// 	setStateFilters({ ...stateFilters, keyword: value })
+	// 	// this.setState({
+	// 	// 	filters: {
+	// 	// 		...this.state.filters,
+	// 	// 		keyword: value
+	// 	// 	}
+	// 	// })
+	// }
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
+	// const handleTabsChange = (e, value) => {
+	// 	setRoute(value)
+	// 	// this.setState({ route: value })
+	// }
 
-	handleSelectAllClick = (arr, checked) => {
+	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: arr })
+			setSelected(arr)
+			// this.setState({ selected: arr })
 			return;
 		}
-		this.setState({ selected: [] })
+		setSelected([])
+		// this.setState({ selected: [] })
 	}
 
-	handleCheckboxClick = (event, id) => {
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
+		// const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -260,39 +350,45 @@ class DeviceTypes extends Component {
 				selected.slice(selectedIndex + 1),
 			);
 		}
-
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
+		// this.setState({ selected: newSelected })
 	}
 
 
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
+		setAnchorElMenu(null)
+		// this.setState({ openDelete: true, anchorElMenu: null })
 	}
 
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
+		// this.setState({ openDelete: false })
 	}
 
-	handleDeleteDeviceTypes = async () => {
-		const { selected } = this.state
+	const handleDeleteDeviceTypes = async () => {
+		// const { selected } = this.state
 		Promise.all([selected.map(u => {
 			return deleteDeviceType(u)
 		})]).then(async () => {
-			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-			await this.getData(true).then(
-				() => this.snackBarMessages(1)
+			setOpenDelete(false)
+			setAnchorElMenu(null)
+			setSelected([])
+			// this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
+			await getData(true).then(
+				() => snackBarMessages(1)
 			)
 		})
 	}
 	//#endregion
 
-	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { t, devicetypes } = this.props
+	const renderConfirmDelete = () => {
+		// const { openDelete, selected } = this.state
+		// const { t, devicetypes } = this.props
 		return <Dialog
 			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
+			onClose={handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -316,10 +412,10 @@ class DeviceTypes extends Component {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+				<Button onClick={handleCloseDeleteDialog} color='primary'>
 					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
+				<Button onClick={handleDeleteDeviceTypes} color='primary' autoFocus>
 					{t('actions.yes')}
 				</Button>
 			</DialogActions>
@@ -327,115 +423,92 @@ class DeviceTypes extends Component {
 	}
 
 
-	renderTableToolBarContent = () => {
-		const { t } = this.props
+	const renderTableToolBarContent = () => {
+		// const { t } = this.props
 		return <Fragment>
 			<Tooltip title={t('menus.create.devicetype')}>
-				<IconButton aria-label='Add new devicetype' onClick={this.addNewDeviceType}>
+				<IconButton aria-label='Add new devicetype' onClick={addNewDeviceType}>
 					<Add />
 				</IconButton>
 			</Tooltip>
 		</Fragment>
 	}
 
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
+		// const { t } = this.props
+		// const { selected } = this.state
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft()}
 			reduxKey={'devicetypes'}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
-			content={this.renderTableToolBarContent()}
+			content={renderTableToolBarContent()}
 		/>
 	}
 
 
 
-	renderTable = (items, handleClick, key) => {
-		const { t } = this.props
-		const { order, orderBy, selected } = this.state
+	const renderTable = (items, handleClick, key) => {
+		// const { t } = this.props
+		// const { order, orderBy, selected } = this.state
 		return <DeviceTypeTable
-			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
+			data={filterItemsFunc(items)}
+			handleCheckboxClick={handleCheckboxClick}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort(key)}
-			handleSelectAllClick={this.handleSelectAllClick}
+			handleRequestSort={handleRequestSortFunc(key)}
+			handleSelectAllClick={handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
 			selected={selected}
 			t={t}
-			tableHead={this.devicetypesHeader()}
+			tableHead={devicetypesHeader()}
 		/>
 	}
 
-	renderCards = () => {
-		const { /* t, history, devicetypes, */ loading } = this.props
+	const renderCards = () => {
+		// const { /* t, history, devicetypes, */ loading } = props
 		return loading ? <CircularLoader /> :
 			// <DeviceTypesCards devicetypes={this.filterItems(devicetypes)} t={t} history={history} />
 			null
 	}
 
-	renderFavorites = () => {
-		const { classes, loading } = this.props
+	const renderFavorites = () => {
+		// const { classes, loading } = this.props
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderConfirmDelete()}
+				{renderTableToolBar()}
+				{renderTable(getFavs(), handleFavClick, 'favorites')}
+				{renderConfirmDelete()}
 			</Paper>
 			}
 		</GridContainer>
 	}
 
-	renderDeviceTypes = () => {
-		const { classes, devicetypes, loading } = this.props
+	const renderDeviceTypes = () => {
+		// const { classes, devicetypes, loading } = this.props
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(devicetypes, this.handleDeviceTypeClick, 'devicetypes')}
-				{this.renderConfirmDelete()}
+				{renderTableToolBar()}
+				{renderTable(devicetypes, handleDeviceTypeClick, 'devicetypes')}
+				{renderConfirmDelete()}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
-	render() {
-		const { match } = this.props
-		return (
-			<Fragment>
-				<Switch>
-					<Route path={`${match.path}/list`} render={() => this.renderDeviceTypes()} />
-					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
-				</Switch>
+	// const { match } = this.props
+	return (
+		<Fragment>
+			<Switch>
+				<Route path={`${match.path}/list`} render={() => renderDeviceTypes()} />
+				<Route path={`${match.path}/grid`} render={() => renderCards()} />
+				<Route path={`${match.path}/favorites`} render={() => renderFavorites()} />
+				<Redirect path={`${match.path}`} to={`${match.path}/list`} />
+			</Switch>
 
-			</Fragment>
-		)
-	}
+		</Fragment>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	devicetypes: state.data.deviceTypes,
-	loading: false, //!state.data.gotdevicetypes,
-	filters: state.appState.filters.devicetypes,
-	user: state.settings.user
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getDeviceTypes: (reload, customerID, ua) => dispatch(getDeviceTypes(reload, customerID, ua)),
-	setDeviceTypes: () => dispatch(setDeviceTypes()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(DeviceTypes))
+export default DeviceTypes
