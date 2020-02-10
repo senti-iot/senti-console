@@ -1,80 +1,66 @@
-import { Paper, withStyles, IconButton, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
+
+import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core';
 import SensorTable from 'components/Sensors/SensorTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, handleRequestSort } from 'variables/functions';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+// import { handleRequestSort } from 'variables/functions';
 import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block, DeviceHub } from 'variables/icons';
 import { GridContainer, CircularLoader, DeleteDialog } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { getSensors, setSensors, sortData } from 'redux/data';
+import { getSensors, sortData } from 'redux/data';
 import SensorCards from 'components/Sensors/SensorCards';
 import { deleteSensor } from 'variables/dataSensors';
+import { useLocalization, useSnackbar, useHistory, useDispatch, useSelector } from 'hooks';
+import sensorsStyles from 'assets/jss/components/devices/sensorsStyles';
 
-class Sensors extends Component {
-	constructor(props) {
-		super(props)
+const Sensors = props => {
+	//Hooks
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const history = useHistory()
+	const location = useLocation()
+	const dispatch = useDispatch()
+	const classes = sensorsStyles()
 
-		this.state = {
-			openDelete: false,
-			selected: [],
-			route: 0,
-			order: 'asc',
-			orderBy: 'id',
-			filters: {
-				keyword: ''
-			}
-		}
-		props.setHeader('devices.pageTitle', false, '', 'manage.sensors')
-		props.setBC('sensors')
-		props.setTabs({
-			id: 'sensors',
-			tabs: this.tabs(),
-			route: this.handleTabs()
-		})
-	}
-	//#region Constants
-	tabs = () => {
-		const { t, match } = this.props
-		return [
-			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
-			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
-		]
-	}
-	dCommunication = () => {
-		const { t, classes } = this.props
-		return [
-			{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} /> },
-			{ value: 1, label: t("sensors.fields.communications.allowed"), icon: <CheckCircle className={classes.allowed} /> }
-		]
-	}
-	ft = () => {
-		const { t } = this.props
-		return [
-			{ key: 'name', name: t('devices.fields.name'), type: 'string' },
-			{ key: 'uuid', name: t('sensors.fields.uuid'), type: 'string' },
-			{ key: 'communication', name: t('sensors.fields.communication'), type: 'dropDown', options: this.dCommunication() },
-			{ key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
-			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
-		]
-	}
-	devicesHeader = () => {
-		const { t } = this.props
-		return [
-			{ id: 'id', label: t('devices.fields.id') },
-			{ id: 'name', label: t('devices.fields.name') },
-			{ id: 'uuid', label: t('sensors.fields.uuid') },
-			{ id: 'communication', label: t('sensors.fields.communication') },
-			{ id: 'reg_name', label: t('sensors.fields.registry') },
-		]
-	}
-	options = () => {
-		const { t, isFav, devices } = this.props
-		const { selected } = this.state
+	//Redux
+	const accessLevel = useSelector(s => s.settings.user.privileges)
+	const favorites = useSelector(s => s.data.favorites)
+	const saved = useSelector(s => s.favorites.saved)
+	const devices = useSelector(s => s.data.sensors)
+	const loading = useSelector(s => !s.data.gotdevices)
+	const filters = useSelector(s => s.appState.filters.sensors)
+	const user = useSelector(s => s.settings.user)
+
+	//State
+	const [openDelete, setOpenDelete] = useState(false)
+	const [selected, setSelected] = useState([])
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('id')
+
+	//Const
+	const dCommunication = [
+		{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} /> },
+		{ value: 1, label: t("sensors.fields.communications.allowed"), icon: <CheckCircle className={classes.allowed} /> }
+	]
+
+	const ft = [
+		{ key: 'name', name: t('devices.fields.name'), type: 'string' },
+		{ key: 'uuid', name: t('sensors.fields.uuid'), type: 'string' },
+		{ key: 'communication', name: t('sensors.fields.communication'), type: 'dropDown', options: dCommunication },
+		{ key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
+		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+	]
+
+	const devicesHeader = [
+		{ id: 'id', label: t('devices.fields.id') },
+		{ id: 'name', label: t('devices.fields.name') },
+		{ id: 'uuid', label: t('sensors.fields.uuid') },
+		{ id: 'communication', label: t('sensors.fields.communication') },
+		{ id: 'reg_name', label: t('sensors.fields.registry') },
+	]
+	const options = () => {
 
 		let device = devices[devices.findIndex(d => d.id === selected[0])]
 		let favObj = {
@@ -83,55 +69,90 @@ class Sensors extends Component {
 			type: 'sensor',
 			path: `/sensor/${device.id}`
 		}
-		let isFavorite = isFav(favObj)
+		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+			{ label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{
+				single: true,
+				label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'),
+				icon: isFavorite ? Star : StarBorder,
+				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
+			}
 		]
 		return allOptions
 	}
-	//#endregion
-
-	//#region Life Cycle
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.handleTabs()
-		if (this.props.user && this.props.accessLevel) {
-			this.getData(true)
+	//useCallbacks
+	const getData = useCallback(async () => {
+		if (user && accessLevel) {
+			dispatch(await getSensors(true, user.org.id, accessLevel.apisuperuser ? true : false))
 		}
+	}, [accessLevel, dispatch, user])
 
-	}
-
-	componentDidUpdate = () => {
-		const { t, saved, s, isFav, finishedSaving } = this.props
-		if (saved === true) {
-			const { devices } = this.props
-			const { selected } = this.state
-			let device = devices[devices.findIndex(d => d.id === selected[0])]
-			if (device) {
-				if (isFav({ id: device.id, type: 'sensor' })) {
-					s('snackbars.favorite.saved', { name: device.name, type: t('favorites.types.device') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-				if (!isFav({ id: device.id, type: 'sensor' })) {
-					s('snackbars.favorite.removed', { name: device.name, type: t('favorites.types.device') })
-					finishedSaving()
-					this.setState({ selected: [] })
+	//useEffects
+	useEffect(() => {
+		const tabs = [
+			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `list` },
+			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `grid` },
+			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `favorites` }
+		]
+		const handleTabs = () => {
+			if (location.pathname.includes('grid'))
+				return 1
+			else {
+				if (location.pathname.includes('favorites'))
+					return 2
+				else {
+					return 0
 				}
 			}
 		}
-	}
+		props.setHeader('devices.pageTitle', false, '', 'manage.sensors')
+		props.setBC('sensors')
+		props.setTabs({
+			id: 'sensors',
+			tabs: tabs,
+			route: handleTabs()
+		})
 
-	//#endregion
+	}, [location.pathname, props, t])
 
-	//#region Functions
-	addNewRegistry = () => this.props.history.push({ pathname: `/sensors/new`, prevURL: '/sensors/list' })
+	useEffect(() => {
+		if (saved === true) {
+			if (selected.length > 1) {
+				s('snackbars.favorite.updated')
+			}
+			else {
+				let device = devices[devices.findIndex(d => d.id === selected[0])]
+				if (device) {
+					if (dispatch(isFav({ id: device.id, type: 'sensor' }))) {
+						s('snackbars.favorite.saved', { name: device.name, type: t('favorites.types.device') })
+						finishedSaving()
+						setSelected([])
+					}
+					if (!dispatch(isFav({ id: device.id, type: 'sensor' }))) {
+						s('snackbars.favorite.removed', { name: device.name, type: t('favorites.types.device') })
+						finishedSaving()
+						setSelected([])
+					}
+				}
+			}
+		}
 
-	getFavs = () => {
-		const { order, orderBy } = this.state
-		const { favorites, devices } = this.props
+	}, [devices, dispatch, s, saved, selected, t])
+
+	useEffect(() => {
+		const getSens = async () => await getData()
+		getSens()
+	}, [getData])
+
+
+	//Handlers
+
+	const handleAddNewSensor = () => history.push({ pathname: `/sensors/new`, prevURL: '/sensors/list' })
+	const handleEditSensor = () => { history.push({ pathname: `/sensor/${selected[0]}/edit`, prevURL: `/sensors/list` }) }
+
+	const getFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'sensor')
 		let favSensors = favs.map(f => {
 			return devices[devices.findIndex(d => d.id === f.id)]
@@ -139,22 +160,18 @@ class Sensors extends Component {
 		favSensors = handleRequestSort(orderBy, order, favSensors)
 		return favSensors
 	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const addToFavorites = (favObj) => {
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const removeFromFavorites = (favObj) => {
+		dispatch(removeFromFav(favObj))
 	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
+
+	const filterItems = (data) => {
+		const rFilters = filters
+		return customFilterItems(data, rFilters)
 	}
-	snackBarMessages = (msg) => {
-		const { /*  devices, */ s } = this.props
-		// const { selected } = this.state
+	const snackBarMessages = (msg) => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -166,98 +183,63 @@ class Sensors extends Component {
 				s('snackbars.assign.deviceToRegistry', { device: ``, what: 'Device' })
 				break;
 			case 6:
-				// s('snackbars.assign.deviceToRegistry', { device: `${devices[devices.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
 				break;
 		}
 	}
-	reload = async () => {
-		await this.getData(true)
-	}
-	getData = async (reload) => {
-		const { getSensors, accessLevel, user } = this.props
-		if (accessLevel || user) {
-			if (reload)
-				getSensors(true, user.org.id, accessLevel.apisuperuser ? true : false)
-			// setSensors()
-		}
-	}
-	//#endregion
 
-	//#region Handlers
-
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/sensor/${selected[0]}/edit`, prevURL: `/sensors/list` })
-	}
-
-	handleTabs = () => {
-		const { location } = this.props
-		if (location.pathname.includes('grid'))
-			// this.setState({ route: 1 })
-			return 1
-		else {
-			if (location.pathname.includes('favorites'))
-				// this.setState({ route: 2 })
-				return 2
-			else {
-				// this.setState({ route: 0 })
-				return 0
-			}
+	const handleRequestSort = key => (event, property, way) => {
+		let direction = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			direction = 'asc'
 		}
+		dispatch(sortData(key, property, direction))
+		setOrder(direction)
+		setOrderBy(property)
 	}
-	handleRequestSort = key => (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
-		}
-		this.props.sortData(key, property, order)
-		this.setState({ order, orderBy: property })
-	}
-	handleRegistryClick = id => e => {
+	const handleSensorClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/sensor/' + id)
+		history.push('/sensor/' + id)
 	}
 
-	handleFavClick = id => e => {
+	const handleFavClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: '/sensor/' + id, prevURL: '/sensors/favorites' })
-	}
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
+		history.push({ pathname: '/sensor/' + id, prevURL: '/sensors/favorites' })
 	}
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-	handleDeleteSensors = async () => {
-		const { selected } = this.state
+	const handleDeleteSensors = async () => {
 		Promise.all([selected.map(u => {
 			return deleteSensor(u)
-		})]).then(async () => {
-			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-			await this.getData(true).then(
-				() => this.snackBarMessages(1)
-			)
+		})]).then(async (rs) => {
+			selected.forEach(u => {
+				let device = devices[devices.findIndex(d => d.id === u)]
+				let favObj = {
+					id: device.id,
+					name: device.name,
+					type: 'sensor',
+					path: `/sensor/${device.id}`
+				}
+				removeFromFavorites(favObj)
+			})
+
+			setOpenDelete(false)
+			setSelected([])
+			await getData(true).then(() => {
+				snackBarMessages(1)
+			})
 		})
 	}
-	handleSelectAllClick = (arr, checked) => {
+	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: arr })
+			setSelected(arr)
 			return;
 		}
-		this.setState({ selected: [] })
+		setSelected([])
 	}
 
-	handleCheckboxClick = (event, id) => {
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -274,23 +256,16 @@ class Sensors extends Component {
 			);
 		}
 
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
 	}
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
-	}
-
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
+	const handleOpenDeleteDialog = () => setOpenDelete(true)
+	const handleCloseDeleteDialog = () => setOpenDelete(false)
 
 
 	//#endregion
 
-	renderDeleteDialog = () => {
-		const { openDelete, selected } = this.state
-		const { t, devices } = this.props
+	const renderDeleteDialog = () => {
 		let data = selected.map(s => devices[devices.findIndex(d => d.id === s)])
 		return <DeleteDialog
 			t={t}
@@ -298,135 +273,93 @@ class Sensors extends Component {
 			message={'dialogs.delete.message.devices'}
 			open={openDelete}
 			icon={<DeviceHub />}
-			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-			handleDelete={this.handleDeleteSensors}
+			handleCloseDeleteDialog={handleCloseDeleteDialog}
+			handleDelete={handleDeleteSensors}
 			data={data}
 			dataKey={'name'}
 		/>
 	}
 
-	renderTableToolBarContent = () => {
-		const { t } = this.props
+	const renderTableToolBarContent = () => {
 		return <Fragment>
 			<Tooltip title={t('menus.create.device')}>
-				<IconButton aria-label='Add new device' onClick={this.addNewRegistry}>
+				<IconButton aria-label='Add new device' onClick={handleAddNewSensor}>
 					<Add />
 				</IconButton>
 			</Tooltip>
 		</Fragment>
 	}
 
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft}
 			reduxKey={'sensors'}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
+			content={renderTableToolBarContent()}
 			t={t}
-			content={this.renderTableToolBarContent()}
 		/>
 	}
 
-
-
-
-	renderTable = (items, handleClick, key) => {
-		const { t } = this.props
-		const { order, orderBy, selected } = this.state
+	const renderTable = (items, handleClick, key) => {
 		return <SensorTable
-			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
+			data={filterItems(items)}
+			handleCheckboxClick={handleCheckboxClick}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort(key)}
-			handleSelectAllClick={this.handleSelectAllClick}
+			handleRequestSort={handleRequestSort(key)}
+			handleSelectAllClick={handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
 			selected={selected}
-			t={t}
-			tableHead={this.devicesHeader()}
+			tableHead={devicesHeader}
 		/>
 	}
 
-	renderCards = () => {
-		const { t, history, devices, loading } = this.props
+	const renderCards = () => {
 		return loading ? <CircularLoader /> :
-			<SensorCards sensors={this.filterItems(devices)} t={t} history={history} />
+			<SensorCards sensors={filterItems(devices)} t={t} history={history} />
 		// null
 	}
 
-	renderFavorites = () => {
-		const { classes, loading } = this.props
-		// const { selected } = this.state
+	const renderFavorites = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{/* {this.renderAssignProject()} */}
-				{/* {this.renderAssignDevice()} */}
-				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
-				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderDeleteDialog()}
+				{renderTableToolBar()}
+				{renderTable(getFavorites(), handleFavClick, 'favorites')}
+				{renderDeleteDialog()}
 			</Paper>
 			}
 		</GridContainer>
 	}
 
-	renderSensors = () => {
-		const { classes, devices, loading } = this.props
-		// const { selected } = this.state
+	const renderSensors = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{/* {this.renderAssignProject()} */}
-				{/* {this.renderAssignDevice()} */}
-				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
-				{this.renderTableToolBar()}
-				{this.renderTable(devices, this.handleRegistryClick, 'sensors')}
-				{/* {this.renderConfirmDelete()} */}
-				{this.renderDeleteDialog()}
+				{renderTableToolBar()}
+				{renderTable(devices, handleSensorClick, 'sensors')}
+				{renderDeleteDialog()}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
-	render() {
-		// const { devices, route, filters } = this.state
-		const { /* history,  */match } = this.props
-		return (
-			<Fragment>
-				<Switch>
-					<Route path={`${match.path}/list`} render={() => this.renderSensors()} />
-					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
-				</Switch>
 
-			</Fragment>
-		)
-	}
+	return (
+		<Fragment>
+			<Switch>
+				<Route path={`/sensors/list`} render={() => renderSensors()} />
+				<Route path={`/sensors/grid`} render={() => renderCards()} />
+				<Route path={`/sensors/favorites`} render={() => renderFavorites()} />
+				<Redirect path={`/sensors`} to={`/sensors/list`} />
+			</Switch>
+
+		</Fragment>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	devices: state.data.sensors,
-	loading: false, //!state.data.gotdevices,
-	filters: state.appState.filters.sensors,
-	user: state.settings.user
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getSensors: (reload, customerID, ua) => {
-		return dispatch(getSensors(reload, customerID, ua))
-	},
-	setSensors: () => dispatch(setSensors()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Sensors))
+
+
+
+export default Sensors

@@ -126,7 +126,7 @@ const Registries = props => {
 		const getRegs = async () => await getData()
 		getRegs()
 
-	}, [dispatch, getData])
+	}, [getData])
 
 	useEffect(() => {
 		if (registries) {

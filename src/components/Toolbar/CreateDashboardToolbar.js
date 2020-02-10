@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { AppBar, withStyles, Toolbar as ToolBar, withWidth, IconButton, Divider, } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
@@ -9,6 +8,8 @@ import cx from 'classnames'
 import { Menu } from 'variables/icons';
 import ItemG from 'components/Grid/ItemG';
 // import inView from 'in-view'
+
+// UNUSED
 
 const styles = theme => ({
 	appBarDrawerOpen: {
@@ -62,52 +63,8 @@ const styles = theme => ({
 
 // @Andrei
 const CDToolbar = React.memo(props => {
-	const [route, setRoute] = useState(props.route ? props.route : 0)
-	const [tooltip, setTooltip] = useState(-1)
 	const [expand, setExpand] = useState(false) // added
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		route: props.route ? props.route : 0,
-	// 		tooltip: -1
-	// 	}
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
-
-	// componentDidMount = () => {
-
-	// 	this._isMounted = 1
-	// }
-	useEffect(() => {
-		setRoute(props.route)
-		setTooltip(-1)
-	}, [props.route])
-	// componentDidUpdate = (prevProps) => {
-	// 	if (this.props.route !== prevProps.route && this.props.route !== undefined) {
-	// 		this.setState({ route: this.props.route, tooltip: -1 })
-	// 	}
-	// }
-	const handleTabsChange = (e, value) => {
-		setRoute(value)
-		// this.setState({ route: value })
-	}
-
-	const handleScroll = el => {
-		let topOfElement = el.offsetTop - 130
-		window.scroll({ top: topOfElement, behavior: 'smooth' })
-	}
-	const handleTooltipClose = () => {
-		setTooltip(false)
-		// this.setState({ tooltip: false })
-	};
-
-	const handleTooltipOpen = (id) => {
-		setTooltip(id)
-		// this.setState({ tooltip: id });
-	};
 	const expandToolbar = () => {
 		setExpand(!expand)
 		// this.setState({ expand: !this.state.expand })

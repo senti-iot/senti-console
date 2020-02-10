@@ -3,6 +3,12 @@ import { red, green } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/styles'
 
 const sensorsStyles = makeStyles(theme => ({
+
+	root: {
+		width: '100%',
+		margin: theme.spacing(1),
+		borderRadius: "3px",
+	},
 	blocked: {
 		color: red[500],
 		marginRight: 8
