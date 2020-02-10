@@ -1,28 +1,36 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import DoubleChartData from 'views/Charts/DoubleChartData';
 import { getWMeterDatav2 } from 'components/Charts/DataModel';
 import { teal } from '@material-ui/core/colors';
+import { useLocalization, useHistory, useMatch } from 'hooks';
 
-export class SensorData extends Component {
-	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 
-	  }
-	}
-	
-	componentDidUpdate = async (prevProps) => {
+// @Andrei
+export default function SensorData(props) {
+	const t = useLocalization()
+	const history = useHistory()
+	const match = useMatch()
+	const [hoverID, /* setHoverID */] = useState(null) // added
+	const [/* loadingData */, setLoadingData] = useState(false) // added
+	// constructor(props) {
+	//   super(props)
 
-	}
-	componentDidMount = async () => {
+	//   this.state = {
 
-	}
-	getWifiHourly = async (p) => {
-		const { hoverID } = this.state 	
-		const { v, nId } = this.props
-		const device = this.props.sensor
-		this.setState({ loadingData: true })
+	//   }
+	// }
+
+	// componentDidUpdate = async (prevProps) => {
+
+	// }
+	// componentDidMount = async () => {
+
+	// }
+	const getWifiHourly = async (p) => {
+		// const { hoverID } = this.state
+		const { v, nId } = props
+		const device = props.sensor
+		setLoadingData(true)
+		// this.setState({ loadingData: true })
 		let newState = await getWMeterDatav2('device', [{
 			name: device.name,
 			id: device.id,
@@ -33,25 +41,23 @@ export class SensorData extends Component {
 		}], p.from, p.to, hoverID, p.raw, v, nId, false)
 		return newState
 	}
-	render() {
-		const { periods, sensor, history, match, v, t } = this.props
-		return (
-			periods.map((period, i) => {
 
-				return <DoubleChartData
-					single
-					title={t(`sensors.metadata.${v}`)}
-					getData={this.getWifiHourly}
-					period={period}
-					device={sensor}
-					history={history}
-					match={match}
-					setHoverID={() => {}}
-					t={t}
-				/>
-			})
-		)
-	}
+	const { periods, sensor, v } = props
+	return (
+		periods.map((period) => {
+
+			return <DoubleChartData
+				single
+				title={t(`sensors.metadata.${v}`)}
+				getData={getWifiHourly}
+				period={period}
+				device={sensor}
+				history={history}
+				match={match}
+				setHoverID={() => { }}
+				t={t}
+			/>
+		})
+	)
 }
 
-export default SensorData
