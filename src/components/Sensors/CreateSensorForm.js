@@ -41,15 +41,15 @@ const CreateSensorForm = props => {
 		// })
 	}
 
-	const ProtocolTypes = () => {
-		// const { t } = this.props
-		return [
-			{ value: 0, label: t('sensors.fields.protocols.none') },
-			{ value: 1, label: t('sensors.fields.protocols.mqtt') },
-			{ value: 2, label: t('sensors.fields.protocols.http') },
-			{ value: 3, label: `${t('sensors.fields.protocols.mqtt')} & ${t('sensors.fields.protocols.http')}` }
-		]
-	}
+	// const ProtocolTypes = () => {
+	// 	// const { t } = this.props
+	// 	return [
+	// 		{ value: 0, label: t('sensors.fields.protocols.none') },
+	// 		{ value: 1, label: t('sensors.fields.protocols.mqtt') },
+	// 		{ value: 2, label: t('sensors.fields.protocols.http') },
+	// 		{ value: 3, label: `${t('sensors.fields.protocols.mqtt')} & ${t('sensors.fields.protocols.http')}` }
+	// 	]
+	// }
 
 	const CommunicationTypes = () => {
 		const { classes } = props

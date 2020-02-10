@@ -23,7 +23,7 @@ const AssignRegistryDialog = props => {
 	// const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 
 	// const [stateRegistries, setStateRegistries] = useState([])
-	const [selectedRegistry, setSelectedRegistry] = useState(null)
+	const [selectedRegistry, /* setSelectedRegistry */] = useState(null)
 	const [page, setPage] = useState(0)
 	const [filters, setFilters] = useState({
 		keyword: '',
@@ -59,11 +59,11 @@ const AssignRegistryDialog = props => {
 		props.callBack(org)
 	}
 
-	const selectRegistry = pId => e => {
-		e.preventDefault()
-		setSelectedRegistry(pId)
-		// this.setState({ selectedRegistry: pId })
-	}
+	// const selectRegistry = pId => e => {
+	// 	e.preventDefault()
+	// 	setSelectedRegistry(pId)
+	// 	// this.setState({ selectedRegistry: pId })
+	// }
 	const closeDialog = () => {
 		props.handleClose(false)
 	}

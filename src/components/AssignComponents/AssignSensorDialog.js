@@ -24,7 +24,7 @@ const AssignSensorDialog = React.memo(props => {
 
 	// const [stateSensors, setStateSensors] = useState([])
 
-	const [selectedSensor, setSelectedSensor] = useState(null)
+	const [selectedSensor, /* setSelectedSensor */] = useState(null)
 	const [page, setPage] = useState(0)
 	const [filters, setFilters] = useState({
 		keyword: '',

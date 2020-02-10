@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography, IconButton } from '@material-ui/core';
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton } from '@material-ui/core';
 import { ExpandMore } from 'variables/icons';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';

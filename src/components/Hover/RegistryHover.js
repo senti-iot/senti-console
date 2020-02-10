@@ -3,7 +3,7 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { Star, StarBorder, SignalWifi2Bar, Business, InputIcon } from 'variables/icons';
+import { Star, StarBorder, /* SignalWifi2Bar, */ Business, InputIcon } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -88,21 +88,21 @@ const RegistryHover = props => {
 		props.handleClose()
 	};
 
-	const renderIcon = (status) => {
-		const { classes } = props
-		switch (status) {
-			case 1:
-				return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
-			case 2:
-				return <SignalWifi2Bar className={classes.greenSignal + ' ' + classes.smallIcon} />
-			case 0:
-				return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
-			case null:
-				return <SignalWifi2Bar className={classes.smallIcon} />
-			default:
-				break;
-		}
-	}
+	// const renderIcon = (status) => {
+	// 	const { classes } = props
+	// 	switch (status) {
+	// 		case 1:
+	// 			return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
+	// 		case 2:
+	// 			return <SignalWifi2Bar className={classes.greenSignal + ' ' + classes.smallIcon} />
+	// 		case 0:
+	// 			return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
+	// 		case null:
+	// 			return <SignalWifi2Bar className={classes.smallIcon} />
+	// 		default:
+	// 			break;
+	// 	}
+	// }
 
 	const { anchorEl, classes, registry } = props
 	return (

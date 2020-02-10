@@ -133,10 +133,10 @@ const Toolbar = React.memo(props => {
 	};
 
 
-	const handleTooltipOpen = (id) => {
-		setTooltip(id)
-		// this.setState({ tooltip: id });
-	};
+	// const handleTooltipOpen = (id) => {
+	// 	setTooltip(id)
+	// 	// this.setState({ tooltip: id });
+	// };
 
 
 	const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ } = props

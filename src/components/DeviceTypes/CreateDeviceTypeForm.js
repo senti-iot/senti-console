@@ -168,75 +168,75 @@ const CreateDeviceTypeForm = props => {
 	}
 
 
-	const renderSelectOrg = () => {
-		const { openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = props
-		const appBarClasses = cx({
-			[' ' + classes['primary']]: 'primary'
-		});
-		return <Dialog
-			fullScreen
-			open={openOrg}
-			onClose={handleCloseOrg}
-			TransitionComponent={SlideT}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
-				<Toolbar>
-					<Hidden mdDown>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={2} container alignItems={'center'}>
-								<IconButton color='inherit' onClick={handleCloseOrg} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8}>
-								<Search
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-					<Hidden lgUp>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={handleCloseOrg} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
-								<Search
-									noAbsolute
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-				</Toolbar>
-			</AppBar>
-			<List>
-				{orgs ? filterItems(orgs, filters).map((o, i) => {
-					return <Fragment key={i}>
-						<ListItem button onClick={handleChangeOrg(o)}>
-							<ListItemText primary={o.name} />
-						</ListItem>
-						<Divider />
-					</Fragment>
-				}) : null}
-			</List>
-		</Dialog>
-	}
+	// const renderSelectOrg = () => {
+	// 	const { openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = props
+	// 	const appBarClasses = cx({
+	// 		[' ' + classes['primary']]: 'primary'
+	// 	});
+	// 	return <Dialog
+	// 		fullScreen
+	// 		open={openOrg}
+	// 		onClose={handleCloseOrg}
+	// 		TransitionComponent={SlideT}>
+	// 		<AppBar className={classes.appBar + ' ' + appBarClasses}>
+	// 			<Toolbar>
+	// 				<Hidden mdDown>
+	// 					<ItemG container alignItems={'center'}>
+	// 						<ItemG xs={2} container alignItems={'center'}>
+	// 							<IconButton color='inherit' onClick={handleCloseOrg} aria-label='Close'>
+	// 								<Close />
+	// 							</IconButton>
+	// 							<Typography variant='h6' color='inherit' className={classes.flex}>
+	// 								{t('orgs.pageTitle')}
+	// 							</Typography>
+	// 						</ItemG>
+	// 						<ItemG xs={8}>
+	// 							<Search
+	// 								fullWidth
+	// 								open={true}
+	// 								focusOnMount
+	// 								suggestions={orgs ? suggestionGen(orgs) : []}
+	// 								handleFilterKeyword={handleFilterKeyword}
+	// 								searchValue={filters.keyword} />
+	// 						</ItemG>
+	// 					</ItemG>
+	// 				</Hidden>
+	// 				<Hidden lgUp>
+	// 					<ItemG container alignItems={'center'}>
+	// 						<ItemG xs={4} container alignItems={'center'}>
+	// 							<IconButton color={'inherit'} onClick={handleCloseOrg} aria-label='Close'>
+	// 								<Close />
+	// 							</IconButton>
+	// 							<Typography variant='h6' color='inherit' className={classes.flex}>
+	// 								{t('orgs.pageTitle')}
+	// 							</Typography>
+	// 						</ItemG>
+	// 						<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+	// 							<Search
+	// 								noAbsolute
+	// 								fullWidth
+	// 								open={true}
+	// 								focusOnMount
+	// 								suggestions={orgs ? suggestionGen(orgs) : []}
+	// 								handleFilterKeyword={handleFilterKeyword}
+	// 								searchValue={filters.keyword} />
+	// 						</ItemG>
+	// 					</ItemG>
+	// 				</Hidden>
+	// 			</Toolbar>
+	// 		</AppBar>
+	// 		<List>
+	// 			{orgs ? filterItems(orgs, filters).map((o, i) => {
+	// 				return <Fragment key={i}>
+	// 					<ListItem button onClick={handleChangeOrg(o)}>
+	// 						<ListItemText primary={o.name} />
+	// 					</ListItem>
+	// 					<Divider />
+	// 				</Fragment>
+	// 			}) : null}
+	// 		</List>
+	// 	</Dialog>
+	// }
 	const renderSelectFunction = () => {
 		const { openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = props
 		const appBarClasses = cx({
