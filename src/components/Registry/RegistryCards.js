@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 import { withStyles } from '@material-ui/core';
 import CP from 'components/Table/CP';
-import { useLocalization } from 'hooks';
+import { useLocalization, /* useHistory */ } from 'hooks';
 
 // const mapStateToProps = (state) => ({
 // 	rowsPerPage: state.appState.CPP
@@ -14,6 +14,7 @@ import { useLocalization } from 'hooks';
 
 const RegistryCards = props => {
 	const t = useLocalization()
+	// const history = useHistory()
 	const rowsPerPage = useSelector(store => store.appState.CPP)
 	const [page, setPage] = useState(0)
 	// constructor(props) {

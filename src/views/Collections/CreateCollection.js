@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { createCollection, getEmptyCollection, assignDeviceToCollection } from 'variables/dataCollections';
 import { /* useSelector, */ useDispatch } from 'react-redux'
 import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
@@ -245,9 +244,5 @@ const CreateCollection = props => {
 	)
 }
 
-CreateCollection.propTypes = {
-	// match: PropTypes.object.isRequired,
-	accessLevel: PropTypes.object.isRequired,
-}
 
 export default CreateCollection
