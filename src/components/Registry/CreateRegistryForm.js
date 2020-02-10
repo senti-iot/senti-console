@@ -1,113 +1,37 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
-import { Close } from 'variables/icons';
-import cx from 'classnames'
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import React, { useState } from 'react'
+import { Button } from '@material-ui/core';
 import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect, SlideT } from 'components'
-import Search from 'components/Search/Search';
-import { suggestionGen, filterItems } from 'variables/functions';
+import { GridContainer, ItemGrid, TextF, DSelect } from 'components'
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 import { useLocalization } from 'hooks'
-/**
-* @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
-*/
+import createRegistryStyles from 'assets/jss/components/registries/createRegistryStyles';
 
-// @Andrei
 const CreateRegistryForm = props => {
+	//Hooks
 	const t = useLocalization()
-	const [filters, setFilters] = useState({ keyword: '' })
+	const classes = createRegistryStyles()
+	//Redux
+
+	//State
 	const [openOrg, setOpenOrg] = useState(false)
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		filters: {
-	// 			keyword: ''
-	// 		},
-	// 		openOrg: false
-	// 	}
-	// }
+	//Const
+	const { org, handleOrgChange, handleChange, registry, handleCreate, goToRegistries } = props
 
-	const handleFilterKeyword = value => {
-		setFilters({ ...filters, keyword: value })
-		// this.setState({
-		// 	filters: {
-		// 		keyword: value
-		// 	}
-		// })
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+	const handleOpenOrg = () => setOpenOrg(true)
+	const handleCloseOrg = () => setOpenOrg(false)
+
+	const handleSetOrg = org => {
+		handleOrgChange(org)
+		handleCloseOrg()
 	}
-	const renderSelectDevice = () => {
-		const { openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = props
-		// const { filters } = this.state
-		const appBarClasses = cx({
-			[' ' + classes['primary']]: 'primary'
-		});
-		return <Dialog
-			fullScreen
-			open={openDevice}
-			onClose={handleCloseDevice}
-			TransitionComponent={SlideT}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
-				<Toolbar>
-					<Hidden mdDown>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={2} container alignItems={'center'}>
-								<IconButton color='inherit' onClick={handleCloseDevice} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('devices.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8}>
-								<Search
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-					<Hidden lgUp>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={handleCloseDevice} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('devices.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
-								<Search
-									noAbsolute
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-				</Toolbar>
-			</AppBar>
-			<List>
-				{devices ? filterItems(devices, filters).map((o, i) => {
-					return <Fragment key={i}>
-						<ListItem button onClick={handleChangeDevice(o)}>
-							<ListItemText primary={o.name} />
-						</ListItem>
-						<Divider />
-					</Fragment>
-				}) : null}
-			</List>
-		</Dialog>
-	}
+
+
 	const renderProtocol = () => {
 		const { registry, handleChange } = props
 		return <DSelect
@@ -132,27 +56,10 @@ const CreateRegistryForm = props => {
 			onChange={handleChange('region')}
 			menuItems={[
 				{ value: 'europe', label: t('registries.fields.regions.europe') },
-				// { value: 1, label: t('registries.fields.protocols.mqtt') },
-				// { value: 2, label: t('registries.fields.protocols.http') },
-				// { value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` }
-			]}
-		/>
-	}
-	const renderSelectState = () => {
-		const { collection, handleChange } = props
-		return <DSelect
-			margin={'normal'}
-			label={t('collections.fields.status')}
-			value={collection.state}
-			onChange={handleChange('state')}
-			menuItems={[
-				{ value: 1, label: t('collections.fields.state.active') },
-				{ value: 2, label: t('collections.fields.state.inactive') }
 			]}
 		/>
 	}
 
-	const { org, handleOrgChange, handleChange, registry, classes, handleCreate, goToRegistries } = props
 	return (
 		<GridContainer>
 			<Paper className={classes.paper}>
@@ -177,14 +84,14 @@ const CreateRegistryForm = props => {
 						<ItemGrid xs={12}>
 							<TextF
 								value={org.name}
-								onClick={() => setOpenOrg(true)}
+								onClick={handleOpenOrg}
 								readonly
 							/>
 							<AssignOrgDialog
 								t={t}
 								open={openOrg}
-								handleClose={() => setOpenOrg(false)}
-								callBack={org => { setOpenOrg(false); handleOrgChange(org) }}
+								handleClose={handleCloseOrg}
+								callBack={handleSetOrg}
 							/>
 						</ItemGrid>
 
@@ -212,4 +119,4 @@ const CreateRegistryForm = props => {
 }
 
 
-export default withStyles(createprojectStyles)(CreateRegistryForm)
+export default CreateRegistryForm
