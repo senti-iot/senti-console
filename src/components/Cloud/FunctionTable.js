@@ -1,34 +1,43 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
 import React, { Fragment, useState } from 'react'
-import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
+import cfTableStyles from 'assets/jss/components/cloudfunctions/cfTableStyles'
 import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption } from 'components'
 import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
-import FunctionHover from 'components/Hover/FunctionHover';
-// import { dateFormatter } from 'variables/functions';
-
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-// 	hoverTime: state.settings.hoverTime
-// })
+import { useLocalization } from 'hooks'
 
 const FunctionTable = props => {
-	const [page, setPage] = useState(0)
-	const [rowHover, setRowHover] = useState(null)
-	const [hoverFunction] = useState(null)
+	//Hooks
+	const classes = cfTableStyles()
+	const t = useLocalization()
 
+	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	// const hoverTime = useSelector(state => state.settings.hoverTime)
 
+	//State
+	const [page, setPage] = useState(0)
+	// const [rowHover, setRowHover] = useState(null)
+	// const [hoverFunction] = useState(null)
+
+	//Const
 	// let timer = null
+	const { handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
+	let emptyRows;
+	if (data)
+		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
 
 	const handleRequestSort = (event, property) => {
 		props.handleRequestSort(event, property)
@@ -46,38 +55,39 @@ const FunctionTable = props => {
 
 	const isSelectedFunc = id => props.selected.indexOf(id) !== -1
 
-	// const setHover = (e, n) => {
-	// 	e.persist()
-	// 	if (hoverTime > 0)
-	// 		timer = setTimeout(() => {
-	// 			if (rowHover) {
-	// 				setRowHover(null)
-	// 				setTimeout(() => {
-	// 					setRowHover(e.target)
-	// 					setHoverFunction(n)
-	// 					// this.setState({ rowHover: e.target, hoverFunction: n })
-	// 				}, 200);
-	// 			}
-	// 			else {
-	// 				setRowHover(e.target)
-	// 				setHoverFunction(n)
-	// 				// this.setState({ rowHover: e.target, hoverFunction: n })
-	// 			}
-	// 		}, hoverTime);
-	// }
+	/* 	// const setHover = (e, n) => {
+		// 	e.persist()
+		// 	if (hoverTime > 0)
+		// 		timer = setTimeout(() => {
+		// 			if (rowHover) {
+		// 				setRowHover(null)
+		// 				setTimeout(() => {
+		// 					setRowHover(e.target)
+		// 					setHoverFunction(n)
+		// 					// this.setState({ rowHover: e.target, hoverFunction: n })
+		// 				}, 200);
+		// 			}
+		// 			else {
+		// 				setRowHover(e.target)
+		// 				setHoverFunction(n)
+		// 				// this.setState({ rowHover: e.target, hoverFunction: n })
+		// 			}
+		// 		}, hoverTime);
+		// }
 
-	// const unsetTimeout = () => {
-	// 	clearTimeout(timer)
-	// }
-	const unsetHover = () => {
-		setRowHover(null)
+		// const unsetTimeout = () => {
+		// 	clearTimeout(timer)
+		// }
+		// const unsetHover = () => {
+		// setRowHover(null)
 		// this.setState({
 		// 	rowHover: null
 		// })
-	}
-	const renderHover = () => {
-		return <FunctionHover anchorEl={rowHover} handleClose={unsetHover} project={hoverFunction} />
-	}
+		// }
+		// const renderHover = () => {
+		// 	return <FunctionHover anchorEl={rowHover} handleClose={unsetHover} project={hoverFunction} />
+		// } */
+
 	const renderProtocol = (id) => {
 		const { t } = props
 		switch (id) {
@@ -90,15 +100,10 @@ const FunctionTable = props => {
 		}
 	}
 
-	const { classes, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = props
-	let emptyRows;
-	if (data)
-		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-
 	return (
 		<Fragment>
-			<div className={classes.tableWrapper} onMouseLeave={unsetHover}>
-				{renderHover()}
+			<div className={classes.tableWrapper} /* onMouseLeave={unsetHover} */>
+				{/* {renderHover()} */}
 				<Table className={classes.table} aria-labelledby='tableTitle'>
 					<TableHeader
 						numSelected={selected.length}
@@ -109,7 +114,6 @@ const FunctionTable = props => {
 						rowCount={data ? data.length : 0}
 						columnData={props.tableHead}
 						t={t}
-						classes={classes}
 						customColumn={[
 							{
 								id: 'name',
@@ -171,17 +175,12 @@ const FunctionTable = props => {
 			</div>
 			<TP
 				count={data ? data.length : 0}
-				classes={classes}
 				page={page}
-				t={t}
 				handleChangePage={handleChangePage}
 			/>
 		</Fragment>
 	)
 }
 
-FunctionTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(FunctionTable))
+export default FunctionTable

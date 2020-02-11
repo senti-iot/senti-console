@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { createFunction } from 'variables/dataFunctions';
 import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
@@ -16,7 +15,9 @@ import { useLocalization, useSnackbar } from 'hooks';
 // 	getFunctions: async (reload, customerID, ua) => dispatch(await getFunctions(reload, customerID, ua)),
 // })
 
-const CreateCollection = props => {
+//@Andrei
+
+const CreateCloudFunction = props => {
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -151,9 +152,5 @@ const CreateCollection = props => {
 	)
 }
 
-CreateCollection.propTypes = {
-	match: PropTypes.object.isRequired,
-	accessLevel: PropTypes.object.isRequired,
-}
 
-export default CreateCollection
+export default CreateCloudFunction
