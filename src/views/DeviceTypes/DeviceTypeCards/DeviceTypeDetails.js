@@ -1,5 +1,3 @@
-import { withStyles } from '@material-ui/core';
-import deviceTypeStyles from 'assets/jss/views/deviceStyles';
 import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
@@ -15,26 +13,36 @@ import { useLocalization } from 'hooks'
 
 // @Andrei
 const DeviceTypeDetails = props => {
+	//Hooks
 	const t = useLocalization()
+
+	//Redux
 	const detailsPanel = useSelector(state => state.settings.detailsPanel)
 
-	const { handleOpenDeleteDialog, deviceType,
-		isFav, addToFav, removeFromFav, history
-	} = props
+	//State
+
+	//Const
+
+	const { handleOpenDeleteDialog, deviceType, isFav, addToFav, removeFromFav, history } = props
+	const deviceTypeMenu = [
+		{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
+		{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+		{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
+	]
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+
 	return (
 		<InfoCard
 			title={deviceType.name ? deviceType.name : deviceType.id}
 			avatar={<DataUsage />}
 			noExpand
 			expanded={Boolean(detailsPanel)}
-			topAction={<Dropdown menuItems={
-				[
-					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
-					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
-				]
-			} />
-			}
+			topAction={<Dropdown menuItems={deviceTypeMenu} />}
 			subheader={<ItemG container alignItems={'center'}>
 				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{deviceType.id}
 			</ItemG>}
@@ -57,4 +65,4 @@ const DeviceTypeDetails = props => {
 	)
 }
 
-export default withStyles(deviceTypeStyles)(DeviceTypeDetails)
+export default DeviceTypeDetails

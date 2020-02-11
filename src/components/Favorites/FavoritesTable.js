@@ -1,11 +1,10 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles, Tooltip,
+	TableRow, Typography, Tooltip,
 } from '@material-ui/core';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-import { withRouter } from 'react-router-dom';
 import FavoriteTableHead from 'components/Table/TableHeader'
 import { useSelector } from 'react-redux'
 import { Info, Caption, ItemG } from 'components';
@@ -18,9 +17,11 @@ import { useLocalization } from 'hooks';
 // 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 // 	accessLevel: state.settings.user.privileges
 // })
-
+//@Andrei
 const FavoriteTable = props => {
 	const t = useLocalization()
+	const classes = devicetableStyles()
+
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
@@ -115,7 +116,7 @@ const FavoriteTable = props => {
 		}
 	}
 
-	const { selected, classes, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
+	const { selected, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
 	let emptyRows
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -211,4 +212,4 @@ FavoriteTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(FavoriteTable));
+export default FavoriteTable;

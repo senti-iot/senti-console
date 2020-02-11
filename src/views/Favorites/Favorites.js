@@ -6,7 +6,7 @@ import { ViewList, StarBorder } from 'variables/icons'
 import TableToolbar from 'components/Table/TableToolbar'
 import FavoritesTable from 'components/Favorites/FavoritesTable'
 import { GridContainer, CircularLoader } from 'components'
-import { Paper, withStyles, Fade } from '@material-ui/core'
+import { Paper, Fade } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
 import { filterItems, handleRequestSort } from 'variables/functions'
 import { finishedSaving, removeFromFav, /* addToFav, */ /* isFav */ } from 'redux/favorites'
@@ -36,6 +36,7 @@ const Favorites = props => {
 	const dispatch = useDispatch()
 	const match = useMatch()
 	const history = useHistory()
+	const classes = projectStyles()
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 	const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
@@ -299,8 +300,6 @@ const Favorites = props => {
 		/>
 	}
 	const renderFavorites = () => {
-		const { classes } = props
-		// const { loading } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{renderTableToolBar()}
@@ -310,19 +309,9 @@ const Favorites = props => {
 			}
 		</GridContainer>
 	}
-	// const { filters, route } = this.state
-	// const { favorites } = this.props
+
 	return (
 		<Fragment>
-			{/* <Toolbar
-					data={favorites}
-					filters={filters}
-					history={this.history}
-					route={route}
-					match={this.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs()}
-				/> */}
 			<Switch>
 				<Route path={`${match.path}/list`} render={() => renderFavorites()} />
 				<Redirect path={`${match.path}`} to={`${match.path}/list`} />
@@ -331,4 +320,4 @@ const Favorites = props => {
 	)
 }
 
-export default withStyles(projectStyles)(Favorites)
+export default Favorites

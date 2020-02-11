@@ -1,13 +1,8 @@
-import { withStyles, Fade } from '@material-ui/core';
-import deviceTypeStyles from 'assets/jss/views/deviceStyles';
+import { Fade } from '@material-ui/core';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { getProject } from 'variables/dataProjects';
-// import { getWeather } from 'variables/dataDevices';
-// import moment from 'moment'
 import { DataUsage, CloudUpload, StorageIcon } from 'variables/icons';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getDeviceTypeLS } from 'redux/data';
@@ -16,7 +11,9 @@ import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
 import { deleteDeviceType } from 'variables/dataDeviceTypes';
 import { useLocalization, useSnackbar, useHistory } from 'hooks';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useLocation } from 'react-router-dom';
+
+
 
 const DeviceType = props => {
 	//Hooks
@@ -26,6 +23,8 @@ const DeviceType = props => {
 	const s = useSnackbar().s
 	const history = useHistory()
 	const match = useRouteMatch()
+	const location = useLocation()
+
 	//Redux
 
 	const accessLevel = useSelector(store => store.settings.user.privileges)
@@ -39,20 +38,7 @@ const DeviceType = props => {
 
 	//Const
 
-
-
-	const tabs = useCallback(() => {
-		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			{ id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
-			{ id: 2, title: t('tabs.cloudfunctions'), label: <CloudUpload />, url: `#cloudfunctions` },
-		]
-	}, [t])
-
-	// const getDeviceType = async (id) => {
-	// 	await getDeviceTypeLS(id)
-	// }
-
+	//useEffects
 	useEffect(() => {
 		const asyncFunc = async () => {
 			if (saved === true) {
@@ -67,42 +53,51 @@ const DeviceType = props => {
 			}
 		}
 		asyncFunc()
-	}, [props.match.params.id, deviceType, saved, dispatch, t, s])
+	}, [match.params.id, deviceType, saved, dispatch, t, s])
 
 	useEffect(() => {
 		const getDT = async () => {
-			if (props.match) {
-				let id = props.match.params.id
+			if (match) {
+				let id = match.params.id
 				await dispatch(await getDeviceTypeLS(id))
 			}
 		}
 		getDT()
-		if (props.location.hash !== '') {
-			scrollToAnchor(props.location.hash)
+		if (location.hash !== '') {
+			scrollToAnchor(location.hash)
 		}
 		//eslint-disable-next-line
 	}, [])
 	useEffect(() => {
 		if (deviceType) {
+			const tabs = [
+				{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+				{ id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
+				{ id: 2, title: t('tabs.cloudfunctions'), label: <CloudUpload />, url: `#cloudfunctions` },
+			]
 
 			props.setTabs({
 				route: 0,
 				id: 'deviceType',
-				tabs: tabs(),
+				tabs: tabs,
 				hashLinks: true
 			})
 			props.setBC('devicetype', deviceType.name)
-			let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
+			let prevURL = location.prevURL ? location.prevURL : '/deviceTypes/list'
 			props.setHeader('sidebar.devicetype', true, prevURL, 'manage.devicetypes')
 		}
-	}, [deviceType, props, tabs])
+	}, [deviceType, location, props, t])
 
+	//handlers
+
+	//#region Favorites
+	const isFavorite = (id) => dispatch(isFav({ id: id, type: 'devicetype' }))
 	const addToFavFunc = () => {
 		let favObj = {
 			id: deviceType.id,
 			name: deviceType.name,
 			type: 'devicetype',
-			path: props.match.url
+			path: match.url
 		}
 		dispatch(addToFav(favObj))
 	}
@@ -112,10 +107,11 @@ const DeviceType = props => {
 			id: deviceType.id,
 			name: deviceType.name,
 			type: 'devicetype',
-			path: props.match.url
+			path: match.url
 		}
 		dispatch(removeFromFav(favObj))
 	}
+	//#endregion
 
 	const snackBarMessages = (msg) => {
 		switch (msg) {
@@ -136,7 +132,7 @@ const DeviceType = props => {
 		await deleteDeviceType(deviceType.id).then(() => {
 			handleCloseDeleteDialog()
 			snackBarMessages(1)
-			props.history.push('/devicetypes/list')
+			history.push('/devicetypes/list')
 		})
 	}
 
@@ -165,7 +161,7 @@ const DeviceType = props => {
 					{renderDeleteDialog()}
 					<ItemGrid xs={12} noMargin id='details'>
 						<DeviceTypeDetails
-							isFav={dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))}
+							isFav={isFavorite(deviceType.id)}
 							addToFav={addToFavFunc}
 							removeFromFav={removeFromFavFunc}
 							handleOpenDeleteDialog={handleOpenDeleteDialog}
@@ -194,4 +190,4 @@ const DeviceType = props => {
 	)
 }
 
-export default withStyles(deviceTypeStyles)(DeviceType)
+export default DeviceType

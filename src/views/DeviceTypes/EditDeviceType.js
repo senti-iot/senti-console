@@ -6,6 +6,7 @@ import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 import { useLocalization, useHistory, useSnackbar, useEventListener } from 'hooks';
+import { useParams, useLocation } from 'react-router-dom';
 // import { useCallback } from 'react';
 
 
@@ -13,10 +14,10 @@ const EditDeviceType = props => {
 	//Hooks
 	const dispatch = useDispatch()
 	const t = useLocalization()
-	const history = useHistory()
 	const s = useSnackbar().s
-	//Redux
-
+	const history = useHistory()
+	const location = useLocation()
+	const params = useParams()
 	//Redux
 	const accessLevel = useSelector(store => store.settings.user.privileges)
 	const orgId = useSelector(store => store.settings.user.org.id)
@@ -28,30 +29,30 @@ const EditDeviceType = props => {
 	const [loading, setLoading] = useState(true)
 	const [openCF, setOpenCF] = useState({ open: false, where: null })
 	const [deviceType, setDeviceType] = useState(null)
-	// const [keyName, setKeyName] = useState('')
-	// const [value, setValue] = useState('')
 	const [org, setOrg] = useState(null)
 	const [sensorMetadata, setSensorMetadata] = useState(null)
 	const [select, setSelect] = useState(null)
-
+	const [openOrg, setOpenOrg] = useState(false)
 
 	//Const
-	const id = props.match.params.id
-	const { location, setHeader, setBC, setTabs } = props
+	const { setHeader, setBC, setTabs } = props
 
+	//useCallbacks
 	const keyHandler = useCallback((e) => {
 		if (e.key === 'Escape') {
-			let prevURL = props.location.prevURL ? props.location.prevURL : `/deviceType/${id}`
+			let prevURL = location.prevURL ? location.prevURL : `/deviceType/${params.id}`
 			history.push(prevURL)
 		}
-	}, [history, id, props.location.prevURL])
+	}, [history, location, params])
 
+	//useEventListeners
 	useEventListener('keydown', keyHandler);
 
+	//useEffects
 	useEffect(() => {
-		let getDT = async () => dispatch(await getDeviceTypeLS(id))
+		let getDT = async () => dispatch(await getDeviceTypeLS(params.id))
 		getDT()
-	}, [dispatch, id])
+	}, [dispatch, params])
 
 
 	useEffect(() => {
@@ -65,7 +66,7 @@ const EditDeviceType = props => {
 			setOrg(orgs[orgs.findIndex(o => o.id === devicetype.orgId)])
 
 			setLoading(false)
-			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${id}`
+			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${params.id}`
 			setHeader('menus.edits.devicetype', true, prevURL, 'manage.devicetypes')
 
 			setTabs({
@@ -74,7 +75,9 @@ const EditDeviceType = props => {
 			})
 			setBC('createdevicetype')
 		}
-	}, [deviceType, devicetype, id, location.prevURL, orgs, setBC, setHeader, setTabs])
+	}, [deviceType, devicetype, params.id, location.prevURL, orgs, setBC, setHeader, setTabs])
+
+	//handlers
 
 	const handleChange = (what) => e => {
 		setDeviceType({
@@ -83,7 +86,6 @@ const EditDeviceType = props => {
 		})
 	}
 	const updtDeviceType = async () => {
-		console.log(sensorMetadata.metadata)
 		let deviceTypee = {
 			...deviceType,
 			outbound: sensorMetadata.outbound,
@@ -112,6 +114,7 @@ const EditDeviceType = props => {
 		else
 			s('snackbars.failed')
 	}
+
 	//#region Inbound Function
 
 	const handleRemoveInboundFunction = index => e => {
@@ -129,7 +132,10 @@ const EditDeviceType = props => {
 	//#region Outbound function
 
 	const handleAddKey = e => {
-		setSensorMetadata({ ...sensorMetadata, outbound: [...sensorMetadata.outbound, { key: '', nId: -1 }] })
+		setSensorMetadata({
+			...sensorMetadata, outbound:
+				[...sensorMetadata.outbound, { key: '', nId: -1, type: 0 }]
+		})
 	}
 
 	const handleRemoveKey = (index) => e => {
@@ -200,24 +206,36 @@ const EditDeviceType = props => {
 		})
 
 	}
-	const handleChangeFunc = (o, where) => e => {
+	const handleChangeFunc = (o, where) => {
 		let metadata = sensorMetadata[where]
 		metadata[select[where]].nId = o.id
 		setOpenCF({ open: false, where: null })
 		setSensorMetadata({ ...sensorMetadata, [where]: metadata })
 	}
+	//#endregion
+
+	//#region Orgs
+
 	const handleOrgChange = org => {
 		setOrg(org)
 	}
+	const handleOpenOrg = () => setOpenOrg(true)
+	const handleCloseOrg = () => setOpenOrg(false)
+
 	//#endregion
 
-	const goToDeviceTypes = () => props.history.push('/devicetypes')
+
+	const goToDeviceTypes = () => history.push('/devicetypes')
 
 	return (loading ? <CircularLoader /> :
 
 		<CreateDeviceTypeForm
 			org={org}
 			handleOrgChange={handleOrgChange}
+			openOrg={openOrg}
+			handleOpenOrg={handleOpenOrg}
+			handleCloseOrg={handleCloseOrg}
+
 			deviceType={devicetype}
 			sensorMetadata={sensorMetadata}
 			cfunctions={cloudfunctions}

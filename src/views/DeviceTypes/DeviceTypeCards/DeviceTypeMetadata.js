@@ -1,5 +1,4 @@
-import { withStyles } from '@material-ui/core';
-import deviceTypeStyles from 'assets/jss/views/deviceStyles';
+// import deviceTypeStyles from 'assets/jss/views/deviceStyles';
 import { ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import React from 'react';
@@ -13,17 +12,26 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	detailsPanel: state.settings.detailsPanel
-// })
 
 // @Andrei
 const DeviceTypeMetadata = props => {
+	//Hooks
 	const t = useLocalization()
-	// const detailsPanel = useSelector(state => state.settings.detailsPanel)
 
+	//Redux
+
+	//State
+
+	//Const
 	const { deviceType } = props
 	let mtd = deviceType.metadata
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	return (
 		<InfoCard
 			title={t('sensors.fields.metadata')}
@@ -40,13 +48,13 @@ const DeviceTypeMetadata = props => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{mtd.map(s => {
-									return <TableRow key={s.key}>
+								{Object.keys(mtd).map(s => {
+									return <TableRow key={s}>
 										<TableCell>
-											{s.key}
+											{mtd[s].key}
 										</TableCell>
 										<TableCell>
-											{s.value}
+											{mtd[s].value}
 										</TableCell>
 									</TableRow>
 								})}
@@ -57,4 +65,4 @@ const DeviceTypeMetadata = props => {
 	)
 }
 
-export default withStyles(deviceTypeStyles)(DeviceTypeMetadata)
+export default DeviceTypeMetadata

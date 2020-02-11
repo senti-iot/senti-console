@@ -22,7 +22,6 @@ const Registry = props => {
 	const match = useMatch()
 	const location = useLocation()
 	//Redux
-	// const accessLevel = useSelector(store => store.settings.user.privileges)
 	const saved = useSelector(store => store.favorites.saved)
 	const registry = useSelector(store => store.data.registry)
 	const loading = useSelector(store => !store.data.gotRegistry)

@@ -13,6 +13,7 @@ import withLocalization from 'components/Localization/T';
 import { connect } from 'react-redux'
 import { changeEH } from 'redux/appState';
 
+//TODO
 function renderInput(inputProps) {
 	return (
 		<SearchInput {...inputProps} />
@@ -53,9 +54,9 @@ function getSuggestions(value, suggestions) {
 }
 
 /**
-* @augments {Component<{	
-	searchValue:string,	
-	suggestions:array.isRequired,	
+* @augments {Component<{
+	searchValue:string,
+	suggestions:array.isRequired,
 	handleFilterKeyword:Function.isRequired,>}
 */
 class IntegrationAutosuggest extends React.PureComponent {
@@ -91,10 +92,10 @@ class IntegrationAutosuggest extends React.PureComponent {
 								{part.text}
 							</span>
 						) : (
-							<strong key={String(index)} style={{ fontWeight: 500 }}>
-								{part.text}
-							</strong>
-						);
+								<strong key={String(index)} style={{ fontWeight: 500 }}>
+									{part.text}
+								</strong>
+							);
 					})}
 				</div>
 			</MenuItem>
@@ -170,12 +171,12 @@ class IntegrationAutosuggest extends React.PureComponent {
 							fullWidth: this.props.fullWidth,
 							value: this.props.searchValue,
 							onChange: this.handleChange,
-							reference: this.inputRef,
+							// reference: this.inputRef,
 							open: this.state.open || this.props.open,
 							handleOpen: this.handleOpen,
 							handleClose: this.handleClose,
 							handleResetSearch: this.handleResetSearch,
-							t: this.props.t
+							// t: this.props.t
 						}}
 					/>
 				</ClickAwayListener>

@@ -1,5 +1,3 @@
-import { withStyles } from '@material-ui/core';
-import deviceTypeStyles from 'assets/jss/views/deviceStyles';
 import { ItemG, CircularLoader, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import React from 'react';
@@ -14,18 +12,29 @@ import TableRow from '@material-ui/core/TableRow';
 import { Link } from 'react-router-dom'
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	detailsPanel: state.settings.detailsPanel,
-// 	cloudfunctions: state.data.functions,
-// 	loading: !state.data.gotfunctions
-// })
 
-// @Andrei
 const DeviceTypeCloudFunctions = props => {
+	//Hooks
 	const t = useLocalization()
-	// const detailsPanel = useSelector(state => state.settings.detailsPanel)
+
+	//Redux
 	const cloudfunctions = useSelector(state => state.data.functions)
 	const loading = useSelector(state => !state.data.gotfunctions)
+
+	//State
+
+	//Const
+	const { deviceType } = props
+	let cfi = deviceType.inbound
+	let cfo = deviceType.outbound
+	let cf = cloudfunctions
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 
 	const renderType = (type) => {
 		// const { t } = this.props
@@ -39,10 +48,6 @@ const DeviceTypeCloudFunctions = props => {
 		}
 	}
 
-	const { deviceType } = props
-	let cfi = deviceType.inbound
-	let cfo = deviceType.outbound
-	let cf = cloudfunctions
 	return (
 		<InfoCard
 			title={t('sidebar.cloudfunctions')}
@@ -89,9 +94,9 @@ const DeviceTypeCloudFunctions = props => {
 											{s.key}
 										</TableCell>
 										<TableCell>
-											<Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
-												{s.nId > 0 ? cf[cf.findIndex(f => f.id === s.nId)].name : '-'}
-											</Link>
+											{s.nId > 0 ? <Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
+												{cf[cf.findIndex(f => f.id === s.nId)].name}
+											</Link> : '-'}
 										</TableCell>
 										<TableCell>
 											{renderType(s.type)}
@@ -104,4 +109,4 @@ const DeviceTypeCloudFunctions = props => {
 				</ItemG>} />)
 }
 
-export default withStyles(deviceTypeStyles)(DeviceTypeCloudFunctions)
+export default DeviceTypeCloudFunctions
