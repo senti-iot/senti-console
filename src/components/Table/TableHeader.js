@@ -4,6 +4,7 @@ import { TableCell, TableHead, TableRow, TableSortLabel, Checkbox, Hidden, Typog
 import classNames from 'classnames'
 import thStyles from 'assets/jss/components/table/thStyles';
 
+//@Andrei - missing Localization
 const TableHeader = props => {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
