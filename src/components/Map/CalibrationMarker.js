@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { Marker } from 'react-google-maps';
 import { MarkerIcon } from './MarkerIcon';
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
-import { withStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import { getDataSummary, getWeather } from 'variables/dataDevices';
 import { teal } from '@material-ui/core/colors'
 import { useLocalization } from 'hooks';
 var moment = require('moment')
-const styles = theme => ({
+
+const styles = makeStyles(theme => ({
 	redSignal: {
 		color: red[700]
 	},
@@ -18,8 +19,10 @@ const styles = theme => ({
 	yellowSignal: {
 		color: yellow[600]
 	},
-})
+}))
+
 const CalibrationMarker = props => {
+	const classes = styles()
 	const t = useLocalization()
 	const [isOpen, setIsOpen] = useState(false)
 
@@ -58,7 +61,7 @@ const CalibrationMarker = props => {
 	}
 
 	const renderIcon = (status) => {
-		const { classes } = props
+		// const { classes } = props
 		switch (status) {
 			case 1:
 				return <div title={t('devices.status.yellow')}><SignalWifi2Bar className={classes.yellowSignal} /></div>
@@ -79,4 +82,4 @@ const CalibrationMarker = props => {
 	)
 }
 
-export default withStyles(styles)(CalibrationMarker)
+export default CalibrationMarker

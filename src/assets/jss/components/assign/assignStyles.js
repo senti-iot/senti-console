@@ -1,6 +1,7 @@
+import { makeStyles } from '@material-ui/core'
 import { headerColor, primaryColor, hoverColor } from 'assets/jss/material-dashboard-react';
 
-const assignStyles = {
+const assignStyles = makeStyles(theme => ({
 	appBar: {
 		position: 'sticky',
 		backgroundColor: headerColor,
@@ -31,6 +32,6 @@ const assignStyles = {
 	selectedItemText: {
 		color: "#FFF"
 	}
-};
+}));
 
 export default assignStyles
