@@ -5,7 +5,8 @@ import useSnackbar from './useSnackbar/useSnackbar'
 import useTimeout from './useTimeout/useTimeout'
 import { useState, useContext, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation, useRouteMatch as useMatch } from 'react-router'
+import { useHistory, useLocation, useRouteMatch as useMatch, useParams } from 'react-router-dom'
+
 import { useTheme } from '@material-ui/styles'
 
 
@@ -15,6 +16,7 @@ import { useTheme } from '@material-ui/styles'
 import useWhyDidYouUpdate from './useWhyDidYouUpdate/useWhyDidYouUpdate'
 
 export {
+	useParams,
 	useTimeout,
 	useMatch,
 	useWhyDidYouUpdate,

@@ -1,46 +1,40 @@
 import React, { useState } from 'react'
-import { Button, withStyles } from '@material-ui/core';
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import { Button } from '@material-ui/core';
 import { Grid, Paper } from '@material-ui/core'
 import { GridContainer, ItemGrid, TextF, DSelect } from 'components'
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
+import createCFStyles from 'assets/jss/components/cloudfunctions/createCFStyles';
+import { useLocalization, useTheme } from 'hooks';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow'
 import 'ace-builds/src-noconflict/theme-monokai'
-// import 'brace/mode/javascript';
-// import 'brace/theme/tomorrow';
-// import 'brace/theme/monokai';
 
-//@Andrei
+
 const CreateFunctionForm = props => {
-	// const [filters, setFilters] = useState({
-	// 	keyword: ''
-	// })
+
+	//Hooks
+	const classes = createCFStyles()
+	const t = useLocalization()
+	const theme = useTheme()
+	//Redux
+
+	//State
 	const [openOrg, setOpenOrg] = useState(false)
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		filters: {
-	// 			keyword: ''
-	// 		},
-	// 		openOrg: false
-	// 	}
-	// }
+	//Const
+	const { handleChange, org, cloudfunction, handleOrgChange, handleCreate, handleCodeChange, goToRegistries } = props
 
-	// const handleFilterKeyword = value => {
-	// 	setFilters({ keyword: value })
-	// 	// this.setState({
-	// 	// 	filters: {
-	// 	// 		keyword: value
-	// 	// 	}
-	// 	// })
-	// }
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+
 
 	const renderType = () => {
-		const { t, cloudfunction, handleChange } = props
 		return <DSelect
 			margin={'normal'}
 			label={t('cloudfunctions.fields.type')}
@@ -53,7 +47,6 @@ const CreateFunctionForm = props => {
 		/>
 	}
 
-	const { t, handleChange, org, cloudfunction, handleOrgChange, classes, handleCreate, handleCodeChange, goToRegistries } = props
 	return (
 		<GridContainer>
 			<Paper className={classes.paper}>
@@ -87,7 +80,6 @@ const CreateFunctionForm = props => {
 								readonly
 							/>
 							<AssignOrgDialog
-								t={t}
 								open={openOrg}
 								handleClose={() => setOpenOrg(false)}
 								callBack={org => { setOpenOrg(false); handleOrgChange(org) }}
@@ -98,7 +90,7 @@ const CreateFunctionForm = props => {
 								<div className={classes.editor}>
 									<AceEditor
 										mode={'javascript'}
-										theme={props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
+										theme={theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 										onChange={handleCodeChange('js')}
 										value={cloudfunction.js}
 										showPrintMargin={false}
@@ -134,4 +126,4 @@ const CreateFunctionForm = props => {
 }
 
 
-export default withStyles(createprojectStyles, { withTheme: true })(CreateFunctionForm)
+export default CreateFunctionForm

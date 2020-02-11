@@ -1,8 +1,7 @@
 /* eslint-disable indent */
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 // import { getAllOrgs } from 'variables/dataOrgs';
 import { ItemG, CircularLoader, SlideT } from 'components';
@@ -17,11 +16,12 @@ import { useLocalization } from 'hooks';
 // 	orgs: state.data.orgs
 // })
 
+//@Andrei
 const AssignOrgDialog = React.memo(props => {
 	const t = useLocalization()
 	const orgs = useSelector(state => state.data.orgs)
+	const classes = assignStyles()
 	// const [stateOrgs, setStateOrgs] = useState([])
-	const [selectedOrg, /* setSelectedOrg */] = useState(null)
 	const [filters, setFilters] = useState({
 		keyword: '',
 		startDate: null,
@@ -72,7 +72,7 @@ const AssignOrgDialog = React.memo(props => {
 		// 	}
 		// })
 	}
-	const { classes, open } = props;
+	const { open } = props;
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
@@ -138,17 +138,8 @@ const AssignOrgDialog = React.memo(props => {
 			<List>
 				{orgs ? filterItems(orgs, filters).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={assignOrg(p.id)} value={p.id}
-							classes={{
-								root: selectedOrg === p.id ? classes.selectedItem : null
-							}}
-						>
-							<ListItemText primaryTypographyProps={{
-								className: selectedOrg === p.id ? classes.selectedItemText : null
-							}}
-								secondaryTypographyProps={{
-									classes: { root: selectedOrg === p.id ? classes.selectedItemText : null }
-								}}
+						<ListItem button onClick={assignOrg(p.id)} value={p.id}>
+							<ListItemText
 								primary={p.name} />
 						</ListItem>
 						<Divider />
@@ -161,8 +152,5 @@ const AssignOrgDialog = React.memo(props => {
 	)
 })
 
-AssignOrgDialog.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
 
-export default withStyles(assignStyles)(AssignOrgDialog)
+export default AssignOrgDialog
