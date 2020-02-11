@@ -1,63 +1,122 @@
-import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, Fade } from '@material-ui/core';
+import { Paper, Dialog, IconButton, DialogContent, DialogTitle, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import MessageTable from 'components/Message/MessageTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, handleRequestSort, dateTimeFormatter } from 'variables/functions';
+import { filterItems, /* handleRequestSort, */ dateTimeFormatter } from 'variables/functions';
 import { ViewList, Close } from 'variables/icons';
 import { GridContainer, CircularLoader, ItemG, Caption, Info, /* AssignProject */ } from 'components'
 // import MessagesCards from './MessagesCards';
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+// import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { getMessages, setMessages, sortData } from 'redux/data';
+import { getMessages, /* setMessages, */ sortData } from 'redux/data';
 import AceEditor from 'react-ace';
+import { useLocalization, useMatch, /* useHistory, useSnackbar */ } from 'hooks'
 
 import 'brace/mode/json';
 import 'brace/theme/tomorrow';
 import 'brace/theme/monokai';
 
-class Messages extends Component {
-	constructor(props) {
-		super(props)
+// const mapStateToProps = (state) => ({
+// 	accessLevel: state.settings.user.privileges,
+// 	favorites: state.data.favorites,
+// 	saved: state.favorites.saved,
+// 	messages: state.data.messages,
+// 	loading: !state.data.gotmessages,
+// 	filters: state.appState.filters.messages,
+// 	user: state.settings.user
+// })
 
-		this.state = {
-			selected: [],
-			openMessage: false,
-			openDelete: false,
-			order: 'asc',
-			orderBy: 'id',
-			filters: {
-				keyword: '',
-			}
-		}
-		props.setHeader('sidebar.messages', false, '', 'messages')
-		props.setBC('messages')
-		props.setTabs({
-			id: 'messages',
-			tabs: this.tabs(),
-			// route: this.handleTabs()
-		})
-	}
-	//#region Constants
-	tabs = () => {
-		const { t, match } = this.props
+// const mapDispatchToProps = (dispatch) => ({
+// 	isFav: (favObj) => dispatch(isFav(favObj)),
+// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
+// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+// 	finishedSaving: () => dispatch(finishedSaving()),
+// 	getMessages: (reload, customerID, ua) => dispatch(getMessages(reload, customerID, ua)),
+// 	setMessages: () => dispatch(setMessages()),
+// 	sortData: (key, property, order) => dispatch(sortData(key, property, order))
+// })
+
+// @Andrei
+// a lot of things commented out because of 'never used' ESLint warnings
+const Messages = props => {
+	const classes = projectStyles()
+	const t = useLocalization()
+	// const s = useSnackbar().s
+	const dispatch = useDispatch()
+	const match = useMatch()
+	// const history = useHistory()
+
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	// const favorites = useSelector(state => state.data.favorites)
+	// const saved = useSelector(state => state.favorites.saved)
+	const messages = useSelector(state => state.data.messages)
+	const loading = useSelector(state => !state.data.gotmessages)
+	const filters = useSelector(state => state.appState.filters.messages)
+	const user = useSelector(state => state.settings.user)
+
+	const [selected, /* setSelected */] = useState([])
+	const [openMessage, setOpenMessage] = useState(false)
+	// const [openDelete, setOpenDelete] = useState(false)
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('id')
+	const [stateFilters, /* setStateFilters */] = useState({ keyword: '' })
+	// const [anchorEl, setAnchorEl] = useState(null) // added
+	// const [anchorElMenu, setAnchorElMenu] = useState(null) // added
+	// const [route, setRoute] = useState(0) // added
+	const [msg, setMsg] = useState(null) // added
+	// const [openUnassignDevice, setOpenUnassignDevice] = useState(null) // added
+
+	const tabs = () => {
+		// const { t, match } = this.props
 		return [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` }
 		]
 	}
-	dProtocols = () => {
-		const { t } = this.props
-		return [
-			{ value: 0, label: t("messages.fields.protocols.none") },
-			{ value: 1, label: t("messages.fields.protocols.mqtt") },
-			{ value: 2, label: t("messages.fields.protocols.http") },
-			{ value: 3, label: `${t('messages.fields.protocols.mqtt')} & ${t('messages.fields.protocols.http')}` }
-		]
-	}
-	ft = () => {
-		const { t } = this.props
+
+	props.setHeader('sidebar.messages', false, '', 'messages')
+	props.setBC('messages')
+	props.setTabs({
+		id: 'messages',
+		tabs: tabs(),
+		// route: this.handleTabs()
+	})
+
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		selected: [],
+	// 		openMessage: false,
+	// 		openDelete: false,
+	// 		order: 'asc',
+	// 		orderBy: 'id',
+	// 		filters: {
+	// 			keyword: '',
+	// 		}
+	// 	}
+	// 	props.setHeader('sidebar.messages', false, '', 'messages')
+	// 	props.setBC('messages')
+	// 	props.setTabs({
+	// 		id: 'messages',
+	// 		tabs: this.tabs(),
+	// 		// route: this.handleTabs()
+	// 	})
+	// }
+	//#region Constants
+	// const dProtocols = () => {
+	// 	// const { t } = this.props
+	// 	return [
+	// 		{ value: 0, label: t("messages.fields.protocols.none") },
+	// 		{ value: 1, label: t("messages.fields.protocols.mqtt") },
+	// 		{ value: 2, label: t("messages.fields.protocols.http") },
+	// 		{ value: 3, label: `${t('messages.fields.protocols.mqtt')} & ${t('messages.fields.protocols.http')}` }
+	// 	]
+	// }
+	const ft = () => {
+		// const { t } = this.props
 		return [
 			// { key: 'name', name: t('messages.fields.name'), type: 'string' },
 			{ key: 'customerName', name: t('orgs.fields.name'), type: 'string' },
@@ -68,8 +127,8 @@ class Messages extends Component {
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
-	messagesHeader = () => {
-		const { t } = this.props
+	const messagesHeader = () => {
+		// const { t } = this.props
 		return [
 			{ id: 'id', label: t('messages.fields.id'), centered: true },
 			{ id: 'deviceName', label: t('messages.fields.deviceName') },
@@ -78,130 +137,150 @@ class Messages extends Component {
 			{ id: 'customerName', label: t('orgs.fields.name') }
 		]
 	}
-	options = () => {
+	const options = () => {
 		return []
 	}
 	//#endregion
 
 	//#region Life Cycle
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.getData()
+	useEffect(() => {
+		getData()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+	// componentDidMount = async () => {
+	// 	this._isMounted = 1
+	// 	this.getData()
 
-	}
+	// }
 
 	//#endregion
 
 	//#region Functions
-	addNewMessage = () => this.props.history.push({ pathname: `/messages/new`, prevURL: '/messages/list' })
+	// const addNewMessage = () => history.push({ pathname: `/messages/new`, prevURL: '/messages/list' })
 
-	getFavs = () => {
-		const { order, orderBy } = this.state
-		const { favorites, messages } = this.props
-		let favs = favorites.filter(f => f.type === 'message')
-		let favMessages = favs.map(f => {
-			return messages[messages.findIndex(d => d.id === f.id)]
-		})
-		favMessages = handleRequestSort(orderBy, order, favMessages)
-		return favMessages
+	// const getFavs = () => {
+	// 	// const { order, orderBy } = this.state
+	// 	// const { favorites, messages } = this.props
+	// 	let favs = favorites.filter(f => f.type === 'message')
+	// 	let favMessages = favs.map(f => {
+	// 		return messages[messages.findIndex(d => d.id === f.id)]
+	// 	})
+	// 	favMessages = handleRequestSort(orderBy, order, favMessages)
+	// 	return favMessages
+	// }
+	// const addToFavorites = (favObj) => {
+	// 	dispatch(addToFav(favObj))
+	// 	setAnchorElMenu(null)
+	// 	// this.setState({ anchorElMenu: null })
+	// }
+	// const removeFromFavorites = (favObj) => {
+	// 	dispatch(removeFromFav(favObj))
+	// 	setAnchorElMenu(null)
+	// 	// this.setState({ anchorElMenu: null })
+	// }
+	const filterItemsFunc = (data) => {
+		// const rFilters = this.props.filters
+		// const { filters } = this.state
+		return customFilterItems(filterItems(data, stateFilters), filters)
 	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
-	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
-	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
-	}
-	snackBarMessages = (msg, display) => {
-		const { s } = this.props
-		// const { selected } = this.state
-		switch (msg) {
-			case 1:
-				s('snackbars.deletedSuccess')
-				break;
-			default:
-				break;
-		}
-	}
-	reload = async () => {
-		await this.getData(true)
-	}
-	getData = async (reload) => {
-		const { getMessages, /* setMessages, */ accessLevel, user, messages } = this.props
+	// const snackBarMessages = (msg, display) => {
+	// 	// const { s } = this.props
+	// 	// const { selected } = this.state
+	// 	switch (msg) {
+	// 		case 1:
+	// 			s('snackbars.deletedSuccess')
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+	// const reload = async () => {
+	// 	await getData(true)
+	// }
+	const getData = async (reload) => {
+		// const { getMessages, /* setMessages, */ accessLevel, user, messages } = this.props
 		// setMessages()
 		if (accessLevel || user) {
 			if (reload || messages.length === 0)
-				getMessages(user.org.id, true, accessLevel.apisuperuser ? true : false)
+				dispatch(getMessages(user.org.id, true, accessLevel.apisuperuser ? true : false))
 		}
 	}
 	//#endregion
 
 	//#region Handlers
 
-	handleRequestSort = key => (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
+	const handleRequestSort = key => (event, property, way) => {
+		let newOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			newOrder = 'asc'
 		}
-		this.props.sortData(key, property, order)
-		this.setState({ order, orderBy: property })
+		dispatch(sortData(key, property, newOrder))
+		setOrder(newOrder)
+		setOrderBy(property)
+		// this.setState({ order, orderBy: property })
 	}
 
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
-	}
+	// const handleFilterKeyword = (value) => {
+	// 	setStateFilters({ ...stateFilters, keyword: value })
+	// 	// this.setState({
+	// 	// 	filters: {
+	// 	// 		...this.state.filters,
+	// 	// 		keyword: value
+	// 	// 	}
+	// 	// })
+	// }
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
+	// const handleTabsChange = (e, value) => {
+	// 	setRoute(value)
+	// 	// this.setState({ route: value })
+	// }
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
-	}
+	// const handleOpenDeleteDialog = () => {
+	// 	setOpenDelete(true)
+	// 	setAnchorElMenu(null)
+	// 	// this.setState({ openDelete: true, anchorElMenu: null })
+	// }
 
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-	handleOpenUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: true
-		})
-	}
+	// const handleCloseDeleteDialog = () => {
+	// 	setOpenDelete(false)
+	// 	// this.setState({ openDelete: false })
+	// }
+	// const handleOpenUnassignDevice = () => {
+	// 	setOpenUnassignDevice(true)
+	// 	// this.setState({
+	// 	// 	openUnassignDevice: true
+	// 	// })
+	// }
 
-	handleCloseUnassignDevice = () => {
-		this.setState({
-			openUnassignDevice: false, anchorEl: null
-		})
+	// const handleCloseUnassignDevice = () => {
+	// 	setOpenUnassignDevice(false)
+	// 	setAnchorEl(null)
+	// 	// this.setState({
+	// 	// 	openUnassignDevice: false, anchorEl: null
+	// 	// })
+	// }
+	const handleOpenMessage = msg => e => {
+		setOpenMessage(true)
+		setMsg(msg)
+		// this.setState({
+		// 	openMessage: true,
+		// 	msg: msg
+		// })
 	}
-	handleOpenMessage = msg => e => {
-		this.setState({
-			openMessage: true,
-			msg: msg
-		})
+	const handleCloseMessage = () => {
+		setOpenMessage(false)
+		setMsg(null)
+		// this.setState({
+		// 	openMessage: false,
+		// 	msg: null
+		// })
 	}
-	handleCloseMessage = () => {
-		this.setState({
-			openMessage: false,
-			msg: null
-		})
-	}
-	renderMessage = () => {
-		let { openMessage, msg } = this.state
-		let { t, classes } = this.props
+	const renderMessage = () => {
+		// let { openMessage, msg } = this.state
+		let { classes } = props
 		return <Dialog
 			open={openMessage}
-			onClose={this.handleCloseMessage}
+			onClose={handleCloseMessage}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 			PaperProps={{
@@ -217,7 +296,7 @@ class Messages extends Component {
 
 							{msg.deviceName}
 
-							<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseMessage}>
+							<IconButton aria-label="Close" className={classes.closeButton} onClick={handleCloseMessage}>
 								<Close />
 							</IconButton>
 						</ItemG>
@@ -241,7 +320,8 @@ class Messages extends Component {
 								<div className={classes.editor}>
 									<AceEditor
 										mode={'json'}
-										theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
+										// TODO
+										theme={props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 										value={JSON.stringify(msg.data, null, 4)}
 										showPrintMargin={false}
 										style={{ width: '100%', height: '300px' }}
@@ -257,7 +337,7 @@ class Messages extends Component {
 	}
 
 
-	renderTableToolBarContent = () => {
+	const renderTableToolBarContent = () => {
 		// const { t } = this.props
 		return <Fragment>
 			{/* <Tooltip title={t('menus.create.message')}>
@@ -268,88 +348,65 @@ class Messages extends Component {
 		</Fragment>
 	}
 
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
+		// const { t } = this.props
+		// const { selected } = this.state
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft()}
 			reduxKey={'messages'}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
-			content={this.renderTableToolBarContent()}
+			content={renderTableToolBarContent()}
 		/>
 	}
 
-	renderTable = (items, key) => {
-		const { t } = this.props
-		const { order, orderBy, selected } = this.state
+	const renderTable = (items, key) => {
+		// const { t } = this.props
+		// const { order, orderBy, selected } = this.state
 		return <Fragment>
-			{this.renderMessage()}
+			{renderMessage()}
 			<MessageTable
-				data={this.filterItems(items)}
-				handleCheckboxClick={this.handleCheckboxClick}
-				handleClick={this.handleOpenMessage}
-				handleRequestSort={this.handleRequestSort(key)}
-				handleSelectAllClick={this.handleSelectAllClick}
+				data={filterItemsFunc(items)}
+				// handleCheckboxClick={handleCheckboxClick}
+				handleClick={handleOpenMessage}
+				handleRequestSort={handleRequestSort(key)}
+				// handleSelectAllClick={handleSelectAllClick}
 				order={order}
 				orderBy={orderBy}
 				selected={selected}
 				t={t}
-				tableHead={this.messagesHeader()}
+				tableHead={messagesHeader()}
 			/>
 		</Fragment>
 	}
 
 
-	renderMessages = () => {
-		const { classes, messages, loading } = this.props
+	const renderMessages = () => {
+		// const { classes, messages, loading } = this.props
 		// const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(messages, 'messages')}
+				{renderTableToolBar()}
+				{renderTable(messages, 'messages')}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
-	render() {
-		// const { messages, route, filters } = this.state
-		const { /* history,  */match } = this.props
-		return (
-			<Fragment>
-				<Switch>
-					<Route path={`${match.path}/list`} render={() => this.renderMessages()} />
-					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					{/* <Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} /> */}
-					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
-				</Switch>
+	// const { messages, route, filters } = this.state
+	// const { /* history,  */match } = this.props
+	return (
+		<Fragment>
+			<Switch>
+				<Route path={`${match.path}/list`} render={() => renderMessages()} />
+				<Route path={`${match.path}/grid`} render={() => /* renderCards()*/ { }} />
+				{/* <Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} /> */}
+				<Redirect path={`${match.path}`} to={`${match.path}/list`} />
+			</Switch>
 
-			</Fragment>
-		)
-	}
+		</Fragment>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	messages: state.data.messages,
-	loading: !state.data.gotmessages,
-	filters: state.appState.filters.messages,
-	user: state.settings.user
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getMessages: (reload, customerID, ua) => dispatch(getMessages(reload, customerID, ua)),
-	setMessages: () => dispatch(setMessages()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles, { withTheme: true })(Messages))
+export default Messages
