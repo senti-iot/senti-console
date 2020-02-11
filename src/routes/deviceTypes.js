@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import CreateDeviceType from 'views/DeviceTypes/CreateDeviceType'
 import DeviceTypes from 'views/DeviceTypes/DeviceTypes'
 
-const registries = (props) => {
+const deviceTypes = (props) => {
 	return (
 		<Switch>
 			<Route path={`${props.path}/new`}>
@@ -16,4 +16,4 @@ const registries = (props) => {
 	)
 }
 
-export default registries
+export default deviceTypes

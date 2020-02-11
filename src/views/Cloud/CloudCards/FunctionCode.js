@@ -7,6 +7,7 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow'
 import 'ace-builds/src-noconflict/theme-monokai'
+
 import { useLocalization, useTheme } from 'hooks';
 import { makeStyles } from '@material-ui/styles';
 
