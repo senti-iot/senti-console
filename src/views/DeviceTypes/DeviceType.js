@@ -127,8 +127,8 @@ const DeviceType = props => {
 		setOpenDelete(false)
 	}
 	const handleDeleteDT = async () => {
-		if (dispatch(isFav(deviceType.id)))
-			removeFromFav()
+		if (isFavorite(deviceType.id))
+			removeFromFavFunc()
 		await deleteDeviceType(deviceType.id).then(() => {
 			handleCloseDeleteDialog()
 			snackBarMessages(1)
