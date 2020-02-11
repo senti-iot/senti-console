@@ -53,7 +53,7 @@ const FunctionCode = props => {
 								readOnly
 								showPrintMargin={false}
 								style={{ width: '100%' }}
-								name="UNIQUE_ID_OF_DIV"
+								name="CloudFunctionCode"
 								editorProps={{ $blockScrolling: true }}
 							/>
 						</div>
