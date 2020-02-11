@@ -1,9 +1,7 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
 import React, { Fragment, useState } from 'react'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
@@ -15,7 +13,7 @@ import TC from 'components/Table/TC';
 import SensorHover from 'components/Hover/SensorHover';
 import { dateFormatter } from 'variables/functions';
 import { useLocalization } from 'hooks'
-import sensorsStyles from 'assets/jss/components/devices/sensorsStyles'
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 
 const SensorTable = props => {
 	//Hooks
@@ -33,6 +31,7 @@ const SensorTable = props => {
 	const { handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
 
 	let timer = null
+	//handlers
 
 	const handleRequestSort = (event, property) => {
 		props.handleRequestSort(event, property)
@@ -215,8 +214,4 @@ const SensorTable = props => {
 	)
 }
 
-SensorTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
-
-export default withStyles(devicetableStyles, { withTheme: true })(SensorTable)
+export default SensorTable

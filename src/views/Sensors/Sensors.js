@@ -13,7 +13,7 @@ import { getSensors, sortData } from 'redux/data';
 import SensorCards from 'components/Sensors/SensorCards';
 import { deleteSensor } from 'variables/dataSensors';
 import { useLocalization, useSnackbar, useHistory, useDispatch, useSelector } from 'hooks';
-import sensorsStyles from 'assets/jss/components/devices/sensorsStyles';
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles';
 
 const Sensors = props => {
 	//Hooks

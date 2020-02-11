@@ -6,7 +6,7 @@ import {
 	ItemGrid,
 	DeleteDialog
 } from "components"
-import React, { Fragment, useState, useEffect } from "react"
+import React, { Fragment, useState, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // import { getWeather } from "variables/dataDevices"
 // import moment from "moment"
@@ -32,42 +32,42 @@ const Sensor = props => {
 	const params = useParams()
 	const location = useLocation()
 	const history = useHistory()
+
 	//Redux
 	const accessLevel = useSelector(s => s.settings.user.privileges)
-	// const language = useSelector(state => state.settings.language)
 	const saved = useSelector(state => state.favorites.saved)
-	// const mapTheme = useSelector(state => state.settings.mapTheme)
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
 	const loading = useSelector(state => !state.data.gotSensor)
 
 	//State
 	const [openDelete, setopenDelete] = useState(false)
-	const [sensorMessages, setSensorMessages] = useState(null) // added
+	const [sensorMessages, setSensorMessages] = useState(null)
+
 	//Const
 	const { setTabs, setBC, setHeader } = props
 
-	const getSensor = async id => {
+	//useCallbacks
+	const getSensor = useCallback(async id => {
 		await dispatch(await getSensorLS(id))
-	}
+	}, [dispatch])
+
+	//useEffects
 	useEffect(() => {
 		if (sensor) {
-			const tabs = () => {
-				return [
-					{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: `#details` },
-					{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: `#messages` },
-					{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: `#protocol` }
-				]
-			}
-
+			const tabs = [
+				{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: `#details` },
+				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: `#messages` },
+				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: `#protocol` }
+			]
 			setTabs({
 				route: 0,
 				id: "sensor",
-				tabs: tabs(),
+				tabs: tabs,
 				hashLinks: true
 			})
 			setBC('sensor', sensor.name)
-			let prevURL = location.state ? location.prevURL : `/devices/list`
+			let prevURL = location.state ? location.prevURL : `/sensors/list`
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
 	}, [location, sensor, setBC, setHeader, setTabs, t])
@@ -88,9 +88,6 @@ const Sensor = props => {
 		gSensor()
 		//eslint-disable-next-line
 	}, [])
-
-	const isFavorite = (favObj) => dispatch(isFav(favObj))
-
 	useEffect(() => {
 		if (saved === true) {
 			if (dispatch(isFav({ id: sensor.id, type: "sensor" }))) {
@@ -110,6 +107,10 @@ const Sensor = props => {
 		}
 	}, [dispatch, s, saved, sensor, t])
 
+	//Handlers
+
+	const isFavorite = (favObj) => dispatch(isFav(favObj))
+
 	const addToFavorites = () => {
 		let favObj = {
 			id: sensor.id,
@@ -128,6 +129,7 @@ const Sensor = props => {
 		}
 		dispatch(removeFromFav(favObj))
 	}
+
 	const getDeviceMessages = async () => {
 		await getSensorMessages(sensor.id, periods[0]).then(rs => {
 			setSensorMessages(rs)
@@ -217,9 +219,6 @@ const Sensor = props => {
 												title={k.key}
 												cfId={k.nId}
 												chartColor={"teal"}
-												// gId={k}
-												// dId={d.id}
-												// color={d.color}
 												single={true}
 												t={t}
 											/>
@@ -277,28 +276,5 @@ const Sensor = props => {
 	)
 }
 
-// const mapStateToProps = state => ({
-// 	accessLevel: state.settings.user.privileges,
-// 	language: state.settings.language,
-// 	saved: state.favorites.saved,
-// 	mapTheme: state.settings.mapTheme,
-// 	periods: state.dateTime.periods,
-// 	sensor: state.data.sensor,
-// 	loading: !state.data.gotSensor
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	isFav: favObj => dispatch(isFav(favObj)),
-// 	addToFav: favObj => dispatch(addToFav(favObj)),
-// 	removeFromFav: favObj => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving()),
-// 	getSensor: async id => dispatch(await getSensorLS(id)),
-// 	unassignSensor: () => dispatch(unassignSensor())
-// })
-
-// export default connect(
-// 	mapStateToProps,
-// 	mapDispatchToProps
-// )(withStyles(registryStyles)(Sensor))
 
 export default Sensor

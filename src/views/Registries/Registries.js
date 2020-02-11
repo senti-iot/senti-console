@@ -99,8 +99,7 @@ const Registries = props => {
 		if (user && accessLevel) {
 			dispatch(await getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false))
 		}
-		//eslint-disable-next-line
-	}, [])
+	}, [accessLevel, dispatch, user])
 
 	//useEffects
 	useEffect(() => {

@@ -1,5 +1,4 @@
-import { withStyles, Link as MuiLink } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
+import { Link as MuiLink } from '@material-ui/core';
 import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
@@ -9,23 +8,27 @@ import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, Star
 // import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { useLocalization } from 'hooks';
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles';
 
 
 const SensorDetails = (props) => {
+	//Hooks
 	const t = useLocalization()
+	const classes = sensorsStyles()
 
-	// TODO
-	// const registryState = () => {
-	// 	const { registry } = props
-	// 	switch (registry.state) {
-	// 		case 1:
-	// 			return t('registries.fields.state.active')
-	// 		case 2:
-	// 			return t('registries.fields.state.inactive')
-	// 		default:
-	// 			break;
-	// 	}
-	// }
+	//Redux
+
+	//State
+
+	//Const
+	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props;
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+	const handleEditSensor = () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` })
 
 	const renderProtocol = (id) => {
 		switch (id) {
@@ -42,7 +45,6 @@ const SensorDetails = (props) => {
 		}
 	}
 	const renderCommunication = (val) => {
-		const { classes } = props;
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /> <Info>{t('sensors.fields.communications.blocked')}</Info></ItemG>
@@ -53,9 +55,7 @@ const SensorDetails = (props) => {
 		}
 	}
 
-	const { sensor, isFav, addToFav, removeFromFav,
-		handleOpenDeleteDialog,
-		/* accessLevel ,*/ history } = props;
+
 	return (
 		<InfoCard
 			title={sensor.name ? sensor.name : sensor.id}
@@ -63,10 +63,9 @@ const SensorDetails = (props) => {
 			noExpand
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
+					{ label: t('menus.edit'), icon: Edit, func: handleEditSensor },
 					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
-
 				]
 			} />
 
@@ -102,4 +101,4 @@ const SensorDetails = (props) => {
 // 	detailsPanel: state.settings.detailsPanel
 // })
 
-export default withStyles(registryStyles)(SensorDetails)
+export default SensorDetails

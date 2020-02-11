@@ -166,7 +166,7 @@ export const getAllData = async (reload, orgId, su) => {
 		dispatch(await getCollections(true))
 		dispatch(await getDevices(true))
 		dispatch(await getOrgs(true))
-		// dispatch(await getRegistries(true, orgId, su))
+		dispatch(await getRegistries(true, orgId, su))
 		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
 		dispatch(await getFunctions(true, orgId, su))
@@ -609,9 +609,6 @@ export const getRegistryLS = async (id, customerID, ua) => {
 }
 export const getRegistries = (reload, orgId, su) => {
 	return dispatch => {
-		if (reload) {
-			dispatch({ type: gotregistries, payload: false })
-		}
 		getAllRegistries(orgId, su).then(rs => {
 			let registries = handleRequestSort('id', 'asc', rs)
 			set('registries', registries)

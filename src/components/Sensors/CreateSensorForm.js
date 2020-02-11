@@ -1,149 +1,62 @@
 import React, { Fragment } from 'react'
-import { /* Dialog, AppBar, Toolbar, Typography, */ Button, /* List, ListItem, ListItemText, */ Divider, withStyles, /*  Hidden, */ IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import { Button, Divider, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close, CheckCircle, Block } from 'variables/icons';
-// import cx from 'classnames'
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-// import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T, /* SlideT */ } from 'components'
-// import Search from 'components/Search/Search';
-// import { suggestionGen, filterItems } from 'variables/functions';
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T } from 'components'
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import Info from 'components/Typography/Info';
 import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
 import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog';
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import { useLocalization } from 'hooks';
+import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles';
 
 
-// @Andrei
 const CreateSensorForm = props => {
+	//Hooks
 	const t = useLocalization()
-	// const [filters, setFilters] = useState({ keyword: '' })
-	// constructor(props) {
-	// 	super(props)
+	const classes = createSensorStyles()
 
-	// 	this.state = {
-	// 		filters: {
-	// 			keyword: ''
-	// 		}
-	// 	}
-	// }
+	//Redux
 
-	// const handleFilterKeyword = value => {
-	// 	setFilters({ ...filters, keyword: value })
-	// 	// this.setState({
-	// 	// 	filters: {
-	// 	// 		keyword: value
-	// 	// 	}
-	// 	// })
-	// }
+	//State
 
-	// const ProtocolTypes = () => {
-	// 	// const { t } = this.props
-	// 	return [
-	// 		{ value: 0, label: t('sensors.fields.protocols.none') },
-	// 		{ value: 1, label: t('sensors.fields.protocols.mqtt') },
-	// 		{ value: 2, label: t('sensors.fields.protocols.http') },
-	// 		{ value: 3, label: `${t('sensors.fields.protocols.mqtt')} & ${t('sensors.fields.protocols.http')}` }
-	// 	]
-	// }
+	//Const
+	const CommunicationTypes = [
+		{ value: 0, icon: <Block className={classes.blocked} />, label: t('sensors.fields.communications.blocked') },
+		{ value: 1, icon: <CheckCircle className={classes.allowed} />, label: t('sensors.fields.communications.allowed') }
+	]
 
-	const CommunicationTypes = () => {
-		const { classes } = props
-		return [
-			{ value: 0, icon: <Block className={classes.blocked} />, label: t('sensors.fields.communications.blocked') },
-			{ value: 1, icon: <CheckCircle className={classes.allowed} />, label: t('sensors.fields.communications.allowed') }
-		]
-	}
-	const LocationTypes = () => {
-		// const { t } = this.props
-		return [
-			{ id: 1, label: t('devices.locationTypes.pedStreet') },
-			{ id: 2, label: t('devices.locationTypes.park') },
-			{ id: 3, label: t('devices.locationTypes.path') },
-			{ id: 4, label: t('devices.locationTypes.square') },
-			{ id: 5, label: t('devices.locationTypes.crossroads') },
-			{ id: 6, label: t('devices.locationTypes.road') },
-			{ id: 7, label: t('devices.locationTypes.motorway') },
-			{ id: 8, label: t('devices.locationTypes.port') },
-			{ id: 9, label: t('devices.locationTypes.office') },
-			{ id: 0, label: t('devices.locationTypes.unspecified') }]
-	}
+	const LocationTypes = [
+		{ value: 1, label: t('devices.locationTypes.pedStreet') },
+		{ value: 2, label: t('devices.locationTypes.park') },
+		{ value: 3, label: t('devices.locationTypes.path') },
+		{ value: 4, label: t('devices.locationTypes.square') },
+		{ value: 5, label: t('devices.locationTypes.crossroads') },
+		{ value: 6, label: t('devices.locationTypes.road') },
+		{ value: 7, label: t('devices.locationTypes.motorway') },
+		{ value: 8, label: t('devices.locationTypes.port') },
+		{ value: 9, label: t('devices.locationTypes.office') },
+		{ value: 0, label: t('devices.locationTypes.unspecified') }
+	]
 
+	const outboundTypes = [
+		{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+		// { value: 1, label: t('cloudfunctions.datatypes.average') }
+	]
+	//useCallbacks
 
-	// const renderSelectFunction = () => {
-	// 	const { openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = props
-	// 	// const { filters } = this.state
-	// 	const appBarClasses = cx({
-	// 		[' ' + classes['primary']]: 'primary'
-	// 	});
-	// 	return <Dialog
-	// 		fullScreen
-	// 		open={openCF.open}
-	// 		onClose={handleCloseFunc}
-	// 		TransitionComponent={SlideT}>
-	// 		<AppBar className={classes.appBar + ' ' + appBarClasses}>
-	// 			<Toolbar>
-	// 				<Hidden mdDown>
-	// 					<ItemG container alignItems={'center'}>
-	// 						<ItemG xs={2} container alignItems={'center'}>
-	// 							<IconButton color='inherit' onClick={handleCloseFunc} aria-label='Close'>
-	// 								<Close />
-	// 							</IconButton>
-	// 							<Typography variant='h6' color='inherit' className={classes.flex}>
-	// 								{t('sidebar.cloudfunctions')}
-	// 							</Typography>
-	// 						</ItemG>
-	// 						<ItemG xs={8}>
-	// 							<Search
-	// 								fullWidth
-	// 								open={true}
-	// 								focusOnMount
-	// 								suggestions={cfunctions ? suggestionGen(cfunctions) : []}
-	// 								handleFilterKeyword={handleFilterKeyword}
-	// 								searchValue={filters.keyword} />
-	// 						</ItemG>
-	// 					</ItemG>
-	// 				</Hidden>
-	// 				<Hidden lgUp>
-	// 					<ItemG container alignItems={'center'}>
-	// 						<ItemG xs={4} container alignItems={'center'}>
-	// 							<IconButton color={'inherit'} onClick={handleCloseFunc} aria-label='Close'>
-	// 								<Close />
-	// 							</IconButton>
-	// 							<Typography variant='h6' color='inherit' className={classes.flex}>
-	// 								{t('orgs.pageTitle')}
-	// 							</Typography>
-	// 						</ItemG>
-	// 						<ItemG xs={8} container alignItems={'center'} justify={'center'}>
-	// 							<Search
-	// 								noAbsolute
-	// 								fullWidth
-	// 								open={true}
-	// 								focusOnMount
-	// 								suggestions={cfunctions ? suggestionGen(cfunctions) : []}
-	// 								handleFilterKeyword={handleFilterKeyword}
-	// 								searchValue={filters.keyword} />
-	// 						</ItemG>
-	// 					</ItemG>
-	// 				</Hidden>
-	// 			</Toolbar>
-	// 		</AppBar>
-	// 		<List>
-	// 			{cfunctions ? filterItems(cfunctions, filters).map((o, i) => {
-	// 				return <Fragment key={i}>
-	// 					<ListItem button onClick={handleChangeFunc(o, openCF.where)}>
-	// 						<ListItemText primary={o.name} />
-	// 					</ListItem>
-	// 					<Divider />
-	// 				</Fragment>
-	// 			}) : null}
-	// 		</List>
-	// 	</Dialog>
-	// }
+	//useEffects
+
+	//Handlers
+	const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
+		handleChangeKey, handleOpenFunc, handleChangeType, cfunctions,
+		handleRemoveKey, handleRemoveFunction, handleAddKey, handleOpenReg, openReg, handleCloseReg, handleChangeReg,
+		handleOpenDT, handleCloseDT, openDT, handleChangeDT,
+		openCF, handleCloseFunc, handleChangeFunc,
+		handleChange, sensor, getLatLngFromMap,
+		handleCreate, goToRegistries, select, handleAddInboundFunction, handleRemoveInboundFunction } = props
 
 	const renderMetadata = () => {
-		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = props
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
@@ -213,10 +126,7 @@ const CreateSensorForm = props => {
 					<DSelect
 						onChange={handleChangeType(i)}
 						value={p.type}
-						menuItems={[
-							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
-							{ value: 1, label: t('cloudfunctions.datatypes.average') }
-						]}
+						menuItems={outboundTypes}
 					/>
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 
@@ -238,7 +148,7 @@ const CreateSensorForm = props => {
 	}
 
 	const renderMetadataInbound = () => {
-		const { sensorMetadata, cfunctions, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = props
+		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
 				return <ItemGrid xs={12} container alignItems={'center'}>
@@ -271,12 +181,7 @@ const CreateSensorForm = props => {
 	}
 
 
-	const {
-		handleOpenReg, openReg, handleCloseReg, handleChangeReg,
-		handleOpenDT, handleCloseDT, openDT, handleChangeDT,
-		openCF, handleCloseFunc, handleChangeFunc,
-		handleChange, sensor, getLatLngFromMap,
-		classes, handleCreate, goToRegistries, select } = props
+
 	return (
 		<GridContainer>
 			<ItemGrid xs={12}>
@@ -400,10 +305,7 @@ const CreateSensorForm = props => {
 									label={t('devices.fields.locType')}
 									value={sensor.locType}
 									onChange={handleChange('locType')}
-									menuItems={LocationTypes().map(m => ({
-										value: m.id,
-										label: m.label
-									}))}
+									menuItems={LocationTypes}
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -411,7 +313,7 @@ const CreateSensorForm = props => {
 									label={t('sensors.fields.communication')}
 									onChange={handleChange('communication')}
 									value={sensor.communication}
-									menuItems={CommunicationTypes()}
+									menuItems={CommunicationTypes}
 								/>
 							</ItemGrid>
 							<ItemGrid container>
@@ -440,4 +342,4 @@ const CreateSensorForm = props => {
 }
 
 
-export default withStyles(createprojectStyles)(CreateSensorForm)
+export default CreateSensorForm

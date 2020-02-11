@@ -9,19 +9,19 @@ import { useLocalization, useHistory, useLocation, useEventListener, useDispatch
 const CreateSensor = props => {
 	//Hooks
 	const t = useLocalization()
-	// const match = useMatch()
 	const location = useLocation()
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const s = useSnackbar().s
+
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const orgId = useSelector(state => state.settings.user.org.id)
 	const registries = useSelector(state => state.data.registries)
 	const deviceTypes = useSelector(state => state.data.deviceTypes)
 	const cloudfunctions = useSelector(state => state.data.function)
+
 	//State
-	// const [loading, setLoading] = useState(true)
 	const [openReg, setOpenReg] = useState(false)
 	const [openDT, setOpenDT] = useState(false)
 	const [openCF, setOpenCF] = useState({ open: false, where: null })
@@ -42,6 +42,7 @@ const CreateSensor = props => {
 		outbound: [],
 		metadata: []
 	})
+
 	//Const
 
 	//useCallbacks
@@ -145,7 +146,7 @@ const CreateSensor = props => {
 		let otbd = sensorMetadata.outbound
 		setSensorMetadata({
 			...sensorMetadata,
-			outbound: [...otbd, { key: '', nId: -1 }]
+			outbound: [...otbd, { key: '', nId: -1, type: 0 }]
 		})
 	}
 
@@ -292,11 +293,17 @@ const CreateSensor = props => {
 
 	//#region Create Sensor
 	const createSensorFunc = async () => {
+		let smtd = sensorMetadata.metadata
+		let mtd = {}
+		smtd.forEach((m) => {
+			mtd[m.key] = m.value
+		})
 		let newSensor = {
 			...stateSensor,
 			tags: [],
 			metadata: {
 				...sensorMetadata,
+				metadata: mtd
 			}
 		}
 		return await createSensor(newSensor)
@@ -365,11 +372,5 @@ const CreateSensor = props => {
 		/>
 	)
 }
-// const mapStateToProps = (state) => ({
 
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	getSensors: async (reload, orgId, ua) => dispatch(await getSensors(reload, orgId, ua))
-// })
 export default CreateSensor
