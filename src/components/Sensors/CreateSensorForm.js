@@ -60,7 +60,7 @@ const CreateSensorForm = props => {
 		return <Fragment>
 			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
-				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
+				return <ItemGrid xs={12} container key={'metadata' + i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
 						onChange={handleChangeMetadataKey(i)}
@@ -93,7 +93,7 @@ const CreateSensorForm = props => {
 			</ItemGrid>
 			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
-				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
+				return <ItemGrid xs={12} container key={'outbound' + i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
 						onChange={handleChangeKey(p, i)}
@@ -151,7 +151,7 @@ const CreateSensorForm = props => {
 		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
-				return <ItemGrid xs={12} container alignItems={'center'}>
+				return <ItemGrid xs={12} key={'inbound' + i} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
 						onClick={handleOpenFunc(i, 'inbound')}
@@ -258,7 +258,7 @@ const CreateSensorForm = props => {
 									}}
 								/>
 								<TextF
-									id={'regID'}
+									id={'deviceType'}
 									label={t('sensors.fields.deviceType')}
 									value={select.dt.name ? select.dt.name : ''}
 									readOnly
@@ -293,7 +293,7 @@ const CreateSensorForm = props => {
 									{`${sensor.lat} ${sensor.lng}`}
 								</Info>
 								<TextF
-									id={'sensorName'}
+									id={'address'}
 									label={t('devices.fields.address')}
 									onChange={handleChange('address')}
 									value={sensor.address}

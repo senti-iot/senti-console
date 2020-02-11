@@ -14,9 +14,9 @@ import { customFilterItems } from 'variables/Filters';
 import { getMessages, setMessages, sortData } from 'redux/data';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/json';
-import 'brace/theme/tomorrow';
-import 'brace/theme/monokai';
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-tomorrow'
+import 'ace-builds/src-noconflict/theme-monokai'
 
 class Messages extends Component {
 	constructor(props) {

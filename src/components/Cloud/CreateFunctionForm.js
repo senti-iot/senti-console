@@ -3,16 +3,17 @@ import { Button, withStyles } from '@material-ui/core';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
 import { GridContainer, ItemGrid, TextF, DSelect } from 'components'
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/javascript';
-import 'brace/theme/tomorrow';
-import 'brace/theme/monokai';
-import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
-/**
-* @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
-*/
+import 'ace-builds/src-noconflict/mode-javascript'
+import 'ace-builds/src-noconflict/theme-tomorrow'
+import 'ace-builds/src-noconflict/theme-monokai'
+// import 'brace/mode/javascript';
+// import 'brace/theme/tomorrow';
+// import 'brace/theme/monokai';
 
+//@Andrei
 const CreateFunctionForm = props => {
 	// const [filters, setFilters] = useState({
 	// 	keyword: ''

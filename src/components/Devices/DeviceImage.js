@@ -1,18 +1,18 @@
 import { Button, MobileStepper, withStyles } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect, useRef } from 'react';
-import ExifOrientationImg from 'react-exif-orientation-img';
-import SwipeableViews from 'react-swipeable-views';
-import { Caption } from 'components';
+import React, { useState, useEffect, /* useRef */ } from 'react';
+// import ExifOrientationImg from 'react-exif-orientation-img';
+// import SwipeableViews from 'react-swipeable-views';
+// import { Caption } from 'components';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
-import ItemG from 'components/Grid/ItemG';
+// import ItemG from 'components/Grid/ItemG';
 import { useLocalization } from 'hooks';
 
 const DeviceImage = props => {
 	const t = useLocalization()
-	const swipeHeight = useRef(null)
+	// const swipeHeight = useRef(null)
 	const [activeStep, setActiveStep] = useState(0)
 	// state = {
 	// 	activeStep: 0,
@@ -38,19 +38,19 @@ const DeviceImage = props => {
 		// }), this.handleCallBack);
 	};
 
-	const handleStepChange = newActiveStep => {
-		setActiveStep(newActiveStep)
-		// this.setState({ activeStep }, this.handleCallBack);
-	};
-	const getRef = e => {
-		swipeHeight.current = e
-		// this.swipeHeight = e
-	}
-	const fixHeight = () => {
-		if (swipeHeight) {
-			swipeHeight.current.updateHeight()
-		}
-	}
+	// const handleStepChange = newActiveStep => {
+	// 	setActiveStep(newActiveStep)
+	// 	// this.setState({ activeStep }, this.handleCallBack);
+	// };
+	// const getRef = e => {
+	// 	swipeHeight.current = e
+	// 	// this.swipeHeight = e
+	// }
+	// const fixHeight = () => {
+	// 	if (swipeHeight) {
+	// 		swipeHeight.current.updateHeight()
+	// 	}
+	// }
 
 	const { classes, theme, images } = props;
 	// const { activeStep } = this.state;
@@ -58,7 +58,7 @@ const DeviceImage = props => {
 	const maxSteps = images ? images.length ? images.length : 0 : 0;
 	return (
 		<div className={classes.root}>
-			{images ? <ItemG container justify={'center'} >
+			{/* {images ? <ItemG container justify={'center'} >
 				{images.length > 0 ? <SwipeableViews
 					axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 					index={activeStep}
@@ -76,7 +76,7 @@ const DeviceImage = props => {
 				</SwipeableViews> :
 					<Caption>{t('devices.noImages')}</Caption>
 				}
-			</ItemG> : null}
+			</ItemG> : null} */}
 			<MobileStepper
 				steps={maxSteps}
 				position='static'

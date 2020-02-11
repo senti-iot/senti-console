@@ -1,17 +1,12 @@
 import React, { Fragment, useEffect } from 'react';
 import {
-	Grid, IconButton, Menu, ListItem,
-	ListItemIcon, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
+	Grid, IconButton, Menu, ListItem, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
 } from '@material-ui/core';
 import {
-	MoreVert,
-	DonutLargeRounded,
-	PieChartRounded,
-	BarChart as BarChartIcon,
-	ShowChart, CloudDownload, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
+	MoreVert, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
+	CircularLoader, Caption, ItemG, InfoCard,
 	DateFilterMenu,
 	T
 } from 'components';
@@ -24,22 +19,12 @@ import { useLocalization, useDispatch, useTheme, useSelector } from 'hooks';
 import { useState } from 'react';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/json';
-import 'brace/theme/tomorrow';
-import 'brace/theme/monokai';
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-tomorrow'
+import 'ace-builds/src-noconflict/theme-monokai'
+
 import sensorMessagesStyles from 'assets/jss/components/sensors/sensorMessagesStyles';
 
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
-// 	changeYAxis: (val) => dispatch(changeYAxis(val)),
-// 	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
-// 	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),
-// 	changeRawData: (p) => dispatch(changeRawData(p))
-// })
 
 const SensorMessages = props => {
 	//Hooks
@@ -51,25 +36,14 @@ const SensorMessages = props => {
 	const rowsPerPage = useSelector(s => s.appState.trp > 0 ? s.appState.trp : s.settings.trp)
 
 	//State
-	/*
-			raw: props.raw ? props.raw : false,
-			actionAnchor: null,
-			openMessage: false,
-			visibility: false,
-			resetZoom: false,
-			zoomDate: [],
-			loading: true,
-			chartType: 'linear',
-			initialPeriod: null,
-			page: 0,
-			msg: null
-	 */
-	const [a, setA] = useState(null)//Action Anchor
+
+	const [a, setA] = useState(null)
 	const [openMessage, setOpenMessage] = useState(false)
 	const [loading, setLoading] = useState(true)
 	const [page, setPage] = useState(0)
 	const [msg, setMsg] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
+
 	//Const
 	const { getData, period, messages } = props
 
@@ -88,13 +62,6 @@ const SensorMessages = props => {
 		{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'lll' },
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
-
-
-	const messagesHeader = [
-		{ id: 'id', label: t('messages.fields.id') },
-		{ id: 'created', label: t('registries.fields.created') },
-	]
-
 
 	//useCallbacks
 
@@ -321,17 +288,13 @@ const SensorMessages = props => {
 		if (!loading) {
 			return (
 				<Fragment>
-					<List style={{
-						width: '100%'
-					}}>
-						{(messages && messages.length > 0) ? messages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-
-							return (
+					<List style={{ width: '100%' }}>
+						{(messages && messages.length > 0) ?
+							messages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n =>
 								<ListItem key={n.id} button onClick={handleOpenMessage(n)} divider style={{ paddingLeft: 24 }}>
 									<ListItemText style={{ margin: 0 }} primary={dateTimeFormatter(n.created, true)} secondary={n.id} />
 								</ListItem>
-							)
-						}) : renderNoData()}
+							) : renderNoData()}
 					</List>
 					<TP
 						count={messages ? messages.length : 0}
@@ -344,8 +307,10 @@ const SensorMessages = props => {
 		}
 	}
 
-	const handleSetDate = (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId))
-
+	// const handleSetDate = (id, to, from, timeType) => {
+	// 	console.log(id, to, from, timeType)
+	// 	dispatch(changeDate(id, to, from, timeType, -1))
+	// }
 	const renderMenu = () => {
 		let displayTo = ''
 		let displayFrom = ''
@@ -392,7 +357,7 @@ const SensorMessages = props => {
 
 									</ItemG>
 								}
-								customSetDate={handleSetDate}
+								// customSetDate={handleSetDate}
 								period={period}
 								t={t} />
 						</Tooltip>

@@ -4,9 +4,9 @@ import { Code } from 'variables/icons';
 // import brace from 'brace';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/javascript';
-import 'brace/theme/tomorrow';
-import 'brace/theme/monokai';
+import 'ace-builds/src-noconflict/mode-javascript'
+import 'ace-builds/src-noconflict/theme-tomorrow'
+import 'ace-builds/src-noconflict/theme-monokai'
 import { useLocalization, useTheme } from 'hooks';
 import { makeStyles } from '@material-ui/styles';
 
