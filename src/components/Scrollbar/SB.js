@@ -1,8 +1,8 @@
 import React from 'react'
 import { Scrollbars } from 'react-custom-scrollbars';
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	scrollbar: {
 		background: theme.palette.type === "light" ? "rgba(128,128,128,0.5)" : "rgba(255,255,255,0.5)",
 		borderRadius: 8,
@@ -12,11 +12,13 @@ const styles = theme => ({
 		},
 		cursor: "drag"
 	}
-})
+}))
 
 const SB = props => {
+	const classes = styles()
+
 	const renderThumb = ({ style, ...props }) => {
-		const { classes } = props
+		// const { classes } = props
 		return (
 			<div
 				className={classes.scrollbar}
@@ -46,4 +48,4 @@ const SB = props => {
 	)
 }
 
-export default withStyles(styles)(SB)
+export default SB
