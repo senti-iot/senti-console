@@ -5,13 +5,14 @@ import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core'
+// import { withStyles } from '@material-ui/core/styles';
+import { TextField, makeStyles } from '@material-ui/core'
 import { getAdresses } from 'variables/dataDevices';
-import withLocalization from 'components/Localization/T';
+// import withLocalization from 'components/Localization/T';
 import teal from '@material-ui/core/colors/teal'
+import { useLocalization } from 'hooks'
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	listItem: {
 		padding: theme.spacing(1),
 		cursor: 'pointer',
@@ -54,9 +55,11 @@ const styles = theme => ({
 	divider: {
 		height: theme.spacing(2),
 	},
-});
+}));
 
 const AddressInput = props => {
+	const t = useLocalization()
+	const classes = styles()
 	const [suggestions, setSuggestions] = useState([])
 	// const [query, setQuery] = useState(null) // added
 
@@ -145,7 +148,7 @@ const AddressInput = props => {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 		return (
-			<Paper square classes={{ root: props.classes.listItem }} /* role={'option'} selected={isHighlighted} */>
+			<Paper square classes={{ root: classes.listItem }} /* role={'option'} selected={isHighlighted} */>
 				{parts.map((part, index) => {
 					return part.highlight ? (
 						<span key={String(index)} style={{ fontWeight: 500, color: props.theme.palette.type === 'dark' ? '#fff' : 'inherit' }}>
@@ -160,7 +163,7 @@ const AddressInput = props => {
 			</Paper>
 		);
 	}
-	const { classes } = props;
+	// const { classes } = props;
 	const autosuggestProps = {
 		renderInputComponent,
 		suggestions,
@@ -176,7 +179,7 @@ const AddressInput = props => {
 				{...autosuggestProps}
 				inputProps={{
 					classes,
-					label: props.t('orgs.fields.address'),
+					label: t('orgs.fields.address'),
 					value: props.value !== null ? props.value : '',
 					onChange: handleChange,
 					onClick: clearInput,
@@ -202,4 +205,4 @@ AddressInput.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withLocalization()(withStyles(styles, { withTheme: true })(AddressInput));
+export default AddressInput
