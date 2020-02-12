@@ -7,7 +7,7 @@ import { ItemG } from 'components';
 
 const styles = theme => ({
 	label: {
-		color: theme.palette.type === 'dark' ? "#fff" : undefined,		
+		color: theme.palette.type === 'dark' ? "#fff" : undefined,
 	},
 	formControl: {
 		marginTop: 16,
@@ -15,12 +15,12 @@ const styles = theme => ({
 		minWidth: 230
 	},
 });
- 
+
 class DSelect extends PureComponent {
 	componentDidMount = () => {
-	  this.setState({ labelWidth: ReactDOM.findDOMNode(this.InputRef).offsetWidth })
+		this.setState({ labelWidth: ReactDOM.findDOMNode(this.InputRef).offsetWidth })
 	}
-	
+
 	labelWidth = () => {
 		if (this.InputRef) {
 			return this.state.labelWidth
@@ -30,16 +30,14 @@ class DSelect extends PureComponent {
 		}
 	}
 	render() {
-	  const { classes, error, helperText, value, onKeyPress, margin, onChange, simple, menuItems, label, theme, fullWidth, leftIcon } = this.props
-	  let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
-	 
+		const { classes, error, helperText, value, onKeyPress, margin, onChange, simple, menuItems, label, theme, fullWidth, leftIcon } = this.props
+		let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
+
 		return (
-	 <FormControl variant="outlined" margin={margin} className={classes.formControl} fullWidth={mobile || fullWidth}>
-			 <InputLabel ref={ref => {
-					this.InputRef = ref;
-				}}
-				classes={{ asterisk: classes.label }}
-				 /* FormLabelClasses={{ root: classes.label }} */ color={'primary'} htmlFor='select-multiple-chip'>
+			<FormControl variant="outlined" margin={margin} className={classes.formControl} fullWidth={mobile || fullWidth}>
+				<InputLabel ref={ref => { this.InputRef = ref; }}
+					classes={{ asterisk: classes.label }}
+					color={'primary'} htmlFor='select-multiple-chip'>
 					{label}
 				</InputLabel>
 				<Select
@@ -52,6 +50,7 @@ class DSelect extends PureComponent {
 					onKeyPress={onKeyPress}
 				>
 					{!simple && menuItems.map((m, i) => {
+						console.log(menuItems)
 						return <MenuItem key={i} value={m.value}>
 							<ItemG container justify={'space-between'} alignItems={'center'}>
 								{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
@@ -68,7 +67,7 @@ class DSelect extends PureComponent {
 								{/* {!leftIcon ? <ItemG>{m.icon ? m.icon : null}</ItemG> : null} */}
 							</ItemG>
 						</MenuItem>
-					}) }
+					})}
 					})}
 				</Select>
 				{helperText ? <FormHelperText>{helperText}</FormHelperText> : null}

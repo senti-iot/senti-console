@@ -104,7 +104,6 @@ const CreateToken = props => {
 						fullWidth
 					/>
 					<AssignSensorDialog
-						t={t}
 						open={openSensor}
 						handleClose={() => setOpenSensor(false)}
 						callBack={sensor => {

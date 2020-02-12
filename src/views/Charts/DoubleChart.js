@@ -101,11 +101,14 @@ const DoubleChart = (props) => {
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceId) {
 			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+
 			let newState = setData(data, period.timeType)
-			setLineDataSets(newState.lineDataSets)
-			setRoundDataSets(newState.roundDataSets)
-			setBarDataSets(newState.barDataSets)
-			setLoading(false)
+			if (newState) {
+				setLineDataSets(newState.lineDataSets)
+				setRoundDataSets(newState.roundDataSets)
+				setBarDataSets(newState.barDataSets)
+				setLoading(false)
+			}
 
 		}
 		else {

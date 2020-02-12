@@ -111,9 +111,11 @@ const MultiSourceChart = (props) => {
 			}
 			//END HACK
 			let newState = setData(data, period.timeType)
-			setLineDataSets(newState.lineDataSets)
-			setRoundDataSets(newState.roundDataSets)
-			setBarDataSets(newState.barDataSets)
+			if (newState) {
+				setLineDataSets(newState.lineDataSets)
+				setRoundDataSets(newState.roundDataSets)
+				setBarDataSets(newState.barDataSets)
+			}
 			setLoading(false)
 
 		}

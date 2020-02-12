@@ -115,6 +115,11 @@ const RenderSaveDialog = (props) => {
 	</Dialog>
 }
 const CreateDashboard = (props) => {
+
+	//Hooks
+	const dispatch = useDispatch()
+	const t = useLocalization()
+
 	//Const
 	const cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
 
@@ -132,9 +137,7 @@ const CreateDashboard = (props) => {
 	const gs = useSelector(s => s.dsSystem.cGraphs)
 	const eGraph = useSelector(s => s.dsSystem.eGraph)
 
-	//Hooks
-	const dispatch = useDispatch()
-	const t = useLocalization()
+
 
 	//ComponentWillUnmount
 	useEffect(() => {

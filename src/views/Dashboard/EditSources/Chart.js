@@ -99,7 +99,6 @@ const ESChart = (props) => {
 		props.handleEditGraph(newG)
 	}
 
-
 	return (
 		<Fragment>
 			<ItemG xs={12}>
@@ -190,7 +189,6 @@ const ESChart = (props) => {
 										</ItemG>
 										<ItemG>
 											<AssignCFDialog
-												t={t}
 												open={openCF}
 												handleClose={handleExpand('openCF', false)}
 												callBack={handleEditCF}

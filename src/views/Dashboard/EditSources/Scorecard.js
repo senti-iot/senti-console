@@ -5,6 +5,7 @@ import { ExpandMore, Add, Delete } from 'variables/icons';
 import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons';
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
+// import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles';
 
 
 class ESScorecard extends Component {
@@ -102,7 +103,8 @@ class ESScorecard extends Component {
 		this.props.handleEditGraph(newG)
 	}
 	render() {
-		const { t, classes, sensor, g, cfs } = this.props
+		// const classes = editSourceStyles()
+		const { t, sensor, g, cfs, classes } = this.props
 		const { generalExp } = this.state
 		return (
 			<Fragment>
