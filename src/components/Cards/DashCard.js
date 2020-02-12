@@ -11,6 +11,7 @@ import { compose } from 'recompose';
 import cx from 'classnames'
 import { useLocalization } from 'hooks';
 
+//Unused
 // @Andrei
 const DashCard = props => {
 	const t = useLocalization()

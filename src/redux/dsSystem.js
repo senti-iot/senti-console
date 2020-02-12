@@ -101,7 +101,7 @@ export const getGraph = (state, id, create) => {
 export const handleSetDate = (dId, gId, p) => {
 	return async (dispatch, getState) => {
 		let gs = getState().dsSystem.graphs
-		let graph = gs[gs.findIndex(g => g.id === gId)]
+		let graph = { ...gs[gs.findIndex(g => g.id === gId)] }
 		if (graph) {
 			graph.period = p
 			graph.periodType = p.menuId

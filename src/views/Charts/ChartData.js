@@ -27,6 +27,8 @@ import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
 // import * as ReactIs from 'react-is'
 
+//@Pavel Do not convert
+//DEPRECATED
 class ChartData extends PureComponent {
 	constructor(props) {
 		super(props)

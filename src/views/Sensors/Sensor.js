@@ -1,5 +1,4 @@
 import { Fade } from "@material-ui/core"
-// import registryStyles from "assets/jss/views/deviceStyles"
 import {
 	CircularLoader,
 	GridContainer,

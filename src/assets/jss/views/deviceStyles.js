@@ -1,8 +1,7 @@
-import { makeStyles } from '@material-ui/core'
 import { red, yellow, green } from "@material-ui/core/colors";
 import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-dashboard-react';
 
-const deviceStyles = makeStyles(theme => ({
+const deviceStyles = theme => ({
 
 	smallBody: {
 		paddingTop: 0
@@ -194,6 +193,6 @@ const deviceStyles = makeStyles(theme => ({
 		minHeight: "50px",
 		display: "block"
 	},
-}))
+})
 
 export default deviceStyles
