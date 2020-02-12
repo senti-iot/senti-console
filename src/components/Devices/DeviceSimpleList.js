@@ -1,16 +1,18 @@
 import React, { Fragment, useState } from 'react';
-import { Checkbox, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
+import { Checkbox, Table, TableBody, TableCell, TablePagination, TableRow } from '@material-ui/core';
 import EnhancedTableHead from 'components/Table/TableHeader';
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+// import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { ItemGrid, Info, Caption, AssignProject } from 'components';
-import { useLocalization } from 'hooks';
+import { useLocalization, useHistory } from 'hooks';
 
 const DeviceSimpleList = props => {
 	const t = useLocalization()
+	const classes = devicetableStyles()
+	const history = useHistory()
 
 	const [order, setOrder] = useState('asc')
 	const [orderBy, setOrderBy] = useState('')
@@ -104,7 +106,7 @@ const DeviceSimpleList = props => {
 		]
 	}
 	const handleDeviceEdit = () => {
-		props.history.push(`/device/${selected[0]}/edit`)
+		history.push(`/device/${selected[0]}/edit`)
 	}
 	const handleAssignToProject = () => {
 		setOpenAssignProject(true)
@@ -128,22 +130,22 @@ const DeviceSimpleList = props => {
 
 	// TODO
 
-	const renderIcon = (status) => {
-		const { classes } = props
-		switch (status) {
-			case 1:
-				return <SignalWifi2Bar className={classes.yellowSignal} />
-			case 2:
-				return <SignalWifi2Bar className={classes.greenSignal} />
-			case 0:
-				return <SignalWifi2Bar className={classes.redSignal} />
-			case null:
-				return <SignalWifi2BarLock className={classes.redSignal} />
-			default:
-				break;
-		}
-	}
-	const { classes, data } = props
+	// const renderIcon = (status) => {
+	// 	const { classes } = props
+	// 	switch (status) {
+	// 		case 1:
+	// 			return <SignalWifi2Bar className={classes.yellowSignal} />
+	// 		case 2:
+	// 			return <SignalWifi2Bar className={classes.greenSignal} />
+	// 		case 0:
+	// 			return <SignalWifi2Bar className={classes.redSignal} />
+	// 		case null:
+	// 			return <SignalWifi2BarLock className={classes.redSignal} />
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+	const { data } = props
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 	const tableHead = [
 		{ id: 'id', label: t('devices.pageTitle') }
@@ -188,7 +190,7 @@ const DeviceSimpleList = props => {
 						return (
 							<TableRow
 								hover
-								onClick={e => { e.stopPropagation(); props.history.push('/device/' + n.id) }}
+								onClick={e => { e.stopPropagation(); history.push('/device/' + n.id) }}
 								role='checkbox'
 								aria-checked={isSelected}
 								tabIndex={-1}
@@ -258,4 +260,4 @@ DeviceSimpleList.propTypes = {
 	data: PropTypes.array.isRequired
 };
 
-export default withRouter(withStyles(devicetableStyles)(DeviceSimpleList));
+export default DeviceSimpleList
