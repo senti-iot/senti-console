@@ -1,4 +1,4 @@
-import { Button, MobileStepper, withStyles } from '@material-ui/core';
+import { Button, MobileStepper } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 // import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles
 import { useLocalization } from 'hooks';
 
 const DeviceImage = props => {
+	const classes = imagecarouselStyles()
 	const t = useLocalization()
 	// const swipeHeight = useRef(null)
 	const [activeStep, setActiveStep] = useState(0)
@@ -52,7 +53,7 @@ const DeviceImage = props => {
 	// 	}
 	// }
 
-	const { classes, theme, images } = props;
+	const { theme, images } = props;
 	// const { activeStep } = this.state;
 
 	const maxSteps = images ? images.length ? images.length : 0 : 0;
@@ -100,7 +101,7 @@ const DeviceImage = props => {
 }
 
 DeviceImage.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 	theme: PropTypes.object.isRequired,
 	images: PropTypes.oneOfType([
 		PropTypes.array,
@@ -108,4 +109,4 @@ DeviceImage.propTypes = {
 	]).isRequired,
 };
 
-export default withStyles(imagecarouselStyles, { withTheme: true })(DeviceImage);
+export default DeviceImage
