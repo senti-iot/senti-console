@@ -87,7 +87,6 @@ const EditSensor = props => {
 	// }
 	useEffect(() => {
 		if (sensor) {
-			console.log(sensor)
 			setSensor(sensor)
 			setSensorMetadata({
 				metadata: sensor.metadata ? Object.keys(sensor.metadata).map(m => ({ key: m, value: sensor.metadata[m] })) : [],

@@ -20,11 +20,11 @@ const multiSourceChartStyles = makeStyles(theme => ({
 		textOverflow: 'ellipsis',
 		paddingLeft: 8,
 		[theme.breakpoints.down('sm')]: {
-			paddingBottom: 8,
+			// paddingBottom: 8,
 			paddingTop: 8
 		},
 		[theme.breakpoints.up('xs')]: {
-			paddingBottom: 16,
+			// paddingBottom: 16,
 			paddingTop: 16
 		}
 	},
