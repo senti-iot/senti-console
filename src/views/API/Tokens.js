@@ -366,6 +366,7 @@ const Tokens = props => {
 			openToken={openNewToken}
 			handleClose={() => {
 				setOpenNewToken(false)
+				getData(true)
 				// this.setState({
 				// 	openNewToken: false
 				// })

@@ -1,9 +1,7 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden, Tooltip } from '@material-ui/core';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-// import { getAllRegistrys } from 'variables/dataRegistrys';
 import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -12,19 +10,17 @@ import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP';
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state, props) => ({
-// 	registries: state.data.registries,
-// 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-// })
 
-//@Andrei
+
 const AssignRegistryDialog = props => {
+	//Hooks
 	const t = useLocalization()
-	const registries = useSelector(state => state.data.registries)
-	// const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
+	const classes = assignStyles()
 
-	// const [stateRegistries, setStateRegistries] = useState([])
-	const [selectedRegistry, /* setSelectedRegistry */] = useState(null)
+	//Redux
+	const registries = useSelector(state => state.data.registries)
+
+	//State
 	const [page, setPage] = useState(0)
 	const [filters, setFilters] = useState({
 		keyword: '',
@@ -32,57 +28,9 @@ const AssignRegistryDialog = props => {
 		endDate: null,
 		activeDateFilter: false
 	})
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		registries: [],
-	// 		selectedRegistry: null,
-	// 		page: 0,
-	// 		filters: {
-	// 			keyword: '',
-	// 			startDate: null,
-	// 			endDate: null,
-	// 			activeDateFilter: false
-	// 		}
-	// 	}
-	// }
-	// componentDidMount = async () => {
-	// 	this._isMounted = 1
-	// 	// await getAllRegistrys().then(rs => this._isMounted ? this.setState({ registries: rs }) : null)
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
-	const assignRegistry = sId => e => {
-		// let sId = this.state.selectedRegistry
-		let org = registries[registries.findIndex(o => o.id === sId)]
-		props.callBack(org)
-	}
-
-	// const selectRegistry = pId => e => {
-	// 	e.preventDefault()
-	// 	setSelectedRegistry(pId)
-	// 	// this.setState({ selectedRegistry: pId })
-	// }
-	const closeDialog = () => {
-		props.handleClose(false)
-	}
-	const handleFilterKeyword = value => {
-		setFilters({ ...filters, keyword: value })
-		// this.setState({
-		// 	filters: {
-		// 		...this.state.filters,
-		// 		keyword: value
-		// 	}
-		// })
-	}
-	const handleChangePage = (event, newpage) => {
-		setPage(newpage)
-		// this.setState({ page });
-	}
-
-	const { classes, open } = props;
+	//Const
+	const { open } = props;
 
 	let height = window.innerHeight
 	let rows = Math.round((height - 85 - 49 - 49) / 49)
@@ -90,12 +38,34 @@ const AssignRegistryDialog = props => {
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+	const assignRegistry = sId => e => {
+		let org = registries[registries.findIndex(o => o.id === sId)]
+		props.callBack(org)
+	}
+
+	const closeDialog = () => {
+		props.handleClose(false)
+	}
+	const handleFilterKeyword = value => {
+		setFilters({ ...filters, keyword: value })
+	}
+	const handleChangePage = (event, newpage) => {
+		setPage(newpage)
+	}
+
+
 	return (
 
 		<Dialog
 			fullScreen
 			open={open}
-			// onClose={handleClose}
 			TransitionComponent={SlideT}
 		>
 			<AppBar className={classes.appBar + appBarClasses}>
@@ -152,19 +122,8 @@ const AssignRegistryDialog = props => {
 			<List>
 				{registries ? filterItems(registries, filters).slice(page * rows, page * rows + rows).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={assignRegistry(p.id)} value={p.id}
-							classes={{
-								root: selectedRegistry === p.id ? classes.selectedItem : null
-							}}
-						>
-							<ListItemText
-								primaryTypographyProps={{
-									className: selectedRegistry === p.id ? classes.selectedItemText : null
-								}}
-								secondaryTypographyProps={{
-									classes: { root: selectedRegistry === p.id ? classes.selectedItemText : null }
-								}}
-								primary={p.name} />
+						<ListItem button onClick={assignRegistry(p.id)} value={p.id}>
+							<ListItemText primary={p.name} />
 						</ListItem>
 						<Divider />
 					</Fragment>
@@ -183,8 +142,4 @@ const AssignRegistryDialog = props => {
 	);
 }
 
-AssignRegistryDialog.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(assignStyles)(AssignRegistryDialog)
+export default AssignRegistryDialog

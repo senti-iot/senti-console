@@ -2,7 +2,6 @@ import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Tool
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import React, { Fragment, useState } from 'react';
-// import { getAllSensors } from 'variables/dataSensors';
 import { ItemG, CircularLoader, SlideT } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -146,7 +145,6 @@ const AssignSensorsDialog = (props) => {
 						// }}
 						>
 							<ListItemText
-
 								// primaryTypographyProps={{
 								// 	className: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null
 								// }}
