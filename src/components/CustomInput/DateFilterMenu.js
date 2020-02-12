@@ -71,6 +71,7 @@ class DateFilterMenu extends Component {
 			case 2: // This week
 				from = moment().startOf('week').startOf('day')
 				to = moment()
+				defaultT = 2
 				break;
 			case 3: // Last 7 days
 				from = moment().subtract(7, 'd').startOf('day')

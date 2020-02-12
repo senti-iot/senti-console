@@ -223,6 +223,7 @@ const DoubleChart = (props) => {
 				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
 				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
 				to = futureTester(to, 'day') ? moment() : to
+				console.log(from, to)
 
 			}
 			if ([3, 4, 5].indexOf(period.menuId) !== -1) {
@@ -451,7 +452,7 @@ const DoubleChart = (props) => {
 							t={t}
 						/> : renderNoData()
 				case 3:
-
+					console.log(timeTypes[period.timeType])
 					return lineDataSets ?
 						<MultiLineChart
 							chartYAxis={chartType}
@@ -479,6 +480,7 @@ const DoubleChart = (props) => {
 		return false
 	}
 	const handleSetDate = async (menuId, to, from, defaultT, chartType) => {
+		console.log(menuId, to, from, defaultT, chartType)
 		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
 	}
 	const handleSetVisibility = () => setVisibility(!visibility)
