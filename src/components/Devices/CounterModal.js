@@ -1,7 +1,7 @@
 /* eslint-disable indent */
-import { Grid, Button, Modal, withStyles, Typography, Fab, } from '@material-ui/core';
+import { Grid, Button, Modal, Typography, Fab, } from '@material-ui/core';
 import React, { Fragment, useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { ItemGrid } from 'components';
 import moment from 'moment'
 import { OpenInBrowser, Timer, Done, Restore } from 'variables/icons'
@@ -15,6 +15,7 @@ import { useLocalization } from 'hooks';
 
 // @Andrei
 const CounterModal = props => {
+	const classes = countermodalStyles()
 	const t = useLocalization()
 	const count = useSelector(state => state.settings.count)
 
@@ -174,7 +175,7 @@ const CounterModal = props => {
 		return true
 	}
 
-	const { classes } = props;
+	// const { classes } = props;
 	// const { started, finished } = this.state
 	return (
 		<Fragment>
@@ -243,8 +244,8 @@ const CounterModal = props => {
 	);
 }
 
-CounterModal.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
+// CounterModal.propTypes = {
+// 	classes: PropTypes.object.isRequired,
+// };
 
-export default withStyles(countermodalStyles)(CounterModal)
+export default CounterModal
