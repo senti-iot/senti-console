@@ -1,9 +1,10 @@
 import React, { useState, Fragment } from 'react'
-import { Popover, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
+import { Popover, MenuItem, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { ArrowDropDown } from 'variables/icons'
 
 const DInput = props => {
+	const classes = settingsStyles()
 	const [actionAnchor, setActionAnchor] = useState(null)
 	// constructor(props) {
 	// 	super(props)
@@ -26,7 +27,7 @@ const DInput = props => {
 		// this.setState({ actionAnchor: event.currentTarget });
 	}
 
-	const { classes, value, menuItems } = props
+	const { value, menuItems } = props
 
 	return (
 		<Fragment>
@@ -71,5 +72,5 @@ const DInput = props => {
 	)
 }
 
-export default withStyles(settingsStyles)(DInput)
+export default DInput
 
