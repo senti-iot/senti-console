@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
+import React, { Fragment } from 'react'
+import { /* useSelector, */ useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Grow, Paper, Typography, Collapse, Dialog, DialogContent } from '@material-ui/core';
 import ItemG from 'components/Grid/ItemG';
@@ -7,16 +7,30 @@ import { T, WeatherIcon, Muted } from 'components';
 import moment from 'moment'
 import { todayOfInterest } from 'redux/doi';
 import { DateRange, Cake, DataUsage } from 'variables/icons';
+import { useLocalization } from 'hooks';
 
-class Tooltip extends Component {
-	clickEvent = () => {
+// const mapStateToProps = (state, props) => ({
+// 	periods: state.dateTime.periods
+// })
+
+// const mapDispatchToProps = dispatch => ({
+// 	todayOfInterest: (date) => dispatch(todayOfInterest(moment(date, 'lll').format('YYYY-MM-DD')))
+// })
+
+// @Andrei
+const Tooltip = props => {
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	// const periods = useSelector(state => state.dateTime.periods)
+
+	const clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
 			return false
 		else
 			return true
 	}
-	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = this.props
+	const transformLoc = () => {
+		const { tooltip, chartWidth, chartHeight } = props
 		let screenWidth = window.innerWidth
 
 		let x = 0
@@ -72,8 +86,8 @@ class Tooltip extends Component {
 		// }
 		// return `translate(${x}, ${y})`
 	}
-	handleRange = () => {
-		const { tooltip, unit } = this.props
+	const handleRange = () => {
+		const { tooltip, unit } = props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
 		if (date) {
@@ -105,26 +119,27 @@ class Tooltip extends Component {
 		let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `
 		return finalStr
 	}
-	handleDate = () => {
-		const { tooltip } = this.props
+	const handleDate = () => {
+		const { tooltip } = props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr
 	}
-	handleDayTime = () => {
-		const { tooltip } = this.props
+	const handleDayTime = () => {
+		const { tooltip } = props
 		let dayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
 		let hours = moment(tooltip.title[0], 'lll').format('LT')
 		let completeDayStr = `${dayStr} (${hours})`
 		return completeDayStr
 	}
-	handleRawDate = () => {
-		const { tooltip } = this.props
-		return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
-	}
-	renderTooltip = () => {
-		const { t, classes, tooltip, weather,
-			handleCloseTooltip, todayOfInterest, mobile } = this.props
-		let doi = todayOfInterest(tooltip.title[0])
+	// const handleRawDate = () => {
+	// 	const { tooltip } = props
+	// 	return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
+	// }
+	const renderTooltip = () => {
+		const { classes, tooltip, weather,
+			handleCloseTooltip, mobile } = props
+
+		let doi = dispatch(todayOfInterest(moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')))
 		let birthdays = doi.birthdays
 		let days = doi.days
 		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
@@ -132,9 +147,9 @@ class Tooltip extends Component {
 				<ItemG container>
 					<ItemG container id={'header'} xs={12}>
 						<ItemG xs={8} container direction='column'>
-							<Typography variant={'h5'}>{`${this.handleDayTime()}`}</Typography>
-							<Typography variant={'body1'}> {`${t('charts.fields.date')}: ${this.handleDate()}`}</Typography>
-							<Typography variant={'body1'}> {`${t('charts.fields.range')}: ${this.handleRange()}`}</Typography>
+							<Typography variant={'h5'}>{`${handleDayTime()}`}</Typography>
+							<Typography variant={'body1'}> {`${t('charts.fields.date')}: ${handleDate()}`}</Typography>
+							<Typography variant={'body1'}> {`${t('charts.fields.range')}: ${handleRange()}`}</Typography>
 						</ItemG>
 						<ItemG container xs={4}>
 							{tooltip.data.map((d, i) => {
@@ -202,39 +217,37 @@ class Tooltip extends Component {
 		</Grow>
 	}
 
-	handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
+	const handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
 
-	render() {
-		const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = this.props
-		let screenWidth = window.innerWidth
-		return (
-			this.clickEvent() ?
-				<div ref={r => getRef(r)} style={{
-					zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
-					position: 'absolute',
-					top: Math.round(tooltip.top),
-					left: chartWidth > screenWidth / 2 ? Math.round(tooltip.left) : '50%',
-					// left: mobile ? '50%' : Math.round(tooltip.left),
-					transform: this.transformLoc(),
-					width: mobile ? 300 : 400,
-					maxWidth: mobile ? 300 : 500
-				}}>
-					{this.renderTooltip()}
-				</div>
-				:
-				<Dialog
-					open={tooltip.show}
-					onClose={e => { e.stopPropagation(); handleCloseTooltip() }}
-					TransitionComponent={this.handleTransition}
-				// onBackdropClick={e => e.stopPropagation()}
-				>
+	const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = props
+	let screenWidth = window.innerWidth
+	return (
+		clickEvent() ?
+			<div ref={r => getRef(r)} style={{
+				zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
+				position: 'absolute',
+				top: Math.round(tooltip.top),
+				left: chartWidth > screenWidth / 2 ? Math.round(tooltip.left) : '50%',
+				// left: mobile ? '50%' : Math.round(tooltip.left),
+				transform: transformLoc(),
+				width: mobile ? 300 : 400,
+				maxWidth: mobile ? 300 : 500
+			}}>
+				{renderTooltip()}
+			</div>
+			:
+			<Dialog
+				open={tooltip.show}
+				onClose={e => { e.stopPropagation(); handleCloseTooltip() }}
+				TransitionComponent={handleTransition}
+			// onBackdropClick={e => e.stopPropagation()}
+			>
 
-					<DialogContent style={{ padding: 0 }}>
-						{this.renderTooltip()}
-					</DialogContent>
-				</Dialog>
-		)
-	}
+				<DialogContent style={{ padding: 0 }}>
+					{renderTooltip()}
+				</DialogContent>
+			</Dialog>
+	)
 }
 
 Tooltip.propTypes = {
@@ -249,12 +262,4 @@ Tooltip.propTypes = {
 	chartHeight: PropTypes.number,
 }
 
-const mapStateToProps = (state, props) => ({
-	periods: state.dateTime.periods
-})
-
-const mapDispatchToProps = dispatch => ({
-	todayOfInterest: (date) => dispatch(todayOfInterest(moment(date, 'lll').format('YYYY-MM-DD')))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Tooltip)
+export default Tooltip
