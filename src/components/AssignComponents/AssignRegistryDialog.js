@@ -17,6 +17,7 @@ import { useLocalization } from 'hooks';
 // 	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
 // })
 
+//@Andrei
 const AssignRegistryDialog = props => {
 	const t = useLocalization()
 	const registries = useSelector(state => state.data.registries)

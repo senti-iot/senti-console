@@ -317,13 +317,10 @@ const CreateToken = props => {
 		</Dialog>
 	}
 
-	// let { openToken } = this.props
-	// let { token, generatedToken } = this.state
 	let { openToken } = props
 	return <Dialog
 		open={openToken}
 		disableBackdropClick
-		// onClose={this.handleCloseToken}
 		aria-labelledby='alert-dialog-title'
 		aria-describedby='alert-dialog-description'
 	>
@@ -333,7 +330,7 @@ const CreateToken = props => {
 				<DialogTitle>
 					<ItemG container justify={'space-between'} alignItems={'center'}>
 						{t('menus.create.token')}
-						<IconButton aria-label="Close" className={classes.closeButton} onClick={generatedToken ? handleConfirmClose : props.handleClose}>
+						<IconButton aria-label="Close" onClick={generatedToken ? handleConfirmClose : props.handleClose}>
 							<Close />
 						</IconButton>
 					</ItemG>

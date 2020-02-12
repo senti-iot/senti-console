@@ -19,20 +19,28 @@ const AssignSensorsDialog = (props) => {
 	//Redux
 	const sensors = useSelector(s => s.data.sensors)
 
-	//Constants
-	const { open } = props
-
-	let height = window.innerHeight
-	let rowsPerPage = Math.round((height - 85 - 49 - 49) / 49)
-
 	//State
 	const [selectedSensors, setSelectedSensors] = useState([])
 	const [page, setPage] = useState(0)
 	const [filterWord, setFilterWord] = useState('')
 	const handleSelectSensor = (sId, sName) => e => {
-		// e.preventDefault()
 		selectSensor(sId, sName)
 	}
+
+	//Const
+	const { open } = props
+	const height = window.innerHeight
+	const rowsPerPage = Math.round((height - 85 - 49 - 49) / 49)
+	const appBarClasses = cx({
+		[' ' + classes['primary']]: 'primary'
+	});
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	const selectSensor = (sId, sName) => {
 		let sS = [...selectedSensors]
 		if (selectedSensors.indexOf(sId) > -1) {
@@ -58,9 +66,7 @@ const AssignSensorsDialog = (props) => {
 		setPage(page)
 	}
 
-	const appBarClasses = cx({
-		[' ' + classes['primary']]: 'primary'
-	});
+
 	return (
 		<Dialog
 			fullScreen
