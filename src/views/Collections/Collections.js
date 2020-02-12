@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
+import { Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -37,6 +37,7 @@ import { useLocalization, useSnackbar } from 'hooks';
 
 // @Andrei
 const Collections = props => {
+	const classes = projectStyles()
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -121,7 +122,7 @@ const Collections = props => {
 
 
 	const dLiveStatus = () => {
-		const { classes } = props
+		// const { classes } = props
 		return [
 			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
 			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
@@ -502,7 +503,7 @@ const Collections = props => {
 	}
 	const renderConfirmDelete = () => {
 		// const { openDelete, selected } = this.state
-		const { classes } = props
+		// const { classes } = props
 		return <Dialog
 			open={openDelete}
 			onClose={handleCloseDeleteDialog}
@@ -606,7 +607,7 @@ const Collections = props => {
 	}
 
 	const renderFavorites = () => {
-		const { classes } = props
+		// const { classes } = props
 		// const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
@@ -622,7 +623,7 @@ const Collections = props => {
 	}
 
 	const renderCollections = () => {
-		const { classes } = props
+		// const { classes } = props
 		// const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
@@ -652,4 +653,4 @@ const Collections = props => {
 	)
 }
 
-export default withStyles(projectStyles)(Collections)
+export default Collections
