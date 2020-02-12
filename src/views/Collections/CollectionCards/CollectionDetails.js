@@ -1,5 +1,5 @@
-import { withStyles, CircularProgress } from '@material-ui/core';
-import collectionStyles from 'assets/jss/views/deviceStyles';
+import { CircularProgress } from '@material-ui/core';
+// import collectionStyles from 'assets/jss/views/deviceStyles';
 import { Caption, Info, ItemG, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
@@ -15,6 +15,7 @@ import { useLocalization } from 'hooks';
 
 // @Andrei
 const DeviceDetails = props => {
+	// const classes = collectionStyles()
 	const t = useLocalization()
 	const detailsPanel = useSelector(state => state.settings.detailsPanel)
 
@@ -107,4 +108,4 @@ const DeviceDetails = props => {
 	)
 }
 
-export default withStyles(collectionStyles)(DeviceDetails)
+export default DeviceDetails
