@@ -26,7 +26,7 @@ import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod 
 import { getSensorDataClean } from 'variables/dataSensors';
 import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
-import multiSourceChartStyles from 'assets/jss/components/dashboards/multiSourceChartStyles'
+import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const MultiSourceChart = (props) => {
 

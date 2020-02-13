@@ -112,7 +112,6 @@ const SensorMessages = props => {
 
 	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	const handleNextPeriod = () => {
-
 		let from, to, diff;
 		if (!initialPeriod) {
 			setInitialPeriod(period)
@@ -307,10 +306,6 @@ const SensorMessages = props => {
 		}
 	}
 
-	// const handleSetDate = (id, to, from, timeType) => {
-	// 	console.log(id, to, from, timeType)
-	// 	dispatch(changeDate(id, to, from, timeType, -1))
-	// }
 	const renderMenu = () => {
 		let displayTo = ''
 		let displayFrom = ''
@@ -357,7 +352,6 @@ const SensorMessages = props => {
 
 									</ItemG>
 								}
-								// customSetDate={handleSetDate}
 								period={period}
 								t={t} />
 						</Tooltip>
@@ -365,7 +359,7 @@ const SensorMessages = props => {
 					<ItemG>
 						<Tooltip title={t('tooltips.chart.nextPeriod')}>
 							<div>
-								<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+								<IconButton onClick={handleNextPeriod} disabled={disableFuture(period)}>
 									<KeyboardArrowRight />
 								</IconButton>
 							</div>

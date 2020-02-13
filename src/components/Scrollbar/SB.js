@@ -1,6 +1,6 @@
 import React from 'react'
 import { Scrollbars } from 'react-custom-scrollbars';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core'
 
 const styles = makeStyles(theme => ({
 	scrollbar: {
@@ -16,9 +16,7 @@ const styles = makeStyles(theme => ({
 
 const SB = props => {
 	const classes = styles()
-
 	const renderThumb = ({ style, ...props }) => {
-		// const { classes } = props
 		return (
 			<div
 				className={classes.scrollbar}

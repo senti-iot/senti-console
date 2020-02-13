@@ -25,7 +25,7 @@ import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod 
 import { getSensorDataClean } from 'variables/dataSensors';
 import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
-import multiSourceChartStyles from 'assets/jss/components/dashboards/multiSourceChartStyles'
+import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const DoubleChart = (props) => {
 
@@ -33,8 +33,8 @@ const DoubleChart = (props) => {
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const classes = multiSourceChartStyles()
-	//Props
 	const { gId, create, title, color, dId, hoverID, setHoverID, device, single, } = props
+
 
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
@@ -52,9 +52,8 @@ const DoubleChart = (props) => {
 	const [roundDataSets, setRoundDataSets] = useState(null)
 	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
-	//Consts
 
-	// const displayFormat = 'DD MMMM YYYY HH:mm'
+	//Consts
 
 	const options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
@@ -76,6 +75,8 @@ const DoubleChart = (props) => {
 		{ id: 3, icon: <ShowChart />, label: t('charts.type.line') }
 	]
 
+	//useEffect
+
 	useEffect(() => {
 		if (period && loading) {
 			const gData = async () => await getData()
@@ -95,7 +96,7 @@ const DoubleChart = (props) => {
 			default:
 				break;
 		}
-	}, [color, g.id, g.period.from, g.period.to, title])
+	}, [color, g, title])
 
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceId) {
@@ -111,6 +112,7 @@ const DoubleChart = (props) => {
 			setLoading(false)
 		}
 	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceId, g.dataSource.deviceType, g.dataSource.type, period.from, period.timeType, period.to, setData])
+
 	useEffect(() => {
 		setLoading(true)
 		const gData = async () => await getData()
@@ -223,7 +225,6 @@ const DoubleChart = (props) => {
 				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
 				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
 				to = futureTester(to, 'day') ? moment() : to
-
 			}
 			if ([3, 4, 5].indexOf(period.menuId) !== -1) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
@@ -451,7 +452,6 @@ const DoubleChart = (props) => {
 							t={t}
 						/> : renderNoData()
 				case 3:
-
 					return lineDataSets ?
 						<MultiLineChart
 							chartYAxis={chartType}
