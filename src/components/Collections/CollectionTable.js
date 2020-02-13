@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, withStyles, Typography
+	TableRow, Typography
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
@@ -16,6 +16,7 @@ import { SignalWifi2Bar } from 'variables/icons'
 import CollectionHover from 'components/Hover/CollectionHover';
 import { getCollection } from 'variables/dataCollections';
 import { getProject } from 'variables/dataProjects';
+import { useLocalization } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
@@ -25,6 +26,9 @@ import { getProject } from 'variables/dataProjects';
 // })
 
 const CollectionTable = props => {
+	const t = useLocalization()
+	const classes = devicetableStyles()
+
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
 	// const language = useSelector(state => state.localization.language)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -124,7 +128,7 @@ const CollectionTable = props => {
 		}
 	}
 
-	const { handleClick, classes, t, order, orderBy, data, selected, handleCheckboxClick } = props
+	const { handleClick, order, orderBy, data, selected, handleCheckboxClick } = props
 	let emptyRows;
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -230,4 +234,4 @@ CollectionTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(CollectionTable))
+export default withRouter(CollectionTable)
