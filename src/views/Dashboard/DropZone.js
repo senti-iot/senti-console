@@ -1,9 +1,9 @@
 import React from 'react'
 import { useDrop } from 'react-dnd';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { bgColorsDark } from 'assets/jss/material-dashboard-react/bgColorsDark';
 
-const style = (theme) => ({
+const style = makeStyles(theme => ({
 	container: {
 		height: '100%',
 		width: '100%',
@@ -12,13 +12,14 @@ const style = (theme) => ({
 	},
 	...bgColorsDark
 
-})
+}))
 
 const ItemTypes = [
 	"chart", "gauge", "scorecardAB", "scorecard", "windcard", "map", "msChart"
 ]
 
-const DropZone = ({ i, children, onDrop, color, classes }) => {
+const DropZone = ({ i, children, onDrop, color }) => {
+	const classes = style()
 	const [{ canDrop, isOver }, drop] = useDrop({
 		accept: ItemTypes,
 		drop: (item) => onDrop(item),
@@ -41,4 +42,4 @@ const DropZone = ({ i, children, onDrop, color, classes }) => {
 	)
 }
 
-export default withStyles(style)(DropZone)
+export default DropZone
