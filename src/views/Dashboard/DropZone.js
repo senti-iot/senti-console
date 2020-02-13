@@ -3,7 +3,7 @@ import { useDrop } from 'react-dnd';
 import { makeStyles } from '@material-ui/styles';
 import { bgColorsDark } from 'assets/jss/material-dashboard-react/bgColorsDark';
 
-const style = makeStyles(theme => ({
+const style = makeStyles((theme) => ({
 	container: {
 		height: '100%',
 		width: '100%',
@@ -17,7 +17,7 @@ const style = makeStyles(theme => ({
 const ItemTypes = [
 	"chart", "gauge", "scorecardAB", "scorecard", "windcard", "map", "msChart"
 ]
-
+//@Pavel don't touch
 const DropZone = ({ i, children, onDrop, color }) => {
 	const classes = style()
 	const [{ canDrop, isOver }, drop] = useDrop({
