@@ -1,7 +1,6 @@
 import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 // import { getAllCloudFunctions } from 'variables/dataCloudFunctions';
 import { ItemG, CircularLoader, SlideT } from 'components';
@@ -12,7 +11,8 @@ import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP';
 import { useLocalization } from 'hooks';
 
-// @Andrei
+
+
 const AssignCloudFunctionDialog = React.memo(props => {
 	//Hooks
 	const classes = assignStyles()

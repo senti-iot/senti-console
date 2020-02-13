@@ -1,7 +1,7 @@
-// import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import { red } from '@material-ui/core/colors';
 
-export const settingsStyles = theme => ({
+const settingsStyles = makeStyles(theme => ({
 	list: {
 		width: "100%"
 	},
@@ -32,4 +32,6 @@ export const settingsStyles = theme => ({
 			color: red[800]
 		}
 	}
-})
+}))
+
+export default settingsStyles

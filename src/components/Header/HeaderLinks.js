@@ -1,9 +1,9 @@
-import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
+import { Grid, Menu, MenuItem, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
 import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, /* Notifications */ } from 'variables/icons';
-import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
+import headerLinksStyles from 'assets/jss/components/header/headerLinksStyles';
 import React, { useState } from 'react';
 import cookie from 'react-cookies';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Gravatar from 'react-gravatar'
 
@@ -17,47 +17,43 @@ import { useLocalization } from 'hooks';
 // import Search from 'components/Search/Search';
 // import GlobalSearch from 'components/Search/GlobalSearch';
 
-// const mapStateToProps = (state) => ({
-// 	user: state.settings.user,
-// 	globalSearch: state.settings.globalSearch
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	resetRedux: () => dispatch({ type: "RESET_APP" })
-// })
-
 const HeaderLinks = props => {
+	//Hooks
 	const t = useLocalization()
 	const dispatch = useDispatch()
+	const history = useHistory()
+	const classes = headerLinksStyles()
+	//Redux
 	const user = useSelector(state => state.settings.user)
-	// const globalSearch = useSelector(state => state.settings.globalSearch)
 
+	//State
 	const [anchorProfile, setAnchorProfile] = useState(null)
-	// state = {
-	// 	anchorProfile: null
-	// };
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
 
 	const handleProfileOpen = e => {
 		setAnchorProfile(e.currentTarget)
-		// this.setState({ anchorProfile: e.currentTarget })
 	}
-	// const handleRedirectToChristmas = () => {
-	// 	props.history.push(`/holiday`)
-	// }
+
 	const handleRedirectToOwnProfile = () => {
 		handleProfileClose()
-		if (props.user)
-			props.history.push(`/management/user/${props.user.id}`)
+		if (user)
+			history.push(`/management/user/${user.id}`)
 
 	}
 	const handleRedirectToOwnOrg = () => {
 		handleProfileClose()
-		if (props.user)
-			props.history.push(`/management/org/${props.user.org.id}`)
+		if (user)
+			history.push(`/management/org/${user.org.id}`)
 	}
 	const handleProfileClose = () => {
 		setAnchorProfile(null)
-		// this.setState({ anchorProfile: null })
 		if (props.onClose)
 			props.onClose()
 	}
@@ -69,34 +65,15 @@ const HeaderLinks = props => {
 		}
 		if (!cookie.load('SESSION')) {
 			setAnchorProfile(null)
-			// this.setState({ anchorPofile: null })
-			props.history.push('/login')
+			history.push('/login')
 			dispatch({ type: "RESET_APP" })
 		}
-		// this.setState({ anchorProfile: null })
 	}
 	const handleSettingsOpen = () => {
 		handleProfileClose()
-		if (props.user)
-			props.history.push(`/settings`)
+		if (user)
+			history.push(`/settings`)
 	}
-	// renderChristmasIcon = () => {
-	// 	const { classes } = this.props
-	// 	if (moment().format('MM') === '12') {
-	// 		let today = moment().format('DD')
-	// 		return today
-	// 	}
-	// 	else
-	// 	{
-	// 		if (moment().format('MM') === '11') {
-	// 			return <IconButton onClick={this.handleRedirectToChristmas}>
-	// 				<img src={christmas[0]} className={classes.img} alt={'christmas'} />
-	// 			</IconButton>
-	// 		}
-	// 		return null
-	// 	}
-
-	// }
 	const renderSearch = () => {
 		// const { globalSearch } = this.props
 		// return globalSearch ? <GlobalSearch /> : null
@@ -108,7 +85,6 @@ const HeaderLinks = props => {
 	// 	</ItemG>
 	// }
 	const renderUserMenu = () => {
-		const { classes } = props;
 		const openProfile = Boolean(anchorProfile)
 
 		return <div>
@@ -134,11 +110,7 @@ const HeaderLinks = props => {
 				style={{ marginTop: 50 }}
 				id='menu-appbar'
 				anchorEl={anchorProfile}
-				// anchorOrigin={{
-				// 	// vertical: 'bottom',
-				// 	horizontal: 'right',
-				// }}
-				className={classes.dorpdown}
+				className={classes.dropdown}
 				transformOrigin={{
 					vertical: 'bottom',
 					horizontal: 'left',
@@ -175,10 +147,8 @@ const HeaderLinks = props => {
 			</Menu>
 		</div>
 	}
-	const { classes } = props;
-
 	return (
-		<Grid container justify={'center'} classes={{ container: classes.headerMargin }}>
+		<Grid container justify={'center'}>
 			{/* <ItemG>
 					{this.renderChristmasIcon()}
 				</ItemG> */}
@@ -191,4 +161,4 @@ const HeaderLinks = props => {
 	);
 }
 
-export default withRouter(withStyles(headerLinksStyle)(HeaderLinks))
+export default HeaderLinks

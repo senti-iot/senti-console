@@ -29,11 +29,11 @@ import { useLocalization, useSelector, useDispatch, useState, useEffect } from '
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const MultiSourceChart = (props) => {
-
 	//Hooks
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const classes = multiSourceChartStyles()
+
 	//Props
 	const { gId, create, title, color, dId, hoverID, setHoverID, device, single, } = props
 
@@ -348,6 +348,7 @@ const MultiSourceChart = (props) => {
 	const handleChangeSelectedDevice = e => {
 		setSelectedDevice(e.target.value)
 	}
+	const handleMenuItems = () => g ? g.dataSource ? g.dataSource.deviceIds ? g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i })) : [] : [] : []
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -357,7 +358,7 @@ const MultiSourceChart = (props) => {
 					<ItemG xs zeroMinWidth>
 						<DSelect
 							value={selectedDevice}
-							menuItems={g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i }))}
+							menuItems={handleMenuItems()}
 							onChange={handleChangeSelectedDevice}
 						/>
 						{/* <Tooltip enterDelay={1000} title={title}>

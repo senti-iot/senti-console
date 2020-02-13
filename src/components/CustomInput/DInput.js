@@ -1,8 +1,9 @@
 import React, { useState, Fragment } from 'react'
 import { Popover, MenuItem, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
-import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
+import settingsStyles from 'assets/jss/components/settings/settingsStylesHooks';
 import { ArrowDropDown } from 'variables/icons'
 
+//@Andrei
 const DInput = props => {
 	const classes = settingsStyles()
 	const [actionAnchor, setActionAnchor] = useState(null)

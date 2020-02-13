@@ -56,6 +56,7 @@ const ExpansionPanelSummary = withStyles({
 })(props => <MuiExpansionPanelSummary {...props} />);
 
 ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
 class ChartSettings extends Component {
 	constructor(props) {
 		super(props)

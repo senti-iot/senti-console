@@ -2,7 +2,7 @@ import React from 'react'
 import { InfoCard, ItemGrid, DSelect } from 'components';
 import { Build } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, Collapse } from '@material-ui/core';
-import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
+import settingsStyles from 'assets/jss/components/settings/settingsStylesHooks';
 import DInput from 'components/CustomInput/DInput';
 import { useLocalization } from 'hooks';
 
