@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
 import { Business, Language, Star, StarBorder } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
+// import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
+// import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 import { useLocalization, useSnackbar } from 'hooks';
 
@@ -24,6 +24,7 @@ import { useLocalization, useSnackbar } from 'hooks';
 // })
 
 const OrgHover = props => {
+	const classes = hoverStyles()
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -84,7 +85,7 @@ const OrgHover = props => {
 		props.handleClose()
 	};
 
-	const { anchorEl, classes, org } = props
+	const { anchorEl, org } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}
@@ -148,4 +149,4 @@ const OrgHover = props => {
 	)
 }
 
-export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(OrgHover))))
+export default OrgHover
