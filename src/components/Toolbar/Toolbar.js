@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, Tooltip, /*  Grow */ } from '@material-ui/core';
+import { AppBar, Tabs, Tab, makeStyles, Toolbar as ToolBar, withWidth, Tooltip, /*  Grow */ } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
 import { NavHashLink } from 'react-router-hash-link';
@@ -10,7 +10,7 @@ import cx from 'classnames'
 
 const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref} />)
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	appBarDrawerOpen: {
 		[theme.breakpoints.up('lg')]: {
 			left: 260,
@@ -78,7 +78,7 @@ const styles = theme => ({
 	indicator: {
 		background: theme.toolbarIndicator ? theme.toolbarIndicator : undefined
 	}
-})
+}))
 
 // const mapStateToProps = (state) => ({
 // 	smallMenu: state.appState.smallMenu,
@@ -88,6 +88,7 @@ const styles = theme => ({
 // @Andrei
 // please check if my useEffect deps are correct
 const Toolbar = React.memo(props => {
+	const classes = styles()
 	const smallMenu = useSelector(state => state.appState.smallMenu)
 	const drawer = useSelector(state => state.settings.drawer)
 
@@ -141,7 +142,7 @@ const Toolbar = React.memo(props => {
 	// };
 
 
-	const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ } = props
+	const { tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ } = props
 	return (
 		dontShow ? null :
 			<div style={{ height: 48 }}>
@@ -185,4 +186,4 @@ const Toolbar = React.memo(props => {
 	)
 })
 
-export default withWidth()(withStyles(styles)(Toolbar))
+export default withWidth()(Toolbar)

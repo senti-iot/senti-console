@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import { Dialog, DialogTitle, DialogContent, FormControlLabel, DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, FormControlLabel, DialogActions, Button, RadioGroup, Radio, FormControl, makeStyles } from '@material-ui/core';
 import { ItemG, Caption } from 'components';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment'
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
+import { useLocalization } from 'hooks';
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	dialogWidth: {
 		maxWidth: 240,
 	},
 	checkbox: {
 		padding: 8
 	}
-})
+}))
 /**
  * TODO: React Hooks for to and from, 
  * on end call handleSetDate and remove handleCustomSetDate
  */
 const CustomDateTime = (props) => {
-	const { classes, t, openCustomDate, handleCloseDialog,
+	const t = useLocalization()
+	const classes = styles()
+	const { openCustomDate, handleCloseDialog,
 		timeType, handleCancelCustomDate, from, to
 	} = props
 	const [endDate, setEndDate] = useState(to ? moment(to) : moment())
@@ -125,4 +128,4 @@ const CustomDateTime = (props) => {
 	</MuiPickersUtilsProvider>
 }
 
-export default withStyles(styles)(CustomDateTime)
+export default CustomDateTime

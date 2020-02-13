@@ -4,7 +4,7 @@ import CollectionCard from 'components/Collections/CollectionCard';
 import { ItemG, GridContainer } from 'components';
 import { useSelector } from 'react-redux'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import { withStyles } from '@material-ui/core';
+// import { withStyles } from '@material-ui/core';
 import CP from 'components/Table/CP';
 import { useLocalization } from 'hooks'
 
@@ -14,6 +14,7 @@ import { useLocalization } from 'hooks'
 
 // @Andrei
 const CollectionsCards = props => {
+	const classes = devicetableStyles()
 	const t = useLocalization()
 	const rowsPerPage = useSelector(state => state.appState.CPP)
 	const [page, setPage] = useState(0)
@@ -30,7 +31,7 @@ const CollectionsCards = props => {
 		// this.setState({ page });
 	}
 
-	const { collections, classes } = props
+	const { collections } = props
 	// const { page } = this.state
 	return (
 		<GridContainer spacing={2} justify={'center'}>
@@ -55,4 +56,4 @@ CollectionsCards.propTypes = {
 	collections: PropTypes.array,
 }
 
-export default withStyles(devicetableStyles, { withTheme: true })(CollectionsCards)
+export default CollectionsCards

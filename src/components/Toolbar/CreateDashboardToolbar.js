@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AppBar, withStyles, Toolbar as ToolBar, withWidth, IconButton, Divider, } from '@material-ui/core';
+import { AppBar, makeStyles, Toolbar as ToolBar, withWidth, IconButton, Divider, } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
 // import { connect } from 'react-redux'
@@ -11,7 +11,7 @@ import ItemG from 'components/Grid/ItemG';
 
 // UNUSED
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	appBarDrawerOpen: {
 		height: '200px !important',
 	},
@@ -59,10 +59,11 @@ const styles = theme => ({
 	noOverflow: {
 		overflow: 'hidden'
 	},
-})
+}))
 
 // @Andrei
 const CDToolbar = React.memo(props => {
+	const classes = styles()
 	const [expand, setExpand] = useState(false) // added
 
 	const expandToolbar = () => {
@@ -70,7 +71,7 @@ const CDToolbar = React.memo(props => {
 		// this.setState({ expand: !this.state.expand })
 	}
 
-	const { classes, children, dontShow } = props
+	const { children, dontShow } = props
 	return (
 		dontShow ? null :
 			<AppBar classes={{
@@ -101,4 +102,4 @@ const CDToolbar = React.memo(props => {
 	)
 })
 
-export default withWidth()(withStyles(styles)(CDToolbar))
+export default withWidth()(CDToolbar)

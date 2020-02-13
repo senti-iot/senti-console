@@ -1,12 +1,12 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core';
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import { useSelector } from 'react-redux'
 import { Info, Caption, ItemG } from 'components';
@@ -27,6 +27,7 @@ import { useLocalization } from 'hooks';
 
 const DeviceTable = props => {
 	const t = useLocalization()
+	const classes = devicetableStyles()
 
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -118,7 +119,7 @@ const DeviceTable = props => {
 		}
 	}
 
-	const { selected, classes, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
+	const { selected, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
 	let emptyRows
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -217,7 +218,7 @@ const DeviceTable = props => {
 }
 
 DeviceTable.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(DeviceTable));
+export default DeviceTable

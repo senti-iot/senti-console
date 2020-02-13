@@ -1,7 +1,8 @@
 import React from 'react'
 import { Scrollbars } from 'react-custom-scrollbars';
+import { makeStyles } from '@material-ui/core'
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	scrollbar: {
 		background: theme.palette.type === "light" ? "rgba(128,128,128,0.5)" : "rgba(255,255,255,0.5)",
 		borderRadius: 8,
@@ -11,7 +12,7 @@ const styles = theme => ({
 		},
 		cursor: "drag"
 	}
-})
+}))
 
 const SB = props => {
 	const classes = styles()
