@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
 import { /* Language, */ Star, StarBorder, /* SignalWifi2Bar, */ LibraryBooks, Business } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
+// import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
+// import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 import { useSnackbar, useLocalization } from 'hooks';
 
@@ -24,6 +24,7 @@ import { useSnackbar, useLocalization } from 'hooks';
 // })
 
 const ProjectHover = props => {
+	const classes = hoverStyles()
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
@@ -96,7 +97,7 @@ const ProjectHover = props => {
 	// 	}
 	// }
 
-	const { anchorEl, classes, project } = props
+	const { anchorEl, project } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}
@@ -167,4 +168,4 @@ const ProjectHover = props => {
 	)
 }
 
-export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(ProjectHover))))
+export default ProjectHover
