@@ -216,7 +216,9 @@ class EditGraph extends Component {
 					}}
 				>
 					<ItemG container justify={'center'}>
-						{g ? <EditDataSource /> : null}
+						{g ? <EditDataSource
+							getSensor={this.props.getSensor}
+						/> : null}
 					</ItemG>
 				</Drawer>
 			</Dialog>

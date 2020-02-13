@@ -7,7 +7,6 @@ import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 import { useLocalization, useHistory, useSnackbar, useEventListener } from 'hooks';
 import { useParams, useLocation } from 'react-router-dom';
-// import { useCallback } from 'react';
 
 
 const EditDeviceType = props => {
@@ -18,6 +17,7 @@ const EditDeviceType = props => {
 	const history = useHistory()
 	const location = useLocation()
 	const params = useParams()
+
 	//Redux
 	const accessLevel = useSelector(store => store.settings.user.privileges)
 	const orgId = useSelector(store => store.settings.user.org.id)
