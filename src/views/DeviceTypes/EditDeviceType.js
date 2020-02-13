@@ -46,7 +46,7 @@ class CreateDeviceType extends Component {
 			this.setState({
 				devicetype: devicetype,
 				sensorMetadata: {
-					metadata: devicetype.metadata ? Object.keys(devicetype.metadata).map(m => ({ key: m, value: devicetype.metadata[m] })) : [],
+					metadata: devicetype.metadata ? devicetype.metadata : [],
 					outbound: devicetype.outbound ? devicetype.outbound : [],
 					inbound: devicetype.inbound ? devicetype.inbound : []
 				},

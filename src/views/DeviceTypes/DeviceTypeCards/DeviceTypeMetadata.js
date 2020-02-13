@@ -17,6 +17,7 @@ class DeviceTypeMetadata extends Component {
 	render() {
 		const { deviceType, t } = this.props
 		let mtd = deviceType.metadata
+		console.log(mtd)
 		return (
 			<InfoCard
 				title={t('sensors.fields.metadata')}
@@ -34,7 +35,7 @@ class DeviceTypeMetadata extends Component {
 								</TableHead>
 								<TableBody>
 									{mtd.map(s => {
-										return <TableRow key={s.key}>
+										return <TableRow key={s}>
 											<TableCell>
 												{s.key}
 											</TableCell>
