@@ -1,14 +1,14 @@
 import React, { useEffect, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade, /* Divider, Button, IconButton, Tooltip */ } from '@material-ui/core';
+import { Popper, Paper, Fade, /* Divider, Button, IconButton, Tooltip */ } from '@material-ui/core';
 // import T from 'components/Typography/T';
 // import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
 import { /* Language,  Star, StarBorder,*/ SignalWifi2Bar, /* LibraryBooks, DataUsage, Business */ } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
+// import withLocalization from 'components/Localization/T';
 // import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
+// import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
@@ -26,6 +26,7 @@ import { useSnackbar, useLocalization } from 'hooks';
 // })
 
 const MessageHover = props => {
+	const classes = hoverStyles()
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -106,7 +107,7 @@ const MessageHover = props => {
 		}
 	}
 
-	const { /* t, */ anchorEl, classes, message, /* isFav */ } = props
+	const { /* t, */ anchorEl, message, /* isFav */ } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}
@@ -190,4 +191,4 @@ const MessageHover = props => {
 	)
 }
 
-export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(MessageHover))))
+export default MessageHover
