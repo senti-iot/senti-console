@@ -1,11 +1,14 @@
-import { Button, MobileStepper, Paper, withStyles } from '@material-ui/core';
+import { Button, MobileStepper, Paper } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Caption from 'components';
+import { useLocalization } from 'hooks'
 
 const ImageCarousel = props => {
+	const t = useLocalization()
+	const classes = imagecarouselStyles()
 	const [activeStep, setActiveStep] = useState(0)
 	// state = {
 	// 	activeStep: 0,
@@ -25,7 +28,7 @@ const ImageCarousel = props => {
 		// }));
 	};
 
-	const { classes, theme, images, t } = props;
+	const { theme, images } = props;
 
 	const maxSteps = images.length;
 	let blob = URL.createObjectURL(images[activeStep])
@@ -62,9 +65,9 @@ const ImageCarousel = props => {
 }
 
 ImageCarousel.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 	theme: PropTypes.object.isRequired,
 	images: PropTypes.array.isRequired
 };
 
-export default withStyles(imagecarouselStyles, { withTheme: true })(ImageCarousel);
+export default ImageCarousel
