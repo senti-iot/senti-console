@@ -106,11 +106,10 @@ const HeaderLinks = props => {
 				</Button>
 			</Tooltip>
 			<Menu
-
 				style={{ marginTop: 50 }}
 				id='menu-appbar'
 				anchorEl={anchorProfile}
-				className={classes.dropdown}
+				className={classes.dropdownn}
 				transformOrigin={{
 					vertical: 'bottom',
 					horizontal: 'left',

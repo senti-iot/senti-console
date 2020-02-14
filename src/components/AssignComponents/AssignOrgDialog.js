@@ -18,64 +18,46 @@ import { useLocalization } from 'hooks';
 
 //@Andrei
 const AssignOrgDialog = React.memo(props => {
+	//Hooks
 	const t = useLocalization()
-	const orgs = useSelector(state => state.data.orgs)
 	const classes = assignStyles()
-	// const [stateOrgs, setStateOrgs] = useState([])
+
+	//Redux
+	const orgs = useSelector(state => state.data.orgs)
+
+	//State
 	const [filters, setFilters] = useState({
 		keyword: '',
 		startDate: null,
 		endDate: null,
 		activeDateFilter: false
 	})
-	// constructor(props) {
-	// 	super(props)
+	//Const
+	const { open } = props;
+	const appBarClasses = cx({
+		[' ' + classes['primary']]: 'primary'
+	});
 
-	// 	this.state = {
-	// 		orgs: [],
-	// 		selectedOrg: null,
-	// 		filters: {
-	// 			keyword: '',
-	// 			startDate: null,
-	// 			endDate: null,
-	// 			activeDateFilter: false
-	// 		}
-	// 	}
-	// }
-	// componentDidMount = async () => {
-	// 	this._isMounted = 1
-	// 	// await getAllOrgs().then(rs => this._isMounted ? this.setState({ orgs: rs }) : null)
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+
 	const assignOrg = sId => e => {
-		// let sId = this.state.selectedOrg
 		let org = orgs[orgs.findIndex(o => o.id === sId)]
 		props.callBack(org)
 	}
 
-	// const selectOrg = pId => e => {
-	// 	e.preventDefault()
-	// 	setSelectedOrg(pId)
-	// 	// this.setState({ selectedOrg: pId })
-	// }
 	const closeDialog = () => {
 		props.handleClose(false)
 	}
 	const handleFilterKeyword = value => {
 		setFilters({ ...filters, keyword: value })
-		// this.setState({
-		// 	filters: {
-		// 		...this.state.filters,
-		// 		keyword: value
-		// 	}
-		// })
+
 	}
-	const { open } = props;
-	const appBarClasses = cx({
-		[' ' + classes['primary']]: 'primary'
-	});
+
 	return (
 
 		<Dialog
