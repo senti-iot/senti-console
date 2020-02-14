@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { useLocalization } from 'hooks'
 
 const AssignDevice = props => {
+	const classes = assignStyles()
 	const t = useLocalization()
 	const [devices, setDevices] = useState([])
 	const [selectedDevices, setSelectedDevices] = useState([])
@@ -133,7 +134,7 @@ const AssignDevice = props => {
 
 	//#endregion
 
-	const { classes, open } = props;
+	const { open } = props;
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
@@ -224,9 +225,9 @@ const AssignDevice = props => {
 }
 
 AssignDevice.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 	orgId: PropTypes.number.isRequired,
 	collectionId: PropTypes.number.isRequired,
 };
 
-export default withStyles(assignStyles)(AssignDevice);
+export default AssignDevice
