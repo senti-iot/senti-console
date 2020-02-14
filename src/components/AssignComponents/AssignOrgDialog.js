@@ -12,11 +12,6 @@ import { useSelector } from 'react-redux'
 import { useLocalization } from 'hooks';
 
 
-// const mapStateToProps = (state) => ({
-// 	orgs: state.data.orgs
-// })
-
-//@Andrei
 const AssignOrgDialog = React.memo(props => {
 	//Hooks
 	const t = useLocalization()
@@ -33,7 +28,8 @@ const AssignOrgDialog = React.memo(props => {
 		activeDateFilter: false
 	})
 	//Const
-	const { open } = props;
+	const { open, callBack, handleClose } = props;
+
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
@@ -47,11 +43,11 @@ const AssignOrgDialog = React.memo(props => {
 
 	const assignOrg = sId => e => {
 		let org = orgs[orgs.findIndex(o => o.id === sId)]
-		props.callBack(org)
+		callBack(org)
 	}
 
 	const closeDialog = () => {
-		props.handleClose(false)
+		handleClose(false)
 	}
 	const handleFilterKeyword = value => {
 		setFilters({ ...filters, keyword: value })

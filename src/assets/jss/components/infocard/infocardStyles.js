@@ -1,21 +1,6 @@
-// ##############################
-// // // RegularCard styles
-// #############################
 
-import {
-	card,
-	// cardHeader,
-	// defaultFont,
-	// orangeCardHeader,
-	// greenCardHeader,
-	// redCardHeader,
-	// blueCardHeader,
-	// purpleCardHeader,
-	// primaryCardHeader,
-	// sentiCardHeader,
-	// transition,
-} from "../../material-dashboard-react";
-import teal from '@material-ui/core/colors/teal';
+
+import { card } from "../../material-dashboard-react";
 import { bgColorsLight } from '../../material-dashboard-react/bgColorsLight';
 import { makeStyles } from '@material-ui/styles';
 
@@ -68,7 +53,7 @@ const infoCardStyles = makeStyles(theme => ({
 	},
 	avatar: {
 		color: '#fff',
-		backgroundColor: teal[600],
+		backgroundColor: theme.palette.primary.main,
 	},
 	whiteAvatar: {
 		backgroundColor: "inherit",
@@ -77,47 +62,11 @@ const infoCardStyles = makeStyles(theme => ({
 		...card,
 		height: "100%",
 	},
-	// cardPlain: {
-	// 	background: "transparent",
-	// 	boxShadow: "none"
-	// },
-	// cardHeader: {
-	// 	...cardHeader,
-	// 	...defaultFont
-	// },
-	// cardPlainHeader: {
-	// 	marginLeft: 0,
-	// 	marginRight: 0
-	// },
-	// orangeCardHeader,
-	// greenCardHeader,
-	// redCardHeader,
-	// blueCardHeader,
-	// purpleCardHeader,
-	// primaryCardHeader,
-	// sentiCardHeader,
+
 	title: {
 		fontSize: "1em",
 		fontWeight: 500
 	},
-	// cardTitle: {
-	// 	color: "#FFFFFF",
-	// 	marginTop: "0",
-	// 	marginBottom: "5px",
-	// 	...defaultFont,
-	// 	fontSize: "1.125em"
-	// },
-	// cardSubtitle: {
-	// 	...defaultFont,
-	// 	marginBottom: "0",
-	// 	color: "rgba(255, 255, 255, 0.62)",
-	// 	margin: "0 0 10px"
-	// },
-	// cardActions: {
-	// 	padding: "14px",
-	// 	display: "block",
-	// 	height: "auto"
-	// },
 	...bgColorsLight(theme),
 
 }))

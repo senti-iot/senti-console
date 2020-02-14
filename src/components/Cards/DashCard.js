@@ -11,8 +11,10 @@ import { compose } from 'recompose';
 import cx from 'classnames'
 import { useLocalization } from 'hooks';
 
-//Unused
-// @Andrei
+/**
+ * Unused
+ */
+
 const DashCard = props => {
 	const t = useLocalization()
 	const [expanded, setExpanded] = useState(props.expanded ? props.expanded : false)
