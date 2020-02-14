@@ -37,7 +37,6 @@ const EditDataSource = props => {
 	}
 
 	const renderSource = () => {
-
 		switch (g.type) {
 			case 0:
 				return <ESChart
@@ -64,7 +63,6 @@ const EditDataSource = props => {
 					cfs={cfs}
 				/>
 			case 3:
-				console.log('Bing')
 				return <ESScorecard
 					handleEditGraph={handleEditGraph}
 					getSensor={getSensor}

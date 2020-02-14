@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core';
 import { T, ItemG, DSelect, TextF, ITB } from 'components';
 import { ExpandMore, Add, Delete } from 'variables/icons';
@@ -7,13 +7,14 @@ import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import { useLocalization } from 'hooks';
 import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles';
 
-
+//@Andrei
 const ESScorecard = props => {
 	//Hooks
 	const t = useLocalization()
 	const classes = editSourceStyles()
 	//Redux
-	const { sensor, g, cfs, handleEditGraph } = props
+	const { sensor, cfs, g } = props
+
 
 	//State
 	const [dataSourceExp, setDataSourceExp] = useState(false)
@@ -39,10 +40,7 @@ const ESScorecard = props => {
 	//useCallbacks
 
 	//useEffects
-	useEffect(() => {
 
-		//eslint-disable-next-line
-	}, [])
 	//Handlers
 
 	const handleExpand = (prop, val, i) => e => {
@@ -79,32 +77,32 @@ const ESScorecard = props => {
 	const handleEditLabel = i => e => {
 		let newG = { ...g }
 		newG.dataSources[i].label = e.target.value
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 	}
 	const handleEditUnit = i => e => {
 		let newG = { ...g }
 		newG.dataSources[i].unit = e.target.value
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 	}
 
 	const handleEditCF = i => d => {
 		let newG = { ...g }
 		newG.dataSources[i].cf = d.id
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 		handleExpand('openCF', false, i)()
 	}
 	const handleEditDevice = i => d => {
 		let newG = { ...g }
 		newG.dataSources[i].deviceId = d.id
 		props.getSensor(d.id)
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 		handleExpand('openSensor', false, i)()
 	}
 
 	const handleEditDataKey = i => e => {
 		let newG = { ...g }
 		newG.dataSources[i].dataKey = e.target.value
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 	}
 	const handleAddDataSource = () => {
 		let newG = { ...g }
@@ -115,15 +113,19 @@ const ESScorecard = props => {
 			label: "",
 			unit: ""
 		})
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 	}
 	const handleRemoveDataSource = index => e => {
 		e.stopPropagation()
 		let newG = { ...g }
 		newG.dataSources = newG.dataSources.filter((ds, i) => index !== i)
-		handleEditGraph(newG)
+		props.handleEditGraph(newG)
 	}
-
+	const handleEditGraph = (prop) => e => {
+		let newG = { ...g }
+		newG[prop] = e.target.value
+		props.handleEditGraph(newG)
+	}
 	return (
 		<Fragment>
 			<ItemG xs={12}>
@@ -195,7 +197,7 @@ const ESScorecard = props => {
 							<ITB
 								onClick={handleRemoveDataSource(i)}
 								size={'small'}
-								label={t('actions.delete')}
+								label={'actions.delete'}
 								icon={<Delete />}
 							/>
 						</ItemG>

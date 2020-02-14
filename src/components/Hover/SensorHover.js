@@ -5,17 +5,15 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import { T, ItemG, Link } from 'components'
 // import Gravatar from 'react-gravatar'
 import { Star, StarBorder, Block, CheckCircle, DeviceHub, InputIcon } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
 import { Link as RLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
 import { useSnackbar, useLocalization } from 'hooks';
 
-
+//@Andrei
 const SensorHover = props => {
 	const s = useSnackbar().s
 	const t = useLocalization()
@@ -178,4 +176,4 @@ const SensorHover = props => {
 	)
 }
 
-export default withSnackbar()((withLocalization()(withStyles(hoverStyles)(SensorHover))))
+export default (withStyles(hoverStyles)(SensorHover))

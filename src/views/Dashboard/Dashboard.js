@@ -28,7 +28,7 @@ const Dashboard = (props) => {
 	const dashboards = useSelector(s => s.dsSystem.dashboards)
 
 	//State
-	const [openAddDash, setOpenAddDash] = useState(false)
+	const [openAddDash, setOpenAddDash] = useState(true)
 	const [openEditDash, setOpenEditDash] = useState(false)
 	const [eDash, setEDash] = useState(null)
 	const [openSpeed, setOpenSpeed] = useState(false)

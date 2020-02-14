@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, Toolbar, Button, Divider, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import { Paper, Dialog, AppBar, IconButton, Toolbar, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
 import { ItemG, Dropdown, TextF, SlideT, T, Warning } from 'components';
 import cx from 'classnames'
-import { Close, Edit, Clear, Palette, Save, Menu } from 'variables/icons';
+import { Close, Edit, Clear, Palette, Save } from 'variables/icons';
 import createDashboardStyle from 'assets/jss/components/dashboards/createDashboardStyles';
 
 import { useSelector, useDispatch, useLocalization } from 'hooks'
@@ -19,9 +19,9 @@ import { createDash, createGraph, setGE, removeGE, editDash, generateID, saveDas
 // import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
 import { red } from '@material-ui/core/colors';
-import ToolbarItem from './ToolbarItem';
 import DropZone from './DropZone';
 import { weekendColorsDropdown } from 'variables/functions';
+import ToolbarContainer from './ToolbarContainer';
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -334,19 +334,7 @@ const CreateDashboard = (props) => {
 								</IconButton>
 							</ItemG>
 							<ItemG xs={4} container>
-								<ItemG container style={{ background: 'teal', borderRadius: 4, padding: 4, margin: "0px 16px" }}>
-
-									<IconButton size={'small'} style={{ color: '#fff', borderRadius: 0 }}>
-										<Menu />
-									</IconButton>
-									<Divider style={{ width: 2, height: '100%' }} />
-									<ToolbarItem type={"chart"} name={'Chart'} />
-									<ToolbarItem type={"gauge"} name={'Gauge'} />
-									<ToolbarItem type={"scorecard"} name={'Scorecard'} />
-									<ToolbarItem type={"map"} name={'Map'} />
-									<ToolbarItem type={"msChart"} name={'Multi Source Chart'} />
-
-								</ItemG>
+								<ToolbarContainer />
 							</ItemG>
 							<ItemG container xs={6} alignItems={'center'}>
 
@@ -364,7 +352,7 @@ const CreateDashboard = (props) => {
 									onClick={handleOpenSave}
 									readOnly
 									reversed
-									notched={false}
+								// notched={false}
 								/>
 								{renderColorPicker()}
 

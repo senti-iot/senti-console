@@ -59,6 +59,7 @@ class TProvider extends Component {
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
 			console.info('Missing key: "' + key + '"')
+			console.trace()
 			result = key
 		}
 		if (typeof phrase === 'string') {

@@ -47,13 +47,19 @@ const EditGraph = props => {
 	//Handlers
 	const getCoords = (c) => {
 		let coords = { ...c }
-		// coords.x = 0
-		// coords.y = 0
+		coords.x = 0
+		coords.y = 0
+		if (coords.w >= 8) {
+			coords.w = 8
+		}
+		if (coords.h > 24) {
+			coords.h = 24
+		}
 		return coords
 	}
 	const getSensor = async (id) => await dispatch(await getSensorLS(id))
 
-	const typeChildren = (g) => {
+	const typeChildren = () => {
 		if (g)
 			switch (g.type) {
 				case 1:
