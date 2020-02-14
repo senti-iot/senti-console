@@ -4,7 +4,7 @@ import SensorCard from './SensorCard';
 import { ItemG, GridContainer } from 'components';
 import { useSelector } from 'react-redux'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import { withStyles } from '@material-ui/core';
+// import { withStyles } from '@material-ui/core';
 import CP from 'components/Table/CP';
 import { useLocalization } from 'hooks';
 
@@ -13,6 +13,7 @@ import { useLocalization } from 'hooks';
 // })
 
 const SensorCards = props => {
+	const classes = devicetableStyles()
 	const rowsPerPage = useSelector(store => store.appState.CPP)
 	const t = useLocalization()
 	const [page, setPage] = useState(0)
@@ -30,7 +31,7 @@ const SensorCards = props => {
 		// this.setState({ page });
 	}
 
-	const { sensors, classes } = props
+	const { sensors } = props
 	return (
 		<GridContainer spacing={2} justify={'center'}>
 			{sensors ? sensors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) =>
@@ -53,4 +54,4 @@ SensorCards.propTypes = {
 	projects: PropTypes.array
 }
 
-export default withStyles(devicetableStyles, { withTheme: true })(SensorCards)
+export default SensorCards

@@ -1,6 +1,6 @@
 import {
 	Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
@@ -22,6 +22,7 @@ import { useLocalization } from 'hooks'
 // })
 
 const MessageTable = props => {
+	const classes = devicetableStyles()
 	const t = useLocalization()
 	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 	// const hoverTime = useSelector(state => state.settings.hoverTime)
@@ -99,7 +100,7 @@ const MessageTable = props => {
 	// 	}
 	// }
 
-	const { classes, handleClick, selected, order, data, orderBy } = props
+	const { handleClick, selected, order, data, orderBy } = props
 	let emptyRows;
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -204,4 +205,4 @@ MessageTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(MessageTable))
+export default withRouter(MessageTable)

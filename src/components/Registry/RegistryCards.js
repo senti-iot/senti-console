@@ -4,7 +4,7 @@ import RegistryCard from './RegistryCard';
 import { ItemG, GridContainer } from 'components';
 import { useSelector } from 'react-redux'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import { withStyles } from '@material-ui/core';
+// import { withStyles } from '@material-ui/core';
 import CP from 'components/Table/CP';
 import { useLocalization, /* useHistory */ } from 'hooks';
 
@@ -13,6 +13,7 @@ import { useLocalization, /* useHistory */ } from 'hooks';
 // })
 
 const RegistryCards = props => {
+	const classes = devicetableStyles()
 	const t = useLocalization()
 	// const history = useHistory()
 	const rowsPerPage = useSelector(store => store.appState.CPP)
@@ -30,7 +31,7 @@ const RegistryCards = props => {
 		// this.setState({ page });
 	}
 
-	const { registries, classes } = props
+	const { registries } = props
 	return (
 		<GridContainer spacing={2}>
 			{registries ? registries.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) =>
@@ -53,4 +54,4 @@ RegistryCards.propTypes = {
 	projects: PropTypes.array
 }
 
-export default withStyles(devicetableStyles, { withTheme: true })(RegistryCards)
+export default RegistryCards

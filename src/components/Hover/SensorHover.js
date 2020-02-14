@@ -1,13 +1,15 @@
 import React, { useEffect, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
 // import T from 'components/Typography/T';
 // import ItemG from 'components/Grid/ItemG';
 import { T, ItemG, Link } from 'components'
 // import Gravatar from 'react-gravatar'
 import { Star, StarBorder, Block, CheckCircle, DeviceHub, InputIcon } from 'variables/icons';
+// import withLocalization from 'components/Localization/T';
 import { Link as RLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
+// import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
@@ -15,11 +17,12 @@ import { useSnackbar, useLocalization } from 'hooks';
 
 //@Andrei
 const SensorHover = props => {
+	const classes = hoverStyles()
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
 	const saved = useSelector(state => state.favorites.saved)
-	const { anchorEl, classes, device } = props
+	const { anchorEl, device } = props
 
 	useEffect(() => {
 		if (saved === true) {
@@ -176,4 +179,4 @@ const SensorHover = props => {
 	)
 }
 
-export default (withStyles(hoverStyles)(SensorHover))
+export default SensorHover
