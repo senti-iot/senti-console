@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable indent */
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
@@ -9,8 +10,8 @@ import { withStyles } from '@material-ui/core/styles';
 import searchStyles from 'assets/jss/components/search/searchStyles';
 import SearchInput from './SearchInput';
 import { ClickAwayListener } from '@material-ui/core';
-import withLocalization from 'components/Localization/T';
-import { connect } from 'react-redux'
+// import withLocalization from 'components/Localization/T';
+import { useDispatch } from 'react-redux'
 import { changeEH } from 'redux/appState';
 
 //TODO
@@ -59,28 +60,53 @@ function getSuggestions(value, suggestions) {
 	suggestions:array.isRequired,
 	handleFilterKeyword:Function.isRequired,>}
 */
-class IntegrationAutosuggest extends React.PureComponent {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			value: '',
-			suggestions: [],
-			open: false
+// const mapStateToProps = (state) => ({
+
+// })
+
+// const mapDispatchToProps = dispatch => ({
+// 	disableEH: () => dispatch(changeEH(false)),
+// 	enableEH: () => dispatch(changeEH(true))
+// })
+
+// @Andrei
+const IntegrationAutosuggest = React.memo(props => {
+	const dispatch = useDispatch()
+
+	// const [value, setValue] = useState('')
+	const [suggestions, setSuggestions] = useState([])
+	const [open, setOpen] = useState(false)
+
+	const inputRef = useRef(null)
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		value: '',
+	// 		suggestions: [],
+	// 		open: false
+	// 	}
+	// 	this.inputRef = React.createRef()
+
+	// }
+
+	useEffect(() => {
+		if (props.focusOnMount && inputRef.current) {
+			focusInput()
 		}
-		this.inputRef = React.createRef()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+	// componentDidMount() {
+	// 	if (this.props.focusOnMount && this.inputRef.current)
+	// 		this.focusInput()
+	// }
 
-	}
-	componentDidMount() {
-		if (this.props.focusOnMount && this.inputRef.current)
-			this.focusInput()
+	const handleResetSearch = () => {
+		handleChange(null, { newValue: '' })
 	}
 
-	handleResetSearch = () => {
-		this.handleChange(null, { newValue: '' })
-	}
-
-	renderSuggestion(suggestion, { query, isHighlighted }) {
+	const renderSuggestion = (suggestion, { query, isHighlighted }) => {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 		return (
@@ -102,103 +128,100 @@ class IntegrationAutosuggest extends React.PureComponent {
 		);
 	}
 
-	handleSuggestionsFetchRequested = ({ value, reason }) => {
-		const { open } = this.state
-		const { searchValue } = this.props
+	const handleSuggestionsFetchRequested = ({ value, reason }) => {
+		// const { open } = this.state
+		const { searchValue } = props
 		if (open && searchValue === '' && reason === 'escape-pressed') {
-			this.handleClose()
+			handleClose()
 		}
-		this.setState({
-			suggestions: getSuggestions(value, this.props.suggestions),
-		})
+		setSuggestions(getSuggestions(value, props.suggestions))
+		// this.setState({
+		// 	suggestions: getSuggestions(value, this.props.suggestions),
+		// })
 	}
 
-	handleSuggestionsClearRequested = () => {
-		this.setState({
-			suggestions: [],
-		})
+	const handleSuggestionsClearRequested = () => {
+		setSuggestions([])
+		// this.setState({
+		// 	suggestions: [],
+		// })
 	}
 
-	handleChange = (event, { newValue }) => {
-		this.props.handleFilterKeyword(newValue)
+	const handleChange = (event, { newValue }) => {
+		props.handleFilterKeyword(newValue)
 	}
 
-	focusInput = () => {
-		if (this.state.open || this.props.open)
-			this.inputRef.current.focus()
+	const focusInput = () => {
+		if (open || props.open)
+			inputRef.current.focus()
 	}
 
-	handleOpen = () => {
-		if (this.props.open === undefined)
-			this.setState({ open: !this.state.open }, this.focusInput)
+	const handleOpen = () => {
+		if (props.open === undefined)
+			// TODO - not sure here
+			setOpen(!open)
+		focusInput()
+		// this.setState({ open: !this.state.open }, this.focusInput)
 	}
 
-	handleClose = () => {
-		if (this.props.open === undefined)
-			this.setState({ open: false })
+	const handleClose = () => {
+		if (props.open === undefined)
+			setOpen(false)
+		// this.setState({ open: false })
 	}
 
-	render() {
-		const { classes, right } = this.props;
-		return (
-			<div className={classes.suggestContainer}>
-				<ClickAwayListener onClickAway={this.handleClose}>
-					<Autosuggest
-						theme={{
-							container: classes.container + ' ' + (right ? classes.right : ''),
-							suggestionsContainerOpen: classes.suggestionsContainerOpen,
-							suggestionsList: classes.suggestionsList,
-							suggestion: classes.suggestion,
-						}}
-						alwaysRenderSuggestions={true}
-						focusInputOnSuggestionClick={false}
-						renderInputComponent={renderInput}
-						suggestions={this.state.suggestions}
-						onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-						onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-						onSuggestionSelected={this.focusInput}
-						renderSuggestionsContainer={renderSuggestionsContainer}
-						getSuggestionValue={getSuggestionValue}
-						renderSuggestion={this.renderSuggestion}
-						onFocus={this.props.disableEH}
-						onBlur={this.props.enableEH}
-						inputProps={{
-							onFocus: this.props.disableEH,
-							onBlur: this.props.enableEH,
-							noAbsolute: this.props.noAbsolute,
-							placeholder: this.props.placeholder,
-							classes,
-							fullWidth: this.props.fullWidth,
-							value: this.props.searchValue,
-							onChange: this.handleChange,
-							// reference: this.inputRef,
-							open: this.state.open || this.props.open,
-							handleOpen: this.handleOpen,
-							handleClose: this.handleClose,
-							handleResetSearch: this.handleResetSearch,
-							// t: this.props.t
-						}}
-					/>
-				</ClickAwayListener>
-			</div>
-		);
-	}
-}
+
+	const { classes, right } = props;
+	return (
+		<div className={classes.suggestContainer}>
+			<ClickAwayListener onClickAway={handleClose}>
+				<Autosuggest
+					theme={{
+						container: classes.container + ' ' + (right ? classes.right : ''),
+						suggestionsContainerOpen: classes.suggestionsContainerOpen,
+						suggestionsList: classes.suggestionsList,
+						suggestion: classes.suggestion,
+					}}
+					alwaysRenderSuggestions={true}
+					focusInputOnSuggestionClick={false}
+					renderInputComponent={renderInput}
+					suggestions={suggestions}
+					onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
+					onSuggestionsClearRequested={handleSuggestionsClearRequested}
+					onSuggestionSelected={focusInput}
+					renderSuggestionsContainer={renderSuggestionsContainer}
+					getSuggestionValue={getSuggestionValue}
+					renderSuggestion={renderSuggestion}
+					onFocus={() => dispatch(changeEH(false))}
+					onBlur={() => dispatch(changeEH(true))}
+					inputProps={{
+						onFocus: () => dispatch(changeEH(false)),
+						onBlur: () => dispatch(changeEH(true)),
+						noAbsolute: props.noAbsolute,
+						placeholder: props.placeholder,
+						classes,
+						fullWidth: props.fullWidth,
+						value: props.searchValue,
+						onChange: handleChange,
+						// reference: this.inputRef,
+						open: open || props.open,
+						handleOpen: handleOpen,
+						handleClose: handleClose,
+						handleResetSearch: handleResetSearch,
+						// t: this.props.t
+					}}
+				/>
+			</ClickAwayListener>
+		</div>
+	);
+})
 
 IntegrationAutosuggest.propTypes = {
 	classes: PropTypes.object.isRequired,
 	searchValue: PropTypes.string,
-	t: PropTypes.func.isRequired,
+	// t: PropTypes.func.isRequired,
 	suggestions: PropTypes.array.isRequired,
 	handleFilterKeyword: PropTypes.func.isRequired,
 };
-const mapStateToProps = (state) => ({
 
-})
-
-const mapDispatchToProps = dispatch => ({
-	disableEH: () => dispatch(changeEH(false)),
-	enableEH: () => dispatch(changeEH(true))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(searchStyles)(IntegrationAutosuggest)));
+export default withStyles(searchStyles)(IntegrationAutosuggest)
