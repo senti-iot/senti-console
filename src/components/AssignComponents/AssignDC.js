@@ -11,7 +11,9 @@ import { assignDeviceToCollection } from 'variables/dataCollections';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { useLocalization } from 'hooks'
 
-// @Andrei
+/**
+ * UNUSED
+ */
 const AssignDC = React.memo(props => {
 	const t = useLocalization()
 	const classes = assignStyles()

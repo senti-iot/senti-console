@@ -15,7 +15,7 @@ import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 import { CircularLoader } from 'components';
 import { useSnackbar, useLocalization } from 'hooks';
 
-
+//@Andrei
 const SensorHover = props => {
 	const classes = hoverStyles()
 	const s = useSnackbar().s

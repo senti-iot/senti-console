@@ -16,6 +16,8 @@ import ResetSettings from './SettingsCards/ResetSettings';
 import { Fade } from '@material-ui/core';
 import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, useHistory } from 'hooks';
 
+
+//@Andrei
 const Settings = (props) => {
 
 	// constructor(props) {

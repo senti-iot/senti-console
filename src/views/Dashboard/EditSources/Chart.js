@@ -6,14 +6,15 @@ import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variabl
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import { useLocalization } from 'hooks';
+import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles';
 
 
 const ESChart = (props) => {
-	const { classes, sensor, g, cfs } = props
+	const { sensor, g, cfs } = props
 
 	//Hooks
 	const t = useLocalization()
-
+	const classes = editSourceStyles()
 	//State
 	const [dataSourceExp, setDataSourceExp] = useState(false)
 	const [generalExp, setGeneralExp] = useState(false)

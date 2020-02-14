@@ -1,6 +1,5 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton } from '@material-ui/core';
 import { ExpandMore } from 'variables/icons';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { ItemG } from 'components';
@@ -8,7 +7,6 @@ import cx from 'classnames'
 import { useLocalization } from 'hooks';
 import infoCardStyles from 'assets/jss/components/infocard/infocardStyles';
 
-// @Andrei
 const InfoCard = React.memo(props => {
 	//Hooks
 	const t = useLocalization()
@@ -16,14 +14,27 @@ const InfoCard = React.memo(props => {
 	//Redux
 
 	//State
-
-	// const [cardExpanded, setCardExpanded] = useState(false) // added
 	const [expanded, setExpanded] = useState(props.expanded ? props.expanded : false)
+
 	//Const
 	const { title, subheader,
 		content, hiddenContent, avatar,
 		noAvatar, leftActions, leftActionContent, color, noRightExpand,
 		whiteAvatar, noHeader, dashboard, headerClasses, bodyClasses } = props;
+
+	const cardClasses = cx({
+		[classes.card]: true,
+		[classes.plainCardClasses]: true,
+		[classes['']]: color,
+		[classes.flexPaper]: props.flexPaper,
+	})
+	const cardContentClasses = cx(
+		{ [classes.flexPaper]: props.flexPaper },
+		{ [classes.dashboard]: dashboard },
+		{ [classes.transition]: true },
+		{ [classes.contentMedia]: props.noPadding },
+		{ [classes.noMargin]: props.noExpand ? false : props.haveMargin ? false : !expanded })
+
 	//Handlers
 	const handleExpandClick = () => {
 		setExpanded(!expanded)
@@ -38,20 +49,13 @@ const InfoCard = React.memo(props => {
 				aria-expanded={expanded}
 				aria-label='Show more'
 			>
-				<ExpandMore className={classnames(classes.expand, {
+				<ExpandMore className={cx(classes.expand, {
 					[classes.expandOpen]: expanded,
 				})} />
 			</IconButton>}
 		</ItemG>
 	}
 
-
-	const cardClasses = cx({
-		[classes.card]: true,
-		[classes.plainCardClasses]: true,
-		[classes['']]: color,
-		[classes.flexPaper]: props.flexPaper,
-	})
 	return (
 		<Card className={cardClasses}>
 			{noHeader ? null : <CardHeader
@@ -73,12 +77,7 @@ const InfoCard = React.memo(props => {
 				classes={{
 					...bodyClasses
 				}}
-				className={classnames(
-					{ [classes.flexPaper]: props.flexPaper },
-					{ [classes.dashboard]: dashboard },
-					{ [classes.transition]: true },
-					{ [classes.contentMedia]: props.noPadding },
-					{ [classes.noMargin]: props.noExpand ? false : props.haveMargin ? false : !expanded })}>
+				className={cardContentClasses}>
 				{/* {this.renderSubHeader()} */}
 				{content ? content : null}
 			</CardContent>
@@ -88,7 +87,7 @@ const InfoCard = React.memo(props => {
 						{leftActionContent}
 					</CardContent> : null}
 					<Collapse in={expanded} timeout='auto' unmountOnExit>
-						<CardContent className={classnames(
+						<CardContent className={cx(
 							{ [classes.contentMedia]: props.noHiddenPadding },
 							{ [classes.noPadding]: props.noHiddenPadding ? true : false })} /* classes={{ root: classes.root }} */>
 							{hiddenContent ? hiddenContent : null}
@@ -105,7 +104,7 @@ const InfoCard = React.memo(props => {
 							className={classes.expandPosition}
 						>
 							{expanded ? t('menus.seeLess') : t('menus.seeMore')}
-							<ExpandMore className={classnames(classes.expand, {
+							<ExpandMore className={cx(classes.expand, {
 								[classes.expandOpen]: expanded,
 							})} />
 						</Button> : null}
@@ -130,5 +129,4 @@ InfoCard.propTypes = {
 	hideFacts: PropTypes.bool,
 };
 
-// let InfoCardComposed = compose(withLocalization(), withStyles(regularCardStyle))(InfoCard)
 export default InfoCard;

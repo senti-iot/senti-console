@@ -1,24 +1,28 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Grow, Paper, Typography, Dialog, DialogContent } from '@material-ui/core';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
-// import { todayOfInterest } from 'redux/doi';
 import { DataUsage } from 'variables/icons';
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = () => ({
-
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	todayOfInterest: (date) => dispatch(todayOfInterest(moment(date, 'lll').format('YYYY-MM-DD')))
-// })
-
-// @Andrei
 const PieTooltip = props => {
+	//Hooks
 	const t = useLocalization()
+
+	//Redux
+
+	//State
+
+	//Const
+	const { tooltip, chartWidth, chartHeight, mobile, getRef, handleCloseTooltip, unit } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 
 	const clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
@@ -27,7 +31,6 @@ const PieTooltip = props => {
 			return true
 	}
 	const transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = props
 		let x = 0
 		let y = 0
 		if (!clickEvent()) {
@@ -56,32 +59,12 @@ const PieTooltip = props => {
 		return `translate(${x}, ${y})`
 	}
 	const handleRange = () => {
-		const { tooltip, unit } = props
 		let finalStr = `${moment(tooltip.from).format(unit.tooltipFormat)} - ${moment(tooltip.to).format(unit.tooltipFormat)} `
 		return finalStr
 	}
-
-	// const handleDate = () => {
-	// 	const { date } = props.tooltip
-	// 	return moment(date).format('ll')
-	// }
-
-	// const handleDayTime = () => {
-	// 	const { tooltip } = props
-	// 	let dayStr = moment(tooltip.date).format('ll')
-	// 	let hours = moment(tooltip.date).format('LT')
-	// 	let completeDayStr = `${dayStr} (${hours})`
-	// 	return completeDayStr
-	// }
-
-	// const handleRawDate = () => {
-	// 	const { tooltip } = props
-	// 	return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
-	// }
 	const renderTooltip = () => {
-		const { classes, tooltip, handleCloseTooltip } = props
 		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
-			<Paper className={classes.paper}>
+			<Paper>
 				<ItemG container>
 					<ItemG container id={'header'} xs={12}>
 						<ItemG xs={9} container direction='column'>
@@ -102,12 +85,11 @@ const PieTooltip = props => {
 
 	const handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
 
-	const { tooltip, mobile, getRef, handleCloseTooltip } = props
+
 	return (
 		clickEvent() ?
 			<div ref={r => getRef(r)} style={{
 				zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
-				// zIndex: 1028,
 				position: 'absolute',
 				top: Math.round(tooltip.top),
 				left: mobile ? '50%' : Math.round(tooltip.left),
@@ -118,7 +100,6 @@ const PieTooltip = props => {
 				{renderTooltip()}
 			</div> :
 			<Dialog
-				// open={true}
 				open={tooltip.show}
 				onClose={e => { e.stopPropagation(); handleCloseTooltip() }}
 				TransitionComponent={handleTransition}

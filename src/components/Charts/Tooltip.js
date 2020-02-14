@@ -9,20 +9,29 @@ import { todayOfInterest } from 'redux/doi';
 import { DateRange, Cake, DataUsage } from 'variables/icons';
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state, props) => ({
-// 	periods: state.dateTime.periods
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	todayOfInterest: (date) => dispatch(todayOfInterest(moment(date, 'lll').format('YYYY-MM-DD')))
-// })
-
-// @Andrei
 const Tooltip = props => {
+	//Hooks
 	const t = useLocalization()
 	const dispatch = useDispatch()
-	// const periods = useSelector(state => state.dateTime.periods)
 
+	//Redux
+
+	//State
+
+	//Const
+	const { classes, tooltip, weather,
+		handleCloseTooltip, mobile, getRef, chartWidth, chartHeight,
+		unit } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+
+
+	let screenWidth = window.innerWidth
 	const clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
 			return false
@@ -30,7 +39,6 @@ const Tooltip = props => {
 			return true
 	}
 	const transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = props
 		let screenWidth = window.innerWidth
 
 		let x = 0
@@ -87,7 +95,6 @@ const Tooltip = props => {
 		// return `translate(${x}, ${y})`
 	}
 	const handleRange = () => {
-		const { tooltip, unit } = props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
 		if (date) {
@@ -120,25 +127,17 @@ const Tooltip = props => {
 		return finalStr
 	}
 	const handleDate = () => {
-		const { tooltip } = props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr
 	}
 	const handleDayTime = () => {
-		const { tooltip } = props
 		let dayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
 		let hours = moment(tooltip.title[0], 'lll').format('LT')
 		let completeDayStr = `${dayStr} (${hours})`
 		return completeDayStr
 	}
-	// const handleRawDate = () => {
-	// 	const { tooltip } = props
-	// 	return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
-	// }
-	const renderTooltip = () => {
-		const { classes, tooltip, weather,
-			handleCloseTooltip, mobile } = props
 
+	const renderTooltip = () => {
 		let doi = dispatch(todayOfInterest(moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')))
 		let birthdays = doi.birthdays
 		let days = doi.days
@@ -219,8 +218,7 @@ const Tooltip = props => {
 
 	const handleTransition = React.forwardRef((props, ref) => { return <Grow in {...props} ref={ref} /> })
 
-	const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = props
-	let screenWidth = window.innerWidth
+
 	return (
 		clickEvent() ?
 			<div ref={r => getRef(r)} style={{

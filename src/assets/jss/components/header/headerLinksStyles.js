@@ -50,7 +50,6 @@ const headerLinksStyle = makeStyles(theme => ({
 		fontSize: "14px",
 		textAlign: "left",
 		listStyle: "none",
-		backgroundColor: "#fff",
 		backgroundClip: "padding-box"
 	},
 	nameAndEmail: {

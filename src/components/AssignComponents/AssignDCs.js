@@ -11,7 +11,9 @@ import assignStyles from 'assets/jss/components/assign/assignStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
 import { useLocalization } from 'hooks';
 
-// @Andrei
+/**
+ * Unused
+ */
 const AssignDCS = props => {
 	const classes = assignStyles()
 	const t = useLocalization()
