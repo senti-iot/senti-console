@@ -8,11 +8,11 @@ import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles';
 
 
-//@Andrei
 const CreateDeviceTypeForm = props => {
 	//Hooks
 	const t = useLocalization()
 	const classes = createSensorStyles()
+
 	//Redux
 
 	//State

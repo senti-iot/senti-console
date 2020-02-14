@@ -12,8 +12,10 @@ import { useLocalization } from 'hooks';
 // const mapStateToProps = (state) => ({
 // 	tcount: state.settings.tcount
 // })
+/**
+ * Unused
+ */
 
-// @Andrei
 const TimeCounterModal = props => {
 	const t = useLocalization()
 	const timeCounter = useRef(null)

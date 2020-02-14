@@ -15,14 +15,8 @@ import TP from 'components/Table/TP';
 import DeviceHover from 'components/Hover/DeviceHover';
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-// 	accessLevel: state.settings.user.privileges,
-// 	hoverTime: state.settings.hoverTime
-// })
 /**
- * TODO @Andrei
- * DeviceTable/Devices are rerendering multiple times
+ * Unused
  */
 
 const DeviceTable = props => {

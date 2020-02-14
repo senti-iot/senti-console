@@ -3,7 +3,6 @@ import {
 	TableRow, Typography, Tooltip,
 } from '@material-ui/core';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 import FavoriteTableHead from 'components/Table/TableHeader'
 import { useSelector } from 'react-redux'
@@ -13,65 +12,36 @@ import TP from 'components/Table/TP';
 import { LibraryBooks, DeviceHub, Person, Business, DataUsage, Memory, InputIcon, CloudDownload } from 'variables/icons';
 import { useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-// 	accessLevel: state.settings.user.privileges
-// })
-//@Andrei
+
 const FavoriteTable = props => {
+	//Hooks
 	const t = useLocalization()
 	const classes = devicetableStyles()
 
+	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
-	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
-	// const [stateSelected, setStateSelected] = useState([])
+	//State
 	const [page, setPage] = useState(0)
-	const [, setStateRowsPerPage] = useState(props.rowsPerPage)
-	// const [anchorElMenu, setAnchorElMenu] = useState(null)
-	// const [, setAnchorFilterMenu] = useState(null)
-	// const [, setSearchFilter] = useState(null) // added
-	// constructor(props) {
-	// 	super(props);
 
-	// 	this.state = {
-	// 		selected: [],
-	// 		page: 0,
-	// 		rowsPerPage: props.rowsPerPage,
-	// 		anchorElMenu: null,
-	// 		anchorFilterMenu: null,
-	// 	};
-	// 	// props.setBC(props.t('sidebar.favorites'), 'favorites')
-	// }
+	//Const
+	const { selected, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
+	let emptyRows
+	if (data)
+		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-	// const handleFilterMenuOpen = e => {
-	// 	e.stopPropagation()
-	// 	setAnchorFilterMenu(e.currentTarget)
-	// 	// this.setState({ anchorFilterMenu: e.currentTarget })
-	// }
-	// const handleFilterMenuClose = e => {
-	// 	e.stopPropagation()
-	// 	setAnchorFilterMenu(null)
-	// 	// this.setState({ anchorFilterMenu: null })
-	// }
-	// const handleSearch = value => {
-	// 	setSearchFilter(value)
-	// 	// this.setState({
-	// 	// 	searchFilter: value
-	// 	// })
-	// }
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	const handleRequestSort = (event, property) => {
 		props.handleRequestSort(event, property)
 	}
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
-		// this.setState({ page });
-	};
-
-	const handleChangeRowsPerPage = event => {
-		setStateRowsPerPage(event.target.value)
-		// this.setState({ rowsPerPage: event.target.value });
 	};
 
 
@@ -116,10 +86,7 @@ const FavoriteTable = props => {
 		}
 	}
 
-	const { selected, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
-	let emptyRows
-	if (data)
-		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
 	return (
 		<Fragment>
 			<div className={classes.tableWrapper}>
@@ -197,19 +164,12 @@ const FavoriteTable = props => {
 			</div>
 			<TP
 				count={data ? data.length : 0}
-				classes={classes}
 				rowsPerPage={rowsPerPage}
 				page={page}
-				t={t}
 				handleChangePage={handleChangePage}
-				handleChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
 		</Fragment>
 	);
 }
-
-FavoriteTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
 
 export default FavoriteTable;

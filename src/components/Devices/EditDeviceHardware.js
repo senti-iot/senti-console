@@ -8,18 +8,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getDeviceLS, getDevices } from 'redux/data';
 import { useLocation, useMatch, useLocalization, useSnackbar, useHistory } from 'hooks'
 
-// const mapStateToProps = (state) => ({
-// 	device: state.data.device,
-// 	loading: !state.data.gotDevice
-// })
-// const mapDispatchToProps = (dispatch) => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	updateFav: (favObj) => dispatch(updateFav(favObj)),
-// 	getDevice: async id => dispatch(await getDeviceLS(id)),
-// 	getDevices: reload => dispatch(getDevices())
-// })
+/**
+ * Unused
+ */
 
-// @Andrei
 const EditDetails = props => {
 	const t = useLocalization()
 	const s = useSnackbar().s

@@ -11,34 +11,31 @@ const styles = makeStyles(theme => ({
 	}
 }))
 
-//@andrei
 const Dropdown = props => {
 	//Hooks
 	const t = useLocalization()
 	const classes = styles()
+
 	//Redux
 
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
 
 	//Const
+	const { menuItems, icon, button, divider, tooltip, buttonClassName, cIcon } = props
 
-	// constructor(props) {
-	// 	super(props)
+	//useCallbacks
 
-	// 	this.state = {
-	// 		actionAnchor: null
-	// 	}
-	// }
+	//useEffects
+
+	//Handlers
 
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
-		// this.setState({ actionAnchor: event.currentTarget });
 	}
 
 	const handleCloseActionsDetails = () => {
 		setActionAnchor(null)
-		// this.setState({ actionAnchor: null });
 	}
 	const handleMenuItemClick = (m) => e => {
 		if (m.func) {
@@ -49,8 +46,7 @@ const Dropdown = props => {
 		}
 		handleCloseActionsDetails()
 	}
-	// const { actionAnchor } = this.state
-	const { menuItems, icon, button, divider, tooltip, buttonClassName, cIcon } = props
+
 	return (
 		<Fragment>
 			{button && <Button

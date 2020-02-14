@@ -1,19 +1,25 @@
 import React, { useState, Fragment } from 'react'
 import { Popover, MenuItem, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
-import settingsStyles from 'assets/jss/components/settings/settingsStylesHooks';
 import { ArrowDropDown } from 'variables/icons'
 
-//@Andrei
-const DInput = props => {
-	const classes = settingsStyles()
-	const [actionAnchor, setActionAnchor] = useState(null)
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		actionAnchor: null
-	// 	}
-	// }
+
+const DInput = props => {
+	//Hooks
+
+	//Redux
+
+	//State
+	const [actionAnchor, setActionAnchor] = useState(null)
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	const handleMenuItem = (e) => {
 		props.onChange(e.target.value)
 		handleCloseActionsDetails()
@@ -21,11 +27,9 @@ const DInput = props => {
 	}
 	const handleCloseActionsDetails = event => {
 		setActionAnchor(null)
-		// this.setState({ actionAnchor: null });
 	}
 	const handleOpenActionsDetails = event => {
 		setActionAnchor(event.currentTarget)
-		// this.setState({ actionAnchor: event.currentTarget });
 	}
 
 	const { value, menuItems } = props
@@ -38,9 +42,8 @@ const DInput = props => {
 					labelWidth={0}
 					aria-owns={actionAnchor ? 'menu-list-grow' : null}
 					value={value} onClick={handleOpenActionsDetails}
-					className={classes.formControl}
 					onChange={handleMenuItem}
-					endAdornment={<ArrowDropDown className={classes.iconColor} />}
+					endAdornment={<ArrowDropDown />}
 				/>
 			</FormControl>
 

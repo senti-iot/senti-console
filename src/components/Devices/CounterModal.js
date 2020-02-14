@@ -12,8 +12,10 @@ import { useLocalization } from 'hooks';
 // const mapStateToProps = (state) => ({
 // 	count: state.settings.count
 // })
+/**
+ * Deprecation - Unused
+ */
 
-// @Andrei
 const CounterModal = props => {
 	const classes = countermodalStyles()
 	const t = useLocalization()
@@ -101,7 +103,7 @@ const CounterModal = props => {
 		setFinished(false)
 		// this.setState({
 		// 	timer: 0,
-		// 	count: this.props.count, 
+		// 	count: this.props.count,
 		// 	timestamp: null,
 		// 	started: false,
 		// 	finished: false

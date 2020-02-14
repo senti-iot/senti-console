@@ -4,21 +4,11 @@ import { FormControl, Select, MenuItem, InputLabel, OutlinedInput, FormHelperTex
 import { ItemG } from 'components';
 import { useTheme } from '@material-ui/styles';
 
-// const styles = makeStyles(theme => ({
-// 	label: {
-// 		color: theme.palette.type === 'dark' ? "#fff" : undefined,
-// 	},
-// 	formControl: {
-// 		marginTop: 16,
-// 		marginBottom: 8,
-// 		minWidth: 230
-// 	},
-// }))
 
 const DSelect = props => {
 	//Hooks
-	// const classes = styles()
 	const theme = useTheme()
+
 	//Redux
 
 	//State
@@ -34,23 +24,23 @@ const DSelect = props => {
 	//useEffects
 	useEffect(() => {
 		setLabelWidth(ReactDOM.findDOMNode(inputRef.current).offsetWidth)
-		//eslint-disable-next-line
+
 	}, [])
 	//Handlers
 
 	const getLabelWidth = () => {
+		console.log(inputRef)
 		if (inputRef.current) {
 			return labelWidth
 		}
 		else {
-			return 100
+			return 0
 		}
 	}
 
 	return (
-		<FormControl variant="outlined" margin={margin} /* className={classes.formControl} */ fullWidth={mobile || fullWidth}>
+		<FormControl variant="outlined" margin={margin} fullWidth={mobile || fullWidth}>
 			<InputLabel ref={inputRef}
-				// classes={{ asterisk: classes.label }}
 				color={'primary'} htmlFor='select-multiple-chip'>
 				{label}
 			</InputLabel>
@@ -60,7 +50,7 @@ const DSelect = props => {
 				value={value}
 				error={error}
 				onChange={onChange}
-				input={<OutlinedInput labelWidth={getLabelWidth()} variant={'outlined'} /* classes={{ root: classes.label }} / */ />}
+				input={<OutlinedInput labelWidth={getLabelWidth()} variant={'outlined'} />}
 				onKeyPress={onKeyPress}
 			>
 				{!simple && menuItems.map((m, i) => {

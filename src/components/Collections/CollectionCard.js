@@ -4,7 +4,9 @@ import React, { Fragment } from 'react';
 import { dateFormat, dateFormatter } from 'variables/functions';
 import { DataUsage, Edit } from 'variables/icons';
 
-//@andrei
+/**
+ * Unused - Deprecation
+ */
 const CollectionCard = props => {
 	const { d, t, history } = props
 
