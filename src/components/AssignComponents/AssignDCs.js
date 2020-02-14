@@ -1,4 +1,4 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ import { useLocalization } from 'hooks';
 
 // @Andrei
 const AssignDCS = props => {
+	const classes = assignStyles()
 	const t = useLocalization()
 	const [project, setProject] = useState(props.project)
 	const [collections, setCollections] = useState([])
@@ -117,7 +118,7 @@ const AssignDCS = props => {
 	//#endregion
 
 	// const { collections, filters } = this.state
-	const { classes, open } = props;
+	const { open } = props;
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
@@ -210,4 +211,4 @@ AssignDCS.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(assignStyles)(AssignDCS);
+export default AssignDCS
