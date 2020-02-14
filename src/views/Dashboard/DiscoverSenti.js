@@ -1,4 +1,4 @@
-import { Hidden, Typography, withStyles, Slide } from '@material-ui/core';
+import { Hidden, Typography, Slide } from '@material-ui/core';
 import AnalyticsImg from 'assets/img/Rounded/analytics.svg';
 import HostingImg from 'assets/img/Rounded/hosting.svg';
 import StorageImg from 'assets/img/Rounded/storage.svg';
@@ -10,13 +10,13 @@ import { useLocalization } from 'hooks';
 
 // @Andrei
 const DiscoverSenti = props => {
+	const classes = discoverSentiStyle()
 	const t = useLocalization()
 	const goTo = (where) => e => {
 		e.preventDefault()
 		props.history.push(where)
 	}
 
-	const { classes } = props
 	return (
 		<Hidden mdDown>
 			<Slide in={true} style={{ transitionDelay: 100 }}>
@@ -60,4 +60,4 @@ const DiscoverSenti = props => {
 	)
 }
 
-export default withStyles(discoverSentiStyle)(DiscoverSenti)
+export default DiscoverSenti
