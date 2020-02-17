@@ -66,7 +66,8 @@ const Sensor = props => {
 				hashLinks: true
 			})
 			setBC('sensor', sensor.name)
-			let prevURL = location.state ? location.prevURL : `/sensors/list`
+
+			let prevURL = location.prevURL ? location.prevURL : `/sensors/list`
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
 	}, [location, sensor, setBC, setHeader, setTabs, t])
