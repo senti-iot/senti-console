@@ -3,18 +3,28 @@ import { InfoCard, ItemGrid, Caption, Info, Dropdown, Muted } from 'components';
 import { Grid, Link } from '@material-ui/core';
 import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
 import { Link as RLink } from 'react-router-dom'
-import { useLocalization } from 'hooks'
 var countries = require('i18n-iso-countries')
 
 //@Andrei
 const OrgDetails = props => {
-	const t = useLocalization()
-	const { org, devices, accessLevel, isFav, addToFav, removeFromFav } = props
+	//Hooks
 
-	const handleDeleteOrg = () => {
-		props.deleteOrg()
-	}
-	const handleEdit = () => props.history.push({ pathname: `${props.match.url}/edit`, prevURL: `/management/org/${props.org.id}` })
+	//Redux
+
+	//State
+
+	//Const
+	const { org, devices, accessLevel, isFav, addToFav, removeFromFav, t, history, match, deleteOrg, language } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+
+	const handleDeleteOrg = () => deleteOrg()
+	const handleEdit = () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/org/${org.id}` })
 
 	const options = () => {
 		let allOptions = [
@@ -82,7 +92,7 @@ const OrgDetails = props => {
 							{t('orgs.fields.country')}
 						</Caption>
 						<Info>
-							{org.country.length === 2 ? countries.getName(org.country, props.language)
+							{org.country.length === 2 ? countries.getName(org.country, language)
 								: org.country}
 						</Info>
 					</ItemGrid>

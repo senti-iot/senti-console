@@ -4,13 +4,13 @@ import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/cor
 import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import { useLocalization } from 'hooks'
 
 // @Andrei
 const OrgDevices = props => {
-	const t = useLocalization()
+	const { devices, t } = props
+	const classes = devicetableStyles()
+
 	const renderIcon = (status) => {
-		const { classes } = props
 		switch (status) {
 			case 1:
 				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
@@ -31,7 +31,6 @@ const OrgDevices = props => {
 		}
 	}
 
-	const { devices, classes } = props
 	return (
 		<InfoCard
 			title={t('devices.pageTitle')}
@@ -53,16 +52,16 @@ const OrgDevices = props => {
 									style={{ cursor: 'pointer', padding: '0 20px' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox className={classes.orgDevicesTD} content={renderIcon(n.liveStatus)} />
+										<TC checkbox /* className={classes.orgDevicesTD} */ content={renderIcon(n.liveStatus)} />
 										<TC content={
 											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-													<Info noWrap paragraphCell={classes.noMargin}>
+													<Info noWrap /* paragraphCell={classes.noMargin} */>
 														{`${n.name} - ${n.id}`}
 													</Info>
 												</ItemGrid>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-													<Caption noWrap className={classes.noMargin}>
+													<Caption noWrap /* className={classes.noMargin} */>
 
 													</Caption>
 												</ItemGrid>
@@ -72,7 +71,7 @@ const OrgDevices = props => {
 
 									</Hidden>
 									<Hidden mdDown>
-										<TC checkbox className={classes.orgDevicesTD} content={renderIcon(n.liveStatus)} />
+										<TC checkbox /* className={classes.orgDevicesTD} */ content={renderIcon(n.liveStatus)} />
 										<TC checkbox label={n.id} />
 										<TC label={n.name} />
 									</Hidden>
@@ -86,4 +85,4 @@ const OrgDevices = props => {
 	)
 }
 
-export default withStyles(devicetableStyles)(OrgDevices)
+export default OrgDevices

@@ -6,11 +6,6 @@ import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
-
-// const AsyncHoliday = Loadable({
-// 	loader: () => import('routes/holiday'),
-// 	loading: AsyncLoader
-// })
 const AsyncTokens = Loadable({
 	loader: () => import('routes/tokens'),
 	loading: AsyncLoader
@@ -229,12 +224,6 @@ const dashboardRoutes = [
 		component: AsyncSettings,
 		menuRoute: 'settings'
 	},
-	// {
-	// 	path: '/holiday',
-	// 	sidebarName: "",
-	// 	component: AsyncHoliday,
-	// 	hideFromSideBar: true
-	// },
 	{
 		path: '/404',
 		sidebarName: 'Error',

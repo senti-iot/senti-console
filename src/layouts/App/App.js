@@ -38,7 +38,6 @@ function App(props) {
 	const classes = makeStyles(appStyle)()
 	const history = useHistory()
 	const dispatch = useDispatch()
-
 	const t = useLocalization()
 	//#endregion
 
@@ -168,37 +167,6 @@ function App(props) {
 									t={t}
 								/>
 								<Switch>
-									{/* {cookie.load('SESSION') ?
-										dashboardRoutes.map((prop, key) => {
-											if (prop.dropdown) {
-												return prop.items.map((r, key) => {
-													return <Route path={r.path}
-														render={rProps =>
-															<r.component {...rProps}
-																setBC={handleSetBreadCrumb}
-																setHeader={handleSetHeaderTitle}
-																setTabs={handleSetTabs} />
-														}
-														key={r.menuRoute + key}
-													/>
-												})
-											}
-											if (prop.redirect) {
-												return <Redirect from={prop.path} to={prop.to} key={key} />;
-											}
-											return <Route path={prop.path}
-												render={(routeProps) =>
-													<prop.component {...routeProps}
-														setBC={handleSetBreadCrumb}
-														setHeader={handleSetHeaderTitle}
-														setTabs={handleSetTabs}
-													/>} key={key} />;
-										})
-										: <Redirect from={window.location.pathname} to={{
-											pathname: '/login', state: {
-												prevURL: window.location.pathname
-											}
-										}} />} */}
 									{cookie.load('SESSION') ?
 										dashboardRoutes.map((prop, key) => {
 											if (prop.dropdown) {

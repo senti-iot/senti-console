@@ -4,12 +4,12 @@ import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/cor
 import { SignalWifi2Bar, DataUsage } from 'variables/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import { useLocalization } from 'hooks'
 
 const OrgCollections = props => {
-	const t = useLocalization()
+	const classes = devicetableStyles()
+	const { collections, t } = props
+
 	const renderIcon = (status) => {
-		const { classes } = props
 		switch (status) {
 			case 1:
 				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
@@ -32,7 +32,6 @@ const OrgCollections = props => {
 		}
 	}
 
-	const { collections, classes } = props
 	return (
 		<InfoCard
 			title={t('collections.pageTitle')}
@@ -54,16 +53,16 @@ const OrgCollections = props => {
 									style={{ cursor: 'pointer', padding: '0 20px' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox className={classes.orgDevicesTD} content={renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
+										<TC checkbox /* className={classes.orgDevicesTD} */ content={renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 										<TC content={
 											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-													<Info noWrap paragraphCell={classes.noMargin}>
+													<Info noWrap/*  paragraphCell={classes.noMargin} */>
 														{`${n.name} - ${n.id}`}
 													</Info>
 												</ItemGrid>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-													<Caption noWrap className={classes.noMargin}>
+													<Caption noWrap /* className={classes.noMargin} */>
 
 													</Caption>
 												</ItemGrid>
@@ -73,7 +72,7 @@ const OrgCollections = props => {
 
 									</Hidden>
 									<Hidden mdDown>
-										<TC checkbox className={classes.orgDevicesTD} content={renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
+										<TC checkbox /* className={classes.orgDevicesTD} */ content={renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 										<TC checkbox label={n.id} />
 										<TC label={n.name} />
 									</Hidden>
@@ -87,4 +86,4 @@ const OrgCollections = props => {
 	)
 }
 
-export default withStyles(devicetableStyles)(OrgCollections)
+export default OrgCollections

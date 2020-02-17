@@ -1,18 +1,14 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, withStyles,
+	TableRow
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
 import React, { Fragment, useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
 import TableHeader from 'components/Table/TableHeader'
 import { Info, ItemG, Caption } from 'components'
 import { useSelector, useDispatch } from 'react-redux'
 import TP from 'components/Table/TP'
 import { isFav, /* addToFav, removeFromFav, */ finishedSaving } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
 import OrgHover from 'components/Hover/OrgHover';
 import { useLocalization, useSnackbar } from 'hooks'
 var countries = require('i18n-iso-countries')
@@ -245,8 +241,4 @@ const OrgTable = props => {
 	)
 }
 
-OrgTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
-
-export default withSnackbar()(withRouter(withStyles(devicetableStyles, { withTheme: true })))(OrgTable)
+export default OrgTable
