@@ -1,10 +1,11 @@
 import React, { /* useState */ } from 'react'
 import breadcrumbs from 'routes/breadcrumbs';
 import { Link } from 'react-router-dom'
-import { Typography, withStyles, /* IconButton */ Link as MuiLink } from '@material-ui/core';
+import { Typography, makeStyles, withStyles, /* IconButton */ Link as MuiLink } from '@material-ui/core';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { useSelector } from 'react-redux'
+import { useLocalization } from 'hooks'
 
 const ExpansionPanelSummary = withStyles({
 	root: {
@@ -28,7 +29,7 @@ const ExpansionPanelSummary = withStyles({
 
 ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	breadcrumbs: {
 		display: 'flex',
 		margin: "24px 24px 0px 24px",
@@ -36,13 +37,15 @@ const styles = theme => ({
 			margin: "8px 8px 0px 8px"
 		}
 	},
-})
+}))
 
 // const mapStateToProps = (state) => ({
 // 	globalBC: state.settings.breadcrumbs
 // })
 
 const BC = props => {
+	const t = useLocalization()
+	const classes = styles()
 	//Hooks
 	//Redux
 	const globalBC = useSelector(store => store.settings.breadcrumbs)
@@ -52,7 +55,7 @@ const BC = props => {
 
 	//Const
 
-	const { defaultRoute, bc, t, classes } = props
+	const { defaultRoute, bc } = props
 	// const { open } = this.state
 	const bcs = breadcrumbs(t, bc.name, bc.extra)[bc.id]
 	return (
@@ -89,4 +92,4 @@ const BC = props => {
 	)
 }
 
-export default withStyles(styles)(BC)
+export default BC

@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ import { updateCollection, getCollection } from 'variables/dataCollections';
 import { useLocalization } from 'hooks'
 
 const AssignProject = props => {
+	const classes = assignStyles()
 	const t = useLocalization()
 	const [projects, setProjects] = useState([])
 	const [selectedProject, setSelectedProject] = useState({ id: 0 })
@@ -102,7 +103,7 @@ const AssignProject = props => {
 		// })
 	}
 
-	const { classes, open, handleCancel } = props;
+	const { open, handleCancel } = props;
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
@@ -198,7 +199,7 @@ const AssignProject = props => {
 }
 
 AssignProject.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 	open: PropTypes.bool.isRequired,
 	// t: PropTypes.func.isRequired,
 	handleClose: PropTypes.func.isRequired,
@@ -206,4 +207,4 @@ AssignProject.propTypes = {
 	collectionId: PropTypes.array.isRequired,
 };
 
-export default withStyles(assignStyles)(AssignProject);
+export default AssignProject

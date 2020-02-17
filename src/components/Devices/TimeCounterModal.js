@@ -1,7 +1,7 @@
 /* eslint-disable indent */
-import { Grid, Button, Modal, withStyles, Typography, Fab, } from '@material-ui/core';
+import { Grid, Button, Modal, Typography, Fab, } from '@material-ui/core';
 import React, { Fragment, useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { ItemGrid } from 'components';
 import moment from 'moment'
 import { OpenInBrowser, Timer, Done, Restore } from 'variables/icons'
@@ -17,6 +17,7 @@ import { useLocalization } from 'hooks';
  */
 
 const TimeCounterModal = props => {
+	const classes = countermodalStyles()
 	const t = useLocalization()
 	const timeCounter = useRef(null)
 	const tcount = useSelector(state => state.settings.tcount)
@@ -171,7 +172,7 @@ const TimeCounterModal = props => {
 		return true
 	}
 
-	const { classes } = props;
+	// const { classes } = props;
 	// const { started, finished } = this.state
 	return (
 		<Fragment>
@@ -242,7 +243,7 @@ const TimeCounterModal = props => {
 }
 
 TimeCounterModal.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(countermodalStyles)(TimeCounterModal)
+export default TimeCounterModal

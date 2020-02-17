@@ -1,8 +1,8 @@
 /* eslint-disable indent */
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React, { Fragment, useState, useEffect } from 'react';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { updateDevice } from 'variables/dataDevices'
@@ -16,6 +16,7 @@ import { useLocalization } from 'hooks'
 
 
 const AssignOrg = React.memo(props => {
+	const classes = assignStyles()
 	const t = useLocalization()
 	const [orgs, setOrgs] = useState([])
 	const [selectedOrg, setSelectedOrg] = useState(null)
@@ -91,7 +92,7 @@ const AssignOrg = React.memo(props => {
 		// 	}
 		// })
 	}
-	const { classes, open } = props;
+	const { open } = props;
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	});
@@ -184,7 +185,7 @@ const AssignOrg = React.memo(props => {
 })
 
 AssignOrg.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(assignStyles)(AssignOrg);
+export default AssignOrg
