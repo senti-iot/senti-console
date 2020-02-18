@@ -1,9 +1,10 @@
-import { primaryColor, leftIcon } from '../../material-dashboard-react';
+import { leftIcon } from '../../material-dashboard-react';
+import { makeStyles } from '@material-ui/core';
 
-export const userStyles = theme => ({
+const userStyles = makeStyles(theme => ({
 	leftIcon: leftIcon,
 	root: {
-		backgroundColor: primaryColor,
+		backgroundColor: theme.palette.primary.main,
 		width: "100%",
 		height: "150px",
 		[theme.breakpoints.down("sm")]: {
@@ -15,7 +16,7 @@ export const userStyles = theme => ({
 	},
 	img: {
 		borderRadius: "250px",
-		[theme.breakpoints.up("sm")]: { 
+		[theme.breakpoints.up("sm")]: {
 			width: 175,
 			height: 175
 		},
@@ -23,15 +24,10 @@ export const userStyles = theme => ({
 			width: 250,
 			height: 250
 		}
-		// [theme.breakpoints.up("sm")]: {
-			
-		// },
-		// [theme.breakpoints.down("sm")]: {
-		// 	width: 50,
-		// 	height: 50
-		// }
 	},
 	chip: {
 		margin: 4
 	}
-})
+}))
+
+export default userStyles

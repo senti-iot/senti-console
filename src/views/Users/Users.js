@@ -87,15 +87,15 @@ const Users = props => {
 	}
 
 	const options = () => {
-		let user = users[users.findIndex(d => d.uuid === selected[0])]
+		let user = users[users.findIndex(d => d.id === selected[0])]
 		let favObj
 		let isFavorite = false
 		if (user) {
 			favObj = {
-				id: user.uuid,
+				id: user.id,
 				name: `${user.firstName} ${user.lastName}`,
 				type: 'user',
-				path: `/management/user/${user.uuid}`
+				path: `/management/user/${user.id}`
 			}
 			isFavorite = dispatch(isFav(favObj))
 		}
@@ -169,7 +169,7 @@ const Users = props => {
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			setSelected(handleFilterItems(users).map(n => n.uuid))
+			setSelected(handleFilterItems(users).map(n => n.id))
 			return;
 		}
 		setSelected([])
@@ -238,7 +238,7 @@ const Users = props => {
 			<div>
 				{openDelete ? selected.map(s => {
 					let u = users[users.findIndex(d => d.id === s)]
-					return <Info key={u.uuid}>&bull;{u.firstName + ' ' + u.lastName}</Info>
+					return <Info key={u.id}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 				})
 					: null}
 			</div>
