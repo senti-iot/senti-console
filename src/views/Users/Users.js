@@ -222,7 +222,6 @@ const Users = props => {
 
 	const handleAddNewUser = () => { history.push('/management/users/new') }
 
-
 	//Renders
 	const renderConfirmDelete = () => <Dialog
 		keepMounted={false}

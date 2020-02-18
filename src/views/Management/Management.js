@@ -6,7 +6,7 @@ import CreateOrg from 'components/Orgs/CreateOrg';
 import Orgs from 'views/Orgs/Orgs';
 import { CircularLoader, GridContainer } from 'components';
 import { People, Business, StarBorder, Star, Person } from 'variables/icons';
-import { filterItems, handleRequestSort } from 'variables/functions';
+import { handleRequestSort } from 'variables/functions';
 import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites';
 import { useSelector, useDispatch } from 'react-redux'
 import FavoritesTable from 'components/Favorites/FavoritesTable';
@@ -38,7 +38,6 @@ const Management = props => {
 	const [order, setOrder] = useState('asc')
 	const [orderBy, setOrderBy] = useState('name')
 	const [selected, setSelected] = useState([])
-	const [filters, setFilters] = useState({ keyword: '', custom: [] })
 
 	//Const
 	const { setHeader, setTabs } = props
@@ -113,41 +112,12 @@ const Management = props => {
 			dispatch(setOrgs())
 		}
 		sortData('users', 'firstName', 'asc')
-		// this.props.sortData('users', 'firstName', 'asc')
 	}
 
-	// componentDidMount = async () => {
-	// 	this.handleTabs()
-	// 	this.getData()
-	// }
-	// componentDidUpdate = (prevProps, prevState) => {
-	// 	if (this.props.location.pathname !== prevProps.location.pathname) {
-	// 		this.props.setTabs({
-	// 			id: 'management',
-	// 			tabs: this.tabs,
-	// 			route: this.handleTabs()
-	// 		})
-	// 	}
-	// 	if (window.location.pathname.includes('favorites')) {
-	// 		this.props.setBC('favorites')
-	// 		if (this.props.saved === true) {
-	// 			this.props.finishedSaving()
-	// 			this.setState({ selected: [] })
-	// 			this.props.s('snackbars.favorite.manyRemoved')
-	// 		}
-	// 	}
-	// }
 	const handleReload = () => {
 		handleGetData(true)
-		handleFilterKeyword('')
 	}
 
-	const handleFilterKeyword = (value) => {
-		setFilters({
-			...filters,
-			keyword: value
-		})
-	}
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
@@ -170,9 +140,7 @@ const Management = props => {
 
 
 	const handleFilterFavorites = (data) => customFilterItems(data, filtersFavorites)
-	const handleFilterItems = (data) => {
-		return filterItems(data, filters)
-	}
+
 	const handleRemoveFromFavs = () => {
 
 		selected.forEach(f => {
@@ -244,17 +212,19 @@ const Management = props => {
 			}
 		</GridContainer>
 	}
-
+	console.log(props)
 	return (
 		<Switch>
 			<Route path={`${props.path}/users/new`}>
 				<CreateUser {...props} />
 			</Route>
 			<Route path={`${props.path}/users`} >
-				{loadingUsers ? <CircularLoader /> : <Users {...props} t={t} reload={handleReload} users={handleFilterItems(users)} />}
+				{loadingUsers ? <CircularLoader /> : <Users {...props} reload={handleReload} users={users} />}
 			</Route>
 			<Route path={`${props.path}/orgs/new`} component={(rp) => <CreateOrg {...props} />} />
-			<Route path={`${props.path}/orgs`} render={(rp) => loadingOrgs ? <CircularLoader /> : <Orgs {...props} reload={handleReload} orgs={handleFilterItems(orgs)} />} />
+			<Route path={`${props.path}/orgs`}>
+				{loadingOrgs ? <CircularLoader /> : <Orgs {...props} reload={handleReload} orgs={orgs} />}
+			</Route>
 			<Route path={`${props.path}/favorites`} render={() => renderFavorites()} />
 			<Redirect from={'/management'} to={'/management/users'} />
 		</Switch>

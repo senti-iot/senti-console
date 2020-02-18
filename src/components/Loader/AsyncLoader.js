@@ -26,7 +26,6 @@ const AsyncLoader = (props) => {
 		return <CircularLoader />
 	}
 	else if (props.error) {
-		console.log(props.error)
 		return <GridContainer>
 			<Paper className={props.classes.paper}>
 				<ItemG container alignItems={'center'} direction={'column'}>

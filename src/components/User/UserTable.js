@@ -4,8 +4,6 @@ import {
 	TableRow, Typography
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
 import React, { Fragment, useState, useEffect } from 'react'
 // import { useHistory } from 'react-router-dom'
 import TableHeader from 'components/Table/TableHeader'
@@ -13,63 +11,40 @@ import { useSelector, useDispatch } from 'react-redux'
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
-import { isFav, /* addToFav, removeFromFav, */ finishedSaving } from 'redux/favorites';
-// import withSnackbar from 'components/Localization/S';
+import { isFav, finishedSaving } from 'redux/favorites';
 import UserHover from 'components/Hover/UserHover';
 import { useSnackbar, useLocalization, useHistory } from 'hooks'
-var moment = require('moment')
+import usertableStyles from 'assets/jss/components/users/usertableStyles'
+import moment from 'moment'
 
-// const mapStateToProps = (state) => ({
-// 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-// 	accessLevel: state.settings.user.privileges,
-// 	language: state.settings.language,
-// 	favorites: state.data.favorites,
-// 	saved: state.favorites.saved,
-// 	hoverTime: state.settings.hoverTime
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
-
-// @Andrei
 const UserTable = props => {
-	const classes = devicetableStyles()
+	//Hooks
+	const classes = usertableStyles()
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const history = useHistory()
 	const dispatch = useDispatch()
 
+	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
-	// const accessLevel = useSelector(state => state.settings.user.privileges)
 	const language = useSelector(state => state.settings.language)
-	// const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
 	const hoverTime = useSelector(state => state.settings.hoverTime)
 
-	let timer = null
-
-	const [/* stateSelected */, setStateSelected] = useState([]) // added
+	//State
 	const [rowHover, setRowHover] = useState(null) // added
 	const [hoverUser, setHoverUser] = useState(null) // added
-	const [data, /* setData */] = useState([])
 	const [page, setPage] = useState(0)
-	// const [openDelete, setOpenDelete] = useState(false)
-	// constructor(props) {
-	// 	super(props);
 
-	// 	this.state = {
-	// 		data: [],
-	// 		page: 0,
-	// 		openDelete: false,
-	// 	}
-	// }
+	//Const
+	const { selected, order, orderBy, data } = props
+	let timer = null
+	let emptyRows;
+	if (data)
+		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+	//useCallbacks
 
-	// timer = null
-
+	//useEffects
 	useEffect(() => {
 		if (saved === true) {
 			const { data, selected } = props
@@ -78,36 +53,16 @@ const UserTable = props => {
 				if (dispatch(isFav({ id: user.id, type: 'user' }))) {
 					s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
 					dispatch(finishedSaving())
-					setStateSelected([])
-					// this.setState({ selected: [] })
 				}
 				if (!dispatch(isFav({ id: user.id, type: 'user' }))) {
 					s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
 					dispatch(finishedSaving())
-					setStateSelected([])
-					// this.setState({ selected: [] })
 				}
 			}
 		}
 	}, [dispatch, props, s, saved, t])
-	// componentDidUpdate = () => {
-	// 	if (this.props.saved === true) {
-	// 		const { data, selected } = this.props
-	// 		let user = data[data.findIndex(d => d.id === selected[0])]
-	// 		if (user) {
-	// 			if (this.props.isFav({ id: user.id, type: 'user' })) {
-	// 				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
-	// 				this.props.finishedSaving()
-	// 				this.setState({ selected: [] })
-	// 			}
-	// 			if (!this.props.isFav({ id: user.id, type: 'user' })) {
-	// 				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
-	// 				this.props.finishedSaving()
-	// 				this.setState({ selected: [] })
-	// 			}
-	// 		}
-	// 	}
-	// }
+
+	//Handlers
 
 
 	const handleRequestSort = (event, property) => {
@@ -116,30 +71,24 @@ const UserTable = props => {
 
 	const handleChangePage = (event, newpage) => {
 		setPage(newpage)
-		// this.setState({ page });
 	}
 	const isSelectedFunc = id => props.selected.indexOf(id) !== -1
+
 	const setHover = (e, n) => {
 		e.persist()
-		// const { hoverTime } = this.props
-		// const { rowHover } = this.state
 		if (hoverTime > 0)
 			timer = setTimeout(() => {
 				if (rowHover) {
 					setRowHover(null)
-					// this.setState({
-					// 	rowHover: null
-					// })
+
 					setTimeout(() => {
-						setRowHover(e.target)
 						setHoverUser(n)
-						// this.setState({ rowHover: e.target, hoverUser: n })
+						setRowHover(e.target)
 					}, 200);
 				}
 				else {
-					setRowHover(e.target)
 					setHoverUser(n)
-					// this.setState({ rowHover: e.target, hoverUser: n })
+					setRowHover(e.target)
 				}
 			}, hoverTime);
 	}
@@ -148,19 +97,11 @@ const UserTable = props => {
 	}
 	const unsetHover = () => {
 		setRowHover(null)
-		// this.setState({
-		// 	rowHover: null
-		// })
 	}
 	const renderHover = () => {
 		return <UserHover anchorEl={rowHover} handleClose={unsetHover} user={hoverUser} />
 	}
 
-	const { selected, order, orderBy, /* classes */ } = props
-	// const { page } = this.state
-	let emptyRows;
-	if (data)
-		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 	return (
 		<Fragment>
 			<div className={classes.tableWrapper} onMouseLeave={unsetHover}>
@@ -175,7 +116,6 @@ const UserTable = props => {
 						rowCount={data ? data.length : 0}
 						columnData={props.tableHead}
 						t={t}
-						classes={classes}
 						customColumn={[{
 							id: 'avatar', label: <div style={{ width: 40 }} />
 						}, {
@@ -189,8 +129,6 @@ const UserTable = props => {
 							return (
 								<TableRow
 									hover
-									// onMouseEnter={e => { this.setHover(e, n) }}
-									// onMouseLeave={this.unsetTimeout}
 									onClick={e => { e.stopPropagation(); history.push('/management/user/' + n.id) }}
 									role='checkbox'
 									aria-checked={isSelected}
@@ -245,7 +183,6 @@ const UserTable = props => {
 			</div>
 			<TP
 				count={data ? data.length : 0}
-				classes={classes}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				t={t}
@@ -253,10 +190,6 @@ const UserTable = props => {
 			/>
 		</Fragment>
 	)
-}
-
-UserTable.propTypes = {
-	classes: PropTypes.object.isRequired,
 }
 
 export default UserTable

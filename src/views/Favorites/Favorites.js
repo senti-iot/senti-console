@@ -180,7 +180,6 @@ const Favorites = props => {
 
 	const handleClick = id => e => {
 		e.stopPropagation()
-		console.log(match.path)
 		history.push({ pathname: id, prevURL: match.path })
 	}
 	const renderTableToolBar = () => {

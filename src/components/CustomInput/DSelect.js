@@ -29,7 +29,6 @@ const DSelect = props => {
 	//Handlers
 
 	const getLabelWidth = () => {
-		console.log(inputRef)
 		if (inputRef.current) {
 			return labelWidth
 		}

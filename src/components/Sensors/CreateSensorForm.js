@@ -148,7 +148,6 @@ const CreateSensorForm = props => {
 	}
 
 	const renderMetadataInbound = () => {
-		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.inbound.map((p, i) => {
 				return <ItemGrid xs={12} key={'inbound' + i} container alignItems={'center'}>
