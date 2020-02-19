@@ -85,7 +85,7 @@ const CloudFunction = props => {
 			})
 
 			let prevURL = location.prevURL ? location.prevURL : '/functions/list'
-			setHeader('sidebar.cloudfunction', true, prevURL, 'functions')
+			setHeader('sidebar.cloudfunction', true, prevURL, 'manage.cloudfunctions')
 			setBC('cloudfunction', cloudfunction.name)
 		}
 	}, [cloudfunction, location.prevURL, setBC, setHeader, setTabs, t])

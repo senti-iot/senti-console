@@ -4,7 +4,7 @@ import SensorTable from 'components/Sensors/SensorTable';
 import TableToolbar from 'components/Table/TableToolbar';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
-// import { handleRequestSort } from 'variables/functions';
+import { handleRequestSort as handleRS } from 'variables/functions';
 import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block, DeviceHub } from 'variables/icons';
 import { GridContainer, CircularLoader, DeleteDialog } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -157,7 +157,7 @@ const Sensors = props => {
 		let favSensors = favs.map(f => {
 			return devices[devices.findIndex(d => d.id === f.id)]
 		})
-		favSensors = handleRequestSort(orderBy, order, favSensors)
+		favSensors = handleRS(orderBy, order, favSensors)
 		return favSensors
 	}
 	const addToFavorites = (favObj) => {
@@ -302,6 +302,7 @@ const Sensors = props => {
 	}
 
 	const renderTable = (items, handleClick, key) => {
+		console.log(items)
 		return <SensorTable
 			data={filterItems(items)}
 			handleCheckboxClick={handleCheckboxClick}
@@ -322,10 +323,11 @@ const Sensors = props => {
 	}
 
 	const renderFavorites = () => {
+		let items = getFavorites()
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{renderTableToolBar()}
-				{renderTable(getFavorites(), handleFavClick, 'favorites')}
+				{renderTable(items, handleFavClick, 'favorites')}
 				{renderDeleteDialog()}
 			</Paper>
 			}
