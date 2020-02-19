@@ -1,87 +1,120 @@
-import React, { Component, Fragment } from 'react'
+import React, { /* Component, */ Fragment, useEffect, useState } from 'react'
 import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
 import OrgTable from 'components/Orgs/OrgTable';
-import { People, Business, PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
-import { handleRequestSort } from 'variables/functions'
+import { /* People, Business, */ PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
+// import { handleRequestSort } from 'variables/functions'
 import { deleteOrg } from 'variables/dataOrgs';
 import TableToolbar from 'components/Table/TableToolbar';
 import { customFilterItems } from 'variables/Filters';
+import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import orgsStyles from 'assets/jss/components/orgs/orgsStyles';
 
-class Orgs extends Component {
-	constructor(props) {
-		super(props)
+const Orgs = props => {
+	//Hooks
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const classes = orgsStyles()
+	//Redux
+	const filters = useSelector(state => state.appState.filters.orgs)
+	const saved = useSelector(state => state.favorites.saved)
 
-		this.state = {
-			selected: [],
-			openDelete: false,
-			loading: true,
-			route: 1,
-			order: 'asc',
-			orderBy: 'name',
-			filters: {
-				keyword: '',
+	//State
+	const [selected, setSelected] = useState([])
+	const [openDelete, setOpenDelete] = useState(false)
+	// const [loading, setLoading] = useState(true)
+	// const [route, setRoute] = useState(1)
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('name')
+	// const [filters, setFilters] = useState({ keyword: '' })
+
+	//Const
+	const { orgs, setHeader, setBC } = props
+
+	const dHasOrgParent = [
+		{ value: true, label: t("filters.orgs.hasParentOrg") },
+		{ value: false, label: t("filters.orgs.noParentOrg") }
+	]
+
+	const ftOrgs = [
+		{ key: 'name', name: t('orgs.fields.name'), type: 'string' },
+		{ key: 'address', name: t('orgs.fields.address'), type: 'string' },
+		{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
+		{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
+		{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
+		{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
+		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+	]
+
+
+	//UseEffect
+
+
+	useEffect(() => {
+		setHeader('orgs.pageTitle', false, '', 'users')
+		setBC('orgs')
+		//eslint-disable-next-line
+	}, [])
+
+	useEffect(() => {
+		if (saved === true) {
+			let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
+			if (org) {
+				if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+					s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
+					dispatch(finishedSaving())
+				}
+				if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+					s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
+					dispatch(finishedSaving())
+				}
 			}
 		}
-		props.setHeader('orgs.pageTitle', false, '', 'users')
-		props.setBC('orgs')
+
+	}, [saved, selected, dispatch, orgs, s, t])
+
+	//Handlers
+	const handleAddToFav = (favObj) => {
+		dispatch(addToFav(favObj))
 	}
-	reload = async () => {
-		this.setState({ loading: true })
-		await this.props.reload()
+	const handleRemoveFromFav = (favObj) => {
+		dispatch(removeFromFav(favObj))
 	}
-	options = () => {
-		const { t, accessLevel, isFav, orgs } = this.props
-		const { selected } = this.state
+	const options = () => {
 		let org = orgs[orgs.findIndex(d => d.id === selected[0])]
 		let favObj
 		let isFavorite = false
 		if (org) {
 			favObj = {
-			   id: org.id,
-			   name: org.name,
-			   type: 'org',
-			   path: `/management/org/${org.id}`
-		   }
-			isFavorite = isFav(favObj)
+				id: org.id,
+				name: org.name,
+				type: 'org',
+				path: `/management/org/${org.id}`
+			}
+			isFavorite = dispatch(isFav(favObj))
 		}
 
 		let allOptions = [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => handleRemoveFromFav(favObj) : () => handleAddToFav(favObj) },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
 		]
-		if (accessLevel.apiorg.edit)
-			return allOptions
-		else return [
-			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
-		]
+		return allOptions
+		// if (accessLevel.apiorg.edit)
+		// 	return allOptions
+		// else return [
+		// 	{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+		// 	{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
+		// ]
 	}
-	dHasOrgParent = () => {
-		const { t } = this.props
-		return [
-			{ value: true, label: t("filters.orgs.hasParentOrg") },
-			{ value: false, label: t("filters.orgs.noParentOrg") }
-		]
-	 }
-	ftOrgs = () => {
-		const { t } = this.props
-		return [
-			{ key: 'name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'address', name: t('orgs.fields.address'), type: 'string' },
-			{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
-			{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
-			{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: this.dHasOrgParent(), values: { false: [-1] } } },
-			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
-		]
-	}
-	handleCheckboxClick = (event, id) => {
+
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -97,113 +130,85 @@ class Orgs extends Component {
 				selected.slice(selectedIndex + 1),
 			);
 		}
+		setSelected(newSelected)
+	}
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
+	}
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
+	}
 
-		this.setState({ selected: newSelected })
-	}
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
+	const handleEdit = () => {
+		history.push(`/management/org/${selected[0]}/edit`)
 	}
 
-	handleEdit = () => {
-		this.props.history.push(`/management/org/${this.state.selected[0]}/edit`)
-	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
-	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
-	}
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-	handleDeleteOrg = async () => {
-		await this.handleDeleteOrgs()
-		this.setState({
-			selected: [],
-			anchorElMenu: null,
-			openDelete: false
+	const handleDeleteOrgs = async () => {
+		await selected.forEach(async u => {
+			await deleteOrg(u)
 		})
+		await props.reload()
+		snackBarMessages(1)
+		setSelected([])
+		setOpenDelete(false)
 	}
-	handleSelectAllClick = (event, checked) => {
+	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.filterItems(this.props.orgs).map(n => n.id) })
+			setSelected([filterItems(orgs).map(n => n.id)])
 			return;
 		}
-		this.setState({ selected: [] })
-	}
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
+		setSelected([])
 	}
 
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
-	}
-
-	orgsHeader = () => {
-		const { t } = this.props
-		return [
-			{ id: 'name', label: t('orgs.fields.name') },
-			{ id: 'address', label: t('orgs.fields.address') },
-			{ id: 'city', label: t('orgs.fields.city') },
-			{ id: 'url', label: t('orgs.fields.url') },
-		]
-	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		await this.getData()
-		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/management/orgs')) {
-				this.setState({ route: 1 })
-			}
-			else {
-				this.setState({ route: 0 })
-			}
-		}
-	}
-	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.orgs !== this.props.orgs) {
-			if (this.state.selected.length > 0)
-				if (this.state.selected.length > 0) {
-					let newSelected = this.state.selected.filter(s => this.props.orgs.findIndex(u => u.id === s) !== -1 ? true : false)
-					this.setState({ selected: newSelected })
-				}
-			this.getData()
-		}
-	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
-	}
-	handleRequestSort = (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
-		}
-		handleRequestSort(property, order, this.props.orgs)
-		// this.props.sortData('orgs', property, order)
-		this.setState({ order, orderBy: property })
-	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		return customFilterItems(data, rFilters)
-	}
-
-	getData = async () => {
-
-	}
-
-	tabs = [
-		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
-		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+	const orgsHeader = [
+		{ id: 'name', label: t('orgs.fields.name') },
+		{ id: 'address', label: t('orgs.fields.address') },
+		{ id: 'city', label: t('orgs.fields.city') },
+		{ id: 'url', label: t('orgs.fields.url') },
 	]
-	
-	addNewOrg = () => { this.props.history.push('/management/orgs/new') }
+	// const componentDidMount = async () => {
+	// 	this._isMounted = 1
+	// 	await this.getData()
+	// 	if (this._isMounted) {
+	// 		if (this.props.location.pathname.includes('/management/orgs')) {
+	// 			this.setState({ route: 1 })
+	// 		}
+	// 		else {
+	// 			this.setState({ route: 0 })
+	// 		}
+	// 	}
+	// }
+	// componentDidUpdate = async (prevProps, prevState) => {
+	// 	if (prevProps.orgs !== this.props.orgs) {
+	// 		if (this.state.selected.length > 0)
+	// 			if (this.state.selected.length > 0) {
+	// 				let newSelected = this.state.selected.filter(s => this.props.orgs.findIndex(u => u.id === s) !== -1 ? true : false)
+	// 				this.setState({ selected: newSelected })
+	// 			}
+	// 		this.getData()
+	// 	}
+	// }
+	// componentWillUnmount = () => {
+	// 	this._isMounted = 0
+	// }
+	const handleRequestSort = (event, property, way) => {
+		let nOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			nOrder = 'asc'
+		}
+		handleRequestSort(property, nOrder, orgs)
+		setOrder(nOrder)
+		setOrderBy(property)
+	}
+	const filterItems = (data) => {
+		return customFilterItems(data, filters)
+	}
 
-	snackBarMessages = (msg) => {
-		const { s } = this.props
+
+
+	const handleAddNewOrg = () => { history.push('/management/orgs/new') }
+
+	const snackBarMessages = (msg) => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -215,23 +220,11 @@ class Orgs extends Component {
 				break;
 		}
 	}
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-	handleDeleteOrgs = async () => {
-		const { selected } = this.state
-		await selected.forEach(async u => {
-			await deleteOrg(u)
-		})
-		await this.props.reload()
-		this.snackBarMessages(1)
-	}
-	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { orgs, t, classes } = this.props
+
+	const renderConfirmDelete = () => {
 		return <Dialog
 			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
+			onClose={handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -246,70 +239,64 @@ class Orgs extends Component {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+				<Button onClick={handleCloseDeleteDialog} color='primary'>
 					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteOrg} color='primary' autoFocus>
+				<Button onClick={handleDeleteOrgs} color='primary' autoFocus>
 					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
-	renderTableToolBarContent = () => {
-		const { accessLevel, t  } = this.props
-		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
+	const renderTableToolBarContent = () => {
+		// let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
+		let access = true
 		return <Fragment>
 			{access ? <Tooltip title={t('menus.create.org')}>
-				<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
+				<IconButton aria-label='Add new organisation' onClick={handleAddNewOrg}>
 					<Add />
-				</IconButton> 
+				</IconButton>
 			</Tooltip>
 				: null
 			}
 		</Fragment>
 	}
 
-	renderOrgs = () => {
-		const { t, classes, orgs } = this.props
-		const {  order, orderBy, selected } = this.state
+	const renderOrgs = () => {
 		return <GridContainer justify={'center'}>
 			<Fade in={true}>
 				<Paper className={classes.root}>
-					{this.renderConfirmDelete()}
+					{renderConfirmDelete()}
 					<TableToolbar
-						ft={this.ftOrgs()}
+						ft={ftOrgs}
 						reduxKey={'orgs'}
-						anchorElMenu={this.state.anchorElMenu}
-						handleToolbarMenuClose={this.handleToolbarMenuClose}
-						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 						numSelected={selected.length}
-						options={this.options}
+						options={options}
 						t={t}
-						content={this.renderTableToolBarContent()}
+						content={renderTableToolBarContent()}
 					/>
 					<OrgTable
-						data={this.filterItems(orgs)}
-						tableHead={this.orgsHeader()}
-						handleRequestSort={this.handleRequestSort}
-						handleDeleteOrgs={this.handleDeleteOrgs}
-						handleCheckboxClick={this.handleCheckboxClick}
-						handleSelectAllClick={this.handleSelectAllClick}
+						data={filterItems(orgs)}
+						tableHead={orgsHeader}
+						handleRequestSort={handleRequestSort}
+						handleDeleteOrgs={handleDeleteOrgs}
+						handleCheckboxClick={handleCheckboxClick}
+						handleSelectAllClick={handleSelectAllClick}
 						orderBy={orderBy}
 						selected={selected}
 						order={order}
 						t={t}
 					/></Paper>
 			</Fade>
-			
+
 		</GridContainer>
 	}
-	render() {
-		return (
-			<Fragment>
-				{this.renderOrgs()}
-			</Fragment>
-		)
-	}
+	return (
+		<Fragment>
+			{renderOrgs()}
+		</Fragment>
+	)
+
 }
 
 export default withStyles(projectStyles)(Orgs)
