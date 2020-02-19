@@ -1,6 +1,5 @@
 import React, { /* Component, */ Fragment, useEffect, useState } from 'react'
-import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
+import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import GridContainer from 'components/Grid/GridContainer';
 import OrgTable from 'components/Orgs/OrgTable';
 import { /* People, Business, */ PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
@@ -299,4 +298,4 @@ const Orgs = props => {
 
 }
 
-export default withStyles(projectStyles)(Orgs)
+export default Orgs
