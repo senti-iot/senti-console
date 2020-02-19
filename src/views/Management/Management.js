@@ -10,11 +10,19 @@ import { handleRequestSort } from 'variables/functions';
 import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites';
 import { useSelector, useDispatch } from 'react-redux'
 import FavoritesTable from 'components/Favorites/FavoritesTable';
-import { Paper } from '@material-ui/core';
+import { Paper, makeStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import { customFilterItems } from 'variables/Filters';
 import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data';
 import { useLocalization, useSnackbar } from 'hooks';
+
+const favContainerStyles = makeStyles(theme => ({
+	root: {
+		width: '100%',
+		margin: theme.spacing(1),
+		borderRadius: "3px",
+	},
+}))
 
 const Management = props => {
 	//Hooks
@@ -24,7 +32,7 @@ const Management = props => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const s = useSnackbar().s
-
+	const classes = favContainerStyles()
 	//Redux
 	const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
@@ -196,7 +204,7 @@ const Management = props => {
 			handleCheckboxClick={handleCheckboxClick}
 			handleSelectAllClick={handleSelectAllClick}
 			data={handleFilterFavorites(usersAndOrgs)}
-			tableHead={favoritesHeaders()}
+			tableHead={favoritesHeaders}
 			handleRequestSort={handleReqSort}
 			orderBy={orderBy}
 			order={order}
@@ -205,7 +213,7 @@ const Management = props => {
 	}
 	const renderFavorites = () => {
 		return <GridContainer justify={'center'}>
-			{loadingUsers || loadingOrgs ? <CircularLoader /> : <Paper /*className={classes.root} */>
+			{loadingUsers || loadingOrgs ? <CircularLoader /> : <Paper className={classes.root}>
 				{renderTableToolBar('favorites')}
 				{renderTable()}
 			</Paper>

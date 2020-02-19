@@ -15,7 +15,7 @@ import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { useRef, useDispatch, useSelector, useLocalization } from 'hooks';
 import NewContent from 'layouts/404/NewContent';
-// import _ from 'lodash'
+
 
 
 function App(props) {
@@ -169,6 +169,9 @@ function App(props) {
 								<Switch>
 									{cookie.load('SESSION') ?
 										dashboardRoutes.map((prop, key) => {
+											if (prop.divider) {
+												return null
+											}
 											if (prop.dropdown) {
 												return prop.items.map((r, key) => {
 													return <Route path={r.path} key={r.menuRoute + key}>

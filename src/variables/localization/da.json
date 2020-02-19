@@ -1007,6 +1007,7 @@
 		}
 	},
 	"sidebar": {
+		"legacy": "SentiWi",
 		"api": "API",
 		"cloudfunction": "Cloud funktion",
 		"cloudfunctions": "Cloud funktioner",
