@@ -106,6 +106,7 @@ const HeaderLinks = props => {
 				</Button>
 			</Tooltip>
 			<Menu
+				disableScrollLock
 				style={{ marginTop: 50 }}
 				id='menu-appbar'
 				anchorEl={anchorProfile}

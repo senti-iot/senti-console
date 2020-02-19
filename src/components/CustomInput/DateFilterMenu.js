@@ -227,6 +227,7 @@ const DateFilterMenu = props => {
 					</IconButton>
 				</Tooltip>}
 				<Menu
+					disableScrollLock
 					disableAutoFocus
 					disableRestoreFocus
 					id='long-menu'

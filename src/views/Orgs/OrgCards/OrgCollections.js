@@ -1,6 +1,6 @@
 import React from 'react'
 import { InfoCard, ItemGrid, Info, Caption, ItemG } from 'components'
-import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/core'
+import { Table, TableBody, TableRow, Hidden } from '@material-ui/core'
 import { SignalWifi2Bar, DataUsage } from 'variables/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'

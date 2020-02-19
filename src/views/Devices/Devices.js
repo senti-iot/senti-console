@@ -569,6 +569,7 @@ const Devices = props => {
 		// const { selected, order, orderBy } = this.state
 		// const { t } = this.props
 		return <DeviceTable
+			classes={classes}
 			data={filterItemsFunc(items)}
 			handleCheckboxClick={handleCheckboxClick}//
 			handleClick={handleClick}//

@@ -1,34 +1,16 @@
-import React, { useState } from 'react'
-import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core'
-import { ItemGrid, SmallCard, ItemG, T, Link } from 'components'
+import React from 'react'
+import { withStyles, Button } from '@material-ui/core'
+import { SmallCard, ItemG, T, Link } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
-import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
-import { withRouter } from 'react-router-dom'
+import { Edit, InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
+import { withRouter, useHistory } from 'react-router-dom'
 import { useLocalization } from 'hooks'
+import Dropdown from 'components/Dropdown/Dropdown'
 
 // @Andrei
 const SensorCard = props => {
 	const t = useLocalization()
-	const [actionAnchor, setActionAnchor] = useState(null)
-	const [img, /* setImg */] = useState(null)
-	// constructor(props) {
-	// 	super(props)
-
-	// 	this.state = {
-	// 		actionAnchor: null,
-	// 		img: null
-	// 	}
-	// }
-
-	const handleOpenActionsDetails = event => {
-		setActionAnchor(event.currentTarget)
-		// this.setState({ actionAnchor: event.currentTarget });
-	}
-
-	const handleCloseActionsDetails = () => {
-		setActionAnchor(null)
-		// this.setState({ actionAnchor: null });
-	}
+	const history = useHistory()
 
 	const renderCommunication = (val) => {
 		const { classes } = props
@@ -53,6 +35,7 @@ const SensorCard = props => {
 	}
 
 	const { p, classes } = props
+	const handleEditSensor = () => history.push({ pathname: `/sensor/${p.id}/edit`, prevURL: `/sensors/grid` })
 
 	return (
 		<SmallCard
@@ -60,31 +43,33 @@ const SensorCard = props => {
 			key={p.id}
 			title={p.name}
 			subheader={p.uuid}
-			img={img}
 			topAction={
-				< ItemGrid noMargin noPadding>
-					<IconButton
-						aria-label='More'
-						aria-owns={actionAnchor ? 'long-menu' : null}
-						aria-haspopup='true'
-						onClick={handleOpenActionsDetails}>
-						<MoreVert />
-					</IconButton>
-					<Menu
-						id='long-menu'
-						anchorEl={actionAnchor}
-						open={Boolean(actionAnchor)}
-						onClose={handleCloseActionsDetails}
-						PaperProps={{
-							style: {
-								minWidth: 200
-							}
-						}}>
-						<MenuItem onClick={() => props.history.push(`/sensor/${p.id}/edit`)}>
-							<Edit className={classes.leftIcon} />{t('menus.edit')}
-						</MenuItem>
-					</Menu>
-				</ItemGrid >
+				<Dropdown menuItems={[
+					{ label: t('menus.edit'), icon: Edit, func: handleEditSensor }
+				]} />
+				// < ItemGrid noMargin noPadding>
+				// 	<IconButton
+				// 		aria-label='More'
+				// 		aria-owns={actionAnchor ? 'long-menu' : null}
+				// 		aria-haspopup='true'
+				// 		onClick={handleOpenActionsDetails}>
+				// 		<MoreVert />
+				// 	</IconButton>
+				// 	<Menu
+				// 		id='long-menu'
+				// 		anchorEl={actionAnchor}
+				// 		open={Boolean(actionAnchor)}
+				// 		onClose={handleCloseActionsDetails}
+				// 		PaperProps={{
+				// 			style: {
+				// 				minWidth: 200
+				// 			}
+				// 		}}>
+				// 		<MenuItem onClick={() => props.history.push(`/sensor/${p.id}/edit`)}>
+				// 			<Edit className={classes.leftIcon} />{t('menus.edit')}
+				// 		</MenuItem>
+				// 	</Menu>
+				// </ItemGrid >
 			}
 			content={< ItemG container >
 				<ItemG xs={12}>

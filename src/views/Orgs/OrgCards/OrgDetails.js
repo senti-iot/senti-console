@@ -5,7 +5,6 @@ import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
 import { Link as RLink } from 'react-router-dom'
 var countries = require('i18n-iso-countries')
 
-//@Andrei
 const OrgDetails = props => {
 	//Hooks
 

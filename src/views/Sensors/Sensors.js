@@ -54,7 +54,7 @@ const Sensors = props => {
 	]
 
 	const devicesHeader = [
-		{ id: 'id', label: t('devices.fields.id') },
+		// { id: 'id', label: t('devices.fields.id') },
 		{ id: 'name', label: t('devices.fields.name') },
 		{ id: 'uuid', label: t('sensors.fields.uuid') },
 		{ id: 'communication', label: t('sensors.fields.communication') },

@@ -184,7 +184,7 @@ const SensorTable = props => {
 
 									<Hidden mdDown>
 										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-										<TC checkbox label={n.id} />
+										{/* <TC checkbox label={n.id} /> */}
 										<TC
 											onMouseEnter={e => { setHover(e, n) }}
 											onMouseLeave={unsetTimeout}

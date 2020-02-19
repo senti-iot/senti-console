@@ -87,7 +87,6 @@ const DeviceHover = props => {
 		props.handleClose()
 	};
 	const renderIcon = (status) => {
-		const { classes } = props
 		switch (status) {
 			case 1:
 				return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />

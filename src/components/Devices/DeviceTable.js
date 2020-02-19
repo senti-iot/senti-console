@@ -92,7 +92,6 @@ const DeviceTable = props => {
 	}
 
 	const renderIcon = (status) => {
-		const { classes } = props
 		switch (status) {
 			case 1:
 				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>

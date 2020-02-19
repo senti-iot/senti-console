@@ -75,6 +75,7 @@ const Dropdown = props => {
 				open={Boolean(actionAnchor)}
 				onClose={handleCloseActionsDetails}
 				disablePortal
+				disableScrollLock
 				PaperProps={{ style: { minWidth: 200 } }}>
 				{menuItems.map((m, i) => {
 					if (m.dontShow)

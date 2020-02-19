@@ -102,6 +102,9 @@ const Sidebar = (props) => {
 					paddingTop: 0,
 				}}>
 					{routes.map((route, index) => {
+						if (route.divider) {
+							return <Divider />
+						}
 						if (route.redirect) return null;
 						if (route.hideFromSideBar) return null;
 						if (route.dropdown) {
