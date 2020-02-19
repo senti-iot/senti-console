@@ -99,16 +99,6 @@ const SensorHover = props => {
 				break;
 		}
 	}
-	// const renderSmallCommunication = (val) => {
-	// 	switch (val) {
-	// 		case 0:
-	// 			return <ItemG container><Block className={classes.blocked + ' ' + classes.smallIcon} /></ItemG>
-	// 		case 1:
-	// 			return <ItemG container><CheckCircle className={classes.allowed + ' ' + classes.smallIcon} /></ItemG>
-	// 		default:
-	// 			break;
-	// 	}
-	// }
 
 	return (
 		<Popper

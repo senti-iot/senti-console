@@ -1,19 +1,31 @@
 import React from 'react'
-import { withStyles, Button } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { SmallCard, ItemG, T, Link } from 'components'
-import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
 import { Edit, InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
-import { withRouter, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useLocalization } from 'hooks'
 import Dropdown from 'components/Dropdown/Dropdown'
-
-// @Andrei
+import sensorCardStyles from 'assets/jss/components/sensors/sensorCardStyles'
 const SensorCard = props => {
+	//Hooks
 	const t = useLocalization()
 	const history = useHistory()
+	const classes = sensorCardStyles()
+	//Redux
+
+	//State
+
+	//Const
+	const { p, /* classes */ } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 
 	const renderCommunication = (val) => {
-		const { classes } = props
 		switch (val) {
 			case 0:
 				return <ItemG container>
@@ -34,9 +46,8 @@ const SensorCard = props => {
 		}
 	}
 
-	const { p, classes } = props
 	const handleEditSensor = () => history.push({ pathname: `/sensor/${p.id}/edit`, prevURL: `/sensors/grid` })
-
+	const handleGoToSensor = () => history.push({ pathname: `/sensor/${p.id}`, prevURL: `/sensors/grid` })
 	return (
 		<SmallCard
 			avatar={< DeviceHub className={classes.bigIcon} />}
@@ -47,29 +58,6 @@ const SensorCard = props => {
 				<Dropdown menuItems={[
 					{ label: t('menus.edit'), icon: Edit, func: handleEditSensor }
 				]} />
-				// < ItemGrid noMargin noPadding>
-				// 	<IconButton
-				// 		aria-label='More'
-				// 		aria-owns={actionAnchor ? 'long-menu' : null}
-				// 		aria-haspopup='true'
-				// 		onClick={handleOpenActionsDetails}>
-				// 		<MoreVert />
-				// 	</IconButton>
-				// 	<Menu
-				// 		id='long-menu'
-				// 		anchorEl={actionAnchor}
-				// 		open={Boolean(actionAnchor)}
-				// 		onClose={handleCloseActionsDetails}
-				// 		PaperProps={{
-				// 			style: {
-				// 				minWidth: 200
-				// 			}
-				// 		}}>
-				// 		<MenuItem onClick={() => props.history.push(`/sensor/${p.id}/edit`)}>
-				// 			<Edit className={classes.leftIcon} />{t('menus.edit')}
-				// 		</MenuItem>
-				// 	</Menu>
-				// </ItemGrid >
 			}
 			content={< ItemG container >
 				<ItemG xs={12}>
@@ -83,7 +71,7 @@ const SensorCard = props => {
 				</ItemG>
 			</ItemG >}
 			rightActions={
-				< Button variant={'text'} color={'primary'} onClick={() => props.history.push(`/sensor/${p.id}`)}>
+				< Button variant={'text'} color={'primary'} onClick={handleGoToSensor}>
 					{t('menus.seeMore')}
 				</Button >
 			}
@@ -91,4 +79,4 @@ const SensorCard = props => {
 	)
 }
 
-export default withRouter(withStyles(regularCardStyle)(SensorCard))
+export default SensorCard
