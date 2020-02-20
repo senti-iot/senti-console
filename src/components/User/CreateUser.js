@@ -1,200 +1,143 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
+import React, { Fragment, useCallback, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
-import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, DatePicker, Warning, Danger, TextF, CircularLoader, DSelect, ItemG } from 'components';
-import { Paper, Collapse, withStyles, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { GridContainer, ItemGrid, Danger, CircularLoader } from 'components';
+import { Paper, Collapse, Button } from '@material-ui/core';
 import classNames from 'classnames';
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import { getUsers } from 'redux/data';
+import { useEventListener, useLocalization, useHistory, useSnackbar } from 'hooks';
+import createUserStyles from 'assets/jss/components/users/createUserStyles';
+import CreateUserForm from './CreateUserForm';
 
-class CreateUser extends Component {
-	constructor(props) {
-		super(props)
+const CreateUser = props => {
+	//Hooks
+	const t = useLocalization()
+	const history = useHistory()
+	const s = useSnackbar().s
+	const dispatch = useDispatch()
+	const classes = createUserStyles()
 
-		this.state = {
-			openExtended: false,
-			extended: {
-				bio: "",
-				position: "",
-				location: "",
-				recoveryEmail: "",
-				linkedInURL: "",
-				twitterURL: "",
-				birthday: null,
-				newsletter: true,
+	//Redux
+	const rUser = useSelector(s => s.settings.user)
+	const accessLevel = useSelector(s => s.settings.user.privileges)
+
+	//State
+	const [user, setUser] = useState({
+		userName: '',
+		firstName: '',
+		lastName: '',
+		phone: '',
+		email: '',
+		image: null,
+		aux: {
+			odeum: {
+				language: 'da'
 			},
-			user: {
-				userName: '',
-				firstName: '',
-				lastName: '',
-				phone: '',
-				email: '',
-				image: null,
-				aux: {
-					odeum: {
-						language: 'da'
-					},
-					senti: {
-						extendedProfile: {
-							newsletter: true,
-						}
-					}
-				},
-				sysLang: 2,
-				org: {
-					id: 0,
-					name: 'Ingen organisation'
-				},
-				groups: {
-					136550100000225: {
-						id: 136550100000225,
-						name: 'Senti User'
-					}
+			senti: {
+				extendedProfile: {
+					newsletter: true,
 				}
-			},
-			orgs: [],
-			creating: false,
-			created: false,
-			loading: true,
-			selectedGroup: 136550100000225,
+			}
+		},
+		sysLang: 2,
+		org: rUser.org,
+		groups: {
+			136550100000225: {
+				id: 136550100000225,
+				name: 'Senti User'
+			}
 		}
-		props.setBC('createuser')
-		props.setTabs({
+	})
+	const [openExtended, setOpenExtended] = useState(false)
+	const [extended, setExtended] = useState({
+		bio: "",
+		position: "",
+		location: "",
+		recoveryEmail: "",
+		linkedInURL: "",
+		twitterURL: "",
+		birthday: null,
+		newsletter: true,
+
+	})
+	const [selectedGroup, setSelectedGroup] = useState(136550100000225)
+	const [creating, setCreating] = useState(false)
+	const [created, setCreated] = useState(false)
+
+	const [error, setError] = useState(false)
+	const [, setErrorMessage] = useState(null)
+	const [openOrg, setOpenOrg] = useState(false)
+
+	//Const
+	const { setBC, setTabs, setHeader } = props
+	const groups = [
+		{
+			id: '136550100000211',
+			appId: '1220',
+			name: t('users.groups.accountManager'),
+			show: accessLevel.apiorg.editusers ? true : false
+		},
+		{
+			id: '136550100000143',
+			appId: '1220',
+			name: t('users.groups.superUser'),
+			show: accessLevel.apisuperuser ? true : false
+
+		},
+		{
+			id: '136550100000225',
+			appId: '1220',
+			name: t('users.groups.user'),
+			show: true
+		}
+	]
+	const languages = [
+		{ value: 'en', label: t('settings.languages.en') },
+		{ value: 'da', label: t('settings.languages.da') }
+	]
+	//useCallbacks
+
+	// const getOrgs = useCallback(async () => {
+	// 	let orgs = await getAllOrgs().then(rs => rs)
+	// 	setOrgs(orgs)
+	// 	setUser({
+	// 		...user,
+	// 		org: {
+	// 			...rUser.org //For selector
+	// 		}
+	// 	})
+	// 	setLoading(false)
+	// 	//eslint-disable-next-line
+	// }, [])
+
+	const goToUser = useCallback(() => history.push('/management/users'), [history])
+
+	const keyHandler = useCallback((e) => {
+		if (e.key === 'Escape') {
+			goToUser()
+		}
+	}, [goToUser])
+
+	//useEventListeners
+	useEventListener('keydown', keyHandler)
+
+	//useEffects
+	useEffect(() => {
+		setBC('createuser')
+		setTabs({
 			id: 'createUser',
 			tabs: []
 		})
-	}
-	keyHandler = (e) => {
-		if (e.key === 'Escape') {
-			this.goToUser()
-		}
-	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		window.addEventListener('keydown', this.keyHandler, false)
-
-		const { setHeader } = this.props
 		setHeader('menus.create.user', true, '/management/users', 'users')
-		if (this._isMounted)
-			await this.getOrgs()
-	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
-		window.removeEventListener('keydown', this.keyHandler, false)
+	}, [setBC, setHeader, setTabs])
+	// useEffect(() => {
+	// 	const gOrgs = async () => await getOrgs()
+	// 	gOrgs()
 
-	}
-	getOrgs = async () => {
-		let orgs = await getAllOrgs().then(rs => rs)
-		this.setState({
-			orgs: orgs,
-			user: {
-				...this.state.user,
-				org: {
-					...this.props.user.org
-				}
-			},
-			loading: false
-		})
-	}
-	handleCreateUser = async () => {
-		const { user, openExtended } = this.state
-		let newUser = {
-			...this.state.user,
-			userName: user.email
-		}
-		if (openExtended)
-			newUser.aux.senti.extendedProfile = this.state.extended
-		if (this.handleValidation()) {
-			await createUser(newUser).then(rs => {
-				return rs !== 400 ?
-					this.close(rs) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.errorMessages(rs) })
-			})
-		}
-	}
-	close = (rs) => {
-		this.setState({ created: true, creating: false })
-		const { history, s } = this.props
-		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
-		this.props.getUsers(true)
-		history.push(`/management/user/${rs.id}`)
+	// }, [getOrgs])
+	//Handlers
 
-	}
-	handleExtendedBirthdayChange = prop => e => {
-
-		const { error } = this.state
-		if (error) {
-			this.setState({
-				error: false,
-				errorMessage: []
-			})
-		}
-		this.setState({
-			extended: {
-				...this.state.extended,
-				[prop]: e
-			}
-		})
-	}
-	handleExtendedChange = prop => e => {
-
-		const { error } = this.state
-		if (error) {
-			this.setState({
-				error: false,
-				errorMessage: []
-			})
-		}
-		this.setState({
-			extended: {
-				...this.state.extended,
-				[prop]: e.target.value
-			}
-		})
-	}
-	handleChange = prop => e => {
-		const { error } = this.state
-		if (error) {
-			this.setState({
-				error: false,
-				errorMessage: [],
-				user: {
-					...this.state.user,
-					[prop]: e.target.value
-				}
-			})
-		}
-		else {
-			this.setState({
-				user: {
-					...this.state.user,
-					[prop]: e.target.value
-				}
-			})
-		}
-	}
-	handleValidation = () => {
-		let errorCode = [];
-		const { email, org } = this.state.user
-		if (email === '') {
-			errorCode.push(4)
-		}
-		if (org.id === 0) {
-			errorCode.push(5)
-		}
-		this.setState({
-			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-		})
-		if (errorCode.length === 0)
-			return true
-		else
-			this.setState({ error: true })
-		return false
-	}
-
-	errorMessages = code => {
-		const { t } = this.props
+	const errorMessages = code => {
 		switch (code) {
 			case 0:
 				return t('users.validation.noUserName')
@@ -217,330 +160,185 @@ class CreateUser extends Component {
 		}
 
 	}
-	handleLangChange = e => {
-		this.setState({
-			user: {
-				...this.state.user,
-				aux: {
-					...this.state.user.aux,
-					odeum: {
-						...this.state.user.aux.odeum,
-						language: e.target.value
+	const handleValidation = () => {
+		let errorCode = [];
+		const { email, org } = user
+		if (email === '') {
+			errorCode.push(4)
+		}
+		if (org.id === 0) {
+			errorCode.push(5)
+		}
+		setErrorMessage(errorCode.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))
+
+		if (errorCode.length === 0)
+			return true
+		else
+			setError(true)
+		return false
+	}
+
+	const handleCreateUser = async () => {
+		let newUser = {
+			...user,
+			userName: user.email
+		}
+		if (openExtended)
+			newUser.aux.senti.extendedProfile = extended
+		if (handleValidation()) {
+			await createUser(newUser).then(rs => {
+				return rs !== 400 ?
+					close(rs) : () => {
+						setCreated(false)
+						setCreating(false)
+						setError(true)
+						setErrorMessage(errorMessages(rs))
 					}
+			})
+		}
+	}
+	const close = (rs) => {
+		setCreating(false)
+		setCreated(true)
+		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
+		dispatch(getUsers(true))
+		history.push(`/management/user/${rs.id}`)
+
+	}
+	const handleExtendedBirthdayChange = prop => date => {
+		if (error) {
+			setError(false)
+			setErrorMessage([])
+		}
+
+		setExtended({
+			...extended,
+			[prop]: date
+		})
+	}
+	const handleExtendedChange = prop => e => {
+		if (error) {
+			setError(false)
+			setErrorMessage([])
+		}
+
+		setExtended({
+			...extended,
+			[prop]: e.target.value
+		})
+	}
+	const handleChange = prop => e => {
+		if (error) {
+			setError(false)
+			setErrorMessage([])
+		}
+		setUser({
+			...user,
+			[prop]: e.target.value
+		})
+
+	}
+
+	const handleLangChange = e => {
+		setUser({
+			...user,
+			aux: {
+				...user.aux,
+				odeum: {
+					...user.aux.odeum,
+					language: e.targe.value
 				}
 			}
 		})
 	}
-	handleGroupChange = e => {
-		this.setState({
-			selectedGroup: e.target.value,
-			user: {
-				...this.state.user,
-				groups: {
-					[e.target.value]: {
-						id: e.target.value
-					}
-				}
-			}
-		})
-	}
-	handleOrgChange = e => {
-		this.setState({
-			user: {
-				...this.state.user,
-				org: {
+	const handleGroupChange = e => {
+		setSelectedGroup(e.target.value)
+		setUser({
+			...user,
+			groups: {
+				[e.target.value]: {
 					id: e.target.value
 				}
 			}
 		})
 	}
-	goToUser = () => this.props.history.push('/management/users')
-	renderOrgs = () => {
-		const { t, accessLevel } = this.props
-		const { orgs, user, error } = this.state
-		const { org } = user
-		return accessLevel.apiorg.editusers ?
-			<DSelect
-				label={t('users.fields.organisation')}
-				error={error}
-				value={org.id}
-				onChange={this.handleOrgChange}
-				menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
-			/>
-			: null
-	}
-	renderLanguage = () => {
-		const { t } = this.props
-		const { error, user } = this.state
-		let languages = [
-			{ value: 'en', label: t('settings.languages.en') },
-			{ value: 'da', label: t('settings.languages.da') }
-		]
-		return <DSelect
-			label={t('users.fields.language')}
-			error={error}
-			value={user.aux.odeum.language}
-			menuItems={languages.map(l => ({ value: l.value, label: l.label }))}
-		/>
-	}
-	groups = () => {
-		const { accessLevel, t } = this.props
-		return [
-			{
-				id: '136550100000211',
-				appId: '1220',
-				name: t('users.groups.accountManager'),
-				show: accessLevel.apiorg.editusers ? true : false
-			},
-			{
-				id: '136550100000143',
-				appId: '1220',
-				name: t('users.groups.superUser'),
-				show: accessLevel.apisuperuser ? true : false
-
-			},
-			{
-				id: '136550100000225',
-				appId: '1220',
-				name: t('users.groups.user'),
-				show: true
-			}
-		]
-	}
-	renderAccess = () => {
-		const { t, accessLevel } = this.props
-		const { error, selectedGroup } = this.state
-		let rend = false
-		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers)) {
-			rend = true
-		}
-		return rend ? <DSelect
-			error={error}
-			label={t('users.fields.accessLevel')}
-			value={selectedGroup}
-			onChange={this.handleGroupChange}
-			menuItems={
-				this.groups().filter(g => g.show ? true : false)
-					.map(g => ({ value: g.id, label: g.name }))
-			} /> : null
-	}
-	renderExtendedProfile = () => {
-		const { openExtended, extended, error } = this.state
-		const { classes, t } = this.props
-		return <Collapse in={openExtended}>
-			<ItemGrid container xs={12} >
-				<TextF
-					id={'bio'}
-					label={t('users.fields.bio')}
-					value={extended.bio}
-					multiline
-					rows={4}
-					className={classes.textField}
-					onChange={this.handleExtendedChange('bio')}
-					margin='normal'
-					error={error}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<TextF
-					id={'position'}
-					label={t('users.fields.position')}
-					value={extended.position}
-					className={classes.textField}
-					onChange={this.handleExtendedChange('position')}
-					margin='normal'
-					error={error}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<TextF
-					id={'location'}
-					label={t('users.fields.location')}
-					value={extended.location}
-					className={classes.textField}
-					onChange={this.handleExtendedChange('location')}
-					margin='normal'
-					error={error}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<TextF
-					id={'recoveryEmail'}
-					label={t('users.fields.recoveryEmail')}
-					value={extended.recoveryEmail}
-					className={classes.textField}
-					onChange={this.handleExtendedChange('recoveryEmail')}
-					margin='normal'
-					error={error}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<TextF
-					id={'linkedInURL'}
-					label={t('users.fields.linkedInURL')}
-					value={extended.linkedInURL}
-					className={classes.textField}
-					onChange={this.handleExtendedChange('linkedInURL')}
-					margin='normal'
-					error={error}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<TextF
-					id={'twitterURL'}
-					label={t('users.fields.twitterURL')}
-					value={extended.twitterURL}
-					className={classes.textField}
-					onChange={this.handleExtendedChange('twitterURL')}
-					margin='normal'
-					error={error}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<DatePicker
-					label={t('users.fields.birthday')}
-					format='ll'
-					value={extended.birthday}
-					className={classes.textField}
-					onChange={this.handleExtendedBirthdayChange('birthday')}
-				/>
-			</ItemGrid>
-			<ItemGrid container xs={12} >
-				<FormControlLabel
-					style={{ margin: 0 }}
-					control={
-						<Checkbox
-							checked={extended.newsletter}
-							onChange={this.handleExtendedChange('newsletter')}
-							value="checkedB"
-							color="primary"
-						/>
-					}
-					label={t('users.fields.newsletter')}
-				/>
-			</ItemGrid>
-		</Collapse>
-	}
-	render() {
-		const { error, errorMessage, user, created } = this.state
-		const { classes, t } = this.props
-		const buttonClassname = classNames({
-			[classes.buttonSuccess]: created,
+	const handleOrgChange = org => {
+		setUser({
+			...user,
+			org: org
 		})
-		return (
-			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<ItemGrid xs={12}>
-							<Collapse in={this.state.error}>
-								<Warning>
-									<Danger>
-										{errorMessage}
-									</Danger>
-								</Warning>
-							</Collapse>
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							<TextF
-								id={'firstName'}
-								label={t('users.fields.firstName')}
-								value={user.firstName}
-								className={classes.textField}
-								onChange={this.handleChange('firstName')}
-								margin='normal'
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							<TextF
-								id={'lastName'}
-								label={t('users.fields.lastName')}
-								value={user.lastName}
-								className={classes.textField}
-								onChange={this.handleChange('lastName')}
-								margin='normal'
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							<TextF
-								id={'email'}
-								label={t('users.fields.email')}
-								value={user.email}
-								className={classes.textField}
-								onChange={this.handleChange('email')}
-								margin='normal'
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							<TextF
-								id={'phone'}
-								label={t('users.fields.phone')}
-								value={user.phone}
-								className={classes.textField}
-								onChange={this.handleChange('phone')}
-								margin='normal'
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							{this.renderLanguage()}
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							{this.renderOrgs()}
-						</ItemGrid>
-						<ItemGrid container xs={12} >
-							{this.renderAccess()}
-						</ItemGrid>
-						<ItemG xs={12}>
-							{this.renderExtendedProfile()}
-						</ItemG>
-						<ItemGrid container xs={12} md={12}>
-							<Button style={{ margin: 8 }} color={'primary'} onClick={() => this.setState({ openExtended: !this.state.openExtended })}>{t('actions.extendProfile')}</Button>
-						</ItemGrid>
-					</form>
-					<ItemGrid xs={12} container justify={'center'}>
-						<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
-							<CircularLoader fill />
-						</Collapse>
-					</ItemGrid>
-					<ItemGrid container style={{ margin: 16 }}>
-						<div className={classes.wrapper}>
-							<Button
-								variant='outlined'
-								onClick={this.goToUser}
-								className={classes.redButton}
-							>
-								{/* <Clear className={classes.leftIcon} /> */}{t('actions.cancel')}
-							</Button>
-						</div>
-						<div className={classes.wrapper}>
-							<Button
-								variant='outlined'
-								color='primary'
-								className={buttonClassname}
-								disabled={this.state.creating || this.state.created}
-								onClick={this.handleCreateUser}>
-								{this.state.created ?
-									<Fragment>{t('snackbars.redirect')}</Fragment>
-									: <Fragment>{/* <Save className={classes.leftIcon} /> */}{t('actions.save')}</Fragment>}
-							</Button>
-						</div>
-					</ItemGrid>
-				</Paper>
-			</GridContainer>
-		)
+		handleCloseOrg()
 	}
+	const handleChangeExtended = () => setOpenExtended(!openExtended)
+	const handleOpenOrg = () => setOpenOrg(true)
+	const handleCloseOrg = () => setOpenOrg(false)
+
+
+	const buttonClassname = classNames({
+		[classes.buttonSuccess]: created,
+	})
+	return (
+		<GridContainer justify={'center'}>
+			<Paper className={classes.paper}>
+				<CreateUserForm
+					/* User */
+					user={user}
+					accessLevel={accessLevel}
+					handleChange={handleChange}
+					/* AssignOrg */
+					openOrg={openOrg}
+					handleOrgChange={handleOrgChange}
+					handleOpenOrg={handleOpenOrg}
+					handleCloseOrg={handleCloseOrg}
+					/* Language */
+					handleLangChange={handleLangChange}
+					languages={languages}
+					/* Groups */
+					groups={groups}
+					selectedGroup={selectedGroup}
+					handleGroupChange={handleGroupChange}
+					/* Extended Profile */
+					extended={extended}
+					openExtended={openExtended}
+					handleChangeExtended={handleChangeExtended}
+					handleExtendedChange={handleExtendedChange}
+					handleExtendedBirthdayChange={handleExtendedBirthdayChange}
+					/* Hooks */
+					t={t}
+				/>
+				<ItemGrid xs={12} container justify={'center'}>
+					<Collapse in={creating} timeout='auto' unmountOnExit>
+						<CircularLoader fill />
+					</Collapse>
+				</ItemGrid>
+				<ItemGrid container style={{ margin: 16 }}>
+					<div className={classes.wrapper}>
+						<Button
+							variant='outlined'
+							onClick={goToUser}
+							className={classes.redButton}
+						>
+							{/* <Clear className={classes.leftIcon} /> */}{t('actions.cancel')}
+						</Button>
+					</div>
+					<div className={classes.wrapper}>
+						<Button
+							variant='outlined'
+							color='primary'
+							className={buttonClassname}
+							disabled={creating || created}
+							onClick={handleCreateUser}>
+							{created ?
+								<Fragment>{t('snackbars.redirect')}</Fragment>
+								: <Fragment>{/* <Save className={classes.leftIcon} /> */}{t('actions.save')}</Fragment>}
+						</Button>
+					</div>
+				</ItemGrid>
+			</Paper>
+		</GridContainer>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	user: state.settings.user
-})
 
-const mapDispatchToProps = (dispatch) => ({
-	getUsers: () => dispatch(getUsers(true))
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(CreateUser))
+export default CreateUser

@@ -185,7 +185,7 @@ const Users = props => {
 			}
 			await deleteUser(u)
 		})
-		await reload()
+		await reload(true)
 		snackBarMessages(1)
 		setSelected([])
 		setOpenDelete(false)
