@@ -1,6 +1,6 @@
 import React from 'react'
 import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
-import { DatePicker as MuiDatePicker } from 'material-ui-pickers';
+import { KeyboardDatePicker as MuiDatePicker } from '@material-ui/pickers';
 
 const DatePicker = ({ className, value, label, onChange, disableFuture, error }) => (
 	<MuiDatePicker
@@ -9,16 +9,13 @@ const DatePicker = ({ className, value, label, onChange, disableFuture, error })
 		margin={'normal'}
 		variant={'outlined'}
 		label={label}
+		inputVariant={'outlined'}
 		clearable
-		mask={value =>
-			value ? [/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/] : []
-		}
 		// format={'ll'}
 		error={error}
 		format={"DD/MM/YYYY"}
 		placeholder="DD/MM/YYYY"
 		value={value}
-		keyboard
 		className={className}
 		onChange={onChange}
 		animateYearScrolling={false}

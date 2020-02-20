@@ -143,6 +143,7 @@ const CreateUserForm = props => {
 					label={t('users.fields.birthday')}
 					format='ll'
 					value={extended.birthday}
+					inputVariant={'outline'}
 					// className={classes.textField}
 					onChange={handleExtendedBirthdayChange('birthday')}
 				/>

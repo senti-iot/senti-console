@@ -103,7 +103,7 @@ const Sidebar = (props) => {
 				}}>
 					{routes.map((route, index) => {
 						if (route.divider) {
-							return <Divider />
+							return <Divider key={index} />
 						}
 						if (route.redirect) return null;
 						if (route.hideFromSideBar) return null;

@@ -1,6 +1,6 @@
 import React from 'react'
 import { KeyboardArrowRight, KeyboardArrowLeft, DateRange, AccessTime } from 'variables/icons';
-import { DateTimePicker as MuiDateTimePicker } from 'material-ui-pickers';
+import { DateTimePicker as MuiDateTimePicker } from '@material-ui/pickers';
 
 const DateTimePicker = ({ className, value, label, onChange }) => (
 	<MuiDateTimePicker

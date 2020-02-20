@@ -14,11 +14,10 @@ import { ClickAwayListener } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { changeEH } from 'redux/appState';
 
-//TODO
 function renderInput(inputProps) {
-	return (
-		<SearchInput {...inputProps} />
-	);
+	return React.forwardRef((props, ref) => (
+		<SearchInput {...inputProps} ref={ref} />
+	))
 }
 
 
@@ -54,31 +53,31 @@ function getSuggestions(value, suggestions) {
 		});
 }
 
-/**
-* @augments {Component<{
-	searchValue:string,
-	suggestions:array.isRequired,
-	handleFilterKeyword:Function.isRequired,>}
-*/
-
-// const mapStateToProps = (state) => ({
-
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	disableEH: () => dispatch(changeEH(false)),
-// 	enableEH: () => dispatch(changeEH(true))
-// })
-
 // @Andrei
 const IntegrationAutosuggest = React.memo(props => {
+	//Hooks
 	const dispatch = useDispatch()
 
-	// const [value, setValue] = useState('')
+	//Redux
+
+	//State
 	const [suggestions, setSuggestions] = useState([])
 	const [open, setOpen] = useState(false)
+	//Refs
+	const inputRef = useRef(React.createRef())
 
-	const inputRef = useRef(null)
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+
+	// const [value, setValue] = useState('')
+
+
 	// constructor(props) {
 	// 	super(props)
 
@@ -203,7 +202,7 @@ const IntegrationAutosuggest = React.memo(props => {
 						fullWidth: props.fullWidth,
 						value: props.searchValue,
 						onChange: handleChange,
-						// reference: this.inputRef,
+						reference: inputRef,
 						open: open || props.open,
 						handleOpen: handleOpen,
 						handleClose: handleClose,

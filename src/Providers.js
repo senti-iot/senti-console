@@ -15,7 +15,7 @@ import 'core-js/features/set';
 import 'core-js/features/array/find'
 import 'core-js/features/array/includes';
 import 'core-js/features/number/is-nan';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { DndProvider } from 'react-dnd'
 import { StylesProvider } from "@material-ui/styles";
