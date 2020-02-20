@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react'
-import PropTypes from 'prop-types'
 import { Divider, MenuItem, Menu, IconButton, makeStyles, Button, Tooltip } from '@material-ui/core';
 import { ItemGrid, Info, CustomDateTime, ItemG, DSelect } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
@@ -9,7 +8,6 @@ import teal from '@material-ui/core/colors/teal'
 import { useDispatch } from 'react-redux'
 import { changeDate, changeHeatMapDate } from 'redux/dateTime';
 import { changeSettingsDate } from 'redux/settings';
-import { compose } from 'recompose';
 import { useLocalization } from 'hooks'
 
 const styles = makeStyles(theme => ({
@@ -19,42 +17,21 @@ const styles = makeStyles(theme => ({
 	},
 }))
 
-/**
-* @augments {Component<{	classes:object,	to:instanceOf(Date),	from:instanceOf(Date),	t:Function,	dateFilterInputID:number,	handleDateFilter:Function,>}
-*/
 
-// const mapStateToProps = (state) => ({
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-// 	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
-// 	handleSetSettingsPeriod: (id, to, from, timeType, pId) => dispatch(changeSettingsDate(id, to, from, timeType, pId)),
-// 	handleSetHeatmapDate: (id, to, from, timeType) => dispatch(changeHeatMapDate(id, to, from, timeType))
-// })
-
-// @Andrei
-// TODO: line 151
 const DateFilterMenu = props => {
-	const classes = styles()
+	//Hooks
 	const t = useLocalization()
 	const dispatch = useDispatch()
-	const [/* timeType */, setTimeType] = useState(props.period !== undefined ? props.period.timeType : 2)
+	const classes = styles()
+	//Redux
+
+	//State
 	const [openCustomDate, setOpenCustomDate] = useState(null) // added
 	const [actionAnchor, setActionAnchor] = useState(null) // added
-	const [/* loading */, setLoading] = useState(true) // added
-	// constructor(props) {
-	// 	super(props)
 
-	// 	this.state = {
-	// 		timeType: props.period !== undefined ? props.period.timeType : 2,
-	// 	}
-	// }
-	// let timeTypes = [
-	// 	{ id: 0, format: 'lll', chart: 'minute' },
-	// 	{ id: 1, format: 'lll', chart: 'hour' },
-	// 	{ id: 2, format: 'll', chart: 'day' },
-	// 	{ id: 3, format: 'll', chart: 'day' },
-	// ]
+	//Const
+	const { label, period, icon, button, settings, inputType, buttonProps } = props
+
 	let dOptions = [
 		{ value: 0, label: t('filters.dateOptions.today') },
 		{ value: 1, label: t('filters.dateOptions.yesterday') },
@@ -73,6 +50,13 @@ const DateFilterMenu = props => {
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
 	]
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	const handleSetDate = (menuId, to, from, timeType) => {
 		const { period } = props
 		let defaultT = 0
@@ -118,27 +102,20 @@ const DateFilterMenu = props => {
 		if (props.settings) {
 			if (menuId === 6)
 				return dispatch(changeSettingsDate(menuId, to, from, defaultT, period ? period.id : -1))
-			// return this.props.handleSetSettingsPeriod(menuId, to, from, defaultT, period ? period.id : -1)
 			return dispatch(changeSettingsDate(menuId, undefined, undefined, defaultT, period ? period.id : -1))
-			// return this.props.handleSetSettingsPeriod(menuId, undefined, undefined, defaultT, period ? period.id : -1)
 		}
 		if (props.heatmap) {
 			return dispatch(changeHeatMapDate(menuId, to, from, defaultT))
-			// return this.props.handleSetHeatmapDate(menuId, to, from, defaultT)
 		}
 		if (props.customSetDate) {
 			return props.customSetDate(menuId, to, from, defaultT)
 		}
 		dispatch(changeDate(menuId, to, from, defaultT, period ? period.id : -1))
-		// this.props.handleSetDate(menuId, to, from, defaultT, period ? period.id : -1)
-
 	}
 
 	const handleCloseDialog = (to, from, timeType) => {
-		// const { period } = this.props
 		setOpenCustomDate(false)
 		setActionAnchor(null)
-		// this.setState({ openCustomDate: false, actionAnchor: null })
 		handleSetDate(6, to, from, timeType)
 	}
 	/**
@@ -149,6 +126,7 @@ const DateFilterMenu = props => {
 		if (id !== 6) {
 			setActionAnchor(null)
 			// TODO - refactor setState callback
+			handleSetDate(id)
 			// this.setState({ actionAnchor: null }, () => this.handleSetDate(id))
 		}
 		else {
@@ -157,44 +135,31 @@ const DateFilterMenu = props => {
 		}
 	}
 
-	const handleCustomCheckBox = (e) => {
-		setTimeType(parseInt(e.target.value, 10))
-		// this.setState({ timeType: parseInt(e.target.value, 10) })
-	}
-
 	const handleCancelCustomDate = () => {
-		setLoading(false)
 		setOpenCustomDate(false)
-		// this.setState({
-		// 	loading: false, openCustomDate: false
-		// })
 	}
 	const renderCustomDateDialog = () => {
 		const { period } = props
 		// const { openCustomDate } = this.state
 		return openCustomDate ? <CustomDateTime
 			openCustomDate={openCustomDate}
-			handleCloseDialog={handleCloseDialog}//
+			handleCloseDialog={handleCloseDialog}
 			to={period ? period.to : undefined}
 			from={period ? period.from : undefined}
 			timeType={period ? period.timeType : undefined}
-			handleCustomCheckBox={handleCustomCheckBox}//
-			handleCancelCustomDate={handleCancelCustomDate}//
+			handleCancelCustomDate={handleCancelCustomDate}
 			t={t}
 		/> : null
 	}
 	const handleOpenMenu = e => {
 		setActionAnchor(e.currentTarget)
-		// this.setState({ actionAnchor: e.currentTarget })
 	}
 	const handleCloseMenu = e => {
 		setActionAnchor(null)
-		// this.setState({ actionAnchor: null })
 	}
 
 	const isSelectedFunc = (value) => value === props.period ? props.period.menuId ? true : false : false
 
-	const { label, period, icon, button, settings, inputType, buttonProps } = props
 	// const { actionAnchor } = this.state
 	let displayTo = period ? dateTimeFormatter(period.to) : ""
 	let displayFrom = period ? dateTimeFormatter(period.from) : ""
@@ -264,17 +229,5 @@ const DateFilterMenu = props => {
 			</Fragment>
 	)
 }
-DateFilterMenu.propTypes = {
-	classes: PropTypes.object,
-	to: PropTypes.instanceOf(moment),
-	from: PropTypes.instanceOf(moment),
-	t: PropTypes.func,
-	dateFilterInputID: PropTypes.number,
-	handleDateFilter: PropTypes.func,
-}
 
-// let DFMenu = compose(connect(mapStateToProps, mapDispatchToProps, undefined, { forwardRef: true }), withStyles(styles))(DateFilterMenu)
-let DFMenu = compose(DateFilterMenu)
-// export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))
-const DFMenuRef = React.forwardRef((props, ref) => <DFMenu {...props} ref={ref} />)
-export default DFMenuRef
+export default DateFilterMenu

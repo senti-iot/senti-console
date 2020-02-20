@@ -232,37 +232,40 @@ const GaugeComponent = props => {
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+						<div>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
+								}
+								customSetDate={handleSetDate}
+								period={period}
+								t={t} />
+						</div>
 
-								</ItemG>
-							}
-							customSetDate={handleSetDate}
-							period={period}
-							t={t} />
 					</Tooltip>
 				</ItemG>
 				<ItemG>

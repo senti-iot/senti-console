@@ -13,6 +13,7 @@ const DatePicker = ({ className, value, label, onChange, disableFuture, error })
 		clearable
 		// format={'ll'}
 		error={error}
+		mask={'__/__/____'}
 		format={"DD/MM/YYYY"}
 		placeholder="DD/MM/YYYY"
 		value={value}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { DateTimePicker } from '@material-ui/pickers';
 import { Dialog, DialogTitle, DialogContent, FormControlLabel, DialogActions, Button, RadioGroup, Radio, FormControl, makeStyles } from '@material-ui/core';
 import { ItemG, Caption } from 'components';
 import moment from 'moment'
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 import { useLocalization } from 'hooks';
+import DateTimePicker from './DateTimePicker';
 
 const styles = makeStyles(theme => ({
 	dialogWidth: {

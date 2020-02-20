@@ -41,7 +41,7 @@ const Dashboard = (props) => {
 	//Effects
 
 	useEffect(() => {
-		props.setHeader('Dashboard', false, '', 'dashboard')
+		props.setHeader('sidebar.dashboard', false, '', 'dashboard')
 		props.setBC('dashboard', '', '', true)
 		props.setTabs({
 			id: 'dashboard',

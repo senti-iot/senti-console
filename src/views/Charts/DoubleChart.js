@@ -482,6 +482,7 @@ const DoubleChart = (props) => {
 		return false
 	}
 	const handleSetDate = async (menuId, to, from, defaultT, chartType) => {
+		console.log(menuId, to, from, defaultT, chartType)
 		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
 	}
 	const handleSetVisibility = () => setVisibility(!visibility)
