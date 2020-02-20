@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react'
 import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
 import withLocalization from 'components/Localization/T';
 import { DateTimePicker } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 import { dateTimeFormatter } from 'variables/functions';
 import { TextF, DSelect } from 'components';
