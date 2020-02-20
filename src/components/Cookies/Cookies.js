@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Snackbar, Button } from '@material-ui/core';
-import ItemG from 'components/Grid/ItemG';
-import { acceptCookiesFunc } from 'redux/settings';
-import CookiesDialog from './CookiesDialog';
-import { finishedSaving } from 'redux/settings';
-import { useSnackbar, useLocalization } from 'hooks';
+import { Snackbar, Button } from '@material-ui/core'
+import ItemG from 'components/Grid/ItemG'
+import { acceptCookiesFunc } from 'redux/settings'
+import CookiesDialog from './CookiesDialog'
+import { finishedSaving } from 'redux/settings'
+import { useSnackbar, useLocalization } from 'hooks'
 
 
 const Cookies = props => {
@@ -49,7 +49,7 @@ const Cookies = props => {
 	}
 	const handleClose = () => {
 		setOpen(false)
-		showSnackBar(true)
+		setShowSnackBar(true)
 	}
 
 	const renderCookiesPrivacy = () => {

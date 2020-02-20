@@ -1,20 +1,20 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import { Header, /* Sidebar,  */CircularLoader } from 'components';
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import { Header, /* Sidebar,  */CircularLoader } from 'components'
 import cx from 'classnames'
-import dashboardRoutes from 'routes/dashboard.js';
-import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
+import dashboardRoutes from 'routes/dashboard.js'
+import appStyle from 'assets/jss/material-dashboard-react/appStyle.js'
 import { makeStyles } from '@material-ui/core/styles'
-import cookie from 'react-cookies';
-import { getSettings } from 'redux/settings';
-import { getDaysOfInterest } from 'redux/doi';
-import Cookies from 'components/Cookies/Cookies';
-import Sidebar from 'components/Sidebar/Sidebar';
-import BC from 'components/Breadcrumbs/BC';
-import { changeTabs } from 'redux/appState';
-import Toolbar from 'components/Toolbar/Toolbar';
-import { useRef, useDispatch, useSelector, useLocalization } from 'hooks';
-import NewContent from 'layouts/404/NewContent';
+import cookie from 'react-cookies'
+import { getSettings } from 'redux/settings'
+import { getDaysOfInterest } from 'redux/doi'
+import Cookies from 'components/Cookies/Cookies'
+import Sidebar from 'components/Sidebar/Sidebar'
+import BC from 'components/Breadcrumbs/BC'
+import { changeTabs } from 'redux/appState'
+import Toolbar from 'components/Toolbar/Toolbar'
+import { useRef, useDispatch, useSelector, useLocalization } from 'hooks'
+import NewContent from 'layouts/404/NewContent'
 
 
 
@@ -50,13 +50,12 @@ function App(props) {
 	const smallMenu = useSelector(s => s.appState.smallMenu)
 	const drawer = useSelector(s => s.settings.drawer)
 	const tabs = useSelector(s => s.appState.tabs)
-	const cookies = useSelector(s => s.settings.cookies)
 
 	//#endregion
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen)
-	};
+	}
 	const handleSetBreadCrumb = (id, name, extra, dontShow) => {
 
 		if (bc.id !== id || bc.name !== name) {
@@ -185,7 +184,7 @@ function App(props) {
 												})
 											}
 											if (prop.redirect) {
-												return <Redirect from={prop.path} to={prop.to} key={key} />;
+												return <Redirect from={prop.path} to={prop.to} key={key} />
 											}
 											return <Route path={prop.path} key={key}>
 												<prop.component
@@ -203,7 +202,7 @@ function App(props) {
 										}} />}
 								</Switch>
 							</div>
-							{!cookies && <Cookies />}
+							<Cookies />
 						</Fragment>
 						: <CircularLoader />}
 				</Fragment>
@@ -211,7 +210,7 @@ function App(props) {
 
 		</div >
 
-	);
+	)
 
 }
 

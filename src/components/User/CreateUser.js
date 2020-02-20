@@ -1,13 +1,13 @@
 import React, { Fragment, useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createUser } from 'variables/dataUsers';
-import { GridContainer, ItemGrid, Danger, CircularLoader } from 'components';
-import { Paper, Collapse, Button } from '@material-ui/core';
-import classNames from 'classnames';
-import { getUsers } from 'redux/data';
-import { useEventListener, useLocalization, useHistory, useSnackbar } from 'hooks';
-import createUserStyles from 'assets/jss/components/users/createUserStyles';
-import CreateUserForm from './CreateUserForm';
+import { createUser } from 'variables/dataUsers'
+import { GridContainer, ItemGrid, Danger, CircularLoader } from 'components'
+import { Paper, Collapse, Button } from '@material-ui/core'
+import classNames from 'classnames'
+import { getUsers } from 'redux/data'
+import { useEventListener, useLocalization, useHistory, useSnackbar } from 'hooks'
+import createUserStyles from 'assets/jss/components/users/createUserStyles'
+import CreateUserForm from './CreateUserForm'
 
 const CreateUser = props => {
 	//Hooks
@@ -65,7 +65,7 @@ const CreateUser = props => {
 	const [created, setCreated] = useState(false)
 
 	const [error, setError] = useState(false)
-	const [, setErrorMessage] = useState(null)
+	const [errorMessage, setErrorMessage] = useState(null)
 	const [openOrg, setOpenOrg] = useState(false)
 
 	//Const
@@ -158,10 +158,9 @@ const CreateUser = props => {
 			default:
 				return ''
 		}
-
 	}
 	const handleValidation = () => {
-		let errorCode = [];
+		let errorCode = []
 		const { email, org } = user
 		if (email === '') {
 			errorCode.push(4)
@@ -246,7 +245,7 @@ const CreateUser = props => {
 				...user.aux,
 				odeum: {
 					...user.aux.odeum,
-					language: e.targe.value
+					language: e.target.value
 				}
 			}
 		})
@@ -281,6 +280,9 @@ const CreateUser = props => {
 		<GridContainer justify={'center'}>
 			<Paper className={classes.paper}>
 				<CreateUserForm
+					/* Error */
+					error={error}
+					errorMessage={errorMessage}
 					/* User */
 					user={user}
 					accessLevel={accessLevel}

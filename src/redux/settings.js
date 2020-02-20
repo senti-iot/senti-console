@@ -1,12 +1,12 @@
-import cookie from 'react-cookies';
+import cookie from 'react-cookies'
 import { getUser, getValidSession } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
-import { saveSettings } from 'variables/dataLogin';
-import { setDates } from './dateTime';
-import { setPrefix, set, get } from 'variables/storage';
-import { getAllData } from './data';
-import { setDashboards } from './dsSystem';
+import { saveSettings } from 'variables/dataLogin'
+import { setDates } from './dateTime'
+import { setPrefix, set, get } from 'variables/storage'
+import { getAllData } from './data'
+import { setDashboards } from './dsSystem'
 
 var moment = require('moment')
 
@@ -73,7 +73,7 @@ export const resetSettings = () => {
 }
 export const saveOnServ = (user) => {
 	return async (dispatch) => {
-		var saved = await saveSettings(user);
+		var saved = await saveSettings(user)
 		dispatch({
 			type: SAVESETTINGS,
 			saved: saved ? true : false
@@ -100,8 +100,8 @@ export const saveSettingsOnServ = () => {
 			rawData: s.rawData,
 			mapTheme: s.mapTheme,
 			defaultRoute: s.defaultRoute,
-			// cookies: s.cookies,
-			cookies: false,
+			cookies: s.cookies,
+			// cookies: false,
 			periods: s.periods,
 			snackbarLocation: s.snackbarLocation,
 			detailsPanel: s.detailsPanel,
@@ -118,7 +118,7 @@ export const saveSettingsOnServ = () => {
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
 		user.aux.senti.settings = settings
 		user.aux.odeum.language = s.language
-		var saved = await saveSettings(user);
+		var saved = await saveSettings(user)
 		dispatch({
 			type: SAVESETTINGS,
 			saved: saved ? true : false

@@ -1,56 +1,54 @@
 /* eslint-disable indent */
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
-import searchStyles from 'assets/jss/components/search/searchStyles';
-import SearchInput from './SearchInput';
-import { ClickAwayListener } from '@material-ui/core';
+import React, { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import Autosuggest from 'react-autosuggest'
+import match from 'autosuggest-highlight/match'
+import parse from 'autosuggest-highlight/parse'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
+import { withStyles } from '@material-ui/core/styles'
+import searchStyles from 'assets/jss/components/search/searchStyles'
+import SearchInput from './SearchInput'
+import { ClickAwayListener } from '@material-ui/core'
 // import withLocalization from 'components/Localization/T';
 import { useDispatch } from 'react-redux'
-import { changeEH } from 'redux/appState';
+import { changeEH } from 'redux/appState'
 
 function renderInput(inputProps) {
-	return React.forwardRef((props, ref) => (
-		<SearchInput {...inputProps} ref={ref} />
-	))
+	return <SearchInput {...inputProps} />
 }
 
 
 function renderSuggestionsContainer(options) {
-	const { containerProps, children } = options;
+	const { containerProps, children } = options
 	return (
 		<Paper {...containerProps} square>
 			{children}
 		</Paper>
-	);
+	)
 }
 
 function getSuggestionValue(suggestion) {
-	return suggestion.label;
+	return suggestion.label
 }
 
 function getSuggestions(value, suggestions) {
-	const inputValue = value.trim().toLowerCase();
-	const inputLength = inputValue.length;
-	let count = 0;
+	const inputValue = value.trim().toLowerCase()
+	const inputLength = inputValue.length
+	let count = 0
 
 	return inputLength === 0
 		? []
 		: suggestions.filter(suggestion => {
 			const keep =
-				count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
+				count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue
 
 			if (keep) {
-				count += 1;
+				count += 1
 			}
 
-			return keep;
-		});
+			return keep
+		})
 }
 
 // @Andrei
@@ -106,8 +104,8 @@ const IntegrationAutosuggest = React.memo(props => {
 	}
 
 	const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-		const matches = match(suggestion.label, query);
-		const parts = parse(suggestion.label, matches);
+		const matches = match(suggestion.label, query)
+		const parts = parse(suggestion.label, matches)
 		return (
 			<MenuItem selected={isHighlighted} component='div'>
 				<div>
@@ -120,11 +118,11 @@ const IntegrationAutosuggest = React.memo(props => {
 								<strong key={String(index)} style={{ fontWeight: 500 }}>
 									{part.text}
 								</strong>
-							);
+							)
 					})}
 				</div>
 			</MenuItem>
-		);
+		)
 	}
 
 	const handleSuggestionsFetchRequested = ({ value, reason }) => {
@@ -170,7 +168,7 @@ const IntegrationAutosuggest = React.memo(props => {
 	}
 
 
-	const { classes, right } = props;
+	const { classes, right } = props
 	return (
 		<div className={classes.suggestContainer}>
 			<ClickAwayListener onClickAway={handleClose}>
@@ -212,7 +210,7 @@ const IntegrationAutosuggest = React.memo(props => {
 				/>
 			</ClickAwayListener>
 		</div>
-	);
+	)
 })
 
 IntegrationAutosuggest.propTypes = {
@@ -221,6 +219,6 @@ IntegrationAutosuggest.propTypes = {
 	// t: PropTypes.func.isRequired,
 	suggestions: PropTypes.array.isRequired,
 	handleFilterKeyword: PropTypes.func.isRequired,
-};
+}
 
 export default withStyles(searchStyles)(IntegrationAutosuggest)

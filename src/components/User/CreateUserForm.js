@@ -1,8 +1,8 @@
 import React from 'react'
-import { ItemGrid, DatePicker, Warning, Danger, TextF, DSelect, ItemG } from 'components';
-import { Collapse, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import createUserStyles from 'assets/jss/components/users/createUserStyles';
-import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
+import { ItemGrid, DatePicker, Warning, Danger, TextF, DSelect, ItemG } from 'components'
+import { Collapse, Button, FormControlLabel, Checkbox } from '@material-ui/core'
+import createUserStyles from 'assets/jss/components/users/createUserStyles'
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog'
 
 const CreateUserForm = props => {
 	//Hooks
@@ -75,6 +75,7 @@ const CreateUserForm = props => {
 				} /> : null
 	}
 	const renderExtendedProfile = () => {
+		console.log(extended)
 		return <Collapse in={openExtended}>
 			<ItemGrid container xs={12} >
 				<TextF
