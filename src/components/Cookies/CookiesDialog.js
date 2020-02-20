@@ -1,24 +1,26 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle, makeStyles } from '@material-ui/core';
 import { T, Link } from 'components';
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	p: {
 		marginBottom: theme.spacing(1)
+	},
+	title: {
+		fontWeight: 500
 	},
 	dialogContent: {
 		padding: 24,
 		[theme.breakpoints.down('sm')]: {
 			padding: 16
 		}
-	},
-	title: {
-		fontWeight: 500
-	},
-})
-
+	}
+}))
+//Test
+//test2
 const CookiesDialog = (props) => {
-	const { open, handleClose, t, classes, handleAcceptCookies, readOnly, read } = props
+	const classes = styles()
+	const { open, handleClose, t, handleAcceptCookies, readOnly, read } = props
 	return (
 		<Dialog
 			open={open}
@@ -68,4 +70,4 @@ const CookiesDialog = (props) => {
 	)
 }
 
-export default withStyles(styles)(CookiesDialog)
+export default CookiesDialog

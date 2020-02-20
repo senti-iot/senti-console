@@ -1,77 +1,62 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Snackbar, Button, withStyles } from '@material-ui/core';
+import { Snackbar, Button } from '@material-ui/core';
 import ItemG from 'components/Grid/ItemG';
-import withLocalization from 'components/Localization/T';
 import { acceptCookiesFunc } from 'redux/settings';
 import CookiesDialog from './CookiesDialog';
-import withSnackbar from 'components/Localization/S';
 import { finishedSaving } from 'redux/settings';
 import { useSnackbar, useLocalization } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	cookies: state.settings.cookies,
-// 	saved: state.settings.saved
-// })
-// const mapDispatchToProps = dispatch => ({
-// 	acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
-
-const styles = theme => ({
-	p: {
-		marginBottom: theme.spacing(1)
-	},
-	title: {
-		fontWeight: 500
-	}
-})
 
 const Cookies = props => {
+	//Hooks
 	const dispatch = useDispatch()
-	const cookies = useSelector(state => state.settings.cookies)
-	const saved = useSelector(state => state.settings.saved)
-
-	// hopefully these hooks are correct
 	const t = useLocalization()
 	const s = useSnackbar().s
 
+	//Redux
+	const cookies = useSelector(state => state.settings.cookies)
+	const saved = useSelector(state => state.settings.saved)
+
+	//State
 	const [open, setOpen] = useState(false)
 	const [showSnackBar, setShowSnackBar] = useState(true)
 
+	//Const
+
+	//useCallbacks
+
+	//useEffects
 	useEffect(() => {
-		s('snackbars.settingsSaved')
-		dispatch(finishedSaving())
+		if (saved) {
+			s('snackbars.settingsSaved')
+			dispatch(finishedSaving())
+		}
 	}, [dispatch, s, saved])
-	// const componentDidUpdate = (prevProps, prevState) => {
-	// 	if (saved) {
-	// 		s('snackbars.settingsSaved')
-	// 		dispatch(finishedSaving()
-	// 	}
-	// }
+
+	//Handlers
+	//Test
+	//Test2
+
 
 	const handleAcceptCookies = async () => {
 		handleClose()
-		// props.acceptCookies(true)
 		dispatch(await acceptCookiesFunc(true))
 	}
 	const handleOpen = () => {
 		setOpen(true)
 		setShowSnackBar(false)
-		// this.setState({ open: true, showSnackBar: false });
-	};
+	}
 	const handleClose = () => {
 		setOpen(false)
 		showSnackBar(true)
-		// this.setState({ open: false, showSnackBar: true });
-	};
+	}
+
 	const renderCookiesPrivacy = () => {
-		const { classes } = props
 		return <CookiesDialog
 			open={open}
 			handleClose={handleClose}
 			t={t}
-			classes={classes}
 			handleAcceptCookies={handleAcceptCookies} />
 	}
 
@@ -101,4 +86,4 @@ const Cookies = props => {
 	)
 }
 
-export default withLocalization()(withStyles(styles)(withSnackbar()(Cookies)))
+export default Cookies

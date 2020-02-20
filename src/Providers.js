@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { createBrowserHistory } from 'history'
-import { Router, Route, Switch } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import store from './redux/store'
-import indexRoutes from 'routes/index.js'
+import configureStore from './redux/store'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
 import 'assets/css/leaflet.css'
 
@@ -28,15 +27,17 @@ import { getWhiteLabel } from 'variables/data'
 import { setWL } from 'variables/storage'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
 import { ThemeProvider } from 'ThemeProvider'
+import { hot } from 'react-hot-loader/root'
+// import Base from './Base'
 
 var countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
 countries.registerLocale(require('i18n-iso-countries/langs/da.json'))
 
-
+const store = configureStore()
 export const hist = createBrowserHistory();
 
-function Providers() {
+const Providers = props => {
 
 	const [loading, setLoading] = useState(true)
 	const loaderFunc = async () => {
@@ -60,14 +61,9 @@ function Providers() {
 							<LocalizationProvider>
 								<SnackbarProvider>
 									<TProvider>
-										<Router history={hist}>
-											<Switch>
-												{indexRoutes.map((prop, key) => {
-													return <Route path={prop.path} key={key} exact={prop.exact ? true : false} >
-														<prop.component />
-													</Route>;
-												})}
-											</Switch>
+										<Router history={hist} key={Math.random()}>
+											{props.children}
+											{/* <Base /> */}
 										</Router>
 									</TProvider>
 								</SnackbarProvider>
@@ -80,6 +76,5 @@ function Providers() {
 	</StylesProvider>
 
 }
-
-
-export default Providers
+const HotProviders = hot(Providers)
+export default HotProviders
