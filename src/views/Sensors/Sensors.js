@@ -1,19 +1,19 @@
 
-import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core';
-import SensorTable from 'components/Sensors/SensorTable';
-import TableToolbar from 'components/Table/TableToolbar';
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
-import { handleRequestSort as handleRS } from 'variables/functions';
-import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block, DeviceHub } from 'variables/icons';
+import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core'
+import SensorTable from 'components/Sensors/SensorTable'
+import TableToolbar from 'components/Table/TableToolbar'
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
+import { handleRequestSort as handleRS } from 'variables/functions'
+import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block, DeviceHub } from 'variables/icons'
 import { GridContainer, CircularLoader, DeleteDialog } from 'components'
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import { customFilterItems } from 'variables/Filters';
-import { getSensors, sortData } from 'redux/data';
-import SensorCards from 'components/Sensors/SensorCards';
-import { deleteSensor } from 'variables/dataSensors';
-import { useLocalization, useSnackbar, useHistory, useDispatch, useSelector } from 'hooks';
-import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
+import { customFilterItems } from 'variables/Filters'
+import { getSensors, sortData } from 'redux/data'
+import SensorCards from 'components/Sensors/SensorCards'
+import { deleteSensor } from 'variables/dataSensors'
+import { useLocalization, useSnackbar, useHistory, useDispatch, useSelector } from 'hooks'
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 
 const Sensors = props => {
 	//Hooks
@@ -175,17 +175,17 @@ const Sensors = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			case 2:
 				s('snackbars.exported')
-				break;
+				break
 			case 3:
 				s('snackbars.assign.deviceToRegistry', { device: ``, what: 'Device' })
-				break;
+				break
 			case 6:
 				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -233,7 +233,7 @@ const Sensors = props => {
 	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			setSelected(arr)
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -241,10 +241,10 @@ const Sensors = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -253,7 +253,7 @@ const Sensors = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 
 		setSelected(newSelected)
@@ -302,7 +302,6 @@ const Sensors = props => {
 	}
 
 	const renderTable = (items, handleClick, key) => {
-		console.log(items)
 		return <SensorTable
 			data={filterItems(items)}
 			handleCheckboxClick={handleCheckboxClick}

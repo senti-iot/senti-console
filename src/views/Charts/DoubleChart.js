@@ -1,8 +1,8 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback } from 'react'
 import {
 	Grid, IconButton, Menu, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
 	Timeline, MoreVert,
 	DonutLargeRounded,
@@ -17,14 +17,14 @@ import {
 	PieChart,
 	DateFilterMenu,
 	T,
-} from 'components';
-import classNames from 'classnames';
+} from 'components'
+import classNames from 'classnames'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
-import { getSensorDataClean } from 'variables/dataSensors';
-import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
-import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
+import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem'
+import { getSensorDataClean } from 'variables/dataSensors'
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
+import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const DoubleChart = (props) => {
@@ -94,7 +94,7 @@ const DoubleChart = (props) => {
 			case 2:
 				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 			default:
-				break;
+				break
 		}
 	}, [color, g, title])
 
@@ -153,16 +153,16 @@ const DoubleChart = (props) => {
 						setZoomDate([])
 					}
 					handleSetDate(6, endDate, startDate, 1, period.id)
-					break;
+					break
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					setResetZoom(false)
 					setZoomDate([])
 					handleSetDate(6, endDate, startDate, 2, period.id)
-					break;
+					break
 				default:
-					break;
+					break
 			}
 		}
 		catch (e) {
@@ -198,9 +198,9 @@ const DoubleChart = (props) => {
 							to: period.to
 						}])
 						handleSetDate(6, endDate, startDate, 1, period.id)
-						break;
+						break
 					default:
-						break;
+						break
 				}
 			}
 			catch (error) {
@@ -209,7 +209,7 @@ const DoubleChart = (props) => {
 	}
 	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	const handleNextPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -273,7 +273,7 @@ const DoubleChart = (props) => {
 		handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	const handlePreviousPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -482,7 +482,6 @@ const DoubleChart = (props) => {
 		return false
 	}
 	const handleSetDate = async (menuId, to, from, defaultT, chartType) => {
-		console.log(menuId, to, from, defaultT, chartType)
 		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
 	}
 	const handleSetVisibility = () => setVisibility(!visibility)
@@ -574,7 +573,7 @@ const DoubleChart = (props) => {
 			case 3:
 				return <ShowChart />
 			default:
-				break;
+				break
 		}
 	}
 	const renderSmallTitle = () => {
@@ -615,7 +614,7 @@ const DoubleChart = (props) => {
 					}
 				</Grid>}
 		/>
-	);
+	)
 }
 
 

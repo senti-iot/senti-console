@@ -75,7 +75,6 @@ const CreateUserForm = props => {
 				} /> : null
 	}
 	const renderExtendedProfile = () => {
-		console.log(extended)
 		return <Collapse in={openExtended}>
 			<ItemGrid container xs={12} >
 				<TextF

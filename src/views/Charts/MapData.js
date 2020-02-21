@@ -1,21 +1,21 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment, Component } from 'react'
 import {
 	Grid, IconButton, withStyles, Hidden, Tooltip, Menu, ListItem, ListItemIcon, ListItemText,
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
 	ShowChart, Assignment, MoreVert, CloudDownload,
 } from 'variables/icons'
-import { CircularLoader, Caption, ItemG, InfoCard, T } from 'components';
-import deviceStyles from 'assets/jss/views/deviceStyles';
+import { CircularLoader, Caption, ItemG, InfoCard, T } from 'components'
+import deviceStyles from 'assets/jss/views/deviceStyles'
 import { connect } from 'react-redux'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { getSensor } from 'variables/dataSensors';
-import { getGraph, handleSetDate } from 'redux/dsSystem';
-import OpenStreetMapWidget from 'components/Map/OpenStreetMapWidget';
+import { getSensor } from 'variables/dataSensors'
+import { getGraph, handleSetDate } from 'redux/dsSystem'
+import OpenStreetMapWidget from 'components/Map/OpenStreetMapWidget'
 
 class MapData extends Component {
 	constructor(props) {
@@ -73,9 +73,7 @@ class MapData extends Component {
 
 	}
 	componentDidUpdate = async (prevProps) => {
-		// console.log('CDU MapData')
 		if (prevProps.g.grid.h !== this.props.g.grid.h) {
-			// console.log('Updated grid', this.props.g)
 		}
 		//TODO: Change the if to include also the id of device
 		if (prevProps.g !== this.props.g || prevProps.g.dataSource !== this.props.g.dataSource) {
@@ -111,11 +109,11 @@ class MapData extends Component {
 		this.setState({ openDownload: true, actionAnchor: null })
 	}
 	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
+		this.setState({ actionAnchor: event.currentTarget })
 	}
 
 	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
+		this.setState({ actionAnchor: null })
 	}
 
 	handleVisibility = () => (event) => {
@@ -142,8 +140,8 @@ class MapData extends Component {
 		</ItemG>
 	}
 	relDiff(oldNumber, newNumber) {
-		var decreaseValue = oldNumber - newNumber;
-		return ((decreaseValue / oldNumber) * 100).toFixed(3);
+		var decreaseValue = oldNumber - newNumber
+		return ((decreaseValue / oldNumber) * 100).toFixed(3)
 	}
 	renderType = () => {
 		const { t, mapTheme, g } = this.props
@@ -251,7 +249,7 @@ class MapData extends Component {
 						</Grid>}
 				/>
 			</Fragment >
-		);
+		)
 	}
 }
 const mapStateToProps = (state, ownProps) => ({

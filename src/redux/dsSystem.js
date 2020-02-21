@@ -1,6 +1,6 @@
 import moment from 'moment'
-import { graphType } from 'variables/dsSystem/graphTypes';
-import { saveOnServ, getSettings } from './settings';
+import { graphType } from 'variables/dsSystem/graphTypes'
+import { saveOnServ, getSettings } from './settings'
 
 export const getDashboards = 'getDashboards'
 export const SetDashboard = 'SetDashboard'
@@ -15,45 +15,45 @@ export const setGraphE = 'setGraphE'
 const snackBar = 'snackBar'
 
 const menuSelect = (p, c) => {
-	let to, from, timeType, chartType;
+	let to, from, timeType, chartType
 	switch (p) {
 		case 0: // Today
 			from = moment().startOf('day')
 			to = moment()
 			timeType = 1
-			break;
+			break
 		case 1: // Yesterday
 			from = moment().subtract(1, 'd').startOf('day')
 			to = moment().subtract(1, 'd').endOf('day')
 			timeType = 1
-			break;
+			break
 		case 2: // This week
 			from = moment().startOf('week').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 3: // Last 7 days
 			from = moment().subtract(7, 'd').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 4: // last 30 days
 			from = moment().subtract(30, 'd').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 5: // last 90 days
 			from = moment().subtract(90, 'd').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 6:
 			from = moment(p.from)
 			to = moment(p.to)
 			timeType = p.timeType
-			break;
+			break
 		default:
-			break;
+			break
 	}
 	chartType = c
 	return { to, from, timeType, chartType }
@@ -65,13 +65,13 @@ export const generateID = (name) => {
 		let min = Math.pow(16, Math.min(len, maxlen) - 1)
 		let max = Math.pow(16, Math.min(len, maxlen)) - 1
 		let n = Math.floor(Math.random() * (max - min + 1)) + min
-		let r = n.toString(16);
+		let r = n.toString(16)
 		while (r.length < len) {
-			r = r + randHex(len - maxlen);
+			r = r + randHex(len - maxlen)
 		}
-		return r;
-	};
-	return name.replace(/\s+/g, '-').toLowerCase() + '-' + randHex(8);
+		return r
+	}
+	return name.replace(/\s+/g, '-').toLowerCase() + '-' + randHex(8)
 }
 
 export const getPeriod = (state, id, create) => {
@@ -102,7 +102,6 @@ export const handleSetDate = (dId, gId, p) => {
 	return async (dispatch, getState) => {
 		let gs = getState().dsSystem.graphs
 		let graph = { ...gs[gs.findIndex(g => g.id === gId)] }
-		console.log(graph, p)
 		if (graph) {
 			graph.period = p
 			graph.periodType = p.menuId
@@ -127,7 +126,7 @@ const gridCoords = (type) => {
 		case 4:
 			return 'windcard'
 		default:
-			break;
+			break
 	}
 }
 export const finishedSaving = () => {
@@ -254,7 +253,7 @@ export const setGE = (payload) => {
 	return (dispatch, getState) => {
 		let gs = []
 		gs = getState().dsSystem.cGraphs
-		let g = null;
+		let g = null
 		if (payload) {
 			g = gs[gs.findIndex(f => f.id === payload.i)]
 		}

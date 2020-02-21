@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
 import rootReducer from './rootReducer'
 
 let composeMiddleware = compose(
@@ -8,12 +8,11 @@ let composeMiddleware = compose(
 )
 const configureStore = () => {
 	const store = createStore(rootReducer, composeMiddleware)
-	console.log(module.hot)
 	if (process.env.NODE_ENV !== 'production') {
 		if (module.hot) {
 			module.hot.accept('./rootReducer', () => {
-				store.replaceReducer(rootReducer);
-			});
+				store.replaceReducer(rootReducer)
+			})
 		}
 	}
 	return store

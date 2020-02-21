@@ -100,7 +100,6 @@ function App(props) {
 		setUrl('')
 	}
 	const handleSetTabs = (tbs) => {
-		console.log(tbs)
 		if (tbs.id !== tabs.id) {
 			dispatch(changeTabs(tbs))
 		}

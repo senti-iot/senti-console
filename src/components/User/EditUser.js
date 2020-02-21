@@ -210,7 +210,6 @@ const EditUser = props => {
 	}
 	const handleEditUser = async () => {
 		let groups = {}
-		console.log(user.groups)
 		user.groups.forEach(x => {
 			groups[x.id] = {
 				...x
@@ -270,11 +269,9 @@ const EditUser = props => {
 	//#region Groups
 	const handleGroupChange = e => {
 		let uGroups = user.groups
-		console.log(groups)
 		uGroups = uGroups.filter(x => !groups.some(y => x.id === y.id))
 		let g = groups[groups.findIndex(x => x.id === e.target.value)]
 		uGroups.push(g)
-		console.log(groups, e.target.value)
 		setSelectedGroup(e.target.value)
 		setUser({
 			...user,

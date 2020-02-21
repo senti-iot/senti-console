@@ -84,7 +84,6 @@ const DeviceTypes = props => {
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `favorites` }
 		]
 		const handleTabs = () => {
-			console.log(location.pathname)
 			if (location.pathname.includes('favorites'))
 				return 2
 			else {
@@ -92,7 +91,6 @@ const DeviceTypes = props => {
 			}
 		}
 
-		console.log(handleTabs())
 		setHeader('devicetypes.pageTitle', false, '', 'manage.devicetypes')
 		setBC('devicetypes')
 		setTabs({
