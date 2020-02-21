@@ -1,29 +1,36 @@
-import { withStyles, Link as MuiLink } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
+import { Link as MuiLink } from '@material-ui/core';
 import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
-import React, { Component } from 'react';
+import React from 'react';
 // import { Link } from 'react-router-dom';
 import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, Delete } from 'variables/icons';
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import { useLocalization } from 'hooks';
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles';
 
-class SensorDetails extends Component {
 
-	registryState = () => {
-		const { registry, t } = this.props
-		switch (registry.state) {
-			case 1:
-				return t('registries.fields.state.active')
-			case 2:
-				return t('registries.fields.state.inactive')
-			default:
-				break;
-		}
-	}
-	renderProtocol = (id) => {
-		const { t } = this.props
+const SensorDetails = (props) => {
+	//Hooks
+	const t = useLocalization()
+	const classes = sensorsStyles()
+
+	//Redux
+
+	//State
+
+	//Const
+	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props;
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+	const handleEditSensor = () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` })
+
+	const renderProtocol = (id) => {
 		switch (id) {
 			case 0:
 				return t('registries.fields.protocols.none')
@@ -37,8 +44,7 @@ class SensorDetails extends Component {
 				break;
 		}
 	}
-	renderCommunication = (val) => {
-		const { t, classes } = this.props
+	const renderCommunication = (val) => {
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /> <Info>{t('sensors.fields.communications.blocked')}</Info></ItemG>
@@ -48,55 +54,51 @@ class SensorDetails extends Component {
 				break;
 		}
 	}
-	render() {
-		const { classes, sensor, t, isFav, addToFav, removeFromFav,
-			handleOpenDeleteDialog,
-			/* accessLevel ,*/ history } = this.props
-		return (
-			<InfoCard
-				title={sensor.name ? sensor.name : sensor.id}
-				avatar={<DataUsage />}
-				noExpand
-				topAction={<Dropdown menuItems={
-					[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` }) },
-						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
-						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog }
 
-					]
-				} />
 
-				}
-				subheader={<ItemG container alignItems={'center'}>
-					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{sensor.id}
-				</ItemG>}
-				content={
-					<ItemG container spacing={3}>
-						<ItemG>
-							<Caption>{t('registries.fields.protocol')}</Caption>
-							<Info>{this.renderProtocol(sensor.protocol)}</Info>
-						</ItemG>
-						<ItemG xs>
-							<Caption>{t('sensors.fields.communication')}</Caption>
-							{this.renderCommunication(sensor.communication)}
-						</ItemG>
-						<ItemG xs={12}>
-							<Caption>{t('registries.fields.registry')}</Caption>
-							<Info>
-								<MuiLink component={Link} to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
-									{sensor.regName}
-								</MuiLink>
-							</Info>
-						</ItemG>
+	return (
+		<InfoCard
+			title={sensor.name ? sensor.name : sensor.id}
+			avatar={<DataUsage />}
+			noExpand
+			topAction={<Dropdown menuItems={
+				[
+					{ label: t('menus.edit'), icon: Edit, func: handleEditSensor },
+					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
+				]
+			} />
+
+			}
+			subheader={<ItemG container alignItems={'center'}>
+				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{sensor.id}
+			</ItemG>}
+			content={
+				<ItemG container spacing={3}>
+					<ItemG>
+						<Caption>{t('registries.fields.protocol')}</Caption>
+						<Info>{renderProtocol(sensor.protocol)}</Info>
 					</ItemG>
-				}
-			/>
-		)
-	}
+					<ItemG xs>
+						<Caption>{t('sensors.fields.communication')}</Caption>
+						{renderCommunication(sensor.communication)}
+					</ItemG>
+					<ItemG xs={12}>
+						<Caption>{t('registries.fields.registry')}</Caption>
+						<Info>
+							<MuiLink component={Link} to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
+								{sensor.regName}
+							</MuiLink>
+						</Info>
+					</ItemG>
+				</ItemG>
+			}
+		/>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	detailsPanel: state.settings.detailsPanel
-})
+// const mapStateToProps = (state) => ({
+// 	detailsPanel: state.settings.detailsPanel
+// })
 
-export default connect(mapStateToProps)(withStyles(registryStyles)(SensorDetails))
+export default SensorDetails

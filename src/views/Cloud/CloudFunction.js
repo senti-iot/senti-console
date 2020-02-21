@@ -1,212 +1,181 @@
-import { withStyles, Fade } from '@material-ui/core';
-import cloudfunctionStyles from 'assets/jss/views/deviceStyles';
+import { Fade } from '@material-ui/core';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, Fragment, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { DataUsage, Code } from 'variables/icons';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getFunctionLS } from 'redux/data';
 import FunctionCode from './CloudCards/FunctionCode';
 import FunctionDetails from './CloudCards/FunctionDetails';
 import { deleteCFunction } from 'variables/dataFunctions';
-// import FunctionDetails from './FunctionCards/FunctionDetails';
-// import FunctionDevices from './FunctionCards/FunctionDevices';
+import { useLocalization, useSnackbar, useHistory, useLocation, useMatch } from 'hooks'
+import { useParams } from 'react-router-dom';
 
-class Function extends Component {
-	constructor(props) {
-		super(props)
+const CloudFunction = props => {
+	//Hooks
+	const history = useHistory()
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const location = useLocation()
+	const params = useParams()
+	const match = useMatch()
 
-		this.state = {
-			loading: true,
-			anchorElHardware: null,
-			openDelete: false,
-		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
-		props.setHeader('sidebar.cloudfunction', true, prevURL, 'functions')
-	}
+	//Redux
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const saved = useSelector(state => state.favorites.saved)
+	const cloudfunction = useSelector(state => state.data.cloudfunction)
+	const loading = useSelector(state => !state.data.gotFunction)
 
-	format = 'YYYY-MM-DD+HH:mm'
-	tabs = () => {
-		const { t } = this.props
-		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			{ id: 1, title: t('tabs.code'), label: <Code />, url: `#code` }
-		]
-	}
+	//State
+	const [openDelete, setOpenDelete] = useState(false)
 
-	reload = (msgId) => {
-		this.snackBarMessages(msgId)
-		this.getFunction(this.props.match.params.id)
-	}
+	//Const
+	const { setTabs, setHeader, setBC } = props
 
-	getFunction = async (id) => {
-		const { getFunction } = this.props
-		await getFunction(id)
-	}
-	componentDidUpdate = async (prevProps) => {
-		if (prevProps.match.params.id !== this.props.match.params.id)
-			await this.componentDidMount()
-		if (this.props.saved === true) {
-			const { cloudfunction } = this.props
-			if (this.props.isFav({ id: cloudfunction.id, type: 'function' })) {
-				this.props.s('snackbars.favorite.saved', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
-				this.props.finishedSaving()
+	//useEffect
+
+	useEffect(() => {
+		if (saved === true) {
+			if (dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))) {
+				s('snackbars.favorite.saved', { name: cloudfunction.name, type: t('favorites.types.cloudfunction') })
+				dispatch(finishedSaving())
 			}
-			if (!this.props.isFav({ id: cloudfunction.id, type: 'function' })) {
-				this.props.s('snackbars.favorite.removed', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
-				this.props.finishedSaving()
+			if (!dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))) {
+				s('snackbars.favorite.removed', { name: cloudfunction.name, type: t('favorites.types.cloudfunction') })
+				dispatch(finishedSaving())
 			}
 		}
-		// if (!this.props.cloudfunction) {
-		// 	this.props.history.push('/404')
-		// }
-	}
-	componentDidMount = async () => {
-		if (this.props.match) {
-			let id = this.props.match.params.id
-			if (id) {
-				await this.getFunction(id).then(() => this.props.cloudfunction ? this.props.setBC('cloudfunction', this.props.cloudfunction.name) : null
-				)
-				this.props.setTabs({
-					route: 0,
-					id: 'cloudfunction',
-					tabs: this.tabs(),
-					hashLinks: true
-				})
-				if (this.props.location.hash !== '') {
-					scrollToAnchor(this.props.location.hash)
+	}, [cloudfunction, dispatch, s, saved, t])
+
+	useEffect(() => {
+		const asyncFunc = async () => {
+			if (params) {
+				let id = params.id
+				if (id) {
+					await dispatch(await getFunctionLS(id))
+
+					if (location.hash !== '') {
+						scrollToAnchor(location.hash)
+					}
 				}
 			}
+			else {
+				history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
+			}
 		}
-		else {
-			this.props.history.push({
-				pathname: '/404',
-				prevURL: window.location.pathname
+		asyncFunc()
+		// eslint-disable-next-line
+	}, [])
+	useEffect(() => {
+		if (cloudfunction) {
+			const tabs = [
+				{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+				{ id: 1, title: t('tabs.code'), label: <Code />, url: `#code` }
+			]
+			setTabs({
+				route: 0,
+				id: 'cloudfunction',
+				tabs: tabs,
+				hashLinks: true
 			})
+
+			let prevURL = location.prevURL ? location.prevURL : '/functions/list'
+			setHeader('sidebar.cloudfunction', true, prevURL, 'manage.cloudfunctions')
+			setBC('cloudfunction', cloudfunction.name)
 		}
-	}
-	addToFav = () => {
-		const { cloudfunction } = this.props
+	}, [cloudfunction, location.prevURL, setBC, setHeader, setTabs, t])
+
+	const addToFavorites = () => {
 		let favObj = {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
-			type: 'function',
-			path: this.props.match.url
+			type: 'cloudfunction',
+			path: match.url
 		}
-		this.props.addToFav(favObj)
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = () => {
-		const { cloudfunction } = this.props
+	const removeFromFavorites = () => {
 		let favObj = {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
-			type: 'function',
-			path: this.props.match.url
+			type: 'cloudfunction',
+			path: match.url
 		}
-		this.props.removeFromFav(favObj)
+		dispatch(removeFromFav(favObj))
+	}
+	const isFavorite = (id) => dispatch(isFav({ id: id, type: 'cloudfunction' }))
+	//TODO
+	// const snackBarMessages = (msg) => {
+	// 	switch (msg) {
+	// 		default:
+	// 			break
+	// 	}
+	// }
+
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
 	}
 
-	snackBarMessages = (msg) => {
-		// const { s, t, cloudfunction } = this.props
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
+	}
 
-		switch (msg) {
-			default:
-				break
-		}
-	}
-	handleOpenDeleteDialog = () => {
-		this.setState({
-			openDelete: true
-		})
-	}
-	handleCloseDeleteDialog = () => {
-		this.setState({
-			openDelete: false
-		})
-	}
-	handleDeleteSensor = async () => {
-		const { cloudfunction } = this.props
-		if (this.props.isFav(cloudfunction.id))
-			this.removeFromFav()
+	const handleDeleteSensor = async () => {
+		if (dispatch(isFav(cloudfunction.id)))
+			removeFromFavorites()
 		await deleteCFunction(cloudfunction.id).then(() => {
-			this.handleCloseDeleteDialog()
-			this.snackBarMessages(1)
-			this.props.history.push('/functions/list')
+			handleCloseDeleteDialog()
+			// snackBarMessages(1)
+			history.push('/functions/list')
 		})
 	}
-	renderDeleteDialog = () => {
-		const { openDelete } = this.state
-		const { t } = this.props
+
+	const renderDeleteDialog = () => {
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.cloudfunction'}
 			message={'dialogs.delete.message.cloudfunction'}
-			messageOpts={{ cf: this.props.cloudfunction.name }}
+			messageOpts={{ cf: cloudfunction.name }}
 			open={openDelete}
 			single
-			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-			handleDelete={this.handleDeleteSensor}
+			handleCloseDeleteDialog={handleCloseDeleteDialog}
+			handleDelete={handleDeleteSensor}
 		/>
 	}
 
-	renderLoader = () => {
+	const renderLoader = () => {
 		return <CircularLoader />
 	}
 
-
-	render() {
-		const { history, match, t, accessLevel, cloudfunction, loading } = this.props
-		return (
-			<Fragment>
-				{!loading ? <Fade in={true}>
-					<GridContainer justify={'center'} alignContent={'space-between'}>
-						{this.renderDeleteDialog()}
-						<ItemGrid xs={12} noMargin id="details">
-							<FunctionDetails
-								cloudfunction={cloudfunction}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								isFav={this.props.isFav({ id: cloudfunction.id, type: 'function' })}
-								addToFav={this.addToFav}
-								removeFromFav={this.removeFromFav}
-								history={history}
-								t={t}
-								accessLevel={accessLevel}
-								match={match}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id='code'>
-							<FunctionCode
-								theme={this.props.theme}
-								cloudfunction={cloudfunction}
-								t={t}
-							/>
-						</ItemGrid>
-					</GridContainer></Fade>
-					: this.renderLoader()}
-			</Fragment>
-		)
-	}
+	return (
+		<Fragment>
+			{!loading ? <Fade in={true}>
+				<GridContainer justify={'center'} alignContent={'space-between'}>
+					{renderDeleteDialog()}
+					<ItemGrid xs={12} noMargin id="details">
+						<FunctionDetails
+							cloudfunction={cloudfunction}
+							handleOpenDeleteDialog={handleOpenDeleteDialog}
+							isFav={isFavorite(cloudfunction.id)}
+							addToFav={addToFavorites}
+							removeFromFav={removeFromFavorites}
+							accessLevel={accessLevel}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id='code'>
+						<FunctionCode
+							cloudfunction={cloudfunction}
+						/>
+					</ItemGrid>
+				</GridContainer></Fade>
+				: renderLoader()}
+		</Fragment>
+	)
 }
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	language: state.settings.language,
-	saved: state.favorites.saved,
-	mapTheme: state.settings.mapTheme,
-	periods: state.dateTime.periods,
-	cloudfunction: state.data.cloudfunction,
-	loading: !state.data.gotFunction,
 
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getFunction: async (id, customerID, ua) => dispatch(await getFunctionLS(id, customerID, ua))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(cloudfunctionStyles, { withTheme: true })(Function))
+export default CloudFunction

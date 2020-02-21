@@ -248,6 +248,7 @@ class EditDashboard extends React.Component {
 	renderColorPicker = () => {
 		const { t } = this.props
 		return <Dropdown
+			cIcon
 			icon={<Palette style={{ color: "#FFF" }} />}
 			menuItems={weekendColorsDropdown(t)}
 			onChange={this.changeColor}

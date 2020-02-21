@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 
 const multiSourceChartStyles = makeStyles(theme => ({
 
@@ -20,12 +20,12 @@ const multiSourceChartStyles = makeStyles(theme => ({
 		textOverflow: 'ellipsis',
 		paddingLeft: 8,
 		[theme.breakpoints.down('sm')]: {
-			paddingBottom: 8,
+			// paddingBottom: 8,
 			paddingTop: 8
 		},
 		[theme.breakpoints.up('xs')]: {
-			paddingBottom: 8,
-			paddingTop: 8
+			// paddingBottom: 16,
+			paddingTop: 16
 		}
 	},
 	subheader: {

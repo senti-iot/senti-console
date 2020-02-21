@@ -476,7 +476,7 @@
 			"collection": "Data collection",
 			"device": "Device",
 			"devicetype": "Device Type",
-			"function": "Cloud Function",
+			"cloudfunction": "Cloud Function",
 			"org": "Organisation",
 			"project": "Project",
 			"registry": "Registry",
@@ -1011,6 +1011,7 @@
 		}
 	},
 	"sidebar": {
+		"legacy": "SentiWi",
 		"api": "API",
 		"cloudfunction": "Cloud function",
 		"cloudfunctions": "Cloud functions",

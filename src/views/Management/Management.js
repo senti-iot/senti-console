@@ -1,124 +1,139 @@
-import React, { Component, Fragment } from 'react'
-// import Toolbar from 'components/Toolbar/Toolbar';
-// import { getAllUsers } from 'variables/dataUsers';
-// import { getAllOrgs } from 'variables/dataOrgs';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
-import CreateUser from 'components/User/CreateUser';
-import Users from 'views/Users/Users';
-import CreateOrg from 'components/Orgs/CreateOrg';
-import Orgs from 'views/Orgs/Orgs';
-import withLocalization from 'components/Localization/T';
-import withSnackbar from 'components/Localization/S';
-import { CircularLoader, GridContainer } from 'components';
-import { People, Business, StarBorder, Star, Person } from 'variables/icons';
-import { filterItems, handleRequestSort } from 'variables/functions';
-import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
-import { connect } from 'react-redux'
-import FavoritesTable from 'components/Favorites/FavoritesTable';
-import { Paper, withStyles } from '@material-ui/core';
-import TableToolbar from 'components/Table/TableToolbar';
-import projectStyles from 'assets/jss/views/projects';
-import { customFilterItems } from 'variables/Filters';
-import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data';
+import React, { useState, useEffect } from 'react'
+import { Route, Switch, Redirect, useRouteMatch, useLocation, useHistory } from 'react-router-dom'
+import CreateUser from 'components/User/CreateUser'
+import Users from 'views/Users/Users'
+import CreateOrg from 'components/Orgs/CreateOrg'
+import Orgs from 'views/Orgs/Orgs'
+import { CircularLoader, GridContainer } from 'components'
+import { People, Business, StarBorder, Star, Person } from 'variables/icons'
+import { handleRequestSort } from 'variables/functions'
+import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites'
+import { useSelector, useDispatch } from 'react-redux'
+import FavoritesTable from 'components/Favorites/FavoritesTable'
+import { Paper, makeStyles } from '@material-ui/core'
+import TableToolbar from 'components/Table/TableToolbar'
+import { customFilterItems } from 'variables/Filters'
+import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data'
+import { useLocalization, useSnackbar } from 'hooks'
 
-class Management extends Component {
-	constructor(props) {
-		super(props)
+const favContainerStyles = makeStyles(theme => ({
+	root: {
+		width: '100%',
+		margin: theme.spacing(1),
+		borderRadius: "3px",
+	},
+}))
 
-		this.state = {
-			order: 'asc',
-			orderBy: 'name',
-			route: window.location.pathname.includes('orgs') ? 1 : 0,
-			selected: [],
-			filters: {
-				keyword: '',
-				custom: []
-			},
-			loading: true,
-			users: [],
-			orgs: []
-		}
-		props.setHeader('users.pageTitle', false, '', 'users')
-		props.setTabs({
-			id: 'management',
-			tabs: this.tabs,
-			route: this.handleTabs()
-		})
-	}
+const Management = props => {
+	//Hooks
+	const t = useLocalization()
+	const match = useRouteMatch()
+	const location = useLocation()
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const s = useSnackbar().s
+	const classes = favContainerStyles()
+	//Redux
+	const favorites = useSelector(state => state.data.favorites)
+	const saved = useSelector(state => state.favorites.saved)
+	const filtersFavorites = useSelector(state => state.appState.filters.favorites)
+	const loadingUsers = useSelector(state => !state.data.gotusers)
+	const loadingOrgs = useSelector(state => !state.data.gotorgs)
+	const users = useSelector(state => state.data.users)
+	const orgs = useSelector(state => state.data.orgs)
 
-	tabs = [
-		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
-		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
-		{ id: 2, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+	//State
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('name')
+	const [selected, setSelected] = useState([])
+
+	//Const
+	const { setHeader, setTabs } = props
+
+	const favoritesHeaders = [
+		{ id: 'type', label: "" },
+		{ id: 'name', label: t('favorites.fields.name') },
+		{ id: 'type', label: t('favorites.fields.type') }
 	]
 
-	componentDidMount = async () => {
-		this.handleTabs()
-		this.getData()
-	}
+	const dTypes = [
+		{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
+		{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
+	]
 
-	reload = () => {
-		this.getData(true)
-		this.handleFilterKeyword('')
-	}
+	const ft = [
+		{ key: "", name: t('filters.freeText'), type: 'string', hidden: true },
+		{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
+		{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: dTypes }
+	]
 
-	renderUserGroup = (user) => {
-		const { t } = this.props
-		if (user.groups) {
-			if (user.groups[136550100000143])
-				return t("users.groups.superUser")
-			if (user.groups[136550100000211])
-				return t("users.groups.accountManager")
-			if (user.groups[136550100000225])
-				return t("users.groups.user")
+	//Effects
+	useEffect(() => {
+		if (saved === true) {
+			s('snackbars.favorite.updated')
+			dispatch(finishedSaving())
+
 		}
-		return ''
-	}
-	getData = async (reload) => {
-		const { getUsers, getOrgs, setUsers, setOrgs } = this.props
+
+	}, [saved, dispatch, s])
+	useEffect(() => {
+		const handleTabs = () => {
+			if (location.pathname.includes('/orgs')) {
+				return 1
+			}
+			else {
+				if (location.pathname.includes('/favorites')) {
+					return 2
+				}
+				else {
+					return 0
+				}
+			}
+		}
+		const tabs = [
+			{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },
+			{ id: 1, title: t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+			{ id: 2, title: t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+		]
+		setHeader('users.pageTitle', false, '', 'users')
+		setTabs({
+			id: 'management',
+			tabs: tabs,
+			route: handleTabs()
+		})
+
+	}, [location.pathname, setHeader, setTabs, t])
+	useEffect(() => {
+		const getData = async () => await handleGetData(true)
+		getData()
+		//eslint-disable-next-line
+	}, [])
+	//Handlers
+
+	const handleGetData = async (reload) => {
+		// const { getUsers, getOrgs, setUsers, setOrgs } = this.props
 		if (reload) {
-			getUsers(reload)
-			getOrgs(reload)
+			dispatch(getUsers(reload))
+			dispatch(getOrgs(reload))
 		}
 		else {
-			setUsers()
-			setOrgs()
+			dispatch(setUsers())
+			dispatch(setOrgs())
 		}
-		// this.props.sortData('users', 'firstName', 'asc')
+		sortData('users', 'firstName', 'asc')
 	}
 
-	dTypes = () => {
-		const { t } = this.props
-		return [
-			{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
-			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
-		]
+	const handleReload = () => {
+		handleGetData(true)
 	}
 
-	ft = () => {
-		const { t } = this.props
-		return [
-			{ key: "", name: t('filters.freeText'), type: 'string', hidden: true },
-			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
-			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
-		]
-	}
-
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				keyword: value
-			}
-		})
-	}
-	handleCheckboxClick = (event, id) => {
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -127,198 +142,104 @@ class Management extends Component {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
-
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
 	}
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-	filterFavorites = (data) => {
-		const { filters } = this.state
-		const rFilters = this.props.filtersFavorites
-		return customFilterItems(this.filterItems(data, filters), rFilters)
-	}
-	filterItems = (data) => {
-		const { filters } = this.state
-		return filterItems(data, filters)
-	}
-	options = () => {
-		const { t } = this.props
-		return [
-			{ label: t('menus.favorites.remove'), icon: StarBorder, func: this.removeFromFavs }
-		]
-	}
 
-	removeFromFavs = () => {
-		const { selected } = this.state
-		const { favorites } = this.props
+	const handleFilterFavorites = (data) => customFilterItems(data, filtersFavorites)
+
+	const handleRemoveFromFavs = () => {
+
 		selected.forEach(f => {
 			let fav = favorites[favorites.findIndex(fe => fe.id === f)]
-			this.props.removeFromFav(fav)
+			dispatch(removeFromFav(fav))
 		})
-		this.setState({ anchorElMenu: null })
-	}
-	handleTabs = () => {
-		if (this.props.location.pathname.includes('/orgs')) {
-			return 1
-		}
-		else {
-			if (this.props.location.pathname.includes('/favorites')) {
-				this.props.setHeader('sidebar.favorites', false, '', 'users')
-				return 2
-			}
-			else {
-				return 0
-			}
-		}
 	}
 
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.location.pathname !== prevProps.location.pathname) {
-			this.props.setTabs({
-				id: 'management',
-				tabs: this.tabs,
-				route: this.handleTabs()
-			})		}
-		if (window.location.pathname.includes('favorites')) {
-			this.props.setBC('favorites')
-			if (this.props.saved === true) {
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-				this.props.s('snackbars.favorite.manyRemoved')
-			}
-		}
-	}
-	favoritesHeaders = () => {
-		const { t } = this.props
-		return [
-			{ id: 'type', label: "" },
-			{ id: 'name', label: t('favorites.fields.name') },
-			{ id: 'type', label: t('favorites.fields.type') }
-		]
-	}
-	handleClick = id => e => {
+	const options = [
+		{ label: t('menus.favorites.remove'), icon: StarBorder, func: handleRemoveFromFavs }
+	]
+
+	const handleClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: id, prevURL: this.props.match.path })
-	}
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
+		history.push({ pathname: id, prevURL: match.path })
 	}
 
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
-	}
-	handleSelectAllClick = (event, checked) => {
-		const { favorites } = this.props
-
+	const handleSelectAllClick = (event, checked) => {
 		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		if (checked) {
-			this.setState({ selected: usersAndOrgs.map(n => n.id) })
-			return;
+			setSelected(usersAndOrgs.map(n => n.uuid))
+			return
 		}
-		this.setState({ selected: [] })
+		setSelected([])
 	}
-	handleRequestSort = (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
+	const handleReqSort = (event, property, way) => {
+		let nOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			nOrder = 'asc'
 		}
-		this.props.sortData('favorites', property, order)
-		// handleRequestSort(property, order, this.props.favorites)
-		this.setState({ order, orderBy: property })
+
+		dispatch(sortData('favorites', property, order))
+		setOrder(nOrder)
+		setOrderBy(property)
 	}
-	renderTableToolBar = (reduxKey) => {
-		const { t } = this.props
-		const { selected } = this.state
+
+
+	const renderTableToolBar = (reduxKey) => {
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft}
 			reduxKey={reduxKey}
-			addFilter={this.addFilter}
-			removeFilter={this.removeFilter}
-			anchorElMenu={this.state.anchorElMenu}
-			handleToolbarMenuClose={this.handleToolbarMenuClose}
-			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
 		/>
 	}
-	renderTable = () => {
-		const { t, favorites } = this.props
-		const { selected, orderBy, order } = this.state
+	const renderTable = () => {
 		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		usersAndOrgs = handleRequestSort(orderBy, order, usersAndOrgs)
 		return <FavoritesTable
 			selected={selected}
-			handleClick={this.handleClick}
-			handleCheckboxClick={this.handleCheckboxClick}
-			handleSelectAllClick={this.handleSelectAllClick}
-			data={this.filterFavorites(usersAndOrgs)}
-			tableHead={this.favoritesHeaders()}
-			handleRequestSort={this.handleRequestSort}
+			handleClick={handleClick}
+			handleCheckboxClick={handleCheckboxClick}
+			handleSelectAllClick={handleSelectAllClick}
+			data={handleFilterFavorites(usersAndOrgs)}
+			tableHead={favoritesHeaders}
+			handleRequestSort={handleReqSort}
 			orderBy={orderBy}
 			order={order}
 			t={t}
 		/>
 	}
-	renderFavorites = () => {
-		const { classes, loadingUsers, loadingOrgs } = this.props
+	const renderFavorites = () => {
 		return <GridContainer justify={'center'}>
 			{loadingUsers || loadingOrgs ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderTableToolBar('favorites')}
-				{this.renderTable()}
+				{renderTableToolBar('favorites')}
+				{renderTable()}
 			</Paper>
 			}
 		</GridContainer>
 	}
+	return (
+		<Switch>
+			<Route path={`${props.path}/users/new`}>
+				<CreateUser {...props} />
+			</Route>
+			<Route path={`${props.path}/users`} >
+				{loadingUsers ? <CircularLoader /> : <Users {...props} reload={handleReload} users={users} />}
+			</Route>
+			<Route path={`${props.path}/orgs/new`} component={(rp) => <CreateOrg {...props} />} />
+			<Route path={`${props.path}/orgs`}>
+				{loadingOrgs ? <CircularLoader /> : <Orgs {...props} reload={handleReload} orgs={orgs} />}
+			</Route>
+			<Route path={`${props.path}/favorites`} render={() => renderFavorites()} />
+			<Redirect from={'/management'} to={'/management/users'} />
+		</Switch>
 
-	render() {
-		// const { users, orgs, /* filters, */ loading } = this.state
-		// const { favorites } = this.props
-		const { classes, filtersOrgs, filtersUsers, users, orgs, loadingUsers, loadingOrgs, ...rest } = this.props
-		return (
-			 <Fragment>
-				<Switch>
-					<Route path={`${this.props.match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
-					<Route path={`${this.props.match.url}/users`} render={(rp) => loadingUsers ? <CircularLoader/> : <Users filters={filtersUsers} {...rest} reload={this.reload} users={this.filterItems(users)} />} />
-					<Route path={`${this.props.match.url}/orgs/new`} component={(rp) => <CreateOrg {...rest} />} />
-					<Route path={`${this.props.match.url}/orgs`} render={(rp) => loadingOrgs ? <CircularLoader/> : <Orgs filters={filtersOrgs} {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
-					<Route path={`${this.props.match.url}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect from={'/management'} to={'/management/users'} />
-				</Switch>
-			</Fragment >
+	)
 
-		)
-	}
 }
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	filtersOrgs: state.appState.filters.orgs,
-	filtersUsers: state.appState.filters.users,
-	filtersFavorites: state.appState.filters.favorites,
-	loadingUsers: !state.data.gotusers,
-	loadingOrgs: !state.data.gotorgs,
-	users: state.data.users,
-	orgs: state.data.orgs
-})
 
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getUsers: (reload) => dispatch(getUsers(reload)),
-	getOrgs: (reload) => dispatch(getOrgs(reload)),
-	setUsers: () => dispatch(setUsers()),
-	setOrgs: () => dispatch(setOrgs()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
 
-export default withRouter(withStyles(projectStyles)(withSnackbar()(withLocalization()(connect(mapStateToProps, mapDispatchToProps)(Management)))))
+export default Management

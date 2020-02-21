@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Paper, Grid, Dialog, AppBar, Toolbar, List, ListItem, Divider, ListItemText, withStyles, Button, Typography } from '@material-ui/core'
 import { GridContainer, TextF, ItemGrid, SlideT } from 'components/index';
 import PropTypes from 'prop-types'
@@ -16,10 +16,10 @@ import { Close } from 'variables/icons';
 	open:boolean.isRequired,
 	orgs:array.isRequired,	>}
 */
-class EditCollectionForm extends Component {
+const EditCollectionForm = props => {
 
-	renderSelectState = () => {
-		const { t, collection, handleChange } = this.props
+	const renderSelectState = () => {
+		const { t, collection, handleChange } = props
 		return <DSelect
 			label={t('collections.fields.status')}
 			value={collection.state}
@@ -30,8 +30,9 @@ class EditCollectionForm extends Component {
 			]}
 		/>
 	}
-	renderSelectOrg = () => {
-		const { t, open, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
+
+	const renderSelectOrg = () => {
+		const { t, open, handleCloseOrg, orgs, handleChangeOrg, classes } = props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -62,75 +63,73 @@ class EditCollectionForm extends Component {
 			</List>
 		</Dialog>
 	}
-	render() {
-		const { t, handleChange, collection, classes, handleOpenOrg, handleUpdate, goToCollection } = this.props
-		return (
-			<GridContainer>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<Grid container>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'collectionName'}
-									label={t('collections.fields.name')}
-									onChange={handleChange('name')}
-									value={collection.name}
-									autoFocus
+	const { t, handleChange, collection, classes, handleOpenOrg, handleUpdate, goToCollection } = props
+	return (
+		<GridContainer>
+			<Paper className={classes.paper}>
+				<form className={classes.form}>
+					<Grid container>
+						<ItemGrid xs={12}>
+							<TextF
+								id={'collectionName'}
+								label={t('collections.fields.name')}
+								onChange={handleChange('name')}
+								value={collection.name}
+								autoFocus
 
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'collectionDescription'}
-									label={t('collections.fields.description')}
-									onChange={handleChange('description')}
-									value={collection.description}
-									multiline
-									rows={3}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<TextF
+								id={'collectionDescription'}
+								label={t('collections.fields.description')}
+								onChange={handleChange('description')}
+								value={collection.description}
+								multiline
+								rows={3}
 
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectOrg()}
-								<TextF
-									id={'collectionOrg'}
-									label={t('collections.fields.org')}
-									value={collection.org.name ? collection.org.name : t('collections.noOrg')}
-									onClick={handleOpenOrg}
-									onChange={() => { }}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{renderSelectOrg()}
+							<TextF
+								id={'collectionOrg'}
+								label={t('collections.fields.org')}
+								value={collection.org.name ? collection.org.name : t('collections.noOrg')}
+								onClick={handleOpenOrg}
+								onChange={() => { }}
 
-									InputProps={{
-										onChange: handleOpenOrg,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectState()}
-							</ItemGrid>
-							<ItemGrid xs={12} container>
-								<div className={classes.wrapper}>
-									<Button
-										variant='outlined'
-										// color={'danger'}
-										onClick={goToCollection}
-										className={classes.redButton}
-									>
-										{t('actions.cancel')}
-									</Button>
-								</div>
-								<div className={classes.wrapper}>
-									<Button onClick={handleUpdate} variant={'outlined'} color={'primary'}>
-										{t('actions.save')}
-									</Button>
-								</div>
-							</ItemGrid>
-						</Grid>
-					</form>
-				</Paper>
-			</GridContainer>
-		)
-	}
+								InputProps={{
+									onChange: handleOpenOrg,
+									readOnly: true
+								}}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{renderSelectState()}
+						</ItemGrid>
+						<ItemGrid xs={12} container>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
+									// color={'danger'}
+									onClick={goToCollection}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
+							<div className={classes.wrapper}>
+								<Button onClick={handleUpdate} variant={'outlined'} color={'primary'}>
+									{t('actions.save')}
+								</Button>
+							</div>
+						</ItemGrid>
+					</Grid>
+				</form>
+			</Paper>
+		</GridContainer>
+	)
 }
 
 EditCollectionForm.propTypes = {

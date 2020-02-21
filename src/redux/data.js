@@ -615,7 +615,7 @@ export const getRegistries = (reload, orgId, su) => {
 			if (reload) {
 				dispatch(setRegistries())
 			}
-			dispatch({ type: gotcollections, payload: true })
+			dispatch({ type: gotregistries, payload: true })
 		})
 	}
 }
@@ -627,6 +627,7 @@ export const setRegistries = () => {
 				type: setregistries,
 				payload: registries
 			})
+			dispatch({ type: gotregistries, payload: true })
 			dispatch(getSuggestions())
 			// dispatch(sortData('collections', 'id', 'asc'))
 		}
@@ -980,6 +981,7 @@ const initialState = {
 	gotdevices: false,
 	gotprojects: false,
 	gotcollections: false,
+	gotregistries: false,
 }
 
 export const data = (state = initialState, { type, payload }) => {

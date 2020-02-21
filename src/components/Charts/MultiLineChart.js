@@ -10,6 +10,11 @@ import { connect } from 'react-redux'
 import { getWeather } from 'redux/weather';
 import MultiTooltip from './MultiTooltip';
 
+/**
+ *  @Pavel do not convert this file
+ *  */
+
+
 Chart.defaults.global.elements.line.tension = 0;
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.defaults.global.elements.point.radius = 1;

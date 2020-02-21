@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react'
 
 import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
 import withLocalization from 'components/Localization/T';
-import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
+import { DateTimePicker } from '@material-ui/pickers';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 import { dateTimeFormatter } from 'variables/functions';
 import { TextF, DSelect } from 'components';
@@ -159,8 +158,7 @@ class FilterCard extends Component {
 		if (type === 'dropDown') {
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		}
-		if (type === 'string')
-		{
+		if (type === 'string') {
 			if (hidden) {
 				handleButton(`${value}`, value)
 			}
@@ -248,28 +246,26 @@ class FilterCard extends Component {
 						<Typography>{t('filters.afterDate')}</Typography>
 					</ItemG>
 					<ItemG>
-						<MuiPickersUtilsProvider utils={MomentUtils}>
-							<DateTimePicker
-								id={'date'}
-								autoOk
-								fullWidth
-								clearable
-								disableFuture
-								ampm={false}
-								format='LLL'
-								value={date}
-								autoFocus
-								onChange={val => this.handleCustomDate(val, 'date')}
-								animateYearScrolling={false}
-								color='primary'
-								dateRangeIcon={<DateRange />}
-								timeIcon={<AccessTime />}
-								rightArrowIcon={<KeyboardArrowRight />}
-								leftArrowIcon={<KeyboardArrowLeft />}
-								InputLabelProps={{/*  FormLabelClasses: { root: classes.label, focused: classes.focused } */ }}
-								InputProps={{ classes: { underline: classes.underline } }}
-							/>
-						</MuiPickersUtilsProvider>
+						<DateTimePicker
+							id={'date'}
+							autoOk
+							fullWidth
+							clearable
+							disableFuture
+							ampm={false}
+							format='LLL'
+							value={date}
+							autoFocus
+							onChange={val => this.handleCustomDate(val, 'date')}
+							animateYearScrolling={false}
+							color='primary'
+							dateRangeIcon={<DateRange />}
+							timeIcon={<AccessTime />}
+							rightArrowIcon={<KeyboardArrowRight />}
+							leftArrowIcon={<KeyboardArrowLeft />}
+							InputLabelProps={{/*  FormLabelClasses: { root: classes.label, focused: classes.focused } */ }}
+							InputProps={{ classes: { underline: classes.underline } }}
+						/>
 					</ItemG>
 				</Fragment>
 			case 'string':

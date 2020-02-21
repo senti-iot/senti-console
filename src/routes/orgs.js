@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 const orgs = (props) => {
 	return (
-		<Redirect from={props.match.path} to={`/management/orgs`}/>
+		<Redirect from={'/orgs'} to={`/management/orgs`} />
 	)
 }
 

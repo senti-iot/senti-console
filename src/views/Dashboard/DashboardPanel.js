@@ -34,6 +34,7 @@ const DashboardPanel = (props) => {
 	const dispatch = useDispatch()
 	const theme = useTheme()
 	const classes = dashboardStyle()
+
 	//Redux
 	const dsTheme = useSelector(s => s.settings.dsTheme)
 
@@ -50,6 +51,11 @@ const DashboardPanel = (props) => {
 	const lightTheme = nLightTheme(wl ? wl : undefined)
 	const darkTheme = nDarkTheme(wl ? wl : undefined)
 
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
 
 	const handleOpenDashboard = () => setOpenDashboard(true)
 
@@ -327,8 +333,6 @@ DashboardPanel.defaultProps = {
 	preventCollision: false,
 	onLayoutChange: () => { },
 	cols: { lg: 12, md: 6, sm: 4, xs: 3, xxs: 3 },
-
-
 };
 
 

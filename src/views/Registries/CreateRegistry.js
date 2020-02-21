@@ -1,110 +1,93 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-// import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
+import React, { useState, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { createRegistry } from 'variables/dataRegistry';
 import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
 import { getRegistries } from 'redux/data';
+import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks';
 
-class CreateCollection extends Component {
-	constructor(props) {
-		super(props)
+const CreateRegistry = props => {
+	//Hooks
+	const s = useSnackbar().s
+	const location = useLocation()
+	const dispatch = useDispatch()
+	const history = useHistory()
 
-		this.state = {
-			loading: true,
-			registry: {
-				name: "",
-				region: "Europe",
-				protocol: 0,
-				ca_certificate: 0,
-				orgId: props.orgId
-			},
-			org: props.org
+	//Redux
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const orgId = useSelector(state => state.settings.user.org.id)
+	const org = useSelector(state => state.settings.user.org)
+
+	//State
+	const [registry, setRegistry] = useState({
+		name: "",
+		region: "Europe",
+		protocol: 0,
+		ca_certificate: 0,
+		orgId
+	})
+	const [stateOrg, setStateOrg] = useState(org)
+
+	//Const
+
+	//useCallbacks
+	const goToRegistries = useCallback(() => history.push('/registries'), [history])
+
+	const handleKeyPress = useCallback((e) => {
+		if (e.key === 'Escape') {
+			goToRegistries()
 		}
-		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
+	}, [goToRegistries])
+
+	//useEffects
+	useEffect(() => {
+		let prevURL = location.prevURL ? location.prevURL : '/registries/list'
 		props.setHeader('menus.create.registry', true, prevURL, 'manage.registries')
 		props.setBC('createregistry')
 		props.setTabs({
 			id: 'createRegistry',
 			tabs: []
 		})
-	}
 
-	keyHandler = (e) => {
-		if (e.key === 'Escape') {
-			this.goToRegistries()
-		}
-	}
-	componentDidMount = async () => {
-		window.addEventListener('keydown', this.keyHandler, false)
-	}
-	componentWillUnmount = () => {
-		window.removeEventListener('keydown', this.keyHandler, false)
-	}
+	}, [location.prevURL, props])
 
-	handleChange = (what) => e => {
-		this.setState({
-			registry: {
-				...this.state.registry,
-				[what]: e.target.value
-			}
-		})
+	//useEventListener
+
+	useEventListener('keypress', handleKeyPress)
+
+	//Handlers
+
+	const handleChange = (what) => e => {
+		setRegistry({ ...registry, [what]: e.target.value })
 	}
-	handleOrgChange = org => {
-		this.setState({
-			org,
-			registry: {
-				...this.state.registry,
-				orgId: org.id
-			}
-		})
+	const handleOrgChange = newOrg => {
+		setStateOrg(newOrg)
+		setRegistry({ ...registry, orgId: newOrg.id })
 	}
-	createRegistry = async () => {
-		return await createRegistry(this.state.registry)
+	const createRegistryFunc = async () => {
+		return await createRegistry(registry)
 	}
-	handleCreate = async () => {
-		const { s, history, orgId, accessLevel } = this.props
-		let rs = await this.createRegistry()
+	const handleCreate = async () => {
+		let rs = await createRegistryFunc()
 		if (rs) {
-			s('snackbars.create.registry', { reg: this.state.registry.name })
-			this.props.getRegistries(true, orgId, accessLevel.apisuperuser ? true : false)
+			s('snackbars.create.registry', { reg: registry.name })
+			dispatch(await getRegistries(true, orgId, accessLevel.apisuperuser ? true : false))
 			history.push(`/registry/${rs}`)
 		}
 		else
 			s('snackbars.failed')
 	}
-	goToRegistries = () => this.props.history.push('/registries')
-	render() {
-		const { t } = this.props
-		const { registry, org } = this.state
-		return (
 
-			<CreateRegistryForm
-				org={org}
-				handleOrgChange={this.handleOrgChange}
-				registry={registry}
-				handleChange={this.handleChange}
-				handleCreate={this.handleCreate}
-				goToRegistries={this.goToRegistries}
-				t={t}
-			/>
-		)
-	}
+	return (
+		<CreateRegistryForm
+			org={stateOrg}
+			handleOrgChange={handleOrgChange}
+			registry={registry}
+			handleChange={handleChange}
+			handleCreate={handleCreate}
+			goToRegistries={goToRegistries}
+		/>
+	)
 }
 
-CreateCollection.propTypes = {
-	match: PropTypes.object.isRequired,
-	accessLevel: PropTypes.object.isRequired,
-}
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	orgId: state.settings.user.org.id,
-	org: state.settings.user.org,
-})
 
-const mapDispatchToProps = dispatch => ({
-	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)
+export default CreateRegistry

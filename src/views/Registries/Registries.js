@@ -1,90 +1,72 @@
 import {
-	Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText,
+	Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText,
 	DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider
 } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
 import RegistryTable from 'components/Registry/RegistryTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, Fragment, useCallback, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, InputIcon } from 'variables/icons';
 import { GridContainer, CircularLoader, /* AssignProject */ } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { getRegistries, setRegistries, sortData } from 'redux/data';
+import { getRegistries, sortData } from 'redux/data';
 import RegistryCards from 'components/Registry/RegistryCards';
 import { deleteRegistry } from 'variables/dataRegistry';
+import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector } from 'hooks';
+import registriesStyles from 'assets/jss/components/registries/registriesStyles';
+import { handleRequestSort } from 'variables/functions';
 
-class Registries extends Component {
-	constructor(props) {
-		super(props)
+const Registries = props => {
+	//Hooks
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const location = useLocation()
+	const history = useHistory()
+	const dispatch = useDispatch()
+	const classes = registriesStyles()
 
-		this.state = {
-			selected: [],
-			openAssignDevice: false,
-			openAssignProject: false,
-			openUnassignDevice: false,
-			openDelete: false,
-			route: 0,
-			order: 'asc',
-			orderBy: 'id',
-			filters: {
-				keyword: '',
-			}
-		}
-		props.setHeader('registries.pageTitle', false, '', 'manage.registries')
-		props.setBC('registries')
-		props.setTabs({
-			id: 'registries',
-			tabs: this.tabs(),
-			route: this.handleTabs()
-		})
-	}
-	//#region Constants
-	tabs = () => {
-		const { t, match } = this.props
-		return [
-			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
-			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
-		]
-	}
-	dProtocols = () => {
-		const { t } = this.props
-		return [
-			{ value: 0, label: t("registries.fields.protocols.none") },
-			{ value: 1, label: t("registries.fields.protocols.mqtt") },
-			{ value: 2, label: t("registries.fields.protocols.http") },
-			{ value: 3, label: `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}` }
-		]
-	}
-	ft = () => {
-		const { t } = this.props
-		return [
-			{ key: 'name', name: t('registries.fields.name'), type: 'string' },
-			{ key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'created', name: t('registries.fields.created'), type: 'date' },
-			{ key: 'protocol', name: t('registries.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
-			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
-		]
-	}
-	registriesHeader = () => {
-		const { t } = this.props
-		return [
-			// { id: 'id', label: t('registries.fields.id') },
-			{ id: 'name', label: t('registries.fields.name') },
-			{ id: 'region', label: t('registries.fields.region') },
-			{ id: 'protocol', label: t('registries.fields.protocol') },
-			{ id: 'protocol', label: t('registries.fields.created') },
-			{ id: 'customer', label: t('registries.fields.customer') },
-		]
-	}
-	options = () => {
-		const { t, isFav, registries } = this.props
-		const { selected } = this.state
+	//Redux
+	const accessLevel = useSelector(s => s.settings.user.privileges)
+	const favorites = useSelector(s => s.data.favorites)
+	const saved = useSelector(s => s.favorites.saved)
+	const registries = useSelector(s => s.data.registries)
+	const loading = useSelector(s => !s.data.gotregistries)
+	const filters = useSelector(s => s.appState.filters.registries)
+	const user = useSelector(s => s.settings.user)
+
+	//State
+	const [selected, setSelected] = useState([])
+	const [openDelete, setOpenDelete] = useState(false)
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('name')
+
+	//Const
+	const dProtocols = [
+		{ value: 0, label: t("registries.fields.protocols.none") },
+		{ value: 1, label: t("registries.fields.protocols.mqtt") },
+		{ value: 2, label: t("registries.fields.protocols.http") },
+		{ value: 3, label: `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}` }
+	]
+
+	const ft = [
+		{ key: 'name', name: t('registries.fields.name'), type: 'string' },
+		{ key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
+		{ key: 'created', name: t('registries.fields.created'), type: 'date' },
+		{ key: 'protocol', name: t('registries.fields.protocol'), type: 'dropDown', options: dProtocols },
+		// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+	]
+
+	const registriesHeader = [
+		{ id: 'name', label: t('registries.fields.name') },
+		{ id: 'region', label: t('registries.fields.region') },
+		{ id: 'protocol', label: t('registries.fields.protocol') },
+		{ id: 'protocol', label: t('registries.fields.created') },
+		{ id: 'customer', label: t('registries.fields.customer') },
+	]
+
+	const options = () => {
 		let registry = registries[registries.findIndex(d => d.id === selected[0])]
 		let favObj = {
 			id: registry.id,
@@ -92,56 +74,81 @@ class Registries extends Component {
 			type: 'registry',
 			path: `/registry/${registry.id}`
 		}
-		let isFavorite = isFav(favObj)
+		let isFavorited = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ single: true, label: isFavorited ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorited ? Star : StarBorder, func: isFavorited ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
 		]
 		return allOptions
 	}
-	//#endregion
-
-	//#region Life Cycle
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.handleTabs()
-		if (this.props.user && this.props.accessLevel) {
-			this.getData(true)
-		}
-	}
-
-	componentDidUpdate = () => {
-		const { t, saved, s, isFav, finishedSaving } = this.props
-		if (saved === true) {
-			const { registries } = this.props
-			const { selected } = this.state
-			let registry = registries[registries.findIndex(d => d.id === selected[0])]
-			if (registry) {
-				if (isFav({ id: registry.id, type: 'registry' })) {
-					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-				if (!isFav({ id: registry.id, type: 'registry' })) {
-					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
+	//useCallbacks
+	const handleTabs = useCallback(() => {
+		if (location.pathname.includes('grid'))
+			return 1
+		else {
+			if (location.pathname.includes('favorites'))
+				return 2
+			else {
+				return 0
 			}
 		}
-	}
-	componentWillUnmount = () => {
-		// this._isMounted = 0
-	}
-	//#endregion
+	}, [location])
 
-	//#region Functions
-	addNewRegistry = () => this.props.history.push({ pathname: `/registries/new`, prevURL: '/registries/list' })
+	const getData = useCallback(async () => {
+		if (user && accessLevel) {
+			dispatch(await getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false))
+		}
+	}, [accessLevel, dispatch, user])
 
-	getFavs = () => {
-		const { order, orderBy } = this.state
-		const { favorites, registries } = this.props
+	//useEffects
+	useEffect(() => {
+		if (saved === true) {
+			let registry = registries[registries.findIndex(d => d.id === selected[0])]
+			if (registry) {
+				if (dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
+					finishedSaving()
+					setSelected([])
+				}
+				if (!dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
+					finishedSaving()
+					setSelected([])
+				}
+			}
+
+		}
+	}, [registries, s, saved, selected, t, dispatch])
+
+	useEffect(() => {
+		const getRegs = async () => await getData()
+		getRegs()
+
+	}, [getData])
+
+	useEffect(() => {
+		if (registries) {
+
+			const tabs = [
+				{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `list` },
+				{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `grid` },
+				{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `favorites` }
+			]
+			props.setHeader('registries.pageTitle', false, '', 'manage.registries')
+			props.setBC('registries')
+			props.setTabs({
+				id: 'registries',
+				tabs: tabs,
+				route: handleTabs()
+			})
+		}
+	}, [handleTabs, props, registries, t])
+
+	//#region Handlers
+	const handleAddNewRegistry = () => history.push({ pathname: `/registries/new`, prevURL: '/registries/list' })
+
+	const handleGetFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'registry')
 		let favRegistries = favs.map(f => {
 			return registries[registries.findIndex(d => d.id === f.id)]
@@ -149,22 +156,17 @@ class Registries extends Component {
 		favRegistries = handleRequestSort(orderBy, order, favRegistries)
 		return favRegistries
 	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const addToFavorites = (favObj) => {
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const removeFromFavorites = (favObj) => {
+		dispatch(removeFromFav(favObj))
 	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
+	const filterItems = (data) => {
+		const rFilters = filters
+		return customFilterItems(data, rFilters)
 	}
-	snackBarMessages = (msg, display) => {
-		const { s } = this.props
-		// const { selected } = this.state
+	const snackBarMessages = (msg, display) => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -182,92 +184,53 @@ class Registries extends Component {
 				break;
 		}
 	}
-	reload = async () => {
-		await this.getData(true)
-	}
-	getData = async (reload) => {
-		const { getRegistries, /* setRegistries, */ accessLevel, user } = this.props
-		// setRegistries()
-		if (accessLevel || user) {
-			if (reload)
-				getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false)
-		}
-	}
-	//#endregion
 
-	//#region Handlers
-
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/registry/${selected[0]}/edit`, prevURL: `/registries/list` })
+	const handleEdit = () => {
+		history.push({ pathname: `/registry/${selected[0]}/edit`, prevURL: `/registries/list` })
 	}
 
-	handleTabs = () => {
-		const { location } = this.props
-		if (location.pathname.includes('grid'))
-			// this.setState({ route: 1 })
-			return 1
-		else {
-			if (location.pathname.includes('favorites'))
-				// this.setState({ route: 2 })
-				return 2
-			else {
-				// this.setState({ route: 0 })
-				return 0
-			}
+	const handleRequestSortRegistries = key => (event, property, way) => {
+		let nOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			nOrder = 'asc'
 		}
+		dispatch(sortData(key, property, nOrder))
+		setOrder(nOrder)
+		setOrderBy(property)
 	}
-	handleRequestSort = key => (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
-		}
-		this.props.sortData(key, property, order)
-		this.setState({ order, orderBy: property })
-	}
-	handleRegistryClick = id => e => {
+	const handleRegistryClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/registry/' + id)
+		history.push('/registry/' + id)
 	}
 
-	handleFavClick = id => e => {
+	const handleFavClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: '/registry/' + id, prevURL: '/registries/favorites' })
-	}
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
+		history.push({ pathname: '/registry/' + id, prevURL: '/registries/favorites' })
 	}
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-	handleDeleteRegistries = async () => {
-		const { selected } = this.state
+	const handleDeleteRegistries = async () => {
 		Promise.all([selected.map(u => {
 			return deleteRegistry(u)
 		})]).then(async () => {
-			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-			await this.getData(true).then(
-				() => this.snackBarMessages(1)
-			)
+			setOpenDelete(false)
+			setSelected([])
+			snackBarMessages(1)
+			await getData()
+			// await this.getData(true).then(
+			// 	() =>
+			// )
 		})
 	}
-	handleSelectAllClick = (arr, checked) => {
+	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: arr })
+			setSelected(arr)
 			return;
 		}
-		this.setState({ selected: [] })
+		setSelected([])
 	}
 
-	handleCheckboxClick = (event, id) => {
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -283,26 +246,22 @@ class Registries extends Component {
 				selected.slice(selectedIndex + 1),
 			);
 		}
-
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
 	}
 
-
-
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
 	}
 
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
 	}
 
-	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { t, registries } = this.props
+	const renderConfirmDelete = () => {
+
 		return <Dialog
 			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
+			onClose={handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -326,10 +285,10 @@ class Registries extends Component {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+				<Button onClick={handleCloseDeleteDialog} color='primary'>
 					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteRegistries} color='primary' autoFocus>
+				<Button onClick={handleDeleteRegistries} color='primary' autoFocus>
 					{t('actions.yes')}
 				</Button>
 			</DialogActions>
@@ -337,114 +296,83 @@ class Registries extends Component {
 	}
 
 
-	renderTableToolBarContent = () => {
-		const { t } = this.props
+	const renderTableToolBarContent = () => {
 		return <Fragment>
 			<Tooltip title={t('menus.create.registry')}>
-				<IconButton aria-label='Add new registry' onClick={this.addNewRegistry}>
+				<IconButton aria-label='Add new registry' onClick={handleAddNewRegistry}>
 					<Add />
 				</IconButton>
 			</Tooltip>
 		</Fragment>
 	}
 
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft}
 			reduxKey={'registries'}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
-			content={this.renderTableToolBarContent()}
+			content={renderTableToolBarContent()}
 		/>
 	}
 
 
-	renderTable = (items, handleClick, key) => {
-		const { t } = this.props
-		const { order, orderBy, selected } = this.state
+	const renderTable = (items, handleClick, key) => {
 		return <RegistryTable
-			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
+			data={filterItems(items)}
+			handleCheckboxClick={handleCheckboxClick}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort(key)}
-			handleSelectAllClick={this.handleSelectAllClick}
+			handleRequestSort={handleRequestSortRegistries(key)}
+			handleSelectAllClick={handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
 			selected={selected}
 			t={t}
-			tableHead={this.registriesHeader()}
+			tableHead={registriesHeader}
 		/>
 	}
 
-	renderCards = () => {
-		const { t, history, registries, loading } = this.props
+	const renderCards = () => {
 		return loading ? <CircularLoader /> :
-			<RegistryCards registries={this.filterItems(registries)} t={t} history={history} />
+			<RegistryCards registries={filterItems(registries)} />
 		// null
 	}
 
-	renderFavorites = () => {
-		const { classes, loading } = this.props
+	const renderFavorites = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderConfirmDelete()}
+				{renderTableToolBar()}
+				{renderTable(handleGetFavorites(), handleFavClick, 'favorites')}
+				{renderConfirmDelete()}
 			</Paper>
 			}
 		</GridContainer>
 	}
 
-	renderRegistries = () => {
-		const { classes, registries, loading } = this.props
+	const renderRegistries = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(registries, this.handleRegistryClick, 'registries')}
-				{this.renderConfirmDelete()}
+				{renderTableToolBar()}
+				{renderTable(registries, handleRegistryClick, 'registries')}
+				{renderConfirmDelete()}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
-	render() {
-		const { match } = this.props
-		return (
-			<Fragment>
-				<Switch>
-					<Route path={`${match.path}/list`} render={() => this.renderRegistries()} />
-					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
-				</Switch>
+	return (
+		<Fragment>
+			<Switch>
+				<Route path={`/registries/list`} render={() => renderRegistries()} />
+				<Route path={`/registries/grid`} render={() => renderCards()} />
+				<Route path={`/registries/favorites`} render={() => renderFavorites()} />
+				<Redirect path={`/registries`} to={`/registries/list`} />
+			</Switch>
 
-			</Fragment>
-		)
-	}
+		</Fragment>
+	)
+
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	registries: state.data.registries,
-	loading: false, //!state.data.gotregistries,
-	filters: state.appState.filters.registries,
-	user: state.settings.user
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistries: (reload, customerID, ua) => dispatch(getRegistries(reload, customerID, ua)),
-	setRegistries: () => dispatch(setRegistries()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Registries))
+export default Registries

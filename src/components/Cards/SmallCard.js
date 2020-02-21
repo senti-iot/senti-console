@@ -1,6 +1,6 @@
 import { Avatar, Card, CardActions, CardContent, CardHeader, withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
 const styles = theme => ({
 	title: {
@@ -33,33 +33,31 @@ const styles = theme => ({
 	}
 })
 
-class SimpleMediaCard extends Component {
+const SimpleMediaCard = props => {
+	const { classes, title, content, noAvatar, topAction, leftActions, rightActions, avatar, whiteAvatar, subheader } = props;
 
-	render() {
-		const { classes, title, content, noAvatar, topAction, leftActions, rightActions, avatar, whiteAvatar, subheader } = this.props;
-		return (
-			<Card className={classes.card}>
-				<CardHeader
-					action={topAction}
-					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={whiteAvatar ? classes.whiteAvatar : classes.avatar}>{avatar}</Avatar>}
-					title={title}
-					subheader={subheader}
-					classes={{
-						title: classes.title
-					}}
-				/>
-				<CardContent classes={{ root: classes.cardContent }}>
-					{content}
-				</CardContent>
-				<CardActions className={classes.actions}>
-					{leftActions}
-					<div className={classes.rightAction}>
-						{rightActions}
-					</div>
-				</CardActions>
-			</Card>
-		)
-	}
+	return (
+		<Card className={classes.card}>
+			<CardHeader
+				action={topAction}
+				avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={whiteAvatar ? classes.whiteAvatar : classes.avatar}>{avatar}</Avatar>}
+				title={title}
+				subheader={subheader}
+				classes={{
+					title: classes.title
+				}}
+			/>
+			<CardContent classes={{ root: classes.cardContent }}>
+				{content}
+			</CardContent>
+			<CardActions className={classes.actions}>
+				{leftActions}
+				<div className={classes.rightAction}>
+					{rightActions}
+				</div>
+			</CardActions>
+		</Card>
+	)
 }
 
 SimpleMediaCard.propTypes = {

@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 const users = (props) => {
 	return (
-		<Redirect from={props.match.path} to={`/management/users`}/>
+		<Redirect from={props.path} to={`/management/users`} />
 	)
 }
 

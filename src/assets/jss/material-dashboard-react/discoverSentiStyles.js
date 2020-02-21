@@ -1,12 +1,12 @@
 // ##############################
 // // // RegularCard styles
 // #############################
-
+import { makeStyles } from '@material-ui/core'
 import ImgDevices from 'assets/img/devices.png'
 import ImgTexture from 'assets/img/texture.png'
 import { primaryColor } from '../material-dashboard-react';
 
-const discoverSentiStyle = theme => ({
+const discoverSentiStyle = makeStyles(theme => ({
 	root: {
 		backgroundColor: primaryColor,
 		width: "100%",
@@ -27,6 +27,6 @@ const discoverSentiStyle = theme => ({
 		width: "100%",
 		height: "425px"
 	}
-});
+}));
 
 export default discoverSentiStyle;

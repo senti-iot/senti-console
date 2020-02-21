@@ -3,8 +3,7 @@ import { Paper, withStyles, Link } from '@material-ui/core';
 import withLocalization from 'components/Localization/T';
 import { T, Caption } from 'components';
 import logo from '../../logo.svg'
-
-// const TProv = React.createContext(TProviderNewCtx)
+//Test agaaaa
 
 const styles = theme => ({
 	logo: {
@@ -35,7 +34,7 @@ function PrivacyPolicy(props) {
 	return <Dialog {...props} />
 
 }
-
+//Test 2
 function Dialog(props) {
 	const t = props.t
 	const classes = props.classes

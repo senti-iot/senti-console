@@ -1,283 +1,190 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {
-	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
+	Grid, IconButton, Menu, ListItem, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
 } from '@material-ui/core';
 import {
-	MoreVert,
-	DonutLargeRounded,
-	PieChartRounded,
-	BarChart as BarChartIcon,
-	ShowChart, CloudDownload, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
+	MoreVert, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
+	CircularLoader, Caption, ItemG, InfoCard,
 	DateFilterMenu,
 	T
 } from 'components';
-import deviceStyles from 'assets/jss/views/deviceStyles';
-import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { changeYAxis } from 'redux/appState'
-import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { changeDate } from 'redux/dateTime'
 import TP from 'components/Table/TP';
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 import { Link } from 'react-router-dom'
+import { useLocalization, useDispatch, useTheme, useSelector } from 'hooks';
+import { useState } from 'react';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/json';
-import 'brace/theme/tomorrow';
-import 'brace/theme/monokai';
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-tomorrow'
+import 'ace-builds/src-noconflict/theme-monokai'
 
-class SensorMessages extends PureComponent {
-	constructor(props) {
-		super(props)
+import sensorMessagesStyles from 'assets/jss/components/sensors/sensorMessagesStyles';
 
-		this.state = {
-			raw: props.raw ? props.raw : false,
-			actionAnchor: null,
-			openMessage: false,
-			visibility: false,
-			resetZoom: false,
-			zoomDate: [],
-			loading: true,
-			chartType: 'linear',
-			initialPeriod: null,
-			page: 0,
-			msg: null
-		}
-	}
 
-	displayFormat = 'DD MMMM YYYY HH:mm'
-	image = null
-	options = [
-		{ id: 0, label: this.props.t('filters.dateOptions.today') },
-		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },
-		{ id: 2, label: this.props.t('filters.dateOptions.thisWeek') },
-		{ id: 3, label: this.props.t('filters.dateOptions.7days') },
-		{ id: 4, label: this.props.t('filters.dateOptions.30days') },
-		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
-		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
+const SensorMessages = props => {
+	//Hooks
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const theme = useTheme()
+	const classes = sensorMessagesStyles()
+	//Redux
+	const rowsPerPage = useSelector(s => s.appState.trp > 0 ? s.appState.trp : s.settings.trp)
+
+	//State
+
+	const [a, setA] = useState(null)
+	const [openMessage, setOpenMessage] = useState(false)
+	const [loading, setLoading] = useState(true)
+	const [page, setPage] = useState(0)
+	const [msg, setMsg] = useState(null)
+	const [initialPeriod, setInitialPeriod] = useState(null)
+
+	//Const
+	const { getData, period, messages } = props
+
+	const options = [
+		{ id: 0, label: t('filters.dateOptions.today') },
+		{ id: 1, label: t('filters.dateOptions.yesterday') },
+		{ id: 2, label: t('filters.dateOptions.thisWeek') },
+		{ id: 3, label: t('filters.dateOptions.7days') },
+		{ id: 4, label: t('filters.dateOptions.30days') },
+		{ id: 5, label: t('filters.dateOptions.90days') },
+		{ id: 6, label: t('filters.dateOptions.custom') },
 	]
-	timeTypes = [
+	const timeTypes = [
 		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
 		{ id: 1, format: 'lll dddd', chart: 'hour', tooltipFormat: 'LT' },
 		{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'lll' },
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
-	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
-		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
-		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
-	]
-	componentDidMount = async () => {
-		const { loading } = this.state
+
+	//useCallbacks
+
+	//useEffects
+	useEffect(() => {
 		if (loading) {
-			await this.props.getData()
-			this.setState({ loading: false })
+			let gData = async () => await getData()
+			gData()
+			setLoading(false)
 		}
+	}, [getData, loading])
+	useEffect(() => {
+		if (period) {
+			setLoading(true)
+			let gData = async () => await getData()
+			gData()
+			setLoading(false)
+		}
+	}, [getData, period])
+	//Handlers
+	const disableFuture = () => {
+		if (moment().diff(period.to, 'hour') <= 0) {
+			return true
+		}
+		return false
 	}
-	componentDidUpdate = async (prevProps) => {
-		if ((prevProps.period.from !== this.props.period.from) || (prevProps.period.to !== this.props.period.to) /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
-			this.setState({ loading: true })
-			await this.props.getData()
-			this.setState({ loading: false })
-		}
+	const handleChangePage = (event, page) => setPage(page)
+
+	const handleCloseMessage = () => {
+		setMsg(null)
+		setOpenMessage(false)
+
 	}
 
-	componentWillUnmount = () => {
-		this._isMounted = 0
-		this.setState({
-			raw: this.props.raw ? this.props.raw : false,
-			actionAnchor: null,
-			openDownload: false,
-			visibility: false,
-			resetZoom: false,
-			zoomDate: [],
-			loading: true,
-			chartType: 'linear',
-			initialPeriod: null
-		})
-	}
-	handleChangeChartType = (type) => {
-		this.setState({
-			chartType: type
-		})
-	}
-	handleCloseDownloadModal = () => {
-		this.setState({ openDownload: false })
-	}
-	handleOpenDownloadModal = () => {
-		this.setState({ openDownload: true, actionAnchor: null })
-	}
-	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
+	const handleOpenMessage = msg => e => {
+		e.preventDefault()
+		setMsg(msg)
+		setOpenMessage(true)
 	}
 
-	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
+	const handleOpenActionsDetails = event => {
+		setA(event.currentTarget)
 	}
 
-	handleVisibility = id => (event) => {
-		if (event)
-			event.preventDefault()
-		this.props.changeChartType(this.props.period, id)
-		this.setState({ actionAnchorVisibility: null })
+	const handleCloseActionsDetails = () => {
+		setA(null)
 	}
 
-	handleReverseZoomOnData = async () => {
-		const { period } = this.props
-		const { zoomDate } = this.state
-		let startDate = null
-		let endDate = null
-		try {
-			switch (period.timeType) {
-				case 0:
-					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
-					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
-					if (zoomDate.length === 1) {
-						this.setState({ resetZoom: false, zoomDate: [] })
-					}
-					this.props.handleSetDate(6, endDate, startDate, 1, period.id)
-					break;
-				case 1:
-					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
-					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
-					this.setState({ resetZoom: false, zoomDate: [] })
-					this.props.handleSetDate(6, endDate, startDate, 2, period.id)
-					break;
-				default:
-					break;
-			}
-		}
-		catch (e) {
-		}
-	}
-
-	handleZoomOnData = async (elements) => {
-		if (elements.length > 0) {
-			const { period } = this.props
-			const { lineDataSets } = this.state
-			let date = null
-			let startDate = null
-			let endDate = null
-			try {
-				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
-				switch (period.timeType) {
-					case 1:
-						startDate = moment(date).startOf('hour')
-						endDate = moment(date).endOf('hour').diff(moment(), 'hour') >= 0 ? moment() : moment(date).endOf('hour')
-						this.setState({
-							resetZoom: true,
-							zoomDate: [
-								...this.state.zoomDate,
-								{
-									from: period.from,
-									to: period.to
-								}]
-						})
-						this.props.handleSetDate(6, endDate, startDate, 0, period.id)
-						break
-					case 2:
-						startDate = moment(date).startOf('day')
-						endDate = moment(date).endOf('day').diff(moment(), 'hour') >= 0 ? moment() : moment(date).endOf('day')
-						this.setState({
-							resetZoom: true,
-							zoomDate: [{
-								from: period.from,
-								to: period.to
-							}]
-						})
-						this.props.handleSetDate(6, endDate, startDate, 1, period.id)
-						break;
-					default:
-						break;
-				}
-			}
-			catch (error) {
-			}
-		}
-	}
-	futureTester = (date, unit) => moment().diff(date, unit) <= 0
-	handleNextPeriod = () => {
-		const { period } = this.props
-		const { initialPeriod } = this.state
+	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
+	const handleNextPeriod = () => {
 		let from, to, diff;
 		if (!initialPeriod) {
-			this.setState({ initialPeriod: period })
+			setInitialPeriod(period)
+			// setState({ initialPeriod: period })
 			if (period.menuId === 6) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
-				from = moment(period.from).add(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
-				to = moment(period.to).add(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
-				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
+				from = moment(period.from).add(diff + 1, 'minute').startOf(timeTypes[period.timeType].chart)
+				to = moment(period.to).add(diff + 1, 'minute').endOf(timeTypes[period.timeType].chart)
+				to = futureTester(to, timeTypes[period.timeType].chart) ? moment() : to
 			}
 			if ([0, 1].indexOf(period.menuId) !== -1) {
 				from = moment(period.from).add(1, 'day').startOf('day')
 				to = moment(period.to).add(1, 'day').endOf('day')
-				to = this.futureTester(to, 'hour') ? moment() : to
+				to = futureTester(to, 'hour') ? moment() : to
 
 			}
 			if (period.menuId === 2) {
 				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
 				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
-				to = this.futureTester(to, 'day') ? moment() : to
+				to = futureTester(to, 'day') ? moment() : to
 
 			}
 			if ([3, 4, 5].indexOf(period.menuId) !== -1) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
 				from = moment(period.from).add(diff + 1, 'minute').startOf('day')
 				to = moment(period.to).add(diff + 1, 'minute').endOf('day')
-				to = this.futureTester(to, 'day') ? moment() : to
+				to = futureTester(to, 'day') ? moment() : to
 			}
 		}
 		else {
 			if (initialPeriod.menuId === 6) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
-				from = moment(period.from).add(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
-				to = moment(period.to).add(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
-				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
+				from = moment(period.from).add(diff + 1, 'minute').startOf(timeTypes[period.timeType].chart)
+				to = moment(period.to).add(diff + 1, 'minute').endOf(timeTypes[period.timeType].chart)
+				to = futureTester(to, timeTypes[period.timeType].chart) ? moment() : to
 
 			}
 			if ([0, 1].indexOf(initialPeriod.menuId) !== -1) {
 				from = moment(period.from).add(1, 'day').startOf('day')
 				to = moment(period.to).add(1, 'day').endOf('day')
-				to = this.futureTester(to, 'hour') ? moment() : to
+				to = futureTester(to, 'hour') ? moment() : to
 			}
 			if (initialPeriod.menuId === 2) {
 				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
 				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
-				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
+				to = futureTester(to, timeTypes[period.timeType].chart) ? moment() : to
 				if (period.timeType === 2 || period.timeType === 3) {
 					let dayDiff = to.diff(from, 'day')
 					if (dayDiff <= 0) {
-						return this.props.handleSetDate(6, to, from, 1, period.id)
+						return dispatch(changeDate(6, to, from, 1, period.id))
 					}
 				}
 				else {
-					return this.props.handleSetDate(6, to, from, 2, period.id)
+					return dispatch(changeDate(6, to, from, 2, period.id))
 				}
 			}
 			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
 				from = moment(period.from).add(diff + 1, 'minute').startOf('day')
 				to = moment(period.to).add(diff + 1, 'minute').endOf('day')
-				to = this.futureTester(to, 'day') ? moment() : to
+				to = futureTester(to, 'day') ? moment() : to
 			}
 		}
-		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+		dispatch(changeDate(6, to, from, period.timeType, period.id))
 	}
-	handlePreviousPeriod = () => {
-		const { period } = this.props
-		const { initialPeriod } = this.state
+	const handlePreviousPeriod = () => {
 		let from, to, diff;
 		if (!initialPeriod) {
-			this.setState({ initialPeriod: period })
+			setInitialPeriod(period)
 			if (period.menuId === 6) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
-				from = moment(period.from).subtract(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
-				to = moment(period.to).subtract(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
+				from = moment(period.from).subtract(diff + 1, 'minute').startOf(timeTypes[period.timeType].chart)
+				to = moment(period.to).subtract(diff + 1, 'minute').endOf(timeTypes[period.timeType].chart)
 			}
 			if ([0, 1].indexOf(period.menuId) !== -1) {
 				from = moment(period.from).subtract(1, 'day').startOf('day')
@@ -296,8 +203,8 @@ class SensorMessages extends PureComponent {
 		else {
 			if (initialPeriod.menuId === 6) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
-				from = moment(period.from).subtract(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
-				to = moment(period.to).subtract(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
+				from = moment(period.from).subtract(diff + 1, 'minute').startOf(timeTypes[period.timeType].chart)
+				to = moment(period.to).subtract(diff + 1, 'minute').endOf(timeTypes[period.timeType].chart)
 			}
 			if ([0, 1].indexOf(initialPeriod.menuId) !== -1) {
 				from = moment(period.from).subtract(1, 'day').startOf('day')
@@ -309,11 +216,11 @@ class SensorMessages extends PureComponent {
 				if (period.timeType === 2 || period.timeType === 3) {
 					let dayDiff = to.diff(from, 'day')
 					if (dayDiff <= 0) {
-						return this.props.handleSetDate(6, to, from, 1, period.id)
+						return dispatch(changeDate(6, to, from, 1, period.id))
 					}
 				}
 				else {
-					return this.props.handleSetDate(6, to, from, 2, period.id)
+					return dispatch(changeDate(6, to, from, 2, period.id))
 				}
 			}
 			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
@@ -322,15 +229,13 @@ class SensorMessages extends PureComponent {
 				to = moment(period.to).subtract(diff + 1, 'minute').endOf('day')
 			}
 		}
-		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+		dispatch(changeDate(6, to, from, period.timeType, period.id))
 	}
 
-	renderMessage = () => {
-		let { openMessage, msg } = this.state
-		let { t, classes } = this.props
+	const renderMessage = () => {
 		return <Dialog
 			open={openMessage}
-			onClose={this.handleCloseMessage}
+			onClose={handleCloseMessage}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 			PaperProps={{
@@ -346,7 +251,7 @@ class SensorMessages extends PureComponent {
 
 							{`${dateTimeFormatter(msg.created, true)} - ${msg.id}`}
 
-							<IconButton aria-label="Close" style={{ color: '#fff' }} className={classes.closeButton} onClick={this.handleCloseMessage}>
+							<IconButton aria-label="Close" style={{ color: '#fff' }} className={classes.closeButton} onClick={handleCloseMessage}>
 								<Close />
 							</IconButton>
 						</ItemG>
@@ -360,7 +265,7 @@ class SensorMessages extends PureComponent {
 									<AceEditor
 										// height={300}
 										mode={'json'}
-										theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
+										theme={theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 										// onChange={handleCodeChange('js')}
 										value={JSON.stringify(msg.data, null, 4)}
 										showPrintMargin={false}
@@ -376,69 +281,32 @@ class SensorMessages extends PureComponent {
 				: <div></div>}
 		</Dialog>
 	}
-	handleCloseMessage = () => {
-		this.setState({
-			msg: null,
-			openMessage: false
-		})
-	}
-	handleOpenMessage = msg => () => {
-		this.setState({
-			msg,
-			openMessage: true
-		})
-	}
-	messagesHeader = () => {
-		const { t } = this.props
-		return [
-			{ id: 'id', label: t('messages.fields.id') },
-			{ id: 'created', label: t('registries.fields.created') },
-		]
-	}
-	handleChangePage = (event, page) => {
-		this.setState({ page });
-	}
 
-	renderType = () => {
-		const { t, messages, rowsPerPage } = this.props
-		const { loading, page } = this.state
+
+	const renderType = () => {
 		if (!loading) {
 			return (
 				<Fragment>
-					<List style={{
-						width: '100%'
-					}}>
-						{messages ? messages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-
-							return (
-								<ListItem key={n.id} button onClick={this.handleOpenMessage(n)} divider style={{ paddingLeft: 24 }}>
+					<List style={{ width: '100%' }}>
+						{(messages && messages.length > 0) ?
+							messages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n =>
+								<ListItem key={n.id} button onClick={handleOpenMessage(n)} divider style={{ paddingLeft: 24 }}>
 									<ListItemText style={{ margin: 0 }} primary={dateTimeFormatter(n.created, true)} secondary={n.id} />
 								</ListItem>
-							)
-						}) : null}
+							) : renderNoData()}
 					</List>
 					<TP
 						count={messages ? messages.length : 0}
 						page={page}
 						t={t}
-						handleChangePage={this.handleChangePage}
+						handleChangePage={handleChangePage}
 					/>
 				</Fragment>
 			)
 		}
+	}
 
-		else return this.renderNoData()
-	}
-	disableFuture = () => {
-		const { period } = this.props
-		if (moment().diff(period.to, 'hour') <= 0) {
-			return true
-		}
-		return false
-	}
-	renderMenu = () => {
-		const { actionAnchor } = this.state
-		const { t, period } = this.props
+	const renderMenu = () => {
 		let displayTo = ''
 		let displayFrom = ''
 		if (period) {
@@ -449,7 +317,7 @@ class SensorMessages extends PureComponent {
 				<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
 					<ItemG>
 						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+							<IconButton onClick={() => handlePreviousPeriod(period)}>
 								<KeyboardArrowLeft />
 							</IconButton>
 						</Tooltip>
@@ -476,7 +344,7 @@ class SensorMessages extends PureComponent {
 													<T noWrap component={'span'}> {`${displayTo}`}</T>
 												</ItemG>
 												<ItemG xs={12}>
-													<T noWrap component={'span'}> {`${this.options[period ? period.menuId : 0].label}`}</T>
+													<T noWrap component={'span'}> {`${options[period ? period.menuId : 0].label}`}</T>
 												</ItemG>
 											</ItemG>
 
@@ -484,7 +352,6 @@ class SensorMessages extends PureComponent {
 
 									</ItemG>
 								}
-								customSetDate={this.handleSetDate}
 								period={period}
 								t={t} />
 						</Tooltip>
@@ -492,7 +359,7 @@ class SensorMessages extends PureComponent {
 					<ItemG>
 						<Tooltip title={t('tooltips.chart.nextPeriod')}>
 							<div>
-								<IconButton onClick={() => this.handleNextPeriod(period)} disabled={this.disableFuture(period)}>
+								<IconButton onClick={handleNextPeriod} disabled={disableFuture(period)}>
 									<KeyboardArrowRight />
 								</IconButton>
 							</div>
@@ -504,9 +371,9 @@ class SensorMessages extends PureComponent {
 					<Tooltip title={t('menus.menu')}>
 						<IconButton
 							aria-label='More'
-							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-owns={a ? 'long-menu' : null}
 							aria-haspopup='true'
-							onClick={this.handleOpenActionsDetails}>
+							onClick={handleOpenActionsDetails}>
 							<MoreVert />
 						</IconButton>
 					</Tooltip>
@@ -514,84 +381,66 @@ class SensorMessages extends PureComponent {
 				<Menu
 					marginThreshold={24}
 					id='long-menu'
-					anchorEl={actionAnchor}
-					open={Boolean(actionAnchor)}
-					onClose={this.handleCloseActionsDetails}
-					onChange={this.handleVisibility}
+					anchorEl={a}
+					open={Boolean(a)}
+					onClose={handleCloseActionsDetails}
+					// onChange={handleVisibility}
 					PaperProps={{ style: { minWidth: 250 } }}>
 
-					<ListItem button onClick={this.handleOpenDownloadModal}>
+					{/* <ListItem button onClick={handleOpenDownloadModal}>
 						<ListItemIcon><CloudDownload /></ListItemIcon>
 						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem>
+					</ListItem> */}
 
 				</Menu>
 			</ItemG>
 		}
 	}
-	renderNoData = () => {
+	const renderNoData = () => {
 		return <ItemG container justify={'center'}>
-			<Caption> {this.props.t('devices.noData')}</Caption>
+			<Caption> {t('devices.noData')}</Caption>
 		</ItemG>
 	}
 
-	renderNoPeriod = () => {
+	const renderNoPeriod = () => {
 		return <ItemG container justify={'center'}>
 			<ItemG xs={12} container justify={'center'}>
-				<Caption>{this.props.t('devices.noPeriodSet')}</Caption>
+				<Caption>{t('devices.noPeriodSet')}</Caption>
 			</ItemG>
 			<ItemG xs={12} container justify={'center'}>
 				<MuiLink component={Link} to={'/settings/#charts'}>
 					<Caption>
-						{this.props.t('devices.noPeriodSetLink')}
+						{t('devices.noPeriodSetLink')}
 					</Caption>
 				</MuiLink>
 			</ItemG>
 		</ItemG>
 	}
 
-	render() {
-		const { t, period } = this.props
-		const { loading } = this.state
-		// let displayTo = dateTimeFormatter(period.to)
-		// let displayFrom = dateTimeFormatter(period.from)
-		return (
-			<Fragment>
-				<InfoCard
-					title={t('sidebar.messages')}
-					// subheader={`${this.options[period.menuId].label}`}
-					avatar={<InsertChart />}
-					noExpand
-					topAction={this.renderMenu()}
-					content={
-						<Grid container>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
-								period ?
-									<ItemG xs={12}>
-										{this.renderMessage()}
-										{this.renderType()}
-									</ItemG> :
-									this.renderNoPeriod()
-							}
-						</Grid>}
-				/>
-			</Fragment >
-		);
-	}
+
+	return (
+		<Fragment>
+			<InfoCard
+				title={t('sidebar.messages')}
+				// subheader={`${options[period.menuId].label}`}
+				avatar={<InsertChart />}
+				noExpand
+				topAction={renderMenu()}
+				content={
+					<Grid container>
+						{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
+							period ?
+								<ItemG xs={12}>
+									{renderMessage()}
+									{renderType()}
+								</ItemG> :
+								renderNoPeriod()
+						}
+					</Grid>}
+			/>
+		</Fragment >
+	);
+
 }
-const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-})
 
-const mapDispatchToProps = dispatch => ({
-	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
-	changeYAxis: (val) => dispatch(changeYAxis(val)),
-	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
-	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),
-	changeRawData: (p) => dispatch(changeRawData(p))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles((theme) => ({
-	...deviceStyles(theme),
-	...devicetableStyles(theme),
-}), { withTheme: true })(SensorMessages))
+export default SensorMessages

@@ -56,6 +56,7 @@ const ExpansionPanelSummary = withStyles({
 })(props => <MuiExpansionPanelSummary {...props} />);
 
 ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
 class ChartSettings extends Component {
 	constructor(props) {
 		super(props)
@@ -68,13 +69,13 @@ class ChartSettings extends Component {
 		const { classes } = this.props
 		switch (chartType) {
 			case 0:
-				return <PieChartRounded className={classes.icon}/>
+				return <PieChartRounded className={classes.icon} />
 			case 1:
-				return <DonutLargeRounded className={classes.icon}/>
+				return <DonutLargeRounded className={classes.icon} />
 			case 2:
-				return <BarChart className={classes.icon}/>
+				return <BarChart className={classes.icon} />
 			case 3:
-				return <ShowChart className={classes.icon}/>
+				return <ShowChart className={classes.icon} />
 			default:
 				break;
 		}
@@ -108,10 +109,10 @@ class ChartSettings extends Component {
 	chartTypes = (p) => {
 		const { t } = this.props
 		return [
-			{ value: 0, icon: <PieChartRounded />, label: t('charts.type.pie'), func: this.changePeriodChartType(p, 0) },
-			{ value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut'), func: this.changePeriodChartType(p, 1) },
-			{ value: 2, icon: <BarChart />, label: t('charts.type.bar'), func: this.changePeriodChartType(p, 2) },
-			{ value: 3, icon: <ShowChart />, label: t('charts.type.line'), func: this.changePeriodChartType(p, 3) },
+			{ value: 0, icon: PieChartRounded, label: t('charts.type.pie'), func: this.changePeriodChartType(p, 0) },
+			{ value: 1, icon: DonutLargeRounded, label: t('charts.type.donut'), func: this.changePeriodChartType(p, 1) },
+			{ value: 2, icon: BarChart, label: t('charts.type.bar'), func: this.changePeriodChartType(p, 2) },
+			{ value: 3, icon: ShowChart, label: t('charts.type.line'), func: this.changePeriodChartType(p, 3) },
 		]
 	}
 	chartDataTypes = () => {

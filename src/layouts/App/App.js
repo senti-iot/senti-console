@@ -1,23 +1,21 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import { Snackbar, IconButton } from '@material-ui/core';
-import { Header, /* Sidebar,  */CircularLoader } from 'components';
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import { Header, /* Sidebar,  */CircularLoader } from 'components'
 import cx from 'classnames'
-import dashboardRoutes from 'routes/dashboard.js';
-import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
+import dashboardRoutes from 'routes/dashboard.js'
+import appStyle from 'assets/jss/material-dashboard-react/appStyle.js'
 import { makeStyles } from '@material-ui/core/styles'
-import cookie from 'react-cookies';
-import { getSettings } from 'redux/settings';
-import { Close } from 'variables/icons';
-import { getDaysOfInterest } from 'redux/doi';
-import Cookies from 'components/Cookies/Cookies';
-import Sidebar from 'components/Sidebar/Sidebar';
-import BC from 'components/Breadcrumbs/BC';
-import { changeTabs } from 'redux/appState';
-import Toolbar from 'components/Toolbar/Toolbar';
-import { useSnackbar, useRef, useDispatch, useSelector, useLocalization } from 'hooks';
-import NewContent from 'layouts/404/NewContent';
-// import _ from 'lodash'
+import cookie from 'react-cookies'
+import { getSettings } from 'redux/settings'
+import { getDaysOfInterest } from 'redux/doi'
+import Cookies from 'components/Cookies/Cookies'
+import Sidebar from 'components/Sidebar/Sidebar'
+import BC from 'components/Breadcrumbs/BC'
+import { changeTabs } from 'redux/appState'
+import Toolbar from 'components/Toolbar/Toolbar'
+import { useRef, useDispatch, useSelector, useLocalization } from 'hooks'
+import NewContent from 'layouts/404/NewContent'
+
 
 
 function App(props) {
@@ -40,9 +38,7 @@ function App(props) {
 	const classes = makeStyles(appStyle)()
 	const history = useHistory()
 	const dispatch = useDispatch()
-
 	const t = useLocalization()
-	const s = useSnackbar()
 	//#endregion
 
 
@@ -51,17 +47,15 @@ function App(props) {
 	const loading = useSelector(s => s.settings.loading)
 	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 	const defaultView = useSelector(s => s.settings.defaultView)
-	const snackbarLocation = useSelector(s => s.settings.snackbarLocation)
 	const smallMenu = useSelector(s => s.appState.smallMenu)
 	const drawer = useSelector(s => s.settings.drawer)
 	const tabs = useSelector(s => s.appState.tabs)
-	const cookies = useSelector(s => s.settings.cookies)
 
 	//#endregion
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen)
-	};
+	}
 	const handleSetBreadCrumb = (id, name, extra, dontShow) => {
 
 		if (bc.id !== id || bc.name !== name) {
@@ -165,7 +159,7 @@ function App(props) {
 					{!loading ?
 						<Fragment>
 							<div className={classes.container} id={'container'}>
-								<Toolbar history={history} {...tabs} />
+								<Toolbar />
 								<BC
 									defaultRoute={defaultRoute}
 									bc={bc}
@@ -174,29 +168,32 @@ function App(props) {
 								<Switch>
 									{cookie.load('SESSION') ?
 										dashboardRoutes.map((prop, key) => {
+											if (prop.divider) {
+												return null
+											}
 											if (prop.dropdown) {
 												return prop.items.map((r, key) => {
-													return <Route path={r.path}
-														render={rProps =>
-															<r.component {...rProps}
-																setBC={handleSetBreadCrumb}
-																setHeader={handleSetHeaderTitle}
-																setTabs={handleSetTabs} />
-														}
-														key={r.menuRoute + key}
-													/>
+													return <Route path={r.path} key={r.menuRoute + key}>
+
+														<r.component
+															path={r.path}
+															setBC={handleSetBreadCrumb}
+															setHeader={handleSetHeaderTitle}
+															setTabs={handleSetTabs} />
+													</Route>
 												})
 											}
 											if (prop.redirect) {
-												return <Redirect from={prop.path} to={prop.to} key={key} />;
+												return <Redirect from={prop.path} to={prop.to} key={key} />
 											}
-											return <Route path={prop.path}
-												render={(routeProps) =>
-													<prop.component {...routeProps}
-														setBC={handleSetBreadCrumb}
-														setHeader={handleSetHeaderTitle}
-														setTabs={handleSetTabs}
-													/>} key={key} />;
+											return <Route path={prop.path} key={key}>
+												<prop.component
+													path={prop.path}
+													setBC={handleSetBreadCrumb}
+													setHeader={handleSetHeaderTitle}
+													setTabs={handleSetTabs}
+												/>
+											</Route>
 										})
 										: <Redirect from={window.location.pathname} to={{
 											pathname: '/login', state: {
@@ -205,27 +202,7 @@ function App(props) {
 										}} />}
 								</Switch>
 							</div>
-
-							{!cookies && <Cookies />}
-							<Snackbar
-								anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
-								open={s.sOpen}
-								onClose={s.sClose}
-								onExited={s.handleNextS}
-								ContentProps={{
-									'aria-describedby': 'message-id',
-								}}
-								ClickAwayListenerProps={{
-									mouseEvent: false,
-									touchEvent: false
-								}}
-								autoHideDuration={3000}
-								message={<span>{t(s.sId, s.sOpt)}</span>}
-								action={<IconButton color={'primary'} size={'small'} onClick={s.sClose} >
-									<Close />
-								</IconButton>}
-							/>
-
+							<Cookies />
 						</Fragment>
 						: <CircularLoader />}
 				</Fragment>
@@ -233,10 +210,10 @@ function App(props) {
 
 		</div >
 
-	);
+	)
 
 }
 
 App.whyDidYouRender = true
 
-export default React.memo(App)
+export default App

@@ -1,24 +1,23 @@
-import { datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors, handleRequestSort } from 'variables/functions';
-// import { teal } from '@material-ui/core/colors'
+import { datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors, handleRequestSort } from 'variables/functions'
 import moment from 'moment'
-import { colors } from 'variables/colors';
+import { colors } from 'variables/colors'
 import {
 	getDataHourly as getDeviceDataHourly,
 	getDataDaily as getDeviceDataDaily,
 	getDataMinutely as getDeviceDataMinutely,
 	getDataSummary as getDeviceDataSummary
-} from 'variables/dataDevices';
-import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections';
-import store from 'redux/store';
-import { getSensorDataClean } from 'variables/dataSensors';
-// import store from ''
+} from 'variables/dataDevices'
+import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections'
+import configureStore from 'redux/store'
+import { getSensorDataClean } from 'variables/dataSensors'
+
 const format = 'YYYY-MM-DD+HH:mm'
 
-const linecolors = (data, defaultColor, id, color) => {
+const linecolors = (data, defaultColor, id) => {
 	let colors = []
 	data.map(d => {
 		if (isWeekend(d[0])) {
-			return colors.push(weekendColors(id, store.getState().settings.weekendColor))
+			return colors.push(weekendColors(id, configureStore().getState().settings.weekendColor))
 		} else {
 			return colors.push(defaultColor)
 		}
@@ -502,7 +501,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 
 				Object.keys(prevData).forEach(p => {
 					prevData[moment(p, format).add(1, 'day').format('YYYY-MM-DD HH:mm')] = prevData[p]
-					delete prevData[p];
+					delete prevData[p]
 				})
 			}
 		}

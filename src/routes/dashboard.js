@@ -6,11 +6,6 @@ import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
-
-// const AsyncHoliday = Loadable({
-// 	loader: () => import('routes/holiday'),
-// 	loading: AsyncLoader
-// })
 const AsyncTokens = Loadable({
 	loader: () => import('routes/tokens'),
 	loading: AsyncLoader
@@ -126,28 +121,14 @@ const dashboardRoutes = [
 		hideFromSideBar: true,
 		menuRoute: 'projects'
 	},
-	{
-		path: '/projects',
-		sidebarName: 'sidebar.projects',
-		icon: LibraryBooks,
-		component: AsyncProjects,
-		menuRoute: 'projects',
-		defaultView: true,
-	},
+
 	{
 		path: '/collection/:id',
 		component: AsyncCollection,
 		hideFromSideBar: true,
 		menuRoute: 'collections'
 	},
-	{
-		path: '/collections',
-		sidebarName: 'sidebar.collections',
-		component: AsyncCollections,
-		icon: DataUsage,
-		menuRoute: 'collections',
-		defaultView: true,
-	},
+
 	{
 		path: '/device/:id',
 		component: AsyncDevice,
@@ -173,12 +154,31 @@ const dashboardRoutes = [
 		menuRoute: 'manage.devicetypes'
 	},
 	{
-		path: '/devices',
-		sidebarName: 'sidebar.devices',
+		divider: true,
+	},
+	{
+		path: '/registries',
+		icon: InputIcon,
+		component: AsyncRegistries,
+		sidebarName: 'sidebar.registries',
+		menuRoute: 'manage.registries'
+	},
+	{
+		path: '/devicetypes',
+		icon: Memory,
+		component: AsyncDeviceTypes,
+		sidebarName: 'sidebar.devicetypes',
+		menuRoute: 'manage.devicetypes'
+	},
+	{
+		path: '/sensors',
 		icon: DeviceHub,
-		component: AsyncDevices,
-		menuRoute: 'devices',
-		defaultView: true,
+		component: AsyncSensors,
+		sidebarName: 'sidebar.devices',
+		menuRoute: 'manage.sensors'
+	},
+	{
+		divider: true,
 	},
 	{
 		path: '/messages',
@@ -186,6 +186,26 @@ const dashboardRoutes = [
 		icon: InsertChart,
 		component: AsyncMessages,
 		menuRoute: 'messages'
+	},
+	{
+		divider: true,
+	},
+	{
+		path: '/functions',
+		icon: CloudUpload,
+		component: AsyncCloudFunctions,
+		sidebarName: 'sidebar.cloudfunctions',
+		menuRoute: 'manage.cloudfunctions'
+	},
+	{
+		path: '/api',
+		icon: Https,
+		component: AsyncTokens,
+		sidebarName: 'sidebar.api',
+		menuRoute: 'manage.api'
+	},
+	{
+		divider: true,
 	},
 	{
 		path: '/management/user/:id',
@@ -225,16 +245,10 @@ const dashboardRoutes = [
 		path: '/settings',
 		sidebarName: 'sidebar.settings',
 		icon: SettingsRounded,
-		hideFromSideBar: true,
+		// hideFromSideBar: true,
 		component: AsyncSettings,
 		menuRoute: 'settings'
 	},
-	// {
-	// 	path: '/holiday',
-	// 	sidebarName: "",
-	// 	component: AsyncHoliday,
-	// 	hideFromSideBar: true
-	// },
 	{
 		path: '/404',
 		sidebarName: 'Error',
@@ -254,47 +268,46 @@ const dashboardRoutes = [
 	{
 		path: null,
 		icon: SettingsApplications,
-		sidebarName: 'sidebar.manage',
+		sidebarName: 'sidebar.legacy',
 		dropdown: true,
-		menuRoute: 'manage',
+		menuRoute: 'legacy',
 		items: [
 			{
-				path: '/registries',
-				icon: InputIcon,
-				component: AsyncRegistries,
-				sidebarName: 'sidebar.registries',
-				menuRoute: 'manage.registries'
-			},
-			{
-				path: '/sensors',
-				icon: DeviceHub,
-				component: AsyncSensors,
+				path: '/devices',
 				sidebarName: 'sidebar.devices',
-				menuRoute: 'manage.sensors'
+				icon: DeviceHub,
+				component: AsyncDevices,
+				menuRoute: 'devices',
+				defaultView: true,
 			},
 			{
-				path: '/devicetypes',
-				icon: Memory,
-				component: AsyncDeviceTypes,
-				sidebarName: 'sidebar.devicetypes',
-				menuRoute: 'manage.devicetypes'
+				path: '/projects',
+				sidebarName: 'sidebar.projects',
+				icon: LibraryBooks,
+				component: AsyncProjects,
+				menuRoute: 'projects',
+				defaultView: true,
 			},
 			{
-				path: '/functions',
-				icon: CloudUpload,
-				component: AsyncCloudFunctions,
-				sidebarName: 'sidebar.cloudfunctions',
-				menuRoute: 'manage.cloudfunctions'
+				path: '/collections',
+				sidebarName: 'sidebar.collections',
+				component: AsyncCollections,
+				icon: DataUsage,
+				menuRoute: 'collections',
+				defaultView: true,
 			},
-			{
-				path: '/api',
-				icon: Https,
-				component: AsyncTokens,
-				sidebarName: 'sidebar.api',
-				menuRoute: 'manage.api'
-			}
 		]
 	},
+	/* 	{
+			path: null,
+			icon: SettingsApplications,
+			sidebarName: 'sidebar.manage',
+			dropdown: true,
+			menuRoute: 'manage',
+			items: [
+
+			]
+		}, */
 	{
 		path: '*',
 		component: () => <Redirect from={window.location.pathname} to={{ pathname: window.location.pathname === '/' ? '/dashboard' : '/404', prevURL: window.location.pathname }} />,

@@ -6,75 +6,9 @@
 import { bgColorsLight } from '../../material-dashboard-react/bgColorsLight';
 import { makeStyles } from '@material-ui/styles';
 
-const createDashboardStyle = makeStyles(theme => ({
+const createDashboardStyles = makeStyles(theme => ({
 	...bgColorsLight(theme),
 
-	image: {
-		position: "relative",
-		height: 48,
-		// marginLeft: 48,
-		borderRadius: 4,
-		[theme.breakpoints.down("xs")]: {
-			height: 48
-		},
-		"&:hover, &$focusVisible": {
-			zIndex: 1,
-		}
-	},
-	focusVisible: {},
-	imageSrc: {
-		position: "absolute",
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		backgroundSize: "contain",
-		backgroundRepeat: "no-repeat",
-		backgroundPosition: "50% 50%",
-	},
-	logo: {
-		minWidth: 120,
-		position: "relative",
-		padding: "8px 16px",
-		minHeight: "40px",
-		zIndex: "4",
-		display: 'flex',
-		"&:after": {
-			content: '""',
-			position: "absolute",
-			bottom: "0",
-
-			height: "0px",
-			right: "15px",
-			width: "calc(100% - 30px)",
-			backgroundColor: "rgba(180, 180, 180, 0.3)"
-		}
-	},
-	logoLink: {
-		// ...defaultFont,
-		textTransform: "uppercase",
-		padding: "5px 0",
-		display: "block",
-		fontSize: "18px",
-		textAlign: "left",
-		fontWeight: "400",
-		lineHeight: "30px",
-		textDecoration: "none",
-		backgroundColor: "transparent",
-		"&,&:hover": {
-			color: "#FFFFFF"
-		}
-	},
-	logoImage: {
-		// width: "50px",
-		display: "inline-block",
-		maxHeight: "50px",
-		marginLeft: "50px",
-		[theme.breakpoints.down("md")]: {
-			marginLeft: "18px"
-		},
-		marginRight: "15px"
-	},
 	cAppBar: {
 		position: 'sticky',
 		backgroundColor: theme.header,
@@ -94,6 +28,16 @@ const createDashboardStyle = makeStyles(theme => ({
 		height: 70,
 
 	},
+	flex: {
+		flex: 1,
+	},
+	editSourceDrawer: {
+		height: 'calc(100% - 70px)',
+		width: 360,
+		top: 70,
+		background: theme.palette.type === 'light' ? 'rgba(255,255,255, 0.3)' : 'rgba(0, 0, 0, 0.7)'
+	},
+
 	editGraph: {
 		position: 'absolute',
 		top: '50%',
@@ -119,6 +63,7 @@ const createDashboardStyle = makeStyles(theme => ({
 			opacity: 1
 		}
 	}
+
 }));
 
-export default createDashboardStyle;
+export default createDashboardStyles

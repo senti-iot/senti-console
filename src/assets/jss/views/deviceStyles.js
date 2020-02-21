@@ -194,4 +194,5 @@ const deviceStyles = theme => ({
 		display: "block"
 	},
 })
+
 export default deviceStyles

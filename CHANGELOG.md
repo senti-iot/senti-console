@@ -81,7 +81,6 @@
 - Fix Display on Landscaped Devices
 - The Dots
 - Hover User
-- Remove unused console.logs
 - Center Text with image + Higher Placement
 - zIndex
 - Fix Hover
@@ -353,12 +352,9 @@
 - Create Collection Page Title
 - Fix Org default selection on Create Project
 - No device Collection icon + sorting improvement + Fix Collection icon missing
-- Remove console.logs
 - Custom Date Time resolve correctly the timeType Favorites Table filter toolbar connect to Redux
 - Add download Data
 - Shake the card if less than 3
-- Disable console logs
-- More console.logs
 - Display Pie Chart Correctly
 - Fix the filter toolbar
 - Pie and Doughnut Minute Hour Day
@@ -685,7 +681,6 @@
 - DataCollection ID on Table
 - DeviceStatus
 - fix the sorting
-- Clear console.logs
 - Update userAlreadyExists
 - Minor wording
 - Added - noCollectionsAssigned
@@ -725,7 +720,6 @@
 - Remove Device Selector from Create Project
 - Remove Devices from Edit Project
 - Remove unused var on Edit Project
-- remove unused console.logs
 - Remove momentjs errors
 - Merge pull request #20 from senti-platform/alpha
 - Merge branch 'master' into beta
@@ -810,7 +804,6 @@
 - More cleaning
 - Line Chart axis, BarChart axis
 - Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
-- Raw Data + remove console.logs
 - Try again travis
 - Again
 - Add the Env file back
@@ -833,7 +826,6 @@
 - Tabs for mobile
 - Fix Wrong icon on Project Tab
 - Highlight
-- remove console.log
 - How about scrollable tabs?
 - More Charts
 - Raw Data on Collection & Project
@@ -1066,7 +1058,7 @@
 - "graphType": "Chart type"
 - "status": "Device status"
 - Text update
-- Collection: - Text ID for Device and Collection - Remove Collection Log Device Name Remove console.logs Localization: - Format and add strings - Fix some Typo's Assign Device Component
+- Collection: - Text ID for Device and Collection - Remove Collection Log Device Name Localization: - Format and add strings - Fix some Typo's Assign Device Component
 - Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
 - Assign Device From Data Collection
 - AssignDevice From Table
@@ -1099,7 +1091,6 @@
 - Fix Scroll bar and TablePagination on Responsive
 - This should fix it
 - More Mobile Stuff
-- Remove console.logs
 - Fix last Header issue
 - Device Table Icons
 - Disable ServiceWorker
@@ -1191,7 +1182,6 @@
 - Create ORG with CVR/EAN
 - Edit project
 - Remove ampmon EditProject
-- Remove console.logs
 - LoginPage Input Focus
 - Validation only the mandatory ones
 - More refactor
@@ -1667,7 +1657,6 @@
 - Project Edit
 - Edit selected item
 - Edit/Recalibrate Order
-- Remove Unused console.logs
 - Device Image use EXIF fix
 - EXIF Image 2
 - Fix image
@@ -1714,7 +1703,6 @@
 ### Version 0.5.2
 - Responsive Tabs
 - Device Simple List Address, No Name , No Address
-- Remove console.log
 
 ### Version 0.5.0
 - Margin Normalization
@@ -1984,7 +1972,6 @@
 - Now without errors
 - More homepage stuff
 - Delete Dialog
-- Clean console.logs
 - Update new Endpoints for Projects and Improve Delete Dialog
 - New project modal fields, but not done
 - Center the Header and items of List

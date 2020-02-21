@@ -1,86 +1,93 @@
-import React, { Component } from 'react'
+import React, { useState, useRef } from 'react'
 import CalibrationMarker from './CalibrationMarker';
 import { GoogleMap } from 'react-google-maps';
 import MarkerClusterer from 'react-google-maps/lib/components/addons/MarkerClusterer';
-import { connect } from 'react-redux'
+// import { useSelector } from 'react-redux'
 
-class CalibrateMapComponent extends Component {
-	constructor(props) {
-		super(props)
+// const mapStateToProps = (state) => ({
+// 	language: state.settings.language
+// })
 
-		this.state = {
-			init: false, 
-			markerDrop: null
-		}
-		this.map = React.createRef()
-	}
-	setCenterAndZoom() {
-		if (!this.state.init) {
-			const bounds = new window.google.maps.LatLngBounds()
-			this.props.markers.forEach(bound => {
-				if (bound.lat && bound.long)
-					return (
-						bounds.extend(new window.google.maps.LatLng(bound.lat, bound.long))
-					)
-			})
-			var offset = 0.002;
-			var center = bounds.getCenter();
-			bounds.extend(new window.google.maps.LatLng(center.lat() + offset, center.lng() + offset));
-			bounds.extend(new window.google.maps.LatLng(center.lat() - offset, center.lng() - offset));
-			this.map.current.fitBounds(bounds)
-			this.map.current.panToBounds(bounds, 10);
-		}
-		this.setState({
-			init: true
-		})
-	}
-	dropPin = e => {
+const CalibrateMapComponent = props => {
+	// const language = useSelector(state => state.settings.language)
+	const map = useRef(null)
+	// const [init, setInit] = useState(false)
+	const [markerDrop, setMarkerDrop] = useState(null)
+
+	// constructor(props) {
+	// 	super(props)
+
+	// 	this.state = {
+	// 		init: false, 
+	// 		markerDrop: null
+	// 	}
+	// 	this.map = React.createRef()
+	// }
+
+	// const setCenterAndZoom = () => {
+	// 	if (!init) {
+	// 		const bounds = new window.google.maps.LatLngBounds()
+	// 		props.markers.forEach(bound => {
+	// 			if (bound.lat && bound.long)
+	// 				return (
+	// 					bounds.extend(new window.google.maps.LatLng(bound.lat, bound.long))
+	// 				)
+	// 		})
+	// 		var offset = 0.002;
+	// 		var center = bounds.getCenter();
+	// 		bounds.extend(new window.google.maps.LatLng(center.lat() + offset, center.lng() + offset));
+	// 		bounds.extend(new window.google.maps.LatLng(center.lat() - offset, center.lng() - offset));
+	// 		map.current.fitBounds(bounds)
+	// 		map.current.panToBounds(bounds, 10);
+	// 	}
+	// 	setInit(true)
+	// 	// this.setState({
+	// 	// 	init: true
+	// 	// })
+	// }
+	const dropPin = e => {
 		let pin = {
 			lat: e.latLng.lat(),
 			long: e.latLng.lng()
 		}
-		this.setState({
-			markerDrop: {
-				lat: e.latLng.lat(),
-				long: e.latLng.lng()
-			}
+		setMarkerDrop({
+			lat: e.latLng.lat(),
+			long: e.latLng.lng()
 		})
-		return this.props.onClick ? this.props.onClick(pin) : null 
+		// this.setState({
+		// 	markerDrop: {
+		// 		lat: e.latLng.lat(),
+		// 		long: e.latLng.lng()
+		// 	}
+		// })
+		return props.onClick ? props.onClick(pin) : null
 	}
-	render() {
-		let props = this.props
-		let defaultLat = parseFloat(56.2639) //Denmark,
-		let defaultLng = parseFloat(9.5018) //Denmark
-		return <GoogleMap
-			onClick={this.dropPin}
-			defaultZoom={props.zoom ? props.zoom : 7}
-			defaultCenter={{ lat: defaultLat, lng: defaultLng }}
-			ref={this.map}
+
+	// let props = props
+	let defaultLat = parseFloat(56.2639) //Denmark,
+	let defaultLng = parseFloat(9.5018) //Denmark
+	return <GoogleMap
+		onClick={dropPin}
+		defaultZoom={props.zoom ? props.zoom : 7}
+		defaultCenter={{ lat: defaultLat, lng: defaultLng }}
+		ref={map}
+	>
+		<MarkerClusterer
+			// onClick={onMarkerClustererClick}
+			averageCenter
+			maxZoom={15}
+			enableRetinaIcons
+			gridSize={8}
 		>
-			<MarkerClusterer
-				onClick={this.onMarkerClustererClick}
-				averageCenter
-				maxZoom={15}
-				enableRetinaIcons
-				gridSize={8}
-			>
-				{this.state.markerDrop ? <CalibrationMarker
-					lang={props.language}
-					t={props.t}
-					i={0}
-					m={this.state.markerDrop}
-					weather={null}/> : null}
-			
-			</MarkerClusterer>
-		</GoogleMap>
-	}
-}
-const mapStateToProps = (state) => ({
-	language: state.settings.language
-})
+			{markerDrop ? <CalibrationMarker
+				lang={props.language}
+				t={props.t}
+				i={0}
+				m={markerDrop}
+				weather={null} /> : null}
 
-const mapDispatchToProps = {
-  
+		</MarkerClusterer>
+	</GoogleMap>
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CalibrateMapComponent)
+export default CalibrateMapComponent

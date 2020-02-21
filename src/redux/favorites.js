@@ -70,7 +70,7 @@ const saveFavorites = (noConfirm) => {
 		var saved = await saveSettings(user)
 		dispatch({
 			type: SAVEFAVORITES,
-			saved: noConfirm ? false : saved ? true : false 
+			saved: noConfirm ? false : saved ? true : false
 		})
 	}
 }
@@ -81,16 +81,12 @@ const initialState = {
 
 export const favorites = (state = initialState, action) => {
 	switch (action.type) {
-		case SETFAV: {
+		case SETFAV:
 			return Object.assign({}, state, { favorites: action.payload })
-		}
-		case GETFAVS: {
+		case GETFAVS:
 			return Object.assign({}, state, { ...action.favorites })
-		}
 		case SAVEFAVORITES:
-		{ 
 			return Object.assign({}, state, { saved: action.saved })
-		}
 		default:
 			return state
 	}

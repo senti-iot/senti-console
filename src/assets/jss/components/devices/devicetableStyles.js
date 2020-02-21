@@ -1,12 +1,10 @@
-
+import { makeStyles } from '@material-ui/core'
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
-const devicetableStyles = theme => ({
+
+const devicetableStyles = makeStyles(theme => ({
 	noCheckbox: {
 		padding: 10
-	},
-	noRows: {
-		display: 'none'
 	},
 	blocked: {
 		color: red[500],
@@ -38,21 +36,6 @@ const devicetableStyles = theme => ({
 	},
 	tableCellNoWidth: {
 		width: 0
-	},
-	SelectIcon: {
-		marginLeft: 4,
-		paddingLeft: 4,
-		paddingRight: 18,
-	},
-	spaceBetween: {
-		marginRight: "auto",
-		fontSize: "0.875rem"
-	},
-	tablePaginationCaption: {
-		fontSize: "0.875rem"
-	},
-	spacer: {
-		flex: 0,
 	},
 	noMargin: {
 		whiteSpace: "pre-line",
@@ -153,6 +136,6 @@ const devicetableStyles = theme => ({
 	paddingLeft: {
 		paddingLeft: 16
 	}
-});
+}));
 
 export default devicetableStyles
