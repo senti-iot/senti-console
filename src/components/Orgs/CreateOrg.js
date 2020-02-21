@@ -1,15 +1,15 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Paper, withStyles, Collapse, Button } from '@material-ui/core';
-import classNames from 'classnames';
+import { Paper, withStyles, Collapse, Button } from '@material-ui/core'
+import classNames from 'classnames'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, DSelect } from 'components'
 import { useSelector, useDispatch } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
-import EditOrgAutoSuggest from './EditOrgAutoSuggest';
-import { createOrg, getAllOrgs } from 'variables/dataOrgs';
-import { getOrgs } from 'redux/data';
-import { camelCase } from 'variables/functions';
-import { useLocalization, useSnackbar } from 'hooks';
-var countries = require('i18n-iso-countries');
+import EditOrgAutoSuggest from './EditOrgAutoSuggest'
+import { createOrg, getAllOrgs } from 'variables/dataOrgs'
+import { getOrgs } from 'redux/data'
+import { camelCase } from 'variables/functions'
+import { useLocalization, useSnackbar } from 'hooks'
+var countries = require('i18n-iso-countries')
 
 // const mapStateToProps = (state) => ({
 // 	language: state.localization.language,
@@ -163,7 +163,7 @@ const CreateOrg = props => {
 	// }
 
 	const handleValidation = () => {
-		let errorCode = [];
+		let errorCode = []
 		const { name, /* address, city, zip, country */ } = org
 		// const { selectedOrg } = this.state
 		if (name === '') {

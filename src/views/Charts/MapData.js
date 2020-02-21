@@ -73,8 +73,6 @@ class MapData extends Component {
 
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.g.grid.h !== this.props.g.grid.h) {
-		}
 		//TODO: Change the if to include also the id of device
 		if (prevProps.g !== this.props.g || prevProps.g.dataSource !== this.props.g.dataSource) {
 			this.setState({ loading: true }, async () => {

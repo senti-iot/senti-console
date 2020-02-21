@@ -1,8 +1,8 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, } from 'react'
 import {
 	Grid, IconButton, Menu, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
-} from '@material-ui/core';
+	ListItemIcon, ListItemText, Collapse, List, Typography, Tooltip, colors, Divider, Hidden
+} from '@material-ui/core'
 import {
 	Timeline, MoreVert,
 	DonutLargeRounded,
@@ -18,14 +18,14 @@ import {
 	DateFilterMenu,
 	T,
 	DSelect,
-} from 'components';
-import classNames from 'classnames';
+} from 'components'
+import classNames from 'classnames'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
-import { getSensorDataClean } from 'variables/dataSensors';
-import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
-import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
+import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem'
+import { getSensorDataClean } from 'variables/dataSensors'
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
+import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const MultiSourceChart = (props) => {
@@ -38,7 +38,10 @@ const MultiSourceChart = (props) => {
 	const { gId, create, title, color, dId, hoverID, setHoverID, device, single, } = props
 
 	//Redux
+	// const gs = useSelector(s => create ? s.dsSystem.cGraphs : s.dsSystem.graphs)
 	const g = useSelector(s => getGraph(s, gId, create))
+
+	// let f = usePrevious(gs[gs.findIndex(r => r.id === gId)])
 	const period = useSelector(s => getPeriod(s, gId, create))
 	// const sensors = useSelector(s => s.data.sensors)
 
@@ -55,9 +58,9 @@ const MultiSourceChart = (props) => {
 	const [initialPeriod, setInitialPeriod] = useState(null)
 	const [selectedDevice, setSelectedDevice] = useState(0)
 
-	//Consts
-	let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 
+	//Consts
+	let small = g ? g.grid ? g.grid.w <= 5 ? true : false : false : false
 	const options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
 		{ id: 1, label: t('filters.dateOptions.yesterday') },
@@ -95,7 +98,7 @@ const MultiSourceChart = (props) => {
 			case 2:
 				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 			default:
-				break;
+				break
 		}
 	}, [color, g.id, g.period.from, g.period.to, title])
 
@@ -111,7 +114,7 @@ const MultiSourceChart = (props) => {
 			}
 			//END HACK
 			let newState = setData(data, period.timeType)
-			if (newState) {
+			if (newState && newState.lineDataSets) {
 				setLineDataSets(newState.lineDataSets)
 				setRoundDataSets(newState.roundDataSets)
 				setBarDataSets(newState.barDataSets)
@@ -171,16 +174,16 @@ const MultiSourceChart = (props) => {
 						setZoomDate([])
 					}
 					handleSetDate(6, endDate, startDate, 1, period.id)
-					break;
+					break
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					setResetZoom(false)
 					setZoomDate([])
 					handleSetDate(6, endDate, startDate, 2, period.id)
-					break;
+					break
 				default:
-					break;
+					break
 			}
 		}
 		catch (e) {
@@ -216,9 +219,9 @@ const MultiSourceChart = (props) => {
 							to: period.to
 						}])
 						handleSetDate(6, endDate, startDate, 1, period.id)
-						break;
+						break
 					default:
-						break;
+						break
 				}
 			}
 			catch (error) {
@@ -227,7 +230,7 @@ const MultiSourceChart = (props) => {
 	}
 	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	const handleNextPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -292,7 +295,7 @@ const MultiSourceChart = (props) => {
 		handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	const handlePreviousPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -352,79 +355,74 @@ const MultiSourceChart = (props) => {
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
-			{small ? null :
-				<Hidden xsDown>
-					<ItemG xs zeroMinWidth>
-						<DSelect
-							value={selectedDevice}
-							menuItems={handleMenuItems()}
-							onChange={handleChangeSelectedDevice}
-						/>
-						{/* <Tooltip enterDelay={1000} title={title}>
-							<div>
-								<T noWrap variant={'h6'}>{title}</T>
-							</div>
-						</Tooltip> */}
-					</ItemG>
-				</Hidden>
-			}
-			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
-				<ItemG>
+		return <ItemG container alignItems={'center'} justify={'center'}>
+			<ItemG zeroMinWidth>
+				<DSelect
+					value={selectedDevice}
+					menuItems={handleMenuItems()}
+					onChange={handleChangeSelectedDevice}
+				/>
+			</ItemG>
+			<Hidden mdDown>
+				{small ? null : <ItemG xs style={{ width: 'auto' }} container justify={'center'}>
+					<T className={classes.smallTitle} variant={'h6'}>{title}</T>
+				</ItemG>}
 
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+				{small ? null : <ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.previousPeriod')}>
+							<IconButton onClick={() => handlePreviousPeriod(period)}>
+								<KeyboardArrowLeft />
+							</IconButton>
+						</Tooltip>
+					</ItemG>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.period')}>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
+								}
+								customSetDate={handleSetDate}
+								period={period}
+								t={t} />
+						</Tooltip>
+					</ItemG>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.nextPeriod')}>
+							<div>
+								<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+									<KeyboardArrowRight />
+								</IconButton>
+							</div>
+						</Tooltip>
+					</ItemG>
 
-								</ItemG>
-							}
-							customSetDate={handleSetDate}
-							period={period}
-							t={t} />
-					</Tooltip>
-				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
-			</ItemG>
+				</ItemG>}
+			</Hidden>
 
 		</ItemG>
 	}
@@ -517,7 +515,10 @@ const MultiSourceChart = (props) => {
 		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
 	}
 	const handleSetVisibility = () => setVisibility(!visibility)
+
 	const renderMenu = () => {
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container direction={'column'}>
 			<ItemG container>
 				<Collapse in={resetZoom}>
@@ -579,6 +580,116 @@ const MultiSourceChart = (props) => {
 							{t(chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 						</ListItemText>
 					</ListItem>
+					{small ? [
+						<Divider />,
+						<ListItem>
+							<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+								<ItemG>
+									<Tooltip title={t('tooltips.chart.previousPeriod')}>
+										<IconButton onClick={() => handlePreviousPeriod(period)}>
+											<KeyboardArrowLeft />
+										</IconButton>
+									</Tooltip>
+								</ItemG>
+								<ItemG>
+									<Tooltip title={t('tooltips.chart.period')}>
+										<DateFilterMenu
+											button
+											buttonProps={{
+												style: {
+													color: undefined,
+													textTransform: 'none',
+													padding: "8px 0px"
+												}
+											}}
+											icon={
+												<ItemG container justify={'center'}>
+													<ItemG>
+														<ItemG container style={{ width: 'min-content' }}>
+															<ItemG xs={12}>
+																<T noWrap component={'span'}>{`${displayFrom}`}</T>
+															</ItemG>
+															<ItemG xs={12}>
+																<T noWrap component={'span'}> {`${displayTo}`}</T>
+															</ItemG>
+															<ItemG xs={12}>
+																<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+															</ItemG>
+														</ItemG>
+
+													</ItemG>
+
+												</ItemG>
+											}
+											customSetDate={handleSetDate}
+											period={period}
+											t={t} />
+									</Tooltip>
+								</ItemG>
+								<ItemG>
+									<Tooltip title={t('tooltips.chart.nextPeriod')}>
+										<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+											<KeyboardArrowRight />
+										</IconButton>
+									</Tooltip>
+								</ItemG>
+							</ItemG>
+						</ListItem>] :
+						<Hidden smUp>
+							<Divider />
+							<ListItem>
+								<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+									<ItemG>
+										<Tooltip title={t('tooltips.chart.previousPeriod')}>
+											<IconButton onClick={() => handlePreviousPeriod(period)}>
+												<KeyboardArrowLeft />
+											</IconButton>
+										</Tooltip>
+									</ItemG>
+									<ItemG>
+										<Tooltip title={t('tooltips.chart.period')}>
+											<DateFilterMenu
+												button
+												buttonProps={{
+													style: {
+														color: undefined,
+														textTransform: 'none',
+														padding: "8px 0px"
+													}
+												}}
+												icon={
+													<ItemG container justify={'center'}>
+														<ItemG>
+															<ItemG container style={{ width: 'min-content' }}>
+																<ItemG xs={12}>
+																	<T noWrap component={'span'}>{`${displayFrom}`}</T>
+																</ItemG>
+																<ItemG xs={12}>
+																	<T noWrap component={'span'}> {`${displayTo}`}</T>
+																</ItemG>
+																<ItemG xs={12}>
+																	<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+																</ItemG>
+															</ItemG>
+
+														</ItemG>
+
+													</ItemG>
+												}
+												customSetDate={handleSetDate}
+												period={period}
+												t={t} />
+										</Tooltip>
+									</ItemG>
+									<ItemG>
+										<Tooltip title={t('tooltips.chart.nextPeriod')}>
+											<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+												<KeyboardArrowRight />
+											</IconButton>
+										</Tooltip>
+									</ItemG>
+								</ItemG>
+							</ListItem></Hidden>}
 					{/* <ListItem button onClick={handleOpenDownloadModal}>
 						<ListItemIcon><CloudDownload /></ListItemIcon>
 						<ListItemText>{t('menus.export')}</ListItemText>
@@ -605,7 +716,7 @@ const MultiSourceChart = (props) => {
 			case 3:
 				return <ShowChart />
 			default:
-				break;
+				break
 		}
 	}
 	const renderSmallTitle = () => {
@@ -632,18 +743,18 @@ const MultiSourceChart = (props) => {
 				<Grid container style={{ height: '100%', width: '100%' }}>
 					{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
 						<Fragment>
-							<Hidden xsDown>
-								{small ? renderSmallTitle() : null}
-							</Hidden>
 							<Hidden smUp>
 								{renderSmallTitle()}
+							</Hidden>
+							<Hidden mdDown>
+								{small ? renderSmallTitle() : null}
 							</Hidden>
 							{renderType()}
 						</Fragment>
 					}
 				</Grid>}
 		/>
-	);
+	)
 }
 
 export default MultiSourceChart

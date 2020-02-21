@@ -1,18 +1,18 @@
-import { Paper, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Fade, Tooltip } from '@material-ui/core';
-import TokensTable from 'components/API/TokensTable';
-import TableToolbar from 'components/Table/TableToolbar';
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { dateTimeFormatter } from 'variables/functions';
-import { Delete, ViewList, Close, Add, Code } from 'variables/icons';
+import { Paper, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Fade, Tooltip } from '@material-ui/core'
+import TokensTable from 'components/API/TokensTable'
+import TableToolbar from 'components/Table/TableToolbar'
+import React, { useState, Fragment, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { dateTimeFormatter } from 'variables/functions'
+import { Delete, ViewList, Close, Add, Code } from 'variables/icons'
 import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, /* AssignProject */ } from 'components'
-import { customFilterItems } from 'variables/Filters';
-import { getTokens, setTokens, sortData } from 'redux/data';
-import CreateToken from './CreateToken';
-import { deleteTokens } from 'variables/dataRegistry';
+import { customFilterItems } from 'variables/Filters'
+import { getTokens, setTokens, sortData } from 'redux/data'
+import CreateToken from './CreateToken'
+import { deleteTokens } from 'variables/dataRegistry'
 import { useLocalization, useMatch, useSnackbar } from 'hooks'
-import tokensStyles from 'assets/jss/components/api/tokensStyles';
+import tokensStyles from 'assets/jss/components/api/tokensStyles'
 
 const Tokens = props => {
 
@@ -110,9 +110,9 @@ const Tokens = props => {
 		switch (token) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -155,7 +155,7 @@ const Tokens = props => {
 	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			setSelected(arr)
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -163,10 +163,10 @@ const Tokens = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -175,7 +175,7 @@ const Tokens = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
@@ -235,7 +235,7 @@ const Tokens = props => {
 				</Link>
 
 			default:
-				break;
+				break
 		}
 	}
 	const renderType = (type) => {
@@ -248,7 +248,7 @@ const Tokens = props => {
 				return t('tokens.fields.types.devicetype')
 
 			default:
-				break;
+				break
 		}
 	}
 	const renderToken = () => {

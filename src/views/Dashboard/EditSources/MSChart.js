@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core';
 import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components';
 import { ExpandMore } from 'variables/icons';
@@ -32,6 +32,11 @@ const ESMSChart = (props) => {
 		]
 	}
 
+	useEffect(() => {
+		props.getDeviceType(g.dataSource.deviceTypeId)
+
+		//eslint-disable-next-line
+	}, [])
 	//Handlers
 
 	const handleExpand = (prop, val) => e => {
@@ -181,7 +186,7 @@ const ESMSChart = (props) => {
 								<TextF
 									id={'sensorChart'}
 									label={t('sensors.fields.deviceType')}
-									value={deviceType ? deviceType.name : t('no.device')}
+									value={deviceType ? deviceType.name : t('no.deviceType')}
 									onClick={handleExpand('openSensorType', true)}
 									onChange={() => { }}
 								/>
@@ -196,7 +201,7 @@ const ESMSChart = (props) => {
 												handleSave={handleEditSensors}
 											/>
 											<Button onClick={() => setOpenSensors(true)}>
-												{g.dataSource.deviceIds.length > 0 ? t('dashboards.messages.selectedDevices', { nr: g.dataSource.deviceIds.length }) : t('actions.selectDevices')}
+												{g.dataSource.deviceIds.length > 0 ? t('menus.select.selectedDevices', { count: g.dataSource.deviceIds.length }) : t('menus.select.devices')}
 											</Button>
 										</ItemG>
 										<ItemG>

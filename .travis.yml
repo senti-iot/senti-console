@@ -13,12 +13,12 @@ before_deploy:
   - ssh-add /tmp/deploy_rsa
 deploy:
   - provider: script
-    script: bash scripts/deploy.sh master $TRAVIS_BUILD_DIR
+    script: bash scripts/deploy.sh master $TRAVIS_BUILD_DIR $SLACK_HOOK
     skip_cleanup: true
     on:
       branch: master
   - provider: script
-    script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR
+    script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR $SLACK_HOOK
     skip_cleanup: true
     on:
       branch: beta
@@ -34,12 +34,12 @@ deploy:
     skip_cleanup: true
     on:
       branch: white-label
-  - domain: https://alphahooks.surge.sh
+  - domain: https://sentidev.surge.sh
     project: "./build"
     provider: surge
     skip_cleanup: true
     on:
-      branch: white-label
+      branch: alpha-dev
 language: node_js
 node_js:
   - stable

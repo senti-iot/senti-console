@@ -132,7 +132,8 @@ const regularCardStyle = theme => ({
 	},
 	actions: {
 		alignSelf: 'center',
-		padding: "4px"
+		padding: "4px",
+		marginTop: '0px'
 	},
 	expandPosition: {
 		marginLeft: 'auto',

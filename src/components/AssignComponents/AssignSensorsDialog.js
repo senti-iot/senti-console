@@ -1,13 +1,13 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip, Button } from '@material-ui/core';
-import { Close } from 'variables/icons';
-import cx from 'classnames';
-import React, { Fragment, useState } from 'react';
-import { ItemG, CircularLoader, SlideT } from 'components';
-import Search from 'components/Search/Search';
-import { suggestionGen, filterItems } from 'variables/functions';
-import assignStyles from 'assets/jss/components/assign/assignStylesHooks';
-import TP from 'components/Table/TP';
-import { useLocalization, useSelector } from 'hooks';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip, Button } from '@material-ui/core'
+import { Close } from 'variables/icons'
+import cx from 'classnames'
+import React, { Fragment, useState } from 'react'
+import { ItemG, CircularLoader, SlideT } from 'components'
+import Search from 'components/Search/Search'
+import { suggestionGen, filterItems } from 'variables/functions'
+import assignStyles from 'assets/jss/components/assign/assignStylesHooks'
+import TP from 'components/Table/TP'
+import { useLocalization, useSelector } from 'hooks'
 
 
 const AssignSensorsDialog = (props) => {
@@ -32,7 +32,7 @@ const AssignSensorsDialog = (props) => {
 	const rowsPerPage = Math.round((height - 85 - 49 - 49) / 49)
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
-	});
+	})
 
 	//useCallbacks
 
@@ -42,12 +42,14 @@ const AssignSensorsDialog = (props) => {
 
 	const selectSensor = (sId, sName) => {
 		let sS = [...selectedSensors]
-		if (selectedSensors.indexOf(sId) > -1) {
+		if (selectedSensors.findIndex(s => s.id === sId) > -1) {
 			sS.splice(selectedSensors.findIndex(s => s.id === sId), 1)
 		}
 		else {
 			sS.push({ id: sId, name: sName })
 		}
+		console.log('Updated sensor list')
+
 		setSelectedSensors(sS)
 	}
 	const handleClose = () => {
@@ -167,7 +169,7 @@ const AssignSensorsDialog = (props) => {
 			</List>
 		</Dialog>
 
-	);
+	)
 }
 
 
