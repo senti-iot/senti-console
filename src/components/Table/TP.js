@@ -2,11 +2,10 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { TablePagination } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
-import { changeTableRows } from 'redux/appState';
+import { changeTableRows } from 'redux/appState'
 import cx from 'classnames'
-import { useLocalization } from 'hooks';
-import tpStyles from 'assets/jss/components/table/tpStyles';
-import { useWidth } from 'components/WidthProvider/Width';
+import { useLocalization, useWidth } from 'hooks'
+import tpStyles from 'assets/jss/components/table/tpStyles'
 
 const TP = props => {
 	//Hooks

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab, makeStyles, Toolbar as ToolBar, withWidth, Tooltip, /*  Grow */ } from '@material-ui/core';
+import { AppBar, Tabs, Tab, makeStyles, Toolbar as ToolBar, Tooltip, /*  Grow */ } from '@material-ui/core'
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
-import { NavHashLink } from 'react-router-hash-link';
+import { NavHashLink } from 'react-router-hash-link'
 import { useSelector } from 'react-redux'
-import { transition } from 'assets/jss/material-dashboard-react';
+import { transition } from 'assets/jss/material-dashboard-react'
 import cx from 'classnames'
+import { useWidth } from 'hooks'
 // import inView from 'in-view'
 
 const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref} />)
@@ -88,63 +89,34 @@ const styles = makeStyles(theme => ({
 // @Andrei
 // please check if my useEffect deps are correct
 const Toolbar = React.memo(props => {
+	//Hooks
 	const classes = styles()
+	const width = useWidth()
+	//Redux
 	const smallMenu = useSelector(state => state.appState.smallMenu)
 	const drawer = useSelector(state => state.settings.drawer)
+	const tabs = useSelector(s => s.appState.tabs)
 
-	const [route, setRoute] = useState(props.route ? props.route : 0)
-	const [tooltip, setTooltip] = useState(-1)
-	// constructor(props) {
-	// 	super(props)
+	//State
+	const [route, setRoute] = useState(0)
 
-	// 	this.state = {
-	// 		route: props.route ? props.route : 0,
-	// 		tooltip: -1
-	// 	}
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
+	//Const
 
-	// componentDidMount = () => {
+	//useCallbacks
 
-	// 	this._isMounted = 1
-	// }
+	//useEffects
 	useEffect(() => {
-		if (props.route) {
-			setRoute(props.route)
-			setTooltip(-1)
-		}
-	}, [props.route])
-	// componentDidUpdate = (prevProps) => {
-	// 	if (this.props.route !== prevProps.route && this.props.route !== undefined) {
-	// 		this.setState({ route: this.props.route, tooltip: -1 })
-	// 	}
-	// }
+		setRoute(tabs.route)
+	}, [tabs.route])
+
+	//Handlers
+
 	const handleTabsChange = (e, value) => {
 		setRoute(value)
-		// this.setState({ route: value })
 	}
 
-	const handleScroll = el => {
-		let topOfElement = el.offsetTop - 130
-		window.scroll({ top: topOfElement, behavior: 'smooth' })
-	}
-	const handleTooltipClose = () => {
-		setTooltip(false)
-		// this.setState({ tooltip: false });
-	};
-
-
-	// const handleTooltipOpen = (id) => {
-	// 	setTooltip(id)
-	// 	// this.setState({ tooltip: id });
-	// };
-
-
-	const { tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ } = props
 	return (
-		dontShow ? null :
+		tabs.dontShow ? null :
 			<div style={{ height: 48 }}>
 				<AppBar classes={{
 					root: cx({
@@ -154,36 +126,26 @@ const Toolbar = React.memo(props => {
 						[classes.appBarDrawerOpen]: smallMenu,
 					})
 				}}>
-					{tabs ? <Tabs
+					{tabs.tabs ? <Tabs
 						id={'tabs'} value={route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow, indicator: classes.indicator }}>
-						{tabs ? tabs.map((t, i) => {
-							return <Tab
-								key={i}
-								onMouseEnter={e => setTooltip(t.id)}
-								onMouseLeave={() => setTooltip(-1)}
-								component={React.forwardRef((props, ref) => <Link {...props} ref={ref} scroll={handleScroll} /* style={{ color: '#fff' }} */ />)}
-								value={t.id}
-								smooth
-								onClick={handleTooltipClose}
-								classes={{ root: classes.tab }}
-								label={<Tooltip open={tooltip === t.id ? true : false}
-									disableFocusListener
-									title={t.title}
-									interactive
-									enterDelay={500}
-									leaveDelay={0}
-								><div>{t.label}</div></Tooltip>}
-								to={`${t.url}`} />
-
-
+						{tabs.tabs ? tabs.tabs.map((t, i) => {
+							return <Tooltip key={i} title={t.title}>
+								<Tab
+									component={Link}
+									value={t.id}
+									smooth
+									classes={{ root: classes.tab }}
+									icon={t.label}
+									to={`${t.url}`} />
+							</Tooltip>
 						}) : null}
 					</Tabs> : null}
-					{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
-						{content}
+					{tabs.content ? <ToolBar classes={{ root: classes.contentToolbar }}>
+						{tabs.content}
 					</ToolBar> : null}
 				</AppBar>
 			</div>
 	)
 })
 
-export default withWidth()(Toolbar)
+export default Toolbar

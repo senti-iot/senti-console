@@ -122,11 +122,7 @@ const initialState = {
 		id: '',
 		route: 0,
 		data: [],
-		// filters: {
-		// keyword: ''
-		// },
 		tabs: [],
-		// noSearch: true
 	},
 	eH: true,
 	CPP: 9,

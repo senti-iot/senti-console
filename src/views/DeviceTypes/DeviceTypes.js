@@ -1,18 +1,18 @@
-import { Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
-import TableToolbar from 'components/Table/TableToolbar';
-import React, { useState, useEffect, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { handleRequestSort } from 'variables/functions';
-import { Edit, ViewList, Add, Star, StarBorder, /* SignalWifi2Bar, */ Memory, Delete } from 'variables/icons';
+import { Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core'
+import projectStyles from 'assets/jss/views/projects'
+import TableToolbar from 'components/Table/TableToolbar'
+import React, { useState, useEffect, Fragment } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { handleRequestSort } from 'variables/functions'
+import { Edit, ViewList, Add, Star, StarBorder, /* SignalWifi2Bar, */ Memory, Delete } from 'variables/icons'
 import { GridContainer, CircularLoader } from 'components'
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import { customFilterItems } from 'variables/Filters';
-import { getDeviceTypes, /* setDeviceTypes, */ sortData } from 'redux/data';
-import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable';
-import { deleteDeviceType } from 'variables/dataDeviceTypes';
-import { useSnackbar, useLocalization, useMatch, useLocation, useHistory } from 'hooks';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
+import { customFilterItems } from 'variables/Filters'
+import { getDeviceTypes, /* setDeviceTypes, */ sortData } from 'redux/data'
+import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable'
+import { deleteDeviceType } from 'variables/dataDeviceTypes'
+import { useSnackbar, useLocalization, useMatch, useLocation, useHistory } from 'hooks'
 
 
 const DeviceTypes = props => {
@@ -84,17 +84,15 @@ const DeviceTypes = props => {
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `favorites` }
 		]
 		const handleTabs = () => {
-			if (location.pathname.includes('grid'))
-				return 1
+			console.log(location.pathname)
+			if (location.pathname.includes('favorites'))
+				return 2
 			else {
-				if (location.pathname.includes('favorites'))
-					return 2
-				else {
-					return 0
-				}
+				return 0
 			}
 		}
 
+		console.log(handleTabs())
 		setHeader('devicetypes.pageTitle', false, '', 'manage.devicetypes')
 		setBC('devicetypes')
 		setTabs({
@@ -151,18 +149,18 @@ const DeviceTypes = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			case 2:
 				s('snackbars.exported')
-				break;
+				break
 			case 3:
 				s('snackbars.assign.deviceToDeviceType', { devicetype: ``, what: 'Device' })
-				break;
+				break
 			case 6:
 				s('snackbars.assign.deviceToDeviceType', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -205,7 +203,7 @@ const DeviceTypes = props => {
 	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			setSelected(arr)
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -213,10 +211,10 @@ const DeviceTypes = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -225,7 +223,7 @@ const DeviceTypes = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}

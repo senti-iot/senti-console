@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Switch, Redirect, useRouteMatch, useLocation, useHistory } from 'react-router-dom'
-import CreateUser from 'components/User/CreateUser';
-import Users from 'views/Users/Users';
-import CreateOrg from 'components/Orgs/CreateOrg';
-import Orgs from 'views/Orgs/Orgs';
-import { CircularLoader, GridContainer } from 'components';
-import { People, Business, StarBorder, Star, Person } from 'variables/icons';
-import { handleRequestSort } from 'variables/functions';
-import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites';
+import CreateUser from 'components/User/CreateUser'
+import Users from 'views/Users/Users'
+import CreateOrg from 'components/Orgs/CreateOrg'
+import Orgs from 'views/Orgs/Orgs'
+import { CircularLoader, GridContainer } from 'components'
+import { People, Business, StarBorder, Star, Person } from 'variables/icons'
+import { handleRequestSort } from 'variables/functions'
+import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites'
 import { useSelector, useDispatch } from 'react-redux'
-import FavoritesTable from 'components/Favorites/FavoritesTable';
-import { Paper, makeStyles } from '@material-ui/core';
-import TableToolbar from 'components/Table/TableToolbar';
-import { customFilterItems } from 'variables/Filters';
-import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data';
-import { useLocalization, useSnackbar } from 'hooks';
+import FavoritesTable from 'components/Favorites/FavoritesTable'
+import { Paper, makeStyles } from '@material-ui/core'
+import TableToolbar from 'components/Table/TableToolbar'
+import { customFilterItems } from 'variables/Filters'
+import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data'
+import { useLocalization, useSnackbar } from 'hooks'
 
 const favContainerStyles = makeStyles(theme => ({
 	root: {
@@ -102,11 +102,13 @@ const Management = props => {
 			tabs: tabs,
 			route: handleTabs()
 		})
+
+	}, [location.pathname])
+	useEffect(() => {
 		const getData = async () => await handleGetData(true)
 		getData()
 		//eslint-disable-next-line
 	}, [])
-
 	//Handlers
 
 	const handleGetData = async (reload) => {
@@ -129,10 +131,10 @@ const Management = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -141,7 +143,7 @@ const Management = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
@@ -170,7 +172,7 @@ const Management = props => {
 		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		if (checked) {
 			setSelected(usersAndOrgs.map(n => n.uuid))
-			return;
+			return
 		}
 		setSelected([])
 	}

@@ -2,10 +2,9 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { TablePagination, withWidth } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
-import { changeCardsPerPage } from 'redux/appState';
-import { useLocalization } from 'hooks';
-import tpStyles from 'assets/jss/components/table/tpStyles';
-import { useWidth } from 'components/WidthProvider/Width';
+import { changeCardsPerPage } from 'redux/appState'
+import { useLocalization, useWidth } from 'hooks'
+import tpStyles from 'assets/jss/components/table/tpStyles'
 
 const CP = props => {
 	//Hooks

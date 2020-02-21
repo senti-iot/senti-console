@@ -100,6 +100,7 @@ function App(props) {
 		setUrl('')
 	}
 	const handleSetTabs = (tbs) => {
+		console.log(tbs)
 		if (tbs.id !== tabs.id) {
 			dispatch(changeTabs(tbs))
 		}
@@ -159,7 +160,7 @@ function App(props) {
 					{!loading ?
 						<Fragment>
 							<div className={classes.container} id={'container'}>
-								<Toolbar history={history} {...tabs} />
+								<Toolbar />
 								<BC
 									defaultRoute={defaultRoute}
 									bc={bc}

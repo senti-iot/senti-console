@@ -1,19 +1,19 @@
 import React, { Fragment, useState } from 'react'
 import classNames from 'classnames'
-import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase, Tooltip, Collapse, useTheme } from '@material-ui/core';
-import { NavLink as Link, useHistory } from 'react-router-dom';
+import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase, Tooltip, Collapse, useTheme } from '@material-ui/core'
+import { NavLink as Link, useHistory } from 'react-router-dom'
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeSmallMenu } from 'redux/appState';
+import { changeSmallMenu } from 'redux/appState'
 // import { Menu } from 'variables/icons';
-import { HeaderLinks } from 'components';
-import sidebarStyles from 'assets/jss/components/sidebar/sidebarStyles';
+import { HeaderLinks } from 'components'
+import sidebarStyles from 'assets/jss/components/sidebar/sidebarStyles'
 import logo from 'logo.svg'
-import { useLocalization } from 'hooks';
+import { useLocalization } from 'hooks'
 
 const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref} />)
 
@@ -38,7 +38,7 @@ const Sidebar = (props) => {
 	const classes = sidebarStyles()
 	//Handlers
 
-	const isActiveRoute = (routeName) => menuRoute === routeName ? true : false;
+	const isActiveRoute = (routeName) => menuRoute === routeName ? true : false
 
 	const handleDropdown = e => key => {
 		let nDropdown = [...dropdown]
@@ -97,16 +97,13 @@ const Sidebar = (props) => {
 					<HeaderLinks t={t} onClose={handleDrawerToggle} />
 				</div>
 				<Divider />
-				<List style={{
-					margin: '16px',
-					paddingTop: 0,
-				}}>
+				<List className={classes.mobileList}>
 					{routes.map((route, index) => {
 						if (route.divider) {
 							return <Divider key={index} />
 						}
-						if (route.redirect) return null;
-						if (route.hideFromSideBar) return null;
+						if (route.redirect) return null
+						if (route.hideFromSideBar) return null
 						if (route.dropdown) {
 							return <Fragment key={index}>
 
@@ -198,8 +195,8 @@ const Sidebar = (props) => {
 					if (route.divider) {
 						return <Divider key={index} />
 					}
-					if (route.redirect) return null;
-					if (route.hideFromSideBar) return null;
+					if (route.redirect) return null
+					if (route.hideFromSideBar) return null
 					if (route.dropdown) {
 						return <Fragment key={index}>
 							<Tooltip key={index}
@@ -278,7 +275,7 @@ const Sidebar = (props) => {
 				{renderMobileDrawer()}
 			</Hidden>
 		</Fragment>
-	);
+	)
 
 }
 

@@ -2,8 +2,8 @@
 // // // HeaderLinks styles
 // #############################
 
-import { getContrast } from 'variables/functions';
-import { makeStyles } from '@material-ui/core';
+import { getContrast } from 'variables/functions'
+import { makeStyles } from '@material-ui/core'
 
 const headerLinksStyle = makeStyles(theme => ({
 	iconRoot: {
@@ -16,7 +16,7 @@ const headerLinksStyle = makeStyles(theme => ({
 	},
 	expand: {
 		[theme.breakpoints.down('md')]: {
-			marginLeft: 18,
+			marginLeft: 0,
 			marginRight: 24,
 		},
 		transform: 'rotate(0deg)',
@@ -70,4 +70,4 @@ const headerLinksStyle = makeStyles(theme => ({
 	}
 }))
 
-export default headerLinksStyle;
+export default headerLinksStyle
