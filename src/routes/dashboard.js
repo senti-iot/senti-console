@@ -1,19 +1,19 @@
-import React from 'react';
+import React from 'react'
 import { Redirect } from 'react-router-dom'
-import DashboardPage from 'views/Dashboard/Dashboard';
-import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload, InsertChart, Https } from 'variables/icons';
-import NotFound from 'layouts/404/NotFound';
-import Loadable from 'react-loadable';
-import AsyncLoader from 'components/Loader/AsyncLoader';
-import { DataUsage } from 'variables/icons';
+import DashboardPage from 'views/Dashboard/Dashboard'
+import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload, InsertChart, Https } from 'variables/icons'
+import NotFound from 'layouts/404/NotFound'
+import Loadable from 'react-loadable'
+import AsyncLoader from 'components/Loader/AsyncLoader'
+import { DataUsage } from 'variables/icons'
 const AsyncTokens = Loadable({
 	loader: () => import('routes/tokens'),
 	loading: AsyncLoader
 })
-const AsyncMessages = Loadable({
-	loader: () => import('routes/messages'),
-	loading: AsyncLoader
-})
+// const AsyncMessages = Loadable({
+// 	loader: () => import('routes/messages'),
+// 	loading: AsyncLoader
+// })
 const AsyncCloudFunction = Loadable({
 	loader: () => import('routes/cloudfunction'),
 	loading: AsyncLoader
@@ -65,7 +65,7 @@ const AsyncCollections = Loadable({
 const AsyncProjects = Loadable({
 	loader: () => import('routes/projects'),
 	loading: AsyncLoader
-});
+})
 const AsyncProject = Loadable({
 	loader: () => import('routes/project'),
 	loading: AsyncLoader
@@ -177,16 +177,16 @@ const dashboardRoutes = [
 		sidebarName: 'sidebar.devices',
 		menuRoute: 'manage.sensors'
 	},
-	{
-		divider: true,
-	},
-	{
-		path: '/messages',
-		sidebarName: 'sidebar.messages',
-		icon: InsertChart,
-		component: AsyncMessages,
-		menuRoute: 'messages'
-	},
+	// {
+	// 	divider: true,
+	// },
+	// {
+	// 	path: '/messages',
+	// 	sidebarName: 'sidebar.messages',
+	// 	icon: InsertChart,
+	// 	component: AsyncMessages,
+	// 	menuRoute: 'messages'
+	// },
 	{
 		divider: true,
 	},
@@ -314,6 +314,6 @@ const dashboardRoutes = [
 		hideFromSideBar: true
 	},
 
-];
+]
 
-export default dashboardRoutes;
+export default dashboardRoutes
