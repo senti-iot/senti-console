@@ -351,6 +351,7 @@ const DoubleChart = (props) => {
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
+						<div>
 						<DateFilterMenu
 							button
 							buttonProps={{
@@ -382,6 +383,7 @@ const DoubleChart = (props) => {
 							customSetDate={handleSetDate}
 							period={period}
 							t={t} />
+						</div>
 					</Tooltip>
 				</ItemG>
 				<ItemG>

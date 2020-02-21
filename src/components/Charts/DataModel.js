@@ -8,8 +8,8 @@ import {
 	getDataSummary as getDeviceDataSummary
 } from 'variables/dataDevices'
 import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections'
-import configureStore from 'redux/store'
 import { getSensorDataClean } from 'variables/dataSensors'
+import { store } from 'Providers'
 
 const format = 'YYYY-MM-DD+HH:mm'
 
@@ -17,7 +17,7 @@ const linecolors = (data, defaultColor, id) => {
 	let colors = []
 	data.map(d => {
 		if (isWeekend(d[0])) {
-			return colors.push(weekendColors(id, configureStore().getState().settings.weekendColor))
+			return colors.push(weekendColors(id, store.getState().settings.weekendColor))
 		} else {
 			return colors.push(defaultColor)
 		}
