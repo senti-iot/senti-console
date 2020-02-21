@@ -83,7 +83,6 @@ const Management = props => {
 			}
 			else {
 				if (location.pathname.includes('/favorites')) {
-					setHeader('sidebar.favorites', false, '', 'users')
 					return 2
 				}
 				else {
@@ -103,7 +102,7 @@ const Management = props => {
 			route: handleTabs()
 		})
 
-	}, [location.pathname])
+	}, [location.pathname, setHeader, setTabs, t])
 	useEffect(() => {
 		const getData = async () => await handleGetData(true)
 		getData()
