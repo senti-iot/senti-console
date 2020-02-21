@@ -19,6 +19,10 @@ const headerLinksStyle = makeStyles(theme => ({
 			marginLeft: 0,
 			marginRight: 24,
 		},
+		[theme.breakpoints.down('lg')]: {
+			marginLeft: 10,
+			marginRight: 24
+		},
 		transform: 'rotate(0deg)',
 		transition: theme.transitions.create('transform', {
 			duration: theme.transitions.duration.shortest,
