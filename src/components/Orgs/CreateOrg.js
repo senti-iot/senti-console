@@ -22,7 +22,6 @@ const CreateOrg = props => {
 	const classes = createOrgStyles()
 
 	//Redux
-	const user = useSelector(s => s.settings.user)
 	const language = useSelector(state => state.localization.language)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
@@ -144,8 +143,10 @@ const CreateOrg = props => {
 
 
 	const handleCountryChange = value => {
-		setError(false)
-		setCountry({ id: value, label: value })
+		if (error) {
+			setError(false)
+			setErrorMessage(null)
+		} setCountry({ id: value, label: value })
 		setOrg({
 			...org,
 			country: countries.getAlpha2Code(value, language) ? countries.getAlpha2Code(value, language) : ''
@@ -153,7 +154,10 @@ const CreateOrg = props => {
 	}
 	const handleAuxChange = (id) => e => {
 		e.preventDefault()
-		setError(false)
+		if (error) {
+			setError(false)
+			setErrorMessage(null)
+		}
 		setOrg({
 			...org,
 			aux: {
@@ -233,7 +237,6 @@ const CreateOrg = props => {
 			<Paper className={classes.paper}>
 				<CreateOrgForm
 					/* Defaults */
-					user={user}
 					org={org}
 					t={t}
 					error={error}
