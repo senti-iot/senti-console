@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback, Suspense } from 'react'
-import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom'
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import { Header, /* Sidebar,  */CircularLoader } from 'components'
 import cx from 'classnames'
 import appRoutes from 'routes/app'
@@ -38,7 +38,6 @@ function App(props) {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const t = useLocalization()
-	const location = useLocation()
 	//#endregion
 
 
@@ -124,7 +123,7 @@ function App(props) {
 		}
 		getS()
 	}, [dispatch, handleSetHeaderTitle, defaultRoute])
-	console.log(location)
+
 	return (
 
 		<div className={classes.wrapper}>

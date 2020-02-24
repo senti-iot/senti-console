@@ -209,7 +209,6 @@ const Management = props => {
 			}
 		</GridContainer>
 	}
-	console.log(location)
 	return (
 		<Switch>
 			<Route path={`${props.path}/users/new`}>
