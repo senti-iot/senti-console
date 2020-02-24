@@ -77,32 +77,20 @@ const Management = props => {
 
 	}, [saved, dispatch, s])
 	useEffect(() => {
-		const handleTabs = () => {
-			if (location.pathname.includes('/orgs')) {
-				return 1
-			}
-			else {
-				if (location.pathname.includes('/favorites')) {
-					return 2
-				}
-				else {
-					return 0
-				}
-			}
+		if (location.pathname.includes('favorites')) {
+			const tabs = [
+				{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },
+				{ id: 1, title: t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+				{ id: 2, title: t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+			]
+			setTabs({
+				id: 'management',
+				tabs: tabs,
+				route: 2
+			})
 		}
-		const tabs = [
-			{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },
-			{ id: 1, title: t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
-			{ id: 2, title: t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
-		]
-		setHeader('users.pageTitle', false, '', 'users')
-		setTabs({
-			id: 'management',
-			tabs: tabs,
-			route: handleTabs()
-		})
-
 	}, [location.pathname, setHeader, setTabs, t])
+
 	useEffect(() => {
 		const getData = async () => await handleGetData(true)
 		getData()

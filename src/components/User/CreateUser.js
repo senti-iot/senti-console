@@ -129,13 +129,9 @@ const CreateUser = props => {
 			tabs: []
 		})
 		setHeader('menus.create.user', true, '/management/users', 'users')
-	}, [setBC, setHeader, setTabs])
-	// useEffect(() => {
-	// 	const gOrgs = async () => await getOrgs()
-	// 	gOrgs()
 
-	// }, [getOrgs])
-	//Handlers
+	}, [setBC, setHeader, setTabs])
+
 
 	const errorMessages = code => {
 		switch (code) {

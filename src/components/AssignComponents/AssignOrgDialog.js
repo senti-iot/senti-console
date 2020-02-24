@@ -1,15 +1,15 @@
 /* eslint-disable indent */
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core';
-import { Close } from 'variables/icons';
-import cx from 'classnames';
-import React, { Fragment, useState } from 'react';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core'
+import { Close } from 'variables/icons'
+import cx from 'classnames'
+import React, { Fragment, useState } from 'react'
 // import { getAllOrgs } from 'variables/dataOrgs';
-import { ItemG, CircularLoader, SlideT } from 'components';
-import Search from 'components/Search/Search';
-import { suggestionGen, filterItems } from 'variables/functions';
-import assignStyles from 'assets/jss/components/assign/assignStyles';
+import { ItemG, CircularLoader, SlideT } from 'components'
+import Search from 'components/Search/Search'
+import { suggestionGen, filterItems } from 'variables/functions'
+import assignStyles from 'assets/jss/components/assign/assignStyles'
 import { useSelector } from 'react-redux'
-import { useLocalization } from 'hooks';
+import { useLocalization } from 'hooks'
 
 
 const AssignOrgDialog = React.memo(props => {
@@ -18,7 +18,7 @@ const AssignOrgDialog = React.memo(props => {
 	const classes = assignStyles()
 
 	//Redux
-	const orgs = useSelector(state => state.data.orgs)
+	const orgs = useSelector(state => props.noOrg ? [{ id: -1, name: t('no.org') }, ...state.data.orgs] : state.data.orgs)
 
 	//State
 	const [filters, setFilters] = useState({
@@ -28,11 +28,11 @@ const AssignOrgDialog = React.memo(props => {
 		activeDateFilter: false
 	})
 	//Const
-	const { open, callBack, handleClose } = props;
+	const { open, callBack, handleClose } = props
 
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
-	});
+	})
 
 	//useCallbacks
 

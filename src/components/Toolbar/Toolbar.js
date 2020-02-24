@@ -81,14 +81,9 @@ const styles = makeStyles(theme => ({
 	}
 }))
 
-// const mapStateToProps = (state) => ({
-// 	smallMenu: state.appState.smallMenu,
-// 	drawer: state.settings.drawer
-// })
 
-// @Andrei
-// please check if my useEffect deps are correct
 const Toolbar = React.memo(props => {
+
 	//Hooks
 	const classes = styles()
 	const width = useWidth()
@@ -106,8 +101,9 @@ const Toolbar = React.memo(props => {
 
 	//useEffects
 	useEffect(() => {
-		setRoute(tabs.route)
-	}, [tabs.route])
+		if ((route !== tabs.route) && tabs.tabs.length > 0)
+			setRoute(tabs.route)
+	}, [route, tabs.route, tabs.tabs])
 
 	//Handlers
 
@@ -148,4 +144,5 @@ const Toolbar = React.memo(props => {
 	)
 })
 
+Toolbar.whyDidYouRender = true
 export default Toolbar

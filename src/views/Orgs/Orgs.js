@@ -1,15 +1,15 @@
 import React, { /* Component, */ Fragment, useEffect, useState } from 'react'
-import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
-import GridContainer from 'components/Grid/GridContainer';
-import OrgTable from 'components/Orgs/OrgTable';
-import { /* People, Business, */ PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
+import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core'
+import GridContainer from 'components/Grid/GridContainer'
+import OrgTable from 'components/Orgs/OrgTable'
+import { /* People, Business, */ PictureAsPdf, Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
 // import { handleRequestSort } from 'variables/functions'
-import { deleteOrg } from 'variables/dataOrgs';
-import TableToolbar from 'components/Table/TableToolbar';
-import { customFilterItems } from 'variables/Filters';
-import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks';
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import orgsStyles from 'assets/jss/components/orgs/orgsStyles';
+import { deleteOrg } from 'variables/dataOrgs'
+import TableToolbar from 'components/Table/TableToolbar'
+import { customFilterItems } from 'variables/Filters'
+import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks'
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
+import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 
 const Orgs = props => {
 	//Hooks
@@ -32,7 +32,7 @@ const Orgs = props => {
 	// const [filters, setFilters] = useState({ keyword: '' })
 
 	//Const
-	const { orgs, setHeader, setBC } = props
+	const { orgs, setHeader, setBC, setTabs } = props
 
 	const dHasOrgParent = [
 		{ value: true, label: t("filters.orgs.hasParentOrg") },
@@ -54,10 +54,22 @@ const Orgs = props => {
 
 
 	useEffect(() => {
+
+		const tabs = [
+			{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },
+			{ id: 1, title: t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+			{ id: 2, title: t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+		]
 		setHeader('orgs.pageTitle', false, '', 'users')
 		setBC('orgs')
-		//eslint-disable-next-line
-	}, [])
+
+		setTabs({
+			id: 'management',
+			tabs: tabs,
+			route: 1
+		})
+
+	}, [setHeader, setTabs, setBC, t])
 
 	useEffect(() => {
 		if (saved === true) {
@@ -115,10 +127,10 @@ const Orgs = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -127,7 +139,7 @@ const Orgs = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
@@ -154,7 +166,7 @@ const Orgs = props => {
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
 			setSelected([filterItems(orgs).map(n => n.id)])
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -211,12 +223,12 @@ const Orgs = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			case 2:
 				s('snackbars.exported')
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 

@@ -214,6 +214,4 @@ function App(props) {
 
 }
 
-App.whyDidYouRender = true
-
 export default App
