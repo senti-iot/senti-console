@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react'
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import React, { Fragment, useState, useEffect, useCallback, Suspense } from 'react'
+import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom'
 import { Header, /* Sidebar,  */CircularLoader } from 'components'
 import cx from 'classnames'
-import dashboardRoutes from 'routes/dashboard.js'
+import appRoutes from 'routes/app'
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js'
 import { makeStyles } from '@material-ui/core/styles'
 import cookie from 'react-cookies'
@@ -15,7 +15,6 @@ import { changeTabs } from 'redux/appState'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { useRef, useDispatch, useSelector, useLocalization } from 'hooks'
 import NewContent from 'layouts/404/NewContent'
-
 
 
 function App(props) {
@@ -39,6 +38,7 @@ function App(props) {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const t = useLocalization()
+	const location = useLocation()
 	//#endregion
 
 
@@ -124,14 +124,14 @@ function App(props) {
 		}
 		getS()
 	}, [dispatch, handleSetHeaderTitle, defaultRoute])
-
+	console.log(location)
 	return (
 
 		<div className={classes.wrapper}>
 			<NewContent />
 			<Header
 				defaultRoute={defaultRoute}
-				routes={dashboardRoutes}
+				routes={appRoutes}
 				handleDrawerToggle={handleDrawerToggle}
 				goBackButton={goBackButton}
 				gbbFunc={handleGoBackButton}
@@ -149,7 +149,7 @@ function App(props) {
 					<Sidebar
 						defaultView={defaultView}
 						defaultRoute={defaultRoute}
-						routes={dashboardRoutes}
+						routes={appRoutes}
 						handleDrawerToggle={handleDrawerToggle}
 						open={mobileOpen}
 						color='senti'
@@ -157,17 +157,19 @@ function App(props) {
 						menuRoute={menuRoute}
 					/>
 					{!loading ?
-						<Fragment>
-							<div className={classes.container} id={'container'}>
-								<Toolbar />
-								<BC
-									defaultRoute={defaultRoute}
-									bc={bc}
-									t={t}
-								/>
+
+						<div className={classes.container} id={'container'}>
+							<Toolbar />
+							<BC
+								defaultRoute={defaultRoute}
+								bc={bc}
+								t={t}
+							/>
+							<Suspense fallback={<CircularLoader />}>
 								<Switch>
 									{cookie.load('SESSION') ?
-										dashboardRoutes.map((prop, key) => {
+										appRoutes.map((prop, key) => {
+											console.log(prop)
 											if (prop.divider) {
 												return null
 											}
@@ -201,9 +203,9 @@ function App(props) {
 											}
 										}} />}
 								</Switch>
-							</div>
+							</Suspense>
 							<Cookies />
-						</Fragment>
+						</div>
 						: <CircularLoader />}
 				</Fragment>
 			</div>

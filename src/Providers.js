@@ -63,7 +63,6 @@ const Providers = props => {
 									<TProvider>
 										<Router history={hist} key={Math.random()}>
 											{props.children}
-											{/* <Base /> */}
 										</Router>
 									</TProvider>
 								</SnackbarProvider>

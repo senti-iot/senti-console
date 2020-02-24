@@ -1,5 +1,6 @@
 const breadcrumbs = (t, name, id) => {
 	return {
+		'home': [],
 		'api': [
 			{ label: t('sidebar.api'), path: '/api' }
 		],

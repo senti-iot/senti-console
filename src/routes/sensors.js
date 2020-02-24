@@ -1,16 +1,17 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Sensors from 'views/Sensors/Sensors';
-import CreateSensor from 'views/Sensors/CreateSensor';
+
+const AsyncCreateSensor = React.lazy(() => import('views/Sensors/CreateSensor'))
+const AsyncSensors = React.lazy(() => import('views/Sensors/Sensors'))
 
 const sensors = (props) => {
 	return (
 		<Switch>
 			<Route path={`${props.path}/new`}>
-				<CreateSensor {...props} />
+				<AsyncCreateSensor {...props} />
 			</Route>
 			<Route path={`${props.path}`}>
-				<Sensors {...props} />
+				<AsyncSensors {...props} />
 			</Route>
 		</Switch>
 	)
