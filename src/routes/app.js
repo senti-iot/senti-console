@@ -1,11 +1,11 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import {
-	Dashboard, LibraryBooks, SettingsApplications,
+	Dashboard, /* LibraryBooks, SettingsApplications, */
 	SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload, /* InsertChart, */ Https
 } from 'variables/icons'
 import NotFound from 'layouts/404/NotFound'
-import { DataUsage } from 'variables/icons'
+// import { DataUsage } from 'variables/icons'
 
 /**
  * Sensors
@@ -59,12 +59,12 @@ const AsyncDashboard = React.lazy(() => import('routes/dashboard'))
 /**
  * SentiWi
  */
-const AsyncCollection = React.lazy(() => import('routes/collection'))
-const AsyncCollections = React.lazy(() => import('routes/collections'))
-const AsyncProjects = React.lazy(() => import('routes/projects'))
-const AsyncProject = React.lazy(() => import('routes/project'))
-const AsyncDevices = React.lazy(() => import('routes/devices'))
-const AsyncDevice = React.lazy(() => import('routes/device'))
+// const AsyncCollection = React.lazy(() => import('routes/collection'))
+// const AsyncCollections = React.lazy(() => import('routes/collections'))
+// const AsyncProjects = React.lazy(() => import('routes/projects'))
+// const AsyncProject = React.lazy(() => import('routes/project'))
+// const AsyncDevices = React.lazy(() => import('routes/devices'))
+// const AsyncDevice = React.lazy(() => import('routes/device'))
 
 
 
@@ -85,26 +85,7 @@ const appRoutes = [
 		menuRoute: 'favorites'
 	},
 
-	{
-		path: '/project/:id',
-		component: AsyncProject,
-		hideFromSideBar: true,
-		menuRoute: 'projects'
-	},
 
-	{
-		path: '/collection/:id',
-		component: AsyncCollection,
-		hideFromSideBar: true,
-		menuRoute: 'collections'
-	},
-
-	{
-		path: '/device/:id',
-		component: AsyncDevice,
-		hideFromSideBar: true,
-		menuRoute: 'devices'
-	},
 	{
 		path: '/registry/:id',
 		component: AsyncRegistry,
@@ -235,39 +216,59 @@ const appRoutes = [
 		hideFromSideBar: true,
 		component: AsyncCloudFunction
 	},
-	{
-		path: null,
-		icon: SettingsApplications,
-		sidebarName: 'sidebar.legacy',
-		dropdown: true,
-		menuRoute: 'legacy',
-		items: [
-			{
-				path: '/devices',
-				sidebarName: 'sidebar.devices',
-				icon: DeviceHub,
-				component: AsyncDevices,
-				menuRoute: 'devices',
-				defaultView: true,
-			},
-			{
-				path: '/projects',
-				sidebarName: 'sidebar.projects',
-				icon: LibraryBooks,
-				component: AsyncProjects,
-				menuRoute: 'projects',
-				defaultView: true,
-			},
-			{
-				path: '/collections',
-				sidebarName: 'sidebar.collections',
-				component: AsyncCollections,
-				icon: DataUsage,
-				menuRoute: 'collections',
-				defaultView: true,
-			},
-		]
-	},
+	// {
+	// 	path: '/project/:id',
+	// 	component: AsyncProject,
+	// 	hideFromSideBar: true,
+	// 	menuRoute: 'projects'
+	// },
+
+	// {
+	// 	path: '/collection/:id',
+	// 	component: AsyncCollection,
+	// 	hideFromSideBar: true,
+	// 	menuRoute: 'collections'
+	// },
+
+	// {
+	// 	path: '/device/:id',
+	// 	component: AsyncDevice,
+	// 	hideFromSideBar: true,
+	// 	menuRoute: 'devices'
+	// },
+	// {
+	// 	path: null,
+	// 	icon: SettingsApplications,
+	// 	sidebarName: 'sidebar.legacy',
+	// 	dropdown: true,
+	// 	menuRoute: 'legacy',
+	// 	items: [
+	// 		{
+	// 			path: '/devices',
+	// 			sidebarName: 'sidebar.devices',
+	// 			icon: DeviceHub,
+	// 			component: AsyncDevices,
+	// 			menuRoute: 'devices',
+	// 			defaultView: true,
+	// 		},
+	// 		{
+	// 			path: '/projects',
+	// 			sidebarName: 'sidebar.projects',
+	// 			icon: LibraryBooks,
+	// 			component: AsyncProjects,
+	// 			menuRoute: 'projects',
+	// 			defaultView: true,
+	// 		},
+	// 		{
+	// 			path: '/collections',
+	// 			sidebarName: 'sidebar.collections',
+	// 			component: AsyncCollections,
+	// 			icon: DataUsage,
+	// 			menuRoute: 'collections',
+	// 			defaultView: true,
+	// 		},
+	// 	]
+	// },
 	{
 		path: '*',
 		component: () => <Redirect from={window.location.pathname} to={{ pathname: window.location.pathname === '/' ? '/dashboard' : '/404', prevURL: window.location.pathname }} />,
