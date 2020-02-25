@@ -1,7 +1,7 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react'
 import {
 	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody, Menu, ListItem, ListItemIcon, ListItemText,
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
 	DonutLargeRounded,
 	PieChartRounded,
@@ -13,18 +13,21 @@ import {
 	// ExportModal,
 	DateFilterMenu,
 	T,
-} from 'components';
-import deviceStyles from 'assets/jss/views/deviceStyles';
+} from 'components'
+import deviceStyles from 'assets/jss/views/deviceStyles'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { getSensorDataClean } from 'variables/dataSensors';
-import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
+import { getSensorDataClean } from 'variables/dataSensors'
+import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem'
 import TC from 'components/Table/TC'
-import withLocalization from 'components/Localization/T';
-
+import withLocalization from 'components/Localization/T'
+/**
+ * TODO
+ * @Andrei
+ */
 class ScoreCard extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -133,11 +136,11 @@ class ScoreCard extends PureComponent {
 		this.setState({ openDownload: true, actionAnchor: null })
 	}
 	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
+		this.setState({ actionAnchor: event.currentTarget })
 	}
 
 	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
+		this.setState({ actionAnchor: null })
 	}
 
 	handleVisibility = () => (event) => {
@@ -161,15 +164,15 @@ class ScoreCard extends PureComponent {
 						this.setState({ resetZoom: false, zoomDate: [] })
 					}
 					this.handleSetDate(6, endDate, startDate, 1, period.id)
-					break;
+					break
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					this.setState({ resetZoom: false, zoomDate: [] })
 					this.handleSetDate(6, endDate, startDate, 2, period.id)
-					break;
+					break
 				default:
-					break;
+					break
 			}
 		}
 		catch (e) {
@@ -211,9 +214,9 @@ class ScoreCard extends PureComponent {
 							}]
 						})
 						this.handleSetDate(6, endDate, startDate, 1, period.id)
-						break;
+						break
 					default:
-						break;
+						break
 				}
 			}
 			catch (error) {
@@ -224,7 +227,7 @@ class ScoreCard extends PureComponent {
 	handleNextPeriod = () => {
 		const { period } = this.props
 		const { initialPeriod } = this.state
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			this.setState({ initialPeriod: period })
 			if (period.menuId === 6) {
@@ -291,7 +294,7 @@ class ScoreCard extends PureComponent {
 	handlePreviousPeriod = () => {
 		const { period } = this.props
 		const { initialPeriod } = this.state
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			this.setState({ initialPeriod: period })
 			if (period.menuId === 6) {
@@ -363,44 +366,48 @@ class ScoreCard extends PureComponent {
 			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => this.handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
+						<div>
+							<IconButton onClick={() => this.handlePreviousPeriod(period)}>
+								<KeyboardArrowLeft />
+							</IconButton>
+						</div>
 					</Tooltip>
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+						<div>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
-
-								</ItemG>
-							}
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
+								}
+								customSetDate={this.handleSetDate}
+								period={period}
+								t={t} />
+						</div>
 					</Tooltip>
 				</ItemG>
 				<ItemG>
@@ -417,9 +424,9 @@ class ScoreCard extends PureComponent {
 		</ItemG>
 	}
 	relDiff(oldNumber, newNumber) {
-		var decreaseValue = oldNumber - newNumber;
+		var decreaseValue = oldNumber - newNumber
 		let finalValue = ((decreaseValue / oldNumber) * 100).toFixed(3)
-		return !isNaN(finalValue) ? finalValue : '---';
+		return !isNaN(finalValue) ? finalValue : '---'
 	}
 	diff(oldNumber, newNumber) {
 		let number = (oldNumber - newNumber).toFixed(3)
@@ -556,7 +563,7 @@ class ScoreCard extends PureComponent {
 						</Grid>}
 				/>
 			</Fragment >
-		);
+		)
 	}
 }
 const mapStateToProps = (state, ownProps) => ({

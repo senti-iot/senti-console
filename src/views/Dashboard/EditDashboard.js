@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react"
 import { Responsive, WidthProvider } from "react-grid-layout"
-import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import { Paper, Dialog, AppBar, IconButton, Toolbar, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
 import { ItemG, Dropdown, TextF, SlideT, T, Warning } from 'components'
 import cx from 'classnames'
 import { Close, Edit, Clear, Palette, Save } from 'variables/icons'
-import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import GaugeSData from 'views/Charts/GaugeSData'
 import DoubleChart from 'views/Charts/DoubleChart'
 import ScorecardAB from 'views/Charts/ScorecardAB'
 import WindCard from 'views/Charts/WindCard'
 import Scorecard from 'views/Charts/Scorecard'
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash, loadDash } from 'redux/dsSystem'
+import { createGraph, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash, loadDash } from 'redux/dsSystem'
 import EditGraph from './EditGraph'
 import { red } from '@material-ui/core/colors'
 import DropZone from './DropZone'
@@ -22,32 +21,17 @@ import MapData from 'views/Charts/MapData'
 import MultiSourceChart from 'views/Charts/MultiSourceChart'
 import ToolbarContainer from 'views/Dashboard/ToolbarContainer'
 import { useLocalization } from 'hooks'
+import createDashboardStyle from 'assets/jss/components/dashboards/createDashboardStyles'
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
-const mapStateToProps = (state) => ({
-	d: state.dsSystem.cDash,
-	gs: state.dsSystem.cGraphs,
-	eGraph: state.dsSystem.eGraph
-})
 
-const mapDispatchToProps = dispatch => ({
-	createDash: () => dispatch(createDash()),
-	createGraph: (type) => dispatch(createGraph(type)),
-	editGraphPos: (g) => dispatch(editGraphPos(g)),
-	editDashboard: (d) => dispatch(editDash(d, true)),
-	loadDashboard: (d) => dispatch(loadDash(d)),
-	setGE: g => dispatch(setGE(g)),
-	removeGE: g => dispatch(removeGE(g)),
-	saveDashboard: () => dispatch(saveDashboard(true)),
-	setLayout: (l) => dispatch(setLayout(l)),
-	resetEditDash: () => dispatch(resetEditDash())
-})
 
 const EditDashboard = props => {
 	//Hooks
 	const t = useLocalization()
 	const dispatch = useDispatch()
+	const classes = createDashboardStyle()
 	//Redux
 	const d = useSelector(s => s.dsSystem.cDash)
 	const gs = useSelector(s => s.dsSystem.cGraphs)
@@ -60,7 +44,7 @@ const EditDashboard = props => {
 	const [openClose, setOpenClose] = useState(false)
 
 	//Const
-	const { open, classes, eDash, handleClose } = props
+	const { open, eDash, handleClose } = props
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
 	})
@@ -87,6 +71,12 @@ const EditDashboard = props => {
 		}
 		//eslint-disable-next-line
 	}, [open, d])
+
+	useEffect(() => {
+		return () => {
+			dispatch(resetEditDash())
+		}
+	}, [dispatch])
 	//Handlers
 	const handleOnDrop = item => {
 		dispatch(createGraph(item.type))
@@ -444,4 +434,4 @@ const EditDashboard = props => {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDashboard))
+export default EditDashboard
