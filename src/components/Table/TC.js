@@ -1,8 +1,8 @@
 import React from 'react'
-import { TableCell, Typography, withStyles } from '@material-ui/core'
+import { TableCell, Typography, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	tablecellPadding: {
 		padding: 9
 	},
@@ -23,11 +23,12 @@ const styles = theme => ({
 	center: {
 		textAlign: 'center'
 	}
-})
+}))
 
 
 const TC = (props) => {
-	const { checkbox, noCheckbox, classes, label, content, className, center, FirstC, ...rest } = props
+	const classes = styles()
+	const { checkbox, noCheckbox, label, content, className, center, FirstC, ...rest } = props
 	let tcClasses = classNames({
 		[className]: className,
 		[classes.tableCellCheckbox]: checkbox,
@@ -45,4 +46,4 @@ const TC = (props) => {
 		</TableCell>
 	)
 }
-export default withStyles(styles)(TC)
+export default TC

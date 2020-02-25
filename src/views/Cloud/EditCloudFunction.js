@@ -1,150 +1,126 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-// import EditCloudFunctionForm from 'components/Collections/EditCloudFunctionForm';
+import React, { useState, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { getFunctionLS, getFunctions } from 'redux/data';
 import { updateFunction } from 'variables/dataFunctions';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
+import { useSnackbar, useLocation, useParams, useEventListener, useHistory } from 'hooks';
 
-class EditCloudFunction extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			loading: true,
-			cloudfunction: null,
-			org: {
-				name: ''
-			}
-		}
-		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
-		props.setHeader('menus.edits.cloudfunction', true, prevURL, 'manage.cloudfunctions')
-		props.setBC('updatecloudfunction')
-		props.setTabs({
-			id: "editCF",
-			tabs: []
-		})
-	}
+const EditCloudFunction = props => {
 
-	keyHandler = (e) => {
+	//Hooks
+	const s = useSnackbar().s
+	const dispatch = useDispatch()
+	const location = useLocation()
+	const params = useParams()
+	const history = useHistory()
+
+	//Redux
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const orgId = useSelector(state => state.settings.user.org.id)
+	const orgs = useSelector(state => state.data.orgs)
+	const cloudfunction = useSelector(state => state.data.cloudfunction)
+
+	//State
+	const [loading, setLoading] = useState(true)
+	const [stateCloudfunction, setStateCloudfunction] = useState(null)
+	const [org, setOrg] = useState({ name: '' })
+
+	//Const
+	const { setHeader, setBC, setTabs } = props
+
+	//useCallbacks
+	const getData = useCallback(async () => {
+		dispatch(await getFunctionLS(params.id))
+	}, [dispatch, params.id])
+
+	const goToRegistries = useCallback(() => history.push('/functions'), [history])
+
+	const handleKeyPress = useCallback((e) => {
 		if (e.key === 'Escape') {
-			this.goToRegistries()
+			goToRegistries()
 		}
-	}
-	getData = async () => {
-		const { getFunction } = this.props
-		await getFunction(this.id)
-	}
-	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, setBC, cloudfunction } = this.props
-		if (((!prevProps.cloudfunction
-			&& cloudfunction !== prevProps.cloudfunction
-			&& cloudfunction)
-			|| (this.state.cloudfunction === null && cloudfunction))
-			&& this.props.orgs.length > 0) {
-			let orgs = this.props.orgs
-			this.setState({
-				cloudfunction: cloudfunction,
-				org: orgs[orgs.findIndex(o => o.id === cloudfunction.orgId)],
-				loading: false
-			})
-			let prevURL = location.prevURL ? location.prevURL : `/function/${this.id}`
+	}, [goToRegistries])
+
+	//useEventListeners
+	useEventListener('keydown', handleKeyPress)
+
+	//useEffects
+	useEffect(() => {
+		const gData = async () => await getData()
+		gData()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		if (cloudfunction) {
+			setStateCloudfunction(cloudfunction)
+			setOrg(orgs[orgs.findIndex(o => o.id === cloudfunction.orgId)])
+			setLoading(false)
+			let prevURL = location.prevURL ? location.prevURL : `/function/${cloudfunction.id}`
 			setHeader('menus.edits.cloudfunction', true, prevURL, 'manage.cloudfunctions')
 			setBC('editcloudfunction', cloudfunction.name, cloudfunction.id)
+			setTabs({
+				id: "editCF",
+				tabs: []
+			})
 		}
-	}
-	componentDidMount = async () => {
-		this.getData()
-		window.addEventListener('keydown', this.keyHandler, false)
+
+	}, [cloudfunction, location.prevURL, orgs, setBC, setHeader, setTabs])
+
+	//Handlers
+
+	const handleOrgChange = org => {
+		setOrg(org)
+		setStateCloudfunction({ ...stateCloudfunction, orgId: org.id })
 
 	}
-	componentWillUnmount = () => {
-		window.removeEventListener('keydown', this.keyHandler, false)
+	const handleCodeChange = what => value => {
+		setStateCloudfunction({ ...stateCloudfunction, [what]: value })
+
 	}
-	handleOrgChange = org => {
-		this.setState({
-			org: org,
-			cloudfunction: {
-				...this.state.cloudfunction,
-				orgId: org.id
-			}
-		})
+	const handleChange = (what) => e => {
+		setStateCloudfunction({ ...stateCloudfunction, [what]: e.target.value })
+
 	}
-	handleCodeChange = what => value => {
-		this.setState({
-			cloudfunction: {
-				...this.state.cloudfunction,
-				[what]: value
-			}
-		})
+	const updateFunctionFunc = async () => {
+		return await updateFunction(stateCloudfunction)
 	}
-	handleChange = (what) => e => {
-		this.setState({
-			cloudfunction: {
-				...this.state.cloudfunction,
-				[what]: e.target.value
-			}
-		})
-	}
-	updateFunction = async () => {
-		return await updateFunction(this.state.cloudfunction)
-	}
-	handleUpdate = async () => {
-		const { s, history, orgId, accessLevel } = this.props
-		let rs = await this.updateFunction()
+	const handleUpdate = async () => {
+		let rs = await updateFunctionFunc()
 		if (rs) {
-			const { isFav, updateFav } = this.props
-			const { cloudfunction } = this.state
 			let favObj = {
-				id: cloudfunction.id,
-				name: cloudfunction.name,
-				type: 'function',
-				path: `/function/${cloudfunction.id}`
+				id: stateCloudfunction.id,
+				name: stateCloudfunction.name,
+				type: 'cloudfunction',
+				path: `/function/${stateCloudfunction.id}`
 			}
-			if (isFav(favObj)) {
-				updateFav(favObj)
+			if (dispatch(isFav(favObj))) {
+				dispatch(updateFav(favObj))
 			}
-			s('snackbars.edit.cloudfunction', { cf: cloudfunction.name })
-			this.props.getFunctions(true, orgId, accessLevel.apisuperuser ? true : false)
-			history.push(`/function/${this.id}`)
+			s('snackbars.edit.cloudfunction', { cf: stateCloudfunction.name })
+			dispatch(await getFunctions(true, orgId, accessLevel.apisuperuser ? true : false))
+			history.push(`/function/${cloudfunction.id}`)
 		}
 		else
 			s('snackbars.failed')
 	}
-	goToRegistries = () => this.props.history.push('/functions')
-	render() {
-		const { t } = this.props
-		const { loading, cloudfunction, org } = this.state
-		return (loading ? <CircularLoader /> :
 
-			<CreateFunctionForm
-				cloudfunction={cloudfunction}
-				org={org}
-				handleChange={this.handleChange}
-				handleCreate={this.handleUpdate}
-				handleCodeChange={this.handleCodeChange}
-				handleOrgChange={this.handleOrgChange}
-				goToRegistries={this.goToRegistries}
-				t={t}
-			/>
-		)
-	}
+
+	return (loading ? <CircularLoader /> :
+
+		<CreateFunctionForm
+			cloudfunction={stateCloudfunction}
+			org={org}
+			handleChange={handleChange}
+			handleCreate={handleUpdate}
+			handleCodeChange={handleCodeChange}
+			handleOrgChange={handleOrgChange}
+			goToRegistries={goToRegistries}
+		/>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	orgId: state.settings.user.org.id,
-	orgs: state.data.orgs,
-	cloudfunction: state.data.cloudfunction
-})
-
-const mapDispatchToProps = dispatch => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj)),
-	getFunction: async id => dispatch(await getFunctionLS(id)),
-	getFunctions: async (reload, orgId, ua) => dispatch(await getFunctions(reload, orgId, ua))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditCloudFunction)
+export default EditCloudFunction

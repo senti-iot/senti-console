@@ -1,149 +1,142 @@
-import React, { Component, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
+import React, { useEffect, Fragment, useCallback } from 'react'
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
-// import Gravatar from 'react-gravatar'
-import { Star, StarBorder, SignalWifi2Bar, Business, InputIcon } from 'variables/icons';
-import withLocalization from 'components/Localization/T';
+import { Star, StarBorder, Business, InputIcon } from 'variables/icons';
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-import withSnackbar from 'components/Localization/S';
-import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
+import { useLocalization, useSnackbar } from 'hooks';
+import hoverStyles from 'assets/jss/components/hover/hoverHStyles';
 
-class RegistryHover extends Component {
-	componentDidUpdate = () => {
-		if (this.props.saved === true) {
-			const { registry } = this.props
+
+const RegistryHover = props => {
+	//Hooks
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const dispatch = useDispatch()
+	const classes = hoverStyles()
+
+	//Redux
+	const saved = useSelector(state => state.favorites.saved)
+
+	//State
+
+	//Const
+	const { anchorEl, registry } = props
+
+	//useCallbacks
+	const isFavorite = useCallback(id => dispatch(isFav({ id: id, type: 'registry' })), [dispatch])
+
+	//useEffects
+
+	useEffect(() => {
+		if (saved === true) {
+			const { registry } = props
 			if (registry) {
 
-				if (this.props.isFav({ id: registry.id, type: 'registry' })) {
-					this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
-					this.props.finishedSaving()
+				if (isFavorite(registry.id)) {
+					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
+					dispatch(finishedSaving())
 				}
-				if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
-					this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
-					this.props.finishedSaving()
+				if (!isFavorite(registry.id)) {
+					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
+					dispatch(finishedSaving())
 				}
 			}
 		}
-	}
-	addToFav = () => {
-		const { registry } = this.props
+	}, [dispatch, props, s, saved, t, isFavorite])
+
+	//Handlers
+
+	const addToFavorites = () => {
+		const { registry } = props
 		let favObj = {
 			id: registry.id,
 			name: registry.name,
 			type: 'registry',
 			path: `/registry/${registry.id}`
 		}
-		this.props.addToFav(favObj)
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = () => {
-		const { registry } = this.props
+	const removeFromFavorites = () => {
+		const { registry } = props
 		let favObj = {
 			id: registry.id,
 			name: registry.name,
 			type: 'registry',
 			path: `/registry/${registry.id}`
 		}
-		this.props.removeFromFav(favObj)
+		dispatch(removeFromFav(favObj))
 
 	}
-	handleClose = () => {
-		this.props.handleClose()
+	const handleClose = () => {
+		props.handleClose()
 	};
-	renderIcon = (status) => {
-		const { classes } = this.props
-		switch (status) {
-			case 1:
-				return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
-			case 2:
-				return <SignalWifi2Bar className={classes.greenSignal + ' ' + classes.smallIcon} />
-			case 0:
-				return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
-			case null:
-				return <SignalWifi2Bar className={classes.smallIcon} />
-			default:
-				break;
-		}
-	}
-	render() {
-		const { t, anchorEl, classes, registry, isFav } = this.props
-		return (
-			<Popper
-				style={{ zIndex: 1040 }}
-				disablePortal
-				id="simple-popover"
-				open={Boolean(anchorEl)}
-				anchorEl={anchorEl}
-				onClose={this.handleClose}
-				placement={'top-start'}
-				onMouseLeave={this.handleClose}
-				transition
-			>
-				{({ TransitionProps }) => (
-					<Fade {...TransitionProps} timeout={250}>
-						<Paper className={classes.paper}>
-							{registry !== null ?
-								<Fragment>
-									<ItemG container style={{ margin: "8px 0" }}>
-										<ItemG xs={3} container justify={'center'} alignItems={'center'}>
-											<InputIcon className={classes.img} />
-										</ItemG>
-										<ItemG xs={9} container justify={'center'}>
-											<ItemG xs={12}>
-												<T variant={'h6'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-													{registry.name}
-												</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T className={classes.smallText} paragraph={false}>{`${registry.uuid}`}</T>
-											</ItemG>
-										</ItemG>
+	return (
+		<Popper
+			style={{ zIndex: 1040 }}
+			disablePortal
+			id="simple-popover"
+			open={Boolean(anchorEl)}
+			anchorEl={anchorEl}
+			onClose={handleClose}
+			placement={'top-start'}
+			onMouseLeave={handleClose}
+			transition
+		>
+			{({ TransitionProps }) => (
+				<Fade {...TransitionProps} timeout={250}>
+					<Paper className={classes.paper}>
+						{registry !== null ?
+							<Fragment>
+								<ItemG container style={{ margin: "8px 0" }}>
+									<ItemG xs={3} container justify={'center'} alignItems={'center'}>
+										<InputIcon className={classes.img} />
 									</ItemG>
-									<ItemG xs={12} className={classes.middleContainer}>
+									<ItemG xs={9} container justify={'center'}>
 										<ItemG xs={12}>
-											<T className={classes.smallText} paragraph={false}>
-												<Business className={classes.smallIcon} />
-												{registry.customer_name}
+											<T variant={'h6'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+												{registry.name}
 											</T>
 										</ItemG>
-									</ItemG>
-									<Divider />
-									<ItemG container style={{ marginTop: '8px' }}>
-										<ItemG>
-											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.id}/edit`, prevURL: '/registrys' }}>
-												{t('menus.edit')}
-											</Button>
-										</ItemG>
-										<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-											<Tooltip placement="top" title={isFav({ id: registry.id, type: 'registry' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-												<IconButton className={classes.smallAction} onClick={isFav({ id: registry.id, type: 'registry' }) ? this.removeFromFav : this.addToFav}>
-													{isFav({ id: registry.id, type: 'registry' }) ? <Star /> : <StarBorder />}
-												</IconButton>
-											</Tooltip>
+										<ItemG xs={12}>
+											<T className={classes.smallText} paragraph={false}>{`${registry.uuid}`}</T>
 										</ItemG>
 									</ItemG>
-								</Fragment>
-								: <CircularLoader fill />}
-						</Paper>
-					</Fade>
-				)}
-			</Popper>
-		)
-	}
+								</ItemG>
+								<ItemG xs={12} className={classes.middleContainer}>
+									<ItemG xs={12}>
+										<T className={classes.smallText} paragraph={false}>
+											<Business className={classes.smallIcon} />
+											{registry.customer_name}
+										</T>
+									</ItemG>
+								</ItemG>
+								<Divider />
+								<ItemG container style={{ marginTop: '8px' }}>
+									<ItemG>
+										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.id}/edit`, prevURL: '/registries' }}>
+											{t('menus.edit')}
+										</Button>
+									</ItemG>
+									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
+										<Tooltip placement="top" title={isFavorite(registry.id) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={isFavorite(registry.id) ? removeFromFavorites : addToFavorites}>
+												{isFavorite(registry.id) ? <Star /> : <StarBorder />}
+											</IconButton>
+										</Tooltip>
+									</ItemG>
+								</ItemG>
+							</Fragment>
+							: <CircularLoader fill />}
+					</Paper>
+				</Fade>
+			)}
+		</Popper>
+	)
 }
-const mapStateToProps = (state) => ({
-	saved: state.favorites.saved
-})
 
-const mapDispatchToProps = dispatch => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()((withLocalization()(withStyles(hoverStyles)(RegistryHover)))))
+export default RegistryHover

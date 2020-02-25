@@ -1,5 +1,6 @@
+import { makeStyles } from '@material-ui/core'
 
-const imagecarouselStyles = theme => ({
+const imagecarouselStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1,
 		[theme.breakpoints.up('md')]: {
@@ -36,6 +37,6 @@ const imagecarouselStyles = theme => ({
 		}
 
 	},
-});
+}));
 
 export default imagecarouselStyles

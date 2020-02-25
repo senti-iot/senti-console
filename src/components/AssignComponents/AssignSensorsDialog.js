@@ -1,14 +1,13 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip, Button } from '@material-ui/core';
-import { Close } from 'variables/icons';
-import cx from 'classnames';
-import React, { Fragment, useState } from 'react';
-// import { getAllSensors } from 'variables/dataSensors';
-import { ItemG, CircularLoader, SlideT } from 'components';
-import Search from 'components/Search/Search';
-import { suggestionGen, filterItems } from 'variables/functions';
-import assignStyles from 'assets/jss/components/assign/assignStylesHooks';
-import TP from 'components/Table/TP';
-import { useLocalization, useSelector } from 'hooks';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip, Button } from '@material-ui/core'
+import { Close } from 'variables/icons'
+import cx from 'classnames'
+import React, { Fragment, useState } from 'react'
+import { ItemG, CircularLoader, SlideT } from 'components'
+import Search from 'components/Search/Search'
+import { suggestionGen, filterItems } from 'variables/functions'
+import assignStyles from 'assets/jss/components/assign/assignStylesHooks'
+import TP from 'components/Table/TP'
+import { useLocalization, useSelector } from 'hooks'
 
 
 const AssignSensorsDialog = (props) => {
@@ -19,20 +18,28 @@ const AssignSensorsDialog = (props) => {
 	//Redux
 	const sensors = useSelector(s => s.data.sensors)
 
-	//Constants
-	const { open } = props
-
-	let height = window.innerHeight
-	let rowsPerPage = Math.round((height - 85 - 49 - 49) / 49)
-
 	//State
 	const [selectedSensors, setSelectedSensors] = useState([])
 	const [page, setPage] = useState(0)
 	const [filterWord, setFilterWord] = useState('')
 	const handleSelectSensor = (sId, sName) => e => {
-		// e.preventDefault()
 		selectSensor(sId, sName)
 	}
+
+	//Const
+	const { open } = props
+	const height = window.innerHeight
+	const rowsPerPage = Math.round((height - 85 - 49 - 49) / 49)
+	const appBarClasses = cx({
+		[' ' + classes['primary']]: 'primary'
+	})
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	const selectSensor = (sId, sName) => {
 		let sS = [...selectedSensors]
 		if (selectedSensors.findIndex(s => s.id === sId) > -1) {
@@ -41,7 +48,6 @@ const AssignSensorsDialog = (props) => {
 		else {
 			sS.push({ id: sId, name: sName })
 		}
-		console.log('Updated sensor list')
 
 		setSelectedSensors(sS)
 	}
@@ -60,9 +66,6 @@ const AssignSensorsDialog = (props) => {
 		setPage(page)
 	}
 
-	const appBarClasses = cx({
-		[' ' + classes['primary']]: 'primary'
-	});
 
 	return (
 		<Dialog
@@ -131,36 +134,30 @@ const AssignSensorsDialog = (props) => {
 				</Toolbar>
 			</AppBar>
 			<List>
-				{sensors ? filterItems(sensors, { keyword: filterWord }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((s, i) => {
-					const listItemClass = cx({
-						[classes.selectedItem]: selectedSensors.findIndex(a => a.id === s.id) > -1 ? true : false
-					})
-					return (
-						<Fragment key={i}>
-							<ListItem
-								button
-								onClick={handleSelectSensor(s.id, s.name)}
-								value={s.id}
-								className={listItemClass}
-								selected={selectedSensors.indexOf(s.id) > -1}
-							// classes={{
-							// 	root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItem : null
-							// }}
-							>
-								<ListItemText
-
-									// primaryTypographyProps={{
-									// 	className: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null
-									// }}
-									// secondaryTypographyProps={{
-									// 	classes: { root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null }
-									// }}
-									primary={s.name} />
-							</ListItem>
-							<Divider />
-						</Fragment>
-					)
-				}) : <CircularLoader />}
+				{sensors ? filterItems(sensors, { keyword: filterWord }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((s, i) => (
+					<Fragment key={i}>
+						<ListItem
+							button
+							onClick={handleSelectSensor(s.id, s.name)}
+							value={s.id}
+							selected={selectedSensors.indexOf(s.id) > -1}
+						// classes={{
+						// 	root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItem : null
+						// }}
+						>
+							<ListItemText
+								// primaryTypographyProps={{
+								// 	className: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null
+								// }}
+								// secondaryTypographyProps={{
+								// 	classes: { root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null }
+								// }}
+								primary={s.name} />
+						</ListItem>
+						<Divider />
+					</Fragment>
+				)
+				) : <CircularLoader />}
 				<TP
 					disableRowsPerPage
 					count={sensors ? sensors.length : 0}
@@ -171,7 +168,7 @@ const AssignSensorsDialog = (props) => {
 			</List>
 		</Dialog>
 
-	);
+	)
 }
 
 

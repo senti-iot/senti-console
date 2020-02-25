@@ -1,8 +1,8 @@
-import React, { Fragment, useCallback, } from 'react';
+import React, { Fragment, useCallback, } from 'react'
 import {
 	Grid, IconButton, Menu, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Typography, Tooltip, colors, Divider, Hidden
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
 	Timeline, MoreVert,
 	DonutLargeRounded,
@@ -18,22 +18,22 @@ import {
 	DateFilterMenu,
 	T,
 	DSelect,
-} from 'components';
-import classNames from 'classnames';
+} from 'components'
+import classNames from 'classnames'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
-import { getSensorDataClean } from 'variables/dataSensors';
-import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
-import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
-import multiSourceChartStyles from 'assets/jss/components/dashboards/multiSourceChartStyles'
+import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem'
+import { getSensorDataClean } from 'variables/dataSensors'
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
+import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
+import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const MultiSourceChart = (props) => {
-
 	//Hooks
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const classes = multiSourceChartStyles()
+
 	//Props
 	const { gId, create, title, color, dId, hoverID, setHoverID, device, single, } = props
 
@@ -98,7 +98,7 @@ const MultiSourceChart = (props) => {
 			case 2:
 				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 			default:
-				break;
+				break
 		}
 	}, [color, g.id, g.period.from, g.period.to, title])
 
@@ -174,16 +174,16 @@ const MultiSourceChart = (props) => {
 						setZoomDate([])
 					}
 					handleSetDate(6, endDate, startDate, 1, period.id)
-					break;
+					break
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					setResetZoom(false)
 					setZoomDate([])
 					handleSetDate(6, endDate, startDate, 2, period.id)
-					break;
+					break
 				default:
-					break;
+					break
 			}
 		}
 		catch (e) {
@@ -219,9 +219,9 @@ const MultiSourceChart = (props) => {
 							to: period.to
 						}])
 						handleSetDate(6, endDate, startDate, 1, period.id)
-						break;
+						break
 					default:
-						break;
+						break
 				}
 			}
 			catch (error) {
@@ -230,7 +230,7 @@ const MultiSourceChart = (props) => {
 	}
 	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	const handleNextPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -295,7 +295,7 @@ const MultiSourceChart = (props) => {
 		handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	const handlePreviousPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -351,6 +351,7 @@ const MultiSourceChart = (props) => {
 	const handleChangeSelectedDevice = e => {
 		setSelectedDevice(e.target.value)
 	}
+	const handleMenuItems = () => g ? g.dataSource ? g.dataSource.deviceIds ? g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i })) : [] : [] : []
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -358,7 +359,7 @@ const MultiSourceChart = (props) => {
 			<ItemG zeroMinWidth>
 				<DSelect
 					value={selectedDevice}
-					menuItems={g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i }))}
+					menuItems={handleMenuItems()}
 					onChange={handleChangeSelectedDevice}
 				/>
 			</ItemG>
@@ -715,7 +716,7 @@ const MultiSourceChart = (props) => {
 			case 3:
 				return <ShowChart />
 			default:
-				break;
+				break
 		}
 	}
 	const renderSmallTitle = () => {
@@ -753,7 +754,7 @@ const MultiSourceChart = (props) => {
 					}
 				</Grid>}
 		/>
-	);
+	)
 }
 
 export default MultiSourceChart

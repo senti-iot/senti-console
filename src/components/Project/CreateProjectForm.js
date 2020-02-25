@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
@@ -9,28 +9,32 @@ import withLocalization from 'components/Localization/T';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import Gravatar from 'react-gravatar'
+import { useLocalization } from 'hooks'
 
-class CreateProjectForm extends Component {
-	constructor(props) {
-		super(props)
+const CreateProjectForm = props => {
+	const t = useLocalization()
+	const [filters, setFilters] = useState({ keyword: '' })
+	// constructor(props) {
+	// 	super(props)
 
-		this.state = {
-			filters: {
-				keyword: ''
-			}
-		}
+	// 	this.state = {
+	// 		filters: {
+	// 			keyword: ''
+	// 		}
+	// 	}
+	// }
+
+	const handleFilterKeyword = value => {
+		setFilters({ ...filters, keyword: value })
+		// this.setState({
+		// 	filters: {
+		// 		keyword: value
+		// 	}
+		// })
 	}
-
-	handleFilterKeyword = value => {
-		this.setState({
-			filters: {
-				keyword: value
-			}
-		})
-	}
-	renderSelectUser = () => {
-		const { t, openUser, handleCloseUser, users, handleChangeUser, classes } = this.props
-		const { filters } = this.state
+	const renderSelectUser = () => {
+		const { openUser, handleCloseUser, users, handleChangeUser, classes } = props
+		// const { filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -57,7 +61,7 @@ class CreateProjectForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={users ? suggestionGen(users) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -79,7 +83,7 @@ class CreateProjectForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={users ? suggestionGen(users) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -99,9 +103,9 @@ class CreateProjectForm extends Component {
 			</List>
 		</Dialog>
 	}
-	renderSelectOrg = () => {
-		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
-		const { filters } = this.state
+	const renderSelectOrg = () => {
+		const { openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = props
+		// const { filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -128,7 +132,7 @@ class CreateProjectForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -150,7 +154,7 @@ class CreateProjectForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -169,134 +173,133 @@ class CreateProjectForm extends Component {
 			</List>
 		</Dialog>
 	}
-	render() {
-		const { t, classes, errorMessage, error,
-			created, title, handleChange, handleDateChange,
-			description, startDate, endDate, creating, handleOpenOrg, org,
-			handleCreateProject, handleOpenUser, user, goToProject
-		} = this.props
-		const buttonClassname = cx({
-			[classes.buttonSuccess]: created,
-		})
-		return (
-			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<ItemGrid xs={12}>
-							<Collapse in={error}>
-								<Warning>
-									<Danger>
-										{errorMessage}
-									</Danger>
-								</Warning>
-							</Collapse>
-						</ItemGrid>
-						<ItemGrid container xs={12}>
-							<TextF
-								autoFocus
-								id={'title'}
-								label={t('projects.fields.name')}
-								value={title}
-								// className={classes.textField}
-								onChange={handleChange('title')}
-								margin='normal'
 
-								error={error}
-
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<TextF
-								id={'multiline-flexible'}
-								label={t('projects.fields.description')}
-								multiline
-								rows={4}
-								color={'secondary'}
-								// className={classes.textField}
-								value={description}
-								onChange={handleChange('description')}
-								margin='normal'
-
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<DatePicker
-								label={t('projects.fields.startDate')}
-								value={startDate}
-								onChange={handleDateChange('startDate')}
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<DatePicker
-								label={t('projects.fields.endDate')}
-								value={endDate}
-								onChange={handleDateChange('endDate')}
-								error={error}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							{this.renderSelectUser()}
-							<TextF
-								id={'contactPerson'}
-								label={t('projects.contact.title')}
-								value={`${user.firstName} ${user.lastName}`}
-								onClick={handleOpenUser}
-								InputProps={{
-									onChange: handleOpenUser,
-									readOnly: true
-								}}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							{this.renderSelectOrg()}
-							<TextF
-								id={'collectionOrg'}
-								label={t('collections.fields.org')}
-								value={org.name}
-								onClick={handleOpenOrg}
-								InputProps={{
-									onChange: handleOpenOrg,
-									readOnly: true
-								}}
-							/>
-						</ItemGrid>
-
-					</form>
-					<ItemGrid xs={12} container justify={'center'}>
-						<Collapse in={creating} timeout='auto' unmountOnExit>
-							<CircularLoader fill />
+	const { classes, errorMessage, error,
+		created, title, handleChange, handleDateChange,
+		description, startDate, endDate, creating, handleOpenOrg, org,
+		handleCreateProject, handleOpenUser, user, goToProject
+	} = props
+	const buttonClassname = cx({
+		[classes.buttonSuccess]: created,
+	})
+	return (
+		<GridContainer justify={'center'}>
+			<Paper className={classes.paper}>
+				<form className={classes.form}>
+					<ItemGrid xs={12}>
+						<Collapse in={error}>
+							<Warning>
+								<Danger>
+									{errorMessage}
+								</Danger>
+							</Warning>
 						</Collapse>
 					</ItemGrid>
-					<ItemGrid container style={{ margin: 16 }}>
-						<div className={classes.wrapper}>
-							<Button
-								variant='outlined'
-								onClick={goToProject}
-								className={classes.redButton}
-							>
-								{t('actions.cancel')}
-							</Button>
-						</div>
-						<div className={classes.wrapper}>
-							<Button
-								variant='outlined'
-								color='primary'
-								className={buttonClassname}
-								disabled={creating || created}
-								onClick={handleCreateProject}
-							>
-								{created ? t('snackbars.redirect')
-									: t('actions.save')}
+					<ItemGrid container xs={12}>
+						<TextF
+							autoFocus
+							id={'title'}
+							label={t('projects.fields.name')}
+							value={title}
+							// className={classes.textField}
+							onChange={handleChange('title')}
+							margin='normal'
 
-							</Button>
-						</div>
+							error={error}
+
+						/>
 					</ItemGrid>
-				</Paper>
-			</GridContainer>
-		)
-	}
+					<ItemGrid xs={12}>
+						<TextF
+							id={'multiline-flexible'}
+							label={t('projects.fields.description')}
+							multiline
+							rows={4}
+							color={'secondary'}
+							// className={classes.textField}
+							value={description}
+							onChange={handleChange('description')}
+							margin='normal'
+
+							error={error}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						<DatePicker
+							label={t('projects.fields.startDate')}
+							value={startDate}
+							onChange={handleDateChange('startDate')}
+							error={error}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						<DatePicker
+							label={t('projects.fields.endDate')}
+							value={endDate}
+							onChange={handleDateChange('endDate')}
+							error={error}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						{renderSelectUser()}
+						<TextF
+							id={'contactPerson'}
+							label={t('projects.contact.title')}
+							value={`${user.firstName} ${user.lastName}`}
+							onClick={handleOpenUser}
+							InputProps={{
+								onChange: handleOpenUser,
+								readOnly: true
+							}}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						{renderSelectOrg()}
+						<TextF
+							id={'collectionOrg'}
+							label={t('collections.fields.org')}
+							value={org.name}
+							onClick={handleOpenOrg}
+							InputProps={{
+								onChange: handleOpenOrg,
+								readOnly: true
+							}}
+						/>
+					</ItemGrid>
+
+				</form>
+				<ItemGrid xs={12} container justify={'center'}>
+					<Collapse in={creating} timeout='auto' unmountOnExit>
+						<CircularLoader fill />
+					</Collapse>
+				</ItemGrid>
+				<ItemGrid container style={{ margin: 16 }}>
+					<div className={classes.wrapper}>
+						<Button
+							variant='outlined'
+							onClick={goToProject}
+							className={classes.redButton}
+						>
+							{t('actions.cancel')}
+						</Button>
+					</div>
+					<div className={classes.wrapper}>
+						<Button
+							variant='outlined'
+							color='primary'
+							className={buttonClassname}
+							disabled={creating || created}
+							onClick={handleCreateProject}
+						>
+							{created ? t('snackbars.redirect')
+								: t('actions.save')}
+
+						</Button>
+					</div>
+				</ItemGrid>
+			</Paper>
+		</GridContainer>
+	)
 }
 
 export default withLocalization()(withStyles(createprojectStyles)(CreateProjectForm))

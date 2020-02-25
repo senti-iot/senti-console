@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
@@ -11,27 +11,29 @@ import { suggestionGen, filterItems } from 'variables/functions';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
-class CreateCollectionForm extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			filters: {
-				keyword: ''
-			}
-		}
-	}
+const CreateCollectionForm = props => {
+	const [filters, setFilters] = useState({ keyword: '' })
+	// constructor(props) {
+	// 	super(props)
 
-	handleFilterKeyword = value => {
-		this.setState({
-			filters: {
-				keyword: value
-			}
-		})
+	// 	this.state = {
+	// 		filters: {
+	// 			keyword: ''
+	// 		}
+	// 	}
+	// }
+
+	const handleFilterKeyword = value => {
+		setFilters({ keyword: value })
+		// this.setState({
+		// 	filters: {
+		// 		keyword: value
+		// 	}
+		// })
 	}
-	renderSelectDevice = () => {
-		const { t, openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = this.props
-		const { filters } = this.state
+	const renderSelectDevice = () => {
+		const { t, openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -58,7 +60,7 @@ class CreateCollectionForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -80,7 +82,7 @@ class CreateCollectionForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -99,8 +101,9 @@ class CreateCollectionForm extends Component {
 			</List>
 		</Dialog>
 	}
-	renderSelectState = () => {
-		const { t, collection, handleChange } = this.props
+
+	const renderSelectState = () => {
+		const { t, collection, handleChange } = props
 		return <DSelect
 			margin={'normal'}
 			label={t('collections.fields.status')}
@@ -112,9 +115,9 @@ class CreateCollectionForm extends Component {
 			]}
 		/>
 	}
-	renderSelectOrg = () => {
-		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
-		const { filters } = this.state
+
+	const renderSelectOrg = () => {
+		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -141,7 +144,7 @@ class CreateCollectionForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -163,7 +166,7 @@ class CreateCollectionForm extends Component {
 									open={true}
 									focusOnMount
 									suggestions={orgs ? suggestionGen(orgs) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
+									handleFilterKeyword={handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
 						</ItemG>
@@ -182,89 +185,88 @@ class CreateCollectionForm extends Component {
 			</List>
 		</Dialog>
 	}
-	render() {
-		const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org, goToCollection } = this.props
-		return (
-			<GridContainer>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<Grid container>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'collectionName'}
-									label={t('collections.fields.name')}
-									onChange={handleChange('name')}
-									value={collection.name}
-									autoFocus
 
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'collectionDescription'}
-									label={t('collections.fields.description')}
-									onChange={handleChange('description')}
-									value={collection.description}
-									multiline
-									rows={3}
+	const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org, goToCollection } = props
+	return (
+		<GridContainer>
+			<Paper className={classes.paper}>
+				<form className={classes.form}>
+					<Grid container>
+						<ItemGrid xs={12}>
+							<TextF
+								id={'collectionName'}
+								label={t('collections.fields.name')}
+								onChange={handleChange('name')}
+								value={collection.name}
+								autoFocus
 
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectOrg()}
-								<TextF
-									id={'collectionOrg'}
-									label={t('collections.fields.org')}
-									value={org.name}
-									onClick={handleOpenOrg}
-									onChange={() => { }}
-									InputProps={{
-										onChange: handleOpenOrg,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectDevice()}
-								<TextF
-									id={'collectionDevice'}
-									label={t('collections.fields.activeDevice')}
-									helperText={t('collections.helper.availableDevicesForOrg')}
-									value={device.name}
-									onClick={handleOpenDevice}
-									onChange={() => { }}
-									InputProps={{
-										onChange: handleOpenDevice,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<TextF
+								id={'collectionDescription'}
+								label={t('collections.fields.description')}
+								onChange={handleChange('description')}
+								value={collection.description}
+								multiline
+								rows={3}
 
-							<ItemGrid xs={12}>
-								{this.renderSelectState()}
-							</ItemGrid>
-							<ItemGrid container /* style={{ margin: 16 }} */>
-								<div className={classes.wrapper}>
-									<Button
-										variant='outlined'
-										onClick={goToCollection}
-										className={classes.redButton}
-									>
-										{t('actions.cancel')}
-									</Button>
-								</div>
-								<div className={classes.wrapper}>
-									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-										{t('actions.save')}
-									</Button>
-								</div>
-							</ItemGrid>
-						</Grid>
-					</form>
-				</Paper>
-			</GridContainer>
-		)
-	}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{renderSelectOrg()}
+							<TextF
+								id={'collectionOrg'}
+								label={t('collections.fields.org')}
+								value={org.name}
+								onClick={handleOpenOrg}
+								onChange={() => { }}
+								InputProps={{
+									onChange: handleOpenOrg,
+									readOnly: true
+								}}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{renderSelectDevice()}
+							<TextF
+								id={'collectionDevice'}
+								label={t('collections.fields.activeDevice')}
+								helperText={t('collections.helper.availableDevicesForOrg')}
+								value={device.name}
+								onClick={handleOpenDevice}
+								onChange={() => { }}
+								InputProps={{
+									onChange: handleOpenDevice,
+									readOnly: true
+								}}
+							/>
+						</ItemGrid>
+
+						<ItemGrid xs={12}>
+							{renderSelectState()}
+						</ItemGrid>
+						<ItemGrid container /* style={{ margin: 16 }} */>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
+									onClick={goToCollection}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
+							<div className={classes.wrapper}>
+								<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+									{t('actions.save')}
+								</Button>
+							</div>
+						</ItemGrid>
+					</Grid>
+				</form>
+			</Paper>
+		</GridContainer>
+	)
 }
 
 CreateCollectionForm.propTypes = {

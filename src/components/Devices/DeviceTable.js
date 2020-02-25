@@ -1,78 +1,97 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core';
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+// import PropTypes from 'prop-types';
+import React, { Fragment, useState } from 'react';
+// import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
 import DeviceHover from 'components/Hover/DeviceHover';
+import { useLocalization } from 'hooks';
 
-class DeviceTable extends React.Component {
-	constructor(props) {
-		super(props);
+/**
+ * Unused
+ */
 
-		this.state = {
-			page: 0,
-			rowHover: null
-		};
+const DeviceTable = props => {
+	const t = useLocalization()
+	const classes = devicetableStyles()
+
+	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
+	// const accessLevel = useSelector(state => state.settings.user.privileges)
+	const hoverTime = useSelector(state => state.settings.hoverTime)
+
+	const [page, setPage] = useState(0)
+	const [rowHover, setRowHover] = useState(null)
+	const [hoverDevice, setHoverDevice] = useState(null)
+	// constructor(props) {
+	// 	super(props);
+
+	// 	this.state = {
+	// 		page: 0,
+	// 		rowHover: null
+	// 	};
+	// }
+
+	let timer = null
+
+	const handleRequestSort = (event, property) => {
+		props.handleRequestSort(event, property)
 	}
 
-	timer = null
-
-	handleRequestSort = (event, property) => {
-		this.props.handleRequestSort(event, property)
-	}
-
-	handleChangePage = (event, page) => {
-		this.setState({ page });
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage)
+		// this.setState({ page });
 	};
 
-	isSelected = id => this.props.selected.indexOf(id) !== -1;
+	const isSelectedFunc = id => props.selected.indexOf(id) !== -1;
 
-	setHover = (e, n) => {
+	const setHover = (e, n) => {
 		// e.persist()
-		const { hoverTime } = this.props
-		const { rowHover } = this.state
 		let target = e.target
 		if (hoverTime > 0)
-			this.timer = setTimeout(() => {
+			timer = setTimeout(() => {
 				if (rowHover !== null) {
 					if (rowHover.id !== n.id) {
-						this.setState({
-							rowHover: null
-						})
+						setRowHover(null)
+						// this.setState({
+						// 	rowHover: null
+						// })
 						setTimeout(() => {
-							this.setState({ rowHover: target, hoverDevice: n })
+							setHoverDevice(n)
+							setRowHover(target)
+							// this.setState({ rowHover: target, hoverDevice: n })
 						}, 200);
 					}
 				}
 				else {
-					this.setState({ rowHover: target, hoverDevice: n })
+					setHoverDevice(n)
+					setRowHover(target)
+					// this.setState({ rowHover: target, hoverDevice: n })
 				}
 			}, hoverTime);
 	}
-	unsetTimeout = () => {
-		clearTimeout(this.timer)
+	const unsetTimeout = () => {
+		clearTimeout(timer)
 	}
-	unsetHover = () => {
+	const unsetHover = () => {
 		// console.trace()
-		this.setState({
-			rowHover: null
-		})
+		setRowHover(null)
+		// this.setState({
+		// 	rowHover: null
+		// })
 	}
-	renderHover = () => {
-		return <DeviceHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} device={this.state.hoverDevice} />
+	const renderHover = () => {
+		return <DeviceHover anchorEl={rowHover} handleClose={unsetHover} device={hoverDevice} />
 	}
 
-	renderIcon = (status) => {
-		const { classes, t } = this.props
+	const renderIcon = (status) => {
 		switch (status) {
 			case 1:
 				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
@@ -92,118 +111,107 @@ class DeviceTable extends React.Component {
 				break;
 		}
 	}
-	render() {
-		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick, rowsPerPage } = this.props;
-		const { page } = this.state;
-		let emptyRows
-		if (data)
-			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		return (
-			<Fragment>
-				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
-					{this.renderHover()}
-					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead
-							numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={this.handleRequestSort}
-							rowCount={data ? data.length : 0}
-							columnData={this.props.tableHead}
-							classes={classes}
-							customColumn={[
-								{
-									id: 'liveStatus', label: <ItemG container justify={'center'}>
-										<SignalWifi2Bar />
-									</ItemG>, checkbox: true
-								},
-								{
-									id: 'id',
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										{t('collections.fields.device')}
-									</Typography>
-								}
-							]}
-						/>
-						<TableBody>
-							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-								const isSelected = this.isSelected(n.id);
-								return (
-									<TableRow
-										hover
-										onClick={handleClick(n.id)}
-										role='checkbox'
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										style={{ cursor: 'pointer' }}
-									>
-										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox content={this.renderIcon(n.liveStatus)} />
-											<TC content={
-												<ItemG container alignItems={'center'}>
-													<ItemG xs={12}>
-														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.name ? n.name : n.id}
-														</Info>
-													</ItemG>
-													<ItemG xs={12}>
-														<Caption noWrap className={classes.noMargin}>
-															{`${n.name ? n.id : t('devices.noName')} - ${n.org ? n.org.name : ''}`}
-														</Caption>
-													</ItemG>
-												</ItemG>} />
-										</Hidden>
-										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC
-												onMouseEnter={e => { this.setHover(e, n) }}
-												onMouseLeave={this.unsetTimeout}
-												label={n.name ? n.name : t('devices.noName')} />
-											<TC label={n.id} />
-											<TC content={this.renderIcon(n.liveStatus)} />
-											<TC label={n.address ? n.address : t('devices.noAddress')} />
-											<TC label={n.org ? n.org.name : t('no.org')} />
-											<TC label={n.dataCollection ? t('devices.fields.notfree') : t('devices.fields.free')} />
-										</Hidden>
-									</TableRow>
-								);
-							}) : null}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 }}>
-									<TableCell colSpan={8} />
+
+	const { selected, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = props;
+	let emptyRows
+	if (data)
+		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+	return (
+		<Fragment>
+			<div className={classes.tableWrapper} onMouseLeave={unsetHover}>
+				{renderHover()}
+				<Table className={classes.table} aria-labelledby='tableTitle'>
+					<EnhancedTableHead
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={data ? data.length : 0}
+						columnData={props.tableHead}
+						classes={classes}
+						customColumn={[
+							{
+								id: 'liveStatus', label: <ItemG container justify={'center'}>
+									<SignalWifi2Bar />
+								</ItemG>, checkbox: true
+							},
+							{
+								id: 'id',
+								label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+									{t('collections.fields.device')}
+								</Typography>
+							}
+						]}
+					/>
+					<TableBody>
+						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							const isSelected = isSelectedFunc(n.id);
+							return (
+								<TableRow
+									hover
+									onClick={handleClick(n.id)}
+									role='checkbox'
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+									style={{ cursor: 'pointer' }}
+								>
+									<Hidden lgUp>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={renderIcon(n.liveStatus)} />
+										<TC content={
+											<ItemG container alignItems={'center'}>
+												<ItemG xs={12}>
+													<Info noWrap paragraphCell={classes.noMargin}>
+														{n.name ? n.name : n.id}
+													</Info>
+												</ItemG>
+												<ItemG xs={12}>
+													<Caption noWrap className={classes.noMargin}>
+														{`${n.name ? n.id : t('devices.noName')} - ${n.org ? n.org.name : ''}`}
+													</Caption>
+												</ItemG>
+											</ItemG>} />
+									</Hidden>
+									<Hidden mdDown>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC
+											onMouseEnter={e => { setHover(e, n) }}
+											onMouseLeave={unsetTimeout}
+											label={n.name ? n.name : t('devices.noName')} />
+										<TC label={n.id} />
+										<TC content={renderIcon(n.liveStatus)} />
+										<TC label={n.address ? n.address : t('devices.noAddress')} />
+										<TC label={n.org ? n.org.name : t('no.org')} />
+										<TC label={n.dataCollection ? t('devices.fields.notfree') : t('devices.fields.free')} />
+									</Hidden>
 								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</div>
-				<TP
-					count={data ? data.length : 0}
-					classes={classes}
-					// rowsPerPage={rowsPerPage}
-					page={page}
-					t={t}
-					handleChangePage={this.handleChangePage}
-				/>
-			</Fragment>
-		);
-	}
+							);
+						}) : null}
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 49 }}>
+								<TableCell colSpan={8} />
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+			</div>
+			<TP
+				count={data ? data.length : 0}
+				classes={classes}
+				// rowsPerPage={rowsPerPage}
+				page={page}
+				t={t}
+				handleChangePage={handleChangePage}
+			/>
+		</Fragment>
+	);
 }
 
 DeviceTable.propTypes = {
-	classes: PropTypes.object.isRequired,
+	// classes: PropTypes.object.isRequired,
 };
-const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-	accessLevel: state.settings.user.privileges,
-	hoverTime: state.settings.hoverTime
-})
 
-const mapDispatchToProps = {
-
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(DeviceTable)));
+export default DeviceTable

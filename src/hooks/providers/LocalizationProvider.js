@@ -56,6 +56,7 @@ const LocalizationProvider = ({ children }) => {
 		} */ else {
 			// console.trace()
 			console.info('Missing key: "' + key + '"')
+			console.trace()
 			result = key
 		}
 		if (typeof phrase === 'string') {

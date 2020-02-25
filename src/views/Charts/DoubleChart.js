@@ -1,8 +1,8 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback } from 'react'
 import {
 	Grid, IconButton, Menu, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
 	Timeline, MoreVert,
 	DonutLargeRounded,
@@ -17,15 +17,15 @@ import {
 	PieChart,
 	DateFilterMenu,
 	T,
-} from 'components';
-import classNames from 'classnames';
+} from 'components'
+import classNames from 'classnames'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem';
-import { getSensorDataClean } from 'variables/dataSensors';
-import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel';
-import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks';
-import multiSourceChartStyles from 'assets/jss/components/dashboards/multiSourceChartStyles'
+import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem'
+import { getSensorDataClean } from 'variables/dataSensors'
+import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
+import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
+import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
 const DoubleChart = (props) => {
 
@@ -33,8 +33,8 @@ const DoubleChart = (props) => {
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const classes = multiSourceChartStyles()
-	//Props
 	const { gId, create, title, color, dId, hoverID, setHoverID, device, single, } = props
+
 
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
@@ -52,9 +52,8 @@ const DoubleChart = (props) => {
 	const [roundDataSets, setRoundDataSets] = useState(null)
 	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
-	//Consts
 
-	// const displayFormat = 'DD MMMM YYYY HH:mm'
+	//Consts
 
 	const options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
@@ -76,6 +75,8 @@ const DoubleChart = (props) => {
 		{ id: 3, icon: <ShowChart />, label: t('charts.type.line') }
 	]
 
+	//useEffect
+
 	useEffect(() => {
 		if (period && loading) {
 			const gData = async () => await getData()
@@ -93,24 +94,28 @@ const DoubleChart = (props) => {
 			case 2:
 				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 			default:
-				break;
+				break
 		}
-	}, [color, g.id, g.period.from, g.period.to, title])
+	}, [color, g, title])
 
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceId) {
 			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+
 			let newState = setData(data, period.timeType)
-			setLineDataSets(newState.lineDataSets)
-			setRoundDataSets(newState.roundDataSets)
-			setBarDataSets(newState.barDataSets)
-			setLoading(false)
+			if (newState) {
+				setLineDataSets(newState.lineDataSets)
+				setRoundDataSets(newState.roundDataSets)
+				setBarDataSets(newState.barDataSets)
+				setLoading(false)
+			}
 
 		}
 		else {
 			setLoading(false)
 		}
 	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceId, g.dataSource.deviceType, g.dataSource.type, period.from, period.timeType, period.to, setData])
+
 	useEffect(() => {
 		setLoading(true)
 		const gData = async () => await getData()
@@ -148,16 +153,16 @@ const DoubleChart = (props) => {
 						setZoomDate([])
 					}
 					handleSetDate(6, endDate, startDate, 1, period.id)
-					break;
+					break
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					setResetZoom(false)
 					setZoomDate([])
 					handleSetDate(6, endDate, startDate, 2, period.id)
-					break;
+					break
 				default:
-					break;
+					break
 			}
 		}
 		catch (e) {
@@ -193,9 +198,9 @@ const DoubleChart = (props) => {
 							to: period.to
 						}])
 						handleSetDate(6, endDate, startDate, 1, period.id)
-						break;
+						break
 					default:
-						break;
+						break
 				}
 			}
 			catch (error) {
@@ -204,7 +209,7 @@ const DoubleChart = (props) => {
 	}
 	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	const handleNextPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -223,7 +228,6 @@ const DoubleChart = (props) => {
 				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
 				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
 				to = futureTester(to, 'day') ? moment() : to
-
 			}
 			if ([3, 4, 5].indexOf(period.menuId) !== -1) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
@@ -269,7 +273,7 @@ const DoubleChart = (props) => {
 		handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	const handlePreviousPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -347,6 +351,7 @@ const DoubleChart = (props) => {
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
+						<div>
 						<DateFilterMenu
 							button
 							buttonProps={{
@@ -378,6 +383,7 @@ const DoubleChart = (props) => {
 							customSetDate={handleSetDate}
 							period={period}
 							t={t} />
+						</div>
 					</Tooltip>
 				</ItemG>
 				<ItemG>
@@ -451,7 +457,6 @@ const DoubleChart = (props) => {
 							t={t}
 						/> : renderNoData()
 				case 3:
-
 					return lineDataSets ?
 						<MultiLineChart
 							chartYAxis={chartType}
@@ -570,7 +575,7 @@ const DoubleChart = (props) => {
 			case 3:
 				return <ShowChart />
 			default:
-				break;
+				break
 		}
 	}
 	const renderSmallTitle = () => {
@@ -611,7 +616,7 @@ const DoubleChart = (props) => {
 					}
 				</Grid>}
 		/>
-	);
+	)
 }
 
 

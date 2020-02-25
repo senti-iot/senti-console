@@ -1,5 +1,6 @@
+import { makeStyles } from '@material-ui/core'
 
-const countermodalStyles = theme => ({
+const countermodalStyles = makeStyles(theme => ({
 	modalWrapper: {
 		top: "50%",
 		left: "50%",
@@ -28,5 +29,5 @@ const countermodalStyles = theme => ({
 	iconButton: {
 		marginRight: theme.spacing(1)
 	}
-});
+}));
 export default countermodalStyles

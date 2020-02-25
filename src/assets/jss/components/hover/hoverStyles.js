@@ -1,7 +1,8 @@
+import { makeStyles } from '@material-ui/core'
 import { hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import { red, green, yellow } from '@material-ui/core/colors'
 
-const hoverStyles = theme => ({
+const hoverStyles = makeStyles(theme => ({
 	blocked: {
 		color: red[500],
 		marginRight: 8
@@ -76,6 +77,6 @@ const hoverStyles = theme => ({
 			background: 'initial',
 		}
 	},
-})
+}))
 
 export default hoverStyles

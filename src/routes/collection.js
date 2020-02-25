@@ -1,19 +1,20 @@
 
 import React from 'react';
-import {  Route, Switch, withRouter } from 'react-router-dom';
-import withLocalization from 'components/Localization/T';
-import withSnackbar from 'components/Localization/S';
-import { compose } from 'recompose';
+import { Route, Switch } from 'react-router-dom';
 import Collection from 'views/Collections/Collection';
 import EditCollection from 'views/Collections/EditCollection';
 
 const collection = (props) => {
 	return (
 		<Switch>
-			<Route path={`${props.match.url}/edit`} render={() => <EditCollection {...props} />}/>
-			<Route path={`${props.match.url}`} render={() => <Collection {...props} />} /> 
+			<Route path={`${props.path}/edit`}>
+				<EditCollection {...props} />
+			</Route>
+			<Route path={`${props.path}`}>
+				<Collection {...props} />
+			</Route>
 		</Switch>
 	)
 }
 
-export default compose(withRouter, withLocalization(), withSnackbar())(collection)
+export default collection

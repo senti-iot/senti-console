@@ -57,6 +57,7 @@ import DateFilterMenu from './CustomInput/DateFilterMenu'
 import AddressInput from './CustomInput/AddressInput'
 import DatePicker from './CustomInput/DatePicker'
 import DateTimePicker from './CustomInput/DateTimePicker'
+import Link from './Link/Link'
 
 // ##############################
 // // // Footer
@@ -111,6 +112,7 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	Link,
 	ITB,
 	DeleteDialog,
 	SlideT,

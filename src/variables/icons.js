@@ -11,6 +11,7 @@ import Language from '@material-ui/icons/Language'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import InsertChart from '@material-ui/icons/InsertChart'
 import Wifi from '@material-ui/icons/Wifi'
+import MultiLineChart from '@material-ui/icons/MultilineChart'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -114,7 +115,12 @@ import GaugeIcon from 'assets/icons/Gauge'
 import Https from '@material-ui/icons/Https'
 import Palette from '@material-ui/icons/Palette'
 import ImportExport from '@material-ui/icons/ImportExport'
+import Looks from '@material-ui/icons/Looks'
+import TableChart from "@material-ui/icons/TableChart";
 export {
+	TableChart,
+	Looks,
+	MultiLineChart,
 	ImportExport,
 	Share,
 	StorageIcon,

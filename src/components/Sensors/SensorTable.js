@@ -1,88 +1,98 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography,
 } from '@material-ui/core'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { Fragment, useState } from 'react'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption, ItemG } from 'components'
 import { Block, CheckCircle, CellWifi } from 'variables/icons'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
 import SensorHover from 'components/Hover/SensorHover';
 import { dateFormatter } from 'variables/functions';
+import { useLocalization } from 'hooks'
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 
-class SensorTable extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			page: 0,
-		}
+const SensorTable = props => {
+	//Hooks
+	const t = useLocalization()
+	const classes = sensorsStyles()
+	//Redux
+	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
+	const hoverTime = useSelector(state => state.settings.hoverTime)
+
+	//State
+	const [page, setPage] = useState(0)
+	const [rowHover, setRowHover] = useState(null) // added
+	const [hoverSensor, setHoverSensor] = useState(null) // added
+	//Const
+	const { handleClick, selected, order, data, orderBy, handleCheckboxClick } = props
+
+	let timer = null
+	//handlers
+
+	const handleRequestSort = (event, property) => {
+		props.handleRequestSort(event, property)
 	}
 
-	timer = null
-
-	handleRequestSort = (event, property) => {
-		this.props.handleRequestSort(event, property)
+	const handleChangePage = (event, newpage) => {
+		setPage(newpage)
+		// this.setState({ page });
 	}
 
-	handleChangePage = (event, page) => {
-		this.setState({ page });
-	}
+	const isSelectedFunc = id => props.selected.indexOf(id) !== -1
 
-	isSelected = id => this.props.selected.indexOf(id) !== -1
-
-	setHover = (e, n) => {
+	const setHover = (e, n) => {
 		e.persist()
-		const { hoverTime } = this.props
-		const { rowHover } = this.state
 		if (hoverTime > 0)
-			this.timer = setTimeout(() => {
+			timer = setTimeout(() => {
 				if (rowHover) {
-					this.setState({
-						rowHover: null
-					})
+					setRowHover(null)
+					// this.setState({
+					// 	rowHover: null
+					// })
 					setTimeout(() => {
-						this.setState({ rowHover: e.target, hoverSensor: n })
+						setHoverSensor(n)
+						setRowHover(e.target)
+						// this.setState({ rowHover: e.target, hoverSensor: n })
 					}, 200);
 				}
 				else {
-					this.setState({ rowHover: e.target, hoverSensor: n })
+					setHoverSensor(n)
+					setRowHover(e.target)
+					// this.setState({ rowHover: e.target, hoverSensor: n })
 				}
 			}, hoverTime);
 	}
-	unsetTimeout = () => {
-		clearTimeout(this.timer)
+	const unsetTimeout = () => {
+		clearTimeout(timer)
 	}
-	unsetHover = () => {
-		this.setState({
-			rowHover: null
-		})
+	const unsetHover = () => {
+		setRowHover(null)
+		// this.setState({
+		// 	rowHover: null
+		// })
 	}
-	renderHover = () => {
-		return <SensorHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} device={this.state.hoverSensor} />
+	const renderHover = () => {
+		return <SensorHover anchorEl={rowHover} handleClose={unsetHover} device={hoverSensor} />
 	}
-	renderProtocol = (id) => {
-		const { t } = this.props
-		switch (id) {
-			case 0:
-				return t('registries.fields.protocols.none')
-			case 1:
-				return t('registries.fields.protocols.mqtt')
-			case 2:
-				return t('registries.fields.protocols.http')
-			case 3:
-				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
-			default:
-				break;
-		}
-	}
-	renderSmallCommunication = (val) => {
-		const { classes } = this.props
+	// const renderProtocol = (id) => {
+	// 	switch (id) {
+	// 		case 0:
+	// 			return t('registries.fields.protocols.none')
+	// 		case 1:
+	// 			return t('registries.fields.protocols.mqtt')
+	// 		case 2:
+	// 			return t('registries.fields.protocols.http')
+	// 		case 3:
+	// 			return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+	const renderSmallCommunication = (val) => {
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /></ItemG>
@@ -92,8 +102,7 @@ class SensorTable extends React.Component {
 				break;
 		}
 	}
-	renderCommunication = (val) => {
-		const { t, classes } = this.props
+	const renderCommunication = (val) => {
 		switch (val) {
 			case 0:
 				return <ItemG container><Block className={classes.blocked} /> {t('sensors.fields.communications.blocked')}</ItemG>
@@ -103,125 +112,106 @@ class SensorTable extends React.Component {
 				break;
 		}
 	}
-	handleSelectAllClick = (event, checked) => {
-		const { data } = this.props
+	const handleSelectAllClick = (event, checked) => {
 		let selected = data.map(d => d.id)
-		this.props.handleSelectAllClick(selected, checked)
+		props.handleSelectAllClick(selected, checked)
 	}
-	render() {
-		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
-		const { page } = this.state
-		let emptyRows;
-		if (data)
-			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+	let emptyRows;
+	if (data)
+		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
-		return (
-			<Fragment>
-				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
-					{this.renderHover()}
-					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<TableHeader
-							numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							onSelectAllClick={this.handleSelectAllClick}
-							onRequestSort={this.handleRequestSort}
-							rowCount={data ? data.length : 0}
-							columnData={this.props.tableHead}
-							t={t}
-							classes={classes}
-							customColumn={[
-								{
-									id: 'communication',
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										<CellWifi />
-									</Typography>
-								},
-								{
-									id: 'name',
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										{t('devices.pageTitle')}
-									</Typography>
-								}
-							]}
-						/>
-						<TableBody>
-							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-								const isSelected = this.isSelected(n.id);
-								return (
-									<TableRow
-										hover
-										onClick={handleClick(n.id)}
-										role='checkbox'
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										style={{ cursor: 'pointer' }}
-									>
-										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox content={this.renderSmallCommunication(n.communication)} />
-											<TC content={
-												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.name}
-														</Info>
-													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-														<Caption noWrap className={classes.noMargin}>
-															{`${n.reg_name} - ${dateFormatter(n.created)}`}
-														</Caption>
-													</ItemGrid>
+	return (
+		<Fragment>
+			<div className={classes.tableWrapper} onMouseLeave={unsetHover}>
+				{renderHover()}
+				<Table className={classes.table} aria-labelledby='tableTitle'>
+					<TableHeader
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={data ? data.length : 0}
+						columnData={props.tableHead}
+						t={t}
+						customColumn={[
+							{
+								id: 'communication',
+								label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+									<CellWifi />
+								</Typography>
+							},
+							{
+								id: 'name',
+								label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+									{t('devices.pageTitle')}
+								</Typography>
+							}
+						]}
+					/>
+					<TableBody>
+						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							const isSelected = isSelectedFunc(n.id);
+							return (
+								<TableRow
+									hover
+									onClick={handleClick(n.id)}
+									role='checkbox'
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+									style={{ cursor: 'pointer' }}
+								>
+									<Hidden lgUp>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={renderSmallCommunication(n.communication)} />
+										<TC content={
+											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													<Info noWrap paragraphCell={classes.noMargin}>
+														{n.name}
+													</Info>
 												</ItemGrid>
-											} />
-										</Hidden>
+												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													<Caption noWrap className={classes.noMargin}>
+														{`${n.reg_name} - ${dateFormatter(n.created)}`}
+													</Caption>
+												</ItemGrid>
+											</ItemGrid>
+										} />
+									</Hidden>
 
-										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox label={n.id} />
-											<TC
-												onMouseEnter={e => { this.setHover(e, n) }}
-												onMouseLeave={this.unsetTimeout}
-												FirstC label={n.name} />
-											<TC label={n.uuid} />
-											<TC content={this.renderCommunication(n.communication)} />
-											<TC label={n.reg_name} />
-										</Hidden>
-									</TableRow>
-								)
-							}) : null}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 }}>
-									<TableCell colSpan={8} />
+									<Hidden mdDown>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										{/* <TC checkbox label={n.id} /> */}
+										<TC
+											onMouseEnter={e => { setHover(e, n) }}
+											onMouseLeave={unsetTimeout}
+											FirstC label={n.name} />
+										<TC label={n.uuid} />
+										<TC content={renderCommunication(n.communication)} />
+										<TC label={n.reg_name} />
+									</Hidden>
 								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</div>
-				<TP
-					count={data ? data.length : 0}
-					classes={classes}
-					page={page}
-					t={t}
-					handleChangePage={this.handleChangePage}
-				/>
-			</Fragment>
-		)
-	}
-}
-const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
-	hoverTime: state.settings.hoverTime
-})
-
-const mapDispatchToProps = {
-
+							)
+						}) : null}
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 49 }}>
+								<TableCell colSpan={8} />
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+			</div>
+			<TP
+				count={data ? data.length : 0}
+				page={page}
+				t={t}
+				handleChangePage={handleChangePage}
+			/>
+		</Fragment>
+	)
 }
 
-SensorTable.propTypes = {
-	classes: PropTypes.object.isRequired,
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(SensorTable)))
+export default SensorTable

@@ -1,18 +1,17 @@
 import React, { Fragment, useState } from 'react'
-import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
-import UserTable from 'components/User/UserTable';
-import GridContainer from 'components/Grid/GridContainer';
-import { deleteUser } from 'variables/dataUsers';
-import { Add, Delete, Edit, Star, StarBorder, Mail, CloudDownload } from 'variables/icons';
-import { handleRequestSort, copyToClipboard } from 'variables/functions';
-import TableToolbar from 'components/Table/TableToolbar';
-import { Info } from 'components';
-import { customFilterItems } from 'variables/Filters';
-import ExportUsers from 'components/Exports/ExportUsers';
-import { useLocalization, useHistory, useEffect, useSnackbar, useSelector, useDispatch } from 'hooks';
-import usersStyles from 'assets/jss/components/users/usersStyles';
-import { isFav, addToFav, removeFromFav } from 'redux/favorites';
-import { finishedSaving } from 'redux/dsSystem';
+import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core'
+import UserTable from 'components/User/UserTable'
+import GridContainer from 'components/Grid/GridContainer'
+import { deleteUser } from 'variables/dataUsers'
+import { Add, Delete, Edit, Star, StarBorder, Mail, CloudDownload, People, Business } from 'variables/icons'
+import { handleRequestSort, copyToClipboard } from 'variables/functions'
+import TableToolbar from 'components/Table/TableToolbar'
+import { Info } from 'components'
+import { customFilterItems } from 'variables/Filters'
+import ExportUsers from 'components/Exports/ExportUsers'
+import { useLocalization, useHistory, useEffect, useSnackbar, useSelector, useDispatch } from 'hooks'
+import usersStyles from 'assets/jss/components/users/usersStyles'
+import { isFav, addToFav, removeFromFav } from 'redux/favorites'
 
 const Users = props => {
 	//Hooks
@@ -23,7 +22,7 @@ const Users = props => {
 	const dispatch = useDispatch()
 	//Redux
 	const filters = useSelector(state => state.appState.filters.users)
-	const saved = useSelector(state => state.favorites.saved)
+	// const saved = useSelector(state => state.favorites.saved)
 
 	//State
 	const [selected, setSelected] = useState([])
@@ -33,7 +32,7 @@ const Users = props => {
 	const [openDownload, setOpenDownload] = useState(false)
 
 	//Const
-	const { users, setHeader, setBC, reload } = props
+	const { users, setHeader, setBC, reload, setTabs } = props
 
 	const dUserGroup = [
 		{ value: 136550100000143, label: t("users.groups.superUser") },
@@ -83,11 +82,14 @@ const Users = props => {
 				s('snackbars.exported')
 				break
 			default:
-				break;
+				break
 		}
 	}
 
 	const options = () => {
+		/**
+		 * TODO
+		 */
 		let user = users[users.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
@@ -120,13 +122,22 @@ const Users = props => {
 	]
 
 	//Effects
-
 	useEffect(() => {
 
-		setHeader('users.pageTitle', false, '', 'users')
+		const tabs = [
+			{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },
+			{ id: 1, title: t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+			{ id: 2, title: t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+		]
 		setBC('users')
-		//eslint-disable-next-line
-	}, [])
+		setHeader('users.pageTitle', false, '', 'users')
+		setTabs({
+			id: 'management',
+			tabs: tabs,
+			route: 0
+		})
+
+	}, [setHeader, setTabs, setBC, t])
 
 	//Handlers
 
@@ -143,8 +154,8 @@ const Users = props => {
 		let fUsers = users.filter((el) => {
 			return selected.some((f) => {
 				return f === el.id
-			});
-		});
+			})
+		})
 		let emails = fUsers.map(u => u.email).join(';')
 		copyToClipboard(emails)
 		s('snackbars.emailsCopied')
@@ -152,10 +163,10 @@ const Users = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -164,14 +175,14 @@ const Users = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
 			setSelected(handleFilterItems(users).map(n => n.uuid))
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -186,7 +197,7 @@ const Users = props => {
 			}
 			await deleteUser(u)
 		})
-		await reload()
+		await reload(true)
 		snackBarMessages(1)
 		setSelected([])
 		setOpenDelete(false)
@@ -222,7 +233,6 @@ const Users = props => {
 
 
 	const handleAddNewUser = () => { history.push('/management/users/new') }
-
 
 	//Renders
 	const renderConfirmDelete = () => <Dialog
@@ -261,7 +271,7 @@ const Users = props => {
 		data={selected.length > 0 ? users.filter((el) => {
 			return selected.some((f) => {
 				return f === el.id
-			});
+			})
 		}) : users}
 		open={openDownload}
 		handleClose={handleCloseDownloadModal}

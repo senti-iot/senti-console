@@ -100,7 +100,6 @@ const override = (color, dark) => ({
 				padding: '12px 14px'
 			},
 		}
-
 	}
 })
 export default override

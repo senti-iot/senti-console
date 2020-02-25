@@ -1,101 +1,97 @@
-import React, { Component, Fragment } from 'react'
-import { Dialog, DialogTitle, IconButton, DialogContent, DialogActions, withStyles, Collapse, Button, Divider } from '@material-ui/core';
+import React, { Fragment, useState } from 'react'
+import { Dialog, DialogTitle, IconButton, DialogContent, DialogActions, Collapse, Button, Divider } from '@material-ui/core';
 import { ItemG, TextF, DSelect, Warning, Info } from 'components';
 import { Close, Save, ContentCopy } from 'variables/icons';
-import projectStyles from 'assets/jss/views/projects';
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
 import { copyToClipboard } from 'variables/functions';
-import withSnackbar from 'components/Localization/S';
 import { generateToken } from 'variables/dataRegistry'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getTokens } from 'redux/data';
 import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog';
 import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
+import { useLocalization, useSnackbar } from 'hooks'
+import tokensStyles from 'assets/jss/components/api/tokensStyles';
 
-class CreateToken extends Component {
-	constructor(props) {
-		super(props)
+// @Andrei
+const CreateToken = props => {
 
-		this.state = {
-			token: {
-				name: "",
-				type: "",
-				typeId: null
-			},
-			sensor: {
-				name: "",
-				id: ""
-			},
-			registry: {
-				name: "",
-				id: ""
-			},
-			deviceType: {
-				name: "",
-				id: ""
-			},
-			generatedToken: "",
-			openSensor: false,
-			openRegistry: false,
-			openDeviceType: false,
-			openConfimClose: false,
-			confirmClose: ""
-		}
+	//Hooks
+	const classes = tokensStyles()
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const dispatch = useDispatch()
+
+	//Redux
+	const user = useSelector(state => state.settings.user)
+
+	//State
+	const [token, setToken] = useState({
+		name: "",
+		type: "",
+		typeId: null
+	})
+	const [sensor, setSensor] = useState({
+		name: "",
+		id: ""
+	})
+	const [registry, setRegistry] = useState({
+		name: "",
+		id: ""
+	})
+	const [deviceType, setDeviceType] = useState({
+		name: "",
+		id: ""
+	})
+	const [generatedToken, setGeneratedToken] = useState('')
+	const [openSensor, setOpenSensor] = useState(false)
+	const [openRegistry, setOpenRegistry] = useState(false)
+	const [openDeviceType, setOpenDeviceType] = useState(false)
+	const [openConfimClose, setOpenConfirmClose] = useState(false)
+	const [confirmClose, setConfirmClose] = useState('')
+
+	//Const
+	let { openToken } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+	const handleChange = field => e => {
+		setToken({ ...token, [field]: e.target.value })
+
 	}
-	handleChange = field => e => {
-		this.setState({
-			token: {
-				...this.state.token,
-				[field]: e.target.value
-			}
-		})
-	}
-	handleGenerateToken = async () => {
+	const handleGenerateToken = async () => {
 		let newToken = {}
-		newToken = this.state.token
-		newToken.userId = this.props.user.id
-		let token = await generateToken(newToken)
-		this.setState({
-			generatedToken: token
-		})
+		newToken = token
+		newToken.userId = user.id
+		let tokenn = await generateToken(newToken)
+		setGeneratedToken(tokenn)
 	}
-	handleClose = () => {
-		this.setState({
-			token: {
-				name: "",
-				type: "",
-				typeId: null
-			},
-			sensor: {
-				name: "",
-				id: ""
-			},
-			registry: {
-				name: "",
-				id: ""
-			},
-			deviceType: {
-				name: "",
-				id: ""
-			},
-			generatedToken: "",
-			openSensor: false,
-			openRegistry: false,
-			openDeviceType: false,
-			openConfimClose: false,
-			confirmClose: ""
-
-		})
-
-		this.props.getTokens(this.props.user.id)
-		this.props.handleClose()
-
+	const handleClose = () => {
+		setToken({ name: '', type: '', typeId: null })
+		setSensor({ name: '', id: '' })
+		setRegistry({ name: '', id: '' })
+		setDeviceType({ name: '', id: '' })
+		setGeneratedToken('')
+		setOpenSensor(false)
+		setOpenRegistry(false)
+		setOpenDeviceType(false)
+		setOpenConfirmClose(false)
+		setConfirmClose('')
+		dispatch(getTokens(user.id))
+		props.handleClose()
 	}
-	handleCloseConfirmDialog = () => this.setState({ openConfimClose: false })
 
-	renderType = (type) => {
-		const { t } = this.props
-		const { sensor, openSensor, registry, openRegistry, deviceType, openDeviceType } = this.state
+	const handleConfirmClose = () => setOpenConfirmClose(true)
+
+	const handleOpenSensor = () => setOpenSensor(true)
+
+	const handleCloseConfirmDialog = () => setOpenConfirmClose(false)
+
+
+	const renderType = (type) => {
 		switch (type) {
 			case 0:
 				return <Fragment>
@@ -103,23 +99,17 @@ class CreateToken extends Component {
 						id={'token-sensor'}
 						label={t('tokens.fields.types.device')}
 						value={sensor.name}
-						onClick={this.handleOpenSensor}
+						onClick={handleOpenSensor}
 						readonly
 						fullWidth
 					/>
 					<AssignSensorDialog
-						t={t}
 						open={openSensor}
-						handleClose={() => this.setState({ openSensor: false })}
+						handleClose={() => setOpenSensor(false)}
 						callBack={sensor => {
-							this.setState({
-								openSensor: false,
-								token: {
-									...this.state.token,
-									typeId: sensor.id
-								},
-								sensor: sensor
-							});
+							setOpenSensor(false)
+							setToken({ ...token, typeId: sensor.id })
+							setSensor(sensor)
 						}}
 					/>
 				</Fragment>
@@ -129,50 +119,39 @@ class CreateToken extends Component {
 						id={'token-registry'}
 						label={t('tokens.fields.types.registry')}
 						value={registry.name}
-						onClick={() => this.setState({ openRegistry: true })}
+						onClick={() => setOpenRegistry(true)}
 						readonly
 						fullWidth
 					/>
 					<AssignRegistryDialog
 						t={t}
 						open={openRegistry}
-						handleClose={() => this.setState({ openRegistry: false })}
+						handleClose={() => setOpenRegistry(false)}
 						callBack={registry => {
-							this.setState({
-								openRegistry: false,
-								token: {
-									...this.state.token,
-									typeId: registry.id
-								},
-								registry: registry
-							});
+							setOpenRegistry(false)
+							setToken({ ...token, typeId: registry.id })
+							setRegistry(registry)
 						}}
 					/>
 				</Fragment>
-			// return t('tokens.fields.types.devicetype')
 			case 2:
 				return <Fragment>
 					<TextF
 						id={'token-dt'}
 						label={t('tokens.fields.types.devicetype')}
 						value={deviceType.name}
-						onClick={() => this.setState({ openDeviceType: true })}
+						onClick={() => setOpenDeviceType(true)}
 						readonly
 						fullWidth
 					/>
 					<AssignDeviceTypeDialog
 						t={t}
 						open={openDeviceType}
-						handleClose={() => this.setState({ openDeviceType: false })}
+						handleClose={() => setOpenDeviceType(false)}
 						callBack={deviceType => {
-							this.setState({
-								openDeviceType: false,
-								token: {
-									...this.state.token,
-									typeId: deviceType.id
-								},
-								deviceType: deviceType
-							});
+							setOpenDeviceType(false)
+							setToken({ ...token, typeId: deviceType.id })
+							setDeviceType(deviceType)
 						}}
 					/>
 				</Fragment>
@@ -181,13 +160,9 @@ class CreateToken extends Component {
 				break;
 		}
 	}
-	handleConfirmClose = () => this.setState({ openConfimClose: true })
 
-	handleOpenSensor = () => this.setState({ openSensor: true })
 
-	renderCloseDialog = () => {
-		const { classes, t } = this.props
-		const { confirmClose, generatedToken, openConfimClose } = this.state
+	const renderCloseDialog = () => {
 		return <Dialog
 			open={openConfimClose}
 			disableBackdropClick
@@ -195,7 +170,7 @@ class CreateToken extends Component {
 			<DialogTitle >
 				<ItemG container justify={'space-between'} alignItems={'center'}>
 					{t('dialogs.tokens.createToken.title')}
-					<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseConfirmDialog}>
+					<IconButton aria-label="Close" className={classes.closeButton} onClick={handleCloseConfirmDialog}>
 						<Close />
 					</IconButton>
 				</ItemG>
@@ -223,7 +198,7 @@ class CreateToken extends Component {
 								endAdornment:
 									<ItemG>
 										<IconButton onClick={() => {
-											this.props.s('snackbars.copied')
+											s('snackbars.copied')
 											copyToClipboard(`${generatedToken}`)
 										}
 										}>
@@ -239,7 +214,7 @@ class CreateToken extends Component {
 							id={'token-confirmClose'}
 							fullWidth
 							value={confirmClose}
-							onChange={e => this.setState({ confirmClose: e.target.value })}
+							onChange={e => setConfirmClose(e.target.value)}
 						/>
 					</ItemG>
 				</ItemG>
@@ -248,8 +223,8 @@ class CreateToken extends Component {
 				<ItemG container justify={'center'}>
 					<Button
 						disabled={!(confirmClose === generatedToken)}
-						onClick={this.handleClose}
-						variant={'outlined'} className={classes.redButton}>
+						onClick={handleClose}
+						variant={'outlined'} className={classes.closeButton}>
 						<Close /> {t('actions.close')}
 					</Button>
 				</ItemG>
@@ -257,115 +232,100 @@ class CreateToken extends Component {
 		</Dialog>
 	}
 
-	render() {
-		// let { openToken } = this.props
-		let { token, generatedToken } = this.state
-		let { t, classes, openToken } = this.props
-		return <Dialog
-			open={openToken}
-			disableBackdropClick
-			// onClose={this.handleCloseToken}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			{token ?
-				<Fragment>
-					{this.renderCloseDialog()}
-					<DialogTitle>
-						<ItemG container justify={'space-between'} alignItems={'center'}>
-							{t('menus.create.token')}
-							<IconButton aria-label="Close" className={classes.closeButton} onClick={generatedToken ? this.handleConfirmClose : this.props.handleClose}>
-								<Close />
-							</IconButton>
+	return <Dialog
+		open={openToken}
+		disableBackdropClick
+		aria-labelledby='alert-dialog-title'
+		aria-describedby='alert-dialog-description'
+	>
+		{token ?
+			<Fragment>
+				{renderCloseDialog()}
+				<DialogTitle>
+					<ItemG container justify={'space-between'} alignItems={'center'}>
+						{t('menus.create.token')}
+						<IconButton aria-label="Close" onClick={generatedToken ? handleConfirmClose : props.handleClose}>
+							<Close />
+						</IconButton>
+					</ItemG>
+				</DialogTitle>
+				<DialogContent>
+					<ItemG container>
+						<ItemG xs={12}>
+							<TextF
+								label={t('tokens.fields.name')}
+								id={'tokenName'}
+								value={token.name}
+								fullWidth
+								onChange={handleChange('name')}
+							/>
 						</ItemG>
-					</DialogTitle>
-					<DialogContent>
-						<ItemG container>
-							<ItemG xs={12}>
+						<ItemG xs={12}>
+							<DSelect
+								fullWidth
+								label={t('tokens.fields.type')}
+								value={token.type}
+								menuItems={[
+									{ value: 0, label: t('tokens.fields.types.device') },
+									{ value: 1, label: t('tokens.fields.types.registry') },
+									{ value: 2, label: t('tokens.fields.types.devicetype') }
+								]}
+								onChange={handleChange('type')}
+							/>
+						</ItemG>
+						<ItemG xs={12}>
+							<Collapse in={token.type > -1}>
+								{renderType(token.type)}
+							</Collapse>
+						</ItemG>
+						<ItemG xs={12}>
+							<Collapse in={Boolean(generatedToken)}>
+								<Divider />
+
 								<TextF
-									label={t('tokens.fields.name')}
-									id={'tokenName'}
-									value={token.name}
+									id={'generatedToken'}
 									fullWidth
-									onChange={this.handleChange('name')}
+									label={''}
+									readOnly
+									value={generatedToken}
+									InputProps={{
+										endAdornment:
+											<ItemG>
+												<IconButton onClick={() => {
+													s('snackbars.copied')
+													copyToClipboard(`${generatedToken}`)
+												}
+												}>
+													<ContentCopy />
+												</IconButton>
+											</ItemG>
+									}
+									}
 								/>
-							</ItemG>
-							<ItemG xs={12}>
-								<DSelect
-									fullWidth
-									label={t('tokens.fields.type')}
-									value={token.type}
-									menuItems={[
-										{ value: 0, label: t('tokens.fields.types.device') },
-										{ value: 1, label: t('tokens.fields.types.registry') },
-										{ value: 2, label: t('tokens.fields.types.devicetype') }
-									]}
-									onChange={this.handleChange('type')}
-								/>
-							</ItemG>
-							<ItemG xs={12}>
-								<Collapse in={token.type > -1}>
-									{this.renderType(token.type)}
-								</Collapse>
-							</ItemG>
-							<ItemG xs={12}>
-								<Collapse in={Boolean(generatedToken)}>
-									<Divider />
-
-									<TextF
-										id={'generatedToken'}
-										fullWidth
-										label={''}
-										readOnly
-										value={generatedToken}
-										InputProps={{
-											endAdornment:
-												<ItemG>
-													<IconButton onClick={() => {
-														this.props.s('snackbars.copied')
-														copyToClipboard(`${generatedToken}`)
-													}
-													}>
-														<ContentCopy />
-													</IconButton>
-												</ItemG>
-										}
-										}
-									/>
-								</Collapse>
-							</ItemG>
+							</Collapse>
 						</ItemG>
-					</DialogContent>
-					<DialogActions >
-						<ItemG container justify={'center'}>
-							<Button
-								onClick={generatedToken ? this.handleConfirmClose : this.handleGenerateToken}
-								variant={'outlined'} color={'primary'}> {
-									!generatedToken ? <Fragment>
-										<Save />
-										{t('actions.create')}
-									</Fragment> :
-										<Fragment>
-											<Close />
-											{t('actions.close')}
-										</Fragment>
-								}
-							</Button>
-						</ItemG>
-					</DialogActions>
-				</Fragment>
-				: null}
-		</Dialog>
-
-	}
+					</ItemG>
+				</DialogContent>
+				<DialogActions >
+					<ItemG container justify={'center'}>
+						<Button
+							onClick={generatedToken ? handleConfirmClose : handleGenerateToken}
+							variant={'outlined'} color={'primary'}> {
+								!generatedToken ? <Fragment>
+									<Save />
+									{t('actions.create')}
+								</Fragment> :
+									<Fragment>
+										<Close />
+										{t('actions.close')}
+									</Fragment>
+							}
+						</Button>
+					</ItemG>
+				</DialogActions>
+			</Fragment>
+			: null}
+	</Dialog>
 }
 
-const mapStateToProps = (state) => ({
-	user: state.settings.user
-})
-
-const mapDispatchToProps = dispatch => ({
-	getTokens: (uId) => dispatch(getTokens(uId, true))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()(withStyles(projectStyles)(CreateToken)))
+export default CreateToken

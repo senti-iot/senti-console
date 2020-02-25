@@ -1,8 +1,7 @@
-import { withStyles, Fade } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
+import { Fade } from '@material-ui/core';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { DataUsage, DeviceHub } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -11,212 +10,171 @@ import { getRegistryLS } from 'redux/data';
 import RegistryDetails from './RegistryCards/RegistryDetails';
 import RegistryDevices from './RegistryCards/RegistryDevices';
 import { deleteRegistry } from 'variables/dataRegistry';
+import { useLocalization, useSnackbar, useHistory, useMatch, useLocation } from 'hooks';
 
-class Registry extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			//Date Filter
-			//End Date Filter Tools
-			registry: null,
-			activeDevice: null,
-			loading: true,
-			anchorElHardware: null,
-			openAssign: false,
-			openUnassignDevice: false,
-			openAssignOrg: false,
-			openAssignDevice: false,
-			openDelete: false,
-			//Map
-			loadingMap: true,
-			heatData: null
-			//End Map
-		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
-	}
+const Registry = props => {
+	//Hooks
+	const dispatch = useDispatch()
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const history = useHistory()
+	const match = useMatch()
+	const location = useLocation()
+	//Redux
+	const saved = useSelector(store => store.favorites.saved)
+	const registry = useSelector(store => store.data.registry)
+	const loading = useSelector(store => !store.data.gotRegistry)
 
-	format = 'YYYY-MM-DD+HH:mm'
-	tabs = () => {
-		const { t } = this.props
-		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			{ id: 1, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
-		]
-	}
+	//State
+	const [openDelete, setOpenDelete] = useState(false)
 
-	reload = (msgId) => {
-		this.snackBarMessages(msgId)
-		this.getRegistry(this.props.match.params.id)
-	}
+	//Const
+	const { setBC, setTabs, setHeader } = props
 
-	getRegistry = async (id) => {
-		const { getRegistry } = this.props
-		await getRegistry(id)
-	}
-	componentDidUpdate = async (prevProps) => {
-		if (prevProps.match.params.id !== this.props.match.params.id)
-			await this.componentDidMount()
-		if (this.props.saved === true) {
-			const { registry } = this.props
-			if (this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
-				this.props.finishedSaving()
+	//useCallbacks
+	const isFavorite = useCallback(id => dispatch(isFav({ id: id, type: 'registry' })), [dispatch])
+
+	//useEffects
+
+	useEffect(() => {
+		if (saved === true) {
+			if (isFavorite(registry.id)) {
+				s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
+				dispatch(finishedSaving())
 			}
-			if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
-				this.props.finishedSaving()
+			if (!isFavorite(registry.id)) {
+				s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
+				dispatch(finishedSaving())
 			}
 		}
-		// if (!this.props.registry) {
-		// 	this.props.history.push('/404')
-		// }
-	}
-	componentDidMount = async () => {
-		if (this.props.match) {
-			let id = this.props.match.params.id
-			if (id) {
-				await this.getRegistry(id).then(() => this.props.registry ? this.props.setBC('registry', this.props.registry.name) : null
-				)
-				this.props.setTabs({
-					route: 0,
-					id: 'registry',
-					tabs: this.tabs(),
-					hashLinks: true
-				})
-				if (this.props.location.hash !== '') {
-					scrollToAnchor(this.props.location.hash)
+
+	}, [saved, match, dispatch, registry, s, t, isFavorite])
+
+	useEffect(() => {
+		const getReg = async () => {
+			if (match) {
+				let id = match.params.id
+				if (id) {
+					await dispatch(await getRegistryLS(id))
+
 				}
 			}
 		}
-		else {
-			this.props.history.push({
-				pathname: '/404',
-				prevURL: window.location.pathname
+		getReg()
+		if (location.hash !== '') {
+			scrollToAnchor(location.hash)
+		}
+		//eslint-disable-next-line
+	}, [])
+
+	useEffect(() => {
+		if (registry) {
+			const tabs = () => {
+				return [
+					{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+					{ id: 1, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
+				]
+			}
+			setBC('registry', registry.name)
+			setTabs({
+				route: 0,
+				id: 'registry',
+				tabs: tabs(),
+				hashLinks: true
 			})
+			let prevURL = location.prevURL ? location.prevURL : '/registries/list'
+			setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
 		}
-	}
-	addToFav = () => {
-		const { registry } = this.props
+
+	})
+
+	//Handlers
+
+	const addToFavorites = () => {
 		let favObj = {
 			id: registry.id,
 			name: registry.name,
 			type: 'registry',
-			path: this.props.match.url
+			path: match.url
 		}
-		this.props.addToFav(favObj)
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = () => {
-		const { registry } = this.props
+	const removeFromFavorites = () => {
 		let favObj = {
 			id: registry.id,
 			name: registry.name,
 			type: 'registry',
-			path: this.props.match.url
+			path: match.url
 		}
-		this.props.removeFromFav(favObj)
+		dispatch(removeFromFav(favObj))
 	}
 
-	snackBarMessages = (msg) => {
-		// const { s, t, registry } = this.props
+	//TODO snackbarMessages
 
-		switch (msg) {
-			default:
-				break
-		}
-	}
+	// const snackBarMessages = (msg) => {
+	// 	switch (msg) {
+	// 		default:
+	// 			break
+	// 	}
+	// }
 
-	handleOpenDeleteDialog = () => {
-		this.setState({
-			openDelete: true
-		})
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
 	}
-	handleCloseDeleteDialog = () => {
-		this.setState({
-			openDelete: false
-		})
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
 	}
-	handleDeleteRegistry = async () => {
-		const { registry } = this.props
-		if (this.props.isFav(registry.id))
-			this.removeFromFav()
+	const handleDeleteRegistry = async () => {
+		if (dispatch(isFav({ id: registry.id, type: 'registry' })))
+			removeFromFavorites()
 		await deleteRegistry(registry.id).then(() => {
-			this.handleCloseDeleteDialog()
-			this.snackBarMessages(1)
-			this.props.history.push('/registries/list')
+			handleCloseDeleteDialog()
+			// snackBarMessages(1)
+			history.push('/registries/list')
 		})
 	}
-	renderDeleteDialog = () => {
-		const { openDelete } = this.state
-		const { t } = this.props
+	const renderDeleteDialog = () => {
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.registry'}
 			message={'dialogs.delete.message.registry'}
-			messageOpts={{ registry: this.props.registry.name }}
+			messageOpts={{ registry: registry.name }}
 			open={openDelete}
 			single
-			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-			handleDelete={this.handleDeleteRegistry}
+			handleCloseDeleteDialog={handleCloseDeleteDialog}
+			handleDelete={handleDeleteRegistry}
 		/>
 	}
 
 
-	renderLoader = () => {
+	const renderLoader = () => {
 		return <CircularLoader />
 	}
-
-
-	render() {
-		const { history, match, t, accessLevel, registry, loading } = this.props
-		return (
-			<Fragment>
-				{!loading ? <Fade in={true}>
-					<GridContainer justify={'center'} alignContent={'space-between'}>
-						{this.renderDeleteDialog()}
-						<ItemGrid xs={12} noMargin id='details'>
-							<RegistryDetails
-								isFav={this.props.isFav({ id: registry.id, type: 'registry' })}
-								addToFav={this.addToFav}
-								removeFromFav={this.removeFromFav}
-								registry={registry}
-								history={history}
-								match={match}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								t={t}
-								accessLevel={accessLevel}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'devices'}>
-							<RegistryDevices
-								devices={registry.devices}
-								t={t}
-							/>
-						</ItemGrid>
-					</GridContainer></Fade>
-					: this.renderLoader()}
-			</Fragment>
-		)
-	}
+	return (
+		<Fragment>
+			{!loading ? <Fade in={true}>
+				<GridContainer justify={'center'} alignContent={'space-between'}>
+					{renderDeleteDialog()}
+					<ItemGrid xs={12} noMargin id='details'>
+						<RegistryDetails
+							isFav={isFavorite(registry.id)}
+							addToFav={addToFavorites}
+							removeFromFav={removeFromFavorites}
+							registry={registry}
+							handleOpenDeleteDialog={handleOpenDeleteDialog}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'devices'}>
+						<RegistryDevices
+							devices={registry.devices}
+							t={t}
+						/>
+					</ItemGrid>
+				</GridContainer></Fade>
+				: renderLoader()}
+		</Fragment>
+	)
 }
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	language: state.settings.language,
-	saved: state.favorites.saved,
-	mapTheme: state.settings.mapTheme,
-	periods: state.dateTime.periods,
-	registry: state.data.registry,
-	loading: !state.data.gotRegistry
-})
 
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistry: async id => dispatch(await getRegistryLS(id))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(registryStyles)(Registry))
+export default Registry

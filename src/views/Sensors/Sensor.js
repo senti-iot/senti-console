@@ -1,269 +1,233 @@
-import { withStyles, Fade } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { getWeather } from 'variables/dataDevices';
-import moment from 'moment'
-import { DataUsage, InsertChart, Wifi, Map } from 'variables/icons';
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import { scrollToAnchor } from 'variables/functions';
-import { getSensorLS, unassignSensor } from 'redux/data';
-import SensorDetails from './SensorCards/SensorDetails';
-import SensorProtocol from './SensorCards/SensorProtocol';
-import SensorMessages from 'views/Charts/SensorMessages';
-import { getSensorMessages } from 'variables/dataSensors';
-import { deleteSensor } from 'variables/dataSensors';
-// import DoubleChart from 'views/Charts/DoubleChart';
-// import SensorData from './SensorCards/SensorData';
-import SensorChart from 'views/Charts/SensorChart';
-import Maps from 'views/Maps/MapCard';
+import { Fade } from "@material-ui/core"
+import {
+	CircularLoader,
+	GridContainer,
+	ItemGrid,
+	DeleteDialog
+} from "components"
+import React, { Fragment, useState, useEffect, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+// import { getWeather } from "variables/dataDevices"
+// import moment from "moment"
+import { DataUsage, InsertChart, Wifi } from "variables/icons"
+import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
+import { scrollToAnchor } from "variables/functions"
+import { getSensorLS } from "redux/data"
+import SensorDetails from "./SensorCards/SensorDetails"
+import SensorProtocol from "./SensorCards/SensorProtocol"
+import SensorMessages from "views/Charts/SensorMessages"
+import { getSensorMessages } from "variables/dataSensors"
+import { deleteSensor } from "variables/dataSensors"
+import SensorChart from "views/Charts/SensorChart"
+import { useLocalization, useSnackbar } from "hooks"
+import { useRouteMatch, useHistory, useLocation, useParams } from "react-router-dom"
 
-class Sensor extends Component {
-	constructor(props) {
-		super(props)
+const Sensor = props => {
+	//Hooks
+	const dispatch = useDispatch()
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const match = useRouteMatch()
+	const params = useParams()
+	const location = useLocation()
+	const history = useHistory()
 
-		this.state = {
-			registry: null,
-			activeDevice: null,
-			loading: true,
-			anchorElHardware: null,
-			openAssign: false,
-			openDelete: false,
-			//Map
-			loadingMap: true,
-			heatData: null,
-			weather: null,
-			value: 0
-			//End Map
+	//Redux
+	const accessLevel = useSelector(s => s.settings.user.privileges)
+	const saved = useSelector(state => state.favorites.saved)
+	const periods = useSelector(state => state.dateTime.periods)
+	const sensor = useSelector(state => state.data.sensor)
+	const loading = useSelector(state => !state.data.gotSensor)
+
+	//State
+	const [openDelete, setopenDelete] = useState(false)
+	const [sensorMessages, setSensorMessages] = useState(null)
+
+	//Const
+	const { setTabs, setBC, setHeader } = props
+
+	//useCallbacks
+	const getSensor = useCallback(async id => {
+		await dispatch(await getSensorLS(id))
+	}, [dispatch])
+
+	//useEffects
+	useEffect(() => {
+		if (sensor) {
+			const tabs = [
+				{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: `#details` },
+				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: `#messages` },
+				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: `#protocol` }
+			]
+			setTabs({
+				route: 0,
+				id: "sensor",
+				tabs: tabs,
+				hashLinks: true
+			})
+			setBC('sensor', sensor.name)
+
+			let prevURL = location.prevURL ? location.prevURL : `/sensors/list`
+			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('sidebar.device', true, prevURL, 'manage.sensors')
-	}
+	}, [location, sensor, setBC, setHeader, setTabs, t])
 
-	format = 'YYYY-MM-DD+HH:mm'
-	tabs = () => {
-		const { t } = this.props
-		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			{ id: 1, title: t('sidebar.messages'), label: <InsertChart />, url: `#messages` },
-			{ id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
-			{ id: 3, title: t('registries.fields.protocol'), label: <Wifi />, url: `#protocol` }
-			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
-			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
-			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
-			// { id: 4, title: t('tabs.history'), label: <History />, url: `#history` }
-		]
-	}
+	useEffect(() => {
+		const gSensor = async () => {
+			if (params) {
+				let id = params.id
+				if (id) {
+					await getSensor(id)
+				}
 
-	reload = (msgId) => {
-		this.snackBarMessages(msgId)
-		this.getSensor(this.props.match.params.id)
-	}
-	getSensor = async (id) => {
-		const { getSensor } = this.props
-		await getSensor(id)
-	}
-	componentDidUpdate = async (prevProps) => {
-		const { registry } = this.props
-		if (registry && !prevProps.registry) {
-			if (registry.activeDevice) {
-				let data = await getWeather(registry.activeDevice, moment(), this.props.language)
-				this.setState({ weather: data })
-			}
-		}
-		if (this.props.saved === true) {
-			const { sensor } = this.props
-			if (this.props.isFav({ id: sensor.id, type: 'sensor' })) {
-				this.props.s('snackbars.favorite.saved', { name: sensor.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-			}
-			if (!this.props.isFav({ id: sensor.id, type: 'sensor' })) {
-				this.props.s('snackbars.favorite.removed', { name: sensor.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-			}
-		}
-	}
-	componentWillUnmount = () => {
-		this.props.unassignSensor()
-	}
-	componentDidMount = async () => {
-		if (this.props.match) {
-			let id = this.props.match.params.id
-			if (id) {
-				await this.getSensor(id).then(() => {
-					this.props.setBC('sensor', this.props.sensor.name)
-				})
-				this.props.setTabs({
-					route: 0,
-					id: 'sensor',
-					tabs: this.tabs(),
-					hashLinks: true
-				})
-				if (this.props.location.hash !== '') {
-					scrollToAnchor(this.props.location.hash)
+				if (location.hash !== "") {
+					scrollToAnchor(location.hash)
 				}
 			}
 		}
-		else {
-			this.props.history.push({
-				pathname: '/404',
-				prevURL: window.location.pathname
-			})
-		}
-	}
-	addToFav = () => {
-		const { sensor } = this.props
-		let favObj = {
-			id: sensor.id,
-			name: sensor.name,
-			type: 'sensor',
-			path: this.props.match.url
-		}
-		this.props.addToFav(favObj)
-	}
-	removeFromFav = () => {
-		const { sensor } = this.props
-		let favObj = {
-			id: sensor.id,
-			name: sensor.name,
-			type: 'sensor',
-			path: this.props.match.url
-		}
-		this.props.removeFromFav(favObj)
-	}
-	getDeviceMessages = async () => {
-		const { sensor, periods } = this.props
-		if (periods.length > 0)
-			await getSensorMessages(sensor.id, periods[0]).then(rs => {
-				this.setState({
-					sensorMessages: rs
+		gSensor()
+		//eslint-disable-next-line
+	}, [])
+	useEffect(() => {
+		if (saved === true) {
+			if (dispatch(isFav({ id: sensor.id, type: "sensor" }))) {
+				s("snackbars.favorite.saved", {
+					name: sensor.name,
+					type: t("favorites.types.device")
 				})
-			})
-		else {
-			this.setState({
-				sensorMessages: []
-			})
+				dispatch(finishedSaving())
+			}
+			if (!dispatch(isFav({ id: sensor.id, type: "sensor" }))) {
+				s("snackbars.favorite.removed", {
+					name: sensor.name,
+					type: t("favorites.types.device")
+				})
+				dispatch(finishedSaving())
+			}
 		}
+	}, [dispatch, s, saved, sensor, t])
+
+	//Handlers
+
+	const isFavorite = (favObj) => dispatch(isFav(favObj))
+
+	const addToFavorites = () => {
+		let favObj = {
+			id: sensor.id,
+			name: sensor.name,
+			type: "sensor",
+			path: match.url
+		}
+		dispatch(addToFav(favObj))
 	}
-	snackBarMessages = (msg) => {
-		// const { s, t, registry } = this.props
+	const removeFromFavorites = () => {
+		let favObj = {
+			id: sensor.id,
+			name: sensor.name,
+			type: "sensor",
+			path: match.url
+		}
+		dispatch(removeFromFav(favObj))
+	}
+
+	const getDeviceMessages = async () => {
+		await getSensorMessages(sensor.id, periods[0]).then(rs => {
+			setSensorMessages(rs)
+		})
+	}
+	const snackBarMessages = msg => {
 
 		switch (msg) {
+			case 1:
+				return t('snackbars.deletedSuccess')
 			default:
 				break
 		}
 	}
-	handleOpenDeleteDialog = () => {
-		this.setState({
-			openDelete: true
-		})
+	const handleOpenDeleteDialog = () => {
+		setopenDelete(true)
 	}
-	handleCloseDeleteDialog = () => {
-		this.setState({
-			openDelete: false
-		})
+	const handleCloseDeleteDialog = () => {
+		setopenDelete(false)
 	}
-	handleDeleteSensor = async () => {
-		const { sensor } = this.props
-		if (this.props.isFav(sensor.id))
-			this.removeFromFav()
+	const handleDeleteSensor = async () => {
+		if (isFavorite(sensor.id)) {
+			removeFromFavorites()
+		}
 		await deleteSensor(sensor.id).then(() => {
-			this.handleCloseDeleteDialog()
-			this.snackBarMessages(1)
-			this.props.history.push('/sensors/list')
+			handleCloseDeleteDialog()
+			snackBarMessages(1)
+			history.push("/sensors/list")
 		})
 	}
 
-	renderDeleteDialog = () => {
-		const { openDelete } = this.state
-		const { t } = this.props
-		return <DeleteDialog
-			t={t}
-			title={'dialogs.delete.title.device'}
-			message={'dialogs.delete.message.device'}
-			messageOpts={{ sensor: this.props.sensor.name }}
-			open={openDelete}
-			single
-			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-			handleDelete={this.handleDeleteSensor}
-		/>
+	const renderDeleteDialog = () => {
+		return (
+			<DeleteDialog
+				t={t}
+				title={"dialogs.delete.title.device"}
+				message={"dialogs.delete.message.device"}
+				messageOpts={{ sensor: sensor.name }}
+				open={openDelete}
+				single
+				handleCloseDeleteDialog={handleCloseDeleteDialog}
+				handleDelete={handleDeleteSensor}
+			/>
+		)
 	}
-	renderLoader = () => {
+	const renderLoader = () => {
 		return <CircularLoader />
 	}
-
-	render() {
-		const { weather, heatData } = this.state
-		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
-
-		if (sensor) {
-			sensor.long = sensor.lng;
-		}
-
-		return (
-			<Fragment>
-				{!loading ? <Fade in={true}>
-					<GridContainer justify={'center'} alignContent={'space-between'}>
-						<ItemGrid xs={12} noMargin id='details'>
+	return (
+		<Fragment>
+			{!loading ? (
+				<Fade in={true}>
+					<GridContainer justify={"center"} alignContent={"space-between"}>
+						<ItemGrid xs={12} noMargin id="details">
 							<SensorDetails
-								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
-								addToFav={this.addToFav}
-								removeFromFav={this.removeFromFav}
+								isFav={isFavorite({ id: sensor.id, type: "sensor" })}
+								addToFav={addToFavorites}
+								removeFromFav={removeFromFavorites}
 								sensor={sensor}
 								history={history}
 								match={match}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								handleOpenAssignDevice={this.handleOpenAssignDevice}
-								t={t}
+								handleOpenDeleteDialog={handleOpenDeleteDialog}
+								// handleOpenAssignDevice={handleOpenAssignDevice}
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'messages'}>
+						<ItemGrid xs={12} noMargin id={"messages"}>
 							<SensorMessages
 								period={periods[0]}
 								t={t}
-								messages={this.state.sensorMessages}
-								getData={this.getDeviceMessages}
+								messages={sensorMessages}
+								getData={getDeviceMessages}
 							/>
 						</ItemGrid>
-						{sensor.lat && sensor.long ?
-							<ItemGrid xs={12} noMargin id={'map'}>
-								<Maps
-									single
-									reload={this.reload}
-									device={sensor}
-									markers={sensor ? [sensor] : []}
-									loading={loading}
-									weather={weather}
-									heatData={heatData}
-									t={this.props.t}
-								/>
-							</ItemGrid>
-							: null}
-						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
-							if (k.type === 1) {
+						{sensor.dataKeys
+							? sensor.dataKeys.map((k, i) => {
+								if (k.type === 1) {
+									return null
+								}
+								if (k.type === 0) {
+									// return null
+									return (
+										<ItemGrid xs={12} key={i} container noMargin id={"charts"}>
+											<SensorChart
+												deviceId={sensor.id}
+												dataKey={k.key}
+												title={k.key}
+												cfId={k.nId}
+												chartColor={"teal"}
+												single={true}
+												t={t}
+											/>
+										</ItemGrid>
+									)
+								}
 								return null
-							}
-							if (k.type === 0) {
-								// return null
-								return <ItemGrid key={i} xs={12} container noMargin id={'charts'} >
-									<SensorChart
-										deviceId={sensor.id}
-										dataKey={k.key}
-										title={k.key}
-										cfId={k.nId}
-										chartColor={'teal'}
-										// gId={k}
-										// dId={d.id}
-										// color={d.color}
-										single={true}
-										t={t}
-									/>
-								</ItemGrid>
-							}
-							return null
-						}) : null}
+							})
+							: null}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return <ItemGrid xs={12} container noMargin key={i + 'gauges'}>
@@ -299,48 +263,18 @@ class Sensor extends Component {
 						}
 						) : null} */}
 						{/* </ItemGrid> */}
-						<ItemGrid xs={12} noMargin id='protocol'>
+						<ItemGrid xs={12} noMargin id="protocol">
 							<SensorProtocol
-								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
-								addToFav={this.addToFav}
-								removeFromFav={this.removeFromFav}
 								sensor={sensor}
-								history={history}
-								match={match}
-								handleOpenAssignProject={this.handleOpenAssignProject}
-								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								handleOpenAssignDevice={this.handleOpenAssignDevice}
-								t={t}
-								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						{this.renderDeleteDialog()}
-					</GridContainer></Fade>
-					: this.renderLoader()}
-			</Fragment>
-		)
-	}
+						{renderDeleteDialog()}
+					</GridContainer>
+				</Fade>
+			) : (renderLoader())}
+		</Fragment>
+	)
 }
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	language: state.settings.language,
-	saved: state.favorites.saved,
-	mapTheme: state.settings.mapTheme,
-	periods: state.dateTime.periods,
-	sensor: state.data.sensor,
-	loading: !state.data.gotSensor
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getSensor: async id => dispatch(await getSensorLS(id)),
-	unassignSensor: () => dispatch(unassignSensor())
-})
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(registryStyles)(Sensor))
+export default Sensor

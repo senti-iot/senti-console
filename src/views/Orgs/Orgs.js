@@ -1,17 +1,14 @@
-import React, { /* Component, */ Fragment, useEffect, useState } from 'react'
-import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
-import GridContainer from 'components/Grid/GridContainer';
-import OrgTable from 'components/Orgs/OrgTable';
-import { /* People, Business, */ PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
-// import { handleRequestSort } from 'variables/functions'
-import { deleteOrg } from 'variables/dataOrgs';
-import TableToolbar from 'components/Table/TableToolbar';
-import { customFilterItems } from 'variables/Filters';
-import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks';
-import { isFav, addToFav, removeFromFav } from 'redux/favorites';
-import orgsStyles from 'assets/jss/components/orgs/orgsStyles';
-import { finishedSaving } from 'redux/dsSystem';
+import React, { Fragment, useEffect, useState } from 'react'
+import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core'
+import GridContainer from 'components/Grid/GridContainer'
+import OrgTable from 'components/Orgs/OrgTable'
+import { PictureAsPdf, Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
+import { deleteOrg } from 'variables/dataOrgs'
+import TableToolbar from 'components/Table/TableToolbar'
+import { customFilterItems } from 'variables/Filters'
+import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks'
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
+import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 
 const Orgs = props => {
 	//Hooks
@@ -34,7 +31,7 @@ const Orgs = props => {
 	// const [filters, setFilters] = useState({ keyword: '' })
 
 	//Const
-	const { orgs, setHeader, setBC } = props
+	const { orgs, setHeader, setBC, setTabs } = props
 
 	const dHasOrgParent = [
 		{ value: true, label: t("filters.orgs.hasParentOrg") },
@@ -56,27 +53,39 @@ const Orgs = props => {
 
 
 	useEffect(() => {
+
+		const tabs = [
+			{ id: 0, title: t('users.tabs.users'), label: <People />, url: `/management/users` },
+			{ id: 1, title: t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+			{ id: 2, title: t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+		]
 		setHeader('orgs.pageTitle', false, '', 'users')
 		setBC('orgs')
-		//eslint-disable-next-line
-	}, [])
 
-	// useEffect(() => {
-	// 	if (saved === true) {
-	// 		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
-	// 		if (org) {
-	// 			if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
-	// 				s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
-	// 				dispatch(finishedSaving())
-	// 			}
-	// 			if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
-	// 				s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
-	// 				dispatch(finishedSaving())
-	// 			}
-	// 		}
-	// 	}
+		setTabs({
+			id: 'management',
+			tabs: tabs,
+			route: 1
+		})
 
-	// }, [saved, selected, dispatch, orgs, s, t])
+	}, [setHeader, setTabs, setBC, t])
+
+	useEffect(() => {
+		if (saved === true) {
+			let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
+			if (org) {
+				if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+					s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
+					dispatch(finishedSaving())
+				}
+				if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
+					s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
+					dispatch(finishedSaving())
+				}
+			}
+		}
+
+	}, [saved, selected, dispatch, orgs, s, t])
 
 	//Handlers
 	const handleAddToFav = (favObj) => {
@@ -117,10 +126,10 @@ const Orgs = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -129,7 +138,7 @@ const Orgs = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
@@ -156,7 +165,7 @@ const Orgs = props => {
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
 			setSelected([filterItems(orgs).map(n => n.id)])
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -167,31 +176,7 @@ const Orgs = props => {
 		{ id: 'city', label: t('orgs.fields.city') },
 		{ id: 'url', label: t('orgs.fields.url') },
 	]
-	// const componentDidMount = async () => {
-	// 	this._isMounted = 1
-	// 	await this.getData()
-	// 	if (this._isMounted) {
-	// 		if (this.props.location.pathname.includes('/management/orgs')) {
-	// 			this.setState({ route: 1 })
-	// 		}
-	// 		else {
-	// 			this.setState({ route: 0 })
-	// 		}
-	// 	}
-	// }
-	// componentDidUpdate = async (prevProps, prevState) => {
-	// 	if (prevProps.orgs !== this.props.orgs) {
-	// 		if (this.state.selected.length > 0)
-	// 			if (this.state.selected.length > 0) {
-	// 				let newSelected = this.state.selected.filter(s => this.props.orgs.findIndex(u => u.id === s) !== -1 ? true : false)
-	// 				this.setState({ selected: newSelected })
-	// 			}
-	// 		this.getData()
-	// 	}
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
+
 	const handleRequestSort = (event, property, way) => {
 		let nOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
 		if (property !== orderBy) {
@@ -213,12 +198,12 @@ const Orgs = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			case 2:
 				s('snackbars.exported')
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -300,4 +285,4 @@ const Orgs = props => {
 
 }
 
-export default withStyles(projectStyles)(Orgs)
+export default Orgs

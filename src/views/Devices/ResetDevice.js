@@ -1,32 +1,40 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Button, Dialog, DialogTitle, /*  DialogContent, DialogContentText, */ DialogActions } from '@material-ui/core';
 import { GridContainer, InfoCard } from 'components';
 import { resetDevice } from 'variables/dataDevices';
+import { useSnackbar } from 'hooks';
 
-export default class ResetDevice extends Component {
-	constructor(props) {
-		super(props)
+// @Andrei
+export default function ResetDevice(props) {
+	const s = useSnackbar().s
+	const [/* success */, setSuccess] = useState(null)
+	const [resetDialog, setResetDialog] = useState(false)
+	// constructor(props) {
+	// 	super(props)
 
-		this.state = {
-			success: null,
-			resetDialog: false,
-		}
-	}
+	// 	this.state = {
+	// 		success: null,
+	// 		resetDialog: false,
+	// 	}
+	// }
 
-	handleReset = async () => {
-		await resetDevice(this.props.match.params.id).then(rs => {
-			this.setState({ success: rs, resetDialog: false })
+	const handleReset = async () => {
+		await resetDevice(props.match.params.id).then(rs => {
+			setSuccess(rs)
+			setResetDialog(false)
+			// this.setState({ success: rs, resetDialog: false })
 		})
 	}
-	handleOpenResetDialog = () => { this.setState({ resetDialog: true }) }
-	handleCloseResetDialog = () => {
-		this.setState({ resetDialog: false })
-		this.props.s('snackbars.resetDeviceSuccess')
+	const handleOpenResetDialog = () => {  /* this.setState({ resetDialog: true }) */ setResetDialog(true) }
+	const handleCloseResetDialog = () => {
+		setResetDialog(false)
+		// this.setState({ resetDialog: false })
+		s('snackbars.resetDeviceSuccess')
 	}
-	renderResetDialog = () => {
+	const renderResetDialog = () => {
 		return <Dialog
-			open={this.state.resetDialog}
-			onClose={this.handleCloseResetDialog}
+			open={resetDialog}
+			onClose={handleCloseResetDialog}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -37,31 +45,29 @@ export default class ResetDevice extends Component {
 				</DialogContentText>
 			</DialogContent> */}
 			<DialogActions>
-				<Button onClick={this.handleCloseResetDialog} color='primary'>
+				<Button onClick={handleCloseResetDialog} color='primary'>
 					No
 				</Button>
-				<Button onClick={this.handleReset} color='primary' autoFocus>
+				<Button onClick={handleReset} color='primary' autoFocus>
 					Yes
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
-	
 
-	render() {
-		return (
-			<GridContainer>
-				<InfoCard
-					noAvatar
-					noExpand
-					title={'Reset device: ' + this.props.match.params.id}
-					content={
-						<Button variant={'outlined'} onClick={this.handleOpenResetDialog}>
-							Reset Device
+
+	return (
+		<GridContainer>
+			<InfoCard
+				noAvatar
+				noExpand
+				title={'Reset device: ' + props.match.params.id}
+				content={
+					<Button variant={'outlined'} onClick={handleOpenResetDialog}>
+						Reset Device
 			  		</Button>
-					} />
-				{this.renderResetDialog()}
-			</GridContainer>
-		)
-	}
+				} />
+			{renderResetDialog()}
+		</GridContainer>
+	)
 }

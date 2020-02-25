@@ -1,10 +1,10 @@
 import React from 'react'
-import { FormControl, withStyles, Select, Input, MenuItem, InputLabel, Checkbox } from '@material-ui/core';
+import { FormControl, makeStyles, Select, Input, MenuItem, InputLabel, Checkbox } from '@material-ui/core';
 import { ItemG } from 'components';
 
 // Replace withStyles with withTheme, remove styles
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	label: {
 		color: theme.palette.type === 'dark' ? "#fff" : undefined
 	},
@@ -13,7 +13,7 @@ const styles = theme => ({
 		// marginBottom: 8,
 		minWidth: 230
 	},
-});
+}));
 const renderSelected = (selected, menuItems) => {
 	let str = ''
 	selected.forEach(s => {
@@ -27,7 +27,8 @@ const renderSelected = (selected, menuItems) => {
 	return str
 }
 const DMultiSelect = (props) => {
-	const { classes, value, onKeyPress, onChange, menuItems, label, theme, fullWidth, leftIcon, checkbox } = props
+	const classes = styles()
+	const { value, onKeyPress, onChange, menuItems, label, theme, fullWidth, leftIcon, checkbox } = props
 	let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	return <FormControl className={classes.formControl} fullWidth={mobile || fullWidth}>
 		{label ? <InputLabel classes={{ asterisk: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
@@ -45,7 +46,7 @@ const DMultiSelect = (props) => {
 			{menuItems.map((m, i) => {
 				return <MenuItem key={i} value={m.value}>
 					<ItemG container justify={'space-between'} alignItems={'center'}>
-				
+
 						{checkbox ? <ItemG style={{ display: 'flex', marginRight: 8 }}>	<Checkbox checked={value.indexOf(m.value) > -1} /></ItemG> : null}
 						{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
 						<ItemG xs>{m.label}</ItemG>
@@ -53,9 +54,9 @@ const DMultiSelect = (props) => {
 					</ItemG>
 				</MenuItem>
 			})}
-				})}
+			})}
 		</Select>
 	</FormControl>
 }
 
-export default withStyles(styles, { withTheme: true })(DMultiSelect)
+export default DMultiSelect

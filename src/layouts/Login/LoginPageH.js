@@ -44,8 +44,6 @@ function LoginPage(props) {
 
 	//Redux
 	const defaultRoute = useSelector(s => s.settings.defaultRoute)
-	//TODO: This is antipattern React Hooks
-	//Move the dispatch completely under the useEffect
 
 	const handleCloseCookies = () => setCookies(false)
 	const handleOpenCookies = () => setCookies(true)
@@ -68,7 +66,7 @@ function LoginPage(props) {
 					if (rs.isLoggedIn) {
 						if (setToken()) {
 							await dispatch(await getSettings())
-							var prevURL = location.state ? location.state.prevURL : null
+							var prevURL = location.prevURL ? location.prevURL : null
 							history.push(prevURL ? prevURL : defaultRoute)
 						}
 					}
