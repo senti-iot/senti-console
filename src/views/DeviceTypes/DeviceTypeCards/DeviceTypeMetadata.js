@@ -1,19 +1,18 @@
 // import deviceTypeStyles from 'assets/jss/views/deviceStyles';
-import { ItemG, Info } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import React from 'react';
+import { ItemG, Info } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
+import React from 'react'
 // import { Link } from 'react-router-dom';
-import { StorageIcon } from 'variables/icons';
+import { StorageIcon } from 'variables/icons'
 // import { useSelector } from 'react-redux'
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { useLocalization } from 'hooks';
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import { useLocalization } from 'hooks'
 
 
-// @Andrei
 const DeviceTypeMetadata = props => {
 	//Hooks
 	const t = useLocalization()

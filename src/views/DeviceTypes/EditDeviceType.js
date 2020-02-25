@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getDeviceTypeLS, getDeviceTypes } from 'redux/data';
-import { updateDeviceType } from 'variables/dataDeviceTypes';
-import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
-import { updateFav, isFav } from 'redux/favorites';
-import { CircularLoader } from 'components';
-import { useLocalization, useHistory, useSnackbar, useEventListener } from 'hooks';
-import { useParams, useLocation } from 'react-router-dom';
+import { getDeviceTypeLS, getDeviceTypes } from 'redux/data'
+import { updateDeviceType } from 'variables/dataDeviceTypes'
+import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm'
+import { updateFav, isFav } from 'redux/favorites'
+import { CircularLoader } from 'components'
+import { useLocalization, useHistory, useSnackbar, useEventListener } from 'hooks'
+import { useParams, useLocation } from 'react-router-dom'
 
 
 const EditDeviceType = props => {
@@ -46,7 +46,7 @@ const EditDeviceType = props => {
 	}, [history, location, params])
 
 	//useEventListeners
-	useEventListener('keydown', keyHandler);
+	useEventListener('keydown', keyHandler)
 
 	//useEffects
 	useEffect(() => {
