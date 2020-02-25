@@ -2,10 +2,11 @@ import useEventListener from './useEventListener/useEventListener'
 import useLocalization from './useLocalization/useLocalization'
 import usePrevious from './usePrevious/usePrevious'
 import useSnackbar from './useSnackbar/useSnackbar'
-
-import { useState, useContext, useRef, useEffect } from 'react'
+import useTimeout from './useTimeout/useTimeout'
+import useWidth from './useWidth/useWidth'
+import { useState, useContext, useRef, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory, useLocation, useRouteMatch as useMatch, useParams } from 'react-router-dom'
 import { useTheme } from '@material-ui/styles'
 
 
@@ -15,6 +16,11 @@ import { useTheme } from '@material-ui/styles'
 import useWhyDidYouUpdate from './useWhyDidYouUpdate/useWhyDidYouUpdate'
 
 export {
+	useWidth,
+	useCallback,
+	useParams,
+	useTimeout,
+	useMatch,
 	useWhyDidYouUpdate,
 	useRef,
 	//Dev

@@ -7,9 +7,9 @@ import {
 	transition,
 	defaultFont,
 	// primaryColor
-} from "assets/jss/material-dashboard-react.js";
-import { getContrast } from 'variables/functions';
-import { makeStyles } from '@material-ui/styles';
+} from "assets/jss/material-dashboard-react.js"
+import { getContrast } from 'variables/functions'
+import { makeStyles } from '@material-ui/styles'
 
 const sidebarStyle = makeStyles(theme => ({
 	nested: {
@@ -20,6 +20,13 @@ const sidebarStyle = makeStyles(theme => ({
 	},
 	root: {
 		display: 'flex',
+	},
+	mobileList: {
+		margin: 16,
+		padding: 0,
+		[theme.breakpoints.down('md')]: {
+			margin: 8
+		}
 	},
 	drawerPaper: {
 		color: getContrast(theme.sidebar),
@@ -35,12 +42,18 @@ const sidebarStyle = makeStyles(theme => ({
 	drawer: {
 		top: 70,
 		width: drawerWidth,
+		[theme.breakpoints.down('sm')]: {
+			width: 275
+		},
 		flexShrink: 0,
 		whiteSpace: 'nowrap',
 
 	},
 	drawerOpen: {
 		width: drawerWidth,
+		[theme.breakpoints.down('sm')]: {
+			width: 275
+		},
 		overflowX: "auto",
 		...transition
 	},
@@ -105,7 +118,10 @@ const sidebarStyle = makeStyles(theme => ({
 	logo: {
 		backgroundColor: theme.header,
 		position: "relative",
-		padding: "8px 16px",
+		padding: "0px 4px",
+		[theme.breakpoints.up('sm')]: {
+			minHeight: 70
+		},
 		minHeight: "48px",
 		zIndex: "4",
 		display: 'flex',
@@ -154,6 +170,9 @@ const sidebarStyle = makeStyles(theme => ({
 	image: {
 		position: "relative",
 		height: 48,
+		[theme.breakpoints.up('sm')]: {
+			height: 70
+		},
 		// marginLeft: 48,
 		borderRadius: 4,
 		[theme.breakpoints.down("xs")]: {
@@ -170,10 +189,10 @@ const sidebarStyle = makeStyles(theme => ({
 		right: 0,
 		top: 0,
 		bottom: 0,
-		backgroundSize: "contain",
+		backgroundSize: "85px 50px",
 		backgroundRepeat: "no-repeat",
 		backgroundPosition: "50% 50%",
 	},
 }))
 
-export default sidebarStyle;
+export default sidebarStyle

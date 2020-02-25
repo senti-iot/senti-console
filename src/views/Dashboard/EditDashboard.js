@@ -1,100 +1,101 @@
-import React from "react";
-import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, withStyles, Toolbar, Button, Divider, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
-import { ItemG, Dropdown, TextF, SlideT, T, Warning } from 'components';
+import React, { useState, useEffect } from "react"
+import { Responsive, WidthProvider } from "react-grid-layout"
+import { Paper, Dialog, AppBar, IconButton, Toolbar, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import { ItemG, Dropdown, TextF, SlideT, T, Warning } from 'components'
 import cx from 'classnames'
-import { Close, Edit, Clear, Palette, Save, Menu } from 'variables/icons';
-import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
-import { connect } from 'react-redux'
+import { Close, Edit, Clear, Palette, Save } from 'variables/icons'
+import { useDispatch, useSelector } from 'react-redux'
 
-import GaugeSData from 'views/Charts/GaugeSData';
-import DoubleChart from 'views/Charts/DoubleChart';
-import ScorecardAB from 'views/Charts/ScorecardAB';
-import WindCard from 'views/Charts/WindCard';
-import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash, loadDash } from 'redux/dsSystem';
-import EditGraph from './EditGraph';
-import { red } from '@material-ui/core/colors';
-import ToolbarItem from './ToolbarItem';
-import DropZone from './DropZone';
-import { weekendColorsDropdown } from 'variables/functions';
-import { graphType } from 'variables/dsSystem/graphTypes';
-import MapData from 'views/Charts/MapData';
-import MultiSourceChart from 'views/Charts/MultiSourceChart';
+import GaugeSData from 'views/Charts/GaugeSData'
+import DoubleChart from 'views/Charts/DoubleChart'
+import ScorecardAB from 'views/Charts/ScorecardAB'
+import WindCard from 'views/Charts/WindCard'
+import Scorecard from 'views/Charts/Scorecard'
+import { createGraph, setGE, removeGE, editDash, saveDashboard, setLayout, resetEditDash, loadDash } from 'redux/dsSystem'
+import EditGraph from './EditGraph'
+import { red } from '@material-ui/core/colors'
+import DropZone from './DropZone'
+import { weekendColorsDropdown } from 'variables/functions'
+import { graphType } from 'variables/dsSystem/graphTypes'
+import MapData from 'views/Charts/MapData'
+import MultiSourceChart from 'views/Charts/MultiSourceChart'
+import ToolbarContainer from 'views/Dashboard/ToolbarContainer'
+import { useLocalization } from 'hooks'
+import createDashboardStyle from 'assets/jss/components/dashboards/createDashboardStyles'
 
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
-class EditDashboard extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			graphs: [],
-			currentBreakpoint: "lg",
-			compactType: 'vertical',
-			mounted: false,
-			openEditGraph: false,
-			openToolbox: true,
-			openClose: false,
-			openSave: false
-		};
-		this.cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
+
+const EditDashboard = props => {
+	//Hooks
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const classes = createDashboardStyle()
+	//Redux
+	const d = useSelector(s => s.dsSystem.cDash)
+	const gs = useSelector(s => s.dsSystem.cGraphs)
+	const eGraph = useSelector(s => s.dsSystem.eGraph)
+
+	//State
+	// const [grapsh, setGrapsh] = useState([])
+	const [openEditGraph, setOpenEditGraph] = useState(false)
+	const [openSave, setOpenSave] = useState(false)
+	const [openClose, setOpenClose] = useState(false)
+
+	//Const
+	const { open, eDash, handleClose } = props
+	const appBarClasses = cx({
+		[' ' + classes['primary']]: 'primary'
+	})
+	const cols = { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }
+	//useCallbacks
+
+	//useEffects
+	/* if ((props.open !== prevProps.open) && props.open) {
+		props.loadDashboard(props.eDash)
 	}
-	componentWillUnmount() {
-		this.props.resetEditDash()
-	}
-
-	componentDidMount = () => {
-	}
-	componentDidUpdate(prevProps, prevState) {
-		if ((this.props.open !== prevProps.open) && this.props.open) {
-			this.props.loadDashboard(this.props.eDash)
+	if (prevProps.gs !== props.gs) {
+		 setState({
+		 	layout: {
+		 		lg: props.gs.map((g) => ({
+		 			i: g.id,
+		 			...g.grid
+		 */
+	useEffect(() => {
+		if (open && !d && eDash) {
+			dispatch(loadDash(eDash))
 		}
-		if (prevProps.gs !== this.props.gs) {
-			// this.setState({
-			// 	layout: {
-			// 		lg: this.props.gs.map((g) => ({
-			// 			i: g.id,
-			// 			...g.grid
-			// 		}))
-			// 	}
-			// })
-
+		return () => {
+			// dispatch(resetEditDash())
 		}
-	}
-	editGraphOpen = l => e => {
-		this.props.setGE(l)
-		this.setState({ openEditGraph: true })
-	}
-	removeGraph = l => e => {
-		this.props.removeGE(l)
-	}
-	renderPos = (l) => {
-		const { classes, t } = this.props
-		return <div className={classes.editGraph}>
-			<ItemG container justify={'center'} alignItems={'center'}>
-				<ItemG xs={6} container justify={'flex-end'}>
-					<Button style={{ width: 125, margin: 4 }} variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
-						<Edit style={{ marginRight: 8 }} />{t('actions.edit')}
-					</Button>
-				</ItemG>
-				<ItemG xs={6}>
-					<Button variant={'contained'} style={{ width: 125, margin: 4, background: red[600], color: '#fff' }} onClick={this.removeGraph(l)}>
-						<Clear style={{ marginRight: 8 }} /> {t('actions.delete')}
-					</Button>
-				</ItemG>
-				<ItemG xs={12} container justify={'center'} alignItems={'center'}>
-					<div className={'dragHandle'} style={{ marginTop: 50 }}>
-						<Button variant={'outlined'} disableRipple style={{ padding: "25px 50px", cursor: 'move' }}>
-							{t('actions.move')}
-						</Button>
-					</div>
-				</ItemG>
-			</ItemG>
+		//eslint-disable-next-line
+	}, [open, d])
 
-		</div>
+	useEffect(() => {
+		return () => {
+			dispatch(resetEditDash())
+		}
+	}, [dispatch])
+	//Handlers
+	const handleOnDrop = item => {
+		dispatch(createGraph(item.type))
 	}
-	gridCoords = (type) => {
+
+	const handleOpenEditGraph = () => setOpenEditGraph(true)
+	const handleCloseEditGraph = () => setOpenEditGraph(false)
+
+	const handleGraphOpen = l => e => {
+		dispatch(setGE(l))
+		handleOpenEditGraph()
+		// handleCloseEditGraph()
+	}
+	const handleRemoveGraph = l => e => {
+		dispatch(removeGE(l))
+		// props.removeGE(l)
+	}
+
+	const gridCoords = (type) => {
 		switch (type) {
 			case 0:
 				return 'chart'
@@ -107,24 +108,21 @@ class EditDashboard extends React.Component {
 			case 4:
 				return 'windcard'
 			default:
-				break;
+				break
 		}
 	}
-	typeChildren = (g, i) => {
-		const { t } = this.props
-		// const { d } = this.state
-		let d = this.props.d
-		let grid = g.grid ? g.grid : graphType(this.gridCoords(g.type)).grid
+	const typeChildren = (g, i) => {
+		let grid = g.grid ? g.grid : graphType(gridCoords(g.type)).grid
 		if (!grid.minW || !grid.minH) {
 			grid = {
-				...graphType(this.gridCoords(g.type)).grid,
+				...graphType(gridCoords(g.type)).grid,
 				...grid
 			}
 		}
 		switch (g.type) {
 			case 1:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<GaugeSData
 						create
 						title={g.name}
@@ -138,7 +136,7 @@ class EditDashboard extends React.Component {
 				</Paper>
 			case 0:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<DoubleChart
 						create
 						title={g.name}
@@ -151,7 +149,7 @@ class EditDashboard extends React.Component {
 				</Paper>
 			case 2:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<ScorecardAB
 						create
 						title={g.name}
@@ -164,7 +162,7 @@ class EditDashboard extends React.Component {
 				</Paper>
 			case 3:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<Scorecard
 						create
 						title={g.name}
@@ -177,7 +175,7 @@ class EditDashboard extends React.Component {
 				</Paper>
 			case 4:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<WindCard
 						create
 						title={g.name}
@@ -190,7 +188,7 @@ class EditDashboard extends React.Component {
 				</Paper>
 			case 5:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<MapData
 						create
 						title={g.name}
@@ -205,7 +203,7 @@ class EditDashboard extends React.Component {
 				</Paper>
 			case 6:
 				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
-					{this.renderPos(g.grid)}
+					{renderPos(g.grid)}
 					<MultiSourceChart
 						create
 						title={g.name}
@@ -216,60 +214,58 @@ class EditDashboard extends React.Component {
 					/>
 				</Paper>
 			default:
-				return null;
+				return null
 		}
 	}
-	generateDOM = () => {
-		const gs = this.props.gs
-		return gs.map((g, i) => this.typeChildren(g, i))
+	const renderGraphs = () => {
+		return gs.map((g, i) => typeChildren(g, i))
 	}
 
-	changeColor = (value) => {
-		const { d } = this.props
+	const handleChangeColor = (value) => {
 		let newD = Object.assign({}, d)
 		newD.color = value
-		this.props.editDashboard(newD)
+		dispatch(editDash(newD, true))
 	}
 
-	changeName = (e) => {
-		const { d } = this.props
+	const handleChangeName = (e) => {
 		let newD = Object.assign({}, d)
 		newD.name = e.target.value
-		this.props.editDashboard(newD)
+		dispatch(editDash(newD, true))
 	}
-
-	changeDescription = (e) => {
-		const { d } = this.props
+	const handleChangeDescription = (e) => {
 		let newD = Object.assign({}, d)
 		newD.description = e.target.value
-		this.props.editDashboard(newD)
+		dispatch(editDash(newD, true))
 	}
 
-	renderColorPicker = () => {
-		const { t } = this.props
-		return <Dropdown
-			icon={<Palette style={{ color: "#FFF" }} />}
-			menuItems={weekendColorsDropdown(t)}
-			onChange={this.changeColor}
-		/>
-	}
-	handleCloseEG = () => {
-		this.props.setGE(null)
-		this.setState({ openEditGraph: false })
+
+	const handleCloseEG = () => {
+		dispatch(setGE(null))
+		handleCloseEditGraph()
+		// props.setGE(null)
+		// setState({ openEditGraph: false })
 
 	}
-	onLayoutChange = (layout) => {
-		this.props.setLayout(layout)
+	const handleLayoutChange = (layout) => {
+		dispatch(setLayout(layout))
 	}
-	handleOpenConfirmClose = () => this.setState({ openClose: true })
-	handleCloseConfirmClose = () => this.setState({ openClose: false })
-	handleConfirmClose = () => {
-		this.props.handleClose()
-		this.handleCloseConfirmClose()
+	const handleOpenConfirmClose = () => setOpenClose(true)
+	const handleCloseConfirmClose = () => setOpenClose(false)
+
+	const handleConfirmClose = () => {
+		props.handleClose()
+		handleCloseConfirmClose()
 	}
-	renderConfirmClose = () => {
-		const { t } = this.props
-		const { openClose } = this.state
+
+	const handleSave = () => {
+		dispatch(saveDashboard())
+		// props.saveDashboard(true)
+		handleClose()
+	}
+	const handleOpenSave = () => setOpenSave(true)
+	const handleCloseSave = () => setOpenSave(false)
+
+	const renderConfirmClose = () => {
 		return <Dialog
 			open={openClose}
 		>
@@ -279,26 +275,17 @@ class EditDashboard extends React.Component {
 				<Warning>{t('dialogs.dashboards.close.warning')}</Warning>
 			</DialogContent>
 			<DialogActions>
-				<Button variant={'outlined'} onClick={this.handleCloseConfirmClose}>
+				<Button variant={'outlined'} onClick={handleCloseConfirmClose}>
 					{t('actions.no')}
 				</Button>
-				<Button variant={'outlined'} onClick={this.handleConfirmClose}>
+				<Button variant={'outlined'} onClick={handleConfirmClose}>
 					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 
 	}
-	handleSave = () => {
-		this.props.saveDashboard()
-		this.props.handleClose()
-	}
-	handleOpenSave = () => this.setState({ openSave: true })
-	handleCloseSave = () => this.setState({ openSave: false })
-
-	renderSaveDialog = () => {
-		const { openSave } = this.state
-		const { t, d } = this.props
+	const renderSaveDialog = () => {
 		return <Dialog
 			open={openSave}
 		>
@@ -306,158 +293,145 @@ class EditDashboard extends React.Component {
 				<TextF
 					fullWidth
 					id={'dashboardNameSave'}
-					// margin={'none'}
 					label={t('dashboard.fields.name')}
 					value={d.name}
-					onChange={this.changeName}
+					onChange={handleChangeName}
 					reversed
-				// notched={false}
 				/>
 				<TextF
 					fullWidth
 					id={'dashboardDesc'}
-					InputProps={{
-						style: {
-							color: '#fff'
-						}
-					}}
+					// InputProps={{
+					// 	style: {
+					// 		color: '#fff'
+					// 	}
+					// }}
 					multiline
 					rows={4}
 					label={t('dashboard.fields.description')}
-					// margin={'none'}
 					value={d.description}
-					onChange={this.changeDescription}
+					onChange={handleChangeDescription}
 					reversed
-				// notched={false}
 				/>
 			</DialogContent>
 			<DialogActions style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-				{/* <Button variant={'outlined'} onClick={this.handleCloseSave}>
-					{t('actions.cancel')}
-				</Button> */}
-				<Button variant={'outlined'} onClick={this.handleCloseSave}>
+				<Button variant={'outlined'} onClick={handleCloseSave}>
 					{t('actions.close')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
 
-	render() {
-		const { open, classes, d, t } = this.props
-		const appBarClasses = cx({
-			[' ' + classes['primary']]: 'primary'
-		});
-
-		return (
-			!d ? null :
-				<Dialog
-					fullScreen
-					open={open}
-					onClose={this.handleOpenConfirmClose}
-					TransitionComponent={SlideT}
-					PaperProps={{
-						className: classes[d.color]
-					}}
-				>
-					<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
-						<Toolbar>
-							<ItemG container alignItems={'center'}>
-								<ItemG xs={1} container alignItems={'center'}>
-									<IconButton color='inherit' onClick={this.handleOpenConfirmClose} aria-label='Close'>
-										<Close />
-									</IconButton>
-								</ItemG>
-								<ItemG xs={4} container /* style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }} */>
-									<ItemG container style={{ background: 'teal', borderRadius: 4, padding: 4, margin: "0px 16px" }}>
-										{/* <CreateDashboardToolbar> */}
-										{/* <ItemG xs={1} container alignItems="center" justify={'center'}> */}
-										<IconButton size={'small'}/* onClick={this.expandToolbar} */ style={{ color: '#fff', borderRadius: 0 }}>
-											<Menu />
-										</IconButton>
-										{/* </ItemG> */}
-										<Divider style={{ width: 2, height: '100%' }} />
-										<ToolbarItem type={"chart"} name={'Chart'} />
-										<ToolbarItem type={"gauge"} name={'Gauge'} />
-										<ToolbarItem type={"scorecard"} name={'Scorecard'} />
-										{/*<ToolbarItem type={"scorecardAB"} name={'Difference Scorecard'} />*/}
-										{/*<ToolbarItem type={"windcard"} name={'Windcard'} /> */}
-									</ItemG>
-									{/* </CreateDashboardToolbar> */}
-								</ItemG>
-								<ItemG container xs={6} /* justify={'center'} */ alignItems={'center'}>
-
-									<TextF
-										id={'dashboardName'}
-										InputProps={{
-											style: {
-												color: '#fff'
-											}
-										}}
-										margin='none'
-										value={d.name}
-										// onChange={this.changeName}
-										onClick={this.handleOpenSave}
-										reversed
-									/>
-									{this.renderColorPicker()}
-
-								</ItemG>
-								<ItemG xs={1}>
-									<Button color={'primary'} variant={'outlined'} onClick={this.handleSave}>
-										<Save style={{ marginRight: 8 }} /> {t('actions.save')}
-									</Button>
-								</ItemG>
-							</ItemG>
-						</Toolbar>
-					</AppBar>
-					{this.renderConfirmClose()}
-					{this.renderSaveDialog()}
-					<EditGraph
-						d={this.props.d}
-						g={this.props.eGraph}
-						handleCloseEG={this.handleCloseEG}
-						openEditGraph={this.state.openEditGraph} />
-					<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
-						<DropZone color={d.color} onDrop={item => { this.props.createGraph(item.type) }}>
-							<ResponsiveReactGridLayout
-								{...this.props}
-								cols={this.cols}
-								draggableCancel={".disableDrag"}
-								draggableHandle={".dragHandle"}
-								className={"layout"}
-								rowHeight={25}
-								preventCollision={false}
-								measureBeforeMount={false}
-								onLayoutChange={this.onLayoutChange}
-								useCSSTransforms={true}
-							>
-								{this.generateDOM()}
-							</ResponsiveReactGridLayout>
-						</DropZone>
-					</div>
-				</Dialog>
-		);
+	const renderColorPicker = () => {
+		return <Dropdown
+			cIcon
+			icon={<Palette style={{ color: "#FFF" }} />}
+			menuItems={weekendColorsDropdown(t)}
+			onChange={handleChangeColor}
+		/>
 	}
+	const renderPos = (l) => {
+		return <div className={classes.editGraph}>
+			<ItemG container justify={'center'} alignItems={'center'}>
+				<ItemG xs={6} container justify={'flex-end'}>
+					<Button style={{ width: 125, margin: 4 }} variant={'contained'} color={'primary'} onClick={handleGraphOpen(l)}>
+						<Edit style={{ marginRight: 8 }} />{t('actions.edit')}
+					</Button>
+				</ItemG>
+				<ItemG xs={6}>
+					<Button variant={'contained'} style={{ width: 125, margin: 4, background: red[600], color: '#fff' }} onClick={handleRemoveGraph(l)}>
+						<Clear style={{ marginRight: 8 }} /> {t('actions.delete')}
+					</Button>
+				</ItemG>
+				<ItemG xs={12} container justify={'center'} alignItems={'center'}>
+					<div className={'dragHandle'} style={{ marginTop: 50 }}>
+						<Button variant={'outlined'} disableRipple style={{ padding: "25px 50px", cursor: 'move' }}>
+							{t('actions.move')}
+						</Button>
+					</div>
+				</ItemG>
+			</ItemG>
+
+		</div>
+	}
+	return (
+		!d ? null :
+			<Dialog
+				fullScreen
+				open={open}
+				onClose={handleOpenConfirmClose}
+				TransitionComponent={SlideT}
+				PaperProps={{
+					className: classes[d.color]
+				}}
+			>
+				<AppBar className={classes.cAppBar + ' ' + appBarClasses}>
+					<Toolbar>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={1} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleOpenConfirmClose} aria-label='Close'>
+									<Close />
+								</IconButton>
+							</ItemG>
+							<ItemG xs={4} container>
+								<ToolbarContainer />
+							</ItemG>
+							<ItemG container xs={6} alignItems={'center'}>
+
+								<TextF
+									id={'dashboardName'}
+									InputProps={{
+										style: {
+											color: '#fff'
+										}
+									}}
+									margin='none'
+									value={d.name}
+									// onChange={changeName}
+									onClick={handleOpenSave}
+									reversed
+								/>
+								{renderColorPicker()}
+
+							</ItemG>
+							<ItemG xs={1}>
+								<Button color={'primary'} variant={'outlined'} onClick={handleSave}>
+									<Save style={{ marginRight: 8 }} /> {t('actions.save')}
+								</Button>
+							</ItemG>
+						</ItemG>
+					</Toolbar>
+				</AppBar>
+				{renderConfirmClose()}
+				{renderSaveDialog()}
+				<EditGraph
+					d={d}
+					g={eGraph}
+					handleCloseEG={handleCloseEG}
+					openEditGraph={openEditGraph} />
+				<div style={{ width: '100%', height: 'calc(100% - 70px)' }}>
+					<DropZone color={d.color} onDrop={handleOnDrop}>
+						<ResponsiveReactGridLayout
+							{...props}
+							cols={cols}
+							draggableCancel={".disableDrag"}
+							draggableHandle={".dragHandle"}
+							className={"layout"}
+							rowHeight={25}
+							preventCollision={false}
+							measureBeforeMount={false}
+							onLayoutChange={handleLayoutChange}
+							useCSSTransforms={true}
+						>
+							{renderGraphs()}
+						</ResponsiveReactGridLayout>
+					</DropZone>
+				</div>
+			</Dialog>
+	)
 }
 
 
-const mapStateToProps = (state) => ({
-	d: state.dsSystem.cDash,
-	gs: state.dsSystem.cGraphs,
-	eGraph: state.dsSystem.eGraph
-})
 
-const mapDispatchToProps = dispatch => ({
-	createDash: () => dispatch(createDash()),
-	createGraph: (type) => dispatch(createGraph(type)),
-	editGraphPos: (g) => dispatch(editGraphPos(g)),
-	editDashboard: (d) => dispatch(editDash(d, true)),
-	loadDashboard: (d) => dispatch(loadDash(d)),
-	setGE: g => dispatch(setGE(g)),
-	removeGE: g => dispatch(removeGE(g)),
-	saveDashboard: () => dispatch(saveDashboard(true)),
-	setLayout: (l) => dispatch(setLayout(l)),
-	resetEditDash: () => dispatch(resetEditDash())
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditDashboard))
+export default EditDashboard

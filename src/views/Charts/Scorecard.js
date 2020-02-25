@@ -297,6 +297,7 @@ class ScoreCard extends PureComponent {
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
+						<div>
 						<DateFilterMenu
 							button
 							buttonProps={{
@@ -328,6 +329,7 @@ class ScoreCard extends PureComponent {
 							customSetDate={this.handleSetDate}
 							period={period}
 							t={t} />
+						</div>
 					</Tooltip>
 				</ItemG>
 				<ItemG>

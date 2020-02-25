@@ -1,21 +1,19 @@
 import React from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
-// import CreateProject from 'components/Project/CreateProject';
-import withLocalization from 'components/Localization/T';
-import withSnackbar from 'components/Localization/S';
-import { compose } from 'recompose';
+import { Switch, Route } from 'react-router-dom'
 import CreateDeviceType from 'views/DeviceTypes/CreateDeviceType'
 import DeviceTypes from 'views/DeviceTypes/DeviceTypes'
 
-const registries = (props) => {
+const deviceTypes = (props) => {
 	return (
 		<Switch>
-			<Route path={'/devicetypes/new'} component={(rp) => <CreateDeviceType {...props} {...rp} />} />
-			{/* <Route path={'/registries/new'} component={(rp) => <CreateRegistry {...props} {...rp} />} /> */}
-			{/* <Route path={'/projects/new'} component={(rp) => <CreateProject {...props} {...rp}/>}/> */}
-			<Route path={'/devicetypes'} render={(rp) => <DeviceTypes {...props} {...rp} />} />
+			<Route path={`${props.path}/new`}>
+				<CreateDeviceType {...props} />
+			</Route>
+			<Route path={`${props.path}`}>
+				<DeviceTypes {...props} />
+			</Route>
 		</Switch>
 	)
 }
 
-export default compose(withRouter, withLocalization(), withSnackbar())(registries)
+export default deviceTypes

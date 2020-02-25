@@ -1,10 +1,11 @@
 import React from 'react'
 import { IconButton, Tooltip } from '@material-ui/core';
-import withLocalization from 'components/Localization/T';
+import { useLocalization } from 'hooks';
 
 const ITB = (props) => {
+	const t = useLocalization()
 	return (
-		<Tooltip title={props.t(props.label)} classes={props.tooltipClasses}>
+		<Tooltip title={t(props.label)} classes={props.tooltipClasses}>
 			<IconButton size={props.size} className={props.buttonClass} onClick={props.onClick} style={props.style}>
 				{props.icon}
 			</IconButton>
@@ -12,4 +13,4 @@ const ITB = (props) => {
 	)
 }
 
-export default withLocalization()(ITB)
+export default ITB

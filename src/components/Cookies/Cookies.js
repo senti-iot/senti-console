@@ -1,93 +1,89 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
-import { Snackbar, Button, withStyles } from '@material-ui/core';
-import ItemG from 'components/Grid/ItemG';
-import withLocalization from 'components/Localization/T';
-import { acceptCookiesFunc } from 'redux/settings';
-import CookiesDialog from './CookiesDialog';
-import withSnackbar from 'components/Localization/S';
-import { finishedSaving } from 'redux/settings';
+import React, { useState, useEffect, Fragment } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Snackbar, Button } from '@material-ui/core'
+import ItemG from 'components/Grid/ItemG'
+import { acceptCookiesFunc } from 'redux/settings'
+import CookiesDialog from './CookiesDialog'
+import { finishedSaving } from 'redux/settings'
+import { useSnackbar, useLocalization } from 'hooks'
 
-const styles = theme => ({
-	p: {
-		marginBottom: theme.spacing(1)
-	},
-	title: {
-		fontWeight: 500
-	}
-})
-class Cookies extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			open: false,
-			showSnackBar: true,
+const Cookies = props => {
+	//Hooks
+	const dispatch = useDispatch()
+	const t = useLocalization()
+	const s = useSnackbar().s
+
+	//Redux
+	const cookies = useSelector(state => state.settings.cookies)
+	const saved = useSelector(state => state.settings.saved)
+
+	//State
+	const [open, setOpen] = useState(false)
+	const [showSnackBar, setShowSnackBar] = useState(true)
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+	useEffect(() => {
+		if (saved) {
+			s('snackbars.settingsSaved')
+			dispatch(finishedSaving())
 		}
+	}, [dispatch, s, saved])
+
+	//Handlers
+	//Test
+	//Test2
+
+
+	const handleAcceptCookies = async () => {
+		handleClose()
+		dispatch(await acceptCookiesFunc(true))
 	}
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.saved === true) {
-			this.props.s('snackbars.settingsSaved')
-			this.props.finishedSaving()
-		}
+	const handleOpen = () => {
+		setOpen(true)
+		setShowSnackBar(false)
 	}
-	handleAcceptCookies = () => {
-		this.handleClose()
-		this.props.acceptCookies(true)
+	const handleClose = () => {
+		setOpen(false)
+		setShowSnackBar(true)
 	}
-	handleOpen = () => {
-		this.setState({ open: true, showSnackBar: false });
-	};
-	handleClose = () => {
-		this.setState({ open: false, showSnackBar: true });
-	};
-	renderCookiesPrivacy = () => {
-		const { t, classes } = this.props
+
+	const renderCookiesPrivacy = () => {
 		return <CookiesDialog
-			open={this.state.open}
-			handleClose={this.handleClose}
+			open={open}
+			handleClose={handleClose}
 			t={t}
-			classes={classes}
-			handleAcceptCookies={this.handleAcceptCookies} />
+			handleAcceptCookies={handleAcceptCookies} />
 	}
-	render() {
-		const { t } = this.props
-		const { showSnackBar } = this.state
-		return (
-			<Fragment>
-				<Snackbar
-					open={!this.props.cookies && showSnackBar}
-					ContentProps={{
-						style: { width: '100%' },
-						'aria-describedby': 'message-id',
-					}}
-					message={<span id="message-id">{t('dialogs.cookies.message.snackbar')}</span>}
-					action={
-						<ItemG container justify={'space-between'}>
-							<Button color={'primary'} size={'small'} onClick={this.handleAcceptCookies}>
-								{t('actions.accept')}
-							</Button>
-							<Button color={'primary'} size={'small'} onClick={this.handleOpen}>
-								{t('actions.readMore')}
-							</Button>
-						</ItemG>
-					}
-				/>
-				{this.renderCookiesPrivacy()}
-			</Fragment>
 
-		)
-	}
+	return (
+		<Fragment>
+			<Snackbar
+				open={!cookies && showSnackBar}
+				ContentProps={{
+					style: { width: '100%' },
+					'aria-describedby': 'message-id',
+				}}
+				message={<span id="message-id">{t('dialogs.cookies.message.snackbar')}</span>}
+				action={
+					<ItemG container justify={'space-between'}>
+						<Button color={'primary'} size={'small'} onClick={handleAcceptCookies}>
+							{t('actions.accept')}
+						</Button>
+						<Button color={'primary'} size={'small'} onClick={handleOpen}>
+							{t('actions.readMore')}
+						</Button>
+					</ItemG>
+				}
+			/>
+			{renderCookiesPrivacy()}
+		</Fragment>
+
+	)
 }
-const mapStateToProps = (state) => ({
-	cookies: state.settings.cookies,
-	saved: state.settings.saved
-})
 
-const mapDispatchToProps = dispatch => ({
-	acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val)),
-	finishedSaving: () => dispatch(finishedSaving())
-
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(styles)(withSnackbar()(Cookies))))
+export default Cookies

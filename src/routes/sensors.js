@@ -1,22 +1,20 @@
 import React from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
-import Sensors from 'views/Sensors/Sensors';
-// import CreateProject from 'components/Project/CreateProject';
-import withLocalization from 'components/Localization/T';
-import withSnackbar from 'components/Localization/S';
-import { compose } from 'recompose';
-import CreateSensor from 'views/Sensors/CreateSensor';
-// import CreateRegistry from 'views/Registries/CreateRegistry';
+import { Switch, Route } from 'react-router-dom'
 
-const registries = (props) => {
+const AsyncCreateSensor = React.lazy(() => import('views/Sensors/CreateSensor'))
+const AsyncSensors = React.lazy(() => import('views/Sensors/Sensors'))
+
+const sensors = (props) => {
 	return (
 		<Switch>
-			<Route path={'/sensors/new'} component={(rp) => <CreateSensor {...props} {...rp} />} />
-			{/* <Route path={'/registries/new'} component={(rp) => <CreateRegistry {...props} {...rp} />} /> */}
-			{/* <Route path={'/projects/new'} component={(rp) => <CreateProject {...props} {...rp}/>}/> */}
-			<Route path={'/sensors'} render={(rp) => <Sensors {...props} {...rp} />} />
+			<Route path={`${props.path}/new`}>
+				<AsyncCreateSensor {...props} />
+			</Route>
+			<Route path={`${props.path}`}>
+				<AsyncSensors {...props} />
+			</Route>
 		</Switch>
 	)
 }
 
-export default compose(withRouter, withLocalization(), withSnackbar())(registries)
+export default sensors

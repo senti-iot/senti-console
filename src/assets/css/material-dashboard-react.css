@@ -1,3 +1,6 @@
+body {
+	padding: 0 !important;
+}
 .react-grid-layout {
 	position: relative;
 	transition: height 200ms ease;
@@ -213,10 +216,6 @@ footer ul li a:hover {
 }
 
 @media (max-width: 991px) {
-	body, html {
-		position: relative;
-		overflow-x: hidden;
-	}
 	#bodyClick {
 		height: 100%;
 		width: 100%;

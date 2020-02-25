@@ -1,74 +1,80 @@
-import React, { Component, Fragment } from 'react'
-import { Popover, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
-import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
+import React, { useState, Fragment } from 'react'
+import { Popover, MenuItem, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
 import { ArrowDropDown } from 'variables/icons'
 
-class DInput extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			actionAnchor: null
-		}
-	}
-	handleMenuItem = (e) => {
-		this.props.onChange(e.target.value)
-		this.handleCloseActionsDetails()
-		
-	}
-	handleCloseActionsDetails = event => {
-		this.setState({ actionAnchor: null });
-	}
-	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
-	}
-	render() {
-		const { actionAnchor } = this.state
-		const { classes, value, menuItems } = this.props
 
-		return (
-			<Fragment>
-				<FormControl style={{ maxWidth: this.props.fullWidth ? undefined : 230 }}>
+const DInput = props => {
+	//Hooks
 
-					<OutlinedInput
-						labelWidth={0}
-						aria-owns={actionAnchor ? 'menu-list-grow' : null}
-						value={value} onClick={this.handleOpenActionsDetails}
-						className={classes.formControl}
-						onChange={this.handleMenuItem}
-						endAdornment={<ArrowDropDown className={classes.iconColor} />}
-					/>
-				</FormControl>
+	//Redux
 
-				<Popover
-					open={actionAnchor ? true : false}
-					anchorEl={actionAnchor}
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'right',
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-					}}
-					disablePortal>
-					<Paper>
-						<ClickAwayListener onClickAway={this.handleCloseActionsDetails}>
-							<MenuList>
-								{menuItems.map((m, i) => {
-									return <MenuItem onClick={this.handleMenuItem} key={i} value={m}>
-										{m}
-									</MenuItem>
-								})}
-							</MenuList>
-						</ClickAwayListener>
-					</Paper>
-				
-				</Popover>
-			</Fragment>
-		)
+	//State
+	const [actionAnchor, setActionAnchor] = useState(null)
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+	const handleMenuItem = (e) => {
+		props.onChange(e.target.value)
+		handleCloseActionsDetails()
+
 	}
+	const handleCloseActionsDetails = event => {
+		setActionAnchor(null)
+	}
+	const handleOpenActionsDetails = event => {
+		setActionAnchor(event.currentTarget)
+	}
+
+	const { value, menuItems } = props
+
+	return (
+		<Fragment>
+			<FormControl style={{ maxWidth: props.fullWidth ? undefined : 230 }}>
+
+				<OutlinedInput
+					labelWidth={0}
+					aria-owns={actionAnchor ? 'menu-list-grow' : null}
+					value={value} onClick={handleOpenActionsDetails}
+					onChange={handleMenuItem}
+					endAdornment={<ArrowDropDown />}
+				/>
+			</FormControl>
+
+			<Popover
+				open={actionAnchor ? true : false}
+				anchorEl={actionAnchor}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'right',
+				}}
+				transformOrigin={{
+					vertical: 'top',
+					horizontal: 'right',
+				}}
+				disablePortal>
+				<Paper>
+					<ClickAwayListener onClickAway={handleCloseActionsDetails}>
+						<MenuList>
+							{menuItems.map((m, i) => {
+								return <MenuItem onClick={handleMenuItem} key={i} value={m}>
+									{m}
+								</MenuItem>
+							})}
+						</MenuList>
+					</ClickAwayListener>
+				</Paper>
+
+			</Popover>
+		</Fragment>
+	)
 }
 
-export default withStyles(settingsStyles)(DInput)
+export default DInput
 

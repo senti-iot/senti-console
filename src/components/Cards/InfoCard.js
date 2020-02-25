@@ -1,137 +1,121 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography, IconButton } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, IconButton } from '@material-ui/core';
 import { ExpandMore } from 'variables/icons';
-import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment, PureComponent } from 'react';
-import withLocalization from 'components/Localization/T';
+import React, { useState } from 'react';
 import { ItemG } from 'components';
-import { compose } from 'recompose';
 import cx from 'classnames'
-class InfoCard extends PureComponent {
-	constructor(props) {
-		super(props)
+import { useLocalization } from 'hooks';
+import infoCardStyles from 'assets/jss/components/infocard/infocardStyles';
 
-		this.state = {
-			expanded: props.expanded ? props.expanded : false,
-			leftActions: false,
-		}
-	}
-	handleExpandClick = () => {
-		this.setState({ expanded: !this.state.expanded });
+const InfoCard = React.memo(props => {
+	//Hooks
+	const t = useLocalization()
+	const classes = infoCardStyles()
+	//Redux
+
+	//State
+	const [expanded, setExpanded] = useState(props.expanded ? props.expanded : false)
+
+	//Const
+	const { title, subheader,
+		content, hiddenContent, avatar,
+		noAvatar, leftActions, leftActionContent, color, noRightExpand,
+		whiteAvatar, noHeader, dashboard, headerClasses, bodyClasses } = props;
+
+	const cardClasses = cx({
+		[classes.card]: true,
+		[classes.plainCardClasses]: true,
+		[classes['']]: color,
+		[classes.flexPaper]: props.flexPaper,
+	})
+	const cardContentClasses = cx(
+		{ [classes.flexPaper]: props.flexPaper },
+		{ [classes.dashboard]: dashboard },
+		{ [classes.transition]: true },
+		{ [classes.contentMedia]: props.noPadding },
+		{ [classes.noMargin]: props.noExpand ? false : props.haveMargin ? false : !expanded })
+
+	//Handlers
+	const handleExpandClick = () => {
+		setExpanded(!expanded)
 	};
-	hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
-	renderSubHeader = () => {
-		const { subheader, subheaderTitle } = this.props
-		return subheader ? subheader.toString().length > 200 ?
-			<Fragment>
-				<Typography variant={'caption'}>
-					{subheaderTitle ? subheaderTitle : null}
-				</Typography>
-				<Typography>
-					{subheader ? subheader : null}
-				</Typography>
-			</Fragment>
-			: null : null
 
-	}
-	handleExpandCardClick = () => {
-		this.setState({ cardExpanded: !this.state.cardExpanded })
-	}
-	renderTopAction = () => {
-		const { menuExpand, classes } = this.props
+	const renderTopAction = () => {
+		const { menuExpand, classes } = props
 		return <ItemG container justify={'flex-end'}>
-			{this.props.topAction}
+			{props.topAction}
 			{!menuExpand ? null : <IconButton variant={'text'}
-				onClick={this.handleExpandClick}
-				aria-expanded={this.state.expanded}
+				onClick={handleExpandClick}
+				aria-expanded={expanded}
 				aria-label='Show more'
 			>
-				<ExpandMore className={classnames(classes.expand, {
-					[classes.expandOpen]: this.state.expanded,
+				<ExpandMore className={cx(classes.expand, {
+					[classes.expandOpen]: expanded,
 				})} />
 			</IconButton>}
 		</ItemG>
 	}
-	render() {
-		const { classes, title, subheader,
-			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent, color, noRightExpand, t,
-			whiteAvatar, noHeader, dashboard, headerClasses, bodyClasses } = this.props;
-		const cardClasses = cx({
-			[classes.card]: true,
-			[classes.plainCardCalsses]: true,
-			[classes['']]: color,
-			[classes.flexPaper]: this.props.flexPaper,
-		})
-		return (
-			<Card className={cardClasses}>
-				{noHeader ? null : <CardHeader
-					action={this.renderTopAction()}
-					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar + ' ' + (whiteAvatar ? classes.whiteAvatar : "")}>{avatar}</Avatar>}
-					title={title}
-					disableTypography
-					subheader={subheader}
-					classes={{
-						title: classes.title,
-						action: classes.actions,
-						subheader: classes.subheader,
-						...headerClasses
-					}}
-				>
 
-				</CardHeader>}
-				<CardContent
-					classes={{
-						...bodyClasses
-					}}
-					className={classnames(
-						{ [classes.flexPaper]: this.props.flexPaper },
-						{ [classes.dashboard]: dashboard },
-						{ [classes.transition]: true },
-						{ [classes.contentMedia]: this.props.noPadding },
-						{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>
-					{/* {this.renderSubHeader()} */}
-					{content ? content : null}
-				</CardContent>
-				{!this.props.noExpand ?
-					<React.Fragment>
-						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
-							{leftActionContent}
-						</CardContent> : null}
-						<Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
-							<CardContent className={classnames(
-								{ [classes.contentMedia]: this.props.noHiddenPadding },
-								{ [classes.noPadding]: this.props.noHiddenPadding ? true : false })} /* classes={{ root: classes.root }} */>
-								{hiddenContent ? hiddenContent : null}
-							</CardContent>
-						</Collapse>
-						<CardActions className={classes.actions}>
-							{leftActions ? leftActions : null}
-							{!noRightExpand ? <Button
-								variant={'text'}
-								color={'primary'}
-								onClick={this.handleExpandClick}
-								aria-expanded={this.state.expanded}
-								aria-label='Show more'
-								className={classes.expandPosition}
-							>
-								{this.state.expanded ? t('menus.seeLess') : t('menus.seeMore')}
-								<ExpandMore className={classnames(classes.expand, {
-									[classes.expandOpen]: this.state.expanded,
-								})} />
-							</Button> : null}
-						</CardActions>
-					</React.Fragment>
-					: null}
-			</Card>
-		);
-	}
-}
+	return (
+		<Card className={cardClasses}>
+			{noHeader ? null : <CardHeader
+				action={renderTopAction()}
+				avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar + ' ' + (whiteAvatar ? classes.whiteAvatar : "")}>{avatar}</Avatar>}
+				title={title}
+				disableTypography
+				subheader={subheader}
+				classes={{
+					title: classes.title,
+					action: classes.actions,
+					subheader: classes.subheader,
+					...headerClasses
+				}}
+			>
+
+			</CardHeader>}
+			<CardContent
+				classes={{
+					...bodyClasses
+				}}
+				className={cardContentClasses}>
+				{/* {this.renderSubHeader()} */}
+				{content ? content : null}
+			</CardContent>
+			{!props.noExpand ?
+				<React.Fragment>
+					{leftActionContent ? <CardContent classes={{ root: classes.root }}>
+						{leftActionContent}
+					</CardContent> : null}
+					<Collapse in={expanded} timeout='auto' unmountOnExit>
+						<CardContent className={cx(
+							{ [classes.contentMedia]: props.noHiddenPadding },
+							{ [classes.noPadding]: props.noHiddenPadding ? true : false })} /* classes={{ root: classes.root }} */>
+							{hiddenContent ? hiddenContent : null}
+						</CardContent>
+					</Collapse>
+					<CardActions className={classes.actions}>
+						{leftActions ? leftActions : null}
+						{!noRightExpand ? <Button
+							variant={'text'}
+							color={'primary'}
+							onClick={handleExpandClick}
+							aria-expanded={expanded}
+							aria-label='Show more'
+							className={classes.expandPosition}
+						>
+							{expanded ? t('menus.seeLess') : t('menus.seeMore')}
+							<ExpandMore className={cx(classes.expand, {
+								[classes.expandOpen]: expanded,
+							})} />
+						</Button> : null}
+					</CardActions>
+				</React.Fragment>
+				: null}
+		</Card>
+	);
+})
 
 InfoCard.propTypes = {
-	classes: PropTypes.object.isRequired,
 	topAction: PropTypes.any,
 	content: PropTypes.any,
 	avatar: PropTypes.any,
@@ -145,5 +129,4 @@ InfoCard.propTypes = {
 	hideFacts: PropTypes.bool,
 };
 
-let InfoCardComposed = compose(withLocalization(), withStyles(regularCardStyle))(InfoCard)
-export default InfoCardComposed;
+export default InfoCard;

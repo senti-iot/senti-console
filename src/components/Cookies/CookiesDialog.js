@@ -1,24 +1,26 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles, Link } from '@material-ui/core';
-import { T } from 'components';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle, makeStyles } from '@material-ui/core';
+import { T, Link } from 'components';
 
-const styles = theme => ({
+const styles = makeStyles(theme => ({
 	p: {
 		marginBottom: theme.spacing(1)
+	},
+	title: {
+		fontWeight: 500
 	},
 	dialogContent: {
 		padding: 24,
 		[theme.breakpoints.down('sm')]: {
 			padding: 16
 		}
-	},
-	title: {
-		fontWeight: 500
-	},
-})
-
+	}
+}))
+//Test
+//test2
 const CookiesDialog = (props) => {
-	const { open, handleClose, t, classes, handleAcceptCookies, readOnly, read } = props
+	const classes = styles()
+	const { open, handleClose, t, handleAcceptCookies, readOnly, read } = props
 	return (
 		<Dialog
 			open={open}
@@ -42,11 +44,11 @@ const CookiesDialog = (props) => {
 				<T className={classes.p}>{t('cookies.p.6')}</T>
 				<T>{t('cookies.p.7')}</T>
 				<T className={classes.p}>
-					<Link target="_blank" rel="noopener noreferrer" href={'https://policies.google.com/privacy '}>https://policies.google.com/privacy.</Link>
+					<Link component={'a'} target="_blank" rel="noopener noreferrer" href={'https://policies.google.com/privacy '}>https://policies.google.com/privacy.</Link>
 				</T>
 				<T className={classes.p}>
 					{`${t('cookies.p.8')} `}
-					<Link target="_blank" rel="noopener noreferrer" href={'https://aboutcookies.org/'}>https://aboutcookies.org/</Link>
+					<Link component={'a'} target="_blank" rel="noopener noreferrer" href={'https://aboutcookies.org/'}>https://aboutcookies.org/</Link>
 					{`. ${t('cookies.p.9')}`}
 				</T>
 				<T className={classes.p}>{t('cookies.p.10')}</T>
@@ -68,4 +70,4 @@ const CookiesDialog = (props) => {
 	)
 }
 
-export default withStyles(styles)(CookiesDialog)
+export default CookiesDialog

@@ -1,69 +1,75 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { TablePagination, withWidth, withStyles } from '@material-ui/core'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { TablePagination } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
-import { changeTableRows } from 'redux/appState';
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import { changeTableRows } from 'redux/appState'
 import cx from 'classnames'
+import { useLocalization, useWidth } from 'hooks'
+import tpStyles from 'assets/jss/components/table/tpStyles'
 
-class TP extends Component {
+const TP = props => {
+	//Hooks
+	const dispatch = useDispatch()
+	const t = useLocalization()
+	const classes = tpStyles()
+	const width = useWidth()
+	//Redux
+	const rowsPerPageOptions = useSelector(state => state.settings.rowsPerPageOptions)
+	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
 
-	handleChangeRowsPerPage = e => {
-		this.props.handleChangeRowsPerPage(e.target.value)
+	//State
+
+	//Const
+	const { count, page, disableRowsPerPage } = props
+
+
+	//Handlers
+	const handleChangeRowsPerPage = e => {
+		dispatch(changeTableRows(e.target.value))
 	}
-	handleChangePage = (e, page) => {
-		this.props.handleChangePage(e, page)
+	const handleChangePage = (e, page) => {
+		props.handleChangePage(e, page)
 	}
-	render() {
-		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page, width, disableRowsPerPage } = this.props
-		const selectClasses = cx({
-			[classes.SelectIcon]: disableRowsPerPage,
-			[classes.noRows]: disableRowsPerPage
-		})
-		const iconClass = cx({
-			[classes.noRows]: disableRowsPerPage
-		})
-		return (
-			<TablePagination
-				component='div'
-				count={count}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				backIconButtonProps={{
-					'aria-label': t('actions.nextPage'),
-				}}
-				nextIconButtonProps={{
-					'aria-label': t('actions.previousPage'),
-				}}
-				classes={{
-					spacer: classes.spacer,
-					input: classes.spaceBetween,
-					caption: classes.tablePaginationCaption
-				}}
-				labelDisplayedRows={({ from, to, count }) => disableRowsPerPage ? `` : `${from}-${to} ${t('tables.of')} ${count}`}
-				onChangePage={this.handleChangePage}
-				onChangeRowsPerPage={this.handleChangeRowsPerPage}
-				labelRowsPerPage={isWidthUp('sm', width) ? disableRowsPerPage ? `` : t('tables.rowsPerPage') : ''}
-				rowsPerPageOptions={rowsPerPageOptions}
-				SelectProps={{
-					renderValue: value => value,
-					classes: {
-						select: selectClasses,
-						icon: iconClass
-					}
-				}}
-			/>
-		)
-	}
+
+	//Classes
+	const selectClasses = cx({
+		[classes.SelectIcon]: disableRowsPerPage,
+		[classes.noRows]: disableRowsPerPage
+	})
+	const iconClass = cx({
+		[classes.noRows]: disableRowsPerPage
+	})
+	return (
+		<TablePagination
+			component='div'
+			count={count}
+			rowsPerPage={rowsPerPage}
+			page={page}
+			backIconButtonProps={{
+				'aria-label': t('actions.nextPage'),
+			}}
+			nextIconButtonProps={{
+				'aria-label': t('actions.previousPage'),
+			}}
+			classes={{
+				spacer: classes.spacer,
+				input: classes.spaceBetween,
+				caption: classes.tablePaginationCaption
+			}}
+			labelDisplayedRows={({ from, to, count }) => disableRowsPerPage ? `` : `${from}-${to} ${t('tables.of')} ${count}`}
+			onChangePage={handleChangePage}
+			onChangeRowsPerPage={handleChangeRowsPerPage}
+			labelRowsPerPage={isWidthUp('sm', width) ? disableRowsPerPage ? `` : t('tables.rowsPerPage') : ''}
+			rowsPerPageOptions={rowsPerPageOptions}
+			SelectProps={{
+				renderValue: value => value,
+				classes: {
+					select: selectClasses,
+					icon: iconClass
+				}
+			}}
+		/>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	rowsPerPageOptions: state.settings.rowsPerPageOptions,
-	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	handleChangeRowsPerPage: (value) => dispatch(changeTableRows(value)),
-})
-
-export default withStyles(devicetableStyles)(withWidth()(connect(mapStateToProps, mapDispatchToProps)(TP)))
+export default TP

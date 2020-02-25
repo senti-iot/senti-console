@@ -1,173 +1,165 @@
-import React, { Component, Fragment } from 'react'
-import { Route, Switch, Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React, { useState, useEffect, Fragment } from 'react'
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 // import Toolbar from 'components/Toolbar/Toolbar'
 import { ViewList, StarBorder } from 'variables/icons'
 import TableToolbar from 'components/Table/TableToolbar'
 import FavoritesTable from 'components/Favorites/FavoritesTable'
-import { GridContainer, CircularLoader } from 'components'
-import { Paper, withStyles, Fade } from '@material-ui/core'
+import { GridContainer } from 'components'
+import { Paper, Fade } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
-import { filterItems, handleRequestSort } from 'variables/functions'
-import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites'
+import { handleRequestSort } from 'variables/functions'
+import { finishedSaving, removeFromFav, /* addToFav, */ /* isFav */ } from 'redux/favorites'
 import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
 import { customFilterItems } from 'variables/Filters';
+import { useSnackbar, useLocalization, useMatch } from 'hooks'
 
-class Favorites extends Component {
-	constructor(props) {
-		super(props)
 
-		this.state = {
-			selected: [],
-			order: 'asc',
-			orderBy: 'name',
-			route: 0,
-			filters: {
-				keyword: '',
-			}
-		}
-		props.setBC('favorites')
-		props.setHeader('sidebar.favorites', false, '', 'favorites')
-		props.setTabs({
-			id: 'favorites',
-			tabs: this.tabs(),
-			route: 0
-		})
-	}
-	options = () => {
-		const { t } = this.props
-		return [
-			{ label: t('menus.favorites.remove'), icon: StarBorder, func: this.removeFromFavs }
-		]
-	}
-	removeFromFavs = () => { 
-		const { selected } = this.state
-		const { favorites } = this.props
+
+const Favorites = props => {
+	//Hooks
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const match = useMatch()
+	const history = useHistory()
+	const classes = projectStyles()
+
+	//Redux
+	const favorites = useSelector(state => state.data.favorites)
+	const saved = useSelector(state => state.favorites.saved)
+	const filters = useSelector(state => state.appState.filters.favorites)
+
+	//State
+	const [selected, setSelected] = useState([])
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('name')
+	// const [route, setRoute] = useState(0)
+	const [stateFilters, setStateFilters] = useState({ keyword: '' })
+	const [anchorElMenu, setAnchorElMenu] = useState(null) // added
+
+	//Const
+	const { setBC, setHeader, setTabs } = props
+	const favoritesHeaders = [
+		{ id: 'type', label: '' },
+		{ id: 'name', label: t('favorites.fields.name') },
+		{ id: 'type', label: t('favorites.fields.type') }
+	]
+
+	const dTypes = [
+		{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks /> },
+		{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage /> },
+		{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub /> },
+		{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
+		{ value: 'org', label: t('favorites.types.org'), icon: <Business /> }
+	]
+
+	const ft = [
+		{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
+		{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: dTypes },
+		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+	]
+
+	const removeFromFavs = () => {
 		selected.forEach(f => {
 			let fav = favorites[favorites.findIndex(fe => fe.id === f)]
-			this.props.removeFromFav(fav)
+			dispatch(removeFromFav(fav))
 		})
-		this.setState({ anchorElMenu: null })
+		setAnchorElMenu(null)
 	}
-	favoritesHeaders = () => { 
-		const { t } = this.props
-		return [
-			{ id: 'type', label: '' },
-			{ id: 'name', label: t('favorites.fields.name') },
-			{ id: 'type', label: t('favorites.fields.type') }
-		]
-	}
-	tabs = () => {
-		return [{ id: 0, title: this.props.t('tooltips.listView'), label: <ViewList />, url: `${this.props.match.path}/list` }]
-	}
-	dTypes = () => { 
-		const { t } = this.props
-		return [
-			{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks/> },
-			{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage/> },
-			{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub/> },
-			{ value: 'user', label: t('favorites.types.user'), icon: <Person/> },
-			{ value: 'org', label: t('favorites.types.org'), icon: <Business/> },
-		]
-	}
-	ft = () => {
-		const { t } = this.props
-		return [
-			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
-			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() },
-			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
-		]
-	}
-	addFilter = (f) => {
-		let cFilters = this.state.filters.custom
+
+	const options = [
+		{ label: t('menus.favorites.remove'), icon: StarBorder, func: removeFromFavs }
+	]
+	//useCallbacks
+
+	//useEffects
+
+	useEffect(() => {
+		if (saved === true) {
+			s('snackbars.favorite.manyRemoved')
+			dispatch(finishedSaving())
+			setSelected([])
+		}
+	}, [dispatch, s, saved])
+
+	useEffect(() => {
+		const tabs = [{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `list` }]
+
+		setBC('favorites')
+		setHeader('sidebar.favorites', false, '', 'favorites')
+		setTabs({
+			id: 'favorites',
+			tabs: tabs,
+			route: 0
+		})
+
+	}, [setBC, setHeader, setTabs, t])
+	//Handlers
+
+	const addFilter = (f) => {
+		let cFilters = stateFilters.custom
 		let id = cFilters.length
 		cFilters.push({ ...f, id: id })
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
+		setStateFilters({ ...stateFilters, custom: cFilters })
 		return id
 	}
-	editFilter = (f) => {
-		let cFilters = this.state.filters.custom
+	const editFilter = (f) => {
+		let cFilters = stateFilters.custom
 		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
 		cFilters[filterIndex] = f
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
+		setStateFilters({ ...stateFilters, custom: cFilters })
+
 	}
-	removeFilter = (fId) => {
-		let cFilters = this.state.filters.custom
+	const removeFilter = (fId) => {
+		let cFilters = stateFilters.custom
 		cFilters = cFilters.reduce((newFilters, f) => {
 			if (f.id !== fId) {
 				newFilters.push(f)
 			}
 			return newFilters
 		}, [])
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
+		setStateFilters({ ...stateFilters, custom: cFilters })
+
 	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
-	}
-	componentDidMount = () => {
-		this.handleRequestSort(null, 'name', 'asc')
-	}
-	componentDidUpdate = () => {
-		if (this.props.saved === true) {
-			this.props.s('snackbars.favorite.manyRemoved')
-			this.props.finishedSaving()
-			this.setState({ selected: [] })
-		}
-	}
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
+	const filterItemsFunc = (data) => {
+		const rFilters = filters
+		return customFilterItems(data, rFilters)
 	}
 
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
+	const handleToolbarMenuOpen = e => {
+		e.stopPropagation()
+		setAnchorElMenu(e.currentTarget)
 	}
-	handleSelectAllClick = (event, checked) => {
+
+	const handleToolbarMenuClose = e => {
+		e.stopPropagation();
+		setAnchorElMenu(null)
+	}
+	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.favorites.map(n => n.id) })
+			setSelected(favorites.map(n => n.id))
 			return;
 		}
-		this.setState({ selected: [] })
+		setSelected([])
 	}
 
-	handleRequestSort = (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
+	const handleRequestSortFunc = (event, property, way) => {
+		let newOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			newOrder = 'asc'
 		}
-		handleRequestSort(property, order, this.props.favorites)
-		this.setState({ order, orderBy: property })
+		handleRequestSort(property, order, favorites)
+		setOrder(newOrder)
+		setOrderBy(property)
 	}
 
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
+	const handleFilterKeyword = (value) => {
+		setStateFilters({ ...stateFilters, keyword: value })
 	}
-	handleCheckboxClick = (event, id) => {
+
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -183,99 +175,64 @@ class Favorites extends Component {
 				selected.slice(selectedIndex + 1),
 			);
 		}
-
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
 	}
 
-	handleClick = id => e => {
+	const handleClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: id, prevURL: this.props.match.path })
+		history.push({ pathname: id, prevURL: match.path })
 	}
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
 		return <TableToolbar
-			ft={this.ft()}
-			addFilter={this.addFilter}
-			editFilter={this.editFilter}
-			removeFilter={this.removeFilter}
+			ft={ft}
+			addFilter={addFilter}
+			editFilter={editFilter}
+			removeFilter={removeFilter}
 			reduxKey={'favorites'}
-			anchorElMenu={this.state.anchorElMenu}
-			handleToolbarMenuClose={this.handleToolbarMenuClose}
-			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+			anchorElMenu={anchorElMenu}
+			handleToolbarMenuClose={handleToolbarMenuClose}
+			handleToolbarMenuOpen={handleToolbarMenuOpen}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
 		/>
 	}
-	renderTable = () => {
-		const { t, favorites } = this.props
-		const { selected, orderBy, order } = this.state
+	const renderTable = () => {
 		return <FavoritesTable
 			selected={selected}
-			handleClick={this.handleClick}
-			handleCheckboxClick={this.handleCheckboxClick}
-			handleSelectAllClick={this.handleSelectAllClick}
-			data={this.filterItems(favorites)}
-			tableHead={this.favoritesHeaders()}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
-			handleRequestSort={this.handleRequestSort}
-			handleOpenUnassignDevice={this.handleOpenUnassignDevice}
+			handleClick={handleClick}
+			handleCheckboxClick={handleCheckboxClick}
+			handleSelectAllClick={handleSelectAllClick}
+			data={filterItemsFunc(favorites)}
+			tableHead={favoritesHeaders}
+			handleFilterKeyword={handleFilterKeyword}
+			handleRequestSort={handleRequestSortFunc}
 			orderBy={orderBy}
 			order={order}
-			filters={this.state.filters}
+			filters={stateFilters}
 			t={t}
 		/>
 	}
-	renderFavorites = () => {
-		const { classes } = this.props
-		const { loading } = this.state
+	const renderFavorites = () => {
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable()}
-				{/* {this.renderConfirmDelete()} */}
-			</Paper></Fade>
+			<Fade in={true}>
+				<Paper className={classes.root}>
+					{renderTableToolBar()}
+					{renderTable()}
+				</Paper>
+			</Fade>
 			}
 		</GridContainer>
 	}
-	render() {
-		// const { filters, route } = this.state
-		// const { favorites } = this.props
-		return (
-			<Fragment>
-				{/* <Toolbar
-					data={favorites}
-					filters={filters}
-					history={this.props.history}
-					route={route}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs()}
-				/> */}
-				<Switch>
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderFavorites()} />
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
-				</Switch>
-			</Fragment>
-		)
-	}
+
+	return (
+		<Fragment>
+			<Switch>
+				<Route path={`${match.path}/list`} render={() => renderFavorites()} />
+				<Redirect path={`${match.path}`} to={`${match.path}/list`} />
+			</Switch>
+		</Fragment>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	filters: state.appState.filters.favorites
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Favorites))
+export default Favorites

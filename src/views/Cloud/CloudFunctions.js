@@ -1,163 +1,160 @@
-import { Paper, withStyles, IconButton, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
+import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, handleRequestSort } from 'variables/functions';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Redirect, Route, Switch, useHistory, useRouteMatch, useLocation } from 'react-router-dom';
+import { handleRequestSort } from 'variables/functions';
 import { /* Delete, PictureAsPdf, DeviceHub, LibraryBooks,  LayersClear, ViewModule, */ Edit, ViewList, Add, Star, StarBorder, CloudDownload, Delete } from 'variables/icons';
 import { GridContainer, CircularLoader, DeleteDialog } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { getFunctions, setFunctions, sortData } from 'redux/data';
+import { getFunctions, /* setFunctions, */ sortData } from 'redux/data';
 import FunctionTable from 'components/Cloud/FunctionTable';
 import { deleteCFunction } from 'variables/dataFunctions';
+import { useSnackbar, useLocalization } from 'hooks'
+import cloudfunctionsStyles from 'assets/jss/components/cloudfunctions/cloudfunctionsStyles';
 
-class Functions extends Component {
-	constructor(props) {
-		super(props)
+const Functions = props => {
+	//Hooks
+	const s = useSnackbar().s
+	const t = useLocalization()
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const match = useRouteMatch()
+	const location = useLocation()
+	const classes = cloudfunctionsStyles()
+	//Redux
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const favorites = useSelector(state => state.data.favorites)
+	const saved = useSelector(state => state.favorites.saved)
+	const functions = useSelector(state => state.data.functions)
+	const filters = useSelector(state => state.appState.filters.functions)
+	const user = useSelector(state => state.settings.user)
+	const loading = useSelector(state => !state.data.gotfunctions)
+	//State
 
-		this.state = {
-			selected: [],
-			openDelete: false,
-			route: 0,
-			order: 'asc',
-			orderBy: 'id',
-			filters: {
-				keyword: '',
-			}
+	const [selected, setSelected] = useState([])
+	const [openDelete, setOpenDelete] = useState(false)
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('id')
+
+
+	//Const
+	const { setHeader, setBC, setTabs } = props
+
+	const dTypes = [
+		{ value: 0, label: t("cloudfunctions.fields.types.function") },
+		{ value: 1, label: t("cloudfunctions.fields.types.external") },
+	]
+
+	const ft = [
+		{ key: 'name', name: t('cloudfunctions.fields.name'), type: 'string' },
+		{ key: 'type', name: t('cloudfunctions.fields.type'), type: 'dropDown', options: dTypes },
+		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+	]
+
+	const functionsHeader = [
+		{ id: 'name', label: t('cloudfunctions.fields.name') },
+		{ id: 'type', label: t('cloudfunctions.fields.type') },
+	]
+
+
+	const options = () => {
+		let func = functions[functions.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: func.id,
+			name: func.name,
+			type: 'cloudfunction',
+			path: `/function/${func.id}`
 		}
-		props.setHeader('cloudfunctions.pageTitle', false, '', 'manage.cloudfunctions')
-		props.setBC('cloudfunctions')
-		props.setTabs({
-			id: 'functions',
-			tabs: this.tabs(),
-			route: this.handleTabs()
-		})
+		let isFavorite = dispatch(isFav(favObj))
+		let allOptions = [
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+		]
+		return allOptions
 	}
-	//#region Constants
-	tabs = () => {
-		const { t, match } = this.props
-		return [
+
+	//useEffects
+
+	useEffect(() => {
+		const tabs = [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
 			// { id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
-	}
-	dTypes = () => {
-		const { t } = this.props
-		return [
-			{ value: 0, label: t("cloudfunctions.fields.types.function") },
-			{ value: 1, label: t("cloudfunctions.fields.types.external") },
-		]
-	}
-	ft = () => {
-		const { t } = this.props
-		return [
-			{ key: 'name', name: t('cloudfunctions.fields.name'), type: 'string' },
-			// { key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			// { key: 'devices[0].start', name: t('cloudfunctions.fields.activeDeviceStartDate'), type: 'date' },
-			// { key: 'created', name: t('cloudfunctions.fields.created'), type: 'date' },
-			{ key: 'type', name: t('cloudfunctions.fields.type'), type: 'dropDown', options: this.dTypes() },
-			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
-		]
-	}
-	functionsHeader = () => {
-		const { t } = this.props
-		return [
-			// { id: 'id', label: t('functions.fields.id') },
-			{ id: 'name', label: t('cloudfunctions.fields.name') },
-			{ id: 'type', label: t('cloudfunctions.fields.type') },
-		]
-	}
-	options = () => {
-		const { t, isFav, functions } = this.props
-		const { selected } = this.state
-		let collection = functions[functions.findIndex(d => d.id === selected[0])]
-		let favObj = {
-			id: collection.id,
-			name: collection.name,
-			type: 'function',
-			path: `/function/${collection.id}`
-		}
-		let isFavorite = isFav(favObj)
-		let allOptions = [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			// { label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			// { label: t('menus.assign.deviceToFunction'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			// { label: t('menus.unassign.deviceFromFunction'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: functions[functions.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
-			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
-		]
-		return allOptions
-	}
-	//#endregion
-
-	//#region Life Cycle
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.handleTabs()
-		if (this.props.user && this.props.accessLevel) {
-			this.getData(true)
-		}
-
-	}
-
-	componentDidUpdate = () => {
-		const { t, saved, s, isFav, finishedSaving } = this.props
-		if (saved === true) {
-			const { functions } = this.props
-			const { selected } = this.state
-			let collection = functions[functions.findIndex(d => d.id === selected[0])]
-			if (collection) {
-				if (isFav({ id: collection.id, type: 'function' })) {
-					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.cloudfunction') })
-					finishedSaving()
-					this.setState({ selected: [] })
-				}
-				if (!isFav({ id: collection.id, type: 'function' })) {
-					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.cloudfunction') })
-					finishedSaving()
-					this.setState({ selected: [] })
+		const handleTabs = () => {
+			if (location.pathname.includes('grid'))
+				return 1
+			else {
+				if (location.pathname.includes('favorites'))
+					return 2
+				else {
+					return 0
 				}
 			}
 		}
-	}
-	componentWillUnmount = () => {
-		// this._isMounted = 0
-	}
-	//#endregion
+		setHeader('cloudfunctions.pageTitle', false, '', 'manage.cloudfunctions')
+		setBC('cloudfunctions')
+		setTabs({
+			id: 'functions',
+			tabs: tabs,
+			route: handleTabs()
+		})
 
-	//#region Functions
-	addNewFunction = () => this.props.history.push({ pathname: `/functions/new`, prevURL: '/functions/list' })
+	}, [location.pathname, match.url, setBC, setHeader, setTabs, t])
 
-	getFavs = () => {
-		const { order, orderBy } = this.state
-		const { favorites, functions } = this.props
-		let favs = favorites.filter(f => f.type === 'function')
+
+
+	useEffect(() => {
+		if (user && accessLevel) {
+			getData(true)
+		}
+		// eslint-disable-next-line
+	}, [])
+
+	useEffect(() => {
+		if (saved === true) {
+			let func = functions[functions.findIndex(d => d.id === selected[0])]
+			if (func) {
+				if (dispatch(isFav({ id: func.id, type: 'cloudfunction' }))) {
+					s('snackbars.favorite.saved', { name: func.name, type: t('favorites.types.cloudfunction') })
+					dispatch(finishedSaving())
+					setSelected([])
+				}
+				if (!dispatch(isFav({ id: func.id, type: 'cloudfunction' }))) {
+					s('snackbars.favorite.removed', { name: func.name, type: t('favorites.types.cloudfunction') })
+					dispatch(finishedSaving())
+					setSelected([])
+				}
+			}
+		}
+	}, [dispatch, functions, s, saved, selected, t])
+
+
+	//Handlers
+	const addNewFunction = () => history.push({ pathname: `/functions/new`, prevURL: '/functions/list' })
+
+	const getFavs = () => {
+		let favs = favorites.filter(f => f.type === 'cloudfunction')
 		let favFunctions = favs.map(f => {
 			return functions[functions.findIndex(d => d.id === f.id)]
 		})
 		favFunctions = handleRequestSort(orderBy, order, favFunctions)
 		return favFunctions
 	}
-	addToFav = (favObj) => {
-		this.props.addToFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const addToFavorites = (favObj) => {
+		dispatch(addToFav(favObj))
 	}
-	removeFromFav = (favObj) => {
-		this.props.removeFromFav(favObj)
-		this.setState({ anchorElMenu: null })
+	const removeFromFavorites = (favObj) => {
+		dispatch(removeFromFav(favObj))
 	}
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
+	const filterItemsFunc = (data) => {
+		const rFilters = filters
+		return customFilterItems(data, rFilters)
 	}
-	snackBarMessages = (msg, display) => {
-		const { functions, s } = this.props
-		const { selected } = this.state
+	const snackBarMessages = (msg, display) => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -166,91 +163,58 @@ class Functions extends Component {
 				s('snackbars.exported')
 				break;
 			case 3:
-				s('snackbars.assign.deviceToFunction', { collection: ``, what: 'Device' })
+				s('snackbars.assign.deviceToFunction', { func: ``, what: 'Device' })
 				break;
 			case 6:
-				s('snackbars.assign.deviceToFunction', { collection: `${functions[functions.findIndex(c => c.id === selected[0])].name}`, device: display })
+				s('snackbars.assign.deviceToFunction', { func: `${functions[functions.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
 				break;
 		}
 	}
-	reload = async () => {
-		await this.getData(true)
-	}
-	getData = async (reload) => {
-		const { getFunctions, /* setFunctions, */ accessLevel, user } = this.props
-		// setFunctions()
+	const getData = async (reload) => {
 		if (accessLevel || user) {
 			if (reload)
-				getFunctions(true, user.org.id, accessLevel.apisuperuser ? true : false)
+				dispatch(getFunctions(true, user.org.id, accessLevel.apisuperuser ? true : false))
 		}
 	}
 	//#endregion
 
 	//#region Handlers
 
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/function/${selected[0]}/edit`, prevURL: `/functions/list` })
+	const handleEdit = () => {
+		history.push({ pathname: `/function/${selected[0]}/edit`, prevURL: `/functions/list` })
 	}
 
-	handleTabs = () => {
-		const { location } = this.props
-		if (location.pathname.includes('grid'))
-			// this.setState({ route: 1 })
-			return 1
-		else {
-			if (location.pathname.includes('favorites'))
-				// this.setState({ route: 2 })
-				return 2
-			else {
-				// this.setState({ route: 0 })
-				return 0
-			}
+	const handleRequestSortFunc = key => (event, property, way) => {
+		let newOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			newOrder = 'asc'
 		}
+		dispatch(sortData(key, property, order))
+		setOrder(newOrder)
+		setOrderBy(property)
 	}
-	handleRequestSort = key => (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
-		}
-		this.props.sortData(key, property, order)
-		this.setState({ order, orderBy: property })
-	}
-	handleFunctionClick = id => e => {
+	const handleFunctionClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/function/' + id)
+		history.push('/function/' + id)
 	}
 
-	handleFavClick = id => e => {
+	const handleFavClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: '/function/' + id, prevURL: '/functions/favorites' })
-	}
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
+		history.push({ pathname: '/function/' + id, prevURL: '/functions/favorites' })
 	}
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-
-	handleSelectAllClick = (arr, checked) => {
+	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: arr })
+			setSelected(arr)
 			return;
 		}
-		this.setState({ selected: [] })
+		setSelected([])
 	}
 
-	handleCheckboxClick = (event, id) => {
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
@@ -267,34 +231,31 @@ class Functions extends Component {
 			);
 		}
 
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
+	}
+
+	const handleOpenDeleteDialog = () => {
+		setOpenDelete(true)
 	}
 
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
+	const handleCloseDeleteDialog = () => {
+		setOpenDelete(false)
 	}
 
-
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-
-	handleDeleteCloudFunctions = () => {
-		const { selected } = this.state
+	const handleDeleteCloudFunctions = () => {
 		Promise.all([selected.map(u => {
 			return deleteCFunction(u)
 		})]).then(async () => {
-			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
-			await this.getData(true).then(
-				() => this.snackBarMessages(1)
+			setOpenDelete(false)
+			setSelected([])
+			await getData(true).then(
+				() => snackBarMessages(1)
 			)
 		})
 	}
 
-	renderDeleteDialog = () => {
-		const { openDelete, selected } = this.state
-		const { t, functions } = this.props
+	const renderDeleteDialog = () => {
 		let data = selected.map(s => functions[functions.findIndex(d => d.id === s)])
 		return <DeleteDialog
 			t={t}
@@ -302,120 +263,88 @@ class Functions extends Component {
 			message={'dialogs.delete.message.cloudfunctions'}
 			open={openDelete}
 			icon={<CloudDownload />}
-			handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-			handleDelete={this.handleDeleteCloudFunctions}
+			handleCloseDeleteDialog={handleCloseDeleteDialog}
+			handleDelete={handleDeleteCloudFunctions}
 			data={data}
 			dataKey={'name'}
 		/>
 	}
 
-	renderTableToolBarContent = () => {
-		const { t } = this.props
+	const renderTableToolBarContent = () => {
 		return <Fragment>
 			<Tooltip title={t('menus.create.cloudfunction')}>
-				<IconButton aria-label='Add new cloud function' onClick={this.addNewFunction}>
+				<IconButton aria-label='Add new cloud function' onClick={addNewFunction}>
 					<Add />
 				</IconButton>
 			</Tooltip>
 		</Fragment>
 	}
 
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft}
 			reduxKey={'functions'}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
-			content={this.renderTableToolBarContent()}
+			content={renderTableToolBarContent()}
 		/>
 	}
 
-	renderTable = (items, handleClick, key) => {
-		const { t } = this.props
-		const { order, orderBy, selected } = this.state
+	const renderTable = (items, handleClick, key) => {
 		return <FunctionTable
-			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
+			data={filterItemsFunc(items)}
+			handleCheckboxClick={handleCheckboxClick}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort(key)}
-			handleSelectAllClick={this.handleSelectAllClick}
+			handleRequestSort={handleRequestSortFunc(key)}
+			handleSelectAllClick={handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
 			selected={selected}
 			t={t}
-			tableHead={this.functionsHeader()}
+			tableHead={functionsHeader}
 		/>
 	}
 
-	renderCards = () => {
-		const { /* t, history, functions, */ loading } = this.props
+	const renderCards = () => {
 		return loading ? <CircularLoader /> :
 			// <FunctionsCards functions={this.filterItems(functions)} t={t} history={history} />
 			null
 	}
 
-	renderFavorites = () => {
-		const { classes, loading } = this.props
+	const renderFavorites = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
-				{this.renderDeleteDialog()}
+				{renderTableToolBar()}
+				{renderTable(getFavs(), handleFavClick, 'favorites')}
+				{renderDeleteDialog()}
 			</Paper>
 			}
 		</GridContainer>
 	}
 
-	renderFunctions = () => {
-		const { classes, functions, loading } = this.props
+	const renderFunctions = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(functions, this.handleFunctionClick, 'functions')}
-				{this.renderDeleteDialog()}
+				{renderTableToolBar()}
+				{renderTable(functions, handleFunctionClick, 'functions')}
+				{renderDeleteDialog()}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
-	render() {
-		const { match } = this.props
-		return (
-			<Fragment>
-				<Switch>
-					<Route path={`${match.path}/list`} render={() => this.renderFunctions()} />
-					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
-				</Switch>
+	return (
+		<Fragment>
+			<Switch>
+				<Route path={`${match.path}/list`} render={() => renderFunctions()} />
+				<Route path={`${match.path}/grid`} render={() => renderCards()} />
+				<Route path={`${match.path}/favorites`} render={() => renderFavorites()} />
+				<Redirect path={`${match.path}`} to={`${match.path}/list`} />
+			</Switch>
 
-			</Fragment>
-		)
-	}
+		</Fragment>
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	functions: state.data.functions,
-	loading: false, //!state.data.gotfunctions,
-	filters: state.appState.filters.functions,
-	user: state.settings.user
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getFunctions: (reload, customerID, ua) => dispatch(getFunctions(reload, customerID, ua)),
-	setFunctions: () => dispatch(setFunctions()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Functions))
+export default Functions

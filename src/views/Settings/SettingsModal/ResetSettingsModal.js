@@ -1,41 +1,45 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { resetSettings } from 'redux/settings';
+import { useLocalization } from 'hooks';
 
-class ResetSettingsModal extends Component {
-	handleClose = () => this.props.handleClose()
-	handleYes = () => {
-		this.props.resetSettings()
-		this.props.handleClose(true)
+// const mapStateToProps = (state) => ({
+
+// })
+
+// const mapDispatchToProps = dispatch => ({
+// 	resetSettings: () => dispatch(resetSettings())
+// })
+
+const ResetSettingsModal = props => {
+	const t = useLocalization()
+	const dispatch = useDispatch()
+
+
+	const handleClose = () => props.handleClose()
+	const handleYes = () => {
+		dispatch(resetSettings())
+		props.handleClose(true)
 	}
-	
-	render() {
-		const { t, open, classes } = this.props
-		return (
-			<Dialog open={open} onClose={this.handleClose} aria-labelledby="simple-dialog-title" >
-				<DialogTitle disableTypography id="simple-dialog-title">{t('settings.reset.resetSettings')}</DialogTitle>
-				<DialogContent>
-					{t('settings.reset.message')}
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={this.handleClose}>
-						{t('actions.no')}
-					</Button>
-					<Button onClick={this.handleYes} className={classes.red}>
-						{t('actions.yes')}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		)
-	}
+
+	const { open, classes } = props
+	return (
+		<Dialog open={open} onClose={handleClose} aria-labelledby="simple-dialog-title" >
+			<DialogTitle disableTypography id="simple-dialog-title">{t('settings.reset.resetSettings')}</DialogTitle>
+			<DialogContent>
+				{t('settings.reset.message')}
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={handleClose}>
+					{t('actions.no')}
+				</Button>
+				<Button onClick={handleYes} className={classes.red}>
+					{t('actions.yes')}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	)
 }
-const mapStateToProps = (state) => ({
-	
-})
 
-const mapDispatchToProps = dispatch => ({
-	resetSettings: () => dispatch(resetSettings())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ResetSettingsModal)
+export default ResetSettingsModal

@@ -1,56 +1,22 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
-import { settings } from './settings'
-import { localization } from './localization'
-import { favorites } from './favorites'
-import { doi } from './doi'
-import { appState } from './appState'
-import { dateTime } from './dateTime'
-import { data } from './data'
-import thunk from 'redux-thunk';
-import { globalSearch } from './globalSearch'
-import { weather } from './weather'
-import { dsSystem } from './dsSystem'
-import { serviceWorkerReducer } from './serviceWorkerRedux'
-// import zendesk from 'lib/stores/ChatStore'
-let reducers = combineReducers({
-	settings,
-	localization,
-	favorites,
-	doi,
-	appState,
-	dateTime,
-	data,
-	globalSearch,
-	weather,
-	dsSystem,
-	serviceWorkerReducer /* zendesk */
-})
-/**
-*	 Debugging purposes
-**/
-// const logger = store => next => action => {
-//  console.info('dispatching', action)
-// 	let result = next(action)
-// 	console.info('next state', store.getState())
-// 	return result
-// }
-const rootReducer = (state, action) => {
-	if (action.type === 'RESET_APP') {
-		state = undefined
-		// state = combineReducers({
-		// 	settings,
-		// 	localization,
-		// 	favorites, doi, appState, dateTime, data, globalSearch, weather, dsSystem, serviceWorkerReducer
-		// })
-	}
-	// return state
-	return reducers(state, action)
-}
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
+import rootReducer from './rootReducer'
+
 let composeMiddleware = compose(
 	applyMiddleware(thunk),
 	window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
 )
-const store = createStore(rootReducer, composeMiddleware)
+const configureStore = () => {
+	const store = createStore(rootReducer, composeMiddleware)
+	if (process.env.NODE_ENV !== 'production') {
+		if (module.hot) {
+			module.hot.accept('./rootReducer', () => {
+				store.replaceReducer(rootReducer)
+			})
+		}
+	}
+	return store
+}
 
 
-export default store
+export default configureStore

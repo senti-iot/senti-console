@@ -476,7 +476,7 @@
 			"collection": "Datasamling",
 			"device": "Enhed",
 			"devicetype": "Enhedstype",
-			"function": "Cloud funktion",
+			"cloudfunction": "Cloud funktion",
 			"org": "Organisation",
 			"project": "Projekt",
 			"registry": "Register",
@@ -1011,6 +1011,7 @@
 		}
 	},
 	"sidebar": {
+		"legacy": "SentiWi",
 		"api": "API",
 		"cloudfunction": "Cloud funktion",
 		"cloudfunctions": "Cloud funktioner",
@@ -1116,7 +1117,7 @@
 	},
 	"tabs": {
 		"metadata": "Enhedsmetadata",
-		"cloudfunctions": "Cloud Funktioner",
+		"cloudfunctions": "Cloud funktioner",
 		"activeDevice": "Aktiv enhed",
 		"code": "Kildekode",
 		"collections": "Datasamlinger",

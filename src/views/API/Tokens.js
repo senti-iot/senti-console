@@ -1,211 +1,172 @@
-import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Fade, Tooltip } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
-import TokensTable from 'components/API/TokensTable';
-import TableToolbar from 'components/Table/TableToolbar';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, dateTimeFormatter } from 'variables/functions';
-import { Delete, ViewList, Close, Add, Code } from 'variables/icons';
-import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, /* AssignProject */ } from 'components'
-// import TokensCards from './TokensCards';
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import { customFilterItems } from 'variables/Filters';
-import { getTokens, setTokens, sortData } from 'redux/data';
-import { Link } from 'react-router-dom'
-import CreateToken from './CreateToken';
-import { deleteTokens } from 'variables/dataRegistry';
+import { Paper, Dialog, IconButton, DialogContent, DialogTitle, DialogActions, Fade, Tooltip } from '@material-ui/core'
+import TokensTable from 'components/API/TokensTable'
+import TableToolbar from 'components/Table/TableToolbar'
+import React, { useState, Fragment, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { dateTimeFormatter } from 'variables/functions'
+import { Delete, ViewList, Close, Add, Code } from 'variables/icons'
+import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, /* AssignProject */ } from 'components'
+import { customFilterItems } from 'variables/Filters'
+import { getTokens, setTokens, sortData } from 'redux/data'
+import CreateToken from './CreateToken'
+import { deleteTokens } from 'variables/dataRegistry'
+import { useLocalization, useMatch, useSnackbar } from 'hooks'
+import tokensStyles from 'assets/jss/components/api/tokensStyles'
 
-class Tokens extends Component {
-	constructor(props) {
-		super(props)
+const Tokens = props => {
 
-		this.state = {
-			selected: [],
-			openToken: false,
-			openNewToken: false,
-			openDeleteS: false,
-			openDeleteM: false,
-			route: 0,
-			order: 'asc',
-			orderBy: 'id',
-			filters: {
-				keyword: '',
-			}
-		}
-		props.setHeader('sidebar.api', false, '', 'manage.api')
-		props.setBC('api')
-		props.setTabs({
-			id: 'api',
-			tabs: this.tabs(),
-			route: this.handleTabs()
-		})
-	}
-	//#region Constants
-	tabs = () => {
-		const { t, match } = this.props
-		return [
-			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
-			// { id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
-			// { id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
-		]
-	}
-	dProtocols = () => {
-		const { t } = this.props
-		return [
-			{ value: 0, label: t("tokens.fields.protocols.none") },
-			{ value: 1, label: t("tokens.fields.protocols.mqtt") },
-			{ value: 2, label: t("tokens.fields.protocols.http") },
-			{ value: 3, label: `${t('tokens.fields.protocols.mqtt')} & ${t('tokens.fields.protocols.http')}` }
-		]
-	}
-	ft = () => {
-		const { t } = this.props
-		return [
-			{ key: 'name', name: t('tokens.fields.name'), type: 'string' },
-			// { key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
-			// { key: 'created', name: t('tokens.fields.created'), type: 'date' },
-			// { key: 'protocol', name: t('tokens.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
-			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
-		]
-	}
-	tokensHeader = () => {
-		const { t } = this.props
-		return [
-			{ id: 'id', label: t('tokens.fields.id') },
-			{ id: 'name', label: t('tokens.fields.name') },
-			{ id: 'created', label: t('registries.fields.created') }
-		]
-	}
-	options = () => {
-		const { t } = this.props
+	//Hooks
+	const dispatch = useDispatch()
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const match = useMatch()
+	const classes = tokensStyles()
+
+	//Redux
+	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const tokens = useSelector(state => state.data.tokens)
+	const loading = useSelector(state => !state.data.gottokens)
+	const filters = useSelector(state => state.appState.filters.tokens)
+	const user = useSelector(state => state.settings.user)
+	const devices = useSelector(state => state.data.sensors)
+	const registries = useSelector(state => state.data.registries)
+	const deviceTypes = useSelector(state => state.data.deviceTypes)
+
+	//State
+	const [selected, setSelected] = useState([])
+	const [openToken, setOpenToken] = useState(false)
+	const [openNewToken, setOpenNewToken] = useState(false)
+	const [openDeleteS, setOpenDeleteS] = useState(false)
+	const [openDeleteM, setOpenDeleteM] = useState(false)
+	const [order, setOrder] = useState('asc')
+	const [orderBy, setOrderBy] = useState('id')
+	const [token, setToken] = useState(null) // added
+
+	//Const
+	const { setHeader, setBC, setTabs } = props
+	const ft = [
+		{ key: 'name', name: t('tokens.fields.name'), type: 'string' },
+		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+	]
+
+	const tokensHeader = [
+		{ id: 'id', label: t('tokens.fields.id') },
+		{ id: 'name', label: t('tokens.fields.name') },
+		{ id: 'created', label: t('registries.fields.created') }
+	]
+
+	const options = () => {
 		let allOptions = [
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialogM, icon: Delete },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialogM, icon: Delete },
 		]
 		return allOptions
 	}
-	//#endregion
 
-	//#region Life Cycle
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.handleTabs()
-		this.getData()
+	//useCallbacks
+	const getData = useCallback(async (reload) => {
+		dispatch(setTokens())
+		if (accessLevel || user) {
+			if (reload || tokens.length === 0)
+				dispatch(getTokens(user.id, true, accessLevel.apisuperuser ? true : false))
+		}
+	}, [accessLevel, dispatch, tokens.length, user])
 
-	}
+	//useEffects
 
-	componentDidUpdate = () => {
-	}
-	//#endregion
+	useEffect(() => {
+		getData()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+
+		const tabs = [
+			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `list` }
+		]
+
+		setHeader('sidebar.api', false, '', 'manage.api')
+		setBC('api')
+		setTabs({
+			id: 'api',
+			tabs: tabs,
+			route: 0
+		})
+
+	}, [setBC, setHeader, setTabs, t])
+
+	//Handlers
+
 
 	//#region Functions
-	addNewToken = () => {
-		this.setState({
-			openNewToken: true
-		})
+	const handleAddNewToken = () => {
+		setOpenNewToken(true)
 	}
 
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
+	const filterItemsFunc = (data) => {
+		return customFilterItems(data, filters)
 	}
-	snackBarTokens = (token) => {
-		const { s } = this.props
-		// const { selected } = this.state
+	const snackBarTokens = (token) => {
 		switch (token) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
-	reload = async () => {
-		await this.getData(true)
-	}
-	getData = async (reload) => {
-		const { getTokens, /* setTokens, */ accessLevel, user, tokens } = this.props
-		// setTokens()
-		if (accessLevel || user) {
-			if (reload || tokens.length === 0)
-				getTokens(user.id, true, accessLevel.apisuperuser ? true : false)
-		}
-	}
+
+
 	//#endregion
 
 	//#region Handlers
 
-	handleTabs = () => {
-		const { location } = this.props
-		if (location.pathname.includes('grid'))
-			// this.setState({ route: 1 })
-			return 1
-	}
-	handleRequestSort = key => (event, property, way) => {
-		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		if (property !== this.state.orderBy) {
-			order = 'asc'
+	const handleRequestSortFunc = key => (event, property, way) => {
+		let newOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
+		if (property !== orderBy) {
+			newOrder = 'asc'
 		}
-		this.props.sortData(key, property, order)
-		this.setState({ order, orderBy: property })
-	}
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
+		dispatch(sortData(key, property, newOrder))
+		setOrder(newOrder)
+		setOrderBy(property)
 	}
 
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
-	}
-	handleDeleteTokens = async () => {
-		const { selected } = this.state
+	const handleDeleteTokens = async () => {
+		// const { selected } = this.state
 		let r = await deleteTokens(selected)
 		if (r) {
-			this.setState({
-				selected: [],
-				openDeleteM: false,
-				anchorElMenu: null
-			})
-			this.getData(true)
-			this.snackBarTokens(1)
+			setSelected([])
+			setOpenDeleteM(false)
+			getData(true)
+			snackBarTokens(1)
 		}
 	}
-	handleDeleteToken = async () => {
-		const { token } = this.state
+	const handleDeleteToken = async () => {
 		let r = await deleteTokens([token.id])
 		if (r) {
-			this.setState({
-				selected: [],
-				token: null,
-				openToken: false,
-				openDeleteS: false,
-				anchorElMenu: false
-			})
-			this.getData(true)
-			this.snackBarTokens(1)
+			setSelected([])
+			setToken(null)
+			setOpenToken(false)
+			setOpenDeleteS(false)
+			getData(true)
+			snackBarTokens(1)
 		}
 	}
-	handleSelectAllClick = (arr, checked) => {
+	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
-			this.setState({ selected: arr })
-			return;
+			setSelected(arr)
+			return
 		}
-		this.setState({ selected: [] })
+		setSelected([])
 	}
-	handleCheckboxClick = (event, id) => {
+
+	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -214,47 +175,50 @@ class Tokens extends Component {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
-
-		this.setState({ selected: newSelected })
+		setSelected(newSelected)
 	}
 
-	handleOpenDeleteDialogM = () => {
-		this.setState({ openDeleteM: true, anchorElMenu: null })
+	const handleOpenDeleteDialogM = () => {
+		setOpenDeleteM(true)
 	}
 
-	handleCloseDeleteDialogM = () => {
-		this.setState({ openDeleteM: false })
+	const handleCloseDeleteDialogM = () => {
+		setOpenDeleteM(false)
 	}
 
-	handleOpenDeleteDialogS = () => {
-		this.setState({ openDeleteS: true, anchorElMenu: null })
+	const handleOpenDeleteDialogS = () => {
+		setOpenDeleteS(true)
 	}
 
-	handleCloseDeleteDialogS = () => {
-		this.setState({ openDeleteS: false })
+	const handleCloseDeleteDialogS = () => {
+		setOpenDeleteS(false)
 	}
 
-	handleOpenToken = token => () => {
-		this.setState({
-			openToken: true,
-			token: token
-		})
+	const handleOpenToken = token => () => {
+		setOpenToken(true)
+		setToken(token)
+
 	}
-	handleCloseToken = () => {
-		this.setState({
-			openToken: false,
-			token: null
-		})
+	const handleCloseToken = () => {
+		setOpenToken(false)
+		setToken(null)
 	}
-	renderReference = (type, tId) => {
-		const { devices, registries, deviceTypes } = this.props
+	const handleGetDeviceName = tId => {
+		let dExists = devices.findIndex(d => d.id === tId)
+		if (dExists > -1) {
+			return devices[dExists].name
+		}
+		else return tId
+
+	}
+	const renderReference = (type, tId) => {
 		switch (type) {
 			case 0:
 				return <Link to={{ pathname: `/sensor/${tId}`, prevURL: '/api/list' }}>
 					<Info>
-						{devices[devices.findIndex(d => d.id === tId)].name}
+						{handleGetDeviceName(tId)}
 					</Info>
 				</Link>
 			case 1:
@@ -271,11 +235,10 @@ class Tokens extends Component {
 				</Link>
 
 			default:
-				break;
+				break
 		}
 	}
-	renderType = (type) => {
-		const { t } = this.props
+	const renderType = (type) => {
 		switch (type) {
 			case 0:
 				return t('tokens.fields.types.device')
@@ -285,15 +248,14 @@ class Tokens extends Component {
 				return t('tokens.fields.types.devicetype')
 
 			default:
-				break;
+				break
 		}
 	}
-	renderToken = () => {
-		let { openToken, token } = this.state
-		let { t, classes } = this.props
+	const renderToken = () => {
+
 		return <Dialog
 			open={openToken}
-			onClose={this.handleCloseToken}
+			onClose={handleCloseToken}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 			PaperProps={{
@@ -308,12 +270,12 @@ class Tokens extends Component {
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{token.name}
 							<Tooltip title={t('actions.delete')}>
-								<IconButton className={classes.closeButton} onClick={this.handleOpenDeleteDialogS}>
+								<IconButton className={classes.closeButton} onClick={handleOpenDeleteDialogS}>
 									<Delete />
 								</IconButton>
 							</Tooltip>
 							<Tooltip title={t('actions.close')}>
-								<IconButton aria-label="Close" className={classes.iconButton} onClick={this.handleCloseToken}>
+								<IconButton aria-label="Close" onClick={handleCloseToken}>
 									<Close />
 								</IconButton>
 							</Tooltip>
@@ -331,45 +293,39 @@ class Tokens extends Component {
 							</ItemG>
 							<ItemG xs={6}>
 								<Caption>{t('tokens.fields.type')}</Caption>
-								<Info>{this.renderType(token.type)}</Info>
+								<Info>{renderType(token.type)}</Info>
 							</ItemG>
 							<ItemG xs={6}>
 								<Caption>{t('tokens.fields.reference')}</Caption>
-								{this.renderReference(token.type, token.type_id)}
+								{renderReference(token.type, token.type_id)}
 							</ItemG>
 						</ItemG>
 					</DialogContent>
 					<DialogActions>
-						{/* <Button variant={'outlined'} onClick={e => {
-							this.handleCheckboxClick(e, token.id)
-							this.handleOpenDeleteDialogS()
-							// this.handleCloseToken()
-						}} className={classes.redButton}><Close /> {t('actions.delete')}</Button> */}
+
 					</DialogActions>
 				</Fragment>
 				: <div />}
 		</Dialog>
 	}
-	renderDeleteDialogMultiple = () => {
-		const { openDeleteM, selected } = this.state
-		const { t, tokens } = this.props
+	const renderDeleteDialogMultiple = () => {
+
 		let data = selected.map(s => tokens[tokens.findIndex(t => t.id === s)])
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.tokens'}
 			message={'dialogs.delete.message.tokens'}
 			open={openDeleteM}
-			handleCloseDeleteDialog={this.handleCloseDeleteDialogM}
+			handleCloseDeleteDialog={handleCloseDeleteDialogM}
 			icon={<Code />}
-			handleDelete={this.handleDeleteTokens}
+			handleDelete={handleDeleteTokens}
 			data={data}
 			dataKey={'name'}
 		/>
 	}
 
-	renderDeleteDialogSingle = () => {
-		const { openDeleteS, token } = this.state
-		const { t } = this.props
+	const renderDeleteDialogSingle = () => {
+
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.token'}
@@ -377,129 +333,84 @@ class Tokens extends Component {
 			messageOpts={{ token: token ? token.name : '' }}
 			open={openDeleteS}
 			single
-			handleCloseDeleteDialog={this.handleCloseDeleteDialogS}
-			handleDelete={this.handleDeleteToken}
+			handleCloseDeleteDialog={handleCloseDeleteDialogS}
+			handleDelete={handleDeleteToken}
 		/>
 	}
 
 
-	renderTableToolBarContent = () => {
-		const { t } = this.props
+	const renderTableToolBarContent = () => {
 		return <Fragment>
 			<Tooltip title={t('menus.create.token')}>
-				<IconButton aria-label='Add new token' onClick={this.addNewToken}>
+				<IconButton aria-label='Add new token' onClick={handleAddNewToken}>
 					<Add />
 				</IconButton>
 			</Tooltip>
 		</Fragment>
 	}
 
-	renderTableToolBar = () => {
-		const { t } = this.props
-		const { selected } = this.state
+	const renderTableToolBar = () => {
 		return <TableToolbar
-			ft={this.ft()}
+			ft={ft}
 			reduxKey={'tokens'}
 			numSelected={selected.length}
-			options={this.options}
+			options={options}
 			t={t}
-			content={this.renderTableToolBarContent()}
+			content={renderTableToolBarContent()}
 		/>
 	}
-	renderNewToken = () => {
-		const { t } = this.props
-		const { openNewToken } = this.state
+	const renderNewToken = () => {
 		return <CreateToken
 			t={t}
 			openToken={openNewToken}
 			handleClose={() => {
-				this.setState({
-					openNewToken: false
-				})
+				setOpenNewToken(false)
+				getData(true)
+				// this.setState({
+				// 	openNewToken: false
+				// })
 			}}
 		/>
 	}
-	renderTable = (items, handleClick, key) => {
-		const { t } = this.props
-		const { order, orderBy, selected } = this.state
+	const renderTable = (items, handleClick, key) => {
 		return <Fragment>
-			{this.renderToken()}
-			{this.renderNewToken()}
+			{renderToken()}
+			{renderNewToken()}
 			<TokensTable
-				data={this.filterItems(items)}
-				handleCheckboxClick={this.handleCheckboxClick}
-				handleClick={this.handleOpenToken}
-				handleRequestSort={this.handleRequestSort(key)}
-				handleSelectAllClick={this.handleSelectAllClick}
+				data={filterItemsFunc(items)}
+				handleCheckboxClick={handleCheckboxClick}
+				handleClick={handleOpenToken}
+				handleRequestSort={handleRequestSortFunc(key)}
+				handleSelectAllClick={handleSelectAllClick}
 				order={order}
 				orderBy={orderBy}
 				selected={selected}
 				t={t}
-				tableHead={this.tokensHeader()}
+				tableHead={tokensHeader}
 			/>
 		</Fragment>
 	}
 
-	renderCards = () => {
-		const { /* t, history, tokens, */ loading } = this.props
-		return loading ? <CircularLoader /> :
-			// <TokenCards tokens={this.filterItems(tokens)} t={t} history={history} />
-			null
-	}
-
-	renderTokens = () => {
-		const { classes, tokens, loading } = this.props
-		// const { selected } = this.state
+	const renderTokens = () => {
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{this.renderTableToolBar()}
-				{this.renderTable(tokens, this.handleTokenClick, 'tokens')}
-				{this.renderDeleteDialogMultiple()}
-				{this.renderDeleteDialogSingle()}
+				{renderTableToolBar()}
+				{renderTable(tokens, null, 'tokens')}
+				{renderDeleteDialogMultiple()}
+				{renderDeleteDialogSingle()}
 			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
-	render() {
-		// const { tokens, route, filters } = this.state
-		const { /* history,  */match } = this.props
-		return (
-			<Fragment>
-				<Switch>
-					<Route path={`${match.path}/list`} render={() => this.renderTokens()} />
-					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					{/* <Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} /> */}
-					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
-				</Switch>
+	return (
 
-			</Fragment>
-		)
-	}
+		<Switch>
+			<Route path={`${match.path}/list`} render={() => renderTokens()} />
+			<Redirect path={`${match.path}`} to={`${match.path}/list`} />
+		</Switch>
+
+	)
 }
 
-const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-	favorites: state.data.favorites,
-	saved: state.favorites.saved,
-	tokens: state.data.tokens,
-	loading: !state.data.gottokens,
-	filters: state.appState.filters.tokens,
-	user: state.settings.user,
-	devices: state.data.sensors,
-	registries: state.data.registries,
-	deviceTypes: state.data.deviceTypes
-})
-
-const mapDispatchToProps = (dispatch) => ({
-	isFav: (favObj) => dispatch(isFav(favObj)),
-	addToFav: (favObj) => dispatch(addToFav(favObj)),
-	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
-	getTokens: (reload, customerID, ua) => dispatch(getTokens(reload, customerID, ua)),
-	setTokens: () => dispatch(setTokens()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles, { withTheme: true })(Tokens))
+export default Tokens

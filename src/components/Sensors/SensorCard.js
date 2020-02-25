@@ -1,36 +1,31 @@
-import React, { Component } from 'react'
-import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core'
-import { ItemGrid, SmallCard, ItemG, T } from 'components'
-import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
-import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
-import { withRouter } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import { Button } from '@material-ui/core'
+import { SmallCard, ItemG, T, Link } from 'components'
+import { Edit, InputIcon, Block, CheckCircle, DeviceHub } from 'variables/icons'
+import { useHistory } from 'react-router-dom'
+import { useLocalization } from 'hooks'
+import Dropdown from 'components/Dropdown/Dropdown'
+import sensorCardStyles from 'assets/jss/components/sensors/sensorCardStyles'
+const SensorCard = props => {
+	//Hooks
+	const t = useLocalization()
+	const history = useHistory()
+	const classes = sensorCardStyles()
+	//Redux
 
-class SensorCard extends Component {
-	constructor(props) {
-	  super(props)
+	//State
 
-	  this.state = {
-		 actionAnchor: null,
-		 img: null
-	  }
-	}
+	//Const
+	const { p, /* classes */ } = props
 
-	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
-	}
+	//useCallbacks
 
-	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
-	}
+	//useEffects
 
-	handleEdit = () => {
-	}
+	//Handlers
 
-	handleDeleteSensor = () => {
-	}
-	renderCommunication = (val) => {
-		const { t, classes } = this.props
+
+	const renderCommunication = (val) => {
 		switch (val) {
 			case 0:
 				return <ItemG container>
@@ -50,61 +45,38 @@ class SensorCard extends Component {
 				break;
 		}
 	}
-	render() {
-		const { p, classes, t } = this.props
-		const { actionAnchor } = this.state
-		return (
 
-			<SmallCard
-				avatar={<DeviceHub className={classes.bigIcon} />}
-				key={p.id}
-				title={p.name}
-				subheader={p.uuid}
-				img={this.state.img}
-				topAction={
-					<ItemGrid noMargin noPadding>
-						<IconButton
-							aria-label='More'
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup='true'
-							onClick={this.handleOpenActionsDetails}>
-							<MoreVert />
-						</IconButton>
-						<Menu
-							id='long-menu'
-							anchorEl={actionAnchor}
-							open={Boolean(actionAnchor)}
-							onClose={this.handleCloseActionsDetails}
-							PaperProps={{
-								style: {
-									minWidth: 200
-								}
-							}}>
-							<MenuItem onClick={() => this.props.history.push(`/sensor/${p.id}/edit`)}>
-								<Edit className={classes.leftIcon} />{t('menus.edit')}
-							</MenuItem>
-						</Menu>
-					</ItemGrid>
-				}
-				content={<ItemG container>
-					<ItemG xs={12}>
-						<T className={classes.smallText} paragraph={false}>
-							<InputIcon className={classes.icon} />
-							<Link to={{ pathname: `/sensor/${p.reg_id}` }}>{p.reg_name}</Link>
-						</T>
-					</ItemG>
-					<ItemG xs={12}>
-						{this.renderCommunication(p.communication)}
-					</ItemG>
-				</ItemG>}
-				rightActions={
-					<Button variant={'text'} color={'primary'} onClick={() => this.props.history.push(`/sensor/${p.id}`)}>
-						{t('menus.seeMore')}
-					</Button>
-				}
-			/>
-		)
-	}
+	const handleEditSensor = () => history.push({ pathname: `/sensor/${p.id}/edit`, prevURL: `/sensors/grid` })
+	const handleGoToSensor = () => history.push({ pathname: `/sensor/${p.id}`, prevURL: `/sensors/grid` })
+	return (
+		<SmallCard
+			avatar={< DeviceHub className={classes.bigIcon} />}
+			key={p.id}
+			title={p.name}
+			subheader={p.uuid}
+			topAction={
+				<Dropdown menuItems={[
+					{ label: t('menus.edit'), icon: Edit, func: handleEditSensor }
+				]} />
+			}
+			content={< ItemG container >
+				<ItemG xs={12}>
+					<T className={classes.smallText} paragraph={false}>
+						<InputIcon className={classes.icon} />
+						<Link to={{ pathname: `/sensor/${p.reg_id}` }}>{p.reg_name}</Link>
+					</T>
+				</ItemG>
+				<ItemG xs={12}>
+					{renderCommunication(p.communication)}
+				</ItemG>
+			</ItemG >}
+			rightActions={
+				< Button variant={'text'} color={'primary'} onClick={handleGoToSensor}>
+					{t('menus.seeMore')}
+				</Button >
+			}
+		/>
+	)
 }
 
-export default withRouter(withStyles(regularCardStyle)(SensorCard))
+export default SensorCard
