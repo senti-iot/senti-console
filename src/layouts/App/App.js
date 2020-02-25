@@ -168,7 +168,6 @@ function App(props) {
 								<Switch>
 									{cookie.load('SESSION') ?
 										appRoutes.map((prop, key) => {
-											console.log(prop)
 											if (prop.divider) {
 												return null
 											}

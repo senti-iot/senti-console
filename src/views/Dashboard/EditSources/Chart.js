@@ -1,20 +1,20 @@
-import React, { Fragment, useState } from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components';
-import { ExpandMore } from 'variables/icons';
-import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons';
-import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
-import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
-import { useLocalization } from 'hooks';
-import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles';
+import React, { Fragment, useState, useEffect } from "react"
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core'
+import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components'
+import { ExpandMore } from 'variables/icons'
+import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons'
+import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
+import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
+import { useLocalization } from 'hooks'
+import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles'
 
 
 const ESChart = (props) => {
-	const { sensor, g, cfs } = props
-
+	const { sensor, g, cfs, getSensor } = props
 	//Hooks
 	const t = useLocalization()
 	const classes = editSourceStyles()
+
 	//State
 	const [dataSourceExp, setDataSourceExp] = useState(false)
 	const [generalExp, setGeneralExp] = useState(false)
@@ -31,24 +31,32 @@ const ESChart = (props) => {
 		]
 	}
 
+	//useEffect
+	useEffect(() => {
+		if ((!sensor && g.dataSource.deviceId) || (g.dataSource.deviceId && (sensor.id !== g.dataSource.deviceId))) {
+			let id = g.dataSource.deviceId
+			getSensor(id)
+		}
+		//eslint-disable-next-line
+	}, [])
 	//Handlers
 
 	const handleExpand = (prop, val) => e => {
 		switch (prop) {
 			case 'dataSourceExp':
 				setDataSourceExp(val ? val : !dataSourceExp)
-				break;
+				break
 			case 'generalExp':
 				setGeneralExp(val ? val : !generalExp)
-				break;
+				break
 			case 'openSensor':
 				setOpenSensor(val ? val : !openSensor)
-				break;
+				break
 			case 'openCF':
 				setOpenCF(val ? val : !openCF)
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 

@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF, ITB } from 'components';
-import { ExpandMore, Add, Delete } from 'variables/icons';
-import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
-import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
-import { useLocalization } from 'hooks';
-import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles';
+import React, { Fragment, useState } from "react"
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core'
+import { T, ItemG, DSelect, TextF, ITB } from 'components'
+import { ExpandMore, Add, Delete } from 'variables/icons'
+import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
+import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
+import { useLocalization } from 'hooks'
+import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles'
 
 //@Andrei
 const ESScorecard = props => {
@@ -47,30 +47,30 @@ const ESScorecard = props => {
 		switch (prop) {
 			case 'dataSourceExp':
 				setDataSourceExp(val ? val : !dataSourceExp)
-				break;
+				break
 			case 'generalExp':
 				setGeneralExp(val ? val : !generalExp)
-				break;
+				break
 			case 'openSensor':
 				setOpenSensor({
 					...openSensor,
 					[i]: val ? val : !openSensor[i]
 				})
-				break;
+				break
 			case 'openCF':
 				setOpenCF({
 					...openCF,
 					[i]: val ? val : !openCF[i]
 				})
-				break;
+				break
 			case 'scorecard':
 				setScorecard({
 					...scorecard,
 					[i]: val ? val : !scorecard[i]
 				})
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -260,7 +260,7 @@ const ESScorecard = props => {
 												callBack={handleEditCF(i)}
 											/>
 											<TextF
-												id={'cfSelect'}
+												id={'cfSelect' + i}
 												label={t('dashboard.fields.cf')}
 												value={cfs[cfs.findIndex(f => f.id === ds.cf)] ? cfs[cfs.findIndex(f => f.id === ds.cf)].name : t('no.function')}
 												onClick={handleExpand('openCF', true, i)}

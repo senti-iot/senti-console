@@ -1,15 +1,15 @@
-import React, { } from "react";
-import { ItemG } from 'components';
+import React, { } from "react"
+import { ItemG } from 'components'
 import { useSelector } from 'react-redux'
 
-import { editGraph } from 'redux/dsSystem';
+import { editGraph } from 'redux/dsSystem'
 import ESChart from './EditSources/Chart'
-import ESGauge from './EditSources/Gauge';
-import ESScorecard from './EditSources/Scorecard';
-import ESMap from './EditSources/Map';
-import ESMSChart from './EditSources/MSChart';
-import { useLocalization, useDispatch } from 'hooks';
-import ESScorecardAB from './EditSources/ScorecardAB';
+import ESGauge from './EditSources/Gauge'
+import ESScorecard from './EditSources/Scorecard'
+import ESMap from './EditSources/Map'
+import ESMSChart from './EditSources/MSChart'
+import { useLocalization, useDispatch } from 'hooks'
+import ESScorecardAB from './EditSources/ScorecardAB'
 
 
 const EditDataSource = props => {
@@ -83,15 +83,13 @@ const EditDataSource = props => {
 			case 6:
 				return <ESMSChart
 					handleEditGraph={handleEditGraph}
-					getSensor={getSensor}
 					getDeviceType={getDeviceType}
-					sensor={sensor}
 					deviceType={deviceType}
 					g={g}
 					cfs={cfs}
 				/>
 			default:
-				break;
+				break
 		}
 	}
 	return renderSource()

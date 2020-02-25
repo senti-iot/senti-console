@@ -48,7 +48,6 @@ const AssignSensorsDialog = (props) => {
 		else {
 			sS.push({ id: sId, name: sName })
 		}
-		console.log('Updated sensor list')
 
 		setSelectedSensors(sS)
 	}

@@ -1,19 +1,19 @@
-import { Button, Fade, Hidden, DialogContent, DialogActions, DialogTitle, Dialog } from '@material-ui/core';
-import dashboardStyle from 'assets/jss/components/dashboards/dashboardStyles';
-import GridContainer from 'components/Grid/GridContainer';
-import React, { Fragment, useState, useEffect } from 'react';
-import DashboardPanel from './DashboardPanel.js';
-import CreateDashboard from './CreateDashboard.js';
-import { Add, ImportExport } from 'variables/icons.js';
-import { ThemeProvider } from '@material-ui/styles';
-import EditDashboard from './EditDashboard.js';
-import { reset, importDashboard } from 'redux/dsSystem.js';
-import { finishedSaving } from 'redux/dsSystem';
-import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab';
-import { TextF } from 'components/index.js';
+import { Button, Fade, Hidden, DialogContent, DialogActions, DialogTitle, Dialog } from '@material-ui/core'
+import dashboardStyle from 'assets/jss/components/dashboards/dashboardStyles'
+import GridContainer from 'components/Grid/GridContainer'
+import React, { Fragment, useState, useEffect } from 'react'
+import DashboardPanel from './DashboardPanel.js'
+import CreateDashboard from './CreateDashboard.js'
+import { Add, ImportExport } from 'variables/icons.js'
+import { ThemeProvider } from '@material-ui/styles'
+import EditDashboard from './EditDashboard.js'
+import { reset, importDashboard } from 'redux/dsSystem.js'
+import { finishedSaving } from 'redux/dsSystem'
+import { SpeedDial, SpeedDialIcon, SpeedDialAction } from '@material-ui/lab'
+import { TextF } from 'components/index.js'
 import { nLightTheme, nDarkTheme } from 'variables/themes'
 import { getWL } from 'variables/storage'
-import { useLocalization, useSnackbar, useDispatch, useSelector } from 'hooks/index.js';
+import { useLocalization, useSnackbar, useDispatch, useSelector } from 'hooks/index.js'
 
 
 const Dashboard = (props) => {
@@ -50,7 +50,7 @@ const Dashboard = (props) => {
 		})
 		return () => {
 
-		};
+		}
 		// eslint-disable-next-line
 	}, [])
 
@@ -79,13 +79,13 @@ const Dashboard = (props) => {
 		setOpenAddDash(false)
 	}
 	const handleOpenEDT = (eDash) => {
-		setOpenEditDash(true)
 		setEDash(eDash)
+		setOpenEditDash(true)
 	}
 	const handleCloseEDT = () => {
 		dispatch(reset())
-		setOpenEditDash(false)
 		setEDash(null)
+		setOpenEditDash(false)
 	}
 	const handleOpenImport = e => {
 		e.preventDefault()

@@ -1,11 +1,11 @@
-import React, { } from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components';
-import { ExpandMore } from 'variables/icons';
-import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
-import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
-import { useLocalization, useState } from 'hooks';
-import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles';
+import React, { useEffect } from "react"
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core'
+import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components'
+import { ExpandMore } from 'variables/icons'
+import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
+import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
+import { useLocalization, useState } from 'hooks'
+import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles'
 
 
 const ESGauge = props => {
@@ -21,30 +21,36 @@ const ESGauge = props => {
 	const [openCF, setOpenCF] = useState(false)
 
 	//Const
-	const { sensor, g, cfs } = props
+	const { sensor, g, cfs, getSensor } = props
 
 	//useCallbacks
 
 	//useEffects
-
+	useEffect(() => {
+		if ((!sensor && g.dataSource.deviceId) || (g.dataSource.deviceId && (sensor.id !== g.dataSource.deviceId))) {
+			let id = g.dataSource.deviceId
+			getSensor(id)
+		}
+		//eslint-disable-next-line
+	}, [])
 	//Handlers
 
 	const handleExpand = (prop, val) => e => {
 		switch (prop) {
 			case 'dataSourceExp':
 				setDataSourceExp(val !== undefined ? val : !dataSourceExp)
-				break;
+				break
 			case 'generalExp':
 				setGeneralExp(val !== undefined ? val : !generalExp)
-				break;
+				break
 			case 'openSensor':
 				setOpenSensor(val !== undefined ? val : !openSensor)
-				break;
+				break
 			case 'openCF':
 				setOpenCF(val !== undefined ? val : !openCF)
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 
