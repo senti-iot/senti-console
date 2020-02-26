@@ -1,20 +1,22 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core';
-import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components';
-import { ExpandMore } from 'variables/icons';
-import { /* PieChartRounded, DonutLargeRounded,  */BarChart, ShowChart } from 'variables/icons';
+import React, { useState, Fragment, useEffect } from "react"
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core'
+import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components'
+import { ExpandMore } from 'variables/icons'
+import { /* PieChartRounded, DonutLargeRounded,  */BarChart, ShowChart } from 'variables/icons'
 // import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
-import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
-import { useLocalization } from 'hooks';
-import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
-import AssignSensorsDialog from 'components/AssignComponents/AssignSensorsDialog';
+import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
+import { useLocalization } from 'hooks'
+import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog'
+import AssignSensorsDialog from 'components/AssignComponents/AssignSensorsDialog'
+import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles'
 
 
 const ESMSChart = (props) => {
-	const { classes, g, cfs, deviceType } = props
+	const { g, cfs, deviceType, getDeviceType } = props
 
 	//Hooks
 	const t = useLocalization()
+	const classes = editSourceStyles()
 
 	//State
 	const [dataSourceExp, setDataSourceExp] = useState(false)
@@ -33,7 +35,7 @@ const ESMSChart = (props) => {
 	}
 
 	useEffect(() => {
-		props.getDeviceType(g.dataSource.deviceTypeId)
+		getDeviceType(g.dataSource.deviceTypeId)
 
 		//eslint-disable-next-line
 	}, [])
@@ -43,18 +45,18 @@ const ESMSChart = (props) => {
 		switch (prop) {
 			case 'dataSourceExp':
 				setDataSourceExp(val ? val : !dataSourceExp)
-				break;
+				break
 			case 'generalExp':
 				setGeneralExp(val ? val : !generalExp)
-				break;
+				break
 			case 'openSensorType':
 				setOpenSensorType(val ? val : !openSensorType)
-				break;
+				break
 			case 'openCF':
 				setOpenCF(val ? val : !openCF)
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -199,8 +201,10 @@ const ESMSChart = (props) => {
 												open={openSensors}
 												handleClose={() => setOpenSensors(false)}
 												handleSave={handleEditSensors}
+												selected={g.dataSource.deviceIds.map(d => d)}
+												deviceTypeId={g.dataSource.deviceTypeId}
 											/>
-											<Button onClick={() => setOpenSensors(true)}>
+											<Button style={{ marginBottom: "8px", width: 230 }} variant={'outlined'} onClick={() => setOpenSensors(true)}>
 												{g.dataSource.deviceIds.length > 0 ? t('menus.select.selectedDevices', { count: g.dataSource.deviceIds.length }) : t('menus.select.devices')}
 											</Button>
 										</ItemG>

@@ -100,7 +100,7 @@ const MultiSourceChart = (props) => {
 			default:
 				break
 		}
-	}, [color, g.id, g.period.from, g.period.to, title])
+	}, [color, g, title])
 
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceIds.length > 0) {

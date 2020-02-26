@@ -16,12 +16,13 @@ const AssignSensorsDialog = (props) => {
 	const t = useLocalization()
 	const classes = assignStyles()
 	//Redux
-	const sensors = useSelector(s => s.data.sensors)
+	const sensors = useSelector(s => props.deviceTypeId ? s.data.sensors.filter(d => d.type_id === props.deviceTypeId) : s.data.sensors)
 
 	//State
-	const [selectedSensors, setSelectedSensors] = useState([])
+	const [selectedSensors, setSelectedSensors] = useState(props.selected ? props.selected : [])
 	const [page, setPage] = useState(0)
 	const [filterWord, setFilterWord] = useState('')
+
 	const handleSelectSensor = (sId, sName) => e => {
 		selectSensor(sId, sName)
 	}
@@ -65,7 +66,6 @@ const AssignSensorsDialog = (props) => {
 	const handleChangePage = (event, page) => {
 		setPage(page)
 	}
-
 
 	return (
 		<Dialog
@@ -140,19 +140,9 @@ const AssignSensorsDialog = (props) => {
 							button
 							onClick={handleSelectSensor(s.id, s.name)}
 							value={s.id}
-							selected={selectedSensors.indexOf(s.id) > -1}
-						// classes={{
-						// 	root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItem : null
-						// }}
+							selected={selectedSensors.findIndex(c => c.id === s.id) > -1 ? true : false}
 						>
-							<ListItemText
-								// primaryTypographyProps={{
-								// 	className: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null
-								// }}
-								// secondaryTypographyProps={{
-								// 	classes: { root: selectedSensors.indexOf(s.id) > -1 ? classes.selectedItemText : null }
-								// }}
-								primary={s.name} />
+							<ListItemText primary={s.name} />
 						</ListItem>
 						<Divider />
 					</Fragment>
