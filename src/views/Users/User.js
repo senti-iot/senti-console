@@ -33,7 +33,7 @@ const User = props => {
 	const classes = userStyles()
 
 	//Redux
-	const accessLevel = useSelector(s => s.settings.user.privileges)
+	// const accessLevel = useSelector(s => s.settings.user.privileges)
 	const saved = useSelector(s => s.favorites.saved)
 	const user = useSelector(s => s.data.user)
 	const loading = useSelector(s => !s.data.gotUser)
