@@ -1,13 +1,13 @@
-import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core';
-import { Close } from 'variables/icons';
-import cx from 'classnames';
-import React, { Fragment, useState } from 'react';
-import { ItemG, CircularLoader, SlideT } from 'components';
-import Search from 'components/Search/Search';
-import { suggestionGen, filterItems } from 'variables/functions';
-import assignStyles from 'assets/jss/components/assign/assignStylesHooks';
+import { AppBar, Dialog, Divider, IconButton, List, ListItem, ListItemText, Toolbar, Typography, Hidden, Tooltip } from '@material-ui/core'
+import { Close } from 'variables/icons'
+import cx from 'classnames'
+import React, { Fragment, useState } from 'react'
+import { ItemG, CircularLoader, SlideT } from 'components'
+import Search from 'components/Search/Search'
+import { suggestionGen, filterItems } from 'variables/functions'
+import assignStyles from 'assets/jss/components/assign/assignStylesHooks'
 import { useSelector } from 'react-redux'
-import TP from 'components/Table/TP';
+import TP from 'components/Table/TP'
 import { useLocalization } from 'hooks'
 
 const AssignDeviceTypeDialog = props => {
@@ -15,7 +15,7 @@ const AssignDeviceTypeDialog = props => {
 	const t = useLocalization()
 	const classes = assignStyles()
 	//Redux
-	const deviceTypes = useSelector(state => state.data.deviceTypes)
+	const deviceTypes = useSelector(state => [{ id: -1, name: t('no.deviceType') }, ...state.data.deviceTypes])
 
 	//State
 	const [page, setPage] = useState(0)
@@ -27,7 +27,7 @@ const AssignDeviceTypeDialog = props => {
 	})
 
 	//Const
-	const { open } = props;
+	const { open } = props
 
 	//Handlers
 
@@ -55,7 +55,7 @@ const AssignDeviceTypeDialog = props => {
 
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
-	});
+	})
 	return (
 		<Dialog
 			fullScreen
@@ -134,7 +134,7 @@ const AssignDeviceTypeDialog = props => {
 			</List>
 		</Dialog>
 
-	);
+	)
 }
 
 

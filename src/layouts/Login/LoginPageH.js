@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { ItemG } from 'components';
-import { Hidden, InputAdornment } from '@material-ui/core';
+import { ItemG } from 'components'
+import { Hidden, InputAdornment } from '@material-ui/core'
 import logo from 'logo.svg'
-import { Person, Google, Visibility, VisibilityOff } from 'variables/icons';
+import { Person, Google, Visibility, VisibilityOff } from 'variables/icons'
 import { Link, useLocation, useHistory } from 'react-router-dom'
-import GoogleLogin from 'react-google-login';
-import LoginImages from './LoginImages';
-import cookie from 'react-cookies';
-import { setToken } from 'variables/data';
-import { loginUser, loginUserViaGoogle } from 'variables/dataLogin';
-import { getSettings } from 'redux/settings';
+import GoogleLogin from 'react-google-login'
+import LoginImages from './LoginImages'
+import cookie from 'react-cookies'
+import { setToken } from 'variables/data'
+import { loginUser, loginUserViaGoogle } from 'variables/dataLogin'
+import { getSettings } from 'redux/settings'
 // import { changeLanguage } from 'redux/localization';
-import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
-import CookiesDialog from 'components/Cookies/CookiesDialog';
-import PrivacyDialog from 'components/Cookies/PrivacyDialog';
-import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles';
-import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks';
-import { getWL } from 'variables/storage';
-let moment = require('moment');
+import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
+import CookiesDialog from 'components/Cookies/CookiesDialog'
+import PrivacyDialog from 'components/Cookies/PrivacyDialog'
+import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles'
+import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks'
+import { getWL } from 'variables/storage'
+let moment = require('moment')
 
 
 function LoginPage(props) {
@@ -89,7 +89,6 @@ function LoginPage(props) {
 		setLoggingIn(true)
 	}
 	const handleLoginUser = async () => {
-		console.trace()
 		await loginUser(user, pass).then(async rs => {
 			if (rs) {
 				let exp = moment().add('1', 'day')
@@ -113,12 +112,12 @@ function LoginPage(props) {
 		switch (e.target.id) {
 			case 'pass':
 				setPass(e.target.value)
-				break;
+				break
 			case 'user':
 				setUser(e.target.value)
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -130,7 +129,7 @@ function LoginPage(props) {
 				history.push('/dashboard')
 			}
 		}
-	});
+	})
 	// useEffect(() => {
 	// 	if (loggingIn) {
 	// 		handleLoginUser()
@@ -235,7 +234,7 @@ function LoginPage(props) {
 										<GoogleLogin
 											clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
 											render={renderProps => (
-												<LoginButton fullWidth variant={'outlined'} color={'primary'} onClick={() => { renderProps.onClick(); }}>
+												<LoginButton fullWidth variant={'outlined'} color={'primary'} onClick={() => { renderProps.onClick() }}>
 													<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
 													{t('actions.loginWithGoogle')}
 												</LoginButton>)}
