@@ -258,7 +258,7 @@ const EditDashboard = props => {
 	}
 
 	const handleSave = () => {
-		dispatch(saveDashboard())
+		dispatch(saveDashboard(true))
 		// props.saveDashboard(true)
 		handleClose()
 	}

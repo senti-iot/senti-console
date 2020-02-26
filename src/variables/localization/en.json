@@ -681,6 +681,7 @@
 		"collection": "No collection",
 		"collections": "No collections",
 		"device": "No device",
+		"deviceType": "No device type",
 		"deviceDataKeys": "No device data keys",
 		"deviceInboundFunc": "No function on receiving data",
 		"devices": "No devices",

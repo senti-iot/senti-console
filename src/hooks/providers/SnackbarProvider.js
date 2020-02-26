@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux'
 
 export const SProvider = React.createContext(null)
 SProvider.displayName = 'Snackbar'
+
 const SnackbarProvider = ({ children }) => {
-	// const [locState, locDispatch] = useReducer(localization, initialLocState)
 	const [sOpen, setSOpen] = useState(false)
 	const [sMessage, setSMessage] = useState('')
 	const [sOpt, setSOpt] = useState(null)
@@ -16,15 +16,14 @@ const SnackbarProvider = ({ children }) => {
 
 	let queue = []
 	const s = (sId, sOpt) => {
-
 		queue.push({ sId, sOpt })
 		if (sOpen) {
-			setSOpen(false);
+			setSOpen(false)
 			setTimeout(() => {
-				processQueue();
-			}, 300);
+				processQueue()
+			}, 500)
 		} else {
-			processQueue();
+			processQueue()
 		}
 	}
 	const processQueue = () => {
@@ -34,7 +33,7 @@ const SnackbarProvider = ({ children }) => {
 			setSOpt(msg.sOpt)
 			setSOpen(true)
 		}
-	};
+	}
 	const sClose = () => {
 		setSOpen(false)
 
@@ -66,7 +65,7 @@ const SnackbarProvider = ({ children }) => {
 					touchEvent: false
 				}}
 				autoHideDuration={3000}
-				message={<span>{t(sMessage, sOpt)}</span>}
+				message={<span>{sMessage ? t(sMessage, sOpt) : null}</span>}
 				action={<IconButton color={'primary'} size={'small'} onClick={sClose} >
 					<Close />
 				</IconButton>}

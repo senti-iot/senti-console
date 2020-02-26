@@ -1,28 +1,28 @@
-import React from "react";
+import React from "react"
 // import _ from "lodash";
-import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, Hidden, Toolbar, Drawer, Slide } from '@material-ui/core';
-import { T, ItemG } from 'components';
+import { Responsive, WidthProvider } from "react-grid-layout"
+import { Paper, Dialog, AppBar, IconButton, Hidden, Toolbar, Drawer, Slide } from '@material-ui/core'
+import { T, ItemG } from 'components'
 import cx from 'classnames'
-import { Close } from 'variables/icons';
-import createDashboardStyles from 'assets/jss/components/dashboards/createDashboardStyles';
+import { Close } from 'variables/icons'
+import createDashboardStyles from 'assets/jss/components/dashboards/createDashboardStyles'
 
-import GaugeSData from 'views/Charts/GaugeSData';
-import DoubleChart from 'views/Charts/DoubleChart';
-import ScorecardAB from 'views/Charts/ScorecardAB';
-import WindCard from 'views/Charts/WindCard';
-import Scorecard from 'views/Charts/Scorecard';
-import { getSensorLS } from 'redux/data';
-import EditDataSource from './EditDataSource';
-import MapData from 'views/Charts/MapData';
-import MultiSourceChart from 'views/Charts/MultiSourceChart';
-import { useLocalization, useDispatch } from 'hooks';
+import GaugeSData from 'views/Charts/GaugeSData'
+import DoubleChart from 'views/Charts/DoubleChart'
+import ScorecardAB from 'views/Charts/ScorecardAB'
+import WindCard from 'views/Charts/WindCard'
+import Scorecard from 'views/Charts/Scorecard'
+import { getSensorLS, getDeviceTypeLS } from 'redux/data'
+import EditDataSource from './EditDataSource'
+import MapData from 'views/Charts/MapData'
+import MultiSourceChart from 'views/Charts/MultiSourceChart'
+import { useLocalization, useDispatch } from 'hooks'
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction="up" ref={ref} {...props} />;
-});
+	return <Slide direction="up" ref={ref} {...props} />
+})
 
 const EditGraph = props => {
 	//Hooks
@@ -39,7 +39,7 @@ const EditGraph = props => {
 
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
-	});
+	})
 	//useCallbacks
 
 	//useEffects
@@ -58,6 +58,7 @@ const EditGraph = props => {
 		return coords
 	}
 	const getSensor = async (id) => await dispatch(await getSensorLS(id))
+	const getDeviceType = async id => await dispatch(await getDeviceTypeLS(id))
 
 	const typeChildren = () => {
 		if (g)
@@ -149,7 +150,7 @@ const EditGraph = props => {
 						/>
 					</Paper>
 				default:
-					return null;
+					return null
 
 			}
 		else {
@@ -217,6 +218,7 @@ const EditGraph = props => {
 				<ItemG container justify={'center'}>
 					{g ? <EditDataSource
 						getSensor={getSensor}
+						getDeviceType={getDeviceType}
 					/> : null}
 				</ItemG>
 			</Drawer>

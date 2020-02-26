@@ -58,6 +58,7 @@ const weekendColor = 'changeWeekendColor'
 const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
+const SavedCookies = 'savedCookies'
 const NOSETTINGS = 'noSettings'
 const reset = 'resetSettings'
 
@@ -103,8 +104,8 @@ export const saveSettingsOnServ = () => {
 			rawData: s.rawData,
 			mapTheme: s.mapTheme,
 			defaultRoute: s.defaultRoute,
-			cookies: s.cookies,
 			// cookies: false,
+			cookies: s.cookies,
 			periods: s.periods,
 			snackbarLocation: s.snackbarLocation,
 			detailsPanel: s.detailsPanel,
@@ -396,6 +397,10 @@ export const acceptCookiesFunc = (val) => {
 			acceptCookies: val
 		})
 		dispatch(saveSettingsOnServ())
+		dispatch({
+			type: SavedCookies,
+			savedCookies: true
+		})
 	}
 }
 export const changeDefaultView = route => {
@@ -629,6 +634,12 @@ export const finishedSaving = () => {
 		saved: false
 	}
 }
+export const finishedSavingCookies = () => {
+	return {
+		type: SavedCookies,
+		savedCookies: false
+	}
+}
 let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 let initialState = {
 	weekendColor: 'red',
@@ -641,6 +652,7 @@ let initialState = {
 		hide: false
 	}],
 	cookies: true,
+	savedCookies: false,
 	defaultRoute: '/dashboard',
 	defaultView: '/list',
 	mapTheme: 0,
@@ -674,6 +686,8 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case SavedCookies:
+			return Object.assign({}, state, { savedCookies: action.savedCookies })
 		case autoRowsPerPage:
 			let newRowsPerPage = [...initialState.rowsPerPageOptions]
 			newRowsPerPage[0] = action.payload

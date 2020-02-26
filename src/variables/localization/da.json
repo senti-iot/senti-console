@@ -681,6 +681,7 @@
 		"collection": "Ikke tildelt en datasamling",
 		"collections": "Ingen datasamlinger",
 		"device": "Ingen enhed",
+		"deviceType": "Ingen enhedstype",
 		"deviceDataKeys": "Ingen enhed datafelter",
 		"deviceInboundFunc": "Ingen funktion ved modtagelse af data",
 		"devices": "Ingen enheder",

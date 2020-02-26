@@ -2,9 +2,8 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Snackbar, Button } from '@material-ui/core'
 import ItemG from 'components/Grid/ItemG'
-import { acceptCookiesFunc } from 'redux/settings'
+import { acceptCookiesFunc, finishedSavingCookies, finishedSaving } from 'redux/settings'
 import CookiesDialog from './CookiesDialog'
-import { finishedSaving } from 'redux/settings'
 import { useSnackbar, useLocalization } from 'hooks'
 
 
@@ -16,7 +15,7 @@ const Cookies = props => {
 
 	//Redux
 	const cookies = useSelector(state => state.settings.cookies)
-	const saved = useSelector(state => state.settings.saved)
+	const saved = useSelector(state => state.settings.savedCookies)
 
 	//State
 	const [open, setOpen] = useState(false)
@@ -30,6 +29,7 @@ const Cookies = props => {
 	useEffect(() => {
 		if (saved) {
 			s('snackbars.settingsSaved')
+			dispatch(finishedSavingCookies())
 			dispatch(finishedSaving())
 		}
 	}, [dispatch, s, saved])
@@ -40,8 +40,8 @@ const Cookies = props => {
 
 
 	const handleAcceptCookies = async () => {
-		handleClose()
 		dispatch(await acceptCookiesFunc(true))
+		handleClose()
 	}
 	const handleOpen = () => {
 		setOpen(true)
