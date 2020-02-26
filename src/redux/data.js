@@ -1,18 +1,18 @@
 /* eslint-disable eqeqeq */
-import { set, get } from 'variables/storage';
-import { getAllUsers, getUser } from 'variables/dataUsers';
-import { getAllProjects, getProject } from 'variables/dataProjects';
-import { getAllDevices, getDevice } from 'variables/dataDevices';
-import { getAllOrgs, getOrg } from 'variables/dataOrgs';
-import { getAllCollections, getCollection } from 'variables/dataCollections';
-import { colors } from 'variables/colors';
-import { hist } from 'Providers';
-import { handleRequestSort } from 'variables/functions';
-import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry';
+import { set, get } from 'variables/storage'
+import { getAllUsers, getUser } from 'variables/dataUsers'
+import { getAllProjects, getProject } from 'variables/dataProjects'
+import { getAllDevices, getDevice } from 'variables/dataDevices'
+import { getAllOrgs, getOrg } from 'variables/dataOrgs'
+import { getAllCollections, getCollection } from 'variables/dataCollections'
+import { colors } from 'variables/colors'
+import { hist } from 'Providers'
+import { handleRequestSort } from 'variables/functions'
+import { getSuggestions } from './globalSearch'
+import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry'
 import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
 import { getAllSensors, getSensor } from 'variables/dataSensors'
-import { getAllFunctions, getFunction } from 'variables/dataFunctions';
+import { getAllFunctions, getFunction } from 'variables/dataFunctions'
 
 
 //#region Special Functions
@@ -37,31 +37,31 @@ const compare = (obj1, obj2) => {
 	}
 	for (var p in obj1) {
 		//Check property exists on both objects
-		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false
 
 		switch (typeof (obj1[p])) {
 			//Deep compare objects
 			case 'object':
-				if (!compare(obj1[p], obj2[p])) return false;
-				break;
+				if (!compare(obj1[p], obj2[p])) return false
+				break
 			//Compare function code
 			case 'function':
 				// eslint-disable-next-line eqeqeq
-				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
-				break;
+				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false
+				break
 			//Compare values
 			default:
-				if (obj1[p] != obj2[p]) return false;
+				if (obj1[p] != obj2[p]) return false
 		}
 	}
 
 	//Check object 2 for any extra properties
 	// eslint-disable-next-line no-redeclare
 	for (var p in obj2) {
-		if (typeof (obj1[p]) == 'undefined') return false;
+		if (typeof (obj1[p]) == 'undefined') return false
 	}
-	return true;
-};
+	return true
+}
 //#endregion
 
 //#region Actions
@@ -194,6 +194,7 @@ export const sortData = (key, property, order) => {
 //#region Users
 
 export const getUserLS = async (id) => {
+	console.log('GetUserLS', id)
 	return async dispatch => {
 		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
@@ -218,6 +219,7 @@ export const getUserLS = async (id) => {
 			})
 		}
 		await getUser(id).then(rs => {
+			console.log("Result from Endpoint", rs)
 			if (!compare(user, rs)) {
 				user = { ...rs }
 				dispatch({

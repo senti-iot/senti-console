@@ -49,26 +49,30 @@ const EditUser = props => {
 
 	//Const
 	const { setBC, setTabs, setHeader } = props
+	/**
+	 * TODO
+	 * @Andrei
+	 */
 	const groups = [
-		{
-			id: '136550100000211',
-			appId: '1220',
-			name: t('users.groups.accountManager'),
-			show: accessLevel.apiorg.editusers ? true : false
-		},
-		{
-			id: '136550100000143',
-			appId: '1220',
-			name: t('users.groups.superUser'),
-			show: accessLevel.apisuperuser ? true : false
+		// {
+		// 	id: '136550100000211',
+		// 	appId: '1220',
+		// 	name: t('users.groups.accountManager'),
+		// 	show: accessLevel.apiorg.editusers ? true : false
+		// },
+		// {
+		// 	id: '136550100000143',
+		// 	appId: '1220',
+		// 	name: t('users.groups.superUser'),
+		// 	show: accessLevel.apisuperuser ? true : false
 
-		},
-		{
-			id: '136550100000225',
-			appId: '1220',
-			name: t('users.groups.user'),
-			show: true
-		}
+		// },
+		// {
+		// 	id: '136550100000225',
+		// 	appId: '1220',
+		// 	name: t('users.groups.user'),
+		// 	show: true
+		// }
 	]
 	const languages = [
 		{ value: 'en', label: t('settings.languages.en') },
@@ -106,36 +110,36 @@ const EditUser = props => {
 	useEffect(() => {
 		if (eUser && !user) {
 			let g = 0
-			let userGroups = Object.keys(eUser.groups)
-			userGroups.sort((a, b) => a > b ? 1 : -1)
-			if (userGroups.find(x => x === '136550100000211'))
-				g = '136550100000211'
-			if (userGroups.find(x => x === '136550100000225'))
-				g = '136550100000225'
-			if (userGroups.find(x => x === '136550100000143'))
-				g = '136550100000143'
+			// let userGroups = Object.keys(eUser.groups)
+			// userGroups.sort((a, b) => a > b ? 1 : -1)
+			// if (userGroups.find(x => x === '136550100000211'))
+			// 	g = '136550100000211'
+			// if (userGroups.find(x => x === '136550100000225'))
+			// 	g = '136550100000225'
+			// if (userGroups.find(x => x === '136550100000143'))
+			// 	g = '136550100000143'
 
 			setSelectedGroup(g)
 			setUser({
 				...eUser,
-				groups: Object.keys(eUser.groups).map(g => ({ id: g, name: eUser.groups[g].name, appId: eUser.groups[g].appId }))
+				// groups: Object.keys(eUser.groups).map(g => ({ id: g, name: eUser.groups[g].name, appId: eUser.groups[g].appId }))
 			})
-			setExtended(
-				eUser.aux.senti ?
-					eUser.aux.senti.extendedProfile ?
-						{
-							bio: "",
-							position: "",
-							location: "",
-							recoveryEmail: "",
-							linkedInURL: "",
-							twitterURL: "",
-							birthday: null,
-							newsletter: true,
-							...eUser.aux.senti.extendedProfile
-						} :
-						{ ...extended } :
-					{ ...extended })
+			// setExtended(
+			// 	eUser.aux.senti ?
+			// 		eUser.aux.senti.extendedProfile ?
+			// 			{
+			// 				bio: "",
+			// 				position: "",
+			// 				location: "",
+			// 				recoveryEmail: "",
+			// 				linkedInURL: "",
+			// 				twitterURL: "",
+			// 				birthday: null,
+			// 				newsletter: true,
+			// 				...eUser.aux.senti.extendedProfile
+			// 			} :
+			// 			{ ...extended } :
+			// 		{ ...extended })
 		}
 	}, [eUser, extended, user])
 

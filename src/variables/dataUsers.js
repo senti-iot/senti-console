@@ -1,5 +1,5 @@
 import { api, coreServicesAPI } from './data'
-import { del } from './storage';
+import { del } from './storage'
 
 //#region GET USERS Senti
 
@@ -29,14 +29,15 @@ export const getAllUsers = async () => {
 	// 	}
 	// })
 	var data = await coreServicesAPI.get('entity/users').then(rs => rs.data)
-	return data
+	return data ? data : []
 }
 export const getValidSession = async (userId) => {
 	var data = await api.get(`core/user/${userId}`).then(rs => rs)
 	return data
 }
 export const getUser = async (userId) => {
-	var data = await api.get(`core/user/${userId}`).then(rs => rs.data)
+	// var data = await api.get(`core/user/${userId}`).then(rs => rs.data)
+	var data = await coreServicesAPI.get(`entity/user/${userId}`).then(rs => rs.data)
 	return data
 }
 export const createUser = async (user) => {

@@ -1,5 +1,5 @@
 import { api, servicesAPI, coreServicesAPI } from './data'
-import { del } from './storage';
+import { del } from './storage'
 
 /**
  * @function getAllOrgs Get all organizations
@@ -7,7 +7,7 @@ import { del } from './storage';
 export const getAllOrgs = async () => {
 	// var data = await api.get(`core/orgs`).then(rs => rs.data)
 	var data = await coreServicesAPI.get('/entity/organisations').then(rs => rs.data)
-	return data
+	return data ? data : []
 }
 
 /**

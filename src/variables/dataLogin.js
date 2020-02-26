@@ -1,5 +1,5 @@
-import { loginApi, api, coreServicesAPI } from './data';
-import cookie from 'react-cookies';
+import { loginApi, api, coreServicesAPI } from './data'
+import cookie from 'react-cookies'
 
 /**
  *

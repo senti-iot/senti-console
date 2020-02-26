@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
-import UserContact from './UserCards/UserContact';
-import { UserLog } from './UserCards/UserLog';
+import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components'
+import UserContact from './UserCards/UserContact'
+import { UserLog } from './UserCards/UserLog'
 import {
 	Dialog,
 	DialogTitle,
@@ -10,16 +10,16 @@ import {
 	DialogActions,
 	Button,
 	Fade
-} from '@material-ui/core';
-import { deleteUser, /*  resendConfirmEmail, confirmUser */ } from 'variables/dataUsers';
+} from '@material-ui/core'
+import { deleteUser, /*  resendConfirmEmail, confirmUser */ } from 'variables/dataUsers'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPassword } from 'variables/dataLogin';
-import userStyles from 'assets/jss/components/users/userStyles';
-import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
-import { Person, FolderShared } from 'variables/icons';
-import { scrollToAnchor } from 'variables/functions';
-import { getUserLS } from 'redux/data';
-import { useMatch, useLocalization, useSnackbar, useLocation, useHistory } from 'hooks';
+import { setPassword } from 'variables/dataLogin'
+import userStyles from 'assets/jss/components/users/userStyles'
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
+import { Person, FolderShared } from 'variables/icons'
+import { scrollToAnchor } from 'variables/functions'
+import { getUserLS } from 'redux/data'
+import { useMatch, useLocalization, useSnackbar, useLocation, useHistory } from 'hooks'
 
 
 const User = props => {
@@ -98,9 +98,10 @@ const User = props => {
 	}, [location, setBC, setHeader, setTabs, user, t])
 
 	useEffect(() => {
-		const gSensor = async () => {
+		const gUser = async () => {
 			if (match.params) {
 				let id = match.params.id
+				console.log(id)
 				if (id) {
 					await getUser(id)
 				}
@@ -110,7 +111,7 @@ const User = props => {
 				}
 			}
 		}
-		gSensor()
+		gUser()
 		//eslint-disable-next-line
 	}, [])
 
@@ -247,7 +248,7 @@ const User = props => {
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('menus.changePassword')}</DialogTitle>
 			<DialogContent>
 				<Danger> {errorMessage} </Danger>
-				{accessLevel.apiorg.editusers ? null : <ItemG>
+				{/* {accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}
 						label={t('users.fields.currentPass')}
@@ -255,7 +256,7 @@ const User = props => {
 						onChange={handleInputChange}
 						value={pw.current}
 					/>
-				</ItemG>}
+				</ItemG>} */}
 				<ItemG>
 					<TextF
 						id={'newP'}

@@ -16,18 +16,18 @@ const encrypt = (text) => {
 	return iv.toString('hex') + ':' + encrypted.toString('hex')
 }
 
-let backendHost, sentiAPI;
+let backendHost, sentiAPI
 
-const hostname = window && window.location && window.location.hostname;
+const hostname = window && window.location && window.location.hostname
 
 if (hostname === 'console.senti.cloud') {
-	backendHost = 'https://senti.cloud/rest/';
+	backendHost = 'https://senti.cloud/rest/'
 	sentiAPI = 'https://api.senti.cloud/'
 } else if (hostname === 'beta.senti.cloud') {
-	backendHost = 'https://betabackend.senti.cloud/rest/';
+	backendHost = 'https://betabackend.senti.cloud/rest/'
 	sentiAPI = 'https://dev.api.senti.cloud/'
 } else {
-	backendHost = 'https://betabackend.senti.cloud/rest/';
+	backendHost = 'https://betabackend.senti.cloud/rest/'
 	sentiAPI = 'https://dev.api.senti.cloud/'
 }
 
@@ -132,7 +132,7 @@ export const api = create({
 
 //#region Senti Services
 
-let sentiServicesURL;
+let sentiServicesURL
 if (process.env.REACT_APP_DEV) {
 	sentiServicesURL = 'https://dev.services.senti.cloud'
 }
@@ -154,7 +154,7 @@ export const getWhiteLabel = async (host) => {
 	return res
 }
 export const coreServicesAPI = create({
-	baseURL: `${sentiServicesURL}/core`,
+	baseURL: `${sentiServicesURL}/core/v2`,
 	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',

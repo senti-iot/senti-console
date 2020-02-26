@@ -44,13 +44,13 @@ const HeaderLinks = props => {
 	const handleRedirectToOwnProfile = () => {
 		handleProfileClose()
 		if (user)
-			history.push(`/management/user/${user.id}`)
+			history.push(`/management/user/${user.uuid}`)
 
 	}
 	const handleRedirectToOwnOrg = () => {
 		handleProfileClose()
 		if (user)
-			history.push(`/management/org/${user.org.id}`)
+			history.push(`/management/org/${user.org.uuid}`)
 	}
 	const handleProfileClose = () => {
 		setAnchorProfile(null)
@@ -86,7 +86,6 @@ const HeaderLinks = props => {
 	// }
 	const renderUserMenu = () => {
 		const openProfile = Boolean(anchorProfile)
-		console.log(user)
 		return <div>
 			<Tooltip title={t('menus.user.profile')}>
 

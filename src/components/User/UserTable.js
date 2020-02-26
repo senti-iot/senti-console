@@ -124,21 +124,21 @@ const UserTable = props => {
 					/>
 					<TableBody >
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.id)
+							const isSelected = isSelectedFunc(n.uuid)
 							const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
 							return (
 								<TableRow
 									hover
-									onClick={e => { e.stopPropagation(); history.push('/management/user/' + n.id) }}
+									onClick={e => { e.stopPropagation(); history.push('/management/user/' + n.uuid) }}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
-									key={n.id}
+									key={n.uuid}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.uuid)} />} />
 										<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 
 										<TC content={
@@ -157,7 +157,7 @@ const UserTable = props => {
 										} />
 									</Hidden>
 									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.uuid)} />} />
 										<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 										<TC
 											onMouseEnter={e => { setHover(e, n) }}

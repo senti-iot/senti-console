@@ -1,48 +1,50 @@
 import React from 'react'
-import { InfoCard, ItemG, Caption, Info } from 'components';
-import { Hidden, Link } from '@material-ui/core';
-import { pF, dateFormatter } from 'variables/functions';
+import { InfoCard, ItemG, Caption, Info, Link } from 'components'
+import { Hidden } from '@material-ui/core'
+import { pF, dateFormatter } from 'variables/functions'
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
-import { Link as RLink } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux'
-import Dropdown from 'components/Dropdown/Dropdown';
-import { useLocalization } from 'hooks'
+import Dropdown from 'components/Dropdown/Dropdown'
+import { useLocalization, useMatch } from 'hooks'
 
-// const mapStateToProps = (state) => ({
-// 	language: state.settings.language,
-// 	loggedUser: state.settings.user,
-// 	accessLevel: state.settings.user.privileges
-// })
-
-// @Andrei
 const UserContact = props => {
+	const history = useHistory()
+	const match = useMatch()
 	const t = useLocalization()
-	// const language = useSelector(state => state.settings.language)
 	const loggedUser = useSelector(state => state.settings.user)
-	const accessLevel = useSelector(state => state.settings.user.privileges)
+	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
 	const deleteUser = () => {
 		props.deleteUser()
 	}
-
-	const renderUserGroup = () => {
-		const { user } = props
-		if (user.groups[136550100000143])
-			return t('users.groups.136550100000143')
-		if (user.groups[136550100000211])
-			return t('users.groups.136550100000211')
-		if (user.groups[136550100000225])
-			return t('users.groups.136550100000225')
-	}
+	/**
+	 * TODO
+	 * @Andrei
+	 */
+	const renderUserGroup = () => null
+	// const renderUserGroup = () => {
+	// 	const { user } = props
+	// 	if (user.groups[136550100000143])
+	// 		return t('users.groups.136550100000143')
+	// 	if (user.groups[136550100000211])
+	// 		return t('users.groups.136550100000211')
+	// 	if (user.groups[136550100000225])
+	// 		return t('users.groups.136550100000225')
+	// }
 	const renderTopActionPriv = () => {
 		const { user } = props
-		const { apiorg } = loggedUser.privileges
-		if (apiorg) {
-			if (apiorg.editusers) {
-				return renderTopAction()
-			}
-		}
+		/**
+		 * TODO
+		 * @Andrei
+		 */
+		// const { apiorg } = loggedUser.privileges
+		// if (apiorg) {
+		// 	if (apiorg.editusers) {
+		// 		return renderTopAction()
+		// 	}
+		// }
 		if (loggedUser.id === user.id)
 			return renderTopAction()
 		return null
@@ -50,18 +52,22 @@ const UserContact = props => {
 	const canDelete = () => {
 		const { user } = props
 		let dontShow = true
-		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
-			dontShow = false
-		}
+		/**
+		 * TODO
+		 * @Andrei
+		 */
+		// if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
+		// 	dontShow = false
+		// }
 		if (loggedUser.id === user.id)
 			dontShow = true
 		return dontShow
 	}
 	const renderTopAction = () => {
-		const { user, history, isFav, addToFav, removeFromFav } = props
+		const { user, isFav, addToFav, removeFromFav } = props
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${props.match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
+				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
 				{ label: t('menus.changePassword'), icon: LockOpen, func: props.changePass },
 				{ label: t('menus.userResendEmail'), icon: Email, func: props.resendConfirmEmail, dontShow: user.suspended !== 2 },
 				// { label: t('menus.confirmUser'), icon: Email, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },
@@ -78,7 +84,8 @@ const UserContact = props => {
 	}
 
 	const { user, classes } = props
-	const extended = user.aux.senti ? user.aux.senti.extendedProfile : null
+	console.log(user)
+	const extended = user.aux ? user.aux.senti ? user.aux.senti.extendedProfile : null : null
 	return (
 		<InfoCard
 			title={`${user.firstName} ${user.lastName}`}
@@ -111,15 +118,19 @@ const UserContact = props => {
 						<ItemG>
 							<Caption>{t('users.fields.organisation')}</Caption>
 							<Info>
-								<Link component={RLink} to={{ pathname: `/management/org/${user.org.id}`, prevURL: `/management/user/${user.id}` }}>
+								<Link to={{ pathname: `/management/org/${user.org.uuid}`, prevURL: `/management/user/${user.uuid}` }}>
 									{user.org ? user.org.name : t('users.noOrg')}
 								</Link>
 							</Info>
 						</ItemG>
-						<ItemG>
+						{/**
+						 * TODO
+						 * @Andrei
+						*/}
+						{/* <ItemG>
 							<Caption>{t('users.fields.language')}</Caption>
-							<Info>{user.aux.odeum.language === 'en' ? t('settings.languages.en') : user.aux.odeum.language === 'da' ? t('settings.languages.da') : ''}</Info>
-						</ItemG>
+							<Info>{user.internal.senti.language === 'en' ? t('settings.languages.en') : user.internal.senti.language === 'da' ? t('settings.languages.da') : ''}</Info>
+						</ItemG> */}
 						<ItemG>
 							<Caption>{t('users.fields.accessLevel')}</Caption>
 							<Info>{renderUserGroup()}</Info>
