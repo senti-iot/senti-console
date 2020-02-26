@@ -135,19 +135,25 @@ export const getNSettings = async () => {
 		if (user) {
 			user.internal = user.internal || {}
 			user.internal.senti = user.internal.senti || {}
+			let senti = user.internal ? user.internal.senti ? user.internal.senti : null : null
+
 			/**
 			 * TEMP FIX MUST REMOVE
 			 * @Andrei
 			 */
 			user.aux = user.aux || {}
-			if (user.internal.senti.extendedProfile && !user.aux.senti.extendedProfile) {
+			if (senti.extendedProfile && !user.aux.senti.extendedProfile) {
 				user.aux = user.aux || {}
 				user.aux.senti = user.aux.senti || {}
 				user.aux.senti.extendedProfile = user.internal.senti.extendedProfile
 				await editUser(user)
 			}
+
+			/**
+			 * Settings
+			 */
 			// user.internal.senti.settings = user.internal.senti.settings || { ...getState().settings }
-			if (!user.internal.senti.settings) {
+			if (!senti.settings) {
 				let internal = {}
 				internal.senti = {}
 				internal.senti.settings = { ...getState().settings }
@@ -161,25 +167,27 @@ export const getNSettings = async () => {
 						settings: internal.senti.settings
 					})
 				else {
-					alert('Shit hit the fan')
+					console.log('Something went wrong with creating the settings')
 				}
 			}
 			else {
-
-				let settings = user.internal.senti.settings
+				let settings = senti.settings
 				dispatch({
 					type: GetSettings,
 					settings: settings,
 					user: user
 				})
 			}
-			moment.updateLocale('en-gb', {
-				week: {
-					dow: 1
-				}
-			})
+			/**
+			 * Moment Localization
+			 */
+			moment.updateLocale('en-gb', { week: { dow: 1 } })
 			moment.locale(settings.language === 'en' ? 'en-gb' : settings.language)
-			let favorites = user.internal.senti.favorites
+
+			/**
+			 * Favorites
+			 */
+			let favorites = senti.favorites
 			if (favorites) {
 				dispatch({
 					type: GETFAVS,
@@ -188,6 +196,12 @@ export const getNSettings = async () => {
 
 				})
 			}
+			/**
+			 * Dashboards
+			 */
+			var dashboards = senti.dashboards ? senti.dashboards : []
+			dispatch(setDashboards(dashboards))
+
 			return true
 		}
 		else {
@@ -209,6 +223,7 @@ export const getNSettings = async () => {
 export const getSettings = async (uuid) => {
 	return async (dispatch, getState) => {
 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
+		console.log(sessionCookie)
 		if (sessionCookie) {
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
@@ -224,8 +239,8 @@ export const getSettings = async (uuid) => {
 
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
-
-		var settings = get('settings') ? get('settings') : user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+		let senti = user ? user.internal ? user.internal.senti ? user.internal.senti : null : null : null
+		var settings = get('settings') ? get('settings') : senti ? senti.settings ? senti.settings : null : null
 		if (settings) {
 			dispatch({
 				type: GetSettings,
@@ -233,8 +248,8 @@ export const getSettings = async (uuid) => {
 				user: user
 			})
 		}
-		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : [] : [] : [] : []
-		var dashboards = user ? user.aux ? user.aux.senti ? user.aux.senti.dashboards ? user.aux.senti.dashboards : [] : [] : [] : []
+		var favorites = senti ? senti.favorites ? senti.favorites : [] : []
+		var dashboards = senti ? senti.dashboards ? senti.dashboards : [] : []
 		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
