@@ -53,7 +53,8 @@ export const confirmUser = async (obj) => {
 	return response.ok ? response.data : response.status
 }
 export const editUser = async (user) => {
-	let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
+	// let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
+	let data = await coreServicesAPI.put(`entity/user/${user.uuid}`, user).then(rs => rs.data)
 	return data
 }
 
