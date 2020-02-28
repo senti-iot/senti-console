@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 // import CreateSensorForm from 'components/Collections/CreateSensorForm';
-import { createSensor } from 'variables/dataSensors';
-import CreateSensorForm from 'components/Sensors/CreateSensorForm';
-import { getAddressByLocation } from 'variables/dataDevices';
-import { getSensors } from 'redux/data';
-import { useLocalization, useHistory, useLocation, useEventListener, useDispatch, useSnackbar, useSelector } from 'hooks';
+import { createSensor } from 'variables/dataSensors'
+import CreateSensorForm from 'components/Sensors/CreateSensorForm'
+import { getAddressByLocation } from 'variables/dataDevices'
+import { getSensors } from 'redux/data'
+import { useLocalization, useHistory, useLocation, useEventListener, useDispatch, useSnackbar, useSelector } from 'hooks'
 
 const CreateSensor = props => {
 	//Hooks
@@ -19,7 +19,7 @@ const CreateSensor = props => {
 	const orgId = useSelector(state => state.settings.user.org.id)
 	const registries = useSelector(state => state.data.registries)
 	const deviceTypes = useSelector(state => state.data.deviceTypes)
-	const cloudfunctions = useSelector(state => state.data.function)
+	const cloudfunctions = useSelector(state => state.data.functions)
 
 	//State
 	const [openReg, setOpenReg] = useState(false)
