@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const onUpdate = () => {
-	store.dispatch(updateServiceworker())
+	store().dispatch(updateServiceworker())
 }
 serviceWorker.register({ onUpdate: onUpdate })
 
