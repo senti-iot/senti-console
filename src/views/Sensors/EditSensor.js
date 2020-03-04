@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 // import EditSensorForm from 'components/Collections/EditSensorForm';
-import { getSensorLS, getSensors } from 'redux/data';
-import { updateSensor } from 'variables/dataSensors';
-import { updateFav, isFav } from 'redux/favorites';
-import { CircularLoader } from 'components';
-import CreateSensorForm from 'components/Sensors/CreateSensorForm';
-import { getAddressByLocation } from 'variables/dataDevices';
-import { useLocalization, useLocation, useEventListener, useDispatch, useSelector, useSnackbar } from 'hooks';
-import { useParams, useHistory } from 'react-router-dom';
-import { useCallback } from 'react';
+import { getSensorLS, getSensors } from 'redux/data'
+import { updateSensor } from 'variables/dataSensors'
+import { updateFav, isFav } from 'redux/favorites'
+import { CircularLoader } from 'components'
+import CreateSensorForm from 'components/Sensors/CreateSensorForm'
+import { getAddressByLocation } from 'variables/dataDevices'
+import { useLocalization, useLocation, useEventListener, useDispatch, useSelector, useSnackbar } from 'hooks'
+import { useParams, useHistory } from 'react-router-dom'
+import { useCallback } from 'react'
 
 
 const EditSensor = props => {
@@ -161,7 +161,7 @@ const EditSensor = props => {
 		setSensorMetadata({
 			inbound: dt.inbound ? dt.inbound : [],
 			outbound: dt.outbound ? dt.outbound : [],
-			metadata: dt.metadata ? dt.metadata : {}
+			metadata: dt.metadata ? dt.metadata : []
 		})
 		setSelect({
 			...select,
