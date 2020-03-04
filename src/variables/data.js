@@ -132,13 +132,13 @@ export const api = create({
 
 //#region Senti Services
 
-let sentiServicesURL
-if (process.env.REACT_APP_DEV) {
-	sentiServicesURL = 'https://dev.services.senti.cloud'
-}
-else {
-	sentiServicesURL = 'https://services.senti.cloud'
-}
+let sentiServicesURL = 'https://dev.services.senti.cloud'
+
+// if (process.env.REACT_APP_DEV) {
+// 	sentiServicesURL = 'https://dev.services.senti.cloud'
+// }
+// else {
+// }
 export const servicesAPI = create({
 	baseURL: `${sentiServicesURL}/databroker`,
 	timeout: 30000,
