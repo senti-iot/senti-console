@@ -145,12 +145,6 @@ const EditSensor = props => {
 			...sensor,
 			[what]: e.target.value
 		})
-		/* 		this.setState({
-					sensor: {
-						...this.state.sensor,
-						[what]: e.target.value
-					}
-				}) */
 	}
 	//#region Device Types
 	const handleOpenDT = () => setOpenDT(true)
