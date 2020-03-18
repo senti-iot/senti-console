@@ -109,7 +109,7 @@ const CreateSensor = props => {
 		setSensorMetadata({
 			inbound: dt.inbound ? dt.inbound : [],
 			outbound: dt.outbound ? dt.outbound : [],
-			metadata: dt.metadata ? dt.metadata : {}
+			metadata: dt.metadata ? dt.metadata : []
 		})
 		setSelect({
 			...select,
