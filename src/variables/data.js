@@ -16,18 +16,18 @@ const encrypt = (text) => {
 	return iv.toString('hex') + ':' + encrypted.toString('hex')
 }
 
-let backendHost, sentiAPI;
+let backendHost, sentiAPI
 
-const hostname = window && window.location && window.location.hostname;
+const hostname = window && window.location && window.location.hostname
 
 if (hostname === 'console.senti.cloud') {
-	backendHost = 'https://senti.cloud/rest/';
+	backendHost = 'https://senti.cloud/rest/'
 	sentiAPI = 'https://api.senti.cloud/'
 } else if (hostname === 'beta.senti.cloud') {
-	backendHost = 'https://betabackend.senti.cloud/rest/';
+	backendHost = 'https://betabackend.senti.cloud/rest/'
 	sentiAPI = 'https://dev.api.senti.cloud/'
 } else {
-	backendHost = 'https://betabackend.senti.cloud/rest/';
+	backendHost = 'https://betabackend.senti.cloud/rest/'
 	sentiAPI = 'https://dev.api.senti.cloud/'
 }
 
@@ -120,24 +120,24 @@ export const imageApi = create({
 	},
 })
 export const makeCancelable = (promise) => {
-	let hasCanceled_ = false;
+	let hasCanceled_ = false
 
 	const wrappedPromise = new Promise((resolve, reject) => {
 		promise.then((val) =>
 			hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)
-		);
+		)
 		promise.catch((error) =>
 			hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
-		);
-	});
+		)
+	})
 
 	return {
 		promise: wrappedPromise,
 		cancel() {
-			hasCanceled_ = true;
+			hasCanceled_ = true
 		},
-	};
-};
+	}
+}
 export const api = create({
 	baseURL: backendHost,
 	timeout: 30000,
@@ -160,7 +160,7 @@ export const setToken = () => {
 	}
 
 }
-setToken()
+
 
 //#region Senti Services
 
@@ -208,3 +208,18 @@ export const externalAPI = create({
 		'Content-Type': 'application/json'
 	}
 })
+
+export const setHeaders = () => {
+	servicesAPI.setHeader('wlHost', window.location.hostname)
+	externalAPI.setHeader('wlHost', window.location.hostname)
+	cloudAPI.setHeader('wlHost', window.location.hostname)
+	devServicesAPI.setHeader('wlHost', window.location.hostname)
+	loginApi.setHeader('wlHost', window.location.hostname)
+	weatherApi.setHeader('wlHost', window.location.hostname)
+	api.setHeader('wlHost', window.location.hostname)
+}
+setHeaders()
+setToken()
+
+
+
