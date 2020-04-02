@@ -46,8 +46,22 @@ function LoginPage(props) {
 	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 
 	const handleCloseCookies = () => setCookies(false)
-	const handleOpenCookies = () => setCookies(true)
-	const handleOpenPrivacy = () => setPrivacy(true)
+	const handleOpenCookies = () => {
+		if (wl && wl.loginSettings.cookieurl) {
+			window.open(wl.loginSettings.cookieurl, '_blank')
+		}
+		else {
+			setCookies(true)
+		}
+	}
+	const handleOpenPrivacy = () => {
+		if (wl && wl.loginSettings.gdprurl) {
+			window.open(wl.loginSettings.gdprurl, '_blank')
+		}
+		else {
+			setPrivacy(true)
+		}
+	}
 	const handleClosePrivacy = () => setPrivacy(false)
 
 
@@ -249,7 +263,7 @@ function LoginPage(props) {
 						<Footer xs={12} container alignItems={'flex-end'} justify={'center'}>
 
 							<FooterText>
-								{`${t('login.footer')} `}
+								{wl ? wl.loginSettings.copyrighttext ? wl.loginSettings.copyrighttext : `${t('login.footer')} ` : `${t('login.footer')} `}
 							</FooterText>
 
 							<ItemG xs={12} container>
