@@ -1,5 +1,5 @@
 import React, { Fragment, useState, /* useRef, */ useEffect, useCallback } from 'react'
-import { Collapse, Button, Paper, Hidden } from '@material-ui/core'
+import { Collapse, Button, Paper, Hidden, useTheme } from '@material-ui/core'
 import { Danger, ItemG, Success, Muted, T } from 'components'
 import loginPageStyles from 'assets/jss/components/login/loginPageStyles'
 import { useDispatch } from 'react-redux'
@@ -14,6 +14,8 @@ import LoginImages from 'layouts/Login/LoginImages'
 import { Link, useParams, useHistory, /* useHistory */ } from 'react-router-dom'
 import logo from 'logo.svg'
 import { useLocalization, useEventListener } from 'hooks'
+import { getWL } from 'variables/storage'
+import { ImgLogo } from 'styles/loginStyles'
 
 // const mapDispatchToProps = dispatch => ({
 // 	getSettings: async () => dispatch(await getSettings()),
@@ -25,6 +27,8 @@ const ResetPassword = props => {
 	const t = useLocalization()
 	const classes = loginPageStyles()
 	const history = useHistory()
+	const wl = getWL()
+	const theme = useTheme()
 	//Redux
 	const dispatch = useDispatch()
 
@@ -132,10 +136,10 @@ const ResetPassword = props => {
 
 		},
 		[confirmPass, params.token]
-	);
+	)
 
 	// Add event listener using our hook
-	useEventListener('keypress', keyPressHandler);
+	useEventListener('keypress', keyPressHandler)
 	// componentWillUnmount = () => {
 	// 	_isMounted = 0
 	// 	window.removeEventListener('keypress', handleKeyPress, false)
@@ -157,41 +161,13 @@ const ResetPassword = props => {
 		let session = await resetPassword({ email: email })
 		if (session !== 404 && session) {
 			setPasswordRequest(true)
-			// this.setState({
-			// 	passwordRequested: true,
-			// })
 		} else {
 			setError(true)
 			setErrorMessage([<Danger>{errorMessages(session)}</Danger>])
-			// this.setState({
-			// 	error: true,
-			// 	errorMessage: [<Danger>{this.errorMessages(session)}</Danger>],
-			// })
+
 		}
 	}
-	// const loginUser = async session => {
-	// 	// this.setState({ loggingIn: true })
-	// 	setLoggingIn(true)
-	// 	setTimeout(async () => {
-	// 		cookie.save('SESSION', session, { path: '/' })
-	// 		if (session.isLoggedIn) {
-	// 			if (setToken()) {
-	// 				await dispatch(await getSettings)()
-	// 				history.push('/dashboard')
-	// 				// this.props.history.push('/dashboard')
-	// 			}
-	// 		} else {
-	// 			setError(true)
-	// 			setErrorMessage([<Danger>{t('confirmUser.networkError')}</Danger>])
-	// 			setLoggingIn(false)
-	// 			// this.setState({
-	// 			// 	error: true,
-	// 			// 	errorMessage: t('confirmUser.networkError'),
-	// 			// 	loggingIn: false,
-	// 			// })
-	// 		}
-	// 	}, 1000)
-	// }
+
 	const handleChangePassword = e => {
 		setPassword(e.target.value)
 		if (error) {
@@ -214,18 +190,7 @@ const ResetPassword = props => {
 			setErrorMessage([])
 		}
 	}
-	// const handleChange = prop => e => {
 
-	// 	this.setState({
-	// 		...this.state,
-	// 		[prop]: e.target.value,
-	// 	})
-	// 	if (this.state.error)
-	// 		this.setState({
-	// 			error: false,
-	// 			errorMessage: [],
-	// 		})
-	// }
 	return (
 		<div className={classes.wrapper}>
 			<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
@@ -233,11 +198,8 @@ const ResetPassword = props => {
 					<Paper className={classes.paper}>
 						<div className={classes.paperContainer}>
 							<ItemG xs={12} container justify={'center'}>
-								<img
-									className={classes.logo}
-									src={logo}
-									alt={'sentiLogo'}
-								/>
+								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
+
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
 								<T
@@ -405,7 +367,7 @@ const ResetPassword = props => {
 							className={classes.footer}
 						>
 							<Muted className={classes.footerText}>
-								{t('login.footer')}
+								{wl ? wl.loginSettings.copyrighttext ? wl.loginSettings.copyrighttext : `${t('login.footer')} ` : `${t('login.footer')} `}
 							</Muted>
 						</ItemG>
 					</Paper>
