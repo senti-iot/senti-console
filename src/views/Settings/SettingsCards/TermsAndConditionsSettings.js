@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
-import { InfoCard, ItemGrid } from 'components';
-import { Assignment } from 'variables/icons';
-import { Grid, List, ListItem, ListItemText, Button } from '@material-ui/core';
-import settingsStyles from 'assets/jss/components/settings/settingsStylesHooks';
-import CookiesDialog from 'components/Cookies/CookiesDialog';
-import PrivacyDialog from 'components/Cookies/PrivacyDialog';
-import ResetSettingsModal from '../SettingsModal/ResetSettingsModal';
-import { useHistory } from 'react-router-dom';
-import { useLocalization } from 'hooks';
+import { InfoCard, ItemGrid } from 'components'
+import { Assignment } from 'variables/icons'
+import { Grid, List, ListItem, ListItemText, Button } from '@material-ui/core'
+import settingsStyles from 'assets/jss/components/settings/settingsStylesHooks'
+import CookiesDialog from 'components/Cookies/CookiesDialog'
+import PrivacyDialog from 'components/Cookies/PrivacyDialog'
+import ResetSettingsModal from '../SettingsModal/ResetSettingsModal'
+import { useHistory } from 'react-router-dom'
+import { useLocalization } from 'hooks'
+import { getWL } from 'variables/storage'
 
 const TermsAndConditions = props => {
 	//Hooks
 	const history = useHistory()
 	const t = useLocalization()
 	const classes = settingsStyles()
+	const wl = getWL()
 	//Redux
 
 	//State
@@ -30,13 +32,25 @@ const TermsAndConditions = props => {
 
 
 	const handleOpenCP = () => {
-		setOpenCP(true)
+		if (wl && wl.loginSettings.gdprurl) {
+			window.open(wl.loginSettings.cookieurl, '_blank')
+		}
+		else {
+			setOpenCP(true)
+		}
 	}
 	const handleCloseCP = () => {
+
 		setOpenCP(false)
+
 	}
 	const handleOpenPP = () => {
-		setOpenPP(true)
+		if (wl && wl.loginSettings.gdprurl) {
+			window.open(wl.loginSettings.gdprurl, '_blank')
+		}
+		else {
+			setOpenPP(true)
+		}
 	}
 	const handleClosePP = () => {
 		setOpenPP(false)
