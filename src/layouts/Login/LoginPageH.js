@@ -169,6 +169,10 @@ function LoginPage(props) {
 							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} fill>
 								{/* {loggingIn ? <LoginLoader /> : */}
 								<ItemG xs={12} container justify={'center'}>
+									{/**
+									 * TODO:
+									 * Don't forget to check for the boolean on WhiteLabel websites
+									 */}
 									{/* <ItemG xs={12} container justify={'center'}>
 										<NeedAccountT>
 											<span style={{ marginRight: 4 }}>
