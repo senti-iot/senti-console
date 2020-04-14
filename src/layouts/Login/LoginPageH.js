@@ -14,7 +14,7 @@ import { getSettings } from 'redux/settings'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
 import CookiesDialog from 'components/Cookies/CookiesDialog'
 import PrivacyDialog from 'components/Cookies/PrivacyDialog'
-import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles'
+import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, /* NeedAccountT, */ LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles'
 import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks'
 import { getWL } from 'variables/storage'
 let moment = require('moment')
@@ -169,7 +169,7 @@ function LoginPage(props) {
 							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} fill>
 								{/* {loggingIn ? <LoginLoader /> : */}
 								<ItemG xs={12} container justify={'center'}>
-									<ItemG xs={12} container justify={'center'}>
+									{/* <ItemG xs={12} container justify={'center'}>
 										<NeedAccountT>
 											<span style={{ marginRight: 4 }}>
 												<span style={{ marginRight: 4 }}>
@@ -190,7 +190,7 @@ function LoginPage(props) {
 												</Link>
 											</span>
 										</NeedAccountT>
-									</ItemG>
+									</ItemG> */}
 
 									<ItemG container xs={12} >
 
