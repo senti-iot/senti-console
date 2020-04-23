@@ -2,7 +2,7 @@ import React from 'react'
 import { ItemGrid, DatePicker, Warning, Danger, TextF, DSelect, ItemG } from 'components'
 import { Collapse, Button, FormControlLabel, Checkbox } from '@material-ui/core'
 import createUserStyles from 'assets/jss/components/users/createUserStyles'
-import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog'
+// import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog'
 
 const CreateUserForm = props => {
 	//Hooks
@@ -12,13 +12,13 @@ const CreateUserForm = props => {
 	//State
 
 	//Const
-	const { user, accessLevel, error, errorMessage, handleChange } = props
+	const { user, /*  accessLevel, */ error, errorMessage, handleChange } = props
 	/* AssignOrg */
-	const { openOrg, handleOpenOrg, handleCloseOrg, handleOrgChange } = props
+	// const { openOrg, handleOpenOrg, handleCloseOrg, handleOrgChange } = props
 	/* ExtendedProfile */
 	const { extended, openExtended, handleExtendedBirthdayChange, handleChangeExtended, handleExtendedChange } = props
 	/* Language */
-	const { handleLangChange, languages } = props
+	// const { handleLangChange, languages } = props
 	/* Group */
 	const { groups, selectedGroup, handleGroupChange } = props
 	/* Hooks */
@@ -30,38 +30,46 @@ const CreateUserForm = props => {
 
 	//Handlers
 	const renderOrgs = () => {
-		const { org } = user
-		return accessLevel.apiorg.editusers ?
-			<>
-				<TextF
-					value={org.name}
-					onClick={handleOpenOrg}
-					readonly
-				/>
-				<AssignOrgDialog
-					t={t}
-					open={openOrg}
-					handleClose={handleCloseOrg}
-					callBack={handleOrgChange}
-				/>
-			</>
-			: null
+		/**
+		 * TODO
+		 */
+		// const { org } = user
+		// return accessLevel.apiorg.editusers ?
+		// 	<>
+		// 		<TextF
+		// 			value={org.name}
+		// 			onClick={handleOpenOrg}
+		// 			readonly
+		// 		/>
+		// 		<AssignOrgDialog
+		// 			t={t}
+		// 			open={openOrg}
+		// 			handleClose={handleCloseOrg}
+		// 			callBack={handleOrgChange}
+		// 		/>
+		// 	</>
+		// 	: null
 	}
 	const renderLanguage = () => {
-		return <DSelect
-			label={t('users.fields.language')}
-			onChange={handleLangChange}
-			error={error}
-			value={user.aux.odeum.language}
-			menuItems={languages}
-			margin={'normal'}
-		/>
+		console.log("User", user)
+		/**
+		 * TODO
+		 */
+		// return <DSelect
+		// 	label={t('users.fields.language')}
+		// 	onChange={handleLangChange}
+		// 	error={error}
+		// 	value={user.internal.senti.language}
+		// 	menuItems={languages}
+		// 	margin={'normal'}
+		// />
 	}
 	const renderAccess = () => {
 		let rend = false
-		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers)) {
-			rend = true
-		}
+		/**TODO */
+		// if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers)) {
+		// 	rend = true
+		// }
 		return rend ?
 			<DSelect
 				margin={'normal'}
