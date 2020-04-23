@@ -1,13 +1,13 @@
 import React from 'react'
-import { InfoCard, ItemG, Caption, Info } from 'components';
-import { Hidden, Link } from '@material-ui/core';
-import { pF, dateFormatter } from 'variables/functions';
+import { InfoCard, ItemG, Caption, Info } from 'components'
+import { Hidden, Link } from '@material-ui/core'
+import { pF, dateFormatter } from 'variables/functions'
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
-import { Link as RLink } from 'react-router-dom'
+import { Link as RLink, useHistory } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux'
-import Dropdown from 'components/Dropdown/Dropdown';
-import { useLocalization } from 'hooks'
+import Dropdown from 'components/Dropdown/Dropdown'
+import { useLocalization, useMatch } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	language: state.settings.language,
@@ -18,6 +18,8 @@ import { useLocalization } from 'hooks'
 // @Andrei
 const UserContact = props => {
 	const t = useLocalization()
+	const history = useHistory()
+	const match = useMatch()
 	// const language = useSelector(state => state.settings.language)
 	const loggedUser = useSelector(state => state.settings.user)
 	const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -58,10 +60,10 @@ const UserContact = props => {
 		return dontShow
 	}
 	const renderTopAction = () => {
-		const { user, history, isFav, addToFav, removeFromFav } = props
+		const { user, isFav, addToFav, removeFromFav } = props
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${props.match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
+				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
 				{ label: t('menus.changePassword'), icon: LockOpen, func: props.changePass },
 				{ label: t('menus.userResendEmail'), icon: Email, func: props.resendConfirmEmail, dontShow: user.suspended !== 2 },
 				// { label: t('menus.confirmUser'), icon: Email, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },

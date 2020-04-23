@@ -1,9 +1,9 @@
 import React, { useState, Fragment } from 'react'
-import { IconButton, Menu, MenuItem, Button, Tooltip } from '@material-ui/core';
-import { ItemG } from 'components';
-import { MoreVert } from 'variables/icons';
-import { useLocalization } from 'hooks';
-import { makeStyles } from '@material-ui/styles';
+import { IconButton, Menu, MenuItem, Button, Tooltip } from '@material-ui/core'
+import { ItemG } from 'components'
+import { MoreVert } from 'variables/icons'
+import { useLocalization } from 'hooks'
+import { makeStyles } from '@material-ui/styles'
 
 const styles = makeStyles(theme => ({
 	leftIcon: {
@@ -38,6 +38,7 @@ const Dropdown = props => {
 		setActionAnchor(null)
 	}
 	const handleMenuItemClick = (m) => e => {
+		console.log(m)
 		if (m.func) {
 			m.func()
 		}
