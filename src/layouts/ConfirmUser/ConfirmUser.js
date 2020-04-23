@@ -169,7 +169,7 @@ const ConfirmUser = (props) => {
 								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
-								<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T>
+								{/* <T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T> */}
 								<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.lastStep')}</T>
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
