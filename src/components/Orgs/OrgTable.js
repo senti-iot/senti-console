@@ -8,7 +8,7 @@ import TableHeader from 'components/Table/TableHeader'
 import { Info, ItemG, Caption } from 'components'
 import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP'
-import OrgHover from 'components/Hover/OrgHover';
+import OrgHover from 'components/Hover/OrgHover'
 import { useLocalization, useHistory } from 'hooks'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 var countries = require('i18n-iso-countries')
@@ -34,7 +34,7 @@ const OrgTable = props => {
 	const { order, orderBy, data, handleCheckboxClick, selected, handleSelectAllClick } = props
 
 	let timer = null
-	let emptyRows;
+	let emptyRows
 
 	if (data) {
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -68,13 +68,13 @@ const OrgTable = props => {
 					setTimeout(() => {
 						setHoverOrg(n)
 						setRowHover(e.target)
-					}, 200);
+					}, 200)
 				}
 				else {
 					setHoverOrg(n)
 					setRowHover(e.target)
 				}
-			}, hoverTime);
+			}, hoverTime)
 	}
 	const unsetTimeout = () => {
 		clearTimeout(timer)
@@ -106,13 +106,13 @@ const OrgTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.id);
+							const isSelected = isSelectedFunc(n.uuid)
 							return (
 								<TableRow
 									hover
 									// onMouseEnter={e => { this.setHover(e, n) }}
 									// onMouseLeave={this.unsetTimeout}
-									onClick={e => { e.stopPropagation(); history.push('/management/org/' + n.id) }}
+									onClick={e => { e.stopPropagation(); history.push('/management/org/' + n.uuid) }}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
@@ -121,7 +121,7 @@ const OrgTable = props => {
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC content={
 											<ItemG container alignItems={'center'}>
 												<ItemG>

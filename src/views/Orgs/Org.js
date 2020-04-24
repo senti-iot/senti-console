@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { GridContainer, ItemGrid, CircularLoader } from 'components';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
-import { getOrgUsers } from 'variables/dataOrgs';
-import OrgDetails from './OrgCards/OrgDetails';
+import { GridContainer, ItemGrid, CircularLoader } from 'components'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core'
+import { getOrgUsers } from 'variables/dataOrgs'
+import OrgDetails from './OrgCards/OrgDetails'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteOrg } from 'variables/dataOrgs';
-import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
-import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
-import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
-import { getAllDevices } from 'variables/dataDevices';
+import { deleteOrg } from 'variables/dataOrgs'
+import OrgUsers from 'views/Orgs/OrgCards/OrgUsers'
+import OrgDevices from 'views/Orgs/OrgCards/OrgDevices'
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
+import { getAllDevices } from 'variables/dataDevices'
 // import Toolbar from 'components/Toolbar/Toolbar';
-import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons';
-import { getAllProjects } from 'variables/dataProjects';
-import { getAllCollections } from 'variables/dataCollections';
-import OrgProjects from './OrgCards/OrgProjects';
-import OrgCollections from './OrgCards/OrgCollections';
-import { scrollToAnchor } from 'variables/functions';
-import { getOrgLS } from 'redux/data';
-import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks';
+import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons'
+import { getAllProjects } from 'variables/dataProjects'
+import { getAllCollections } from 'variables/dataCollections'
+import OrgProjects from './OrgCards/OrgProjects'
+import OrgCollections from './OrgCards/OrgCollections'
+import { scrollToAnchor } from 'variables/functions'
+import { getOrgLS } from 'redux/data'
+import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks'
 
 
 const Org = props => {
@@ -35,7 +35,7 @@ const Org = props => {
 	const saved = useSelector(state => state.favorites.saved)
 	const org = useSelector(state => state.data.org)
 	const loading = useSelector(state => !state.data.gotOrg)
-
+	console.log('Org', org)
 	//State
 	const [projects, setProjects] = useState([]) // added
 	const [collections, setCollections] = useState([]) // added

@@ -134,6 +134,15 @@ export const getNSettings = async () => {
 		// let userUUID = uuid
 		let user = await getLoginUser()
 		if (user) {
+			//#region ACL
+			dispatch({
+				type: 'setAccessLevel',
+				payload: {
+					role: user.role,
+					privileges: user.privileges
+				}
+			})
+			//#endregion
 			user.internal = user.internal || {}
 			user.internal.senti = user.internal.senti || {}
 			let senti = user.internal ? user.internal.senti ? user.internal.senti : null : null
@@ -143,6 +152,7 @@ export const getNSettings = async () => {
 			 * @Andrei
 			 */
 			user.aux = user.aux || {}
+			user.aux.senti = user.aux.senti || {}
 			if (senti.extendedProfile && !user.aux.senti.extendedProfile) {
 				user.aux = user.aux || {}
 				user.aux.senti = user.aux.senti || {}

@@ -12,6 +12,15 @@ export const getAllOrgs = async () => {
 
 /**
  * @function getOrg Get an organization based on ID
+ * @param {uuid} orgId Organization ID
+ */
+export const getOrgV2 = async (orgId) => {
+	var data = await coreServicesAPI.get(`entity/organisation/${orgId}`).then(rs => rs.ok ? rs.data : null)
+	return data
+}
+
+/**
+ * @function getOrg Get an organization based on ID
  * @param {int} orgId Organization ID
  */
 export const getOrg = async (orgId) => {
