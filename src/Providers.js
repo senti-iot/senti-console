@@ -9,7 +9,7 @@ import 'assets/css/leaflet.css'
 import TProvider from 'components/Localization/TProvider'
 import 'core-js/es/map'
 import 'core-js/es/set'
-// import 'core-js/find';
+
 import 'core-js/features/set'
 import 'core-js/features/array/find'
 import 'core-js/features/array/includes'
