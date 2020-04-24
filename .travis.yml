@@ -23,7 +23,7 @@ deploy:
     on:
       branch: beta
   - provider: script
-    script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR $SLACK_HOOK
+    script: bash scripts/deploy.sh alpha-dev $TRAVIS_BUILD_DIR $SLACK_HOOK
     skip_cleanup: true
     on:
       branch: alpha-dev
