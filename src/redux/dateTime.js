@@ -8,18 +8,18 @@ const GetSettings = 'getSettings'
 const addPeriod = 'chartAddPeriod'
 // const removePeriod = 'chartRemovePeriod'
 const menuSelect = (p) => {
-	let to, from, timeType;
+	let to, from, timeType
 	switch (p.menuId) {
 		case 0: // Today
 			from = moment().startOf('day')
 			to = moment()
 			timeType = 1
-			break;
+			break
 		case 1: // Yesterday
 			from = moment().subtract(1, 'd').startOf('day')
 			to = moment().subtract(1, 'd').endOf('day')
 			timeType = 1
-			break;
+			break
 		case 2: // This week
 			from = moment().startOf('week').startOf('day')
 			to = moment()
@@ -29,29 +29,29 @@ const menuSelect = (p) => {
 			else {
 				timeType = 2
 			}
-			break;
+			break
 		case 3: // Last 7 days
 			from = moment().subtract(7, 'd').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 4: // last 30 days
 			from = moment().subtract(30, 'd').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 5: // last 90 days
 			from = moment().subtract(90, 'd').startOf('day')
 			to = moment()
 			timeType = 2
-			break;
+			break
 		case 6:
 			from = moment(p.from)
 			to = moment(p.to)
 			timeType = p.timeType
-			break;
+			break
 		default:
-			break;
+			break
 	}
 	return { to, from, timeType }
 }
@@ -188,6 +188,7 @@ const initialState = {
 		menuId: 3,
 	},
 	periods: [{
+		id: 'initial',
 		to: moment(),
 		from: moment().subtract(7, 'days'),
 		timeType: 2,
