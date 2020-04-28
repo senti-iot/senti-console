@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
-import UserContact from './UserCards/UserContact';
-import { UserLog } from './UserCards/UserLog';
+import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components'
+import UserContact from './UserCards/UserContact'
+import { UserLog } from './UserCards/UserLog'
 import {
 	Dialog,
 	DialogTitle,
@@ -10,16 +10,16 @@ import {
 	DialogActions,
 	Button,
 	Fade
-} from '@material-ui/core';
-import { deleteUser, /*  resendConfirmEmail, confirmUser */ } from 'variables/dataUsers';
+} from '@material-ui/core'
+import { deleteUser, /*  resendConfirmEmail, confirmUser */ } from 'variables/dataUsers'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPassword } from 'variables/dataLogin';
-import userStyles from 'assets/jss/components/users/userStyles';
-import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
-import { Person, FolderShared } from 'variables/icons';
-import { scrollToAnchor } from 'variables/functions';
-import { getUserLS } from 'redux/data';
-import { useMatch, useLocalization, useSnackbar, useLocation, useHistory } from 'hooks';
+import { setPassword } from 'variables/dataLogin'
+import userStyles from 'assets/jss/components/users/userStyles'
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
+import { Person, FolderShared } from 'variables/icons'
+import { scrollToAnchor } from 'variables/functions'
+import { getUserLS } from 'redux/data'
+import { useMatch, useLocalization, useSnackbar, useLocation, useHistory } from 'hooks'
 
 
 const User = props => {
@@ -116,7 +116,7 @@ const User = props => {
 
 	//Handlers
 	const snackBarMessages = (msg) => {
-		const { s, user } = props
+		const { user } = props
 		switch (msg) {
 			case 1:
 				s('snackbars.userDeleted', { user: user.firstName + ' ' + user.lastName })
@@ -224,8 +224,10 @@ const User = props => {
 				newPassword: pw.newP
 			}
 			let success = await setPassword(newPassObj).then(rs => rs)
-			if (success)
+			console.log(success)
+			if (success) {
 				handleCloseChangePassword(success)()
+			}
 			else {
 				setPwError(true)
 				setErrorMessage(t('confirmUser.networkError'))
