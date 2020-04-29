@@ -1,7 +1,6 @@
 import React from 'react'
 // import { localization, initialLocState } from 'Redux/localization';
 import { useSelector } from 'react-redux'
-import { getPrivilege } from 'variables/dataAuth'
 
 export const AuthProv = React.createContext(null)
 AuthProv.displayName = 'PrivilegeProvider'
