@@ -10,26 +10,37 @@ import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites'
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 import { copyToClipboard } from 'variables/functions'
 import { Link as RLink } from 'react-router-dom'
-import { useSnackbar, useLocalization } from 'hooks'
+import { useSnackbar, useLocalization, useAuth } from 'hooks'
 
 
 const UserHover = props => {
+	//Hooks
 	const classes = hoverStyles()
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
+	const hasAccess = useAuth()
+
+	//Redux
 	const saved = useSelector(state => state.favorites.saved)
 
+	//State
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
 	useEffect(() => {
 		if (saved === true) {
 			const { user } = props
 			if (user) {
 				// let user = data[data.findIndex(d => d.id === selected[0])]
-				if (dispatch(isFav({ id: user.id, type: 'user' }))) {
+				if (dispatch(isFav({ id: user.uuid, type: 'user' }))) {
 					s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: user.id, type: 'user' }))) {
+				if (!dispatch(isFav({ id: user.uuid, type: 'user' }))) {
 					s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
 					dispatch(finishedSaving())
 				}
@@ -37,23 +48,24 @@ const UserHover = props => {
 		}
 	}, [dispatch, props, s, saved, t])
 
+	//Handlers
 	const addToFavorites = () => {
 		const { user } = props
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: `/management/user/${user.id}`
+			path: `/management/user/${user.uuid}`
 		}
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
 		const { user } = props
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: `/management/user/${user.id}`
+			path: `/management/user/${user.uuid}`
 		}
 		dispatch(removeFromFav(favObj))
 
@@ -64,7 +76,6 @@ const UserHover = props => {
 	const copyToClipboardFunc = (str) => () => {
 		copyToClipboard(str)
 	}
-
 	const { anchorEl, user } = props
 	return (
 		<Popper
@@ -125,11 +136,11 @@ const UserHover = props => {
 						</ItemG>
 						<Divider />
 						<ItemG container style={{ marginTop: '8px' }}>
-							<ItemG>
-								<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `user/${user.id}/edit`, prevURL: '/management/users' }}>
+							{hasAccess(user.uuid, 'user.modify') ? <ItemG>
+								<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `user/${user.uuid}/edit`, prevURL: '/management/users' }}>
 									{t('menus.edit')}
 								</Button>
-							</ItemG>
+							</ItemG> : null}
 							<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
 								<Tooltip placement="top" title={t('actions.sendEmail')}>
 									<IconButton className={classes.smallAction}>

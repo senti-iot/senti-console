@@ -13,6 +13,7 @@ import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'var
 import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
 import { getAllSensors, getSensor } from 'variables/dataSensors'
 import { getAllFunctions, getFunction } from 'variables/dataFunctions'
+import { getPrivList } from 'redux/auth'
 
 
 //#region Special Functions
@@ -242,6 +243,8 @@ export const getUsers = (reload) => {
 		getAllUsers().then(rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
 			users = handleRequestSort('firstName', 'asc', users)
+			let userUUIDs = rs.map(u => u.uuid)
+			dispatch(getPrivList(userUUIDs, ['user.modify', 'user.delete']))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())

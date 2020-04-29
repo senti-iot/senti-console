@@ -4,6 +4,7 @@ import usePrevious from './usePrevious/usePrevious'
 import useSnackbar from './useSnackbar/useSnackbar'
 import useTimeout from './useTimeout/useTimeout'
 import useWidth from './useWidth/useWidth'
+import useAuth from './useAuth/useAuth'
 import { useState, useContext, useRef, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation, useRouteMatch as useMatch, useParams } from 'react-router-dom'
@@ -30,6 +31,7 @@ export {
 	useTheme,
 	usePrevious,
 	useLocalization,
+	useAuth,
 	useHistory,
 	useLocation,
 	useSelector,
