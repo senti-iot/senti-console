@@ -74,7 +74,6 @@ const SensorMessages = props => {
 		}
 	}, [getData, loading])
 	useEffect(() => {
-		console.log('This is calling the data')
 		if (period && (initialPeriod !== period)) {
 			setLoading(true)
 			let gData = async () => {
