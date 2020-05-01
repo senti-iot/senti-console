@@ -33,7 +33,7 @@ const Sensor = props => {
 	const history = useHistory()
 
 	//Redux
-	const accessLevel = useSelector(s => s.settings.user.privileges)
+	// const accessLevel = useSelector(s => s.settings.user.privileges)
 	const saved = useSelector(state => state.favorites.saved)
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
@@ -192,8 +192,8 @@ const Sensor = props => {
 								history={history}
 								match={match}
 								handleOpenDeleteDialog={handleOpenDeleteDialog}
-								// handleOpenAssignDevice={handleOpenAssignDevice}
-								accessLevel={accessLevel}
+							// handleOpenAssignDevice={handleOpenAssignDevice}
+							// accessLevel={accessLevel}
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"messages"}>
