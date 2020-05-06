@@ -20,6 +20,7 @@ import { Person, FolderShared } from 'variables/icons'
 import { scrollToAnchor } from 'variables/functions'
 import { getUserLS } from 'redux/data'
 import { useMatch, useLocalization, useSnackbar, useLocation, useHistory, useAuth } from 'hooks'
+import { Redirect } from 'react-router-dom'
 
 
 const User = props => {
@@ -362,10 +363,10 @@ const User = props => {
 		</Dialog>
 	}
 
-
+	console.log(user)
 
 	return (
-		loading ? <CircularLoader /> : <Fade in={true}>
+		loading ? <CircularLoader /> : user ? <Fade in={true}>
 			<GridContainer justify={'center'} alignContent={'space-between'}>
 				<ItemGrid xs={12} noMargin id={'contact'}>
 					<UserContact
@@ -389,7 +390,8 @@ const User = props => {
 				{renderChangePassword()}
 				{/* {renderConfirmUser()} */}
 			</GridContainer>
-		</Fade>
+		</Fade> : <Redirect to={'/404'} />
+
 	)
 }
 
