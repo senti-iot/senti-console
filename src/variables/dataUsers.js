@@ -57,9 +57,12 @@ export const editUser = async (user) => {
 	let data = await coreServicesAPI.put(`entity/user/${user.uuid}`, user).then(rs => rs.data)
 	return data
 }
-
+/**
+ * DELETE '/v2/entity/user/:uuid'
+ */
 export const deleteUser = async (user) => {
-	let data = await api.delete(`core/user/${user}`).then(rs => rs.data)
+	// let data = await api.delete(`core/user/${user}`).then(rs => rs.data)0
+	let data = await coreServicesAPI.delete(`entity/user/${user}`).then(rs => rs.ok)
 	del('user.' + user)
 	return data
 }

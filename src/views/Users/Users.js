@@ -1,18 +1,18 @@
 import React, { Fragment, useState } from 'react'
-import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core'
+import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip, ListItemIcon, ListItemText, ListItem } from '@material-ui/core'
 import UserTable from 'components/User/UserTable'
 import GridContainer from 'components/Grid/GridContainer'
 import { deleteUser } from 'variables/dataUsers'
 import { Add, Delete, Edit, Star, StarBorder, Mail, CloudDownload, People, Business } from 'variables/icons'
 import { handleRequestSort, copyToClipboard } from 'variables/functions'
 import TableToolbar from 'components/Table/TableToolbar'
-import { Info } from 'components'
+import Gravatar from 'react-gravatar'
 import { customFilterItems } from 'variables/Filters'
 import ExportUsers from 'components/Exports/ExportUsers'
-import { useLocalization, useHistory, useEffect, useSnackbar, useSelector, useDispatch } from 'hooks'
+import { useLocalization, useHistory, useEffect, useSnackbar, useSelector, useDispatch, useAuth } from 'hooks'
 import usersStyles from 'assets/jss/components/users/usersStyles'
 import { isFav, addToFav, removeFromFav } from 'redux/favorites'
-
+import { asyncForEach } from "variables/functions"
 const Users = props => {
 	//Hooks
 	const t = useLocalization()
@@ -20,6 +20,9 @@ const Users = props => {
 	const history = useHistory()
 	const classes = usersStyles()
 	const dispatch = useDispatch()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
 	//Redux
 	const filters = useSelector(state => state.appState.filters.users)
 	// const saved = useSelector(state => state.favorites.saved)
@@ -81,11 +84,14 @@ const Users = props => {
 			case 2:
 				s('snackbars.exported')
 				break
+			case 3:
+				s('404.networkError')
+				break
 			default:
 				break
 		}
 	}
-
+	const favFunc = (favObj, isFavorite) => isFavorite ? () => handleRemoveFromFav(favObj) : () => handleAddToFav(favObj)
 	const options = () => {
 		/**
 		 * TODO
@@ -103,12 +109,12 @@ const Users = props => {
 			isFavorite = dispatch(isFav(favObj))
 		}
 		return [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => handleRemoveFromFav(favObj) : () => handleAddToFav(favObj) },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: hasAccess(user.uuid, 'user.modify') },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: favFunc(favObj, isFavorite) },
 			{ label: t('menus.copyEmails'), icon: Mail, func: handleCopyEmailsSelected },
 			{ label: t('menus.exportUsers'), icon: CloudDownload, func: handleOpenDownloadModal },
 			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete, dontShow: !hasAccessList(selected, 'user.delete') }
 		]
 	}
 	const userHeader = [
@@ -147,8 +153,8 @@ const Users = props => {
 	const handleAddToFav = (favObj) => {
 		dispatch(addToFav(favObj))
 	}
-	const handleRemoveFromFav = (favObj) => {
-		dispatch(removeFromFav(favObj))
+	const handleRemoveFromFav = (favObj, noConfirm) => {
+		dispatch(removeFromFav(favObj, noConfirm))
 	}
 	const handleCopyEmailsSelected = () => {
 		let fUsers = users.filter((el) => {
@@ -187,18 +193,29 @@ const Users = props => {
 		setSelected([])
 	}
 	const handleDeleteUsers = async () => {
-		await selected.forEach(async u => {
-			let favObj = {
-				id: u,
-				type: 'user',
+		let state = 0
+		asyncForEach(selected, async u => {
+			if (state !== 2) {
+				let favObj = {
+					id: u,
+					type: 'user',
+				}
+				if (isFav(favObj)) {
+					handleRemoveFromFav(favObj, true)
+				}
+				let res = await deleteUser(u)
+				console.log('Res', res)
+				if (res) {
+					state = 1
+				}
+				else
+					state = 2
+				console.log('State', state)
 			}
-			if (isFav(favObj)) {
-				handleRemoveFromFav(favObj)
-			}
-			await deleteUser(u)
 		})
 		await reload(true)
-		snackBarMessages(1)
+		console.log('State2', state)
+		snackBarMessages(state === 2 ? 3 : 1)
 		setSelected([])
 		setOpenDelete(false)
 	}
@@ -249,8 +266,14 @@ const Users = props => {
 			</DialogContentText>
 			<div>
 				{openDelete ? selected.map(s => {
-					let u = users[users.findIndex(d => d.id === s)]
-					return <Info key={u.uuid}>&bull;{u.firstName + ' ' + u.lastName}</Info>
+					let u = users[users.findIndex(d => d.uuid === s)]
+					return u ? <ListItem divider key={u.uuid}>
+						<ListItemIcon>
+							<Gravatar default='mp' email={u.email} className={classes.img} />
+						</ListItemIcon>
+						<ListItemText primary={u.firstName + ' ' + u.lastName} />
+					</ListItem>
+						: null	// <Info key={u.uuid}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 				})
 					: null}
 			</div>

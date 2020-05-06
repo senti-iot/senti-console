@@ -7,34 +7,38 @@ import { useHistory } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { useSelector } from 'react-redux'
 import Dropdown from 'components/Dropdown/Dropdown'
-import { useLocalization, useMatch } from 'hooks'
+import { useLocalization, useMatch, useAuth } from 'hooks'
 
 const UserContact = props => {
+	//Hooks
+	const hasAccess = useAuth().hasAccess
+	//Redux
+
+	//State
+
+	//Const
+	const { user, isFav, addToFav, removeFromFav, deleteUser, classes,
+		changePass, resendConfirmEmail } = props
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
 	const history = useHistory()
 	const match = useMatch()
 	const t = useLocalization()
 	const loggedUser = useSelector(state => state.settings.user)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
-	const deleteUser = () => {
-		props.deleteUser()
+	const handleDeleteUser = () => {
+		deleteUser()
 	}
-	/**
-	 * TODO
-	 * @Andrei
-	 */
-	const renderUserGroup = () => null
-	// const renderUserGroup = () => {
-	// 	const { user } = props
-	// 	if (user.groups[136550100000143])
-	// 		return t('users.groups.136550100000143')
-	// 	if (user.groups[136550100000211])
-	// 		return t('users.groups.136550100000211')
-	// 	if (user.groups[136550100000225])
-	// 		return t('users.groups.136550100000225')
-	// }
+
+	const renderUserGroup = () => user.role.name
+
 	const renderTopActionPriv = () => {
-		const { user } = props
 		/**
 		 * TODO
 		 * @Andrei
@@ -50,7 +54,6 @@ const UserContact = props => {
 		return null
 	}
 	const canDelete = () => {
-		const { user } = props
 		let dontShow = true
 		/**
 		 * TODO
@@ -64,18 +67,17 @@ const UserContact = props => {
 		return dontShow
 	}
 	const renderTopAction = () => {
-		const { user, isFav, addToFav, removeFromFav } = props
 		return <Dropdown menuItems={
 			[
 				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
-				{ label: t('menus.changePassword'), icon: LockOpen, func: props.changePass },
-				{ label: t('menus.userResendEmail'), icon: Email, func: props.resendConfirmEmail, dontShow: user.suspended !== 2 },
+				{ label: t('menus.changePassword'), icon: LockOpen, func: changePass, dontShow: hasAccess(user.id) },
+				{ label: t('menus.userResendEmail'), icon: Email, func: resendConfirmEmail, dontShow: user.suspended !== 2 },
 				// { label: t('menus.confirmUser'), icon: Email, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },
 				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 				{
 					label: t('menus.delete'),
 					icon: Delete,
-					func: deleteUser,
+					func: handleDeleteUser,
 					dontShow: canDelete()
 				},
 
@@ -83,9 +85,8 @@ const UserContact = props => {
 		} />
 	}
 
-	const { user, classes } = props
+	const extended = user.aux ? user.aux.senti ? user.aux.senti.extendedProfile : {} : {}
 	console.log(user)
-	const extended = user.aux ? user.aux.senti ? user.aux.senti.extendedProfile : null : null
 	return (
 		<InfoCard
 			title={`${user.firstName} ${user.lastName}`}
@@ -123,14 +124,6 @@ const UserContact = props => {
 								</Link>
 							</Info>
 						</ItemG>
-						{/**
-						 * TODO
-						 * @Andrei
-						*/}
-						{/* <ItemG>
-							<Caption>{t('users.fields.language')}</Caption>
-							<Info>{user.internal.senti.language === 'en' ? t('settings.languages.en') : user.internal.senti.language === 'da' ? t('settings.languages.da') : ''}</Info>
-						</ItemG> */}
 						<ItemG>
 							<Caption>{t('users.fields.accessLevel')}</Caption>
 							<Info>{renderUserGroup()}</Info>
@@ -149,51 +142,51 @@ const UserContact = props => {
 					<ItemG xs={12}>
 						<Caption>{t('users.fields.bio')}</Caption>
 						<Info>
-							{extended ? extended.bio ? extended.bio : null : null}
+							{extended.bio ? extended.bio : ` `}
 						</Info>
 					</ItemG>
 					<ItemG xs={12} md={2}>
 						<Caption>{t('users.fields.position')}</Caption>
 						<Info>
-							{extended ? extended.position ? extended.position : null : null}
+							{extended.position ? extended.position : ` `}
 						</Info>
 					</ItemG>
-					<ItemG xs={12} md={9}>
+					<ItemG xs={12} md={12}>
 						<Caption>{t('users.fields.location')}</Caption>
 						<Info>
-							{extended ? extended.location ? extended.location : null : null}
+							{extended.location ? extended.location : ` `}
 						</Info>
 					</ItemG>
-					<ItemG xs={12} md={2}>
+					{extended.linkedInURL ? <ItemG xs={12} md={12}>
 						<Caption>{t('users.fields.linkedInURL')}</Caption>
 						<Info>
-							{extended ? extended.linkedInURL ?
-								<Link target='_blank' rel="noopener noreferrer" href={`${extended.linkedInURL}`}>
-									{`${user.firstName} ${user.lastName}`}
-								</Link>
-								: null : null}
+
+							<Link target='_blank' rel="noopener noreferrer" href={`${extended.linkedInURL}`}>
+								{`${user.firstName} ${user.lastName}`}
+							</Link>
+
 						</Info>
-					</ItemG>
-					<ItemG xs={12} md={8}>
+					</ItemG> : ` `}
+					{extended.twitterURL ? <ItemG xs={12} md={8}>
 						<Caption>{t('users.fields.twitterURL')}</Caption>
 						<Info>
-							{extended ? extended.twitterURL ?
-								<Link target='_blank' rel="noopener noreferrer" href={`${extended.twitterURL}`}>
-									{`${user.firstName} ${user.lastName}`}
-								</Link>
-								: null : null}
+
+							<Link target='_blank' rel="noopener noreferrer" href={`${extended.twitterURL}`}>
+								{`${user.firstName} ${user.lastName}`}
+							</Link>
+
 						</Info>
-					</ItemG>
-					<ItemG xs={10}>
+					</ItemG> : ` `}
+					<ItemG xs={12}>
 						<Caption>{t('users.fields.birthday')}</Caption>
 						<Info>
-							{extended ? extended.birthday ? dateFormatter(extended.birthday) : null : null}
+							{extended.birthday ? dateFormatter(extended.birthday) : ` `}
 						</Info>
 					</ItemG>
 					<ItemG xs={12}>
 						<Caption>{t('users.fields.newsletter')}</Caption>
 						<Info>
-							{extended ? extended.newsletter ? t('actions.yes') : t('actions.no') : t('actions.no')}
+							{extended.newsletter ? t('actions.yes') : t('actions.no')}
 						</Info>
 					</ItemG>
 				</ItemG>

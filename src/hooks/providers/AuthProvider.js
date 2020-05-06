@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
 
 	//Redux
 	const resources = useSelector(s => s.auth.resources)
+	const user = useSelector(s => s.settings.user)
 	//State
 
 	//Const
@@ -19,7 +20,20 @@ const AuthProvider = ({ children }) => {
 	//useEffects
 
 	//Handlers
+	const hasAccessList = async (uuids, perm) => {
+
+		console.log(uuids)
+		let access = false
+		await uuids.forEach(async uuid => {
+			access = await hasAccess(uuid, perm)
+		})
+		console.log(access)
+		return access
+	}
 	const hasAccess = async (uuid, perm) => {
+		if (uuid === user.uuid) {
+			return true
+		}
 		if (resources[uuid]) {
 			return resources[uuid][perm]
 		}
@@ -28,7 +42,7 @@ const AuthProvider = ({ children }) => {
 		}
 	}
 	return (
-		<AuthProv.Provider value={hasAccess}>
+		<AuthProv.Provider value={{ hasAccess, hasAccessList }}>
 			{children}
 		</AuthProv.Provider>
 

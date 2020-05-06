@@ -19,7 +19,7 @@ const UserHover = props => {
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
-	const hasAccess = useAuth()
+	const hasAccess = useAuth().hasAccess
 
 	//Redux
 	const saved = useSelector(state => state.favorites.saved)

@@ -19,7 +19,7 @@ import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 import { Person, FolderShared } from 'variables/icons'
 import { scrollToAnchor } from 'variables/functions'
 import { getUserLS } from 'redux/data'
-import { useMatch, useLocalization, useSnackbar, useLocation, useHistory } from 'hooks'
+import { useMatch, useLocalization, useSnackbar, useLocation, useHistory, useAuth } from 'hooks'
 
 
 const User = props => {
@@ -31,6 +31,8 @@ const User = props => {
 	const location = useLocation()
 	const history = useHistory()
 	const classes = userStyles()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
 
 	//Redux
 	// const accessLevel = useSelector(s => s.settings.user.privileges)
@@ -101,7 +103,6 @@ const User = props => {
 		const gUser = async () => {
 			if (match.params) {
 				let id = match.params.id
-				console.log(id)
 				if (id) {
 					await getUser(id)
 				}
@@ -248,7 +249,7 @@ const User = props => {
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('menus.changePassword')}</DialogTitle>
 			<DialogContent>
 				<Danger> {errorMessage} </Danger>
-				{/* {accessLevel.apiorg.editusers ? null : <ItemG>
+				{hasAccess(user.uuid, 'user.modify') ? null : <ItemG>
 					<TextF
 						id={'current'}
 						label={t('users.fields.currentPass')}
@@ -256,7 +257,7 @@ const User = props => {
 						onChange={handleInputChange}
 						value={pw.current}
 					/>
-				</ItemG>} */}
+				</ItemG>}
 				<ItemG>
 					<TextF
 						id={'newP'}
