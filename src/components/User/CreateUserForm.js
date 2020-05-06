@@ -1,6 +1,6 @@
 import React from 'react'
 import { ItemGrid, DatePicker, Warning, Danger, TextF, DSelect, ItemG } from 'components'
-import { Collapse, Button, FormControlLabel, Checkbox } from '@material-ui/core'
+import { Collapse, Button } from '@material-ui/core'
 import createUserStyles from 'assets/jss/components/users/createUserStyles'
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog'
 
@@ -134,7 +134,19 @@ const CreateUserForm = props => {
 					onChange={handleExtendedBirthdayChange('birthday')}
 				/>
 			</ItemGrid>
-
+			<ItemGrid container xs={12} >
+				<DSelect
+					margin={'normal'}
+					error={error}
+					label={t('users.fields.newsletter')}
+					value={extended.newsletter}
+					onChange={handleExtendedChange('newsletter')}
+					menuItems={[
+						{ value: true, label: t('actions.yes') },
+						{ value: false, label: t('actions.no') }
+					]
+					} />
+			</ItemGrid>
 		</Collapse>
 	}
 	return (
@@ -198,20 +210,7 @@ const CreateUserForm = props => {
 			<ItemG xs={12}>
 				{renderExtendedProfile()}
 			</ItemG>
-			<ItemGrid container xs={12} >
-				<FormControlLabel
-					style={{ margin: 0 }}
-					control={
-						<Checkbox
-							checked={extended.newsletter}
-							onChange={handleExtendedChange('newsletter')}
-							value="checkedB"
-							color="primary"
-						/>
-					}
-					label={t('users.fields.newsletter')}
-				/>
-			</ItemGrid>
+
 			<ItemGrid container xs={12} md={12}>
 				<Button style={{ margin: 8 }} color={'primary'} onClick={handleChangeExtended}>{t('actions.extendProfile')}</Button>
 			</ItemGrid>

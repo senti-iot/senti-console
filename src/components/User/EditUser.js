@@ -52,10 +52,6 @@ const EditUser = props => {
 	//Const
 	const { setBC, setTabs, setHeader } = props
 
-	const languages = [
-		{ value: 'en', label: t('settings.languages.en') },
-		{ value: 'da', label: t('settings.languages.da') }
-	]
 
 	//useCallbacks
 	const getUserRole = useCallback(
@@ -233,18 +229,7 @@ const EditUser = props => {
 	//#endregion
 
 	//#region Language
-	const handleLangChange = e => {
-		setUser({
-			...user,
-			aux: {
-				...user.aux,
-				odeum: {
-					...user.aux.odeum,
-					language: e.target.value
-				}
-			}
-		})
-	}
+
 
 	//#endregion
 
@@ -256,7 +241,6 @@ const EditUser = props => {
 			...user,
 			role: g
 		})
-		console.log(user)
 	}
 	//#endregion
 
@@ -291,7 +275,7 @@ const EditUser = props => {
 			setError(false)
 			setErrorMessage([])
 		}
-
+		console.log(prop, e.target.value)
 		setExtended({
 			...extended,
 			[prop]: e.target.value
@@ -323,9 +307,6 @@ const EditUser = props => {
 					handleOrgChange={handleOrgChange}
 					handleOpenOrg={handleOpenOrg}
 					handleCloseOrg={handleCloseOrg}
-					/* Language */
-					handleLangChange={handleLangChange}
-					languages={languages}
 					/* Groups */
 					roles={roles}
 					selectedRole={selectedRole}
