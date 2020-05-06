@@ -20,17 +20,17 @@ const AuthProvider = ({ children }) => {
 	//useEffects
 
 	//Handlers
-	const hasAccessList = async (uuids, perm) => {
+	const hasAccessList = (uuids, perm) => {
 
 		console.log(uuids)
 		let access = false
-		await uuids.forEach(async uuid => {
-			access = await hasAccess(uuid, perm)
+		uuids.forEach(async uuid => {
+			access = hasAccess(uuid, perm)
 		})
 		console.log(access)
 		return access
 	}
-	const hasAccess = async (uuid, perm) => {
+	const hasAccess = (uuid, perm) => {
 		if (uuid === user.uuid) {
 			return true
 		}
