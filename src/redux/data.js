@@ -195,10 +195,10 @@ export const sortData = (key, property, order) => {
 //#region Users
 
 export const getUserLS = async (id) => {
-	console.log('GetUserLS', id)
 	return async dispatch => {
 		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
+		console.log('Redux User', user)
 		if (user) {
 			dispatch({
 				type: setUser,
@@ -222,7 +222,10 @@ export const getUserLS = async (id) => {
 		await getUser(id).then(rs => {
 			console.log("Result from Endpoint", rs)
 			if (!compare(user, rs)) {
-				user = { ...rs }
+				if (rs)
+					user = { ...rs }
+				else
+					user = undefined
 				dispatch({
 					type: setUser,
 					payload: user

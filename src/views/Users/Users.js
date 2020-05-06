@@ -194,7 +194,7 @@ const Users = props => {
 	}
 	const handleDeleteUsers = async () => {
 		let state = 0
-		asyncForEach(selected, async u => {
+		await asyncForEach(selected, async u => {
 			if (state !== 2) {
 				let favObj = {
 					id: u,

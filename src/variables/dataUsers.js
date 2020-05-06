@@ -3,47 +3,16 @@ import { del } from './storage'
 
 //#region GET USERS Senti
 
-/**
- * @param {Object} s
- * @param {String} uuid
- */
-export const setInternal = async (s, uuid) => {
-	let data = await coreServicesAPI.put(`/entity/user/${uuid}/internal`, s).then(rs => rs.ok)
-	return data
-}
-export const getNUser = async (uuid) => {
-	let data = await coreServicesAPI.get(`entity/user/${uuid}`).then(rs => rs.data)
-	return data
-}
-export const getLoginUser = async (uuid) => {
-	let data = await coreServicesAPI.get(`auth/user`).then(rs => rs.data)
-	return data
-}
-//#region GET User,Users
-export const getAllUsers = async () => {
-	// var data = await api.get('core/users').then(rs => rs.data)
-	// data.forEach(d => {
-	// 	if (d.aux) {
-	// 		delete d.aux.favorites
-	// 		delete d.aux.settings
-	// 	}
-	// })
-	var data = await coreServicesAPI.get('entity/users').then(rs => rs.data)
-	return data ? data : []
-}
+
 export const getValidSession = async (userId) => {
 	var data = await api.get(`core/user/${userId}`).then(rs => rs)
 	return data
 }
-export const getUser = async (userId) => {
-	// var data = await api.get(`core/user/${userId}`).then(rs => rs.data)
-	var data = await coreServicesAPI.get(`entity/user/${userId}`).then(rs => rs.data)
-	return data
-}
-export const createUser = async (user) => {
-	let response = await api.post(`core/user`, user).then(rs => rs)
-	return response.data ? response.data : response.status
-}
+
+// export const createUser = async (user) => {
+// 	let response = await api.post(`core/user`, user).then(rs => rs)
+// 	return response.data ? response.data : response.status
+// }
 export const resendConfirmEmail = async (user) => {
 	let data = await api.post('core/user/resendconfirmmail', user).then(rs => rs.data)
 	return data
@@ -52,6 +21,18 @@ export const confirmUser = async (obj) => {
 	let response = await api.post(`core/user/confirm`, obj).then(rs => rs)
 	return response.ok ? response.data : response.status
 }
+
+//#region Senti Core API
+export const createUser = async (user) => {
+	var res = await coreServicesAPI.post(`entity/user`, user).then(rs => rs)
+	return res
+}
+export const getUser = async (userId) => {
+	// var data = await api.get(`core/user/${userId}`).then(rs => rs.data)
+	var data = await coreServicesAPI.get(`entity/user/${userId}`).then(rs => rs.ok ? rs.data : rs.ok)
+	return data
+}
+
 export const editUser = async (user) => {
 	// let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
 	let data = await coreServicesAPI.put(`entity/user/${user.uuid}`, user).then(rs => rs.data)
@@ -66,5 +47,21 @@ export const deleteUser = async (user) => {
 	del('user.' + user)
 	return data
 }
-
+/**
+ * @param {Object} s
+ * @param {String} uuid
+ */
+export const setInternal = async (s, uuid) => {
+	let data = await coreServicesAPI.put(`/entity/user/${uuid}/internal`, s).then(rs => rs.ok)
+	return data
+}
+export const getLoginUser = async (uuid) => {
+	let data = await coreServicesAPI.get(`auth/user`).then(rs => rs.data)
+	return data
+}
+//#region GET User,Users
+export const getAllUsers = async () => {
+	var data = await coreServicesAPI.get('entity/users').then(rs => rs.data)
+	return data ? data : []
+}
 //#endregion
