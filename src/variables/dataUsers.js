@@ -35,7 +35,7 @@ export const getUser = async (userId) => {
 
 export const editUser = async (user) => {
 	// let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
-	let data = await coreServicesAPI.put(`entity/user/${user.uuid}`, user).then(rs => rs.data)
+	let data = await coreServicesAPI.put(`entity/user/${user.uuid}`, user).then(rs => rs.ok)
 	return data
 }
 /**
