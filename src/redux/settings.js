@@ -1,5 +1,5 @@
 import cookie from 'react-cookies'
-import { getUser, getValidSession, /*getNUser, */ getLoginUser, setInternal, editUser } from 'variables/dataUsers'
+import { getUser, getValidSession, getLoginUser, setInternal, editUser } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin'
