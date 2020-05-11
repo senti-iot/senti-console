@@ -3,7 +3,7 @@ import { set, get } from 'variables/storage'
 import { getAllUsers, getUser } from 'variables/dataUsers'
 import { getAllProjects, getProject } from 'variables/dataProjects'
 import { getAllDevices, getDevice } from 'variables/dataDevices'
-import { getAllOrgs, getOrgV2 } from 'variables/dataOrgs'
+import { getAllOrgs, getOrg } from 'variables/dataOrgs'
 import { getAllCollections, getCollection } from 'variables/dataCollections'
 import { colors } from 'variables/colors'
 import { hist } from 'Providers'
@@ -376,7 +376,7 @@ export const getOrgLS = async (id) => {
 				payload: null
 			})
 		}
-		await getOrgV2(id).then(rs => {
+		await getOrg(id).then(rs => {
 			console.log(rs)
 			if (!compare(org, rs)) {
 				org = { ...rs }

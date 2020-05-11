@@ -14,19 +14,19 @@ export const getAllOrgs = async () => {
  * @function getOrg Get an organization based on ID
  * @param {uuid} orgId Organization ID
  */
-export const getOrgV2 = async (orgId) => {
+export const getOrg = async (orgId) => {
 	var data = await coreServicesAPI.get(`entity/organisation/${orgId}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
 
-/**
- * @function getOrg Get an organization based on ID
- * @param {int} orgId Organization ID
- */
-export const getOrg = async (orgId) => {
-	var data = await api.get(`core/org/${orgId}`).then(rs => rs.data)
-	return data
-}
+// /**
+//  * @function getOrg Get an organization based on ID
+//  * @param {int} orgId Organization ID
+//  */
+// export const getOrg = async (orgId) => {
+// 	var data = await api.get(`core/org/${orgId}`).then(rs => rs.data)
+// 	return data
+// }
 
 /**
  * @function getOrgUsers Get Organization's users
@@ -67,7 +67,12 @@ export const createOrg = async (org) => {
  * @param {object} org
  */
 export const deleteOrg = async (org) => {
-	var result = await api.delete(`core/org/${org}`).then(rs => rs)
+	// var result = await api.delete(`core/org/${org}`).then(rs => rs)
+	var result = await coreServicesAPI.delete(`core/org/${org}`).then(rs => rs.ok)
 	del('org.' + org)
 	return result
 }
+
+//#region Senti Services
+
+//#endregion

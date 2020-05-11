@@ -44,7 +44,7 @@ const Orgs = props => {
 		{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
 		{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
 		{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
-		{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
+		{ key: 'org.uuid', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
 		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 	]
 
@@ -95,15 +95,15 @@ const Orgs = props => {
 		dispatch(removeFromFav(favObj))
 	}
 	const options = () => {
-		let org = orgs[orgs.findIndex(d => d.id === selected[0])]
+		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
 		if (org) {
 			favObj = {
-				id: org.id,
+				id: org.uuid,
 				name: org.name,
 				type: 'org',
-				path: `/management/org/${org.id}`
+				path: `/management/org/${org.uuid}`
 			}
 			isFavorite = dispatch(isFav(favObj))
 		}
@@ -124,6 +124,8 @@ const Orgs = props => {
 	}
 
 	const handleCheckboxClick = (event, id) => {
+		console.log(event)
+		console.log(id)
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = []
@@ -164,7 +166,7 @@ const Orgs = props => {
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			setSelected([filterItems(orgs).map(n => n.id)])
+			setSelected([filterItems(orgs).map(n => n.uuid)])
 			return
 		}
 		setSelected([])
@@ -208,6 +210,7 @@ const Orgs = props => {
 	}
 
 	const renderConfirmDelete = () => {
+		console.log(orgs.findIndex(d => d.uuid === selected[0]), selected)
 		return <Dialog
 			open={openDelete}
 			onClose={handleCloseDeleteDialog}
@@ -221,7 +224,7 @@ const Orgs = props => {
 				</DialogContentText>
 				<List>
 					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={orgs[orgs.findIndex(d => d.id === s)].name} /></ListItem>)}
+						<ListItemText primary={orgs[orgs.findIndex(d => d.uuid === s)].name} /></ListItem>)}
 				</List>
 			</DialogContent>
 			<DialogActions>

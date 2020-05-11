@@ -6,15 +6,15 @@ import OrgDetails from './OrgCards/OrgDetails'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs'
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers'
-import OrgDevices from 'views/Orgs/OrgCards/OrgDevices'
+// import OrgDevices from 'views/Orgs/OrgCards/OrgDevices'
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
-import { getAllDevices } from 'variables/dataDevices'
+// import { getAllDevices } from 'variables/dataDevices'
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons'
-import { getAllProjects } from 'variables/dataProjects'
-import { getAllCollections } from 'variables/dataCollections'
-import OrgProjects from './OrgCards/OrgProjects'
-import OrgCollections from './OrgCards/OrgCollections'
+// import { getAllProjects } from 'variables/dataProjects'
+// import { getAllCollections } from 'variables/dataCollections'
+// import OrgProjects from './OrgCards/OrgProjects'
+// import OrgCollections from './OrgCards/OrgCollections'
 import { scrollToAnchor } from 'variables/functions'
 import { getOrgLS } from 'redux/data'
 import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks'
@@ -37,15 +37,15 @@ const Org = props => {
 	const loading = useSelector(state => !state.data.gotOrg)
 	console.log('Org', org)
 	//State
-	const [projects, setProjects] = useState([]) // added
-	const [collections, setCollections] = useState([]) // added
+	// const [projects, setProjects] = useState([]) // added
+	// const [collections, setCollections] = useState([]) // added
 	const [users, setUsers] = useState([])
 	const [devices, setDevices] = useState([]) // added
 	const [loadingUsers, setLoadingUsers] = useState(true)
-	const [loadingDevices, setLoadingDevices] = useState(true) // added
+	// const [loadingDevices, setLoadingDevices] = useState(true) // added
 	const [openDelete, setOpenDelete] = useState(false)
-	const [loadingCollections, setLoadingCollections] = useState(true) // added
-	const [loadingProjects, setLoadingProjects] = useState(true) // added
+	// const [loadingCollections, setLoadingCollections] = useState(true) // added
+	// const [loadingProjects, setLoadingProjects] = useState(true) // added
 
 	//Const
 	const { setHeader, setTabs, setBC } = props
@@ -63,21 +63,21 @@ const Org = props => {
 				setUsers(rs)
 				setLoadingUsers(false)
 			})
-			await getAllDevices().then(rs => {
-				let newDevices = rs.filter(f => f.org.id === org.id)
-				setDevices(newDevices)
-				setLoadingDevices(false)
-			})
-			await getAllCollections().then(rs => {
-				let newCollections = rs.filter(f => f.org.id === org.id)
-				setCollections(newCollections)
-				setLoadingCollections(false)
-			})
-			await getAllProjects().then(rs => {
-				let newProjects = rs.filter(f => f.org.id === org.id)
-				setProjects(newProjects)
-				setLoadingProjects(false)
-			})
+			// await getAllDevices().then(rs => {
+			// 	let newDevices = rs.filter(f => f.org.id === org.id)
+			// 	setDevices(newDevices)
+			// 	setLoadingDevices(false)
+			// })
+			// await getAllCollections().then(rs => {
+			// 	let newCollections = rs.filter(f => f.org.id === org.id)
+			// 	setCollections(newCollections)
+			// 	setLoadingCollections(false)
+			// })
+			// await getAllProjects().then(rs => {
+			// 	let newProjects = rs.filter(f => f.org.id === org.id)
+			// 	setProjects(newProjects)
+			// 	setLoadingProjects(false)
+			// })
 		}
 	}, [dispatch, match.params.id, org])
 
@@ -230,7 +230,7 @@ const Org = props => {
 					/> :
 						<CircularLoader fill />}
 				</ItemGrid>
-				<ItemGrid xs={12} noMargin id={'projects'}>
+				{/* <ItemGrid xs={12} noMargin id={'projects'}>
 					{!loadingProjects ? <OrgProjects
 						t={t}
 						org={org}
@@ -259,7 +259,7 @@ const Org = props => {
 						:
 						<CircularLoader fill />
 					}
-				</ItemGrid>
+				</ItemGrid> */}
 				{renderDeleteDialog()}
 			</GridContainer>
 		</Fade>

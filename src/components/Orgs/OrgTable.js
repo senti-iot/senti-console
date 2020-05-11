@@ -107,6 +107,7 @@ const OrgTable = props => {
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 							const isSelected = isSelectedFunc(n.uuid)
+							console.log('n', n)
 							return (
 								<TableRow
 									hover
@@ -139,7 +140,7 @@ const OrgTable = props => {
 										} />
 									</Hidden>
 									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC
 											onMouseEnter={e => { setHover(e, n) }}
 											onMouseLeave={unsetTimeout}

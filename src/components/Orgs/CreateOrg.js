@@ -28,7 +28,6 @@ const CreateOrg = props => {
 	//State
 	const [openOrg, setOpenOrg] = useState(false)
 	const [org, setOrg] = useState({
-		id: -1,
 		name: '',
 		nickname: '',
 		address: '',
@@ -42,7 +41,7 @@ const CreateOrg = props => {
 			ean: ''
 		},
 		org: {
-			id: -1,
+			uuid: -1,
 			name: t('no.org')
 		}
 	})
