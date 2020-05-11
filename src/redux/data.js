@@ -13,7 +13,7 @@ import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'var
 import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
 import { getAllSensors, getSensor } from 'variables/dataSensors'
 import { getAllFunctions, getFunction } from 'variables/dataFunctions'
-import { getPrivList } from 'redux/auth'
+import { getPrivList, getPriv } from 'redux/auth'
 
 
 //#region Special Functions
@@ -162,7 +162,7 @@ const setFavorites = 'setFavorites'
 
 export const getAllData = async (reload, orgId, su) => {
 	return async dispatch => {
-		dispatch(await getUsers(true))
+		await dispatch(await getUsers(true))
 		dispatch(await getProjects(true))
 		dispatch(await getCollections(true))
 		dispatch(await getDevices(true))
@@ -241,13 +241,13 @@ export const getUserLS = async (id) => {
 }
 
 export const getUsers = (reload) => {
-	return dispatch => {
+	return async dispatch => {
 
-		getAllUsers().then(rs => {
+		await getAllUsers().then(async rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
 			users = handleRequestSort('firstName', 'asc', users)
 			let userUUIDs = rs.map(u => u.uuid)
-			dispatch(getPrivList(userUUIDs, ['user.modify', 'user.delete']))
+			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete']))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -394,9 +394,13 @@ export const getOrgLS = async (id) => {
 	}
 }
 export const getOrgs = (reload) => {
-	return dispatch => {
-		getAllOrgs().then(rs => {
+	return async (dispatch, getState) => {
+		await getAllOrgs().then(async rs => {
 			let orgs = handleRequestSort('name', 'asc', rs)
+			let orgUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['org.create', 'org.list']))
+			await dispatch(await getPrivList(orgUUIDs, ['org.modify', 'org.delete']))
 			set('orgs', orgs)
 			if (reload) {
 				dispatch(setOrgs())

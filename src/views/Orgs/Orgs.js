@@ -6,12 +6,13 @@ import { PictureAsPdf, Delete, Edit, Star, StarBorder, Add, People, Business } f
 import { deleteOrg } from 'variables/dataOrgs'
 import TableToolbar from 'components/Table/TableToolbar'
 import { customFilterItems } from 'variables/Filters'
-import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks'
+import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar, useAuth } from 'hooks'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 
 const Orgs = props => {
 	//Hooks
+	const hasAccess = useAuth().hasAccess
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -95,6 +96,9 @@ const Orgs = props => {
 		dispatch(removeFromFav(favObj))
 	}
 	const options = () => {
+		/**
+		 * TODO @Andrei
+		 */
 		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
@@ -210,7 +214,6 @@ const Orgs = props => {
 	}
 
 	const renderConfirmDelete = () => {
-		console.log(orgs.findIndex(d => d.uuid === selected[0]), selected)
 		return <Dialog
 			open={openDelete}
 			onClose={handleCloseDeleteDialog}
@@ -239,7 +242,7 @@ const Orgs = props => {
 	}
 	const renderTableToolBarContent = () => {
 		// let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
-		let access = true
+		let access = hasAccess(null, 'org.create')
 		return <Fragment>
 			{access ? <Tooltip title={t('menus.create.org')}>
 				<IconButton aria-label='Add new organisation' onClick={handleAddNewOrg}>

@@ -30,10 +30,11 @@ const AuthProvider = ({ children }) => {
 		console.log(access)
 		return access
 	}
-	const hasAccess = (uuid, perm) => {
-		if (uuid === user.uuid) {
-			return true
-		}
+	const hasAccess = (uid, perm) => {
+		let uuid = uid ? uid : user.uuid
+		// if (uuid === user.uuid) {
+		// 	return true
+		// }
 		if (resources[uuid]) {
 			return resources[uuid][perm]
 		}

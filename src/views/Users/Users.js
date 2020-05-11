@@ -214,7 +214,6 @@ const Users = props => {
 			}
 		})
 		await reload(true)
-		console.log('State2', state)
 		snackBarMessages(state === 2 ? 3 : 1)
 		setSelected([])
 		setOpenDelete(false)
