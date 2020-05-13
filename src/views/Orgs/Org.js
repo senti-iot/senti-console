@@ -40,7 +40,7 @@ const Org = props => {
 	// const [projects, setProjects] = useState([]) // added
 	// const [collections, setCollections] = useState([]) // added
 	const [users, setUsers] = useState([])
-	const [devices, setDevices] = useState([]) // added
+	// const [devices, setDevices] = useState([]) // added
 	const [loadingUsers, setLoadingUsers] = useState(true)
 	// const [loadingDevices, setLoadingDevices] = useState(true) // added
 	const [openDelete, setOpenDelete] = useState(false)
@@ -218,7 +218,7 @@ const Org = props => {
 						org={org}
 						language={language}
 						accessLevel={accessLevel}
-						devices={devices ? devices.length : 0}
+					// devices={devices ? devices.length : 0}
 					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin id={'users'}>

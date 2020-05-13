@@ -17,7 +17,7 @@ export const getPriv = (uuid, pList) => {
 		nAccess.privileges = { ...nAccess.privileges, ...privs }
 		dispatch({
 			type: setPrivs,
-			payload: nAccess
+			payload: nAccess.privileges
 		})
 	}
 }

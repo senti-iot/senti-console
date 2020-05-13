@@ -10,7 +10,8 @@ const AuthProvider = ({ children }) => {
 
 	//Redux
 	const resources = useSelector(s => s.auth.resources)
-	const user = useSelector(s => s.settings.user)
+	// const user = useSelector(s => s.settings.user)
+	const userPriv = useSelector(s => s.auth.userPrivilege)
 	//State
 
 	//Const
@@ -30,15 +31,17 @@ const AuthProvider = ({ children }) => {
 		console.log(access)
 		return access
 	}
-	const hasAccess = (uid, perm) => {
-		let uuid = uid ? uid : user.uuid
-		// if (uuid === user.uuid) {
-		// 	return true
-		// }
-		if (resources[uuid]) {
-			return resources[uuid][perm]
+	const hasAccess = (uuid, perm) => {
+		if (uuid) {
+			if (resources[uuid]) {
+				return resources[uuid][perm]
+			}
+			return false
 		}
 		else {
+			if (userPriv[perm]) {
+				return userPriv[perm]
+			}
 			return false
 		}
 	}

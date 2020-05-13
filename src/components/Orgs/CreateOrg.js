@@ -28,14 +28,15 @@ const CreateOrg = props => {
 	//State
 	const [openOrg, setOpenOrg] = useState(false)
 	const [org, setOrg] = useState({
+		id: null,
 		name: '',
-		nickname: '',
+		uuname: '',
 		address: '',
 		city: '',
 		zip: '',
 		region: '',
 		country: '',
-		url: '',
+		website: '',
 		aux: {
 			cvr: '',
 			ean: ''

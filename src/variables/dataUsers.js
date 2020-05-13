@@ -48,8 +48,9 @@ export const deleteUser = async (user) => {
 	return data
 }
 /**
- * @param {Object} s
- * @param {String} uuid
+ * This function modifies the internal key of the user
+ * @param {Object} s - Internal Object
+ * @param {String} uuid - UUID of the user
  */
 export const setInternal = async (s, uuid) => {
 	let data = await coreServicesAPI.put(`/entity/user/${uuid}/internal`, s).then(rs => rs.ok)
