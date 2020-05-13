@@ -58,7 +58,7 @@ const User = props => {
 	const { setBC, setHeader, setTabs } = props
 
 	//useCallbacks
-	const isFavorite = useCallback(id => dispatch(isFav({ id: user.id, type: 'user' })), [dispatch, user])
+	const isFavorite = useCallback(id => dispatch(isFav({ id: user.uuid, type: 'user' })), [dispatch, user])
 
 	const getUser = useCallback(async id => {
 		await dispatch(await getUserLS(id))
@@ -133,7 +133,7 @@ const User = props => {
 	}
 	const addToFavorites = () => {
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
 			path: match.url
@@ -142,7 +142,7 @@ const User = props => {
 	}
 	const removeFromFavorites = () => {
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
 			path: props.match.url
@@ -152,7 +152,7 @@ const User = props => {
 
 	const resendConfirmEmail = async () => {
 		let userId = {
-			id: user.id
+			id: user.uuid
 		}
 		await resendConfirmEmail(userId).then(rs => rs)
 		handleCloseResend()
@@ -179,9 +179,9 @@ const User = props => {
 		history.push('/management/users')
 	}
 	const handleDeleteUser = async () => {
-		await deleteUser(user.id).then(rs => rs ? () => {
+		await deleteUser(user.uuid).then(rs => rs ? () => {
 			let favObj = {
-				id: user.id,
+				id: user.uuid,
 				type: 'user'
 			}
 			if (props.isFav(favObj)) {
@@ -222,7 +222,7 @@ const User = props => {
 		const { confirm, newP } = pw
 		if (confirm === newP) {
 			let newPassObj = {
-				id: user.id,
+				id: user.uuid,
 				oldPassword: pw.current,
 				newPassword: pw.newP
 			}

@@ -5,7 +5,6 @@ import { pF, dateFormatter } from 'variables/functions'
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
 import { useHistory } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
-import { useSelector } from 'react-redux'
 import Dropdown from 'components/Dropdown/Dropdown'
 import { useLocalization, useMatch, useAuth } from 'hooks'
 
@@ -29,7 +28,6 @@ const UserContact = props => {
 	const history = useHistory()
 	const match = useMatch()
 	const t = useLocalization()
-	const loggedUser = useSelector(state => state.settings.user)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
 	const handleDeleteUser = () => {
@@ -39,46 +37,25 @@ const UserContact = props => {
 	const renderUserGroup = () => user.role.name
 
 	const renderTopActionPriv = () => {
-		/**
-		 * TODO
-		 * @Andrei
-		 */
-		// const { apiorg } = loggedUser.privileges
-		// if (apiorg) {
-		// 	if (apiorg.editusers) {
-		// 		return renderTopAction()
-		// 	}
-		// }
-		if (loggedUser.id === user.id)
-			return renderTopAction()
-		return null
+
+		return renderTopAction()
+		// if (loggedUser.uuid === user.uuid)
+		// return null
 	}
-	const canDelete = () => {
-		let dontShow = true
-		/**
-		 * TODO
-		 * @Andrei
-		 */
-		// if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
-		// 	dontShow = false
-		// }
-		if (loggedUser.id === user.id)
-			dontShow = true
-		return dontShow
-	}
+
+	const handleEdit = () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/user/${user.uuid}` })
 	const renderTopAction = () => {
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
-				{ label: t('menus.changePassword'), icon: LockOpen, func: changePass, dontShow: hasAccess(user.id) },
-				{ label: t('menus.userResendEmail'), icon: Email, func: resendConfirmEmail, dontShow: user.suspended !== 2 },
-				// { label: t('menus.confirmUser'), icon: Email, func: this.props.handleOpenConfirmDialog, dontShow: user.suspended !== 2 },
+				{ label: t('menus.edit'), icon: Edit, func: handleEdit, dontShow: !hasAccess(user.uuid, 'user.modify') },
+				{ label: t('menus.changePassword'), icon: LockOpen, func: changePass, dontShow: !hasAccess(user.uuid, 'user.modify') },
+				{ label: t('menus.userResendEmail'), icon: Email, func: resendConfirmEmail, dontShow: user.suspended !== 2 || !hasAccess(user.uuid, 'user.modify') },
 				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 				{
 					label: t('menus.delete'),
 					icon: Delete,
 					func: handleDeleteUser,
-					dontShow: canDelete()
+					dontShow: !hasAccess(user.uuid, 'user.delete')
 				},
 
 			]
@@ -86,7 +63,6 @@ const UserContact = props => {
 	}
 
 	const extended = user.aux ? user.aux.senti ? user.aux.senti.extendedProfile : {} : {}
-	console.log(user)
 	return (
 		<InfoCard
 			title={`${user.firstName} ${user.lastName}`}

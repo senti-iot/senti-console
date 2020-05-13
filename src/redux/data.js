@@ -198,8 +198,8 @@ export const getUserLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
-		console.log('Redux User', user)
 		if (user) {
+			await dispatch(await getPrivList([id], ['user.modify', 'user.delete']))
 			dispatch({
 				type: setUser,
 				payload: user
@@ -219,8 +219,8 @@ export const getUserLS = async (id) => {
 				payload: null
 			})
 		}
-		await getUser(id).then(rs => {
-			console.log("Result from Endpoint", rs)
+		await getUser(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['user.modify', 'user.delete']))
 			if (!compare(user, rs)) {
 				if (rs)
 					user = { ...rs }
