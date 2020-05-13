@@ -1,4 +1,4 @@
-import { api, servicesAPI, coreServicesAPI } from './data'
+import { api, coreServicesAPI } from './data'
 import { del } from './storage'
 
 /**
@@ -42,12 +42,14 @@ export const getOrgUsers = async (orgId) => {
  * @param {object} org
  */
 export const updateOrg = async (org) => {
-	var data = async () => {
-		let r = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
-		await servicesAPI.put(`/v1/customer`, { name: org.name, ODEUM_org_id: org.id })
-		return r
-	}
-	return data()
+	// var data = async () => {
+	// 	let r = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
+	// 	await servicesAPI.put(`/v1/customer`, { name: org.name, ODEUM_org_id: org.id })
+	// 	return r
+	// }
+	// return data()
+	var result = await coreServicesAPI.put(`/entity/organisation/${org.uuid}`, org).then(rs => rs.ok ? rs.data : rs.ok)
+	return result
 }
 
 /**

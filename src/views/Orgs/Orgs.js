@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core'
 import GridContainer from 'components/Grid/GridContainer'
 import OrgTable from 'components/Orgs/OrgTable'
-import { PictureAsPdf, Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
+import { /* PictureAsPdf, */ Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
 import { deleteOrg } from 'variables/dataOrgs'
 import TableToolbar from 'components/Table/TableToolbar'
 import { customFilterItems } from 'variables/Filters'
@@ -13,6 +13,7 @@ import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 const Orgs = props => {
 	//Hooks
 	const hasAccess = useAuth().hasAccess
+	const hasAccessList = useAuth().hasAccessList
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -96,9 +97,6 @@ const Orgs = props => {
 		dispatch(removeFromFav(favObj))
 	}
 	const options = () => {
-		/**
-		 * TODO @Andrei
-		 */
 		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
@@ -113,10 +111,10 @@ const Orgs = props => {
 		}
 
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: !hasAccess(selected[0], 'org.edit') },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => handleRemoveFromFav(favObj) : () => handleAddToFav(favObj) },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete, dontShow: !hasAccessList(selected, "org.delete") }
 		]
 		return allOptions
 		// if (accessLevel.apiorg.edit)
@@ -226,8 +224,14 @@ const Orgs = props => {
 					{t('dialogs.delete.message.orgs')}:
 				</DialogContentText>
 				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={orgs[orgs.findIndex(d => d.uuid === s)].name} /></ListItem>)}
+					{selected.map(s => {
+						let org = orgs[orgs.findIndex(o => o.uuid === s)]
+						return org ? <ListItem divider key={s.uuid}>
+							<ListItemIcon><Business /></ListItemIcon>
+							<ListItemText primary={org.name} /></ListItem>
+							: s
+					}
+					)}
 				</List>
 			</DialogContent>
 			<DialogActions>

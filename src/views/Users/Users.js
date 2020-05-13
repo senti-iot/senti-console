@@ -272,7 +272,7 @@ const Users = props => {
 						</ListItemIcon>
 						<ListItemText primary={u.firstName + ' ' + u.lastName} />
 					</ListItem>
-						: null	// <Info key={u.uuid}>&bull;{u.firstName + ' ' + u.lastName}</Info>
+						: s	// <Info key={u.uuid}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 				})
 					: null}
 			</div>

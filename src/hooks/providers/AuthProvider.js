@@ -22,8 +22,6 @@ const AuthProvider = ({ children }) => {
 
 	//Handlers
 	const hasAccessList = (uuids, perm) => {
-
-		console.log(uuids)
 		let access = false
 		uuids.forEach(async uuid => {
 			access = hasAccess(uuid, perm)
