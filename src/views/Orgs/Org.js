@@ -10,7 +10,7 @@ import OrgUsers from 'views/Orgs/OrgCards/OrgUsers'
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 // import { getAllDevices } from 'variables/dataDevices'
 // import Toolbar from 'components/Toolbar/Toolbar';
-import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons'
+import { Business, People } from 'variables/icons'
 // import { getAllProjects } from 'variables/dataProjects'
 // import { getAllCollections } from 'variables/dataCollections'
 // import OrgProjects from './OrgCards/OrgProjects'
@@ -35,7 +35,6 @@ const Org = props => {
 	const saved = useSelector(state => state.favorites.saved)
 	const org = useSelector(state => state.data.org)
 	const loading = useSelector(state => !state.data.gotOrg)
-	console.log('Org', org)
 	//State
 	// const [projects, setProjects] = useState([]) // added
 	// const [collections, setCollections] = useState([]) // added
@@ -64,17 +63,17 @@ const Org = props => {
 				setLoadingUsers(false)
 			})
 			// await getAllDevices().then(rs => {
-			// 	let newDevices = rs.filter(f => f.org.id === org.id)
+			// 	let newDevices = rs.filter(f => f.org.uuid === org.uuid)
 			// 	setDevices(newDevices)
 			// 	setLoadingDevices(false)
 			// })
 			// await getAllCollections().then(rs => {
-			// 	let newCollections = rs.filter(f => f.org.id === org.id)
+			// 	let newCollections = rs.filter(f => f.org.uuid === org.uuid)
 			// 	setCollections(newCollections)
 			// 	setLoadingCollections(false)
 			// })
 			// await getAllProjects().then(rs => {
-			// 	let newProjects = rs.filter(f => f.org.id === org.id)
+			// 	let newProjects = rs.filter(f => f.org.uuid === org.uuid)
 			// 	setProjects(newProjects)
 			// 	setLoadingProjects(false)
 			// })
@@ -90,11 +89,11 @@ const Org = props => {
 
 	useEffect(() => {
 		if (saved === true) {
-			if (dispatch(isFav({ id: org.id, type: 'org' }))) {
+			if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
 				s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
 				dispatch(finishedSaving())
 			}
-			if (!dispatch(isFav({ id: org.id, type: 'org' }))) {
+			if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
 				s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
 				dispatch(finishedSaving())
 			}
@@ -107,9 +106,9 @@ const Org = props => {
 			const tabs = [
 				{ id: 0, title: t('tabs.details'), label: <Business />, url: `#details` },
 				{ id: 1, title: t('tabs.users'), label: <People />, url: `#users` },
-				{ id: 2, title: t('tabs.projects'), label: <LibraryBooks />, url: `#projects` },
-				{ id: 3, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
-				{ id: 4, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
+				// { id: 2, title: t('tabs.projects'), label: <LibraryBooks />, url: `#projects` },
+				// { id: 3, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
+				// { id: 4, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
 			]
 
 			let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
@@ -133,7 +132,7 @@ const Org = props => {
 
 	const addToFavorites = () => {
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
 			path: match.url
@@ -143,7 +142,7 @@ const Org = props => {
 	const removeFromFavorites = () => {
 		// const { org } = this.props
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
 			path: match.url
@@ -155,7 +154,7 @@ const Org = props => {
 		history.push('/management/orgs')
 	}
 	const handleDeleteOrg = async () => {
-		await deleteOrg(org.id).then(rs => {
+		await deleteOrg(org.uuid).then(rs => {
 			setOpenDelete(false)
 			handleClose()
 		})
@@ -208,7 +207,7 @@ const Org = props => {
 			<GridContainer justify={'center'} alignContent={'space-between'}>
 				<ItemGrid xs={12} noMargin id={'details'}>
 					<OrgDetails
-						isFav={dispatch(isFav({ id: org.id, type: 'org' }))}
+						isFav={dispatch(isFav({ id: org.uuid, type: 'org' }))}
 						addToFav={addToFavorites}
 						removeFromFav={removeFromFavorites}
 						deleteOrg={handleOpenDeleteDialog}

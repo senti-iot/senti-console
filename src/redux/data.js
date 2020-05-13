@@ -357,6 +357,7 @@ export const getOrgLS = async (id) => {
 		dispatch({ type: gotOrg, payload: false })
 		let org = get('org.' + id)
 		if (org) {
+			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
 			dispatch({
 				type: setOrg,
 				payload: org
@@ -376,8 +377,8 @@ export const getOrgLS = async (id) => {
 				payload: null
 			})
 		}
-		await getOrg(id).then(rs => {
-			console.log(rs)
+		await getOrg(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
 			if (!compare(org, rs)) {
 				org = { ...rs }
 				dispatch({
