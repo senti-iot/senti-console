@@ -1,4 +1,4 @@
-import { api, coreServicesAPI } from './data'
+import { coreServicesAPI } from './data'
 import { del } from './storage'
 
 /**
@@ -30,11 +30,12 @@ export const getOrg = async (orgId) => {
 
 /**
  * @function getOrgUsers Get Organization's users
- * @param {int} orgId Organization ID
+ * @param {UUID} orgUuid Organization ID
  */
-export const getOrgUsers = async (orgId) => {
-	var data = await api.get(`core/org/users/${orgId}`).then(rs => rs.data)
-	return data
+export const getOrgUsers = async (orgUuid) => {
+	// var data = await api.get(`core/org/users/${orgId}`).then(rs => rs.data)
+	var result = await coreServicesAPI.get(`/entity/users/${orgUuid}`).then(rs => rs.ok ? rs.data : rs.ok)
+	return result
 }
 
 /**
