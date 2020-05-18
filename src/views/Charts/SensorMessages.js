@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react'
 import {
 	Grid, IconButton, Menu, ListItem, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
 	MoreVert, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
 } from 'variables/icons'
@@ -9,21 +9,21 @@ import {
 	CircularLoader, Caption, ItemG, InfoCard,
 	DateFilterMenu,
 	T
-} from 'components';
+} from 'components'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeDate } from 'redux/dateTime'
-import TP from 'components/Table/TP';
+import TP from 'components/Table/TP'
 import { Link } from 'react-router-dom'
-import { useLocalization, useDispatch, useTheme, useSelector } from 'hooks';
-import { useState } from 'react';
-import AceEditor from 'react-ace';
+import { useLocalization, useDispatch, useTheme, useSelector } from 'hooks'
+import { useState } from 'react'
+import AceEditor from 'react-ace'
 
 import 'ace-builds/src-noconflict/mode-json'
 import 'ace-builds/src-noconflict/theme-tomorrow'
 import 'ace-builds/src-noconflict/theme-monokai'
 
-import sensorMessagesStyles from 'assets/jss/components/sensors/sensorMessagesStyles';
+import sensorMessagesStyles from 'assets/jss/components/sensors/sensorMessagesStyles'
 
 
 const SensorMessages = props => {
@@ -74,13 +74,16 @@ const SensorMessages = props => {
 		}
 	}, [getData, loading])
 	useEffect(() => {
-		if (period) {
+		if (period && (initialPeriod !== period)) {
+
 			setLoading(true)
 			let gData = async () => await getData()
 			gData()
+			setInitialPeriod(period)
+
 			setLoading(false)
 		}
-	}, [getData, period])
+	}, [getData, initialPeriod, period])
 	//Handlers
 	const disableFuture = () => {
 		if (moment().diff(period.to, 'hour') <= 0) {
@@ -112,7 +115,7 @@ const SensorMessages = props => {
 
 	const futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	const handleNextPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			// setState({ initialPeriod: period })
@@ -178,7 +181,7 @@ const SensorMessages = props => {
 		dispatch(changeDate(6, to, from, period.timeType, period.id))
 	}
 	const handlePreviousPeriod = () => {
-		let from, to, diff;
+		let from, to, diff
 		if (!initialPeriod) {
 			setInitialPeriod(period)
 			if (period.menuId === 6) {
@@ -439,7 +442,7 @@ const SensorMessages = props => {
 					</Grid>}
 			/>
 		</Fragment >
-	);
+	)
 
 }
 

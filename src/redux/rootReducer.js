@@ -10,9 +10,10 @@ import { weather } from './weather'
 import { dsSystem } from './dsSystem'
 import { serviceWorkerReducer } from './serviceWorkerRedux'
 import { combineReducers } from 'redux'
-
+import { auth } from './auth'
 // import zendesk from 'lib/stores/ChatStore'
 let reducers = combineReducers({
+	auth,
 	settings,
 	localization,
 	favorites,

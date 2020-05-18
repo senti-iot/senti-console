@@ -1,15 +1,24 @@
 import React from 'react'
 import { InfoCard, ItemGrid, Info, Caption, ItemG } from 'components'
-import { Table, TableBody, TableRow, Hidden, Link } from '@material-ui/core'
+import { Table, TableBody, TableRow, Hidden, Link, makeStyles } from '@material-ui/core'
 import { People } from 'variables/icons'
 import TC from 'components/Table/TC'
 import Gravatar from 'react-gravatar'
 import { pF, dateFormat } from 'variables/functions'
 import moment from 'moment'
-
+const orgUserStyles = makeStyles(theme => ({
+	img: {
+		borderRadius: "50px",
+		height: "40px",
+		width: "40px",
+		display: 'flex',
+		padding: 8
+	},
+}))
 const OrgUsers = props => {
 
 	const { users, t, history, org } = props
+	const classes = orgUserStyles()
 	return (
 		<InfoCard
 			title={t('users.pageTitle')}
@@ -30,7 +39,7 @@ const OrgUsers = props => {
 								>
 									<Hidden lgUp>
 										<TC /* className={classes.orgUsersTD} */ checkbox content={<ItemGrid container zeroMargin justify={'center'}>
-											{n.img ? <img src={n.img} alt='brken' /* className={classes.img} */ /> : <Gravatar default='mp' email={n.email} /* className={classes.img} */ />}
+											<Gravatar default='mp' email={n.email} /* className={classes.img} */ />
 										</ItemGrid>} />
 										<TC content={
 											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
@@ -51,7 +60,7 @@ const OrgUsers = props => {
 									</Hidden>
 									<Hidden mdDown>
 										<TC checkbox content={<ItemG container justify={'center'}>
-											{n.img ? <img src={n.img} alt='brken' /* className={classes.img} */ /> : <Gravatar default='mp' email={n.email} /* className={classes.img}  */ />}
+											<Gravatar default='mp' email={n.email} className={classes.img} />
 										</ItemG>} />
 										{/* <TC label={n.userName} /> */}
 										<TC FirstC label={`${n.firstName} ${n.lastName}`} />

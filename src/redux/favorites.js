@@ -1,5 +1,5 @@
 // import { saveSettings } from 'variables/dataLogin';
-import { setInternal } from 'variables/dataUsers';
+import { setInternal } from 'variables/dataUsers'
 
 const SETFAV = 'setFavorites'
 const GETFAVS = 'getFavorites'
@@ -39,7 +39,7 @@ export const finishedSaving = () => {
 		saved: false
 	}
 }
-export const removeFromFav = (obj) => {
+export const removeFromFav = (obj, noConfirm) => {
 	return async (dispatch, getState) => {
 		let favs = getState().data.favorites
 		favs = favs.filter(f => f.id !== obj.id)
@@ -47,10 +47,10 @@ export const removeFromFav = (obj) => {
 			type: SETFAV,
 			payload: favs
 		})
-		dispatch(saveFavorites())
+		dispatch(saveFavorites(noConfirm))
 	}
 }
-export const addToFav = (obj) => {
+export const addToFav = (obj, noConfirm) => {
 	return async (dispatch, getState) => {
 		let favs = getState().data.favorites
 		favs.push(obj)
@@ -58,7 +58,7 @@ export const addToFav = (obj) => {
 			type: SETFAV,
 			payload: favs
 		})
-		dispatch(saveFavorites())
+		dispatch(saveFavorites(noConfirm))
 	}
 }
 

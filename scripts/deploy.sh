@@ -3,7 +3,6 @@
 if [[ "$1" == "master" ]]; then
 	echo
 	echo Deploying Senti App $1 ...
-	# rsync -r --quiet $2/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/dashboard.senti.cloud
 	rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/dashboard.senti.cloud
 	echo
 	# Senti Workspace
@@ -15,7 +14,6 @@ fi
 if [[ "$1" == "beta" ]]; then
 	echo
 	echo Deploying Senti App $1 ...
-	# rsync -r --quiet $2/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/beta.senti.cloud
 	rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/beta.senti.cloud
 	echo
 	# Senti Workspace
@@ -24,14 +22,13 @@ if [[ "$1" == "beta" ]]; then
 	exit 0
 fi
 
-if [[ "$1" == "alpha" ]]; then
+if [[ "$1" == "alpha-dev" ]]; then
 	echo
 	echo Deploying Senti App $1 ...
-	# rsync -r --quiet $2/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/beta.senti.cloud
-	# rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/beta.senti.cloud
+	rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/alpha.senti.cloud/
 	echo
 	# Senti Workspace
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Senti App ALPHA updated!"}' $3
-	echo Deployment to beta done!
+	echo Deployment to alpha-dev done!
 	exit 0
 fi

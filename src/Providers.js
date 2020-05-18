@@ -28,6 +28,7 @@ import { setWL } from 'variables/storage'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
 import { ThemeProvider } from 'ThemeProvider'
 import { hot } from 'react-hot-loader/root'
+import AuthProvider from 'hooks/providers/AuthProvider'
 // import Base from './Base'
 
 var countries = require('i18n-iso-countries')
@@ -61,9 +62,11 @@ const Providers = props => {
 							<LocalizationProvider>
 								<SnackbarProvider>
 									<TProvider>
-										<Router history={hist} key={Math.random()}>
-											{props.children}
-										</Router>
+										<AuthProvider>
+											<Router history={hist} key={Math.random()}>
+												{props.children}
+											</Router>
+										</AuthProvider>
 									</TProvider>
 								</SnackbarProvider>
 							</LocalizationProvider>

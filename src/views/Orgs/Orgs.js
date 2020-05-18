@@ -2,16 +2,18 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core'
 import GridContainer from 'components/Grid/GridContainer'
 import OrgTable from 'components/Orgs/OrgTable'
-import { PictureAsPdf, Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
+import { /* PictureAsPdf, */ Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
 import { deleteOrg } from 'variables/dataOrgs'
 import TableToolbar from 'components/Table/TableToolbar'
 import { customFilterItems } from 'variables/Filters'
-import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks'
+import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar, useAuth } from 'hooks'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 
 const Orgs = props => {
 	//Hooks
+	const hasAccess = useAuth().hasAccess
+	const hasAccessList = useAuth().hasAccessList
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -44,7 +46,7 @@ const Orgs = props => {
 		{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
 		{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
 		{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
-		{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
+		{ key: 'org.uuid', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
 		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 	]
 
@@ -95,24 +97,24 @@ const Orgs = props => {
 		dispatch(removeFromFav(favObj))
 	}
 	const options = () => {
-		let org = orgs[orgs.findIndex(d => d.id === selected[0])]
+		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
 		if (org) {
 			favObj = {
-				id: org.id,
+				id: org.uuid,
 				name: org.name,
 				type: 'org',
-				path: `/management/org/${org.id}`
+				path: `/management/org/${org.uuid}`
 			}
 			isFavorite = dispatch(isFav(favObj))
 		}
 
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: !hasAccess(selected[0], 'org.modify') },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => handleRemoveFromFav(favObj) : () => handleAddToFav(favObj) },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete, dontShow: !hasAccessList(selected, "org.delete") }
 		]
 		return allOptions
 		// if (accessLevel.apiorg.edit)
@@ -124,6 +126,8 @@ const Orgs = props => {
 	}
 
 	const handleCheckboxClick = (event, id) => {
+		console.log(event)
+		console.log(id)
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = []
@@ -164,7 +168,7 @@ const Orgs = props => {
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			setSelected([filterItems(orgs).map(n => n.id)])
+			setSelected([filterItems(orgs).map(n => n.uuid)])
 			return
 		}
 		setSelected([])
@@ -220,8 +224,14 @@ const Orgs = props => {
 					{t('dialogs.delete.message.orgs')}:
 				</DialogContentText>
 				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={orgs[orgs.findIndex(d => d.id === s)].name} /></ListItem>)}
+					{selected.map(s => {
+						let org = orgs[orgs.findIndex(o => o.uuid === s)]
+						return org ? <ListItem divider key={s.uuid}>
+							<ListItemIcon><Business /></ListItemIcon>
+							<ListItemText primary={org.name} /></ListItem>
+							: s
+					}
+					)}
 				</List>
 			</DialogContent>
 			<DialogActions>
@@ -236,7 +246,7 @@ const Orgs = props => {
 	}
 	const renderTableToolBarContent = () => {
 		// let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
-		let access = true
+		let access = hasAccess(null, 'org.create')
 		return <Fragment>
 			{access ? <Tooltip title={t('menus.create.org')}>
 				<IconButton aria-label='Add new organisation' onClick={handleAddNewOrg}>

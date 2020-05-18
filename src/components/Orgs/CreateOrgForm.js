@@ -29,6 +29,7 @@ const CreateOrgForm = props => {
 	const renderOrgs = () => {
 		return <>
 			<TextF
+				label={t('orgs.fields.parentOrg')}
 				value={org.org.name}
 				onClick={handleOpenOrg}
 				readonly
@@ -133,10 +134,10 @@ const CreateOrgForm = props => {
 			<ItemGrid container xs={12} md={6}>
 				<TextF
 
-					id={'url'}
+					id={'website'}
 					label={t('orgs.fields.url')}
 					value={org.url}
-					onChange={handleChange('url')}
+					onChange={handleChange('website')}
 					margin='normal'
 
 					error={error}
