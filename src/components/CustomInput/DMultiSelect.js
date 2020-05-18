@@ -1,6 +1,7 @@
 import React from 'react'
-import { FormControl, makeStyles, Select, Input, MenuItem, InputLabel, Checkbox } from '@material-ui/core';
-import { ItemG } from 'components';
+import { FormControl, makeStyles, Select, Input, MenuItem, InputLabel, Checkbox } from '@material-ui/core'
+import { ItemG } from 'components'
+import { useTheme } from '@material-ui/core'
 
 // Replace withStyles with withTheme, remove styles
 
@@ -13,7 +14,7 @@ const styles = makeStyles(theme => ({
 		// marginBottom: 8,
 		minWidth: 230
 	},
-}));
+}))
 const renderSelected = (selected, menuItems) => {
 	let str = ''
 	selected.forEach(s => {
@@ -28,7 +29,8 @@ const renderSelected = (selected, menuItems) => {
 }
 const DMultiSelect = (props) => {
 	const classes = styles()
-	const { value, onKeyPress, onChange, menuItems, label, theme, fullWidth, leftIcon, checkbox } = props
+	const theme = useTheme()
+	const { value, onKeyPress, onChange, menuItems, label, fullWidth, leftIcon, checkbox } = props
 	let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	return <FormControl className={classes.formControl} fullWidth={mobile || fullWidth}>
 		{label ? <InputLabel classes={{ asterisk: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>

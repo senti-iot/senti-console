@@ -42,7 +42,7 @@ const AssignOrgDialog = React.memo(props => {
 
 
 	const assignOrg = sId => e => {
-		let org = orgs[orgs.findIndex(o => o.id === sId)]
+		let org = orgs[orgs.findIndex(o => o.uuid === sId)]
 		callBack(org)
 	}
 
@@ -116,7 +116,7 @@ const AssignOrgDialog = React.memo(props => {
 			<List>
 				{orgs ? filterItems(orgs, filters).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={assignOrg(p.id)} value={p.id}>
+						<ListItem button onClick={assignOrg(p.uuid)} value={p.uuid}>
 							<ListItemText
 								primary={p.name} />
 						</ListItem>

@@ -13,6 +13,7 @@ import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'var
 import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
 import { getAllSensors, getSensor } from 'variables/dataSensors'
 import { getAllFunctions, getFunction } from 'variables/dataFunctions'
+import { getPrivList, getPriv } from 'redux/auth'
 
 
 //#region Special Functions
@@ -161,7 +162,7 @@ const setFavorites = 'setFavorites'
 
 export const getAllData = async (reload, orgId, su) => {
 	return async dispatch => {
-		dispatch(await getUsers(true))
+		await dispatch(await getUsers(true))
 		dispatch(await getProjects(true))
 		dispatch(await getCollections(true))
 		dispatch(await getDevices(true))
@@ -194,11 +195,11 @@ export const sortData = (key, property, order) => {
 //#region Users
 
 export const getUserLS = async (id) => {
-	console.log('GetUserLS', id)
 	return async dispatch => {
 		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
 		if (user) {
+			await dispatch(await getPrivList([id], ['user.modify', 'user.delete']))
 			dispatch({
 				type: setUser,
 				payload: user
@@ -218,10 +219,13 @@ export const getUserLS = async (id) => {
 				payload: null
 			})
 		}
-		await getUser(id).then(rs => {
-			console.log("Result from Endpoint", rs)
+		await getUser(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['user.modify', 'user.delete']))
 			if (!compare(user, rs)) {
-				user = { ...rs }
+				if (rs)
+					user = { ...rs }
+				else
+					user = undefined
 				dispatch({
 					type: setUser,
 					payload: user
@@ -237,11 +241,13 @@ export const getUserLS = async (id) => {
 }
 
 export const getUsers = (reload) => {
-	return dispatch => {
+	return async dispatch => {
 
-		getAllUsers().then(rs => {
+		await getAllUsers().then(async rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
 			users = handleRequestSort('firstName', 'asc', users)
+			let userUUIDs = rs.map(u => u.uuid)
+			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete']))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -351,6 +357,7 @@ export const getOrgLS = async (id) => {
 		dispatch({ type: gotOrg, payload: false })
 		let org = get('org.' + id)
 		if (org) {
+			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
 			dispatch({
 				type: setOrg,
 				payload: org
@@ -370,7 +377,8 @@ export const getOrgLS = async (id) => {
 				payload: null
 			})
 		}
-		await getOrg(id).then(rs => {
+		await getOrg(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
 			if (!compare(org, rs)) {
 				org = { ...rs }
 				dispatch({
@@ -387,9 +395,13 @@ export const getOrgLS = async (id) => {
 	}
 }
 export const getOrgs = (reload) => {
-	return dispatch => {
-		getAllOrgs().then(rs => {
+	return async (dispatch, getState) => {
+		await getAllOrgs().then(async rs => {
 			let orgs = handleRequestSort('name', 'asc', rs)
+			let orgUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['org.create', 'org.list']))
+			await dispatch(await getPrivList(orgUUIDs, ['org.modify', 'org.delete']))
 			set('orgs', orgs)
 			if (reload) {
 				dispatch(setOrgs())

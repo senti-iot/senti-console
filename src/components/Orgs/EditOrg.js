@@ -208,7 +208,7 @@ const EditOrg = props => {
 			id: org.id,
 			name: org.name,
 			type: 'org',
-			path: `/management/org/${org.id}`
+			path: `/management/org/${org.uuid}`
 		}
 		if (dispatch(isFav(favObj))) {
 			dispatch(updateFav(favObj))
@@ -217,9 +217,9 @@ const EditOrg = props => {
 		setCreating(false)
 		s('snackbars.orgUpdated', ({ org: org.name }))
 		// dispatch(getOrgLS(org.id))
-		getOrg(org.id)
+		getOrg(org.uuid)
 		dispatch(getOrgs(true))
-		history.push(`/management/org/${org.id}`)
+		history.push(`/management/org/${org.uuid}`)
 	}
 
 	const handleUpdateOrg = () => {

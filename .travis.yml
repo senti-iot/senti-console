@@ -22,6 +22,11 @@ deploy:
     skip_cleanup: true
     on:
       branch: beta
+  - provider: script
+    script: bash scripts/deploy.sh alpha-dev $TRAVIS_BUILD_DIR $SLACK_HOOK
+    skip_cleanup: true
+    on:
+      branch: alpha-dev
   - domain: https://alphasenti.surge.sh
     project: "./build"
     provider: surge
@@ -34,12 +39,6 @@ deploy:
     skip_cleanup: true
     on:
       branch: white-label
-  - domain: https://sentidev.surge.sh
-    project: "./build"
-    provider: surge
-    skip_cleanup: true
-    on:
-      branch: alpha-dev
 language: node_js
 node_js:
   - stable

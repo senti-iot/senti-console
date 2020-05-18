@@ -1,19 +1,21 @@
 import React from 'react'
-import { InfoCard, ItemGrid, Caption, Info, Dropdown, Muted } from 'components';
-import { Grid, Link } from '@material-ui/core';
+import { InfoCard, ItemGrid, Caption, Info, Dropdown, Muted } from 'components'
+import { Grid, Link } from '@material-ui/core'
 import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
 import { Link as RLink } from 'react-router-dom'
+import { useAuth } from 'hooks'
 var countries = require('i18n-iso-countries')
 
 const OrgDetails = props => {
 	//Hooks
+	const hasAccess = useAuth().hasAccess
 
 	//Redux
 
 	//State
 
 	//Const
-	const { org, devices, accessLevel, isFav, addToFav, removeFromFav, t, history, match, deleteOrg, language } = props
+	const { org, devices, /* accessLevel, */ isFav, addToFav, removeFromFav, t, history, match, deleteOrg, language } = props
 
 	//useCallbacks
 
@@ -27,19 +29,20 @@ const OrgDetails = props => {
 
 	const options = () => {
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: !hasAccess(org.uuid, 'org.modify') },
 			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
-			{ label: t('menus.delete'), func: handleDeleteOrg, icon: Delete },
+			{ label: t('menus.delete'), func: handleDeleteOrg, icon: Delete, dontShow: !hasAccess(org.uuid, 'org.delete') },
 
 		]
-		if (accessLevel.apiorg.edit)
-			return allOptions
-		else return [
-			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+		/**TODO @Andrei */
+		// if (accessLevel.apiorg.edit)
+		return allOptions
+		// else return [
+		// 	{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 
-		]
+		// ]
 	}
-
+	console.log(org)
 	return (
 		<InfoCard
 			title={org.name}

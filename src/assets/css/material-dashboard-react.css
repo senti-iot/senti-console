@@ -1,4 +1,9 @@
 body {
+	overflow: auto !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+header {
 	padding: 0 !important;
 }
 .react-grid-layout {
