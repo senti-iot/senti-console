@@ -1,14 +1,11 @@
-import { Link as MuiLink } from '@material-ui/core';
-import { Caption, ItemG, Info } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import Dropdown from 'components/Dropdown/Dropdown';
-import React from 'react';
-// import { Link } from 'react-router-dom';
-import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, Delete } from 'variables/icons';
+import { Caption, ItemG, Info, Link } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
+import Dropdown from 'components/Dropdown/Dropdown'
+import React from 'react'
+import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, Delete } from 'variables/icons'
 // import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
-import { useLocalization } from 'hooks';
-import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles';
+import { useLocalization } from 'hooks'
+import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 
 
 const SensorDetails = (props) => {
@@ -21,7 +18,7 @@ const SensorDetails = (props) => {
 	//State
 
 	//Const
-	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props;
+	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
 
 	//useCallbacks
 
@@ -41,7 +38,7 @@ const SensorDetails = (props) => {
 			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
-				break;
+				break
 		}
 	}
 	const renderCommunication = (val) => {
@@ -51,7 +48,7 @@ const SensorDetails = (props) => {
 			case 1:
 				return <ItemG container><CheckCircle className={classes.allowed} /> <Info>{t('sensors.fields.communications.allowed')}</Info></ItemG>
 			default:
-				break;
+				break
 		}
 	}
 
@@ -86,9 +83,9 @@ const SensorDetails = (props) => {
 					<ItemG xs={12}>
 						<Caption>{t('registries.fields.registry')}</Caption>
 						<Info>
-							<MuiLink component={Link} to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
+							<Link to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
 								{sensor.regName}
-							</MuiLink>
+							</Link>
 						</Info>
 					</ItemG>
 				</ItemG>

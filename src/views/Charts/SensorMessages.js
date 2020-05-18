@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 import {
-	Grid, IconButton, Menu, ListItem, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider, Link as MuiLink
+	Grid, IconButton, Menu, ListItem, ListItemText, List, Tooltip, DialogTitle, DialogContent, Dialog, Divider
 } from '@material-ui/core'
 import {
 	MoreVert, KeyboardArrowLeft, KeyboardArrowRight, InsertChart, Close,
@@ -8,13 +8,12 @@ import {
 import {
 	CircularLoader, Caption, ItemG, InfoCard,
 	DateFilterMenu,
-	T
+	T, Link
 } from 'components'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeDate } from 'redux/dateTime'
 import TP from 'components/Table/TP'
-import { Link } from 'react-router-dom'
 import { useLocalization, useDispatch, useTheme, useSelector } from 'hooks'
 import { useState } from 'react'
 import AceEditor from 'react-ace'
@@ -411,12 +410,13 @@ const SensorMessages = props => {
 			<ItemG xs={12} container justify={'center'}>
 				<Caption>{t('devices.noPeriodSet')}</Caption>
 			</ItemG>
-			<ItemG xs={12} container justify={'center'}>
-				<MuiLink component={Link} to={'/settings/#charts'}>
+			<ItemG xs={12} container justify={'center'}>7
+				<Link to={`/settings/#charts`}>
 					<Caption>
 						{t('devices.noPeriodSetLink')}
 					</Caption>
-				</MuiLink>
+				</Link>
+
 			</ItemG>
 		</ItemG>
 	}

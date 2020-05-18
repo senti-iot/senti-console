@@ -1,9 +1,8 @@
-import { Caption, ItemG, Info } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import Dropdown from 'components/Dropdown/Dropdown';
-import React from 'react';
-import { Link } from 'react-router-dom'
-import { DataUsage, Edit, Star, StarBorder, Delete } from 'variables/icons';
+import { Caption, ItemG, Info, Link } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
+import Dropdown from 'components/Dropdown/Dropdown'
+import React from 'react'
+import { DataUsage, Edit, Star, StarBorder, Delete } from 'variables/icons'
 import { useSelector } from 'react-redux'
 import { useLocalization } from 'hooks'
 

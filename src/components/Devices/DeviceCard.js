@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { withStyles, IconButton, Menu, MenuItem, Button } from '@material-ui/core';
-import { ItemGrid, SmallCard, ItemG, Info, Caption } from 'components';
-import { MoreVert, Edit, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
-import { Link } from 'react-router-dom';
-import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
-import { useLocalization } from 'hooks';
+import { withStyles, IconButton, Menu, MenuItem, Button } from '@material-ui/core'
+import { ItemGrid, SmallCard, ItemG, Info, Caption } from 'components'
+import { MoreVert, Edit, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+import { Link } from 'react-router-dom'
+import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
+import { useLocalization } from 'hooks'
 
+/**
+ * TODO
+ * @Andrei
+ */
 const DeviceCard = props => {
 	const t = useLocalization()
 	const [actionAnchor, setActionAnchor] = useState(null)
@@ -60,7 +64,7 @@ const DeviceCard = props => {
 			case null:
 				return <SignalWifi2BarLock />
 			default:
-				break;
+				break
 		}
 	}
 

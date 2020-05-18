@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import DeviceCard from 'components/Devices/DeviceCard';
-import { ItemG, GridContainer } from 'components';
+import DeviceCard from 'components/Devices/DeviceCard'
+import { ItemG, GridContainer } from 'components'
 import { useSelector } from 'react-redux'
-import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-import { withStyles } from '@material-ui/core';
-import CP from 'components/Table/CP';
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import { withStyles } from '@material-ui/core'
+import CP from 'components/Table/CP'
 import { useLocalization } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	rowsPerPage: state.appState.CPP
 // })
 
-// @Andrei
+/**
+ * TODO
+ * @Andrei
+ */
 const DevicesCards = props => {
 	const t = useLocalization()
 	const rowsPerPage = useSelector(state => state.appState.CPP)

@@ -2,7 +2,6 @@
 import { ItemG, Info } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import React from 'react'
-// import { Link } from 'react-router-dom';
 import { StorageIcon } from 'variables/icons'
 // import { useSelector } from 'react-redux'
 import Table from '@material-ui/core/Table'
