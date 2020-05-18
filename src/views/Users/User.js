@@ -119,7 +119,7 @@ const User = props => {
 
 	//Handlers
 	const snackBarMessages = (msg) => {
-		const { s, user } = props
+		const { user } = props
 		switch (msg) {
 			case 1:
 				s('snackbars.userDeleted', { user: user.firstName + ' ' + user.lastName })
@@ -227,8 +227,10 @@ const User = props => {
 				newPassword: pw.newP
 			}
 			let success = await setPassword(newPassObj).then(rs => rs)
-			if (success)
+			console.log(success)
+			if (success) {
 				handleCloseChangePassword(success)()
+			}
 			else {
 				setPwError(true)
 				setErrorMessage(t('confirmUser.networkError'))

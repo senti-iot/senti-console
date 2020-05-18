@@ -14,7 +14,7 @@ import { getNSettings } from 'redux/settings'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
 import CookiesDialog from 'components/Cookies/CookiesDialog'
 import PrivacyDialog from 'components/Cookies/PrivacyDialog'
-import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, NeedAccountT, LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles'
+import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, /* NeedAccountT, */ LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles'
 import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks'
 import { getWL } from 'variables/storage'
 let moment = require('moment')
@@ -46,8 +46,22 @@ function LoginPage(props) {
 	const defaultRoute = useSelector(s => s.settings.defaultRoute)
 
 	const handleCloseCookies = () => setCookies(false)
-	const handleOpenCookies = () => setCookies(true)
-	const handleOpenPrivacy = () => setPrivacy(true)
+	const handleOpenCookies = () => {
+		if (wl && wl.loginSettings.cookieurl) {
+			window.open(wl.loginSettings.cookieurl, '_blank')
+		}
+		else {
+			setCookies(true)
+		}
+	}
+	const handleOpenPrivacy = () => {
+		if (wl && wl.loginSettings.gdprurl) {
+			window.open(wl.loginSettings.gdprurl, '_blank')
+		}
+		else {
+			setPrivacy(true)
+		}
+	}
 	const handleClosePrivacy = () => setPrivacy(false)
 
 
@@ -153,7 +167,11 @@ function LoginPage(props) {
 							<FadeOutLoader CustomLoader={LoginLoader} on={loggingIn} onChange={handleLoginUser} fill>
 								{/* {loggingIn ? <LoginLoader /> : */}
 								<ItemG xs={12} container justify={'center'}>
-									<ItemG xs={12} container justify={'center'}>
+									{/**
+									 * TODO:
+									 * Don't forget to check for the boolean on WhiteLabel websites
+									 */}
+									{/* <ItemG xs={12} container justify={'center'}>
 										<NeedAccountT>
 											<span style={{ marginRight: 4 }}>
 												<span style={{ marginRight: 4 }}>
@@ -174,7 +192,7 @@ function LoginPage(props) {
 												</Link>
 											</span>
 										</NeedAccountT>
-									</ItemG>
+									</ItemG> */}
 
 									<ItemG container xs={12} >
 
@@ -247,7 +265,7 @@ function LoginPage(props) {
 						<Footer xs={12} container alignItems={'flex-end'} justify={'center'}>
 
 							<FooterText>
-								{`${t('login.footer')} `}
+								{wl ? wl.loginSettings.copyrighttext ? wl.loginSettings.copyrighttext : `${t('login.footer')} ` : `${t('login.footer')} `}
 							</FooterText>
 
 							<ItemG xs={12} container>

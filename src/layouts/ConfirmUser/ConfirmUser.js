@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Collapse, Button, Paper, Hidden } from '@material-ui/core';
-import { Danger, ItemG, /* Success, */ Muted, T, CircularLoader } from 'components';
-import loginPageStyles from 'assets/jss/components/login/loginPageStyles';
-import { getSettings } from 'redux/settings';
-import TextF from 'components/CustomInput/TextF';
-import { changeLanguage } from 'redux/localization';
-import cookie from 'react-cookies';
-import { setToken } from 'variables/data';
-import LoginImages from 'layouts/Login/LoginImages';
+import React, { useState, useEffect, useCallback } from 'react'
+import { Collapse, Button, Paper, Hidden } from '@material-ui/core'
+import { Danger, ItemG, /* Success, */ Muted, T, CircularLoader } from 'components'
+import loginPageStyles from 'assets/jss/components/login/loginPageStyles'
+import { getSettings } from 'redux/settings'
+import TextF from 'components/CustomInput/TextF'
+import { changeLanguage } from 'redux/localization'
+import cookie from 'react-cookies'
+import { setToken } from 'variables/data'
+import LoginImages from 'layouts/Login/LoginImages'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import logo from 'logo.svg'
-import { confirmUser as confirmSUser } from 'variables/dataUsers';
-import { useLocalization, useDispatch, useEventListener } from 'hooks';
+import { confirmUser as confirmSUser } from 'variables/dataUsers'
+import { useLocalization, useDispatch, useEventListener, useTheme } from 'hooks'
+import { getWL } from 'variables/storage'
+import { ImgLogo } from 'styles/loginStyles'
 
 // const mapDispatchToProps = dispatch => ({
 // 	getSettings: async () => dispatch(await getSettings()),
@@ -25,6 +27,7 @@ const ConfirmUser = (props) => {
 	const dispatch = useDispatch()
 	const classes = loginPageStyles()
 	const history = useHistory()
+	const theme = useTheme()
 	//Redux
 
 	//State
@@ -33,26 +36,7 @@ const ConfirmUser = (props) => {
 	const [loggingIn, setLoggingIn] = useState(false)
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState([])
-	// const [score, setScore] = useState(0)
-	// const [passwordReset, setPasswordReset] = useState(false)
-	// const [passwordRequest, setPasswordRequest] = useState(false)
-	//Const
-	// const minScore = 2;
-	// const minLength = 8;
-
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		password: '',
-	// 		confirmPassword: '',
-	// 		loggingIn: false,
-	// 		error: false,
-	// 		errorMessage: [],
-	// 		score: 0,
-
-	// 	};
-	// 	this.input = React.createRef()
-	// }
+	const wl = getWL()
 
 
 	useEffect(() => {
@@ -62,12 +46,12 @@ const ConfirmUser = (props) => {
 		}
 		return () => {
 
-		};
+		}
 		//eslint-disable-next-line
 	}, [])
 
 	const handleValidation = useCallback(() => {
-		let errorCode = [];
+		let errorCode = []
 		if (password === '' && confirmPassword === '') {
 			errorCode.push(0)
 		}
@@ -144,7 +128,7 @@ const ConfirmUser = (props) => {
 			confirmUser()
 		}
 	}, [confirmUser])
-	useEventListener('keypress', handleKeyPress);
+	useEventListener('keypress', handleKeyPress)
 
 	const handlePasswordChange = e => {
 		setPassword(e.target.value)
@@ -182,10 +166,10 @@ const ConfirmUser = (props) => {
 						<div className={classes.paperContainer}>
 
 							<ItemG xs={12} container justify={'center'}>
-								<img className={classes.logo} src={logo} alt={'sentiLogo'} />
+								<ImgLogo src={theme.logo ? theme.logo : logo} alt={'sentiLogo'} />
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
-								<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T>
+								{/* <T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T> */}
 								<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.lastStep')}</T>
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
@@ -247,7 +231,9 @@ const ConfirmUser = (props) => {
 							</ItemG>
 						</div>
 						<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
-							<Muted className={classes.footerText}>{t('login.footer')}</Muted>
+							<Muted className={classes.footerText}>
+								{wl ? wl.loginSettings.copyrighttext ? wl.loginSettings.copyrighttext : `${t('login.footer')} ` : `${t('login.footer')} `}
+							</Muted>
 						</ItemG>
 					</Paper>
 				</div>
@@ -258,8 +244,8 @@ const ConfirmUser = (props) => {
 				</ItemG>
 			</Hidden>
 		</div>
-	);
+	)
 }
 
 
-export default ConfirmUser;
+export default ConfirmUser

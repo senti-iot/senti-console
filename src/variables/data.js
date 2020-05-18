@@ -119,7 +119,6 @@ export const imageApi = create({
 		'ODEUMAuthToken': ''
 	},
 })
-
 export const api = create({
 	baseURL: backendHost,
 	timeout: 30000,

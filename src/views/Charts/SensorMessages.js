@@ -68,16 +68,17 @@ const SensorMessages = props => {
 	//useEffects
 	useEffect(() => {
 		if (loading) {
+			setLoading(false)
 			let gData = async () => await getData()
 			gData()
-			setLoading(false)
 		}
 	}, [getData, loading])
 	useEffect(() => {
 		if (period && (initialPeriod !== period)) {
-
 			setLoading(true)
-			let gData = async () => await getData()
+			let gData = async () => {
+				await getData()
+			}
 			gData()
 			setInitialPeriod(period)
 

@@ -28,7 +28,6 @@ const UserContact = props => {
 	const history = useHistory()
 	const match = useMatch()
 	const t = useLocalization()
-	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
 	const handleDeleteUser = () => {
 		deleteUser()

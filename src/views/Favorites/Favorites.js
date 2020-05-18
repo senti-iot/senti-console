@@ -10,8 +10,8 @@ import { Paper, Fade } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
 import { handleRequestSort } from 'variables/functions'
 import { finishedSaving, removeFromFav, /* addToFav, */ /* isFav */ } from 'redux/favorites'
-import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
-import { customFilterItems } from 'variables/Filters';
+import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons'
+import { customFilterItems } from 'variables/Filters'
 import { useSnackbar, useLocalization, useMatch } from 'hooks'
 
 
@@ -68,7 +68,7 @@ const Favorites = props => {
 		setAnchorElMenu(null)
 	}
 
-	const options = [
+	const options = () => [
 		{ label: t('menus.favorites.remove'), icon: StarBorder, func: removeFromFavs }
 	]
 	//useCallbacks
@@ -133,13 +133,13 @@ const Favorites = props => {
 	}
 
 	const handleToolbarMenuClose = e => {
-		e.stopPropagation();
+		e.stopPropagation()
 		setAnchorElMenu(null)
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
 			setSelected(favorites.map(n => n.id))
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -161,10 +161,10 @@ const Favorites = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -173,7 +173,7 @@ const Favorites = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
@@ -221,7 +221,6 @@ const Favorites = props => {
 					{renderTable()}
 				</Paper>
 			</Fade>
-			}
 		</GridContainer>
 	}
 
