@@ -42,8 +42,8 @@ const CreateOrg = props => {
 			ean: ''
 		},
 		org: {
-			uuid: -1,
-			name: t('no.org')
+			uuid: "47acb6ca-3984-4065-b248-fe740e0116c2",
+			name: t('no.orgParent')
 		}
 	})
 	const [country, setCountry] = useState({
@@ -194,7 +194,7 @@ const CreateOrg = props => {
 		// setOrg(rs)
 		dispatch(getOrgs(true))
 		s('snackbars.orgCreated', { org: rs.name })
-		history.push(`/management/org/${rs.id}`)
+		history.push(`/management/org/${rs.uuid}`)
 	}
 	const handleCreateOrg = async () => {
 		if (handleValidation()) {

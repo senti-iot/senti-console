@@ -64,6 +64,7 @@ export const createOrg = async (org) => {
 	// 	return result
 	// return result & result2
 	var result = await coreServicesAPI.post(`/entity/organisation`, org).then(rs => rs.ok ? rs.data : rs.ok)
+	console.log(result)
 	return result
 }
 
