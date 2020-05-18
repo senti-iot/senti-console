@@ -1,13 +1,12 @@
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core'
 // import collectionStyles from 'assets/jss/views/deviceStyles';
-import { Caption, Info, ItemG, WeatherIcon } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import Dropdown from 'components/Dropdown/Dropdown';
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { DataUsage, Edit, DeviceHub, LibraryBooks, LayersClear, Star, StarBorder, Delete } from 'variables/icons';
+import { Caption, Info, ItemG, WeatherIcon, Link } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
+import Dropdown from 'components/Dropdown/Dropdown'
+import React, { Fragment } from 'react'
+import { DataUsage, Edit, DeviceHub, LibraryBooks, LayersClear, Star, StarBorder, Delete } from 'variables/icons'
 import { useSelector } from 'react-redux'
-import { useLocalization } from 'hooks';
+import { useLocalization } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	detailsPanel: state.settings.detailsPanel
@@ -27,7 +26,7 @@ const DeviceDetails = props => {
 			case 2:
 				return t('collections.fields.state.inactive')
 			default:
-				break;
+				break
 		}
 	}
 

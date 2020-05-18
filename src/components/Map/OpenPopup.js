@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Paper, Button, withStyles, Typography, Collapse } from '@material-ui/core';
-import { ItemG, Caption, Info, WeatherIcon, T } from 'components';
-import { Link } from 'react-router-dom';
-import withLocalization from 'components/Localization/T';
+import { Paper, Button, withStyles, Typography, Collapse } from '@material-ui/core'
+import { ItemG, Caption, Info, WeatherIcon, T } from 'components'
+import { Link } from 'react-router-dom'
+import withLocalization from 'components/Localization/T'
 import { red, green, yellow, teal } from '@material-ui/core/colors'
-import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import moment from 'moment'
 // import { getWeather } from 'variables/dataDevices';
 import { useSelector, useDispatch } from 'react-redux'
-import { getWeather } from 'redux/weather';
-import { useLocalization } from 'hooks';
+import { getWeather } from 'redux/weather'
+import { useLocalization } from 'hooks'
 
 const styles = theme => ({
 	paper: {
@@ -43,7 +43,9 @@ const styles = theme => ({
 // const mapDispatchToProps = dispatch => ({
 // 	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang))
 // })
-
+/**
+ * @Andrei
+ */
 const OpenPopup = props => {
 	const t = useLocalization()
 	const dispatch = useDispatch()

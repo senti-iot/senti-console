@@ -1,16 +1,14 @@
-import { ItemG, CircularLoader, Info } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import React from 'react';
-// import { Link } from 'react-router-dom';
-import { CloudUpload } from 'variables/icons';
+import { ItemG, CircularLoader, Info, Link } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
+import React from 'react'
+import { CloudUpload } from 'variables/icons'
 import { useSelector } from 'react-redux'
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { Link } from 'react-router-dom'
-import { useLocalization } from 'hooks';
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import { useLocalization } from 'hooks'
 
 
 const DeviceTypeCloudFunctions = props => {
@@ -44,7 +42,7 @@ const DeviceTypeCloudFunctions = props => {
 			case 1:
 				return t('cloudfunctions.datatypes.average')
 			default:
-				break;
+				break
 		}
 	}
 
