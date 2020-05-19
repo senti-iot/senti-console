@@ -116,7 +116,7 @@ const OrgTable = props => {
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
-									key={n.id}
+									key={n.uuid}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>

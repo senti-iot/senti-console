@@ -1038,6 +1038,12 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"orgs": {
+			"stillHasUsers": "Some Organisations still have users!"
+		},
+		"org": {
+			"stillHasUsers": "Organisation still has users!"
+		},
 		"assign": {
 			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
 			"collectionToProject": "Data collection %{collection} assigned to project %{project}",

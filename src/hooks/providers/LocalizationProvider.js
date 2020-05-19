@@ -55,9 +55,12 @@ const LocalizationProvider = ({ children }) => {
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} */ else {
 			// console.trace()
-			console.info('Missing key: "' + key + '"')
-			console.trace()
-			result = key
+			if (opts.disableMissing) {
+
+			}
+			else {
+				console.info('Missing key: "' + key + '"')
+			} result = key
 		}
 		if (typeof phrase === 'string') {
 			result = transformPhrase(phrase, opts)

@@ -1,14 +1,16 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core'
+import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip, Collapse } from '@material-ui/core'
 import GridContainer from 'components/Grid/GridContainer'
 import OrgTable from 'components/Orgs/OrgTable'
 import { /* PictureAsPdf, */ Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
-import { deleteOrg } from 'variables/dataOrgs'
+import { deleteOrg, getOrgUsers } from 'variables/dataOrgs'
 import TableToolbar from 'components/Table/TableToolbar'
 import { customFilterItems } from 'variables/Filters'
 import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar, useAuth } from 'hooks'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
+import { Warning, Danger, /* TextF */ } from 'components'
+import { asyncForEach } from 'variables/functions'
 
 const Orgs = props => {
 	//Hooks
@@ -26,6 +28,7 @@ const Orgs = props => {
 	//State
 	const [selected, setSelected] = useState([])
 	const [openDelete, setOpenDelete] = useState(false)
+	const [error, setError] = useState(null)
 	// const [loading, setLoading] = useState(true)
 	// const [route, setRoute] = useState(1)
 	const [order, setOrder] = useState('asc')
@@ -158,13 +161,31 @@ const Orgs = props => {
 	}
 
 	const handleDeleteOrgs = async () => {
-		await selected.forEach(async u => {
-			await deleteOrg(u)
-		})
-		await props.reload()
-		snackBarMessages(1)
-		setSelected([])
-		setOpenDelete(false)
+		let nError = false
+		await asyncForEach(selected, (async u => {
+			let hasUsers = await getOrgUsers(u).then(rs => {
+				if (rs.length === 0) {
+					return false
+				}
+				else return true
+			})
+			if (hasUsers) {
+				nError = true
+				setError('snackbars.orgs.stillHasUsers')
+				snackBarMessages(3)
+			}
+			else {
+				await deleteOrg(u)
+			}
+
+		}))
+
+		if (!nError) {
+			await props.reload()
+			snackBarMessages(1)
+			setSelected([])
+			setOpenDelete(false)
+		}
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
@@ -206,6 +227,9 @@ const Orgs = props => {
 			case 2:
 				s('snackbars.exported')
 				break
+			case 3:
+				s('snackbars.orgs.stillHasUsers')
+				break
 			default:
 				break
 		}
@@ -220,19 +244,32 @@ const Orgs = props => {
 		>
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.orgs')}</DialogTitle>
 			<DialogContent>
+				<Collapse in={Boolean(error)}>
+					<div style={{ padding: 16 }}>
+
+						<Warning >
+							<Danger>
+								{t(error, { disableMissing: true })}
+							</Danger>
+						</Warning>
+					</div>
+				</Collapse>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.orgs')}:
 				</DialogContentText>
 				<List>
 					{selected.map(s => {
 						let org = orgs[orgs.findIndex(o => o.uuid === s)]
-						return org ? <ListItem divider key={s.uuid}>
+						return org ? <ListItem divider key={s}>
 							<ListItemIcon><Business /></ListItemIcon>
 							<ListItemText primary={org.name} /></ListItem>
 							: s
 					}
 					)}
 				</List>
+				{/* <TextF
+
+				/> */}
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleCloseDeleteDialog} color='primary'>

@@ -26,7 +26,6 @@ const AuthProvider = ({ children }) => {
 		uuids.forEach(async uuid => {
 			access = hasAccess(uuid, perm)
 		})
-		console.log(access)
 		return access
 	}
 	const hasAccess = (uuid, perm) => {

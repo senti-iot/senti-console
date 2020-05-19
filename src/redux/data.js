@@ -241,12 +241,14 @@ export const getUserLS = async (id) => {
 }
 
 export const getUsers = (reload) => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
 
 		await getAllUsers().then(async rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
 			users = handleRequestSort('firstName', 'asc', users)
 			let userUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['user.create', 'user.list']))
 			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete']))
 			set('users', users)
 			if (reload) {

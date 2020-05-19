@@ -261,7 +261,7 @@ const CreateUser = props => {
 		[classes.buttonSuccess]: created,
 	})
 	return (
-		hasAccess(rUser.uuid, 'users.create') ? <GridContainer justify={'center'}>
+		hasAccess(null, 'user.create') ? <GridContainer justify={'center'}>
 			<Paper className={classes.paper}>
 				{loading ? <CircularLoader /> : <CreateUserForm
 					/* Error */
