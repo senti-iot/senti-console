@@ -131,7 +131,7 @@ export const api = create({
 
 //#region Senti Services
 
-let sentiServicesURL = 'https://merge.services.senti.cloud'
+let sentiServicesURL = 'https://mergeservices.senti.cloud'
 let sentiServicesURLL = 'https://dev.services.senti.cloud'
 
 // if (process.env.REACT_APP_DEV) {
