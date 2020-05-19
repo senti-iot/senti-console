@@ -19,6 +19,10 @@ const OrgUsers = props => {
 
 	const { users, t, history, org } = props
 	const classes = orgUserStyles()
+	const handleNavigation = (e, n) => {
+		e.stopPropagation()
+		history.push({ pathname: '/management/user/' + n.uuid, prevURL: `/management/org/${org.uuid}` })
+	}
 	return (
 		<InfoCard
 			title={t('users.pageTitle')}
@@ -33,7 +37,7 @@ const OrgUsers = props => {
 							return (
 								<TableRow
 									hover
-									onClick={e => { e.stopPropagation(); history.push({ pathname: '/management/user/' + n.id, prevURL: `/management/org/${org.id}` }) }}
+									onClick={e => handleNavigation(e, n)}
 									key={i}
 									style={{ cursor: 'pointer', padding: '0 20px' }}
 								>
