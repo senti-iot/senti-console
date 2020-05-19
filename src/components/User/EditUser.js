@@ -101,21 +101,34 @@ const EditUser = props => {
 				...eUser,
 			})
 			setExtended(
-				eUser.aux.senti ?
-					eUser.aux.senti.extendedProfile ?
-						{
-							bio: "",
-							position: "",
-							location: "",
-							recoveryEmail: "",
-							linkedInURL: "",
-							twitterURL: "",
-							birthday: null,
-							newsletter: true,
-							...eUser.aux.senti.extendedProfile
-						} :
-						{ ...extended } :
-					{ ...extended })
+				eUser.aux?.senti?.extendedProfile ? {
+					bio: "",
+					position: "",
+					location: "",
+					recoveryEmail: "",
+					linkedInURL: "",
+					twitterURL: "",
+					birthday: null,
+					newsletter: true,
+					...eUser.aux.senti.extendedProfile
+				} : { ...extended }
+			/* 	eUser.aux ?
+					eUser.aux.senti ?
+						eUser.aux.senti.extendedProfile ?
+							{
+								bio: "",
+								position: "",
+								location: "",
+								recoveryEmail: "",
+								linkedInURL: "",
+								twitterURL: "",
+								birthday: null,
+								newsletter: true,
+								...eUser.aux.senti.extendedProfile
+							} :
+							{ ...extended } :
+						{ ...extended } : */ )
+
 		}
 	}, [eUser, extended, user, getUserRole])
 
@@ -275,7 +288,6 @@ const EditUser = props => {
 			setError(false)
 			setErrorMessage([])
 		}
-		console.log(prop, e.target.value)
 		setExtended({
 			...extended,
 			[prop]: e.target.value

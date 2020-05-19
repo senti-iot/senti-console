@@ -33,7 +33,6 @@ export const isFav = (obj) => {
 	}
 }
 export const finishedSaving = () => {
-	console.log('finishedSaving')
 	return {
 		type: SAVEFAVORITES,
 		saved: false

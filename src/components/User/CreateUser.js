@@ -170,7 +170,6 @@ const CreateUser = props => {
 			newUser.aux.senti.extendedProfile = extended
 		if (handleValidation()) {
 			await createUser(newUser).then(rs => {
-				console.log('RS', rs)
 				if (rs.ok)
 					close(rs.data)
 				else {

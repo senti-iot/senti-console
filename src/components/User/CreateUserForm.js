@@ -60,7 +60,6 @@ const CreateUserForm = props => {
 			} />
 	}
 	const renderExtendedProfile = () => {
-		console.log(selectedRole)
 		return <Collapse in={openExtended}>
 			<ItemGrid container xs={12} >
 				<TextF

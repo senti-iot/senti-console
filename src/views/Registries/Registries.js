@@ -1,21 +1,21 @@
 import {
 	Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText,
 	DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider
-} from '@material-ui/core';
-import RegistryTable from 'components/Registry/RegistryTable';
-import TableToolbar from 'components/Table/TableToolbar';
-import React, { useState, Fragment, useCallback, useEffect } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, InputIcon } from 'variables/icons';
+} from '@material-ui/core'
+import RegistryTable from 'components/Registry/RegistryTable'
+import TableToolbar from 'components/Table/TableToolbar'
+import React, { useState, Fragment, useCallback, useEffect } from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, InputIcon } from 'variables/icons'
 import { GridContainer, CircularLoader, /* AssignProject */ } from 'components'
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import { customFilterItems } from 'variables/Filters';
-import { getRegistries, sortData } from 'redux/data';
-import RegistryCards from 'components/Registry/RegistryCards';
-import { deleteRegistry } from 'variables/dataRegistry';
-import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector } from 'hooks';
-import registriesStyles from 'assets/jss/components/registries/registriesStyles';
-import { handleRequestSort } from 'variables/functions';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
+import { customFilterItems } from 'variables/Filters'
+import { getRegistries, sortData } from 'redux/data'
+import RegistryCards from 'components/Registry/RegistryCards'
+import { deleteRegistry } from 'variables/dataRegistry'
+import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector } from 'hooks'
+import registriesStyles from 'assets/jss/components/registries/registriesStyles'
+import { handleRequestSort } from 'variables/functions'
 
 const Registries = props => {
 	//Hooks
@@ -27,7 +27,7 @@ const Registries = props => {
 	const classes = registriesStyles()
 
 	//Redux
-	const accessLevel = useSelector(s => s.settings.user.privileges)
+	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(s => s.data.favorites)
 	const saved = useSelector(s => s.favorites.saved)
 	const registries = useSelector(s => s.data.registries)
@@ -96,8 +96,11 @@ const Registries = props => {
 	}, [location])
 
 	const getData = useCallback(async () => {
+		/**
+		 * @Andrei
+		 */
 		if (user && accessLevel) {
-			dispatch(await getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false))
+			dispatch(await getRegistries(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
 		}
 	}, [accessLevel, dispatch, user])
 
@@ -170,7 +173,7 @@ const Registries = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			// case 2:
 			// 	s('snackbars.exported')
 			// 	break;
@@ -181,7 +184,7 @@ const Registries = props => {
 			// 	s('snackbars.assign.deviceToRegistry', { registry: `${registries[registries.findIndex(c => c.id === selected[0])].name}`, device: display })
 			// 	break
 			default:
-				break;
+				break
 		}
 	}
 
@@ -224,7 +227,7 @@ const Registries = props => {
 	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			setSelected(arr)
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -232,10 +235,10 @@ const Registries = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -244,7 +247,7 @@ const Registries = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 		setSelected(newSelected)
 	}
