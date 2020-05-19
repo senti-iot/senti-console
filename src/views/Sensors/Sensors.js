@@ -29,7 +29,7 @@ const Sensors = props => {
 	const favorites = useSelector(s => s.data.favorites)
 	const saved = useSelector(s => s.favorites.saved)
 	const devices = useSelector(s => s.data.sensors)
-	const loading = useSelector(s => !s.data.gotdevices)
+	const loading = useSelector(s => !s.data.gotsensors)
 	const filters = useSelector(s => s.appState.filters.sensors)
 	const user = useSelector(s => s.settings.user)
 
@@ -85,7 +85,7 @@ const Sensors = props => {
 	//useCallbacks
 	const getData = useCallback(async () => {
 		if (user && accessLevel) {
-			dispatch(await getSensors(true, user.org.id, accessLevel.apisuperuser ? true : false))
+			dispatch(await getSensors(true, user.org.aux.odeumId, accessLevel.apisuperuser ? true : false))
 		}
 	}, [accessLevel, dispatch, user])
 
