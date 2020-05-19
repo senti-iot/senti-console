@@ -7,11 +7,11 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { createOrg } from 'variables/dataOrgs'
 import { getOrgs } from 'redux/data'
 import { camelCase } from 'variables/functions'
-import { useLocalization, useSnackbar, useHistory, useEventListener, useAuth } from 'hooks'
+import { useLocalization, useSnackbar, useHistory, useEventListener, /* useAuth  */ } from 'hooks'
 import CreateOrgForm from 'components/Orgs/CreateOrgForm'
 import { useCallback } from 'react'
 import createOrgStyles from 'assets/jss/components/orgs/createOrgStyles'
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 var countries = require('i18n-iso-countries')
 
 const CreateOrg = props => {
@@ -21,7 +21,7 @@ const CreateOrg = props => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const classes = createOrgStyles()
-	const hasAccess = useAuth().hasAccess
+	// const hasAccess = useAuth().hasAccess
 	//Redux
 	const language = useSelector(state => state.localization.language)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -234,7 +234,7 @@ const CreateOrg = props => {
 	})
 
 	return (
-		hasAccess(null, 'org.create') ? <GridContainer justify={'center'}>
+		<GridContainer justify={'center'}>
 			<Paper className={classes.paper}>
 				<CreateOrgForm
 					/* Defaults */
@@ -286,7 +286,7 @@ const CreateOrg = props => {
 					</div>
 				</ItemGrid>
 			</Paper>
-		</GridContainer> : <Redirect to='/' />
+		</GridContainer>
 	)
 }
 

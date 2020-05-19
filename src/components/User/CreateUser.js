@@ -5,11 +5,11 @@ import { GridContainer, ItemGrid, Danger, CircularLoader } from 'components'
 import { Paper, Collapse, Button } from '@material-ui/core'
 import classNames from 'classnames'
 import { getUsers } from 'redux/data'
-import { useEventListener, useLocalization, useHistory, useSnackbar, useAuth } from 'hooks'
+import { useEventListener, useLocalization, useHistory, useSnackbar, /* useAuth */ } from 'hooks'
 import createUserStyles from 'assets/jss/components/users/createUserStyles'
 import CreateUserForm from './CreateUserForm'
 import { getRoles } from 'variables/dataRoles'
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 
 const CreateUser = props => {
 	//Hooks
@@ -18,7 +18,7 @@ const CreateUser = props => {
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
 	const classes = createUserStyles()
-	const hasAccess = useAuth().hasAccess
+	// const hasAccess = useAuth().hasAccess
 
 	//Redux
 	const rUser = useSelector(s => s.settings.user)
@@ -261,7 +261,7 @@ const CreateUser = props => {
 		[classes.buttonSuccess]: created,
 	})
 	return (
-		hasAccess(null, 'user.create') ? <GridContainer justify={'center'}>
+		<GridContainer justify={'center'}>
 			<Paper className={classes.paper}>
 				{loading ? <CircularLoader /> : <CreateUserForm
 					/* Error */
@@ -320,7 +320,7 @@ const CreateUser = props => {
 					</div>
 				</ItemGrid>
 			</Paper>
-		</GridContainer> : <Redirect to={'/'} />
+		</GridContainer>
 	)
 }
 

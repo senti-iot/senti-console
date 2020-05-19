@@ -194,7 +194,7 @@ const Users = props => {
 	}
 	const handleDeleteUsers = async () => {
 		let state = 0
-		await asyncForEach(selected, async u => {
+		await asyncForEach(selected, (async u => {
 			if (state !== 2) {
 				let favObj = {
 					id: u,
@@ -212,7 +212,7 @@ const Users = props => {
 					state = 2
 				console.log('State', state)
 			}
-		})
+		}))
 		await reload(true)
 		snackBarMessages(state === 2 ? 3 : 1)
 		setSelected([])
