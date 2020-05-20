@@ -1,18 +1,18 @@
-import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core';
-import TableToolbar from 'components/Table/TableToolbar';
-import React, { useState, useEffect, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, Route, Switch, useHistory, useRouteMatch, useLocation } from 'react-router-dom';
-import { handleRequestSort } from 'variables/functions';
-import { /* Delete, PictureAsPdf, DeviceHub, LibraryBooks,  LayersClear, ViewModule, */ Edit, ViewList, Add, Star, StarBorder, CloudDownload, Delete } from 'variables/icons';
+import { Paper, IconButton, Fade, Tooltip } from '@material-ui/core'
+import TableToolbar from 'components/Table/TableToolbar'
+import React, { useState, useEffect, Fragment } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Redirect, Route, Switch, useHistory, useRouteMatch, useLocation } from 'react-router-dom'
+import { handleRequestSort } from 'variables/functions'
+import { /* Delete, PictureAsPdf, DeviceHub, LibraryBooks,  LayersClear, ViewModule, */ Edit, ViewList, Add, Star, StarBorder, CloudDownload, Delete } from 'variables/icons'
 import { GridContainer, CircularLoader, DeleteDialog } from 'components'
-import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
-import { customFilterItems } from 'variables/Filters';
-import { getFunctions, /* setFunctions, */ sortData } from 'redux/data';
-import FunctionTable from 'components/Cloud/FunctionTable';
-import { deleteCFunction } from 'variables/dataFunctions';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
+import { customFilterItems } from 'variables/Filters'
+import { getFunctions, /* setFunctions, */ sortData } from 'redux/data'
+import FunctionTable from 'components/Cloud/FunctionTable'
+import { deleteCFunction } from 'variables/dataFunctions'
 import { useSnackbar, useLocalization } from 'hooks'
-import cloudfunctionsStyles from 'assets/jss/components/cloudfunctions/cloudfunctionsStyles';
+import cloudfunctionsStyles from 'assets/jss/components/cloudfunctions/cloudfunctionsStyles'
 
 const Functions = props => {
 	//Hooks
@@ -24,7 +24,7 @@ const Functions = props => {
 	const location = useLocation()
 	const classes = cloudfunctionsStyles()
 	//Redux
-	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
 	const functions = useSelector(state => state.data.functions)
@@ -158,24 +158,24 @@ const Functions = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
-				break;
+				break
 			case 2:
 				s('snackbars.exported')
-				break;
+				break
 			case 3:
 				s('snackbars.assign.deviceToFunction', { func: ``, what: 'Device' })
-				break;
+				break
 			case 6:
 				s('snackbars.assign.deviceToFunction', { func: `${functions[functions.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
-				break;
+				break
 		}
 	}
 	const getData = async (reload) => {
 		if (accessLevel || user) {
 			if (reload)
-				dispatch(getFunctions(true, user.org.id, accessLevel.apisuperuser ? true : false))
+				dispatch(getFunctions(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
 		}
 	}
 	//#endregion
@@ -208,7 +208,7 @@ const Functions = props => {
 	const handleSelectAllClick = (arr, checked) => {
 		if (checked) {
 			setSelected(arr)
-			return;
+			return
 		}
 		setSelected([])
 	}
@@ -216,10 +216,10 @@ const Functions = props => {
 	const handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
+		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -228,7 +228,7 @@ const Functions = props => {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
 				selected.slice(selectedIndex + 1),
-			);
+			)
 		}
 
 		setSelected(newSelected)

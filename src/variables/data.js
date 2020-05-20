@@ -133,6 +133,7 @@ export const api = create({
 
 let sentiServicesURL = 'https://mergeservices.senti.cloud'
 let sentiServicesURLL = 'https://dev.services.senti.cloud'
+let sentiServicesBetaURL = 'https://services.senti.cloud'
 
 // if (process.env.REACT_APP_DEV) {
 // 	sentiServicesURL = 'https://dev.services.senti.cloud'
@@ -174,7 +175,7 @@ export const coreServicesAPI = create({
 // })
 
 export const cloudAPI = create({
-	baseURL: `${sentiServicesURLL}/functions`,
+	baseURL: `${sentiServicesBetaURL}/functions`,
 	// baseURL: 'http://localhost:3011',
 	timeout: 30000,
 	headers: {
