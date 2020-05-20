@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Button } from '@material-ui/core';
+import { Button } from '@material-ui/core'
 import { Grid, Paper } from '@material-ui/core'
 import { GridContainer, ItemGrid, TextF, DSelect } from 'components'
-import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
-import createCFStyles from 'assets/jss/components/cloudfunctions/createCFStyles';
-import { useLocalization, useTheme } from 'hooks';
-import AceEditor from 'react-ace';
+import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog'
+import createCFStyles from 'assets/jss/components/cloudfunctions/createCFStyles'
+import { useLocalization, useTheme } from 'hooks'
+import AceEditor from 'react-ace'
 
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow'
@@ -32,8 +32,7 @@ const CreateFunctionForm = props => {
 
 	//Handlers
 
-
-
+	console.log('props', props)
 	const renderType = () => {
 		return <DSelect
 			margin={'normal'}

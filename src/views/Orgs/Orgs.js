@@ -9,7 +9,7 @@ import { customFilterItems } from 'variables/Filters'
 import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar, useAuth } from 'hooks'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
-import { Warning, Danger, /* TextF */ } from 'components'
+import { Warning, Danger, TextF, ItemG, /* TextF */ } from 'components'
 import { asyncForEach } from 'variables/functions'
 
 const Orgs = props => {
@@ -29,6 +29,7 @@ const Orgs = props => {
 	const [selected, setSelected] = useState([])
 	const [openDelete, setOpenDelete] = useState(false)
 	const [error, setError] = useState(null)
+	const [deleteInput, setDeleteInput] = useState('')
 	// const [loading, setLoading] = useState(true)
 	// const [route, setRoute] = useState(1)
 	const [order, setOrder] = useState('asc')
@@ -129,8 +130,6 @@ const Orgs = props => {
 	}
 
 	const handleCheckboxClick = (event, id) => {
-		console.log(event)
-		console.log(id)
 		event.stopPropagation()
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = []
@@ -154,6 +153,8 @@ const Orgs = props => {
 	}
 	const handleCloseDeleteDialog = () => {
 		setOpenDelete(false)
+		setError(null)
+		setDeleteInput('')
 	}
 
 	const handleEdit = () => {
@@ -162,34 +163,42 @@ const Orgs = props => {
 
 	const handleDeleteOrgs = async () => {
 		let nError = false
-		await asyncForEach(selected, (async u => {
-			let hasUsers = await getOrgUsers(u).then(rs => {
-				if (rs.length === 0) {
-					return false
+		if (deleteInput === 'DELETE') {
+			setDeleteInput('')
+			setError(null)
+			await asyncForEach(selected, (async u => {
+				let hasUsers = await getOrgUsers(u).then(rs => {
+					if (rs.length === 0) {
+						return false
+					}
+					else return true
+				})
+				if (hasUsers) {
+					nError = true
+					setError('snackbars.orgs.stillHasUsers')
+					snackBarMessages(3)
 				}
-				else return true
-			})
-			if (hasUsers) {
-				nError = true
-				setError('snackbars.orgs.stillHasUsers')
-				snackBarMessages(3)
-			}
-			else {
-				await deleteOrg(u)
-			}
+				else {
+					await deleteOrg(u)
+				}
 
-		}))
+			}))
 
-		if (!nError) {
-			await props.reload()
-			snackBarMessages(1)
-			setSelected([])
-			setOpenDelete(false)
+			if (!nError) {
+				await props.reload()
+				snackBarMessages(1)
+				setSelected([])
+				setOpenDelete(false)
+			}
+		}
+		else {
+			setError('dialogs.delete.warning.wrongText')
 		}
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			setSelected([filterItems(orgs).map(n => n.uuid)])
+
+			setSelected(filterItems(orgs).map(n => n.uuid))
 			return
 		}
 		setSelected([])
@@ -215,9 +224,9 @@ const Orgs = props => {
 		return customFilterItems(data, filters)
 	}
 
-
-
 	const handleAddNewOrg = () => { history.push('/management/orgs/new') }
+
+	const handleDeleteInput = e => setDeleteInput(e.target.value)
 
 	const snackBarMessages = (msg) => {
 		switch (msg) {
@@ -257,7 +266,7 @@ const Orgs = props => {
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.orgs')}:
 				</DialogContentText>
-				<List>
+				<List style={{ maxHeight: 250, overflow: 'auto' }}>
 					{selected.map(s => {
 						let org = orgs[orgs.findIndex(o => o.uuid === s)]
 						return org ? <ListItem divider key={s}>
@@ -267,17 +276,30 @@ const Orgs = props => {
 					}
 					)}
 				</List>
-				{/* <TextF
-
-				/> */}
+				<DialogContentText>
+					{t("dialogs.delete.warning.orgs", { type: 'markdown' })}
+				</DialogContentText>
+				<DialogContentText>
+					{t("dialogs.delete.actions.orgs", { type: 'markdown' })}
+				</DialogContentText>
+				<TextF
+					fullWidth
+					onChange={handleDeleteInput}
+					value={deleteInput}
+				/>
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={handleDeleteOrgs} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
+			<DialogActions style={{ display: 'flex' }}>
+				<ItemG xs={6} container>
+					<Button fullWidth onClick={handleCloseDeleteDialog}>
+						{t('actions.cancel')}
+					</Button>
+				</ItemG>
+				<ItemG xs={6} container>
+
+					<Button fullWidth onClick={handleDeleteOrgs} color='primary'>
+						{t('actions.delete')}
+					</Button>
+				</ItemG>
 			</DialogActions>
 		</Dialog>
 	}

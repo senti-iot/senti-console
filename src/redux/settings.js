@@ -212,6 +212,7 @@ export const getNSettings = async () => {
 			 */
 			var dashboards = senti.dashboards ? senti.dashboards : []
 			dispatch(setDashboards(dashboards))
+			dispatch(await getAllData(true, user.org.aux?.odeumId, true))
 
 			return true
 		}
@@ -225,6 +226,8 @@ export const getNSettings = async () => {
 				user,
 				settings: s
 			})
+			dispatch(await getAllData(true, user.org.aux?.odeumId, true))
+
 			return false
 		}
 		// dispatch(await getAllData(true, user.org.id, true))

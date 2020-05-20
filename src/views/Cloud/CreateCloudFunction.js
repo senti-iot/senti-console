@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createFunction } from 'variables/dataFunctions';
-import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
-import { getFunctions } from 'redux/data';
-import { useSnackbar, useLocation, useEventListener, useHistory } from 'hooks';
+import { createFunction } from 'variables/dataFunctions'
+import CreateFunctionForm from 'components/Cloud/CreateFunctionForm'
+import { getFunctions } from 'redux/data'
+import { useSnackbar, useLocation, useEventListener, useHistory } from 'hooks'
 
 
 const CreateCloudFunction = props => {
@@ -18,7 +18,7 @@ const CreateCloudFunction = props => {
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const org = useSelector(state => state.settings.user.org)
 	const orgId = useSelector(state => state.settings.user.org)
-
+	console.log('Org', org)
 	//State
 	const [cloudfunction, setCloudfunction] = useState({
 		name: '',
