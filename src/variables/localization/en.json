@@ -419,11 +419,13 @@
 				"users": "Delete users?"
 			},
 			"warning": {
+				"org": "**This cannot be undone**.You will remove this Organisation!",
 				"orgs": "**This cannot be undone**. You will remove the above Organisations!",
-				"wrongText": "You haven't confirmed that you want to delete the Organisations!"
+				"wrongText": "You haven't confirmed that you want to delete the Organisation!"
 			},
 			"actions": {
-				"orgs": "Type **DELETE** to confirm"
+				"org": "Type **%{org}** to confirm:",
+				"orgs": "Type **DELETE** to confirm:"
 			}
 		},
 		"discoverSenti": {

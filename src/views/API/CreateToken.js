@@ -1,16 +1,16 @@
 import React, { Fragment, useState } from 'react'
-import { Dialog, DialogTitle, IconButton, DialogContent, DialogActions, Collapse, Button, Divider } from '@material-ui/core';
-import { ItemG, TextF, DSelect, Warning, Info } from 'components';
-import { Close, Save, ContentCopy } from 'variables/icons';
-import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
-import { copyToClipboard } from 'variables/functions';
+import { Dialog, DialogTitle, IconButton, DialogContent, DialogActions, Collapse, Button, Divider } from '@material-ui/core'
+import { ItemG, TextF, DSelect, Warning, Info } from 'components'
+import { Close, Save, ContentCopy } from 'variables/icons'
+import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
+import { copyToClipboard } from 'variables/functions'
 import { generateToken } from 'variables/dataRegistry'
 import { useSelector, useDispatch } from 'react-redux'
-import { getTokens } from 'redux/data';
-import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog';
-import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
+import { getTokens } from 'redux/data'
+import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog'
+import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog'
 import { useLocalization, useSnackbar } from 'hooks'
-import tokensStyles from 'assets/jss/components/api/tokensStyles';
+import tokensStyles from 'assets/jss/components/api/tokensStyles'
 
 // @Andrei
 const CreateToken = props => {
@@ -80,7 +80,7 @@ const CreateToken = props => {
 		setOpenDeviceType(false)
 		setOpenConfirmClose(false)
 		setConfirmClose('')
-		dispatch(getTokens(user.id))
+		dispatch(getTokens(user.internal.odeumId))
 		props.handleClose()
 	}
 
@@ -157,7 +157,7 @@ const CreateToken = props => {
 				</Fragment>
 
 			default:
-				break;
+				break
 		}
 	}
 

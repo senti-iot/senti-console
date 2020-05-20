@@ -42,7 +42,6 @@ const OrgDetails = props => {
 
 		// ]
 	}
-	console.log(org)
 	return (
 		<InfoCard
 			title={org.name}

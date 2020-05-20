@@ -163,14 +163,15 @@ const setFavorites = 'setFavorites'
 export const getAllData = async (reload, orgId, su) => {
 	return async dispatch => {
 		await dispatch(await getUsers(true))
-		dispatch(await getProjects(true))
-		dispatch(await getCollections(true))
-		dispatch(await getDevices(true))
+		// dispatch(await getProjects(true))
+		// dispatch(await getCollections(true))
+		// dispatch(await getDevices(true))
 		dispatch(await getOrgs(true))
 		dispatch(await getRegistries(true, orgId, su))
 		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
 		dispatch(await getFunctions(true, orgId, su))
+		// dispatch(await getTokens(true, orgId, su))
 		// dispatch(await getMessages(orgId, true))
 	}
 }

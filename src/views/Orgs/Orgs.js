@@ -296,7 +296,7 @@ const Orgs = props => {
 				</ItemG>
 				<ItemG xs={6} container>
 
-					<Button fullWidth onClick={handleDeleteOrgs} color='primary'>
+					<Button fullWidth onClick={handleDeleteOrgs} className={classes.closeButton}>
 						{t('actions.delete')}
 					</Button>
 				</ItemG>

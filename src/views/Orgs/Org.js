@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { GridContainer, ItemGrid, CircularLoader } from 'components'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core'
+import { GridContainer, ItemGrid, CircularLoader, Warning, Danger, TextF, ItemG } from 'components'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Collapse } from '@material-ui/core'
 import { getOrgUsers } from 'variables/dataOrgs'
 import OrgDetails from './OrgCards/OrgDetails'
 import { useSelector, useDispatch } from 'react-redux'
@@ -18,7 +18,18 @@ import { Business, People } from 'variables/icons'
 import { scrollToAnchor } from 'variables/functions'
 import { getOrgLS } from 'redux/data'
 import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks'
+import { red } from '@material-ui/core/colors'
+import { makeStyles } from '@material-ui/styles'
 
+const styles = makeStyles(theme => ({
+	closeButton: {
+		marginLeft: 'auto',
+		color: red[500],
+		"&:hover": {
+			background: 'rgb(211,47,47, 0.2)'
+		}
+	},
+}))
 
 const Org = props => {
 	//Hooks
@@ -28,7 +39,7 @@ const Org = props => {
 	const dispatch = useDispatch()
 	const location = useLocation()
 	const history = useHistory()
-
+	const classes = styles()
 	//Redux
 	const language = useSelector(state => state.localization.language)
 	const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -45,6 +56,8 @@ const Org = props => {
 	const [openDelete, setOpenDelete] = useState(false)
 	// const [loadingCollections, setLoadingCollections] = useState(true) // added
 	// const [loadingProjects, setLoadingProjects] = useState(true) // added
+	const [error, setError] = useState(null)
+	const [deleteInput, setDeleteInput] = useState('')
 
 	//Const
 	const { setHeader, setTabs, setBC } = props
@@ -154,10 +167,29 @@ const Org = props => {
 		history.push('/management/orgs')
 	}
 	const handleDeleteOrg = async () => {
-		await deleteOrg(org.uuid).then(rs => {
-			setOpenDelete(false)
-			handleClose()
-		})
+		if (deleteInput === org.name) {
+			setDeleteInput('')
+			setError(null)
+			let hasUsers = await getOrgUsers(org.uuid).then(rs => {
+				if (rs.length === 0) {
+					return false
+				}
+				else return true
+			})
+			if (hasUsers) {
+				setError('snackbars.orgs.stillHasUsers')
+				snackBarMessages(3)
+			}
+			else {
+				await deleteOrg(org.uuid).then(rs => {
+					setOpenDelete(false)
+					handleClose()
+				})
+			}
+		}
+		else {
+			setError('dialogs.delete.warning.wrongText')
+		}
 	}
 
 	const handleOpenDeleteDialog = () => {
@@ -167,6 +199,8 @@ const Org = props => {
 	const handleCloseDeleteDialog = () => {
 		setOpenDelete(false)
 	}
+
+	const handleDeleteInput = e => setDeleteInput(e.target.value)
 
 
 	const renderDeleteDialog = () => {
@@ -178,17 +212,41 @@ const Org = props => {
 		>
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
+				<Collapse in={Boolean(error)}>
+					<div style={{ padding: 16 }}>
+						<Warning>
+							<Danger>
+								{t(error, { disableMissing: true })}
+							</Danger>
+						</Warning>
+					</div>
+				</Collapse>
+				{/* <DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.org', { org: org.name })}
+				</DialogContentText> */}
+				<DialogContentText>
+					{t("dialogs.delete.warning.org", { type: 'markdown' })}
 				</DialogContentText>
+				<DialogContentText>
+					{t("dialogs.delete.actions.org", { type: 'markdown', org: org.name })}
+				</DialogContentText>
+				<TextF
+					fullWidth
+					onChange={handleDeleteInput}
+					value={deleteInput}
+				/>
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleCloseDeleteDialog} color='primary'>
-					{t('actions.cancel')}
-				</Button>
-				<Button onClick={handleDeleteOrg} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
+			<DialogActions style={{ display: 'flex' }}>
+				<ItemG xs={6}>
+					<Button fullWidth onClick={handleCloseDeleteDialog}>
+						{t('actions.cancel')}
+					</Button>
+				</ItemG>
+				<ItemG xs={6}>
+					<Button fullWidth onClick={handleDeleteOrg} className={classes.closeButton} >
+						{t('actions.delete')}
+					</Button>
+				</ItemG>
 			</DialogActions>
 		</Dialog>
 	}
@@ -196,6 +254,9 @@ const Org = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.orgDeleted')
+				break
+			case 3:
+				s('snackbars.orgs.stillHasUsers')
 				break
 			default:
 				break
