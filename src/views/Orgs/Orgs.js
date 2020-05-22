@@ -168,7 +168,7 @@ const Orgs = props => {
 			setError(null)
 			await asyncForEach(selected, (async u => {
 				let hasUsers = await getOrgUsers(u).then(rs => {
-					if (rs.length === 0) {
+					if (!rs || rs.length === 0) {
 						return false
 					}
 					else return true

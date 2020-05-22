@@ -387,7 +387,7 @@
 				"deviceTypes": "Er du sikker på du ønsker at slette disse enhedstyper:",
 				"devices": "Er du sikker på du ønsker at slette disse enheder:",
 				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
-				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
+				"orgs": "Er du sikker på du ønsker at slette disse organisationer",
 				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
 				"registries": "Er du sikker på du ønsker at slette disse registre:",
@@ -417,6 +417,15 @@
 				"tokens": "Slet API tokens?",
 				"user": "Slet bruger?",
 				"users": "Slet brugere?"
+			},
+			"warning": {
+				"org": "**Dette kan ikke fortrydes**.Du vil fjerne denne organisationer!",
+				"orgs": "**Dette kan ikke fortrydes**. You will remove the above Organisations!",
+				"wrongText": "You haven't confirmed that you want to delete the Organisation!"
+			},
+			"actions": {
+				"org": "Type **%{org}** to confirm:",
+				"orgs": "Type **DELETE** to confirm:"
 			}
 		},
 		"discoverSenti": {

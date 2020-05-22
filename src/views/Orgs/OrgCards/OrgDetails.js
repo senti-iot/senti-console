@@ -93,7 +93,7 @@ const OrgDetails = props => {
 							{t('orgs.fields.country')}
 						</Caption>
 						<Info>
-							{org.country.length === 2 ? countries.getName(org.country, language)
+							{org.country?.length === 2 ? countries.getName(org.country, language)
 								: org.country}
 						</Info>
 					</ItemGrid>
@@ -103,7 +103,7 @@ const OrgDetails = props => {
 						</Caption>
 						<Info>
 							<Link href={org.url ? org.url : ''} target={'_blank'}>
-								{org.url}
+								{org.url ? org.url : ''}
 							</Link>
 						</Info>
 					</ItemGrid>

@@ -67,17 +67,23 @@ const Org = props => {
 	const getData = useCallback(async () => {
 		if (!org) {
 			await dispatch(await getOrgLS(match.params.id))
+
 		}
 		if (org) {
 			if (match.params.id !== org.uuid) {
 				dispatch(await getOrgLS(match.params.id))
-				await getOrgUsers(match.params.id).then(rs => {
-					setUsers(rs)
-					setLoadingUsers(false)
-				})
-			}
-		}
 
+			}
+			else {
+
+
+			}
+
+		}
+		await getOrgUsers(match.params.id).then(rs => {
+			setUsers(rs)
+			setLoadingUsers(false)
+		})
 	}, [dispatch, match.params.id, org])
 
 	//useEffects
