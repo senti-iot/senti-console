@@ -65,32 +65,19 @@ const Org = props => {
 	//useCallbacks
 
 	const getData = useCallback(async () => {
-
-		if (match.params.id && !org) {
-			dispatch(await getOrgLS(match.params.id))
-
+		if (!org) {
+			await dispatch(await getOrgLS(match.params.id))
 		}
 		if (org) {
-			await getOrgUsers(match.params.id).then(rs => {
-				setUsers(rs)
-				setLoadingUsers(false)
-			})
-			// await getAllDevices().then(rs => {
-			// 	let newDevices = rs.filter(f => f.org.uuid === org.uuid)
-			// 	setDevices(newDevices)
-			// 	setLoadingDevices(false)
-			// })
-			// await getAllCollections().then(rs => {
-			// 	let newCollections = rs.filter(f => f.org.uuid === org.uuid)
-			// 	setCollections(newCollections)
-			// 	setLoadingCollections(false)
-			// })
-			// await getAllProjects().then(rs => {
-			// 	let newProjects = rs.filter(f => f.org.uuid === org.uuid)
-			// 	setProjects(newProjects)
-			// 	setLoadingProjects(false)
-			// })
+			if (match.params.id !== org.uuid) {
+				dispatch(await getOrgLS(match.params.id))
+				await getOrgUsers(match.params.id).then(rs => {
+					setUsers(rs)
+					setLoadingUsers(false)
+				})
+			}
 		}
+
 	}, [dispatch, match.params.id, org])
 
 	//useEffects

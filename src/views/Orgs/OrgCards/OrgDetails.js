@@ -102,7 +102,7 @@ const OrgDetails = props => {
 							{t('orgs.fields.url')}
 						</Caption>
 						<Info>
-							<Link href={org.url} target={'_blank'}>
+							<Link href={org.url ? org.url : ''} target={'_blank'}>
 								{org.url}
 							</Link>
 						</Info>
