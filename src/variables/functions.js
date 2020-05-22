@@ -1,24 +1,28 @@
 import React from 'react'
 import { parsePhoneNumber } from 'libphonenumber-js'
-import { colors } from '@material-ui/core';
-var moment = require('moment');
+import { colors } from '@material-ui/core'
+var moment = require('moment')
 var _ = require('lodash')
 
-
+export async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+		await callback(array[index], index, array)
+	}
+}
 export function getContrast(hexcolor, reverse) {
 	if (hexcolor) {
 
-		var r = parseInt(hexcolor.substr(1, 2), 16);
-		var g = parseInt(hexcolor.substr(3, 2), 16);
-		var b = parseInt(hexcolor.substr(5, 2), 16);
-		var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+		var r = parseInt(hexcolor.substr(1, 2), 16)
+		var g = parseInt(hexcolor.substr(3, 2), 16)
+		var b = parseInt(hexcolor.substr(5, 2), 16)
+		var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000
 		let white = 'white'
 		let black = 'black'
 		if (reverse) {
-			return (yiq >= 128) ? white : black;
+			return (yiq >= 128) ? white : black
 		}
 		else {
-			return (yiq >= 128) ? black : white;
+			return (yiq >= 128) ? black : white
 		}
 	}
 	return 'inherit'
@@ -35,46 +39,46 @@ export const scrollToAnchor = (id) => {
 export const selectAll = containerid => {
 	var range = {}
 	if (document.selection) { // IE
-		range = document.body.createTextRange();
-		range.moveToElementText(document.getElementById(containerid));
-		range.select();
+		range = document.body.createTextRange()
+		range.moveToElementText(document.getElementById(containerid))
+		range.select()
 	} else if (window.getSelection) {
-		range = document.createRange();
-		range.selectNode(document.getElementById(containerid));
-		window.getSelection().removeAllRanges();
-		window.getSelection().addRange(range);
+		range = document.createRange()
+		range.selectNode(document.getElementById(containerid))
+		window.getSelection().removeAllRanges()
+		window.getSelection().addRange(range)
 	}
 
 }
 export const copyToClipboard = str => {
 
-	let el = document.createElement('textarea');  // Create a <textarea> element
-	el.value = str;                                 // Set its value to the string that you want copied
+	let el = document.createElement('textarea')  // Create a <textarea> element
+	el.value = str                                 // Set its value to the string that you want copied
 	// el.value = 'andrei@webhouse.dk'
-	el.setAttribute('readonly', '');                // Make it readonly to be tamper-proof
-	el.style.position = 'absolute';
+	el.setAttribute('readonly', '')                // Make it readonly to be tamper-proof
+	el.style.position = 'absolute'
 	// el.style.left = '-9999px';
 	el.style.background = '#fff'
 	el.style.zIndex = '-999'                      // Move outside the screen to make it invisible
-	document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
+	document.body.appendChild(el)                  // Append the <textarea> element to the HTML document
 	const selected =
 		document.getSelection().rangeCount > 0        // Check if there is any content selected previously
 			? document.getSelection().getRangeAt(0)     // Store selection if found
-			: false;                                    // Mark as false to know no selection existed before
+			: false                                    // Mark as false to know no selection existed before
 	// el.focus()
-	el.select();                                    // Select the <textarea> content
-	document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
-	document.body.removeChild(el);                  // Remove the <textarea> element
+	el.select()                                    // Select the <textarea> content
+	document.execCommand('copy')                   // Copy - only works as a result of a user action (e.g. click events)
+	document.body.removeChild(el)                  // Remove the <textarea> element
 	if (selected) {                                 // If a selection existed before copying
-		document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
-		document.getSelection().addRange(selected);   // Restore the original selection
+		document.getSelection().removeAllRanges()    // Unselect everything on the HTML document
+		document.getSelection().addRange(selected)   // Restore the original selection
 	}
 	navigator.clipboard.writeText(str).then(function () {
-		console.info('Async: Copying to clipboard was successful!');
+		console.info('Async: Copying to clipboard was successful!')
 	}, function (err) {
-		console.error('Async: Could not copy text: ', err);
-	});
-};
+		console.error('Async: Could not copy text: ', err)
+	})
+}
 
 export const dateDiff = (from, to) => {
 	let diff = moment.duration(from.diff(to)).asMinutes()
@@ -205,7 +209,7 @@ export const weekendColors = (id, colorStr) => {
 		case 3:
 			return colors[colorStr][900]
 		default:
-			break;
+			break
 	}
 }
 export const dateFormat = (date) => {
@@ -217,7 +221,7 @@ export const dateFormat = (date) => {
 }
 
 const isObject = (obj) => {
-	return obj === Object(obj);
+	return obj === Object(obj)
 }
 
 const filterByDate = (items, filters) => {
@@ -307,13 +311,13 @@ const sortFunc = (a, b, orderBy, way, type) => {
 		case 'number':
 		case undefined:
 			if (way) {
-				return (newA === null || newA === undefined) - (newB === null || newB === undefined) || +(newA > newB) || -(newA < newB);
+				return (newA === null || newA === undefined) - (newB === null || newB === undefined) || +(newA > newB) || -(newA < newB)
 			}
 			else {
-				return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined);
+				return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined)
 			}
 		default:
-			break;
+			break
 	}
 	// if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
 	// }
@@ -331,7 +335,7 @@ const sortFunc = (a, b, orderBy, way, type) => {
  * @param {Array} data
  */
 export const handleRequestSort = (property, way, data) => {
-	const orderBy = property;
+	const orderBy = property
 	let newData = []
 	newData = data.sort((a, b) => sortFunc(a, b, orderBy, way === 'desc' ? false : true))
 	return newData
@@ -356,8 +360,8 @@ export const pF = (phone) => {
  */
 export const camelCase = (str) => {
 	return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-		return index === 0 ? word.toLowerCase() : word.toUpperCase();
-	}).replace(/\s+/g, '');
+		return index === 0 ? word.toLowerCase() : word.toUpperCase()
+	}).replace(/\s+/g, '')
 }
 /**
  * Date Time Formatter
@@ -393,13 +397,13 @@ export const timeFormatter = (date) => {
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {
-	return [0 | D, '\u00B0', 0 | (D < 0 ? D = -D : D) % 1 * 60, "' ", 0 | D * 60 % 1 * 60, '"', D < 0 ? lng ? 'W' : 'S' : lng ? 'E' : 'N'].join('');
+	return [0 | D, '\u00B0', 0 | (D < 0 ? D = -D : D) % 1 * 60, "' ", 0 | D * 60 % 1 * 60, '"', D < 0 ? lng ? 'W' : 'S' : lng ? 'E' : 'N'].join('')
 }
 const globalSuggestionSlicer = (obj) => {
-	var arr = [];
+	var arr = []
 	for (var prop in obj) {
 		if (obj.hasOwnProperty(prop)) {
-			var innerObj = {};
+			var innerObj = {}
 			if (typeof obj[prop] === 'object') {
 				arr.push(...globalSuggestionSlicer(obj[prop]))
 			}
@@ -410,13 +414,13 @@ const globalSuggestionSlicer = (obj) => {
 			}
 		}
 	}
-	return arr;
+	return arr
 }
 const suggestionSlicer = (obj) => {
-	var arr = [];
+	var arr = []
 	for (var prop in obj) {
 		if (obj.hasOwnProperty(prop)) {
-			var innerObj = {};
+			var innerObj = {}
 			if (typeof obj[prop] === 'object') {
 				arr.push(...suggestionSlicer(obj[prop]))
 			}
@@ -424,12 +428,12 @@ const suggestionSlicer = (obj) => {
 				innerObj = {
 					id: prop.toString().toLowerCase(),
 					label: obj[prop] ? obj[prop].toString() : ''
-				};
+				}
 				arr.push(innerObj)
 			}
 		}
 	}
-	return arr;
+	return arr
 }
 export const globalSuggestionGen = (obj) => {
 	// let arr = []
@@ -439,10 +443,10 @@ export const globalSuggestionGen = (obj) => {
 	return globalSuggestionSlicer(obj)
 }
 export const suggestionGen = (arrayOfObjs) => {
-	let arr = [];
+	let arr = []
 	arrayOfObjs.forEach(obj => {
 		arr.push(...suggestionSlicer(obj))
 	})
 	arr = _.uniqBy(arr, 'label')
-	return arr;
+	return arr
 }

@@ -56,14 +56,14 @@ const EditDeviceType = props => {
 
 
 	useEffect(() => {
-		if (devicetype && !deviceType) {
+		if (devicetype && orgs.length > 0) {
 			setDeviceType(devicetype)
 			setSensorMetadata({
 				metadata: devicetype.metadata ? devicetype.metadata : [],
 				outbound: devicetype.outbound ? devicetype.outbound : [],
 				inbound: devicetype.inbound ? devicetype.inbound : []
 			})
-			setOrg(orgs[orgs.findIndex(o => o.id === devicetype.orgId)])
+			setOrg(orgs[orgs.findIndex(o => o.aux?.odeumId === devicetype.orgId)])
 
 			setLoading(false)
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${params.id}`

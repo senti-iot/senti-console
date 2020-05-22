@@ -119,25 +119,6 @@ export const imageApi = create({
 		'ODEUMAuthToken': ''
 	},
 })
-export const makeCancelable = (promise) => {
-	let hasCanceled_ = false
-
-	const wrappedPromise = new Promise((resolve, reject) => {
-		promise.then((val) =>
-			hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)
-		)
-		promise.catch((error) =>
-			hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
-		)
-	})
-
-	return {
-		promise: wrappedPromise,
-		cancel() {
-			hasCanceled_ = true
-		},
-	}
-}
 export const api = create({
 	baseURL: backendHost,
 	timeout: 30000,
@@ -148,24 +129,18 @@ export const api = create({
 	},
 })
 
-export const setToken = () => {
-	try {
-		var OAToken = cookie.load('SESSION').sessionID
-		api.setHeader('ODEUMAuthToken', OAToken)
-		imageApi.setHeader('ODEUMAuthToken', OAToken)
-		return true
-	}
-	catch (error) {
-		return false
-	}
-
-}
-
-
 //#region Senti Services
 
-export const devServicesAPI = create({
-	baseURL: 'https://dev.services.senti.cloud/databroker',
+let sentiServicesURL = 'https://services.senti.cloud'
+// let sentiServicesBetaURL = 'https://services.senti.cloud'
+
+// if (process.env.REACT_APP_DEV) {
+// 	sentiServicesURL = 'https://dev.services.senti.cloud'
+// }
+// else {
+// }
+export const servicesAPI = create({
+	baseURL: `${sentiServicesURL}/databroker`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -174,22 +149,32 @@ export const devServicesAPI = create({
 	}
 
 })
+
 export const getWhiteLabel = async (host) => {
 	let res = await servicesAPI.get(`/orgMetadata/${host}`).then(rs => rs.ok ? rs.data : rs.ok)
 	return res
 }
-export const servicesAPI = create({
-	baseURL: 'https://services.senti.cloud/databroker',
+
+export const coreServicesAPI = create({
+	baseURL: `${sentiServicesURL}/core/v2`,
 	timeout: 30000,
 	headers: {
-		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
 		'Accept': 'application/json',
 		'Content-Type': 'application/json'
 	}
 })
+// export const servicesAPI = create({
+// 	baseURL: 'https://services.senti.cloud/databroker',
+// 	timeout: 30000,
+// 	headers: {
+// 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
+// 		'Accept': 'application/json',
+// 		'Content-Type': 'application/json'
+// 	}
+// })
 
 export const cloudAPI = create({
-	baseURL: 'https://services.senti.cloud/functions',
+	baseURL: `${sentiServicesURL}/functions`,
 	// baseURL: 'http://localhost:3011',
 	timeout: 30000,
 	headers: {
@@ -200,7 +185,7 @@ export const cloudAPI = create({
 })
 
 export const externalAPI = create({
-	baseURL: 'https://services.senti.cloud/api',
+	baseURL: `${sentiServicesURL}/api`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -209,17 +194,23 @@ export const externalAPI = create({
 	}
 })
 
-export const setHeaders = () => {
-	servicesAPI.setHeader('wlHost', window.location.hostname)
-	externalAPI.setHeader('wlHost', window.location.hostname)
-	cloudAPI.setHeader('wlHost', window.location.hostname)
-	devServicesAPI.setHeader('wlHost', window.location.hostname)
-	loginApi.setHeader('wlHost', window.location.hostname)
-	weatherApi.setHeader('wlHost', window.location.hostname)
-	api.setHeader('wlHost', window.location.hostname)
+
+//Always the last
+export const setToken = () => {
+	try {
+		let token = cookie.load('SESSION')
+		servicesAPI.setHeader('Authorization', `Bearer ${token}`)
+		coreServicesAPI.setHeader('Authorization', `Bearer ${token}`)
+		cloudAPI.setHeader('Authorization', `Bearer ${token}`)
+		// var OAToken = cookie.load('SESSION').sessionID
+		// api.setHeader('ODEUMAuthToken', OAToken)
+		// imageApi.setHeader('ODEUMAuthToken', OAToken)
+		return true
+	}
+	catch (error) {
+		console.log(error)
+		return false
+	}
+
 }
-setHeaders()
 setToken()
-
-
-

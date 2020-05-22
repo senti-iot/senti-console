@@ -1,24 +1,35 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { GridContainer, ItemGrid, CircularLoader } from 'components';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
-import { getOrgUsers } from 'variables/dataOrgs';
-import OrgDetails from './OrgCards/OrgDetails';
+import { GridContainer, ItemGrid, CircularLoader, Warning, Danger, TextF, ItemG } from 'components'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Collapse } from '@material-ui/core'
+import { getOrgUsers } from 'variables/dataOrgs'
+import OrgDetails from './OrgCards/OrgDetails'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteOrg } from 'variables/dataOrgs';
-import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
-import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
-import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
-import { getAllDevices } from 'variables/dataDevices';
+import { deleteOrg } from 'variables/dataOrgs'
+import OrgUsers from 'views/Orgs/OrgCards/OrgUsers'
+// import OrgDevices from 'views/Orgs/OrgCards/OrgDevices'
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
+// import { getAllDevices } from 'variables/dataDevices'
 // import Toolbar from 'components/Toolbar/Toolbar';
-import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons';
-import { getAllProjects } from 'variables/dataProjects';
-import { getAllCollections } from 'variables/dataCollections';
-import OrgProjects from './OrgCards/OrgProjects';
-import OrgCollections from './OrgCards/OrgCollections';
-import { scrollToAnchor } from 'variables/functions';
-import { getOrgLS } from 'redux/data';
-import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks';
+import { Business, People } from 'variables/icons'
+// import { getAllProjects } from 'variables/dataProjects'
+// import { getAllCollections } from 'variables/dataCollections'
+// import OrgProjects from './OrgCards/OrgProjects'
+// import OrgCollections from './OrgCards/OrgCollections'
+import { scrollToAnchor } from 'variables/functions'
+import { getOrgLS } from 'redux/data'
+import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks'
+import { red } from '@material-ui/core/colors'
+import { makeStyles } from '@material-ui/styles'
 
+const styles = makeStyles(theme => ({
+	closeButton: {
+		marginLeft: 'auto',
+		color: red[500],
+		"&:hover": {
+			background: 'rgb(211,47,47, 0.2)'
+		}
+	},
+}))
 
 const Org = props => {
 	//Hooks
@@ -28,24 +39,25 @@ const Org = props => {
 	const dispatch = useDispatch()
 	const location = useLocation()
 	const history = useHistory()
-
+	const classes = styles()
 	//Redux
 	const language = useSelector(state => state.localization.language)
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const saved = useSelector(state => state.favorites.saved)
 	const org = useSelector(state => state.data.org)
 	const loading = useSelector(state => !state.data.gotOrg)
-
 	//State
-	const [projects, setProjects] = useState([]) // added
-	const [collections, setCollections] = useState([]) // added
+	// const [projects, setProjects] = useState([]) // added
+	// const [collections, setCollections] = useState([]) // added
 	const [users, setUsers] = useState([])
-	const [devices, setDevices] = useState([]) // added
+	// const [devices, setDevices] = useState([]) // added
 	const [loadingUsers, setLoadingUsers] = useState(true)
-	const [loadingDevices, setLoadingDevices] = useState(true) // added
+	// const [loadingDevices, setLoadingDevices] = useState(true) // added
 	const [openDelete, setOpenDelete] = useState(false)
-	const [loadingCollections, setLoadingCollections] = useState(true) // added
-	const [loadingProjects, setLoadingProjects] = useState(true) // added
+	// const [loadingCollections, setLoadingCollections] = useState(true) // added
+	// const [loadingProjects, setLoadingProjects] = useState(true) // added
+	const [error, setError] = useState(null)
+	const [deleteInput, setDeleteInput] = useState('')
 
 	//Const
 	const { setHeader, setTabs, setBC } = props
@@ -63,21 +75,21 @@ const Org = props => {
 				setUsers(rs)
 				setLoadingUsers(false)
 			})
-			await getAllDevices().then(rs => {
-				let newDevices = rs.filter(f => f.org.id === org.id)
-				setDevices(newDevices)
-				setLoadingDevices(false)
-			})
-			await getAllCollections().then(rs => {
-				let newCollections = rs.filter(f => f.org.id === org.id)
-				setCollections(newCollections)
-				setLoadingCollections(false)
-			})
-			await getAllProjects().then(rs => {
-				let newProjects = rs.filter(f => f.org.id === org.id)
-				setProjects(newProjects)
-				setLoadingProjects(false)
-			})
+			// await getAllDevices().then(rs => {
+			// 	let newDevices = rs.filter(f => f.org.uuid === org.uuid)
+			// 	setDevices(newDevices)
+			// 	setLoadingDevices(false)
+			// })
+			// await getAllCollections().then(rs => {
+			// 	let newCollections = rs.filter(f => f.org.uuid === org.uuid)
+			// 	setCollections(newCollections)
+			// 	setLoadingCollections(false)
+			// })
+			// await getAllProjects().then(rs => {
+			// 	let newProjects = rs.filter(f => f.org.uuid === org.uuid)
+			// 	setProjects(newProjects)
+			// 	setLoadingProjects(false)
+			// })
 		}
 	}, [dispatch, match.params.id, org])
 
@@ -90,11 +102,11 @@ const Org = props => {
 
 	useEffect(() => {
 		if (saved === true) {
-			if (dispatch(isFav({ id: org.id, type: 'org' }))) {
+			if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
 				s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
 				dispatch(finishedSaving())
 			}
-			if (!dispatch(isFav({ id: org.id, type: 'org' }))) {
+			if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
 				s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
 				dispatch(finishedSaving())
 			}
@@ -107,9 +119,9 @@ const Org = props => {
 			const tabs = [
 				{ id: 0, title: t('tabs.details'), label: <Business />, url: `#details` },
 				{ id: 1, title: t('tabs.users'), label: <People />, url: `#users` },
-				{ id: 2, title: t('tabs.projects'), label: <LibraryBooks />, url: `#projects` },
-				{ id: 3, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
-				{ id: 4, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
+				// { id: 2, title: t('tabs.projects'), label: <LibraryBooks />, url: `#projects` },
+				// { id: 3, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
+				// { id: 4, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
 			]
 
 			let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
@@ -133,7 +145,7 @@ const Org = props => {
 
 	const addToFavorites = () => {
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
 			path: match.url
@@ -143,7 +155,7 @@ const Org = props => {
 	const removeFromFavorites = () => {
 		// const { org } = this.props
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
 			path: match.url
@@ -155,10 +167,29 @@ const Org = props => {
 		history.push('/management/orgs')
 	}
 	const handleDeleteOrg = async () => {
-		await deleteOrg(org.id).then(rs => {
-			setOpenDelete(false)
-			handleClose()
-		})
+		if (deleteInput === org.name) {
+			setDeleteInput('')
+			setError(null)
+			let hasUsers = await getOrgUsers(org.uuid).then(rs => {
+				if (rs.length === 0) {
+					return false
+				}
+				else return true
+			})
+			if (hasUsers) {
+				setError('snackbars.orgs.stillHasUsers')
+				snackBarMessages(3)
+			}
+			else {
+				await deleteOrg(org.uuid).then(rs => {
+					setOpenDelete(false)
+					handleClose()
+				})
+			}
+		}
+		else {
+			setError('dialogs.delete.warning.wrongText')
+		}
 	}
 
 	const handleOpenDeleteDialog = () => {
@@ -168,6 +199,8 @@ const Org = props => {
 	const handleCloseDeleteDialog = () => {
 		setOpenDelete(false)
 	}
+
+	const handleDeleteInput = e => setDeleteInput(e.target.value)
 
 
 	const renderDeleteDialog = () => {
@@ -179,17 +212,41 @@ const Org = props => {
 		>
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
+				<Collapse in={Boolean(error)}>
+					<div style={{ padding: 16 }}>
+						<Warning>
+							<Danger>
+								{t(error, { disableMissing: true })}
+							</Danger>
+						</Warning>
+					</div>
+				</Collapse>
+				{/* <DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.org', { org: org.name })}
+				</DialogContentText> */}
+				<DialogContentText>
+					{t("dialogs.delete.warning.org", { type: 'markdown' })}
 				</DialogContentText>
+				<DialogContentText>
+					{t("dialogs.delete.actions.org", { type: 'markdown', org: org.name })}
+				</DialogContentText>
+				<TextF
+					fullWidth
+					onChange={handleDeleteInput}
+					value={deleteInput}
+				/>
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleCloseDeleteDialog} color='primary'>
-					{t('actions.cancel')}
-				</Button>
-				<Button onClick={handleDeleteOrg} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
+			<DialogActions style={{ display: 'flex' }}>
+				<ItemG xs={6}>
+					<Button fullWidth onClick={handleCloseDeleteDialog}>
+						{t('actions.cancel')}
+					</Button>
+				</ItemG>
+				<ItemG xs={6}>
+					<Button fullWidth onClick={handleDeleteOrg} className={classes.closeButton} >
+						{t('actions.delete')}
+					</Button>
+				</ItemG>
 			</DialogActions>
 		</Dialog>
 	}
@@ -197,6 +254,9 @@ const Org = props => {
 		switch (msg) {
 			case 1:
 				s('snackbars.orgDeleted')
+				break
+			case 3:
+				s('snackbars.orgs.stillHasUsers')
 				break
 			default:
 				break
@@ -208,7 +268,7 @@ const Org = props => {
 			<GridContainer justify={'center'} alignContent={'space-between'}>
 				<ItemGrid xs={12} noMargin id={'details'}>
 					<OrgDetails
-						isFav={dispatch(isFav({ id: org.id, type: 'org' }))}
+						isFav={dispatch(isFav({ id: org.uuid, type: 'org' }))}
 						addToFav={addToFavorites}
 						removeFromFav={removeFromFavorites}
 						deleteOrg={handleOpenDeleteDialog}
@@ -218,7 +278,7 @@ const Org = props => {
 						org={org}
 						language={language}
 						accessLevel={accessLevel}
-						devices={devices ? devices.length : 0}
+					// devices={devices ? devices.length : 0}
 					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin id={'users'}>
@@ -230,7 +290,7 @@ const Org = props => {
 					/> :
 						<CircularLoader fill />}
 				</ItemGrid>
-				<ItemGrid xs={12} noMargin id={'projects'}>
+				{/* <ItemGrid xs={12} noMargin id={'projects'}>
 					{!loadingProjects ? <OrgProjects
 						t={t}
 						org={org}
@@ -259,7 +319,7 @@ const Org = props => {
 						:
 						<CircularLoader fill />
 					}
-				</ItemGrid>
+				</ItemGrid> */}
 				{renderDeleteDialog()}
 			</GridContainer>
 		</Fade>

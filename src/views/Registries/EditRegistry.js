@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getRegistryLS, getRegistries } from 'redux/data';
-import { updateRegistry } from 'variables/dataRegistry';
-import UpdateRegistryForm from 'components/Registry/CreateRegistryForm';
-import { updateFav, isFav } from 'redux/favorites';
-import { CircularLoader } from 'components';
-import { useSnackbar, useLocation, useMatch, useHistory, useEventListener } from 'hooks';
+import { getRegistryLS, getRegistries } from 'redux/data'
+import { updateRegistry } from 'variables/dataRegistry'
+import UpdateRegistryForm from 'components/Registry/CreateRegistryForm'
+import { updateFav, isFav } from 'redux/favorites'
+import { CircularLoader } from 'components'
+import { useSnackbar, useLocation, useMatch, useHistory, useEventListener } from 'hooks'
 
 const UpdateRegistry = props => {
 	//Hooks
@@ -48,9 +48,9 @@ const UpdateRegistry = props => {
 
 	//useEffects
 	useEffect(() => {
-		if (stateRegistry === null && registry) {
+		if ((stateRegistry === null && registry) && orgs.length > 0) {
 			setStateRegistry(registry)
-			setOrg(orgs[orgs.findIndex(o => o.id === registry.orgId)])
+			setOrg(orgs[orgs.findIndex(o => o.aux?.odeumId === registry.orgId)])
 			setLoading(false)
 		}
 	}, [orgs, registry, stateRegistry])

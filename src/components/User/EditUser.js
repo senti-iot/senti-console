@@ -9,6 +9,7 @@ import { getUserLS, getUsers } from 'redux/data'
 import createUserStyles from 'assets/jss/components/users/createUserStyles'
 import { useSnackbar, useHistory, useLocalization, useEventListener, useLocation, useParams } from 'hooks'
 import CreateUserForm from 'components/User/CreateUserForm'
+import { getRoles } from 'variables/dataRoles'
 
 
 
@@ -27,6 +28,7 @@ const EditUser = props => {
 	const loading = useSelector(s => !s.data.gotUser)
 	//State
 	const [user, setUser] = useState(null)
+	const [roles, setRoles] = useState([])
 	const [openExtended, setOpenExtended] = useState(false)
 	const [extended, setExtended] = useState({
 		bio: "",
@@ -39,7 +41,7 @@ const EditUser = props => {
 		newsletter: true,
 
 	})
-	const [selectedGroup, setSelectedGroup] = useState(136550100000225)
+	const [selectedRole, setSelectedRole] = useState()
 	const [creating, setCreating] = useState(false)
 	const [created, setCreated] = useState(false)
 
@@ -49,33 +51,20 @@ const EditUser = props => {
 
 	//Const
 	const { setBC, setTabs, setHeader } = props
-	const groups = [
-		{
-			id: '136550100000211',
-			appId: '1220',
-			name: t('users.groups.accountManager'),
-			show: accessLevel.apiorg.editusers ? true : false
-		},
-		{
-			id: '136550100000143',
-			appId: '1220',
-			name: t('users.groups.superUser'),
-			show: accessLevel.apisuperuser ? true : false
 
-		},
-		{
-			id: '136550100000225',
-			appId: '1220',
-			name: t('users.groups.user'),
-			show: true
-		}
-	]
-	const languages = [
-		{ value: 'en', label: t('settings.languages.en') },
-		{ value: 'da', label: t('settings.languages.da') }
-	]
 
 	//useCallbacks
+	const getUserRole = useCallback(
+		async () => {
+			if (eUser)
+				await getRoles().then(rs => {
+					if (rs) {
+						setRoles(rs)
+					}
+				})
+		},
+		[eUser],
+	)
 	const getUser = useCallback(async () => {
 		let id = params.id
 		if (id) {
@@ -105,39 +94,43 @@ const EditUser = props => {
 	}, [])
 	useEffect(() => {
 		if (eUser && !user) {
-			let g = 0
-			let userGroups = Object.keys(eUser.groups)
-			userGroups.sort((a, b) => a > b ? 1 : -1)
-			if (userGroups.find(x => x === '136550100000211'))
-				g = '136550100000211'
-			if (userGroups.find(x => x === '136550100000225'))
-				g = '136550100000225'
-			if (userGroups.find(x => x === '136550100000143'))
-				g = '136550100000143'
-
-			setSelectedGroup(g)
+			let gRoles = async () => await getUserRole()
+			gRoles()
+			setSelectedRole(eUser.role.uuid)
 			setUser({
 				...eUser,
-				groups: Object.keys(eUser.groups).map(g => ({ id: g, name: eUser.groups[g].name, appId: eUser.groups[g].appId }))
 			})
 			setExtended(
-				eUser.aux.senti ?
-					eUser.aux.senti.extendedProfile ?
-						{
-							bio: "",
-							position: "",
-							location: "",
-							recoveryEmail: "",
-							linkedInURL: "",
-							twitterURL: "",
-							birthday: null,
-							newsletter: true,
-							...eUser.aux.senti.extendedProfile
-						} :
-						{ ...extended } :
-					{ ...extended })
+				eUser.aux?.senti?.extendedProfile ? {
+					bio: "",
+					position: "",
+					location: "",
+					recoveryEmail: "",
+					linkedInURL: "",
+					twitterURL: "",
+					birthday: null,
+					newsletter: true,
+					...eUser.aux.senti.extendedProfile
+				} : { ...extended }
+			/* 	eUser.aux ?
+					eUser.aux.senti ?
+						eUser.aux.senti.extendedProfile ?
+							{
+								bio: "",
+								position: "",
+								location: "",
+								recoveryEmail: "",
+								linkedInURL: "",
+								twitterURL: "",
+								birthday: null,
+								newsletter: true,
+								...eUser.aux.senti.extendedProfile
+							} :
+							{ ...extended } :
+						{ ...extended } : */ )
+
 		}
-	}, [eUser, extended, user])
+	}, [eUser, extended, user, getUserRole])
 
 	useEffect(() => {
 		if (eUser) {
@@ -197,7 +190,7 @@ const EditUser = props => {
 			id: user.id,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: `/management/user/${user.id}`
+			path: `/management/user/${user.uuid}`
 		}
 		// await dispatch(getSettings())
 		if (dispatch(isFav(favObj))) {
@@ -206,31 +199,29 @@ const EditUser = props => {
 		setCreated(true)
 		setCreating(false)
 		s('snackbars.userUpdated', { user: `${user.firstName} ${user.lastName}` })
-		history.push(`/management/user/${user.id}`)
+		history.push(`/management/user/${user.uuid}`)
 	}
 	const handleEditUser = async () => {
-		let groups = {}
-		user.groups.forEach(x => {
-			groups[x.id] = {
-				...x
-			}
-		})
 		let newUser = {
 			...user,
 			userName: user.email,
-			groups: groups
 		}
 		if (openExtended) {
 			newUser.aux.senti.extendedProfile = extended
 		}
 		if (handleValidation()) {
-			await editUser(newUser).then(rs => rs ?
-				close() : () => {
+			await editUser(newUser).then(rs => {
+				if (rs) {
+					close()
+				}
+				else {
 					setCreated(false)
 					setCreating(false)
 					setError(true)
 					setErrorMessage(errorMessages(rs))
 				}
+
+			}
 			)
 		}
 	}
@@ -251,31 +242,17 @@ const EditUser = props => {
 	//#endregion
 
 	//#region Language
-	const handleLangChange = e => {
-		setUser({
-			...user,
-			aux: {
-				...user.aux,
-				odeum: {
-					...user.aux.odeum,
-					language: e.target.value
-				}
-			}
-		})
-	}
+
 
 	//#endregion
 
 	//#region Groups
-	const handleGroupChange = e => {
-		let uGroups = user.groups
-		uGroups = uGroups.filter(x => !groups.some(y => x.id === y.id))
-		let g = groups[groups.findIndex(x => x.id === e.target.value)]
-		uGroups.push(g)
-		setSelectedGroup(e.target.value)
+	const handleRoleChange = e => {
+		let g = roles[roles.findIndex(x => x.uuid === e.target.value)]
+		setSelectedRole(e.target.value)
 		setUser({
 			...user,
-			groups: uGroups
+			role: g
 		})
 	}
 	//#endregion
@@ -311,7 +288,6 @@ const EditUser = props => {
 			setError(false)
 			setErrorMessage([])
 		}
-
 		setExtended({
 			...extended,
 			[prop]: e.target.value
@@ -343,13 +319,10 @@ const EditUser = props => {
 					handleOrgChange={handleOrgChange}
 					handleOpenOrg={handleOpenOrg}
 					handleCloseOrg={handleCloseOrg}
-					/* Language */
-					handleLangChange={handleLangChange}
-					languages={languages}
 					/* Groups */
-					groups={groups}
-					selectedGroup={selectedGroup}
-					handleGroupChange={handleGroupChange}
+					roles={roles}
+					selectedRole={selectedRole}
+					handleRoleChange={handleRoleChange}
 					/* Extended Profile */
 					extended={extended}
 					openExtended={openExtended}

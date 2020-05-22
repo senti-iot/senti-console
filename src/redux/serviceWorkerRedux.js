@@ -1,3 +1,4 @@
+import cookie from 'react-cookies'
 
 // CONSTANTS
 export const UPDATE_SERVICEWORKER = 'UPDATE_SERVICEWORKER'
@@ -13,6 +14,7 @@ export const serviceWorkerReducer = (state = {
 }, action) => {
 	switch (action.type) {
 		case UPDATE_SERVICEWORKER: {
+			cookie.delete('SESSION')
 			return {
 				...state,
 				serviceWorkerUpdated: true

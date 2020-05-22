@@ -1,18 +1,21 @@
-import React, { /* Component, */ Fragment, useEffect, useState } from 'react'
-import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core'
+import React, { Fragment, useEffect, useState } from 'react'
+import { Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip, Collapse } from '@material-ui/core'
 import GridContainer from 'components/Grid/GridContainer'
 import OrgTable from 'components/Orgs/OrgTable'
-import { /* People, Business, */ PictureAsPdf, Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
-// import { handleRequestSort } from 'variables/functions'
-import { deleteOrg } from 'variables/dataOrgs'
+import { /* PictureAsPdf, */ Delete, Edit, Star, StarBorder, Add, People, Business } from 'variables/icons'
+import { deleteOrg, getOrgUsers } from 'variables/dataOrgs'
 import TableToolbar from 'components/Table/TableToolbar'
 import { customFilterItems } from 'variables/Filters'
-import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar } from 'hooks'
+import { useLocalization, useDispatch, useHistory, useSelector, useSnackbar, useAuth } from 'hooks'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
+import { Warning, Danger, TextF, ItemG, /* TextF */ } from 'components'
+import { asyncForEach } from 'variables/functions'
 
 const Orgs = props => {
 	//Hooks
+	const hasAccess = useAuth().hasAccess
+	const hasAccessList = useAuth().hasAccessList
 	const t = useLocalization()
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
@@ -25,6 +28,8 @@ const Orgs = props => {
 	//State
 	const [selected, setSelected] = useState([])
 	const [openDelete, setOpenDelete] = useState(false)
+	const [error, setError] = useState(null)
+	const [deleteInput, setDeleteInput] = useState('')
 	// const [loading, setLoading] = useState(true)
 	// const [route, setRoute] = useState(1)
 	const [order, setOrder] = useState('asc')
@@ -45,7 +50,7 @@ const Orgs = props => {
 		{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
 		{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
 		{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
-		{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
+		{ key: 'org.uuid', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: dHasOrgParent, values: { false: [-1] } } },
 		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 	]
 
@@ -96,24 +101,24 @@ const Orgs = props => {
 		dispatch(removeFromFav(favObj))
 	}
 	const options = () => {
-		let org = orgs[orgs.findIndex(d => d.id === selected[0])]
+		let org = orgs[orgs.findIndex(d => d.uuid === selected[0])]
 		let favObj
 		let isFavorite = false
 		if (org) {
 			favObj = {
-				id: org.id,
+				id: org.uuid,
 				name: org.name,
 				type: 'org',
-				path: `/management/org/${org.id}`
+				path: `/management/org/${org.uuid}`
 			}
 			isFavorite = dispatch(isFav(favObj))
 		}
 
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: !hasAccess(selected[0], 'org.modify') },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => handleRemoveFromFav(favObj) : () => handleAddToFav(favObj) },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete, dontShow: !hasAccessList(selected, "org.delete") }
 		]
 		return allOptions
 		// if (accessLevel.apiorg.edit)
@@ -148,6 +153,8 @@ const Orgs = props => {
 	}
 	const handleCloseDeleteDialog = () => {
 		setOpenDelete(false)
+		setError(null)
+		setDeleteInput('')
 	}
 
 	const handleEdit = () => {
@@ -155,17 +162,43 @@ const Orgs = props => {
 	}
 
 	const handleDeleteOrgs = async () => {
-		await selected.forEach(async u => {
-			await deleteOrg(u)
-		})
-		await props.reload()
-		snackBarMessages(1)
-		setSelected([])
-		setOpenDelete(false)
+		let nError = false
+		if (deleteInput === 'DELETE') {
+			setDeleteInput('')
+			setError(null)
+			await asyncForEach(selected, (async u => {
+				let hasUsers = await getOrgUsers(u).then(rs => {
+					if (rs.length === 0) {
+						return false
+					}
+					else return true
+				})
+				if (hasUsers) {
+					nError = true
+					setError('snackbars.orgs.stillHasUsers')
+					snackBarMessages(3)
+				}
+				else {
+					await deleteOrg(u)
+				}
+
+			}))
+
+			if (!nError) {
+				await props.reload()
+				snackBarMessages(1)
+				setSelected([])
+				setOpenDelete(false)
+			}
+		}
+		else {
+			setError('dialogs.delete.warning.wrongText')
+		}
 	}
 	const handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			setSelected([filterItems(orgs).map(n => n.id)])
+
+			setSelected(filterItems(orgs).map(n => n.uuid))
 			return
 		}
 		setSelected([])
@@ -177,31 +210,7 @@ const Orgs = props => {
 		{ id: 'city', label: t('orgs.fields.city') },
 		{ id: 'url', label: t('orgs.fields.url') },
 	]
-	// const componentDidMount = async () => {
-	// 	this._isMounted = 1
-	// 	await this.getData()
-	// 	if (this._isMounted) {
-	// 		if (this.props.location.pathname.includes('/management/orgs')) {
-	// 			this.setState({ route: 1 })
-	// 		}
-	// 		else {
-	// 			this.setState({ route: 0 })
-	// 		}
-	// 	}
-	// }
-	// componentDidUpdate = async (prevProps, prevState) => {
-	// 	if (prevProps.orgs !== this.props.orgs) {
-	// 		if (this.state.selected.length > 0)
-	// 			if (this.state.selected.length > 0) {
-	// 				let newSelected = this.state.selected.filter(s => this.props.orgs.findIndex(u => u.id === s) !== -1 ? true : false)
-	// 				this.setState({ selected: newSelected })
-	// 			}
-	// 		this.getData()
-	// 	}
-	// }
-	// componentWillUnmount = () => {
-	// 	this._isMounted = 0
-	// }
+
 	const handleRequestSort = (event, property, way) => {
 		let nOrder = way ? way : order === 'desc' ? 'asc' : 'desc'
 		if (property !== orderBy) {
@@ -215,9 +224,9 @@ const Orgs = props => {
 		return customFilterItems(data, filters)
 	}
 
-
-
 	const handleAddNewOrg = () => { history.push('/management/orgs/new') }
+
+	const handleDeleteInput = e => setDeleteInput(e.target.value)
 
 	const snackBarMessages = (msg) => {
 		switch (msg) {
@@ -226,6 +235,9 @@ const Orgs = props => {
 				break
 			case 2:
 				s('snackbars.exported')
+				break
+			case 3:
+				s('snackbars.orgs.stillHasUsers')
 				break
 			default:
 				break
@@ -241,27 +253,59 @@ const Orgs = props => {
 		>
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.orgs')}</DialogTitle>
 			<DialogContent>
+				<Collapse in={Boolean(error)}>
+					<div style={{ padding: 16 }}>
+
+						<Warning >
+							<Danger>
+								{t(error, { disableMissing: true })}
+							</Danger>
+						</Warning>
+					</div>
+				</Collapse>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.orgs')}:
 				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={orgs[orgs.findIndex(d => d.id === s)].name} /></ListItem>)}
+				<List style={{ maxHeight: 250, overflow: 'auto' }}>
+					{selected.map(s => {
+						let org = orgs[orgs.findIndex(o => o.uuid === s)]
+						return org ? <ListItem divider key={s}>
+							<ListItemIcon><Business /></ListItemIcon>
+							<ListItemText primary={org.name} /></ListItem>
+							: s
+					}
+					)}
 				</List>
+				<DialogContentText>
+					{t("dialogs.delete.warning.orgs", { type: 'markdown' })}
+				</DialogContentText>
+				<DialogContentText>
+					{t("dialogs.delete.actions.orgs", { type: 'markdown' })}
+				</DialogContentText>
+				<TextF
+					fullWidth
+					onChange={handleDeleteInput}
+					value={deleteInput}
+				/>
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={handleDeleteOrgs} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
+			<DialogActions style={{ display: 'flex' }}>
+				<ItemG xs={6} container>
+					<Button fullWidth onClick={handleCloseDeleteDialog}>
+						{t('actions.cancel')}
+					</Button>
+				</ItemG>
+				<ItemG xs={6} container>
+
+					<Button fullWidth onClick={handleDeleteOrgs} className={classes.closeButton}>
+						{t('actions.delete')}
+					</Button>
+				</ItemG>
 			</DialogActions>
 		</Dialog>
 	}
 	const renderTableToolBarContent = () => {
 		// let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
-		let access = true
+		let access = hasAccess(null, 'org.create')
 		return <Fragment>
 			{access ? <Tooltip title={t('menus.create.org')}>
 				<IconButton aria-label='Add new organisation' onClick={handleAddNewOrg}>

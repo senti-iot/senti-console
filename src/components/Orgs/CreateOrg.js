@@ -7,10 +7,11 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { createOrg } from 'variables/dataOrgs'
 import { getOrgs } from 'redux/data'
 import { camelCase } from 'variables/functions'
-import { useLocalization, useSnackbar, useHistory, useEventListener } from 'hooks'
+import { useLocalization, useSnackbar, useHistory, useEventListener, /* useAuth  */ } from 'hooks'
 import CreateOrgForm from 'components/Orgs/CreateOrgForm'
 import { useCallback } from 'react'
 import createOrgStyles from 'assets/jss/components/orgs/createOrgStyles'
+// import { Redirect } from 'react-router-dom'
 var countries = require('i18n-iso-countries')
 
 const CreateOrg = props => {
@@ -20,7 +21,7 @@ const CreateOrg = props => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const classes = createOrgStyles()
-
+	// const hasAccess = useAuth().hasAccess
 	//Redux
 	const language = useSelector(state => state.localization.language)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
@@ -28,22 +29,22 @@ const CreateOrg = props => {
 	//State
 	const [openOrg, setOpenOrg] = useState(false)
 	const [org, setOrg] = useState({
-		id: -1,
+		id: null,
 		name: '',
-		nickname: '',
+		uuname: '',
 		address: '',
 		city: '',
 		zip: '',
 		region: '',
 		country: '',
-		url: '',
+		website: '',
 		aux: {
 			cvr: '',
 			ean: ''
 		},
 		org: {
-			id: -1,
-			name: t('no.org')
+			uuid: "47acb6ca-3984-4065-b248-fe740e0116c2",
+			name: t('no.orgParent')
 		}
 	})
 	const [country, setCountry] = useState({
@@ -194,7 +195,7 @@ const CreateOrg = props => {
 		// setOrg(rs)
 		dispatch(getOrgs(true))
 		s('snackbars.orgCreated', { org: rs.name })
-		history.push(`/management/org/${rs.id}`)
+		history.push(`/management/org/${rs.uuid}`)
 	}
 	const handleCreateOrg = async () => {
 		if (handleValidation()) {

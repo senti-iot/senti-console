@@ -4,7 +4,7 @@ import { Link as MuiLink } from '@material-ui/core'
 
 const Link = (props) => {
 	return (
-		<MuiLink component={RLink} {...props} />
+		<MuiLink component={props.href ? 'a' : RLink} {...props} />
 	)
 }
 

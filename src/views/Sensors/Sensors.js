@@ -25,11 +25,11 @@ const Sensors = props => {
 	const classes = sensorsStyles()
 
 	//Redux
-	const accessLevel = useSelector(s => s.settings.user.privileges)
+	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(s => s.data.favorites)
 	const saved = useSelector(s => s.favorites.saved)
 	const devices = useSelector(s => s.data.sensors)
-	const loading = useSelector(s => !s.data.gotdevices)
+	const loading = useSelector(s => !s.data.gotsensors)
 	const filters = useSelector(s => s.appState.filters.sensors)
 	const user = useSelector(s => s.settings.user)
 
@@ -84,8 +84,11 @@ const Sensors = props => {
 	}
 	//useCallbacks
 	const getData = useCallback(async () => {
+		/**
+		 * @Andrei
+		 */
 		if (user && accessLevel) {
-			dispatch(await getSensors(true, user.org.id, accessLevel.apisuperuser ? true : false))
+			dispatch(await getSensors(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
 		}
 	}, [accessLevel, dispatch, user])
 

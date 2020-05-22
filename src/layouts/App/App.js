@@ -6,8 +6,8 @@ import appRoutes from 'routes/app'
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js'
 import { makeStyles } from '@material-ui/core/styles'
 import cookie from 'react-cookies'
-import { getSettings } from 'redux/settings'
-import { getDaysOfInterest } from 'redux/doi'
+import { /* getSettings, */ getNSettings } from 'redux/settings'
+// import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies'
 import Sidebar from 'components/Sidebar/Sidebar'
 import BC from 'components/Breadcrumbs/BC'
@@ -15,6 +15,7 @@ import { changeTabs } from 'redux/appState'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { useRef, useDispatch, useSelector, useLocalization } from 'hooks'
 import NewContent from 'layouts/404/NewContent'
+// import _ from 'lodash'
 
 
 function App(props) {
@@ -115,13 +116,18 @@ function App(props) {
 	useEffect(() => {
 		if (defaultRoute === '/')
 			handleSetHeaderTitle('', false, '', 'dashboard')
-
 		const getS = async () => {
-			dispatch(await getSettings()).then(async rs => {
-				await dispatch(getDaysOfInterest())
+			dispatch(await getNSettings()).then(async rs => {
+
 			})
 		}
 		getS()
+		// const getS = async () => {
+		// 	dispatch(await getSettings()).then(async rs => {
+		// 		await dispatch(getDaysOfInterest())
+		// 	})
+		// }
+		// getS()
 	}, [dispatch, handleSetHeaderTitle, defaultRoute])
 
 	return (

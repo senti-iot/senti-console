@@ -1,19 +1,19 @@
-import { Grid, Menu, MenuItem, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
-import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, /* Notifications */ } from 'variables/icons';
-import headerLinksStyles from 'assets/jss/components/header/headerLinksStyles';
-import React, { useState } from 'react';
-import cookie from 'react-cookies';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { Grid, Menu, MenuItem, Divider, Tooltip, Button, Hidden } from '@material-ui/core'
+import { AccountBox, Business, PowerSettingsNew, /* SettingsRounded, */ ExpandMore, /* Notifications */ } from 'variables/icons'
+import headerLinksStyles from 'assets/jss/components/header/headerLinksStyles'
+import React, { useState } from 'react'
+import cookie from 'react-cookies'
+import { useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import Gravatar from 'react-gravatar'
 
-import { logOut } from 'variables/dataLogin';
+import { logOut } from 'variables/dataLogin'
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'
-import { /* ItemG, */ T, Muted } from 'components';
-import { GoogleLogout } from 'react-google-login';
+import { /* ItemG, */ T, Muted } from 'components'
+import { GoogleLogout } from 'react-google-login'
 import cx from 'classnames'
-import { useLocalization } from 'hooks';
+import { useLocalization } from 'hooks'
 // import Search from 'components/Search/Search';
 // import GlobalSearch from 'components/Search/GlobalSearch';
 
@@ -44,13 +44,13 @@ const HeaderLinks = props => {
 	const handleRedirectToOwnProfile = () => {
 		handleProfileClose()
 		if (user)
-			history.push(`/management/user/${user.id}`)
+			history.push(`/management/user/${user.uuid}`)
 
 	}
 	const handleRedirectToOwnOrg = () => {
 		handleProfileClose()
 		if (user)
-			history.push(`/management/org/${user.org.id}`)
+			history.push(`/management/org/${user.org.uuid}`)
 	}
 	const handleProfileClose = () => {
 		setAnchorProfile(null)
@@ -69,11 +69,11 @@ const HeaderLinks = props => {
 			dispatch({ type: "RESET_APP" })
 		}
 	}
-	const handleSettingsOpen = () => {
-		handleProfileClose()
-		if (user)
-			history.push(`/settings`)
-	}
+	// const handleSettingsOpen = () => {
+	// 	handleProfileClose()
+	// 	if (user)
+	// 		history.push(`/settings`)
+	// }
 	const renderSearch = () => {
 		// const { globalSearch } = this.props
 		// return globalSearch ? <GlobalSearch /> : null
@@ -86,7 +86,6 @@ const HeaderLinks = props => {
 	// }
 	const renderUserMenu = () => {
 		const openProfile = Boolean(anchorProfile)
-
 		return <div>
 			<Tooltip title={t('menus.user.profile')}>
 
@@ -129,12 +128,13 @@ const HeaderLinks = props => {
 				<MenuItem onClick={handleRedirectToOwnProfile}>
 					<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
 				</MenuItem>
-				{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={handleRedirectToOwnOrg}>
+				{/* user ? user.privileges.apiorg.editusers ? */}
+				<MenuItem onClick={handleRedirectToOwnOrg}>
 					<Business className={classes.leftIcon} />{t('menus.user.account')}
-				</MenuItem> : null : null}
-				<MenuItem onClick={handleSettingsOpen}>
+				</MenuItem> {/* : null : null} */}
+				{/* <MenuItem onClick={handleSettingsOpen}>
 					<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
-				</MenuItem>
+				</MenuItem> */}
 				<GoogleLogout
 					// onLogoutSuccess={() => this.logOut()}
 					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
@@ -158,7 +158,7 @@ const HeaderLinks = props => {
 			{renderUserMenu()}
 			{/* {this.renderNotifications()} */}
 		</Grid>
-	);
+	)
 }
 
 export default HeaderLinks

@@ -19,7 +19,8 @@ import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 import { Person, FolderShared } from 'variables/icons'
 import { scrollToAnchor } from 'variables/functions'
 import { getUserLS } from 'redux/data'
-import { useMatch, useLocalization, useSnackbar, useLocation, useHistory } from 'hooks'
+import { useMatch, useLocalization, useSnackbar, useLocation, useHistory, useAuth } from 'hooks'
+import { Redirect } from 'react-router-dom'
 
 
 const User = props => {
@@ -31,9 +32,11 @@ const User = props => {
 	const location = useLocation()
 	const history = useHistory()
 	const classes = userStyles()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
 
 	//Redux
-	const accessLevel = useSelector(s => s.settings.user.privileges)
+	// const accessLevel = useSelector(s => s.settings.user.privileges)
 	const saved = useSelector(s => s.favorites.saved)
 	const user = useSelector(s => s.data.user)
 	const loading = useSelector(s => !s.data.gotUser)
@@ -55,7 +58,7 @@ const User = props => {
 	const { setBC, setHeader, setTabs } = props
 
 	//useCallbacks
-	const isFavorite = useCallback(id => dispatch(isFav({ id: user.id, type: 'user' })), [dispatch, user])
+	const isFavorite = useCallback(id => dispatch(isFav({ id: user.uuid, type: 'user' })), [dispatch, user])
 
 	const getUser = useCallback(async id => {
 		await dispatch(await getUserLS(id))
@@ -98,7 +101,7 @@ const User = props => {
 	}, [location, setBC, setHeader, setTabs, user, t])
 
 	useEffect(() => {
-		const gSensor = async () => {
+		const gUser = async () => {
 			if (match.params) {
 				let id = match.params.id
 				if (id) {
@@ -110,7 +113,7 @@ const User = props => {
 				}
 			}
 		}
-		gSensor()
+		gUser()
 		//eslint-disable-next-line
 	}, [])
 
@@ -130,7 +133,7 @@ const User = props => {
 	}
 	const addToFavorites = () => {
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
 			path: match.url
@@ -139,7 +142,7 @@ const User = props => {
 	}
 	const removeFromFavorites = () => {
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
 			path: props.match.url
@@ -149,7 +152,7 @@ const User = props => {
 
 	const resendConfirmEmail = async () => {
 		let userId = {
-			id: user.id
+			id: user.uuid
 		}
 		await resendConfirmEmail(userId).then(rs => rs)
 		handleCloseResend()
@@ -176,9 +179,9 @@ const User = props => {
 		history.push('/management/users')
 	}
 	const handleDeleteUser = async () => {
-		await deleteUser(user.id).then(rs => rs ? () => {
+		await deleteUser(user.uuid).then(rs => rs ? () => {
 			let favObj = {
-				id: user.id,
+				id: user.uuid,
 				type: 'user'
 			}
 			if (props.isFav(favObj)) {
@@ -219,7 +222,7 @@ const User = props => {
 		const { confirm, newP } = pw
 		if (confirm === newP) {
 			let newPassObj = {
-				id: user.id,
+				id: user.uuid,
 				oldPassword: pw.current,
 				newPassword: pw.newP
 			}
@@ -249,7 +252,7 @@ const User = props => {
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('menus.changePassword')}</DialogTitle>
 			<DialogContent>
 				<Danger> {errorMessage} </Danger>
-				{accessLevel.apiorg.editusers ? null : <ItemG>
+				{hasAccess(user.uuid, 'user.modify') ? null : <ItemG>
 					<TextF
 						id={'current'}
 						label={t('users.fields.currentPass')}
@@ -362,10 +365,10 @@ const User = props => {
 		</Dialog>
 	}
 
-
+	console.log(user)
 
 	return (
-		loading ? <CircularLoader /> : <Fade in={true}>
+		loading ? <CircularLoader /> : user ? <Fade in={true}>
 			<GridContainer justify={'center'} alignContent={'space-between'}>
 				<ItemGrid xs={12} noMargin id={'contact'}>
 					<UserContact
@@ -389,7 +392,8 @@ const User = props => {
 				{renderChangePassword()}
 				{/* {renderConfirmUser()} */}
 			</GridContainer>
-		</Fade>
+		</Fade> : <Redirect to={'/404'} />
+
 	)
 }
 

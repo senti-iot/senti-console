@@ -1,13 +1,13 @@
 import React, { useEffect, Fragment } from 'react'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import { GridContainer, ItemGrid } from 'components';
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
-import withLocalization from 'components/Localization/T';
-import { changeCalType, changeCount, changeCalNotif, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeTCount } from 'redux/settings';
+// import withLocalization from 'components/Localization/T';
+import { changeCalType, changeCount, changeCalNotif, /* changeAlerts, changeDidKnow, saveSettingsOnServ, */ finishedSaving, changeTCount } from 'redux/settings';
 import ChartSettings from './SettingsCards/ChartSettings';
-import withSnackbar from 'components/Localization/S';
-import { compose } from 'recompose';
+// import withSnackbar from 'components/Localization/S';
+// import { compose } from 'recompose';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { Laptop, Build, /* Notifications, */ BarChart, Assignment, Public } from 'variables/icons';
 import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
@@ -18,22 +18,25 @@ import { useLocation, useSelector, useDispatch, useSnackbar, useLocalization, us
 
 
 const Settings = (props) => {
+	//Hooks
+	const t = useLocalization()
+	const s = useSnackbar().s
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const location = useLocation()
 
-	// constructor(props) {
-	// 	super(props)
+	//Redux
 
-	// 	this.state = {
+	const saved = useSelector(s => s.settings.saved)
+	const calibration = useSelector(s => s.settings.calibration)
+	const count = useSelector(s => s.settings.count)
+	const tcount = useSelector(s => s.settings.tcount)
+	const calNotifications = useSelector(s => s.settings.calNotifications)
 
-	// 	}
-	// 	props.setHeader('settings.pageTitle', false, '', 'settings')
-	// 	props.setTabs({
-	// 		id: 'settings',
-	// 		tabs: this.tabs,
-	// 		hashLinks: true,
-	// 		route: 0
-	// 	})
-	// 	props.setBC('settings')
-	// }
+	//State
+
+	//Const
+
 	const tabs = [
 		{ id: 0, title: '', label: <Laptop />, url: `#display` },
 		{ id: 1, title: '', label: <Public />, url: `#navigation` },
@@ -42,29 +45,6 @@ const Settings = (props) => {
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
 		{ id: 4, title: '', label: <Assignment />, url: '#termsAndConditions' }
 	]
-	/*	const s = state.settings
-	return {
-		saved: s.saved,
-
-		calibration: s.calibration,
-		count: s.count,
-		tcount: s.tcount,
-		calNotifications: s.calNotifications,
-
-		alerts: s.alerts,
-		didKnow: s.didKnow
-	}*/
-	const saved = useSelector(s => s.settings.saved)
-	const calibration = useSelector(s => s.settings.calibration)
-	const count = useSelector(s => s.settings.count)
-	const tcount = useSelector(s => s.settings.tcount)
-	const calNotifications = useSelector(s => s.settings.calNotifications)
-
-	const t = useLocalization()
-	const s = useSnackbar()
-	const dispatch = useDispatch()
-	const history = useHistory()
-	const location = useLocation()
 
 	useEffect(() => {
 		props.setHeader('settings.pageTitle', false, '', 'settings')
@@ -85,7 +65,7 @@ const Settings = (props) => {
 
 	useEffect(() => {
 		if (saved === true) {
-			s.s('snackbars.settingsSaved')
+			s('snackbars.settingsSaved')
 			dispatch(finishedSaving())
 		}
 	}, [dispatch, s, saved])
@@ -102,7 +82,6 @@ const Settings = (props) => {
 	const dispTCount = (tcount) => dispatch(changeTCount(tcount))
 	const dispCalNotif = (type) => dispatch(changeCalNotif(type))
 
-	// const { changeCalType, changeCount, changeTCount, changeCalNotif } = this.props
 	const reset = location.pathname.includes('reset') ? true : false
 	return (
 		<Fade in={true}>
@@ -146,50 +125,5 @@ const Settings = (props) => {
 
 	)
 }
-// }
 
-const mapStateToProps = state => {
-	const s = state.settings
-	return {
-		saved: s.saved,
-
-		calibration: s.calibration,
-		count: s.count,
-		tcount: s.tcount,
-		calNotifications: s.calNotifications,
-
-		alerts: s.alerts,
-		didKnow: s.didKnow
-	}
-}
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		// changeDiscoverSenti: val => dispatch(changeDiscoverSenti(val)),
-		// changeLanguage: code => dispatch(changeLanguage(code)),
-		// changeTRP: nr => dispatch(changeTRP(nr)),
-		// changeTheme: t => dispatch(changeTheme(t)),
-		// changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
-		// changeMapTheme: t => dispatch(changeMapTheme(t)),
-		// changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
-
-		changeCalType: type => dispatch(changeCalType(type)),
-		changeCount: count => dispatch(changeCount(count)),
-		changeTCount: tcount => dispatch(changeTCount(tcount)),
-		changeCalNotif: type => dispatch(changeCalNotif(type)),
-
-		changeAlerts: t => dispatch(changeAlerts(t)),
-		changeDidKnow: t => dispatch(changeDidKnow(t)),
-
-		// changeChartType: type => dispatch(changeChartType(type)),
-		// changeChartDataType: type => dispatch(changeChartDataType(type)),
-
-		// removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
-		// updateChartPeriod: p => dispatch(updateChartPeriod(p)),
-
-		saveSettings: () => dispatch(saveSettingsOnServ()),
-		finishedSaving: () => dispatch(finishedSaving())
-	}
-}
-const Setting = compose(withLocalization(), withSnackbar())(Settings)
-export default connect(mapStateToProps, mapDispatchToProps)(Setting)
+export default Settings

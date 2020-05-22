@@ -5,9 +5,11 @@ import { GridContainer, ItemGrid, Danger, CircularLoader } from 'components'
 import { Paper, Collapse, Button } from '@material-ui/core'
 import classNames from 'classnames'
 import { getUsers } from 'redux/data'
-import { useEventListener, useLocalization, useHistory, useSnackbar } from 'hooks'
+import { useEventListener, useLocalization, useHistory, useSnackbar, /* useAuth */ } from 'hooks'
 import createUserStyles from 'assets/jss/components/users/createUserStyles'
 import CreateUserForm from './CreateUserForm'
+import { getRoles } from 'variables/dataRoles'
+// import { Redirect } from 'react-router-dom'
 
 const CreateUser = props => {
 	//Hooks
@@ -16,38 +18,33 @@ const CreateUser = props => {
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
 	const classes = createUserStyles()
+	// const hasAccess = useAuth().hasAccess
 
 	//Redux
 	const rUser = useSelector(s => s.settings.user)
-	const accessLevel = useSelector(s => s.settings.user.privileges)
 
 	//State
+	const [loading, setLoading] = useState(true)
 	const [user, setUser] = useState({
 		userName: '',
 		firstName: '',
 		lastName: '',
 		phone: '',
 		email: '',
-		image: null,
+		internal: {},
 		aux: {
-			odeum: {
-				language: 'da'
-			},
 			senti: {
 				extendedProfile: {
 					newsletter: true,
 				}
 			}
 		},
-		sysLang: 2,
+		state: 2,
 		org: rUser.org,
-		groups: {
-			136550100000225: {
-				id: 136550100000225,
-				name: 'Senti User'
-			}
-		}
+		role: {}
 	})
+
+	const [roles, setRoles] = useState([])
 	const [openExtended, setOpenExtended] = useState(false)
 	const [extended, setExtended] = useState({
 		bio: "",
@@ -60,7 +57,7 @@ const CreateUser = props => {
 		newsletter: true,
 
 	})
-	const [selectedGroup, setSelectedGroup] = useState(136550100000225)
+	const [selectedRole, setSelectedRole] = useState()
 	const [creating, setCreating] = useState(false)
 	const [created, setCreated] = useState(false)
 
@@ -70,27 +67,7 @@ const CreateUser = props => {
 
 	//Const
 	const { setBC, setTabs, setHeader } = props
-	const groups = [
-		{
-			id: '136550100000211',
-			appId: '1220',
-			name: t('users.groups.accountManager'),
-			show: accessLevel.apiorg.editusers ? true : false
-		},
-		{
-			id: '136550100000143',
-			appId: '1220',
-			name: t('users.groups.superUser'),
-			show: accessLevel.apisuperuser ? true : false
 
-		},
-		{
-			id: '136550100000225',
-			appId: '1220',
-			name: t('users.groups.user'),
-			show: true
-		}
-	]
 	const languages = [
 		{ value: 'en', label: t('settings.languages.en') },
 		{ value: 'da', label: t('settings.languages.da') }
@@ -123,6 +100,17 @@ const CreateUser = props => {
 
 	//useEffects
 	useEffect(() => {
+		//GetRoles
+		const getR = async () => {
+			let roles = await getRoles()
+			setRoles(roles)
+			setSelectedRole(roles[0].uuid)
+			setLoading(false)
+		}
+		getR()
+	}, [])
+
+	useEffect(() => {
 		setBC('createuser')
 		setTabs({
 			id: 'createUser',
@@ -149,7 +137,7 @@ const CreateUser = props => {
 				return t('users.validation.noOrg')
 			case 6:
 				return t('users.validation.noGroup')
-			case 400:
+			case 409:
 				return t('users.validation.userAlreadyExists')
 			default:
 				return ''
@@ -182,13 +170,15 @@ const CreateUser = props => {
 			newUser.aux.senti.extendedProfile = extended
 		if (handleValidation()) {
 			await createUser(newUser).then(rs => {
-				return rs !== 400 ?
-					close(rs) : () => {
-						setCreated(false)
-						setCreating(false)
-						setError(true)
-						setErrorMessage(errorMessages(rs))
-					}
+				if (rs.ok)
+					close(rs.data)
+				else {
+					setCreated(false)
+					setCreating(false)
+					setError(true)
+					setErrorMessage(errorMessages(rs.status))
+					s(errorMessages(rs.status))
+				}
 			})
 		}
 	}
@@ -197,7 +187,7 @@ const CreateUser = props => {
 		setCreated(true)
 		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
 		dispatch(getUsers(true))
-		history.push(`/management/user/${rs.id}`)
+		history.push(`/management/user/${rs.uuid}`)
 
 	}
 	const handleExtendedBirthdayChange = prop => date => {
@@ -246,14 +236,12 @@ const CreateUser = props => {
 			}
 		})
 	}
-	const handleGroupChange = e => {
-		setSelectedGroup(e.target.value)
+	const handleRoleChange = e => {
+		setSelectedRole(e.target.value)
 		setUser({
 			...user,
-			groups: {
-				[e.target.value]: {
-					id: e.target.value
-				}
+			role: {
+				uuid: e.target.value
 			}
 		})
 	}
@@ -275,13 +263,12 @@ const CreateUser = props => {
 	return (
 		<GridContainer justify={'center'}>
 			<Paper className={classes.paper}>
-				<CreateUserForm
+				{loading ? <CircularLoader /> : <CreateUserForm
 					/* Error */
 					error={error}
 					errorMessage={errorMessage}
 					/* User */
 					user={user}
-					accessLevel={accessLevel}
 					handleChange={handleChange}
 					/* AssignOrg */
 					openOrg={openOrg}
@@ -292,9 +279,9 @@ const CreateUser = props => {
 					handleLangChange={handleLangChange}
 					languages={languages}
 					/* Groups */
-					groups={groups}
-					selectedGroup={selectedGroup}
-					handleGroupChange={handleGroupChange}
+					roles={roles}
+					selectedRole={selectedRole}
+					handleRoleChange={handleRoleChange}
 					/* Extended Profile */
 					extended={extended}
 					openExtended={openExtended}
@@ -303,7 +290,7 @@ const CreateUser = props => {
 					handleExtendedBirthdayChange={handleExtendedBirthdayChange}
 					/* Hooks */
 					t={t}
-				/>
+				/>}
 				<ItemGrid xs={12} container justify={'center'}>
 					<Collapse in={creating} timeout='auto' unmountOnExit>
 						<CircularLoader fill />
@@ -316,7 +303,7 @@ const CreateUser = props => {
 							onClick={goToUser}
 							className={classes.redButton}
 						>
-							{/* <Clear className={classes.leftIcon} /> */}{t('actions.cancel')}
+							{t('actions.cancel')}
 						</Button>
 					</div>
 					<div className={classes.wrapper}>
@@ -328,7 +315,7 @@ const CreateUser = props => {
 							onClick={handleCreateUser}>
 							{created ?
 								<Fragment>{t('snackbars.redirect')}</Fragment>
-								: <Fragment>{/* <Save className={classes.leftIcon} /> */}{t('actions.save')}</Fragment>}
+								: <Fragment>{t('actions.save')}</Fragment>}
 						</Button>
 					</div>
 				</ItemGrid>

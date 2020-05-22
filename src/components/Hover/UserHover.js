@@ -1,97 +1,81 @@
 import React, { useEffect } from 'react'
-import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
-import T from 'components/Typography/T';
-import ItemG from 'components/Grid/ItemG';
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
+import T from 'components/Typography/T'
+import ItemG from 'components/Grid/ItemG'
 import { Link } from 'components'
 import Gravatar from 'react-gravatar'
-import { Business, Call, LocationOn, Mail, Star, StarBorder, ContentCopy } from 'variables/icons';
-// import withLocalization from 'components/Localization/T';
+import { Business, Call, LocationOn, Mail, Star, StarBorder, ContentCopy } from 'variables/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-// import withSnackbar from 'components/Localization/S';
+import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites'
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
-import { copyToClipboard } from 'variables/functions';
+import { copyToClipboard } from 'variables/functions'
 import { Link as RLink } from 'react-router-dom'
-import { useSnackbar, useLocalization } from 'hooks';
+import { useSnackbar, useLocalization, useAuth } from 'hooks'
 
-// const mapStateToProps = (state) => ({
-// 	saved: state.favorites.saved
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
 
 const UserHover = props => {
+	//Hooks
 	const classes = hoverStyles()
 	const s = useSnackbar().s
 	const t = useLocalization()
 	const dispatch = useDispatch()
+	const hasAccess = useAuth().hasAccess
+
+	//Redux
 	const saved = useSelector(state => state.favorites.saved)
 
+	//State
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
 	useEffect(() => {
 		if (saved === true) {
 			const { user } = props
 			if (user) {
 				// let user = data[data.findIndex(d => d.id === selected[0])]
-				if (dispatch(isFav({ id: user.id, type: 'user' }))) {
+				if (dispatch(isFav({ id: user.uuid, type: 'user' }))) {
 					s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: user.id, type: 'user' }))) {
+				if (!dispatch(isFav({ id: user.uuid, type: 'user' }))) {
 					s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
 					dispatch(finishedSaving())
 				}
 			}
 		}
 	}, [dispatch, props, s, saved, t])
-	// componentDidUpdate = () => {
-	// 	if (this.props.saved === true) {
-	// 		const { user } = this.props
-	// 		if (user) {
-	// 			// let user = data[data.findIndex(d => d.id === selected[0])]
-	// 			if (this.props.isFav({ id: user.id, type: 'user' })) {
-	// 				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 			if (!this.props.isFav({ id: user.id, type: 'user' })) {
-	// 				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 		}
-	// 	}
-	// }
+
+	//Handlers
 	const addToFavorites = () => {
 		const { user } = props
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: `/management/user/${user.id}`
+			path: `/management/user/${user.uuid}`
 		}
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
 		const { user } = props
 		let favObj = {
-			id: user.id,
+			id: user.uuid,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: `/management/user/${user.id}`
+			path: `/management/user/${user.uuid}`
 		}
 		dispatch(removeFromFav(favObj))
 
 	}
 	const handleClose = () => {
 		props.handleClose()
-	};
+	}
 	const copyToClipboardFunc = (str) => () => {
 		copyToClipboard(str)
 	}
-
 	const { anchorEl, user } = props
 	return (
 		<Popper
@@ -143,20 +127,20 @@ const UserHover = props => {
 								</T>
 							</ItemG>
 							<ItemG xs={12}>
-								{user.aux.senti ? user.aux.senti.extendedProfile ?
+								{user.aux ? user.aux.senti ? user.aux.senti.extendedProfile ?
 									user.aux.senti.extendedProfile.location ? <T className={classes.smallText}>
 										<LocationOn className={classes.smallIcon} />
 										{user.aux.senti.extendedProfile.location}
-									</T> : null : null : null}
+									</T> : null : null : null : null}
 							</ItemG>
 						</ItemG>
 						<Divider />
 						<ItemG container style={{ marginTop: '8px' }}>
-							<ItemG>
-								<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `user/${user.id}/edit`, prevURL: '/management/users' }}>
+							{hasAccess(user.uuid, 'user.modify') ? <ItemG>
+								<Button color={'primary'} variant={'text'} component={RLink} to={{ pathname: `user/${user.uuid}/edit`, prevURL: '/management/users' }}>
 									{t('menus.edit')}
 								</Button>
-							</ItemG>
+							</ItemG> : null}
 							<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
 								<Tooltip placement="top" title={t('actions.sendEmail')}>
 									<IconButton className={classes.smallAction}>

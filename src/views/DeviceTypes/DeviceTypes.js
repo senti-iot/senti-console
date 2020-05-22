@@ -26,7 +26,7 @@ const DeviceTypes = props => {
 	const history = useHistory()
 
 	//Redux
-	const accessLevel = useSelector(state => state.settings.user.privileges)
+	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
 	const devicetypes = useSelector(state => state.data.deviceTypes)
@@ -163,9 +163,14 @@ const DeviceTypes = props => {
 	}
 
 	const getData = async (reload) => {
-		if (accessLevel || user) {
+		/**
+		 * @Andrei
+		 * this also needs normalization
+		 * Check Registries or Sensors
+		 */
+		if (accessLevel && user) {
 			if (reload)
-				dispatch(getDeviceTypes(true, user.org.id, accessLevel.apisuperuser ? true : false))
+				dispatch(getDeviceTypes(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
 		}
 	}
 	//#endregion

@@ -8,11 +8,11 @@ import React, { Fragment, useState, useEffect } from 'react'
 // import { useHistory } from 'react-router-dom'
 import TableHeader from 'components/Table/TableHeader'
 import { useSelector, useDispatch } from 'react-redux'
-import { pF, dateFormat } from 'variables/functions';
+import { pF, dateFormat } from 'variables/functions'
 import Gravatar from 'react-gravatar'
-import TP from 'components/Table/TP';
-import { isFav, finishedSaving } from 'redux/favorites';
-import UserHover from 'components/Hover/UserHover';
+import TP from 'components/Table/TP'
+import { isFav, finishedSaving } from 'redux/favorites'
+import UserHover from 'components/Hover/UserHover'
 import { useSnackbar, useLocalization, useHistory } from 'hooks'
 import usertableStyles from 'assets/jss/components/users/usertableStyles'
 import moment from 'moment'
@@ -39,7 +39,7 @@ const UserTable = props => {
 	//Const
 	const { selected, order, orderBy, data } = props
 	let timer = null
-	let emptyRows;
+	let emptyRows
 	if (data)
 		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 	//useCallbacks
@@ -84,13 +84,13 @@ const UserTable = props => {
 					setTimeout(() => {
 						setHoverUser(n)
 						setRowHover(e.target)
-					}, 200);
+					}, 200)
 				}
 				else {
 					setHoverUser(n)
 					setRowHover(e.target)
 				}
-			}, hoverTime);
+			}, hoverTime)
 	}
 	const unsetTimeout = () => {
 		clearTimeout(timer)
@@ -124,21 +124,21 @@ const UserTable = props => {
 					/>
 					<TableBody >
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.id);
+							const isSelected = isSelectedFunc(n.uuid)
 							const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
 							return (
 								<TableRow
 									hover
-									onClick={e => { e.stopPropagation(); history.push('/management/user/' + n.id) }}
+									onClick={e => { e.stopPropagation(); history.push('/management/user/' + n.uuid) }}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
-									key={n.id}
+									key={n.uuid}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.uuid)} />} />
 										<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 
 										<TC content={
@@ -157,7 +157,7 @@ const UserTable = props => {
 										} />
 									</Hidden>
 									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => props.handleCheckboxClick(e, n.uuid)} />} />
 										<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 										<TC
 											onMouseEnter={e => { setHover(e, n) }}

@@ -1,4 +1,5 @@
-import { saveSettings } from 'variables/dataLogin';
+// import { saveSettings } from 'variables/dataLogin';
+import { setInternal } from 'variables/dataUsers'
 
 const SETFAV = 'setFavorites'
 const GETFAVS = 'getFavorites'
@@ -37,7 +38,7 @@ export const finishedSaving = () => {
 		saved: false
 	}
 }
-export const removeFromFav = (obj) => {
+export const removeFromFav = (obj, noConfirm) => {
 	return async (dispatch, getState) => {
 		let favs = getState().data.favorites
 		favs = favs.filter(f => f.id !== obj.id)
@@ -45,10 +46,10 @@ export const removeFromFav = (obj) => {
 			type: SETFAV,
 			payload: favs
 		})
-		dispatch(saveFavorites())
+		dispatch(saveFavorites(noConfirm))
 	}
 }
-export const addToFav = (obj) => {
+export const addToFav = (obj, noConfirm) => {
 	return async (dispatch, getState) => {
 		let favs = getState().data.favorites
 		favs.push(obj)
@@ -56,7 +57,7 @@ export const addToFav = (obj) => {
 			type: SETFAV,
 			payload: favs
 		})
-		dispatch(saveFavorites())
+		dispatch(saveFavorites(noConfirm))
 	}
 }
 
@@ -64,10 +65,16 @@ const saveFavorites = (noConfirm) => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
 		let f = getState().data.favorites
-		user.aux = user.aux ? user.aux : {}
-		user.aux.senti = user.aux.senti ? user.aux.senti : {}
-		user.aux.senti.favorites = f
-		var saved = await saveSettings(user)
+		let internal = user.internal || {}
+		internal.senti = internal.senti || {}
+		internal.senti.favorites = f
+		// user.internal = user.internal || {}
+		// user.internal.senti = user.internal.senti || {}
+		// user.aux = user.aux ? user.aux : {}
+		// user.aux.senti = user.aux.senti ? user.aux.senti : {}
+		// user.aux.senti.favorites = f
+
+		var saved = await setInternal(internal, user.uuid)
 		dispatch({
 			type: SAVEFAVORITES,
 			saved: noConfirm ? false : saved ? true : false

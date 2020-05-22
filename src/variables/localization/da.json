@@ -690,6 +690,7 @@
 		"history": "Ingen historik",
 		"metadata": "Ingen metadata",
 		"org": "Ingen organisation",
+		"orgParent": "Uden tilhørsforhold",
 		"project": "Ingen projekt",
 		"projects": "Ingen projekter"
 	},
@@ -1037,6 +1038,12 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
+		"orgs": {
+			"stillHasUsers": "Nogle organisationer har stadig brugere!"
+		},
+		"org": {
+			"stillHasUsers": "Organisationen har stadig brugere!"
+		},
 		"assign": {
 			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
 			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",

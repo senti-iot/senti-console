@@ -7,7 +7,7 @@ import Orgs from 'views/Orgs/Orgs'
 import { CircularLoader, GridContainer } from 'components'
 import { People, Business, StarBorder, Star, Person } from 'variables/icons'
 import { handleRequestSort } from 'variables/functions'
-import { finishedSaving, removeFromFav, /* addToFav, isFav */ } from 'redux/favorites'
+import { finishedSaving, removeFromFav } from 'redux/favorites'
 import { useSelector, useDispatch } from 'react-redux'
 import FavoritesTable from 'components/Favorites/FavoritesTable'
 import { Paper, makeStyles } from '@material-ui/core'
@@ -97,7 +97,6 @@ const Management = props => {
 		//eslint-disable-next-line
 	}, [])
 	//Handlers
-
 	const handleGetData = async (reload) => {
 		// const { getUsers, getOrgs, setUsers, setOrgs } = this.props
 		if (reload) {
@@ -173,7 +172,6 @@ const Management = props => {
 		setOrder(nOrder)
 		setOrderBy(property)
 	}
-
 
 	const renderTableToolBar = (reduxKey) => {
 		return <TableToolbar

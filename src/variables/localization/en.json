@@ -417,6 +417,15 @@
 				"tokens": "Delete API tokens?",
 				"user": "Delete user?",
 				"users": "Delete users?"
+			},
+			"warning": {
+				"org": "**This cannot be undone**.You will remove this Organisation!",
+				"orgs": "**This cannot be undone**. You will remove the above Organisations!",
+				"wrongText": "You haven't confirmed that you want to delete the Organisation!"
+			},
+			"actions": {
+				"org": "Type **%{org}** to confirm:",
+				"orgs": "Type **DELETE** to confirm:"
 			}
 		},
 		"discoverSenti": {
@@ -690,6 +699,7 @@
 		"history": "No history",
 		"metadata": "No metadata",
 		"org": "No organisation",
+		"orgParent": "Without affiliation",
 		"project": "No project",
 		"projects": "No projects"
 	},
@@ -1037,6 +1047,12 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"orgs": {
+			"stillHasUsers": "Some Organisations still have users!"
+		},
+		"org": {
+			"stillHasUsers": "Organisation still has users!"
+		},
 		"assign": {
 			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
 			"collectionToProject": "Data collection %{collection} assigned to project %{project}",

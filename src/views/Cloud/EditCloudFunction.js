@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getFunctionLS, getFunctions } from 'redux/data';
-import { updateFunction } from 'variables/dataFunctions';
-import { updateFav, isFav } from 'redux/favorites';
-import { CircularLoader } from 'components';
-import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
-import { useSnackbar, useLocation, useParams, useEventListener, useHistory } from 'hooks';
+import { getFunctionLS, getFunctions, getOrgs } from 'redux/data'
+import { updateFunction } from 'variables/dataFunctions'
+import { updateFav, isFav } from 'redux/favorites'
+import { CircularLoader } from 'components'
+import CreateFunctionForm from 'components/Cloud/CreateFunctionForm'
+import { useSnackbar, useLocation, useParams, useEventListener, useHistory } from 'hooks'
 
 
 const EditCloudFunction = props => {
@@ -19,7 +19,7 @@ const EditCloudFunction = props => {
 
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
-	const orgId = useSelector(state => state.settings.user.org.id)
+	const orgId = useSelector(state => state.settings.user.org.uuid)
 	const orgs = useSelector(state => state.data.orgs)
 	const cloudfunction = useSelector(state => state.data.cloudfunction)
 
@@ -33,7 +33,8 @@ const EditCloudFunction = props => {
 
 	//useCallbacks
 	const getData = useCallback(async () => {
-		dispatch(await getFunctionLS(params.id))
+		await dispatch(await getOrgs())
+		await dispatch(await getFunctionLS(params.id))
 	}, [dispatch, params.id])
 
 	const goToRegistries = useCallback(() => history.push('/functions'), [history])
@@ -55,9 +56,13 @@ const EditCloudFunction = props => {
 	}, [])
 
 	useEffect(() => {
-		if (cloudfunction) {
+		if (cloudfunction && orgs.length > 0) {
 			setStateCloudfunction(cloudfunction)
-			setOrg(orgs[orgs.findIndex(o => o.id === cloudfunction.orgId)])
+			let orgIndex = orgs.findIndex(o => o.aux?.odeumId === cloudfunction.orgId)
+			let fOrg = orgs[orgIndex]
+			if (fOrg) {
+				setOrg(fOrg)
+			}
 			setLoading(false)
 			let prevURL = location.prevURL ? location.prevURL : `/function/${cloudfunction.id}`
 			setHeader('menus.edits.cloudfunction', true, prevURL, 'manage.cloudfunctions')

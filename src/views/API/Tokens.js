@@ -68,7 +68,7 @@ const Tokens = props => {
 		dispatch(setTokens())
 		if (accessLevel || user) {
 			if (reload || tokens.length === 0)
-				dispatch(getTokens(user.id, true, accessLevel.apisuperuser ? true : false))
+				dispatch(getTokens(user.internal.odeumId, true, accessLevel.apisuperuser ? true : false))
 		}
 	}, [accessLevel, dispatch, tokens.length, user])
 

@@ -80,17 +80,10 @@ const SensorMessages = props => {
 			}
 			gData()
 			setInitialPeriod(period)
+
 			setLoading(false)
 		}
 	}, [getData, initialPeriod, period])
-	// useEffect(() => {
-	// 	if (period) {
-	// 		setLoading(true)
-	// 		let gData = async () => await getData()
-	// 		gData()
-	// 		setLoading(false)
-	// 	}
-	// }, [getData, period])
 	//Handlers
 	const disableFuture = () => {
 		if (moment().diff(period.to, 'hour') <= 0) {

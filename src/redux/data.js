@@ -1,18 +1,19 @@
 /* eslint-disable eqeqeq */
-import { set, get } from 'variables/storage';
-import { getAllUsers, getUser } from 'variables/dataUsers';
-import { getAllProjects, getProject } from 'variables/dataProjects';
-import { getAllDevices, getDevice } from 'variables/dataDevices';
-import { getAllOrgs, getOrg } from 'variables/dataOrgs';
-import { getAllCollections, getCollection } from 'variables/dataCollections';
-import { colors } from 'variables/colors';
-import { hist } from 'Providers';
-import { handleRequestSort } from 'variables/functions';
-import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry';
+import { set, get } from 'variables/storage'
+import { getAllUsers, getUser } from 'variables/dataUsers'
+import { getAllProjects, getProject } from 'variables/dataProjects'
+import { getAllDevices, getDevice } from 'variables/dataDevices'
+import { getAllOrgs, getOrg } from 'variables/dataOrgs'
+import { getAllCollections, getCollection } from 'variables/dataCollections'
+import { colors } from 'variables/colors'
+import { hist } from 'Providers'
+import { handleRequestSort } from 'variables/functions'
+import { getSuggestions } from './globalSearch'
+import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry'
 import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
 import { getAllSensors, getSensor } from 'variables/dataSensors'
-import { getAllFunctions, getFunction } from 'variables/dataFunctions';
+import { getAllFunctions, getFunction } from 'variables/dataFunctions'
+import { getPrivList, getPriv } from 'redux/auth'
 
 
 //#region Special Functions
@@ -37,31 +38,31 @@ const compare = (obj1, obj2) => {
 	}
 	for (var p in obj1) {
 		//Check property exists on both objects
-		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false
 
 		switch (typeof (obj1[p])) {
 			//Deep compare objects
 			case 'object':
-				if (!compare(obj1[p], obj2[p])) return false;
-				break;
+				if (!compare(obj1[p], obj2[p])) return false
+				break
 			//Compare function code
 			case 'function':
 				// eslint-disable-next-line eqeqeq
-				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
-				break;
+				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false
+				break
 			//Compare values
 			default:
-				if (obj1[p] != obj2[p]) return false;
+				if (obj1[p] != obj2[p]) return false
 		}
 	}
 
 	//Check object 2 for any extra properties
 	// eslint-disable-next-line no-redeclare
 	for (var p in obj2) {
-		if (typeof (obj1[p]) == 'undefined') return false;
+		if (typeof (obj1[p]) == 'undefined') return false
 	}
-	return true;
-};
+	return true
+}
 //#endregion
 
 //#region Actions
@@ -161,15 +162,16 @@ const setFavorites = 'setFavorites'
 
 export const getAllData = async (reload, orgId, su) => {
 	return async dispatch => {
-		dispatch(await getUsers(true))
-		dispatch(await getProjects(true))
-		dispatch(await getCollections(true))
-		dispatch(await getDevices(true))
+		await dispatch(await getUsers(true))
+		// dispatch(await getProjects(true))
+		// dispatch(await getCollections(true))
+		// dispatch(await getDevices(true))
 		dispatch(await getOrgs(true))
 		dispatch(await getRegistries(true, orgId, su))
 		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
 		dispatch(await getFunctions(true, orgId, su))
+		// dispatch(await getTokens(true, orgId, su))
 		// dispatch(await getMessages(orgId, true))
 	}
 }
@@ -198,6 +200,7 @@ export const getUserLS = async (id) => {
 		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
 		if (user) {
+			await dispatch(await getPrivList([id], ['user.modify', 'user.delete']))
 			dispatch({
 				type: setUser,
 				payload: user
@@ -217,9 +220,13 @@ export const getUserLS = async (id) => {
 				payload: null
 			})
 		}
-		await getUser(id).then(rs => {
+		await getUser(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['user.modify', 'user.delete']))
 			if (!compare(user, rs)) {
-				user = { ...rs }
+				if (rs)
+					user = { ...rs }
+				else
+					user = undefined
 				dispatch({
 					type: setUser,
 					payload: user
@@ -235,11 +242,15 @@ export const getUserLS = async (id) => {
 }
 
 export const getUsers = (reload) => {
-	return dispatch => {
+	return async (dispatch, getState) => {
 
-		getAllUsers().then(rs => {
+		await getAllUsers().then(async rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
 			users = handleRequestSort('firstName', 'asc', users)
+			let userUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['user.create', 'user.list']))
+			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete']))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -349,6 +360,7 @@ export const getOrgLS = async (id) => {
 		dispatch({ type: gotOrg, payload: false })
 		let org = get('org.' + id)
 		if (org) {
+			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
 			dispatch({
 				type: setOrg,
 				payload: org
@@ -368,7 +380,8 @@ export const getOrgLS = async (id) => {
 				payload: null
 			})
 		}
-		await getOrg(id).then(rs => {
+		await getOrg(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
 			if (!compare(org, rs)) {
 				org = { ...rs }
 				dispatch({
@@ -385,9 +398,13 @@ export const getOrgLS = async (id) => {
 	}
 }
 export const getOrgs = (reload) => {
-	return dispatch => {
-		getAllOrgs().then(rs => {
+	return async (dispatch, getState) => {
+		await getAllOrgs().then(async rs => {
 			let orgs = handleRequestSort('name', 'asc', rs)
+			let orgUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['org.create', 'org.list']))
+			await dispatch(await getPrivList(orgUUIDs, ['org.modify', 'org.delete']))
 			set('orgs', orgs)
 			if (reload) {
 				dispatch(setOrgs())
