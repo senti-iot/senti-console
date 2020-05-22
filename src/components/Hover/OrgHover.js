@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
-import T from 'components/Typography/T';
-import ItemG from 'components/Grid/ItemG';
+import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
+import T from 'components/Typography/T'
+import ItemG from 'components/Grid/ItemG'
 // import Gravatar from 'react-gravatar'
-import { Business, Language, Star, StarBorder } from 'variables/icons';
+import { Business, Language, Star, StarBorder } from 'variables/icons'
 // import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
+import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites'
 // import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
-import { useLocalization, useSnackbar } from 'hooks';
+import { useLocalization, useSnackbar } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	saved: state.favorites.saved
@@ -34,11 +34,11 @@ const OrgHover = props => {
 		if (saved === true) {
 			const { org } = props
 			if (org) {
-				if (dispatch(isFav({ id: org.id, type: 'org' }))) {
+				if (dispatch(isFav({ id: org.uuid, type: 'org' }))) {
 					s('snackbars.favorite.saved', { name: org.name, type: t('favorites.types.org') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: org.id, type: 'org' }))) {
+				if (!dispatch(isFav({ id: org.uuid, type: 'org' }))) {
 					s('snackbars.favorite.removed', { name: org.name, type: t('favorites.types.org') })
 					dispatch(finishedSaving())
 				}
@@ -49,11 +49,11 @@ const OrgHover = props => {
 	// 	if (this.props.saved === true) {
 	// 		const { org } = this.props
 	// 		if (org) {
-	// 			if (this.props.isFav({ id: org.id, type: 'org' })) {
+	// 			if (this.props.isFav({ id: org.uuid, type: 'org' })) {
 	// 				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
 	// 				this.props.finishedSaving()
 	// 			}
-	// 			if (!this.props.isFav({ id: org.id, type: 'org' })) {
+	// 			if (!this.props.isFav({ id: org.uuid, type: 'org' })) {
 	// 				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
 	// 				this.props.finishedSaving()
 	// 			}
@@ -63,27 +63,27 @@ const OrgHover = props => {
 	const addToFavorites = () => {
 		const { org } = props
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
-			path: `/management/org/${org.id}`
+			path: `/management/org/${org.uuid}`
 		}
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
 		const { org } = props
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
-			path: `/management/org/${org.id}`
+			path: `/management/org/${org.uuid}`
 		}
 		dispatch(removeFromFav(favObj))
 
 	}
 	const handleClose = () => {
 		props.handleClose()
-	};
+	}
 
 	const { anchorEl, org } = props
 	return (
@@ -125,7 +125,7 @@ const OrgHover = props => {
 						<Divider />
 						<ItemG container style={{ marginTop: '8px' }}>
 							<ItemG>
-								<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `org/${org.id}/edit`, prevURL: '/management/orgs' }}>
+								<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `org/${org.uuid}/edit`, prevURL: '/management/orgs' }}>
 									{t('menus.edit')}
 								</Button>
 							</ItemG>
@@ -135,9 +135,9 @@ const OrgHover = props => {
 										<Language />
 									</IconButton>
 								</Tooltip>
-								<Tooltip placement="top" title={dispatch(isFav({ id: org.id, type: 'org' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-									<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: org.id, type: 'org' })) ? removeFromFavorites : addToFavorites}>
-										{dispatch(isFav({ id: org.id, type: 'org' })) ? <Star /> : <StarBorder />}
+								<Tooltip placement="top" title={dispatch(isFav({ id: org.uuid, type: 'org' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+									<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: org.uuid, type: 'org' })) ? removeFromFavorites : addToFavorites}>
+										{dispatch(isFav({ id: org.uuid, type: 'org' })) ? <Star /> : <StarBorder />}
 									</IconButton>
 								</Tooltip>
 							</ItemG>
