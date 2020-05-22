@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Collapse, Button, Paper, Hidden } from '@material-ui/core'
 import { Danger, ItemG, /* Success, */ Muted, T, CircularLoader } from 'components'
 import loginPageStyles from 'assets/jss/components/login/loginPageStyles'
-import { getSettings } from 'redux/settings'
+import { getNSettings } from 'redux/settings'
 import TextF from 'components/CustomInput/TextF'
 import { changeLanguage } from 'redux/localization'
 import cookie from 'react-cookies'
@@ -94,7 +94,7 @@ const ConfirmUser = (props) => {
 				cookie.save('SESSION', session, { path: '/' })
 				if (session.isLoggedIn) {
 					if (setToken()) {
-						await dispatch(await getSettings())
+						await dispatch(await getNSettings())
 						history.push('/dashboard')
 					}
 				}

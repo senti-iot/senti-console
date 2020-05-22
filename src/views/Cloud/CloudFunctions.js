@@ -175,7 +175,7 @@ const Functions = props => {
 	const getData = async (reload) => {
 		if (accessLevel || user) {
 			if (reload)
-				dispatch(getFunctions(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
+				dispatch(getFunctions(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
 		}
 	}
 	//#endregion

@@ -100,7 +100,7 @@ const Registries = props => {
 		 * @Andrei
 		 */
 		if (user && accessLevel) {
-			dispatch(await getRegistries(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
+			dispatch(await getRegistries(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
 		}
 	}, [accessLevel, dispatch, user])
 

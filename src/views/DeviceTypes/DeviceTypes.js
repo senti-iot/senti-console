@@ -170,7 +170,7 @@ const DeviceTypes = props => {
 		 */
 		if (accessLevel && user) {
 			if (reload)
-				dispatch(getDeviceTypes(true, user.org.aux?.odeumId, accessLevel.name === 'Super User' ? true : false))
+				dispatch(getDeviceTypes(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
 		}
 	}
 	//#endregion
