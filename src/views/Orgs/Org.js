@@ -214,9 +214,9 @@ const Org = props => {
 						</Warning>
 					</div>
 				</Collapse>
-				{/* <DialogContentText id='alert-dialog-description'>
+				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.org', { org: org.name })}
-				</DialogContentText> */}
+				</DialogContentText>
 				<DialogContentText>
 					{t("dialogs.delete.warning.org", { type: 'markdown' })}
 				</DialogContentText>
