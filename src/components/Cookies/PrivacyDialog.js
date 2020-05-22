@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles } from '@material-ui/core';
-import { T, Caption, Link } from 'components';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles } from '@material-ui/core'
+import { T, Link } from 'components'
 
 const styles = theme => ({
 	p: {
@@ -33,12 +33,12 @@ const PrivacyDialog = (props) => {
 			</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<T b>{t('privacy.responsible')}</T>
-				<Caption>Senti </Caption>
-				<Caption>c/o WebHouse ApS</Caption>
-				<Caption>Alexander Foss Gade 13, 3. th</Caption>
-				<Caption>DK-9000 Aalborg</Caption>
-				<Caption>{t('privacy.contactEmail')}privacy@senti.io</Caption>
-				<Caption className={classes.p}>CVR-nr. 21221198</Caption>
+				<T>Senti </T>
+				<T>c/o WebHouse ApS</T>
+				<T>Alexander Foss Gade 13, 3. th</T>
+				<T>DK-9000 Aalborg</T>
+				<T>{t('privacy.contactEmail')}privacy@senti.io</T>
+				<T className={classes.p}>CVR-nr. 21221198</T>
 				<T className={classes.p} b>{t('privacy.subtitle')}</T>
 				<T className={classes.p}>{t('privacy.p0')}</T>
 				<T className={classes.p}><span style={{ fontWeight: 600 }}>{t('privacy.note')}</span> {`${t('privacy.p1')}`}</T>

@@ -119,7 +119,6 @@ const User = props => {
 
 	//Handlers
 	const snackBarMessages = (msg) => {
-		const { user } = props
 		switch (msg) {
 			case 1:
 				s('snackbars.userDeleted', { user: user.firstName + ' ' + user.lastName })
@@ -179,16 +178,19 @@ const User = props => {
 		history.push('/management/users')
 	}
 	const handleDeleteUser = async () => {
-		await deleteUser(user.uuid).then(rs => rs ? () => {
-			let favObj = {
-				id: user.uuid,
-				type: 'user'
+		await deleteUser(user.uuid).then(rs => {
+			if (rs) {
+				let favObj = {
+					id: user.uuid,
+					type: 'user'
+				}
+				if (dispatch(isFav(favObj))) {
+					removeFromFav()
+				}
+				handleClose(rs)
 			}
-			if (props.isFav(favObj)) {
-				removeFromFav()
-			}
-			handleClose()
-		} : null)
+		}
+		)
 	}
 
 

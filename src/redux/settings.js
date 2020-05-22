@@ -69,7 +69,7 @@ export const resetSettings = () => {
 			user: getState().settings.user
 		})
 		dispatch(await saveSettingsOnServ())
-		dispatch(await getSettings())
+		dispatch(await getNSettings())
 	}
 }
 export const saveOnServ = (user) => {
@@ -212,7 +212,10 @@ export const getNSettings = async () => {
 			 */
 			var dashboards = senti.dashboards ? senti.dashboards : []
 			dispatch(setDashboards(dashboards))
-			dispatch(await getAllData(true, user.org.aux?.odeumId, true))
+			/**
+			 * @Andrei
+			*/
+			dispatch(await getAllData(true, user.org.aux?.odeumId, false))
 
 			return true
 		}
@@ -226,7 +229,10 @@ export const getNSettings = async () => {
 				user,
 				settings: s
 			})
-			dispatch(await getAllData(true, user.org.aux?.odeumId, true))
+			/**
+			 * @Andrei
+			 */
+			dispatch(await getAllData(true, user.org.aux?.odeumId, false))
 
 			return false
 		}
@@ -234,6 +240,10 @@ export const getNSettings = async () => {
 
 	}
 }
+/**
+ * @Andrei
+ * Why do we have 2 getSettings?
+ */
 export const getSettings = async (uuid) => {
 	return async (dispatch, getState) => {
 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
@@ -272,7 +282,11 @@ export const getSettings = async (uuid) => {
 			}
 		})
 		if (user) {
-			dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser ? true : false))
+			/**
+			 * @Andrei
+			 * superUser Perm
+			 */
+			dispatch(await getAllData(true, user.org.id, /* user.privileges.apisuperuser ? true : */ false))
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				dispatch({

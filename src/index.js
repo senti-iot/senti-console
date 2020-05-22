@@ -21,6 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const onUpdate = () => {
+	console.log('Trying to dispatch message to store')
 	store().dispatch(updateServiceworker())
 }
 serviceWorker.register({ onUpdate: onUpdate })

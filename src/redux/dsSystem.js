@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { graphType } from 'variables/dsSystem/graphTypes'
-import { saveOnServ, getSettings } from './settings'
+import { saveOnServ, getNSettings } from './settings'
 
 export const getDashboards = 'getDashboards'
 export const SetDashboard = 'SetDashboard'
@@ -149,7 +149,7 @@ export const repairDashboard = (dashboard) => {
 		user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
 		dispatch(saveSnackbar('snackbars.repairedOldDashboards'))
 		dispatch(saveOnServ(user))
-		dispatch(await getSettings())
+		dispatch(await getNSettings())
 
 	}
 }
@@ -309,7 +309,7 @@ export const removeDashboard = id => {
 		ds = ds.filter(f => f.id !== id)
 		user.aux.senti.dashboards = ds
 		dispatch(saveOnServ(user))
-		dispatch(await getSettings())
+		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.deletedSuccess'))
 		dispatch({
 			type: getDashboards,
@@ -347,7 +347,7 @@ export const importDashboard = (iDash) => {
 			user.aux.senti.dashboards.push(newD)
 		}
 		dispatch(saveOnServ(user))
-		dispatch(await getSettings())
+		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.importedSuccess'))
 	}
 }
@@ -373,7 +373,7 @@ export const saveDashboard = (edit) => {
 		}
 		// dispatch()
 		dispatch(saveOnServ(user))
-		dispatch(await getSettings())
+		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.savedSuccess'))
 
 	}

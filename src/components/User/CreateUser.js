@@ -105,9 +105,16 @@ const CreateUser = props => {
 			let roles = await getRoles()
 			setRoles(roles)
 			setSelectedRole(roles[0].uuid)
+			setUser({
+				...user,
+				role: {
+					uuid: roles[0].uuid
+				}
+			})
 			setLoading(false)
 		}
 		getR()
+		//eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
@@ -170,8 +177,10 @@ const CreateUser = props => {
 			newUser.aux.senti.extendedProfile = extended
 		if (handleValidation()) {
 			await createUser(newUser).then(rs => {
-				if (rs.ok)
+				if (rs.ok) {
+					console.log(rs)
 					close(rs.data)
+				}
 				else {
 					setCreated(false)
 					setCreating(false)
