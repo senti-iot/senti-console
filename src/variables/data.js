@@ -131,9 +131,8 @@ export const api = create({
 
 //#region Senti Services
 
-let sentiServicesURL = 'https://mergeservices.senti.cloud'
-let sentiServicesURLL = 'https://dev.services.senti.cloud'
-let sentiServicesBetaURL = 'https://services.senti.cloud'
+let sentiServicesURL = 'https://services.senti.cloud'
+// let sentiServicesBetaURL = 'https://services.senti.cloud'
 
 // if (process.env.REACT_APP_DEV) {
 // 	sentiServicesURL = 'https://dev.services.senti.cloud'
@@ -175,7 +174,7 @@ export const coreServicesAPI = create({
 // })
 
 export const cloudAPI = create({
-	baseURL: `${sentiServicesBetaURL}/functions`,
+	baseURL: `${sentiServicesURL}/functions`,
 	// baseURL: 'http://localhost:3011',
 	timeout: 30000,
 	headers: {
@@ -186,7 +185,7 @@ export const cloudAPI = create({
 })
 
 export const externalAPI = create({
-	baseURL: `${sentiServicesURLL}/api`,
+	baseURL: `${sentiServicesURL}/api`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),

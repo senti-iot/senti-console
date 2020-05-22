@@ -237,7 +237,6 @@ export const getNSettings = async () => {
 export const getSettings = async (uuid) => {
 	return async (dispatch, getState) => {
 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
-		console.log(sessionCookie)
 		if (sessionCookie) {
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
@@ -252,6 +251,9 @@ export const getSettings = async (uuid) => {
 		}
 
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
+		if (userId === 0) {
+			cookie.delete('SESSION')
+		}
 		var user = userId !== 0 ? await getUser(userId) : null
 		let senti = user ? user.internal ? user.internal.senti ? user.internal.senti : null : null : null
 		var settings = get('settings') ? get('settings') : senti ? senti.settings ? senti.settings : null : null
