@@ -102,7 +102,7 @@ const EditOrg = props => {
 		if (rOrg) {
 			let prevURL = location.prevURL
 			setHeader('orgs.updateOrg', true, prevURL, 'users')
-			setBC('editorg', rOrg.name, rOrg.id)
+			setBC('editorg', rOrg.name, rOrg.uuid)
 			setTabs({
 				id: "editOrg",
 				tabs: []

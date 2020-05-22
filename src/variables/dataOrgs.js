@@ -74,7 +74,7 @@ export const createOrg = async (org) => {
  */
 export const deleteOrg = async (org) => {
 	// var result = await api.delete(`core/org/${org}`).then(rs => rs)
-	var result = await coreServicesAPI.delete(`core/org/${org}`).then(rs => rs.ok)
+	var result = await coreServicesAPI.delete(`entity/organisation/${org}`).then(rs => rs.ok)
 	del('org.' + org)
 	return result
 }

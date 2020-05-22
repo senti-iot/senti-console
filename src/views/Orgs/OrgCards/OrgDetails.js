@@ -15,7 +15,7 @@ const OrgDetails = props => {
 	//State
 
 	//Const
-	const { org, devices, /* accessLevel, */ isFav, addToFav, removeFromFav, t, history, match, deleteOrg, language } = props
+	const { org, /* devices, */ /* accessLevel, */ isFav, addToFav, removeFromFav, t, history, match, deleteOrg, language } = props
 
 	//useCallbacks
 
@@ -93,7 +93,7 @@ const OrgDetails = props => {
 							{t('orgs.fields.country')}
 						</Caption>
 						<Info>
-							{org.country.length === 2 ? countries.getName(org.country, language)
+							{org.country?.length === 2 ? countries.getName(org.country, language)
 								: org.country}
 						</Info>
 					</ItemGrid>
@@ -102,26 +102,26 @@ const OrgDetails = props => {
 							{t('orgs.fields.url')}
 						</Caption>
 						<Info>
-							<Link href={org.url} target={'_blank'}>
-								{org.url}
+							<Link href={org.url ? org.url : ''} target={'_blank'}>
+								{org.url ? org.url : ''}
 							</Link>
 						</Info>
 					</ItemGrid>
-					<ItemGrid xs={12}>
+					{/* <ItemGrid xs={12}>
 						<Caption>
 							{t('orgs.fields.deviceCount')}
 						</Caption>
 						<Info>
 							{devices}
 						</Info>
-					</ItemGrid>
-					{org.org.id > 0 ?
+					</ItemGrid> */}
+					{org.org.uuid ?
 						<ItemGrid xs={12}>
 							<Caption>
 								{t('orgs.fields.parentOrg')}
 							</Caption>
 							<Info>
-								<Link component={RLink} to={{ pathname: `/management/org/${org.org.id}`, prevURL: `/management/org/${org.id}` }}>
+								<Link component={RLink} to={{ pathname: `/management/org/${org.org.uuid}`, prevURL: `/management/org/${org.uuid}` }}>
 									{org.org.name}
 								</Link>
 							</Info>

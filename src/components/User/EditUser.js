@@ -135,7 +135,7 @@ const EditUser = props => {
 	useEffect(() => {
 		if (eUser) {
 			let prevURL = location.prevURL ? location.prevURL : '/management/users'
-			setBC('edituser', eUser.firstName + ' ' + eUser.lastName, eUser.id)
+			setBC('edituser', eUser.firstName + ' ' + eUser.lastName, eUser.uuid)
 			setTabs({
 				id: "editUser",
 				tabs: []
