@@ -217,10 +217,10 @@ const Org = props => {
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.org', { org: org.name })}
 				</DialogContentText>
-				<DialogContentText>
+				<DialogContentText component={'div'}>
 					{t("dialogs.delete.warning.org", { type: 'markdown' })}
 				</DialogContentText>
-				<DialogContentText>
+				<DialogContentText component={'div'}>
 					{t("dialogs.delete.actions.org", { type: 'markdown', org: org.name })}
 				</DialogContentText>
 				<TextF

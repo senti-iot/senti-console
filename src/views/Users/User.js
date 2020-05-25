@@ -229,7 +229,6 @@ const User = props => {
 				newPassword: pw.newP
 			}
 			let success = await setPassword(newPassObj).then(rs => rs)
-			console.log(success)
 			if (success) {
 				handleCloseChangePassword(success)()
 			}
@@ -366,8 +365,6 @@ const User = props => {
 			</DialogActions>
 		</Dialog>
 	}
-
-	console.log(user)
 
 	return (
 		loading ? <CircularLoader /> : user ? <Fade in={true}>

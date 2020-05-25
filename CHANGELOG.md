@@ -172,7 +172,6 @@
 - More Raw Data
 - Fix Header and Map size for medium sized screens
 - Fix Export Data
-- Remove Console.logs
 - Fix Edit Address
 - Calibration fix
 - Location Based on Input
@@ -482,7 +481,6 @@
 - Logarithmic / Linear
 - Fix diff newsletter
 - Fix Map + Total Count for Selected period
-- Remove Console.log
 - Show HeatMap Period on Collection/Device
 - Localize Daca control Panel
 - Fix DeviceImages setState() on unmounted
@@ -1536,7 +1534,6 @@
 - Devices Live status sorting fix
 - Use the new endpoints
 - Project Table Update Responsive Format True Center Denmark on Maps
-- Remove Console.log
 - Users Table FirstName -> Name
 - Device Edit Address Search Improvement
 - Refactor Calibrate to new endpoint
@@ -1718,7 +1715,7 @@
 - Change Login to Sign in and Sign out
 - Maps Geolookup
 - Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
-- Remove Console.logs and Alert ServiceWorker on New Content
+- Alert ServiceWorker on New Content
 - Unassign Project
 - Device
 - Create Project
@@ -2015,7 +2012,7 @@
 - Major refactor
 - Fix missing imports
 - Move UserAdmin and OrgAdmin to Management/ Refactor Login for cdm/cwum Refactor theme tab colors Move Organisations to separate tab Add Tables with users and orgs for each tab Move inline styles to styled-compoents constants
-- Remove mocking data 'faker' package Move Error Login Modal from Form to Container - fix animation Remove Console.logs Refactor styling on  Admin Tabs
+- Remove mocking data 'faker' package Move Error Login Modal from Form to Container - fix animation Refactor styling on  Admin Tabs
 - Upgrade odeum-app
 - Beautiful tables
 - Rename Expanded Card to Modal

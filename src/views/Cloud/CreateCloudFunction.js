@@ -18,7 +18,6 @@ const CreateCloudFunction = props => {
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const org = useSelector(state => state.settings.user.org)
 	const orgId = useSelector(state => state.settings.user.org)
-	console.log('Org', org)
 	//State
 	const [cloudfunction, setCloudfunction] = useState({
 		name: '',

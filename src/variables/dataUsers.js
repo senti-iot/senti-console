@@ -17,15 +17,19 @@ export const resendConfirmEmail = async (user) => {
 	let data = await api.post('core/user/resendconfirmmail', user).then(rs => rs.data)
 	return data
 }
-export const confirmUser = async (obj) => {
-	let response = await api.post(`core/user/confirm`, obj).then(rs => rs)
-	return response.ok ? response.data : response.status
-}
+// export const confirmUser = async (obj) => {
+// 	let response = await api.post(`core/user/confirm`, obj).then(rs => rs)
+// 	return response.ok ? response.data : response.status
+// }
 
 //#region Senti Core API
 export const createUser = async (user) => {
 	var res = await coreServicesAPI.post(`entity/user`, user).then(rs => rs)
 	return res
+}
+export const confirmUser = async (obj) => {
+	let response = await coreServicesAPI.post(`entity/user/confirm`, obj).then(rs => rs.ok ? rs.data : rs.ok)
+	return response
 }
 export const getUser = async (userId) => {
 	// var data = await api.get(`core/user/${userId}`).then(rs => rs.data)

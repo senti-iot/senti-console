@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip, ListItemIcon, ListItemText, ListItem } from '@material-ui/core'
+import { Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip, ListItemIcon, ListItemText, ListItem, List } from '@material-ui/core'
 import UserTable from 'components/User/UserTable'
 import GridContainer from 'components/Grid/GridContainer'
 import { deleteUser } from 'variables/dataUsers'
@@ -204,13 +204,11 @@ const Users = props => {
 					handleRemoveFromFav(favObj, true)
 				}
 				let res = await deleteUser(u)
-				console.log('Res', res)
 				if (res) {
 					state = 1
 				}
 				else
 					state = 2
-				console.log('State', state)
 			}
 		}))
 		await reload(true)
@@ -263,7 +261,7 @@ const Users = props => {
 			<DialogContentText id='alert-dialog-description'>
 				{t('dialogs.delete.message.users')}
 			</DialogContentText>
-			<div>
+			<List style={{ maxHeight: 250, overflow: 'auto' }}>
 				{openDelete ? selected.map(s => {
 					let u = users[users.findIndex(d => d.uuid === s)]
 					return u ? <ListItem divider key={u.uuid}>
@@ -275,7 +273,7 @@ const Users = props => {
 						: s	// <Info key={u.uuid}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 				})
 					: null}
-			</div>
+			</List>
 		</DialogContent>
 		<DialogActions>
 			<Button onClick={handleCloseDeleteDialog} color='primary'>

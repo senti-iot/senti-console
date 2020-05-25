@@ -8,7 +8,7 @@ import GoogleLogin from 'react-google-login'
 import LoginImages from './LoginImages'
 import cookie from 'react-cookies'
 import { setToken } from 'variables/data'
-import { loginUserViaGoogle, nLoginUser } from 'variables/dataLogin'
+import { nGoogleLogin, nLoginUser } from 'variables/dataLogin'
 import { getNSettings } from 'redux/settings'
 // import { changeLanguage } from 'redux/localization';
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
@@ -17,7 +17,6 @@ import PrivacyDialog from 'components/Cookies/PrivacyDialog'
 import { LoginButton, LoginWrapper, MobileContainer, InputContainer, LeftPanel, ImgLogo, LoginLoader, /* NeedAccountT, */ LoginTF, SmallActionButton, Footer, FooterText, MutedButton } from 'styles/loginStyles'
 import { useLocalization, useDispatch, useEventListener, useTheme, useSelector } from 'hooks'
 import { getWL } from 'variables/storage'
-let moment = require('moment')
 
 
 function LoginPage(props) {
@@ -73,17 +72,15 @@ function LoginPage(props) {
 		}
 		if (googleUser) {
 			let token = googleUser.getAuthResponse().id_token
-			await loginUserViaGoogle(token).then(async rs => {
+			await nGoogleLogin(token).then(async rs => {
 				if (rs) {
-					let exp = moment().add('1', 'day')
-					cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
-					if (rs.isLoggedIn) {
-						if (setToken()) {
-							await dispatch(await getNSettings())
-							var prevURL = location.prevURL ? location.prevURL : null
-							history.push(prevURL ? prevURL : defaultRoute)
-						}
+					cookie.save('SESSION', rs.token, { path: '/', expires: new Date(rs.expires) })
+					if (setToken()) {
+						await dispatch(await getNSettings())
+						var prevURL = location.prevURL ? location.prevURL : null
+						history.push(prevURL ? prevURL : defaultRoute)
 					}
+
 				}
 				else {
 					setError(true)

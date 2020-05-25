@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Collapse, Button, Paper, Hidden } from '@material-ui/core'
-import { Danger, ItemG, /* Success, */ Muted, T, CircularLoader } from 'components'
+import { Danger, ItemG, /* Success, */ Muted, T } from 'components'
 import loginPageStyles from 'assets/jss/components/login/loginPageStyles'
-import { getNSettings } from 'redux/settings'
 import TextF from 'components/CustomInput/TextF'
 import { changeLanguage } from 'redux/localization'
-import cookie from 'react-cookies'
-import { setToken } from 'variables/data'
 import LoginImages from 'layouts/Login/LoginImages'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import logo from 'logo.svg'
@@ -33,7 +30,6 @@ const ConfirmUser = (props) => {
 	//State
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
-	const [loggingIn, setLoggingIn] = useState(false)
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState([])
 	const wl = getWL()
@@ -86,43 +82,18 @@ const ConfirmUser = (props) => {
 				return ''
 		}
 	}
-	const loginUser = useCallback(async (session) => {
-		setLoggingIn(true)
-		setTimeout(
-			async () => {
-
-				cookie.save('SESSION', session, { path: '/' })
-				if (session.isLoggedIn) {
-					if (setToken()) {
-						await dispatch(await getNSettings())
-						history.push('/dashboard')
-					}
-				}
-
-				else {
-					setError(true)
-					setErrorMessage([<Danger >{t('confirmUser.networkError')}</Danger>])
-					setLoggingIn(false)
-					// this.setState({
-					// 	error: true,
-					// 	errorMessage: ,
-					// 	loggingIn: false
-					// })
-				}
-			}, 1000)
-	}, [dispatch, history, t])
 
 	const confirmUser = useCallback(async () => {
 		if (handleValidation()) {
-			let session = await confirmSUser({ newPassword: password, passwordToken: params.token })
+			let session = await confirmSUser({ newPassword: password, token: params.token })
 			if (session !== 404 && session)
-				loginUser(session)
+				history.push('/login')
 			else {
 				setError(true)
 				setErrorMessage([<Danger >{errorMessages(session)}</Danger>])
 			}
 		}
-	}, [handleValidation, loginUser, params.token, password])
+	}, [handleValidation, history, params.token, password])
 	const handleKeyPress = useCallback((event) => {
 		if (event.key === 'Enter') {
 			confirmUser()
@@ -174,9 +145,6 @@ const ConfirmUser = (props) => {
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
 								<ItemG container justify={'center'} xs={12}>
-									<Collapse in={loggingIn}>
-										<CircularLoader />
-									</Collapse>
 									<Collapse in={error}>
 										{errorMessage.map(m => m)}
 									</Collapse>
