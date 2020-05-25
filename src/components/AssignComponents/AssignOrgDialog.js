@@ -18,7 +18,7 @@ const AssignOrgDialog = React.memo(props => {
 	const classes = assignStyles()
 
 	//Redux
-	const orgs = useSelector(state => props.noOrg ? [{ id: -1, name: t('no.org') }, ...state.data.orgs] : state.data.orgs)
+	const orgs = useSelector(state => state.data.orgs)
 
 	//State
 	const [filters, setFilters] = useState({

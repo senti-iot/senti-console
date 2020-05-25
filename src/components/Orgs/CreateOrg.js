@@ -23,7 +23,8 @@ const CreateOrg = props => {
 	const classes = createOrgStyles()
 	// const hasAccess = useAuth().hasAccess
 	//Redux
-	const language = useSelector(state => state.localization.language)
+	const language = useSelector(state => state.localization.language ? state.localization.language : 'da')
+	const user = useSelector(state => state.settings.user)
 	// const accessLevel = useSelector(state => state.settings.user.privileges)
 
 	//State
@@ -43,8 +44,8 @@ const CreateOrg = props => {
 			ean: ''
 		},
 		org: {
-			uuid: "47acb6ca-3984-4065-b248-fe740e0116c2",
-			name: t('no.orgParent')
+			uuid: user.org.uuid,
+			name: user.org.name
 		}
 	})
 	const [country, setCountry] = useState({
