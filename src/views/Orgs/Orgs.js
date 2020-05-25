@@ -306,7 +306,6 @@ const Orgs = props => {
 	const renderTableToolBarContent = () => {
 		// let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		let access = hasAccess(null, 'org.create')
-		console.log('Access', access)
 		return <Fragment>
 			{access ? <Tooltip title={t('menus.create.org')}>
 				<IconButton aria-label='Add new organisation' onClick={handleAddNewOrg}>

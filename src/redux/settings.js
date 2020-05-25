@@ -170,7 +170,6 @@ export const getNSettings = async () => {
 				internal.senti.settings = { ...getState().settings }
 				let SSettings = await setInternal(internal, user.uuid)
 				user.internal = internal
-				console.log(SSettings)
 				if (SSettings)
 					dispatch({
 						type: NOSETTINGS,

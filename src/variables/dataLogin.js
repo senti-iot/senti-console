@@ -12,7 +12,10 @@ export const loginUser = async (username, password) => {
 }
 export const nLoginUser = async (username, password) => {
 	var session = await coreServicesAPI.post('/auth/basic', { username, password }).then(rs => rs.data)
-	console.log(session)
+	return session
+}
+export const nGoogleLogin = async (token) => {
+	var session = await coreServicesAPI.post('/auth/google', { id_token: token }).then(rs => rs.data)
 	return session
 }
 export const loginUserViaGoogle = async (token) => {

@@ -32,7 +32,6 @@ const CreateFunctionForm = props => {
 
 	//Handlers
 
-	console.log('props', props)
 	const renderType = () => {
 		return <DSelect
 			margin={'normal'}

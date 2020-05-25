@@ -28,7 +28,6 @@ export const createUser = async (user) => {
 	return res
 }
 export const confirmUser = async (obj) => {
-	console.log(obj)
 	let response = await coreServicesAPI.post(`entity/user/confirm`, obj).then(rs => rs.ok ? rs.data : rs.ok)
 	return response
 }

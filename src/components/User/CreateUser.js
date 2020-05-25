@@ -178,7 +178,6 @@ const CreateUser = props => {
 		if (handleValidation()) {
 			await createUser(newUser).then(rs => {
 				if (rs.ok) {
-					console.log(rs)
 					close(rs.data)
 				}
 				else {

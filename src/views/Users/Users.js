@@ -204,13 +204,11 @@ const Users = props => {
 					handleRemoveFromFav(favObj, true)
 				}
 				let res = await deleteUser(u)
-				console.log('Res', res)
 				if (res) {
 					state = 1
 				}
 				else
 					state = 2
-				console.log('State', state)
 			}
 		}))
 		await reload(true)
