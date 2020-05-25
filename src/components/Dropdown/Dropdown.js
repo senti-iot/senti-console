@@ -38,7 +38,6 @@ const Dropdown = props => {
 		setActionAnchor(null)
 	}
 	const handleMenuItemClick = (m) => e => {
-		console.log(m)
 		if (m.func) {
 			m.func()
 		}

@@ -59,10 +59,10 @@ const EditOrg = props => {
 	}, [location.prevURL, history, rOrg])
 
 	const handleKeyPress = useCallback((e) => {
-		if (e.key === 'Escape') {
+		if (e.key === 'Escape' && !openOrg) {
 			goToOrg()
 		}
-	}, [goToOrg])
+	}, [goToOrg, openOrg])
 
 	//useEventListener
 
