@@ -114,7 +114,7 @@ const ConfirmUser = (props) => {
 
 	const confirmUser = useCallback(async () => {
 		if (handleValidation()) {
-			let session = await confirmSUser({ newPassword: password, passwordToken: params.token })
+			let session = await confirmSUser({ newPassword: password, token: params.token })
 			if (session !== 404 && session)
 				loginUser(session)
 			else {

@@ -220,22 +220,25 @@ export const getNSettings = async () => {
 			return true
 		}
 		else {
-			moment.locale('da')
-			let s = {
-				...getState().settings,
-			}
-			dispatch({
-				type: NOSETTINGS,
-				user,
-				settings: s
-			})
-			/**
-			 * @Andrei
-			 */
-			dispatch(await getAllData(true, user.org.aux?.odeumId, false))
-
-			return false
+			cookie.remove('SESSION')
 		}
+		// else {
+		// 	moment.locale('da')
+		// 	let s = {
+		// 		...getState().settings,
+		// 	}
+		// 	dispatch({
+		// 		type: NOSETTINGS,
+		// 		user,
+		// 		settings: s
+		// 	})
+		// 	/**
+		// 	 * @Andrei
+		// 	 */
+		// 	dispatch(await getAllData(true, user.org.aux?.odeumId, false))
+
+		// 	return false
+		// }
 		// dispatch(await getAllData(true, user.org.id, true))
 
 	}

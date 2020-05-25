@@ -1,8 +1,8 @@
 
 import loc from 'variables/localization/index'
-import { saveSettingsOnServ } from './settings';
-import { getDaysOfInterest } from './doi';
-var forEach = require('for-each');
+import { saveSettingsOnServ } from './settings'
+import { getDaysOfInterest } from './doi'
+var forEach = require('for-each')
 
 const changeLangAction = 'changeLanguage'
 const GETSETTINGS = 'getSettings'
@@ -11,7 +11,8 @@ const NOSETTINGS = 'noSettings'
 export const changeLanguage = (code, noSave) => {
 	return async (dispatch, getState) => {
 		dispatch(
-			{ type: changeLangAction,
+			{
+				type: changeLangAction,
 				code
 			})
 		if (!noSave)
@@ -25,15 +26,15 @@ export const changeLanguage = (code, noSave) => {
 let phrases = []
 const extend = (morePhrases, prefix) => {
 	forEach(morePhrases, function (phrase, key) {
-		var prefixedKey = prefix ? prefix + '.' + key : key;
+		var prefixedKey = prefix ? prefix + '.' + key : key
 		if (typeof phrase === 'object') {
-			extend(phrase, prefixedKey);
+			extend(phrase, prefixedKey)
 		} else {
-			phrases[prefixedKey] = phrase;
+			phrases[prefixedKey] = phrase
 		}
-	}, this);
+	}, this)
 	return phrases
-};
+}
 
 //Reducer
 const initialState = {
@@ -47,9 +48,9 @@ export const localization = (state = initialState, action) => {
 				language: action.settings.language,
 				s: extend(loc[action.settings.language])
 			})
-		case GETSETTINGS: 
+		case GETSETTINGS:
 			return Object.assign({}, state, {
-				language: action.settings.language,
+				language: action.settings.language ? action.settings.language : state.language,
 				s: extend(loc[action.settings.language])
 			})
 		case changeLangAction:
@@ -58,7 +59,7 @@ export const localization = (state = initialState, action) => {
 				language: action.code,
 				s: extend(loc[action.code])
 			})
-		
+
 		default:
 			return state
 	}
