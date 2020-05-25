@@ -10,6 +10,7 @@ import { suggestionGen, filterItems } from 'variables/functions'
 import assignStyles from 'assets/jss/components/assign/assignStyles'
 import { useSelector } from 'react-redux'
 import { useLocalization } from 'hooks'
+import TP from 'components/Table/TP'
 
 
 const AssignOrgDialog = React.memo(props => {
@@ -21,6 +22,7 @@ const AssignOrgDialog = React.memo(props => {
 	const orgs = useSelector(state => state.data.orgs)
 
 	//State
+	const [page, setPage] = useState(0)
 	const [filters, setFilters] = useState({
 		keyword: '',
 		startDate: null,
@@ -29,6 +31,8 @@ const AssignOrgDialog = React.memo(props => {
 	})
 	//Const
 	const { open, callBack, handleClose } = props
+	const height = window.innerHeight
+	const rows = Math.round((height - 85 - 49 - 49) / 49)
 
 	const appBarClasses = cx({
 		[' ' + classes['primary']]: 'primary'
@@ -53,13 +57,17 @@ const AssignOrgDialog = React.memo(props => {
 		setFilters({ ...filters, keyword: value })
 
 	}
+	const handleChangePage = (event, newpage) => {
+		setPage(newpage)
+	}
+
 
 	return (
 
 		<Dialog
 			fullScreen
 			open={open}
-			// onClose={handleClose}
+			onClose={closeDialog}
 			TransitionComponent={SlideT}
 		>
 			<AppBar className={classes.appBar + appBarClasses}>
@@ -114,7 +122,7 @@ const AssignOrgDialog = React.memo(props => {
 				</Toolbar>
 			</AppBar>
 			<List>
-				{orgs ? filterItems(orgs, filters).map((p, i) => (
+				{orgs ? filterItems(orgs, filters).slice(page * rows, page * rows + rows).map((p, i) => (
 					<Fragment key={i}>
 						<ListItem button onClick={assignOrg(p.uuid)} value={p.uuid}>
 							<ListItemText
@@ -124,6 +132,13 @@ const AssignOrgDialog = React.memo(props => {
 					</Fragment>
 				)
 				) : <CircularLoader />}
+				<TP
+					disableRowsPerPage
+					count={orgs ? orgs.length : 0}
+					page={page}
+					t={t}
+					handleChangePage={handleChangePage}
+				/>
 			</List>
 		</Dialog>
 

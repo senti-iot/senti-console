@@ -67,10 +67,10 @@ const CreateOrg = props => {
 	}, [history])
 
 	const handleKeyPress = useCallback((e) => {
-		if (e.key === 'Escape') {
+		if (e.key === 'Escape' && !openOrg) {
 			goToOrg()
 		}
-	}, [goToOrg])
+	}, [goToOrg, openOrg])
 
 	//useEventListener
 	useEventListener('keydown', handleKeyPress)
