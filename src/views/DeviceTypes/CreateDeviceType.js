@@ -1,32 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { createDeviceType } from 'variables/dataDeviceTypes';
-import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
-import { getDeviceTypes } from 'redux/data';
-import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks';
+import { createDeviceType } from 'variables/dataDeviceTypes'
+import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm'
+import { getDeviceTypes } from 'redux/data'
+import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks'
 
-// const mapStateToProps = (state) => ({
-// 	accessLevel: state.settings.user.privileges,
-// 	orgId: state.settings.user.org.id,
-// 	org: state.settings.user.org,
-// 	cloudfunctions: state.data.functions,
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	getDeviceTypes: async (reload, orgId, ua) => dispatch(await getDeviceTypes(reload, orgId, ua))
-// })
-
-// @Andrei
 const CreateDeviceType = props => {
 	//Hooks
-	const s = useSnackbar().s
 	const dispatch = useDispatch()
-	const location = useLocation()
+	const s = useSnackbar().s
 	const history = useHistory()
+	const location = useLocation()
 
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
-	const orgId = useSelector(state => state.settings.user.org.id)
 	const org = useSelector(state => state.settings.user.org)
 	const cloudfunctions = useSelector(state => state.data.functions)
 
@@ -65,6 +52,8 @@ const CreateDeviceType = props => {
 	useEventListener('keydown', handleKeyPress)
 
 
+
+
 	//useEffects
 	useEffect(() => {
 		let prevURL = location.prevURL ? location.prevURL : '/devicetypes/list'
@@ -86,7 +75,6 @@ const CreateDeviceType = props => {
 			[what]: e.target.value
 		})
 	}
-
 	//#region Orgs
 
 	const handleOrgChange = org => {
@@ -96,6 +84,7 @@ const CreateDeviceType = props => {
 	const handleCloseOrg = () => setOpenOrg(false)
 
 	//#endregion
+
 	//#region Inbound Function
 
 	const handleRemoveInboundFunction = index => e => {
@@ -105,12 +94,6 @@ const CreateDeviceType = props => {
 			...sensorMetadata,
 			inbound: mtd
 		})
-		// this.setState({
-		// 	sensorMetadata: {
-		// 		...this.state.sensorMetadata,
-		// 		inbound: mtd
-		// 	}
-		// })
 	}
 	const handleAddInboundFunction = e => {
 		let mtd = sensorMetadata.inbound
@@ -134,7 +117,6 @@ const CreateDeviceType = props => {
 				...sensorMetadata.outbound, { key: '', nId: -1, type: 0 }
 			]
 		})
-
 	}
 
 	const handleRemoveKey = (index) => e => {
@@ -143,7 +125,6 @@ const CreateDeviceType = props => {
 			...sensorMetadata,
 			outbound: newMetadata
 		})
-
 	}
 
 	const handleRemoveFunction = (i) => e => {
@@ -153,7 +134,6 @@ const CreateDeviceType = props => {
 			...sensorMetadata,
 			outbound: mtd
 		})
-
 	}
 
 	const handleChangeKey = (v, i) => e => {
@@ -163,7 +143,6 @@ const CreateDeviceType = props => {
 			...sensorMetadata,
 			outbound: mtd
 		})
-
 	}
 
 	const handleChangeType = index => e => {
@@ -246,9 +225,7 @@ const CreateDeviceType = props => {
 			...sensorMetadata,
 			[where]: metadata
 		})
-
 	}
-
 	//#endregion
 
 	//#region Create Device Type
@@ -264,9 +241,9 @@ const CreateDeviceType = props => {
 			inbound: sensorMetadata.inbound,
 			outbound: sensorMetadata.outbound,
 			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
-			orgId: stateOrg.id
+			orgId: stateOrg.aux?.odeumId
 		}
-
+		console.log(newDeviceType)
 		return await createDeviceType(newDeviceType)
 	}
 
@@ -274,11 +251,11 @@ const CreateDeviceType = props => {
 		let rs = await createDeviceTypeFunc()
 		if (rs) {
 			s('snackbars.create.devicetype', { dt: deviceType.name })
-			dispatch(getDeviceTypes(true, orgId, accessLevel.apisuperuser ? true : false))
+			dispatch(getDeviceTypes(true, stateOrg.aux?.odeumId, accessLevel.apisuperuser ? true : false))
 			history.push(`/devicetype/${rs}`)
 		}
 		else
-			s('snackbars.failed')
+			s('snackbars.networkError')
 	}
 
 
@@ -317,11 +294,8 @@ const CreateDeviceType = props => {
 
 			handleChange={handleChange}
 			handleCreate={handleCreate}
-			// handleAddKeyToStructure={handleAddKeyToStructure}
-			// keyName={keyName}
-			// value={value}
+
 			goToDeviceTypes={goToDeviceTypes}
-		// t={t}
 		/>
 	)
 }

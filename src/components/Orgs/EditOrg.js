@@ -89,7 +89,7 @@ const EditOrg = props => {
 				...rOrg,
 				org: {
 					...rOrg.org,
-					name: rOrg.org.id === -1 ? t('no.org') : rOrg.org.name
+					name: rOrg.org.name
 				}
 			})
 			setCountry({
@@ -205,7 +205,7 @@ const EditOrg = props => {
 	}
 	const close = () => {
 		let favObj = {
-			id: org.id,
+			id: org.uuid,
 			name: org.name,
 			type: 'org',
 			path: `/management/org/${org.uuid}`
@@ -216,7 +216,6 @@ const EditOrg = props => {
 		setCreated(true)
 		setCreating(false)
 		s('snackbars.orgUpdated', ({ org: org.name }))
-		// dispatch(getOrgLS(org.id))
 		getOrg(org.uuid)
 		dispatch(getOrgs(true))
 		history.push(`/management/org/${org.uuid}`)

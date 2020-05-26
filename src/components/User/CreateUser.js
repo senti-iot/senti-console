@@ -156,7 +156,7 @@ const CreateUser = props => {
 		if (email === '') {
 			errorCode.push(4)
 		}
-		if (org.id === 0) {
+		if (org.uuid === '') {
 			errorCode.push(5)
 		}
 		setErrorMessage(errorCode.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))

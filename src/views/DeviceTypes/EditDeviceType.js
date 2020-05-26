@@ -5,14 +5,14 @@ import { updateDeviceType } from 'variables/dataDeviceTypes'
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm'
 import { updateFav, isFav } from 'redux/favorites'
 import { CircularLoader } from 'components'
-import { useLocalization, useHistory, useSnackbar, useEventListener } from 'hooks'
+import { useHistory, useSnackbar, useEventListener } from 'hooks'
 import { useParams, useLocation } from 'react-router-dom'
 
 
 const EditDeviceType = props => {
 	//Hooks
 	const dispatch = useDispatch()
-	const t = useLocalization()
+
 	const s = useSnackbar().s
 	const history = useHistory()
 	const location = useLocation()
@@ -20,7 +20,6 @@ const EditDeviceType = props => {
 
 	//Redux
 	const accessLevel = useSelector(store => store.settings.user.privileges)
-	const orgId = useSelector(store => store.settings.user.org.id)
 	const cloudfunctions = useSelector(store => store.data.functions)
 	const devicetype = useSelector(store => store.data.deviceType)
 	const orgs = useSelector(store => store.data.orgs)
@@ -47,6 +46,7 @@ const EditDeviceType = props => {
 
 	//useEventListeners
 	useEventListener('keydown', keyHandler)
+
 
 	//useEffects
 	useEffect(() => {
@@ -75,7 +75,7 @@ const EditDeviceType = props => {
 			})
 			setBC('createdevicetype')
 		}
-	}, [deviceType, devicetype, params.id, location.prevURL, orgs, setBC, setHeader, setTabs])
+	}, [devicetype, params.id, location.prevURL, orgs, setBC, setHeader, setTabs])
 
 	//handlers
 
@@ -85,15 +85,171 @@ const EditDeviceType = props => {
 			[what]: e.target.value
 		})
 	}
+	//#region Orgs
+
+	const handleOrgChange = org => {
+		setOrg(org)
+	}
+	const handleOpenOrg = () => setOpenOrg(true)
+	const handleCloseOrg = () => setOpenOrg(false)
+
+	//#endregion
+
+	//#region Inbound Function
+
+	const handleRemoveInboundFunction = index => e => {
+		let mtd = sensorMetadata.inbound
+		mtd = mtd.filter((v, i) => index !== i)
+		setSensorMetadata({
+			...sensorMetadata,
+			inbound: mtd
+		})
+	}
+	const handleAddInboundFunction = e => {
+		let mtd = sensorMetadata.inbound
+		setSensorMetadata({
+			...sensorMetadata,
+			inbound: [
+				...mtd,
+				{ id: mtd.length, order: mtd.length, nId: -1 }
+			]
+		})
+	}
+
+	//#endregion
+
+	//#region Outbound function
+
+	const handleAddKey = e => {
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: [
+				...sensorMetadata.outbound, { key: '', nId: -1, type: 0 }
+			]
+		})
+	}
+
+	const handleRemoveKey = (index) => e => {
+		let newMetadata = sensorMetadata.outbound.filter((v, i) => i !== index)
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: newMetadata
+		})
+	}
+
+	const handleRemoveFunction = (i) => e => {
+		let mtd = sensorMetadata.outbound
+		mtd[i].nId = -1
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+
+	const handleChangeKey = (v, i) => e => {
+		let mtd = sensorMetadata.outbound
+		mtd[i].key = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+
+	const handleChangeType = index => e => {
+		e.preventDefault()
+		let mtd = sensorMetadata.outbound
+		mtd[index].type = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+
+	//#endregion
+
+	//#region Metadata
+
+	const handleAddMetadataKey = e => {
+		let mtd = sensorMetadata.metadata
+		mtd.push({ key: "", value: "" })
+		setSensorMetadata({
+			...sensorMetadata,
+			metadata: mtd
+		})
+	}
+
+	const handleRemoveMtdKey = index => e => {
+		let newMetadata = sensorMetadata.metadata.filter((v, i) => i !== index)
+		setSensorMetadata({
+			...sensorMetadata,
+			metadata: newMetadata
+		})
+
+	}
+
+	const handleChangeMetadataKey = (i) => e => {
+		let mtd = sensorMetadata.metadata
+		mtd[i].key = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			metadata: mtd
+		})
+	}
+
+	const handleChangeMetadata = (i) => e => {
+		let mtd = sensorMetadata.metadata
+		mtd[i].value = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			metadata: mtd
+		})
+
+	}
+
+	//#endregion
+
+	//#region Function selector
+
+	const handleOpenFunc = (p, where) => e => {
+		setSelect({ ...select, [where]: p })
+		setOpenCF({
+			open: true,
+			where
+		})
+	}
+
+	const handleCloseFunc = () => {
+		setOpenCF({
+			open: false,
+			where: null
+		})
+	}
+	const handleChangeFunc = (o, where) => {
+		let metadata = sensorMetadata[where]
+		metadata[select[where]].nId = o.id
+		setOpenCF({
+			open: false,
+			where: null
+		})
+		setSensorMetadata({
+			...sensorMetadata,
+			[where]: metadata
+		})
+	}
+	//#endregion
+
+	//#region Update Device Type
+
 	const updtDeviceType = async () => {
-		let deviceTypee = {
+		let nDeviceType = {
 			...deviceType,
 			outbound: sensorMetadata.outbound,
 			inbound: sensorMetadata.inbound,
 			metadata: sensorMetadata.metadata,
-			orgId: org.id
+			orgId: org.aux?.odeumId
 		}
-		return await updateDeviceType(deviceTypee)
+		console.log(nDeviceType)
+		return await updateDeviceType(nDeviceType)
 	}
 	const handleCreate = async () => {
 		let rs = await updtDeviceType()
@@ -108,121 +264,15 @@ const EditDeviceType = props => {
 				dispatch(updateFav(favObj))
 			}
 			s('snackbars.edit.devicetype', { dt: deviceType.name })
-			dispatch(await getDeviceTypes(true, orgId, accessLevel.apisuperuser ? true : false))
+			dispatch(await getDeviceTypes(true, org.aux?.odeumId, accessLevel.apisuperuser ? true : false))
 			history.push(`/devicetype/${rs}`)
 		}
 		else
 			s('snackbars.failed')
 	}
 
-	//#region Inbound Function
+	//#region
 
-	const handleRemoveInboundFunction = index => e => {
-		let mtd = sensorMetadata.inbound
-		mtd = mtd.filter((v, i) => index !== i)
-		setSensorMetadata({ ...sensorMetadata, inbound: mtd })
-	}
-	const handleAddInboundFunction = e => {
-		let mtd = sensorMetadata.inbound
-		setSensorMetadata({ ...sensorMetadata, inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }] })
-	}
-
-	//#endregion
-
-	//#region Outbound function
-
-	const handleAddKey = e => {
-		setSensorMetadata({
-			...sensorMetadata, outbound:
-				[...sensorMetadata.outbound, { key: '', nId: -1, type: 0 }]
-		})
-	}
-
-	const handleRemoveKey = (index) => e => {
-		let newMetadata = sensorMetadata.outbound.filter((v, i) => i !== index)
-		setSensorMetadata({ ...sensorMetadata, outbound: newMetadata })
-	}
-
-	const handleRemoveFunction = (i) => e => {
-		let mtd = sensorMetadata.outbound
-		mtd[i].nId = -1
-		setSensorMetadata({ ...sensorMetadata, outbound: mtd })
-	}
-
-	const handleChangeKey = (v, i) => e => {
-		let mtd = sensorMetadata.outbound
-		mtd[i].key = e.target.value
-		setSensorMetadata({ ...sensorMetadata, outbound: mtd })
-	}
-
-	const handleChangeType = index => e => {
-		let mtd = sensorMetadata.outbound
-		mtd[index].type = e.target.value
-		setSensorMetadata({ ...sensorMetadata, outbound: mtd })
-	}
-
-	//#endregion
-
-	//#region Metadata
-
-	const handleAddMetadataKey = e => {
-		let mtd = sensorMetadata.metadata
-		mtd.push({ key: "", value: "" })
-		setSensorMetadata({ ...sensorMetadata, metadata: mtd })
-	}
-
-	const handleRemoveMtdKey = index => e => {
-		let newMetadata = sensorMetadata.metadata.filter((v, i) => i !== index)
-		setSensorMetadata({ ...sensorMetadata, metadata: newMetadata })
-
-	}
-
-	const handleChangeMetadataKey = (i) => e => {
-		let mtd = sensorMetadata.metadata
-		mtd[i].key = e.target.value
-		setSensorMetadata({ ...sensorMetadata, metadata: mtd })
-	}
-
-	const handleChangeMetadata = (i) => e => {
-		let mtd = sensorMetadata.metadata
-		mtd[i].value = e.target.value
-		setSensorMetadata({ ...sensorMetadata, metadata: mtd })
-
-	}
-
-	//#endregion
-
-	//#region Function selector
-
-	const handleOpenFunc = (p, where) => e => {
-		setSelect({ ...select, [where]: p })
-		setOpenCF({ open: true, where })
-	}
-
-	const handleCloseFunc = () => {
-		setOpenCF({
-			open: false,
-			where: null
-		})
-
-	}
-	const handleChangeFunc = (o, where) => {
-		let metadata = sensorMetadata[where]
-		metadata[select[where]].nId = o.id
-		setOpenCF({ open: false, where: null })
-		setSensorMetadata({ ...sensorMetadata, [where]: metadata })
-	}
-	//#endregion
-
-	//#region Orgs
-
-	const handleOrgChange = org => {
-		setOrg(org)
-	}
-	const handleOpenOrg = () => setOpenOrg(true)
-	const handleCloseOrg = () => setOpenOrg(false)
-
-	//#endregion
 
 
 	const goToDeviceTypes = () => history.push('/devicetypes')
@@ -236,7 +286,7 @@ const EditDeviceType = props => {
 			handleOpenOrg={handleOpenOrg}
 			handleCloseOrg={handleCloseOrg}
 
-			deviceType={devicetype}
+			deviceType={deviceType}
 			sensorMetadata={sensorMetadata}
 			cfunctions={cloudfunctions}
 			handleOpenFunc={handleOpenFunc}
@@ -262,7 +312,6 @@ const EditDeviceType = props => {
 			handleCreate={handleCreate}
 
 			goToDeviceTypes={goToDeviceTypes}
-			t={t}
 		/>
 	)
 }
