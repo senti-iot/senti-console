@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { createRegistry } from 'variables/dataRegistry';
-import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
-import { getRegistries } from 'redux/data';
-import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks';
+import { createRegistry } from 'variables/dataRegistry'
+import CreateRegistryForm from 'components/Registry/CreateRegistryForm'
+import { getRegistries } from 'redux/data'
+import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks'
 
 const CreateRegistry = props => {
 	//Hooks
@@ -14,7 +14,6 @@ const CreateRegistry = props => {
 
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
-	const orgId = useSelector(state => state.settings.user.org.id)
 	const org = useSelector(state => state.settings.user.org)
 
 	//State
@@ -23,7 +22,7 @@ const CreateRegistry = props => {
 		region: "Europe",
 		protocol: 0,
 		ca_certificate: 0,
-		orgId
+		orgId: org.aux?.odeumId
 	})
 	const [stateOrg, setStateOrg] = useState(org)
 
@@ -61,7 +60,7 @@ const CreateRegistry = props => {
 	}
 	const handleOrgChange = newOrg => {
 		setStateOrg(newOrg)
-		setRegistry({ ...registry, orgId: newOrg.id })
+		setRegistry({ ...registry, orgId: newOrg.aux.odeumId })
 	}
 	const createRegistryFunc = async () => {
 		return await createRegistry(registry)
@@ -70,7 +69,7 @@ const CreateRegistry = props => {
 		let rs = await createRegistryFunc()
 		if (rs) {
 			s('snackbars.create.registry', { reg: registry.name })
-			dispatch(await getRegistries(true, orgId, accessLevel.apisuperuser ? true : false))
+			dispatch(await getRegistries(true, org.aux?.odeumId, accessLevel.apisuperuser ? true : false))
 			history.push(`/registry/${rs}`)
 		}
 		else

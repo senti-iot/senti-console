@@ -1047,6 +1047,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"failed": "Error!",
 		"orgs": {
 			"stillHasUsers": "Some Organisations still have users!"
 		},
