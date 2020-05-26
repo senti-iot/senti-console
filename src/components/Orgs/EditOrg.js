@@ -55,7 +55,7 @@ const EditOrg = props => {
 	}, [dispatch, params.id])
 	const goToOrg = useCallback(() => {
 		let prevURL = location.prevURL
-		history.push(prevURL ? prevURL : '/management/org/' + rOrg.id)
+		history.push(prevURL ? prevURL : '/management/org/' + rOrg.uuid)
 	}, [location.prevURL, history, rOrg])
 
 	const handleKeyPress = useCallback((e) => {
