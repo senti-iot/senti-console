@@ -25,7 +25,7 @@ const OrgDetails = props => {
 
 
 	const handleDeleteOrg = () => deleteOrg()
-	const handleEdit = () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/org/${org.id}` })
+	const handleEdit = () => history.push({ pathname: `${match.url}/edit`, prevURL: `/management/org/${org.uuid}` })
 
 	const options = () => {
 		let allOptions = [

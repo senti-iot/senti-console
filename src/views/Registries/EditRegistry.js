@@ -75,7 +75,7 @@ const UpdateRegistry = props => {
 
 	const handleOrgChange = newOrg => {
 		setOrg(newOrg)
-		setStateRegistry({ ...stateRegistry, orgId: newOrg.id })
+		setStateRegistry({ ...stateRegistry, orgId: newOrg.aux?.odeumId })
 	}
 	const handleChange = (what) => e => {
 		setStateRegistry({ ...stateRegistry, [what]: e.target.value })

@@ -1047,6 +1047,7 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
+		"failed": "Fejl!",
 		"orgs": {
 			"stillHasUsers": "Nogle organisationer har stadig brugere!"
 		},
