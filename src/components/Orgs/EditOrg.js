@@ -192,7 +192,7 @@ const EditOrg = props => {
 				setOrg({
 					...org,
 					name: e.target.value,
-					nickname: camelCase(e.target.value)
+					uuname: camelCase(e.target.value)
 				})
 			}
 			else {
