@@ -355,7 +355,7 @@ export const pF = (phone) => {
 	return phoneNumber.formatInternational()
 }
 /**
- * Transform Spaces into camelCase
+ * Transform String to camelCase standard
  * @param {String} str
  */
 export const camelCase = (str) => {

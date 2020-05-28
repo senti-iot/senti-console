@@ -32,7 +32,7 @@ const CreateOrg = props => {
 	const [org, setOrg] = useState({
 		id: null,
 		name: '',
-		uuname: '',
+		nickname: '',
 		address: '',
 		city: '',
 		zip: '',

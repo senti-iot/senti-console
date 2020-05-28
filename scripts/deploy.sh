@@ -22,7 +22,7 @@ if [[ "$1" == "beta" ]]; then
 	exit 0
 fi
 
-if [[ "$1" == "alpha-dev" ]]; then
+if [[ "$1" == "alpha" ]]; then
 	echo
 	echo Deploying Senti App $1 ...
 	rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/alpha.senti.cloud/
