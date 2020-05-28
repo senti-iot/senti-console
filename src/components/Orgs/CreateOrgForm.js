@@ -69,8 +69,8 @@ const CreateOrgForm = props => {
 				<TextF
 					id={'nickname'}
 					label={t('orgs.fields.nickname')}
-					value={org.uuname}
-					onChange={handleChange('uuname')}
+					value={org.nickname}
+					onChange={handleChange('nickname')}
 					margin='normal'
 					error={error}
 				/>

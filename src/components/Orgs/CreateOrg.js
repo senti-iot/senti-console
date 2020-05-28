@@ -32,7 +32,7 @@ const CreateOrg = props => {
 	const [org, setOrg] = useState({
 		id: null,
 		name: '',
-		uuname: '',
+		nickname: '',
 		address: '',
 		city: '',
 		zip: '',
@@ -178,7 +178,7 @@ const CreateOrg = props => {
 				setOrg({
 					...org,
 					name: e.target.value,
-					uuname: camelCase(e.target.value)
+					nickname: camelCase(e.target.value)
 				})
 			}
 			else {
