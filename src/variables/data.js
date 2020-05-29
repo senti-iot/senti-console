@@ -131,7 +131,7 @@ export const api = create({
 
 //#region Senti Services
 
-let sentiServicesURL = 'https://services.senti.cloud'
+let sentiServicesURL = process.env.REACT_APP_BACKEND
 // let sentiServicesBetaURL = 'https://services.senti.cloud'
 
 // if (process.env.REACT_APP_DEV) {
