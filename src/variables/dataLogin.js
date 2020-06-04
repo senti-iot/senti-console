@@ -61,14 +61,3 @@ export const setPassword = async (obj) => {
 	let data = await api.post(`/core/user/setpassword`, obj).then(rs => rs.data)
 	return data
 }
-/**
- *
- * @param {object} user
- * @param {object} user.aux - Required
- * @param {object} user.aux.senti
- * @param {object} user.aux.odeum
- */
-export const saveSettings = async (user) => {
-	var data = await api.put(`/core/user/${user.id}`, user).then(rs => rs.data)
-	return data
-}
