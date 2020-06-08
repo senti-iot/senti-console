@@ -2,7 +2,6 @@ import cookie from 'react-cookies'
 import { getUser, getValidSession, getLoginUser, setInternal, editUser } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
-import { saveSettings } from 'variables/dataLogin'
 import { setDates } from './dateTime'
 import { setPrefix, set, get } from 'variables/storage'
 import { getAllData } from './data'
@@ -74,7 +73,7 @@ export const resetSettings = () => {
 }
 export const saveOnServ = (user) => {
 	return async (dispatch) => {
-		var saved = await saveSettings(user)
+		var saved = await setInternal(user.internal, user.uuid)
 		dispatch({
 			type: SAVESETTINGS,
 			saved: saved ? true : false
