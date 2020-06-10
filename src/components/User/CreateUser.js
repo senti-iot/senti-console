@@ -5,7 +5,7 @@ import { GridContainer, ItemGrid, Danger, CircularLoader } from 'components'
 import { Paper, Collapse, Button } from '@material-ui/core'
 import classNames from 'classnames'
 import { getUsers } from 'redux/data'
-import { useEventListener, useLocalization, useHistory, useSnackbar, /* useAuth */ } from 'hooks'
+import { useEventListener, useLocalization, useHistory, useSnackbar, useLocation, /* useAuth */ } from 'hooks'
 import createUserStyles from 'assets/jss/components/users/createUserStyles'
 import CreateUserForm from './CreateUserForm'
 import { getRoles } from 'variables/dataRoles'
@@ -18,6 +18,7 @@ const CreateUser = props => {
 	const s = useSnackbar().s
 	const dispatch = useDispatch()
 	const classes = createUserStyles()
+	const location = useLocation()
 	// const hasAccess = useAuth().hasAccess
 
 	//Redux
@@ -87,7 +88,10 @@ const CreateUser = props => {
 	// 	//eslint-disable-next-line
 	// }, [])
 
-	const goToUser = useCallback(() => history.push('/management/users'), [history])
+	const goToUser = useCallback(() => {
+		let prevURL = location.prevURL ? location.prevURL : null
+		history.push( prevURL ? prevURL : '/management/users')
+	}, [history, location.prevURL])
 
 	const keyHandler = useCallback((e) => {
 		if (e.key === 'Escape') {
@@ -103,13 +107,15 @@ const CreateUser = props => {
 		//GetRoles
 		const getR = async () => {
 			let roles = await getRoles()
+			let org = location.org ? location.org : null
 			setRoles(roles)
 			setSelectedRole(roles[0].uuid)
 			setUser({
 				...user,
 				role: {
-					uuid: roles[0].uuid
-				}
+					uuid: roles[0].uuid,
+				},
+				org: org ? org : user.org
 			})
 			setLoading(false)
 		}

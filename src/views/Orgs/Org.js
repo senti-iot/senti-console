@@ -74,11 +74,6 @@ const Org = props => {
 				dispatch(await getOrgLS(match.params.id))
 
 			}
-			else {
-
-
-			}
-
 		}
 		await getOrgUsers(match.params.id).then(rs => {
 			setUsers(rs)

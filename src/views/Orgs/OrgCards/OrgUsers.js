@@ -1,7 +1,7 @@
 import React from 'react'
 import { InfoCard, ItemGrid, Info, Caption, ItemG } from 'components'
-import { Table, TableBody, TableRow, Hidden, Link, makeStyles } from '@material-ui/core'
-import { People } from 'variables/icons'
+import { Table, TableBody, TableRow, Hidden, Link, makeStyles, Tooltip, IconButton } from '@material-ui/core'
+import { People, Add } from 'variables/icons'
 import TC from 'components/Table/TC'
 import Gravatar from 'react-gravatar'
 import { pF, dateFormat } from 'variables/functions'
@@ -23,12 +23,20 @@ const OrgUsers = props => {
 		e.stopPropagation()
 		history.push({ pathname: '/management/user/' + n.uuid, prevURL: `/management/org/${org.uuid}` })
 	}
+	const handleCreateNewUser = () => {
+		history.push({ pathname: '/management/users/new', prevURL: `/management/org/${org.uuid}`, org: org })
+	}
 	return (
 		<InfoCard
 			title={t('users.pageTitle')}
 			avatar={<People />}
 			noExpand
 			noPadding
+			topAction={<Tooltip title={t('menus.create.user')}>
+				<IconButton aria-label='Add new user' onClick={handleCreateNewUser}>
+					<Add />
+				</IconButton>
+			</Tooltip>}
 			content={
 				<Table>
 					<TableBody style={{ padding: "0 24px" }}>
