@@ -115,7 +115,7 @@ class CreateUser extends Component {
 		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
 		this.props.getUsers(true)
 		history.push(`/management/user/${rs.id}`)
-	
+
 	}
 	handleExtendedBirthdayChange = prop => e => {
 
@@ -304,8 +304,8 @@ class CreateUser extends Component {
 		]
 	}
 	renderAccess = () => {
-		const { t, accessLevel } = this.props
-		const { error, selectedGroup, user } = this.state
+		const { t, accessLevel, user } = this.props
+		const { error, selectedGroup  } = this.state
 		let rend = false
 		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
 			rend = true
