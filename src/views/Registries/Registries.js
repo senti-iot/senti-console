@@ -13,7 +13,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getRegistries, sortData } from 'redux/data'
 import RegistryCards from 'components/Registry/RegistryCards'
 import { deleteRegistry } from 'variables/dataRegistry'
-import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector, useAuth } from 'hooks'
+import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector /*, useAuth  */ } from 'hooks'
 import registriesStyles from 'assets/jss/components/registries/registriesStyles'
 import { handleRequestSort } from 'variables/functions'
 
@@ -25,7 +25,7 @@ const Registries = props => {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const classes = registriesStyles()
-	const hasAccess = useAuth()
+	// const hasAccess = useAuth()
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
