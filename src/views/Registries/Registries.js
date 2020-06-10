@@ -25,7 +25,7 @@ const Registries = props => {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const classes = registriesStyles()
-	const hasAccess = useAuth()
+	// const hasAccess = useAuth()
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
