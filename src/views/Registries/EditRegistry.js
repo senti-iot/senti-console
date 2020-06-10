@@ -50,7 +50,7 @@ const UpdateRegistry = props => {
 	useEffect(() => {
 		if ((stateRegistry === null && registry) && orgs.length > 0) {
 			setStateRegistry(registry)
-			setOrg(orgs[orgs.findIndex(o => o.aux?.odeumId === registry.orgId)])
+			setOrg(registry.org)
 			setLoading(false)
 		}
 	}, [orgs, registry, stateRegistry])
@@ -75,7 +75,11 @@ const UpdateRegistry = props => {
 
 	const handleOrgChange = newOrg => {
 		setOrg(newOrg)
-		setStateRegistry({ ...stateRegistry, orgId: newOrg.aux?.odeumId })
+		setStateRegistry({
+			...stateRegistry, org: {
+				uuid: newOrg.uuid
+			}
+		})
 	}
 	const handleChange = (what) => e => {
 		setStateRegistry({ ...stateRegistry, [what]: e.target.value })
@@ -85,19 +89,20 @@ const UpdateRegistry = props => {
 	}
 	const handleUpdate = async () => {
 		let rs = await updateRegistryFunc()
+		console.log(rs)
 		if (rs) {
 			let favObj = {
-				id: stateRegistry.id,
+				id: stateRegistry.uuid,
 				name: stateRegistry.name,
 				type: 'registry',
-				path: `/registry/${stateRegistry.id}`
+				path: `/registry/${stateRegistry.uuid}`
 			}
 			if (dispatch(isFav(favObj))) {
 				dispatch(updateFav(favObj))
 			}
 			s('snackbars.edit.registry', { reg: stateRegistry.name })
 			dispatch(await getRegistries(true, orgId, accessLevel.apisuperuser ? true : false))
-			history.push(`/registry/${stateRegistry.id}`)
+			history.push(`/registry/${stateRegistry.uuid}`)
 		}
 		else
 			s('snackbars.failed')

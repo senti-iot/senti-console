@@ -107,10 +107,6 @@ const User = props => {
 				if (id) {
 					await getUser(id)
 				}
-
-				if (location.hash !== "") {
-					scrollToAnchor(location.hash)
-				}
 			}
 		}
 		gUser()

@@ -35,15 +35,28 @@ const Registry = props => {
 	//useCallbacks
 	const isFavorite = useCallback(id => dispatch(isFav({ id: id, type: 'registry' })), [dispatch])
 
+	const getReg = useCallback(async id => {
+		if (!registry) {
+			await dispatch(await getRegistryLS(match.params.id))
+		}
+		if (registry) {
+			if (match.params.id !== registry.uuid) {
+				await dispatch(await getRegistryLS(match.params.id))
+			}
+		}
+	}, [dispatch, match.params.id, registry])
 	//useEffects
 
+	/**
+	 * Use Effect for favorites handling
+	 */
 	useEffect(() => {
 		if (saved === true) {
-			if (isFavorite(registry.id)) {
+			if (isFavorite(registry.uuid)) {
 				s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
 				dispatch(finishedSaving())
 			}
-			if (!isFavorite(registry.id)) {
+			if (!isFavorite(registry.uuid)) {
 				s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
 				dispatch(finishedSaving())
 			}
@@ -52,19 +65,9 @@ const Registry = props => {
 	}, [saved, match, dispatch, registry, s, t, isFavorite])
 
 	useEffect(() => {
-		const getReg = async () => {
-			if (match) {
-				let id = match.params.id
-				if (id) {
-					await dispatch(await getRegistryLS(id))
+		const gReg = async () => await getReg()
+		gReg()
 
-				}
-			}
-		}
-		getReg()
-		if (location.hash !== '') {
-			scrollToAnchor(location.hash)
-		}
 		//eslint-disable-next-line
 	}, [])
 
@@ -85,6 +88,9 @@ const Registry = props => {
 			})
 			let prevURL = location.prevURL ? location.prevURL : '/registries/list'
 			setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
+			if (location.hash !== '') {
+				scrollToAnchor(location.hash)
+			}
 		}
 
 	})
@@ -93,7 +99,7 @@ const Registry = props => {
 
 	const addToFavorites = () => {
 		let favObj = {
-			id: registry.id,
+			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
 			path: match.url
@@ -102,7 +108,7 @@ const Registry = props => {
 	}
 	const removeFromFavorites = () => {
 		let favObj = {
-			id: registry.id,
+			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
 			path: match.url
@@ -126,9 +132,9 @@ const Registry = props => {
 		setOpenDelete(false)
 	}
 	const handleDeleteRegistry = async () => {
-		if (dispatch(isFav({ id: registry.id, type: 'registry' })))
+		if (dispatch(isFav({ id: registry.uuid, type: 'registry' })))
 			removeFromFavorites()
-		await deleteRegistry(registry.id).then(() => {
+		await deleteRegistry(registry.uuid).then(() => {
 			handleCloseDeleteDialog()
 			// snackBarMessages(1)
 			history.push('/registries/list')
@@ -158,7 +164,7 @@ const Registry = props => {
 					{renderDeleteDialog()}
 					<ItemGrid xs={12} noMargin id='details'>
 						<RegistryDetails
-							isFav={isFavorite(registry.id)}
+							isFav={isFavorite(registry.uuid)}
 							addToFav={addToFavorites}
 							removeFromFav={removeFromFavorites}
 							registry={registry}

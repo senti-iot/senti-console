@@ -1,4 +1,4 @@
-import { Caption, ItemG, Info } from 'components';
+import { Caption, ItemG, Info, Link } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React from 'react';
@@ -49,7 +49,7 @@ const RegistryDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.id}/edit`, prevURL: `/registry/${registry.id}` }) },
+					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.uuid}/edit`, prevURL: `/registry/${registry.uuid}` }) },
 					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
 
@@ -58,9 +58,9 @@ const RegistryDetails = props => {
 			} />
 
 			}
-			subheader={<ItemG container alignItems={'center'}>
-				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{registry.id}
-			</ItemG>}
+			// subheader={<ItemG container alignItems={'center'}>
+			// 	<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{registry.uuid}
+			// </ItemG>}
 			content={
 				<ItemG container >
 
@@ -75,6 +75,14 @@ const RegistryDetails = props => {
 					<ItemG xs={12}>
 						<Caption>{t('registries.fields.description')}</Caption>
 						<Info>{registry.description}</Info>
+					</ItemG>
+					<ItemG xs={12}>
+						<Caption>{t('orgs.fields.name')}</Caption>
+						<Info>
+							<Link to={{ pathname: `/management/org/${registry.org.uuid}`, prevURL: `/management/user/${registry.uuid}` }}>
+								{registry.org ? registry.org.name : t('users.noOrg')}
+							</Link>
+						</Info>
 					</ItemG>
 				</ItemG>
 			}

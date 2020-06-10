@@ -9,7 +9,8 @@ import { colors } from 'variables/colors'
 import { hist } from 'Providers'
 import { handleRequestSort } from 'variables/functions'
 import { getSuggestions } from './globalSearch'
-import { getAllRegistries, getRegistry, getAllMessages, getAllTokens } from 'variables/dataRegistry'
+import { getAllRegistries, getRegistry, getAllMessages } from 'variables/dataRegistry'
+import { getAllTokens } from 'variables/dataTokens'
 import { getAllDeviceTypes, getDeviceType } from 'variables/dataDeviceTypes'
 import { getAllSensors, getSensor } from 'variables/dataSensors'
 import { getAllFunctions, getFunction } from 'variables/dataFunctions'
@@ -582,7 +583,7 @@ export const setFunctions = () => {
 //#endregion
 
 //#region Registries
-export const getRegistryLS = async (id, customerID, ua) => {
+export const getRegistryLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotRegistry, payload: false })
 		let registry = get('registry.' + id)
@@ -606,7 +607,7 @@ export const getRegistryLS = async (id, customerID, ua) => {
 				payload: null
 			})
 		}
-		await getRegistry(id, customerID, ua).then(async rs => {
+		await getRegistry(id).then(async rs => {
 			if (!compare(registry, rs)) {
 				registry = {
 					...rs,

@@ -10,7 +10,7 @@ import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link
 import { customFilterItems } from 'variables/Filters'
 import { getTokens, setTokens, sortData } from 'redux/data'
 import CreateToken from './CreateToken'
-import { deleteTokens } from 'variables/dataRegistry'
+import { deleteTokens } from 'variables/dataTokens'
 import { useLocalization, useMatch, useSnackbar } from 'hooks'
 import tokensStyles from 'assets/jss/components/api/tokensStyles'
 

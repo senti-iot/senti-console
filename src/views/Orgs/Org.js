@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { GridContainer, ItemGrid, CircularLoader, Warning, Danger, TextF, ItemG } from 'components'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Collapse } from '@material-ui/core'
 import { getOrgUsers } from 'variables/dataOrgs'
+import { getOrgRegistries } from 'variables/dataRegistry'
 import OrgDetails from './OrgCards/OrgDetails'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs'
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers'
+import OrgRegistries from 'views/Orgs/OrgCards/OrgRegistries'
 // import OrgDevices from 'views/Orgs/OrgCards/OrgDevices'
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 // import { getAllDevices } from 'variables/dataDevices'
@@ -14,6 +16,7 @@ import { Business, People } from 'variables/icons'
 // import { getAllProjects } from 'variables/dataProjects'
 // import { getAllCollections } from 'variables/dataCollections'
 // import OrgProjects from './OrgCards/OrgProjects'
+
 // import OrgCollections from './OrgCards/OrgCollections'
 import { scrollToAnchor } from 'variables/functions'
 import { getOrgLS } from 'redux/data'
@@ -50,8 +53,10 @@ const Org = props => {
 	// const [projects, setProjects] = useState([]) // added
 	// const [collections, setCollections] = useState([]) // added
 	const [users, setUsers] = useState([])
+	const [registries, setRegistries] = useState([])
 	// const [devices, setDevices] = useState([]) // added
 	const [loadingUsers, setLoadingUsers] = useState(true)
+	const [loadingRegistries, setLoadingRegistries] = useState(true)
 	// const [loadingDevices, setLoadingDevices] = useState(true) // added
 	const [openDelete, setOpenDelete] = useState(false)
 	// const [loadingCollections, setLoadingCollections] = useState(true) // added
@@ -78,6 +83,10 @@ const Org = props => {
 		await getOrgUsers(match.params.id).then(rs => {
 			setUsers(rs)
 			setLoadingUsers(false)
+		})
+		await getOrgRegistries(match.params.id).then(rs => {
+			setRegistries(rs)
+			setLoadingRegistries(false)
 		})
 	}, [dispatch, match.params.id, org])
 
@@ -277,6 +286,12 @@ const Org = props => {
 						history={history}
 					/> :
 						<CircularLoader fill />}
+				</ItemGrid>
+				<ItemGrid xs={12} noMargin id={'registries'}>
+					{!loadingRegistries ? <OrgRegistries
+						org={org}
+						registries={registries ? registries : []}
+					/> : <CircularLoader fill/>}
 				</ItemGrid>
 				{/* <ItemGrid xs={12} noMargin id={'projects'}>
 					{!loadingProjects ? <OrgProjects
