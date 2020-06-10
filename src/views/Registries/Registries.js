@@ -62,7 +62,7 @@ const Registries = props => {
 		{ id: 'name', label: t('registries.fields.name') },
 		{ id: 'region', label: t('registries.fields.region') },
 		{ id: 'protocol', label: t('registries.fields.protocol') },
-		{ id: 'protocol', label: t('registries.fields.created') },
+		{ id: 'created', label: t('registries.fields.created') },
 		{ id: 'customer', label: t('registries.fields.customer') },
 	]
 
