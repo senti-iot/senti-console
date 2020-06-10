@@ -19,7 +19,7 @@ import { userStyles } from 'assets/jss/components/users/userStyles';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { Person, FolderShared } from 'variables/icons';
 import { scrollToAnchor } from 'variables/functions';
-import { getUserLS } from 'redux/data';
+import { getUserLS, getUsers } from 'redux/data';
 
 class User extends Component {
 	constructor(props) {
@@ -95,7 +95,7 @@ class User extends Component {
 				await this.getUser(match.params.id).then(() => {
 					let name = this.props.user.firstName + ' ' + this.props.user.lastName
 					setBC('user', name ? name : "")
-				
+
 				})
 				let prevURL = location.prevURL ? location.prevURL : '/management/users'
 				setHeader("users.user", true, prevURL, 'users')
@@ -144,21 +144,27 @@ class User extends Component {
 	}
 	handleDeleteUser = async () => {
 		const { user } = this.props
-		await deleteUser(user.id).then(rs => rs ? () => {
-			let favObj = {
-				id: user.id,
-				type: 'user'
-			}	
-			if (this.props.isFav(favObj)) {
-				this.removeFromFav()
+		await deleteUser(user.id).then(rs => {
+			if (rs) {
+				let favObj = {
+					id: user.id,
+					type: 'user'
+				}
+				if (this.props.isFav(favObj)) {
+					this.removeFromFav()
+				}
+				this.close(rs)
 			}
-			this.close()
-		} : null)
+			else {
+				this.close(rs)
+			}
+		})
 	}
 	close = (rs) => {
 		this.setState({ openDelete: false })
-		this.snackBarMessages(1)
+		this.snackBarMessages(rs ? 1 : 3)
 		this.props.history.push('/management/users')
+		this.props.reload(true)
 	}
 	snackBarMessages = (msg) => {
 		const { s, user } = this.props
@@ -168,6 +174,9 @@ class User extends Component {
 				break
 			case 2:
 				s('snackbars.userPasswordChanged')
+				break
+			case 3:
+				s('snackbars.deletedFail')
 				break
 			default:
 				break
@@ -329,7 +338,7 @@ class User extends Component {
 	render() {
 		const { classes, t, user, loading } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
-
+		console.log('user', user)
 		return (
 			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -369,7 +378,8 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getUser: async (id) => dispatch(await getUserLS(id))
+	getUser: async (id) => dispatch(await getUserLS(id)),
+	reload: (reload) => dispatch(getUsers(reload)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(User))

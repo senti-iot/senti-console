@@ -64,7 +64,7 @@ class UserContact extends Component {
 	}
 	render() {
 		const { t, user, classes } = this.props
-		const extended = user.aux.senti ? user.aux.senti.extendedProfile : null
+		const extended = user ? user.aux ? user.aux.senti ? user.aux.senti.extendedProfile : null : null : null
 		return (
 			<InfoCard
 				title={`${user.firstName} ${user.lastName}`}
