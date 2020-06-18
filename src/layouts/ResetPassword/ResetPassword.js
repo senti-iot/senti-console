@@ -107,7 +107,7 @@ const ResetPassword = props => {
 		if (handleValidation()) {
 			let session = await bConfirmPass({
 				newPassword: password,
-				passwordToken: params.token,
+				token: params.token,
 			})
 			if (session !== 404 && session) {
 				setPasswordReset(true)
