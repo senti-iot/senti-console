@@ -220,7 +220,7 @@ const User = props => {
 		const { confirm, newP } = pw
 		if (confirm === newP) {
 			let newPassObj = {
-				id: user.uuid,
+				uuid: user.uuid,
 				oldPassword: pw.current,
 				newPassword: pw.newP
 			}
