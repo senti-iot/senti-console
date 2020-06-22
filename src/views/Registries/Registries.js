@@ -13,7 +13,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getRegistries, sortData } from 'redux/data'
 import RegistryCards from 'components/Registry/RegistryCards'
 import { deleteRegistry } from 'variables/dataRegistry'
-import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector /*, useAuth  */ } from 'hooks'
+import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector, useAuth  } from 'hooks'
 import registriesStyles from 'assets/jss/components/registries/registriesStyles'
 import { handleRequestSort } from 'variables/functions'
 
@@ -25,8 +25,9 @@ const Registries = props => {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const classes = registriesStyles()
-	// const hasAccess = useAuth()
-
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(s => s.data.favorites)
@@ -77,9 +78,9 @@ const Registries = props => {
 		}
 		let isFavorited = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ dontShow: !hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
 			{ single: true, label: isFavorited ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorited ? Star : StarBorder, func: isFavorited ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			{ dontShow: !hasAccessList(selected, 'registry.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
 		]
 		return allOptions
 	}
@@ -301,13 +302,13 @@ const Registries = props => {
 
 
 	const renderTableToolBarContent = () => {
-		return <Fragment>
-			<Tooltip title={t('menus.create.registry')}>
-				<IconButton aria-label='Add new registry' onClick={handleAddNewRegistry}>
-					<Add />
-				</IconButton>
-			</Tooltip>
-		</Fragment>
+		let access = hasAccess(null, 'registry.create')
+		return access ? <Tooltip title={t('menus.create.registry')}>
+			<IconButton aria-label='Add new registry' onClick={handleAddNewRegistry}>
+				<Add />
+			</IconButton>
+		</Tooltip>
+			: null
 	}
 
 	const renderTableToolBar = () => {

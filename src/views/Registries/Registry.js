@@ -21,6 +21,8 @@ const Registry = props => {
 	const history = useHistory()
 	const match = useMatch()
 	const location = useLocation()
+
+
 	//Redux
 	const saved = useSelector(store => store.favorites.saved)
 	const registry = useSelector(store => store.data.registry)

@@ -4,13 +4,14 @@ import Dropdown from 'components/Dropdown/Dropdown';
 import React from 'react';
 import { DataUsage, Edit, Star, StarBorder, Delete } from 'variables/icons';
 import { useSelector } from 'react-redux'
-import { useLocalization, useHistory } from 'hooks';
+import { useLocalization, useHistory, useAuth } from 'hooks';
 
 const RegistryDetails = props => {
 	//Hooks
 	const t = useLocalization()
 	const history = useHistory()
-
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
 	//Redux
 	const detailsPanel = useSelector(store => store.settings.detailsPanel)
 
@@ -49,11 +50,10 @@ const RegistryDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.uuid}/edit`, prevURL: `/registry/${registry.uuid}` }) },
 					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
-
-
+					{ isDivider: true },
+					{ disabled: hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.uuid}/edit`, prevURL: `/registry/${registry.uuid}` }) },
+					{ disabled: hasAccess(registry.uuid, 'registry.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
 				]
 			} />
 

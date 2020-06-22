@@ -164,9 +164,6 @@ const setFavorites = 'setFavorites'
 export const getAllData = async (reload, orgId, su) => {
 	return async dispatch => {
 		await dispatch(await getUsers(true))
-		// dispatch(await getProjects(true))
-		// dispatch(await getCollections(true))
-		// dispatch(await getDevices(true))
 		dispatch(await getOrgs(true))
 		dispatch(await getRegistries(true, orgId, su))
 		dispatch(await getDeviceTypes(true, orgId, su))
@@ -251,7 +248,7 @@ export const getUsers = (reload) => {
 			let userUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
 			await dispatch(await getPriv(user.uuid, ['user.create', 'user.list']))
-			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete']))
+			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete, user.changeparent']))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -588,6 +585,7 @@ export const getRegistryLS = async (id) => {
 		dispatch({ type: gotRegistry, payload: false })
 		let registry = get('registry.' + id)
 		if (registry) {
+			await dispatch(await getPrivList([id], ['registries.modify', 'registries.changeparent', 'registries.delete']))
 			dispatch({
 				type: setRegistry,
 				payload: registry
@@ -608,6 +606,8 @@ export const getRegistryLS = async (id) => {
 			})
 		}
 		await getRegistry(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['registry.modify', 'registry.changeparent', 'registry.delete']))
+
 			if (!compare(registry, rs)) {
 				registry = {
 					...rs,
@@ -626,9 +626,14 @@ export const getRegistryLS = async (id) => {
 	}
 }
 export const getRegistries = (reload, orgId, su) => {
-	return dispatch => {
-		getAllRegistries(orgId, su).then(rs => {
+	return async (dispatch, getState) => {
+		await getAllRegistries(orgId, su).then(async rs => {
+			console.log('rs', rs)
 			let registries = handleRequestSort('id', 'asc', rs)
+			let regUUIDs = registries.map(r => r.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['registry.create', 'registry.list']))
+			await dispatch(await getPrivList(regUUIDs, ['registry.modify', 'registry.delete']))
 			set('registries', registries)
 			if (reload) {
 				dispatch(setRegistries())

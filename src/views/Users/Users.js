@@ -109,7 +109,7 @@ const Users = props => {
 			isFavorite = dispatch(isFav(favObj))
 		}
 		return [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: hasAccess(user.uuid, 'user.modify') },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: !hasAccess(user.uuid, 'user.modify') },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: favFunc(favObj, isFavorite) },
 			{ label: t('menus.copyEmails'), icon: Mail, func: handleCopyEmailsSelected },
 			{ label: t('menus.exportUsers'), icon: CloudDownload, func: handleOpenDownloadModal },
@@ -330,13 +330,12 @@ const Users = props => {
 
 
 	const renderTableToolBarContent = () => {
-		return <Fragment>
-			<Tooltip title={t('menus.create.user')}>
-				<IconButton aria-label='Add new user' onClick={handleAddNewUser}>
-					<Add />
-				</IconButton>
-			</Tooltip>
-		</Fragment>
+		let access = hasAccess(null, 'user.create')
+		return access ? <Tooltip title={t('menus.create.user')}>
+			<IconButton aria-label='Add new user' onClick={handleAddNewUser}>
+				<Add />
+			</IconButton>
+		</Tooltip> : null
 	}
 
 	return (

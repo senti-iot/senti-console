@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react'
-import { IconButton, Menu, MenuItem, Button, Tooltip } from '@material-ui/core'
+import { IconButton, Menu, MenuItem, Button, Tooltip, Divider } from '@material-ui/core'
 import { ItemG } from 'components'
 import { MoreVert } from 'variables/icons'
 import { useLocalization } from 'hooks'
@@ -22,7 +22,7 @@ const Dropdown = props => {
 	const [actionAnchor, setActionAnchor] = useState(null)
 
 	//Const
-	const { menuItems, icon, button, divider, tooltip, buttonClassName, cIcon } = props
+	const { menuItems, icon, button, tooltip, buttonClassName, cIcon } = props
 
 	//useCallbacks
 
@@ -78,9 +78,11 @@ const Dropdown = props => {
 				disableScrollLock
 				PaperProps={{ style: { minWidth: 200 } }}>
 				{menuItems.map((m, i) => {
+					if (m.isDivider)
+						return <Divider style={{ margin: "3px 1px" }} key={i} />
 					if (m.dontShow)
 						return null
-					return <MenuItem divider={divider ? i === menuItems.length - 1 ? false : true : false} selected={m.selected} key={i}
+					return <MenuItem disabled={m.disabled} selected={m.selected} key={i}
 						onClick={handleMenuItemClick(m)}>
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{m.icon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{cIcon ? m.icon : <m.icon className={classes.leftIcon} />}</ItemG> : null}
