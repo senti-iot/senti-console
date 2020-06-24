@@ -13,7 +13,6 @@ export const getPriv = (uuid, pList) => {
 	return async (dispatch, getState) => {
 		let accessLevel = getState().auth.accessLevel
 		let privs = await getPrivilege(uuid, pList)
-		console.log('priv', privs)
 		let nAccess = { ...accessLevel }
 		nAccess.privileges = { ...nAccess.privileges, ...privs }
 		dispatch({
@@ -24,10 +23,7 @@ export const getPriv = (uuid, pList) => {
 }
 export const getPrivList = (uuids, pList) => {
 	return async (dispatch, getState) => {
-		console.log('uuids', uuids, pList)
 		let privs = await getListPrivileges(uuids, pList)
-		console.log('privs', privs)
-
 		dispatch({
 			type: setRes,
 			payload: privs

@@ -15,7 +15,6 @@ const CreateRegistry = props => {
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const org = useSelector(state => state.settings.user.org)
-	console.log(org)
 	//State
 	const [registry, setRegistry] = useState({
 		name: "",

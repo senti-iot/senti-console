@@ -248,7 +248,6 @@ const EditDeviceType = props => {
 			metadata: sensorMetadata.metadata,
 			orgId: org.aux?.odeumId
 		}
-		console.log(nDeviceType)
 		return await updateDeviceType(nDeviceType)
 	}
 	const handleCreate = async () => {

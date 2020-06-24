@@ -243,7 +243,6 @@ const CreateDeviceType = props => {
 			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
 			orgId: stateOrg.aux?.odeumId
 		}
-		console.log(newDeviceType)
 		return await createDeviceType(newDeviceType)
 	}
 

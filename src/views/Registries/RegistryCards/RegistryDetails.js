@@ -52,8 +52,8 @@ const RegistryDetails = props => {
 				[
 					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 					{ isDivider: true },
-					{ disabled: hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.uuid}/edit`, prevURL: `/registry/${registry.uuid}` }) },
-					{ disabled: hasAccess(registry.uuid, 'registry.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
+					{ disabled: !hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/registry/${registry.uuid}/edit`, prevURL: `/registry/${registry.uuid}` }) },
+					{ disabled: !hasAccess(registry.uuid, 'registry.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
 				]
 			} />
 

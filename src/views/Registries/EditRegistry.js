@@ -89,7 +89,6 @@ const UpdateRegistry = props => {
 	}
 	const handleUpdate = async () => {
 		let rs = await updateRegistryFunc()
-		console.log(rs)
 		if (rs) {
 			let favObj = {
 				id: stateRegistry.uuid,

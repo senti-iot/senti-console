@@ -2,39 +2,61 @@
 import { servicesAPI } from './data';
 import moment from 'moment';
 
-export const getAllSensors = async (customerID, ua) => {
+
+/**
+ * Get All Sensors available to the user
+ */
+export const getAllSensors = async () => {
 	let response = []
-	if (ua) {
-		response = await servicesAPI.get(`/v1/devices`).then(rs => rs.ok ? rs.data : [])
-	}
-	else {
-		response = await servicesAPI.get(`/v1/${customerID}/devices`).then(rs => rs.ok ? rs.data : [])
-	}
+	response = await servicesAPI.get(`/v2/devices`).then(rs => rs.ok ? rs.data : [])
 	return response
 }
 
-export const getSensor = async (id, customerID, ua) => {
-	let response = null
-	// if (ua)
-	response = await servicesAPI.get(`/v1/device/${id}`).then(rs => rs.ok ? rs.data : null)
-	// else
-	// response = await servicesAPI.get(`v1/${customerID}/device/${id}`).then(rs => rs.ok ? rs.data : null)
+/**
+ * Get All Sensors under an org
+ * @param {UUIDv4} orgUUID - Organisation UUID
+ */
+export const getAllOrgSensors = async (orgUUID) => {
+	let response = []
+	response = await servicesAPI.get(`/v2/devices/${orgUUID}`).then(rs => rs.ok ? rs.data : [])
 	return response
 }
 
+/**
+ * Get Sensor
+ * @param {UUIDv4} uuid Device UUID
+ */
+export const getSensor = async (uuid) => {
+	let response = await servicesAPI.get(`/v2/device/${uuid}`).then(rs => rs.ok ? rs.data : null)
+	return response
+}
+
+/**
+ * Create Sensor
+ * @param {object} sensor
+ */
 export const createSensor = async (sensor) => {
-	let response = await servicesAPI.put(`/v1/device`, sensor).then(rs => rs.ok ? rs.data : null)
+	let response = await servicesAPI.put(`/v2/device`, sensor).then(rs => rs.ok ? rs.data : null)
 	return response
 }
+/**
+ * Update Sensor
+ * @param {object} sensor
+ */
 export const updateSensor = async (sensor) => {
-	let response = await servicesAPI.post(`/v1/device`, sensor).then(rs => rs.data)
+	let response = await servicesAPI.put(`/v2/device`, sensor).then(rs => rs.data)
 	return response
 }
 
+/**
+ * Delete Sensor
+ * @param {UUIDv4} uuid Sensor UUID
+ */
 export const deleteSensor = async (uuid) => {
-	let response = await servicesAPI.post(`/v1/delete-device/${uuid}`).then(rs => rs.ok)
+	let response = await servicesAPI.delete(`/v2/device/${uuid}`).then(rs => rs.ok)
 	return response
 }
+
 
 export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chartType, calc) => {
 	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')

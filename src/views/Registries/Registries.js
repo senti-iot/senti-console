@@ -28,6 +28,7 @@ const Registries = props => {
 	const Auth = useAuth()
 	const hasAccess = Auth.hasAccess
 	const hasAccessList = Auth.hasAccessList
+
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(s => s.data.favorites)

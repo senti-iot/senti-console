@@ -4,7 +4,7 @@ import Dropdown from 'components/Dropdown/Dropdown'
 import React from 'react'
 import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, Delete } from 'variables/icons'
 // import { connect } from 'react-redux'
-import { useLocalization } from 'hooks'
+import { useLocalization, useAuth } from 'hooks'
 import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 
 
@@ -12,6 +12,8 @@ const SensorDetails = (props) => {
 	//Hooks
 	const t = useLocalization()
 	const classes = sensorsStyles()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
 
 	//Redux
 
@@ -60,9 +62,10 @@ const SensorDetails = (props) => {
 			noExpand
 			topAction={<Dropdown menuItems={
 				[
-					{ label: t('menus.edit'), icon: Edit, func: handleEditSensor },
 					{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
-					{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
+					{ isDivider: true },
+					{ disabled: !hasAccess(sensor.uuid, 'device.modify' ), label: t('menus.edit'), icon: Edit, func: handleEditSensor },
+					{ disabled: !hasAccess(sensor.uuid, 'device.delete' ), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog }
 				]
 			} />
 

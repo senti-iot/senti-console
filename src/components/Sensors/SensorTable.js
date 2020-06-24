@@ -42,7 +42,7 @@ const SensorTable = props => {
 		// this.setState({ page });
 	}
 
-	const isSelectedFunc = id => props.selected.indexOf(id) !== -1
+	const isSelectedFunc = uuid => props.selected.indexOf(uuid) !== -1
 
 	const setHover = (e, n) => {
 		e.persist()
@@ -113,7 +113,7 @@ const SensorTable = props => {
 		}
 	}
 	const handleSelectAllClick = (event, checked) => {
-		let selected = data.map(d => d.id)
+		let selected = data.map(d => d.uuid)
 		props.handleSelectAllClick(selected, checked)
 	}
 	let emptyRows;
@@ -151,20 +151,20 @@ const SensorTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.id);
+							const isSelected = isSelectedFunc(n.uuid);
 							return (
 								<TableRow
 									hover
-									onClick={handleClick(n.id)}
+									onClick={handleClick(n.uuid)}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
-									key={n.id}
+									key={n.uuid}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC checkbox content={renderSmallCommunication(n.communication)} />
 										<TC content={
 											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
@@ -183,8 +183,8 @@ const SensorTable = props => {
 									</Hidden>
 
 									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-										{/* <TC checkbox label={n.id} /> */}
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
+										{/* <TC checkbox label={n.uuid} /> */}
 										<TC
 											onMouseEnter={e => { setHover(e, n) }}
 											onMouseLeave={unsetTimeout}
