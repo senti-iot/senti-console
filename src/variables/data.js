@@ -119,15 +119,15 @@ export const imageApi = create({
 		'ODEUMAuthToken': ''
 	},
 })
-export const api = create({
-	baseURL: backendHost,
-	timeout: 30000,
-	headers: {
-		'Accept': 'application/json',
-		'Content-Type': 'application/json',
-		'ODEUMAuthToken': ''
-	},
-})
+// export const api = create({
+// 	baseURL: backendHost,
+// 	timeout: 30000,
+// 	headers: {
+// 		'Accept': 'application/json',
+// 		'Content-Type': 'application/json',
+// 		'ODEUMAuthToken': ''
+// 	},
+// })
 
 //#region Senti Services
 

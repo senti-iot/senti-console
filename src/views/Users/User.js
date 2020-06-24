@@ -227,6 +227,11 @@ const User = props => {
 			let success = await setPassword(newPassObj).then(rs => rs)
 			if (success) {
 				handleCloseChangePassword(success)()
+				setPw({
+					current: '',
+					newP: '',
+					confirm: ''
+				})
 			}
 			else {
 				setPwError(true)
