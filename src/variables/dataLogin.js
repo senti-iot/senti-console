@@ -1,4 +1,4 @@
-import { api, coreServicesAPI } from './data'
+import { coreServicesAPI } from './data'
 import cookie from 'react-cookies'
 
 /**
@@ -18,10 +18,6 @@ export const nGoogleLogin = async (token) => {
 	var session = await coreServicesAPI.post('/auth/google', { id_token: token }).then(rs => rs.data)
 	return session
 }
-// export const loginUserViaGoogle = async (token) => {
-// 	var session = await api.post('senti/googleauth', { id_token: token }).then(rs => rs.data)
-// 	return session
-// }
 /**
  * @function logOut Log out function
  */
@@ -51,11 +47,11 @@ export const confirmPassword = async (obj) => {
 /**
  *
  * @param {object} obj
- * @param {String} obj.id User ID
+ * @param {String} obj.uuid User UUID
  * @param {String} obj.oldPassword Old Password - Not required
  * @param {String} obj.newPassword New Password
  */
 export const setPassword = async (obj) => {
-	let data = await api.post(`entity/user/${obj.uuid}`, obj).then(rs => rs.data)
+	let data = await coreServicesAPI.post(`entity/user/${obj.uuid}/setpassword`, obj).then(rs => rs.ok)
 	return data
 }

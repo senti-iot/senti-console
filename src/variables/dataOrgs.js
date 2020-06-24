@@ -19,14 +19,6 @@ export const getOrg = async (orgId) => {
 	return data
 }
 
-// /**
-//  * @function getOrg Get an organization based on ID
-//  * @param {int} orgId Organization ID
-//  */
-// export const getOrg = async (orgId) => {
-// 	var data = await api.get(`core/org/${orgId}`).then(rs => rs.data)
-// 	return data
-// }
 
 /**
  * @function getOrgUsers Get Organization's users
