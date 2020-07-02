@@ -77,9 +77,9 @@ const RegistryDevices = props => {
 						<TableBody>
 							{devices ? devices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(d => {
 								return (
-									<TableRow key={d.id}>
+									<TableRow key={d.uuid}>
 										<TableCell style={{ paddingLeft: 24 }} component="th" scope="row">
-											<Link to={`/sensor/${d.id}`}>
+											<Link to={`/sensor/${d.uuid}`}>
 												{d.name}
 											</Link>
 										</TableCell>
