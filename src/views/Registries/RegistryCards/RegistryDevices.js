@@ -30,7 +30,7 @@ const RegistryDevices = props => {
 	const [page, setPage] = useState(0)
 
 	//Const
-	const { devices } = props
+	const { devices, registry } = props
 
 	//useCallbacks
 
@@ -79,7 +79,8 @@ const RegistryDevices = props => {
 								return (
 									<TableRow key={d.uuid}>
 										<TableCell style={{ paddingLeft: 24 }} component="th" scope="row">
-											<Link to={`/sensor/${d.uuid}`}>
+											{/* `/sensor/${d.uuid}`} */}
+											<Link to={{ pathname: `/sensor/${d.uuid}`, prevURL: `/registry/${registry.uuid}` }}>
 												{d.name}
 											</Link>
 										</TableCell>

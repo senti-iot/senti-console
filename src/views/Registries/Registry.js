@@ -175,6 +175,7 @@ const Registry = props => {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'devices'}>
 						<RegistryDevices
+							registry={registry}
 							devices={registry.devices}
 							t={t}
 						/>
