@@ -78,10 +78,10 @@ const Dropdown = props => {
 				disableScrollLock
 				PaperProps={{ style: { minWidth: 200 } }}>
 				{menuItems.map((m, i) => {
-					if (m.isDivider)
-						return <Divider style={{ margin: "3px 1px" }} key={i} />
 					if (m.dontShow)
 						return null
+					if (m.isDivider)
+						return <Divider style={{ margin: "3px 1px" }} key={i} />
 					return <MenuItem disabled={m.disabled} selected={m.selected} key={i}
 						onClick={handleMenuItemClick(m)}>
 						<ItemG container justify={'space-between'} alignItems={'center'}>

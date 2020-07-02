@@ -47,7 +47,7 @@ const DeviceTypeTable = props => {
 		setPage(newpage)
 	}
 	const handleSelectAllClick = (event, checked) => {
-		let selected = data.map(d => d.id)
+		let selected = data.map(d => d.uuid)
 		props.handleSelectAllClick(selected, checked)
 	}
 	const isSelectedFunc = id => props.selected.indexOf(id) !== -1
@@ -108,20 +108,20 @@ const DeviceTypeTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.id);
+							const isSelected = isSelectedFunc(n.uuid);
 							return (
 								<TableRow
 									hover
-									onClick={handleClick(n.id)}
+									onClick={handleClick(n.uuid)}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
-									key={n.id}
+									key={n.uuid}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC content={
 											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -139,7 +139,7 @@ const DeviceTypeTable = props => {
 									</Hidden>
 
 									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC
 											onMouseEnter={e => { setHover(e, n) }}
 											onMouseLeave={unsetTimeout}

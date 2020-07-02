@@ -67,8 +67,8 @@ const CreateCloudFunction = props => {
 	}
 	const createFunctionFunc = async () => {
 
-		let res = await createFunction({ ...cloudfunction, orgId: stateOrg.id })
-		dispatch(await getFunctions(true, orgId, accessLevel.apisuperuser ? true : false))
+		let res = await createFunction({ ...cloudfunction, org: stateOrg })
+		dispatch(await getFunctions(true))
 		return res
 	}
 	const handleCreate = async () => {
@@ -76,7 +76,7 @@ const CreateCloudFunction = props => {
 		if (rs) {
 			s('snackbars.create.cloudfunction', { cf: cloudfunction.name })
 			dispatch(await getFunctions(true, orgId, accessLevel.apisuperuser ? true : false))
-			history.push(`/function/${rs}`)
+			history.push(`/function/${rs.uuid}`)
 		}
 		else
 			s('snackbars.failed')

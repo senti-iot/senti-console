@@ -1,29 +1,50 @@
 import { servicesAPI } from './data';
-
-export const getAllDeviceTypes = async (customerID, ua) => {
+/**
+ * Get Device Types
+ * @func getAllDeviceTypes
+ */
+export const getAllDeviceTypes = async () => {
 	let data = []
-	if (ua) {
-		data = await servicesAPI.get('/v1/devicetypes').then(rs => rs.ok ? rs.data : [])
-	}
-	else {
-		data = await servicesAPI.get(`/v1/${customerID}/devicetypes`).then(rs => rs.ok ? rs.data : [])
-	}
+	data = await servicesAPI.get('/v2/devicetypes').then(rs => rs.ok ? rs.data : [])
 	return data
 }
-export const getDeviceType = async (id) => {
-	let data = await servicesAPI.get(`/v1/1/devicetype/${id}`).then(rs => rs.ok ? rs.data : null)
+
+/**
+ * Get Device Type based on UUID
+ * @func getDeviceType
+ * @param {UUIDv4} uuid UUID of a device type
+ */
+export const getDeviceType = async (uuid) => {
+	let data = await servicesAPI.get(`/v2/devicetype/${uuid}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
+
+/**
+ * Create Device Type
+ * @function createDeviceType
+ * @param {object} dt - Device Type
+ */
 export const createDeviceType = async (dt) => {
-	let response = await servicesAPI.put('/v1/devicetype', dt).then(rs => rs.ok ? rs.data : false)
-	return response
-}
-export const updateDeviceType = async (dt) => {
-	let response = await servicesAPI.post(`/v1/devicetype`, dt).then(rs => rs.ok ? rs.data : false)
+	let response = await servicesAPI.post('/v2/devicetype', dt).then(rs => rs.ok ? rs.data : false)
 	return response
 }
 
-export const deleteDeviceType = async (id) => {
-	let response = await servicesAPI.post(`/v1/delete-device-type/${id}`).then(rs => rs.ok)
+/**
+ * Update Device Type
+ * @func updateDeviceType
+ * @param {object} dt - Device Type
+ */
+export const updateDeviceType = async (dt) => {
+	let response = await servicesAPI.put(`/v2/devicetype`, dt).then(rs => rs.ok ? rs.data : false)
+	return response
+}
+
+/**
+ * Delete Device Type
+ * @func deleteDeviceType
+ * @param {UUIDv4} uuid - Device Type UUID
+ */
+export const deleteDeviceType = async (uuid) => {
+	let response = await servicesAPI.delete(`/v2/devicetype/${uuid}`).then(rs => rs.ok)
 	return response
 }

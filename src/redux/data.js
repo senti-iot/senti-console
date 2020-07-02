@@ -429,11 +429,12 @@ export const setDeviceTypes = () => {
 //#endregion
 
 //#region Fuctions
-export const getFunctionLS = async (id, customerID, ua) => {
+export const getFunctionLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotFunction, payload: false })
 		let cloudfunction = get('cloudfunction.' + id)
 		if (cloudfunction) {
+			await dispatch(await getPrivList([id], ['cloudfunction.modify', 'cloudfunction.delete']))
 			dispatch({
 				type: setFunction,
 				payload: cloudfunction
@@ -453,7 +454,8 @@ export const getFunctionLS = async (id, customerID, ua) => {
 				payload: null
 			})
 		}
-		await getFunction(id, customerID, ua).then(async rs => {
+		await getFunction(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['cloudfunction.modify', 'cloudfunction.delete']))
 			if (!compare(cloudfunction, rs)) {
 				cloudfunction = {
 					...rs,
@@ -472,9 +474,13 @@ export const getFunctionLS = async (id, customerID, ua) => {
 	}
 }
 export const getFunctions = (reload, orgId, su) => {
-	return dispatch => {
-		getAllFunctions(orgId, su).then(rs => {
+	return async (dispatch, getState) => {
+		getAllFunctions(orgId, su).then(async rs => {
 			let functions = handleRequestSort('id', 'asc', rs)
+			let funcUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['cloudfunction.create', 'cloudfunction.list']))
+			await dispatch(await getPrivList(funcUUIDs, ['cloudfunction.modify', 'cloudfunction.delete, cloudfunction.changeparent']))
 			set('functions', functions)
 			if (reload) {
 				dispatch(setFunctions())

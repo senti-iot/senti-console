@@ -55,12 +55,12 @@ const DeviceTypes = props => {
 	]
 
 	const options = () => {
-		let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
+		let devicetype = devicetypes[devicetypes.findIndex(d => d.uuid === selected[0])]
 		let favObj = {
-			id: devicetype.id,
+			id: devicetype.uuid,
 			name: devicetype.name,
 			type: 'devicetype',
-			path: `/devicetype/${devicetype.id}`
+			path: `/devicetype/${devicetype.uuid}`
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
@@ -104,14 +104,14 @@ const DeviceTypes = props => {
 	}, [])
 	useEffect(() => {
 		if (saved === true) {
-			let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
+			let devicetype = devicetypes[devicetypes.findIndex(d => d.uuid === selected[0])]
 			if (devicetype) {
-				if (dispatch(isFav({ id: devicetype.id, type: 'devicetype' }))) {
+				if (dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
 					s('snackbars.favorite.saved', { name: devicetype.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 					setSelected([])
 				}
-				if (!dispatch(isFav({ id: devicetype.id, type: 'devicetype' }))) {
+				if (!dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
 					s('snackbars.favorite.removed', { name: devicetype.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 					setSelected([])
@@ -129,7 +129,7 @@ const DeviceTypes = props => {
 		// const { favorites, devicetypes } = this.props
 		let favs = favorites.filter(f => f.type === 'devicetype')
 		let favDeviceTypes = favs.map(f => {
-			return devicetypes[devicetypes.findIndex(d => d.id === f.id)]
+			return devicetypes[devicetypes.findIndex(d => d.uuid === f.uuid)]
 		})
 		favDeviceTypes = handleRequestSort(orderBy, order, favDeviceTypes)
 		return favDeviceTypes
@@ -155,7 +155,7 @@ const DeviceTypes = props => {
 				s('snackbars.assign.deviceToDeviceType', { devicetype: ``, what: 'Device' })
 				break
 			case 6:
-				s('snackbars.assign.deviceToDeviceType', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.id === selected[0])].name}`, device: display })
+				s('snackbars.assign.deviceToDeviceType', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.uuid === selected[0])].name}`, device: display })
 				break
 			default:
 				break
@@ -267,8 +267,8 @@ const DeviceTypes = props => {
 				<List dense={true}>
 					<Divider />
 					{selected.map(s => {
-						let u = devicetypes[devicetypes.findIndex(d => d.id === s)]
-						return u ? <ListItem divider key={u.id}>
+						let u = devicetypes[devicetypes.findIndex(d => d.uuid === s)]
+						return u ? <ListItem divider key={u.uuid}>
 							<ListItemIcon>
 								<Memory />
 							</ListItemIcon>

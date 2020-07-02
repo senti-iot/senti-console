@@ -120,6 +120,7 @@
 			"timeSeries": "Tidsserier"
 		},
 		"fields": {
+			"org": "Organisation",
 			"code": "Kildekode",
 			"description": "Beskrivelse",
 			"inboundfunc": "Cloud Funktion",
