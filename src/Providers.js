@@ -23,7 +23,7 @@ import TouchBackend from 'react-dnd-touch-backend'
 import HTML5Backend from 'react-dnd-html5-backend'
 import LocalizationProvider from 'hooks/providers/LocalizationProvider'
 import SnackbarProvider from 'hooks/providers/SnackbarProvider'
-import { getWhiteLabel } from 'variables/data'
+import { getWhiteLabel, setWlHost } from 'variables/data'
 import { setWL } from 'variables/storage'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
 import { ThemeProvider } from 'ThemeProvider'
@@ -45,7 +45,7 @@ const Providers = props => {
 		let getWL = async () => await getWhiteLabel(window.location.hostname)
 		getWL().then(rs => {
 			setWL(rs)
-
+			setWlHost()
 			// window.location.reload()
 			setLoading(false)
 
