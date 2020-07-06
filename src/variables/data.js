@@ -2,6 +2,7 @@ import { create } from 'apisauce'
 import cookie from 'react-cookies'
 import crypto from 'crypto'
 import moment from 'moment'
+import { getWL } from 'variables/storage'
 
 const { REACT_APP_ENCRYPTION_KEY } = process.env
 const IV_LENGTH = 16
@@ -214,3 +215,17 @@ export const setToken = () => {
 
 }
 setToken()
+
+export const setWlHost = () => {
+	try {
+		let wlHost = getWL()
+		servicesAPI.setHeader('wlHost', wlHost.host)
+		coreServicesAPI.setHeader('wlHost', wlHost.host)
+		cloudAPI.setHeader('wlHost', wlHost.host)
+		return true
+	}
+	catch (error) {
+		console.log(error)
+		return false
+	}
+}
