@@ -146,7 +146,7 @@ export const repairDashboard = (dashboard) => {
 		let user, newD = {}
 		user = getState().settings.user
 		newD = { ...dashboard }
-		user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
+		user.internal.senti.dashboards[user.internal.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
 		dispatch(saveSnackbar('snackbars.repairedOldDashboards'))
 		dispatch(saveOnServ(user))
 		dispatch(await getNSettings())
@@ -305,9 +305,9 @@ export const removeDashboard = id => {
 		let user = {}
 		let ds = []
 		user = getState().settings.user
-		ds = user.aux.senti.dashboards
+		ds = user.internal.senti.dashboards
 		ds = ds.filter(f => f.id !== id)
-		user.aux.senti.dashboards = ds
+		user.internal.senti.dashboards = ds
 		dispatch(saveOnServ(user))
 		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.deletedSuccess'))
@@ -336,15 +336,15 @@ export const importDashboard = (iDash) => {
 		newD = iDash
 		newD.id = generateID(iDash.name)
 		//check for update
-		// if (user.aux.senti.dashboards.findIndex(f => f.id === iDash.id)) {
-		// 	user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f=> f.id === iDash.id)] =
+		// if (user.internal.senti.dashboards.findIndex(f => f.id === iDash.id)) {
+		// 	user.internal.senti.dashboards[user.internal.senti.dashboards.findIndex(f=> f.id === iDash.id)] =
 		// }
-		if (user.aux.senti.dashboards) {
-			user.aux.senti.dashboards.push(newD)
+		if (user.internal.senti.dashboards) {
+			user.internal.senti.dashboards.push(newD)
 		}
 		else {
-			user.aux.senti.dashboards = []
-			user.aux.senti.dashboards.push(newD)
+			user.internal.senti.dashboards = []
+			user.internal.senti.dashboards.push(newD)
 		}
 		dispatch(saveOnServ(user))
 		dispatch(await getNSettings())
@@ -360,15 +360,15 @@ export const saveDashboard = (edit) => {
 		graphs = getState().dsSystem.cGraphs
 		newD.graphs = graphs
 		if (edit) {
-			user.aux.senti.dashboards[user.aux.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
+			user.internal.senti.dashboards[user.internal.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
 		}
 		else {
-			if (user.aux.senti.dashboards) {
-				user.aux.senti.dashboards.push(newD)
+			if (user.internal.senti.dashboards) {
+				user.internal.senti.dashboards.push(newD)
 			}
 			else {
-				user.aux.senti.dashboards = []
-				user.aux.senti.dashboards.push(newD)
+				user.internal.senti.dashboards = []
+				user.internal.senti.dashboards.push(newD)
 			}
 		}
 		// dispatch()

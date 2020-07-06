@@ -1,10 +1,9 @@
 import cookie from 'react-cookies'
-import { getUser, getValidSession, getLoginUser, setInternal, editUser } from 'variables/dataUsers'
+import { getLoginUser, setInternal, editUser } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
-import { saveSettings } from 'variables/dataLogin'
 import { setDates } from './dateTime'
-import { setPrefix, set, get } from 'variables/storage'
+import { set } from 'variables/storage'
 import { getAllData } from './data'
 import { setDashboards } from './dsSystem'
 
@@ -74,7 +73,7 @@ export const resetSettings = () => {
 }
 export const saveOnServ = (user) => {
 	return async (dispatch) => {
-		var saved = await saveSettings(user)
+		var saved = await setInternal(user.internal, user.uuid)
 		dispatch({
 			type: SAVESETTINGS,
 			saved: saved ? true : false
@@ -242,104 +241,104 @@ export const getNSettings = async () => {
 
 	}
 }
-/**
- * @Andrei
- * Why do we have 2 getSettings?
- */
-export const getSettings = async (uuid) => {
-	return async (dispatch, getState) => {
-		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
-		if (sessionCookie) {
-			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
-			if (vSession === 200) {
+// /**
+//  * @Andrei
+//  * Why do we have 2 getSettings?
+//  */
+// export const getSettings = async (uuid) => {
+// 	return async (dispatch, getState) => {
+// 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
+// 		if (sessionCookie) {
+// 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
+// 			if (vSession === 200) {
 
-				let exp = moment().add('1', 'day')
-				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
-				setPrefix(sessionCookie.userID)
-			}
-			else {
-				return cookie.remove('SESSION')
-			}
-		}
+// 				let exp = moment().add('1', 'day')
+// 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
+// 				setPrefix(sessionCookie.userID)
+// 			}
+// 			else {
+// 				return cookie.remove('SESSION')
+// 			}
+// 		}
 
-		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
-		if (userId === 0) {
-			cookie.delete('SESSION')
-		}
-		var user = userId !== 0 ? await getUser(userId) : null
-		let senti = user ? user.internal ? user.internal.senti ? user.internal.senti : null : null : null
-		var settings = get('settings') ? get('settings') : senti ? senti.settings ? senti.settings : null : null
-		if (settings) {
-			dispatch({
-				type: GetSettings,
-				settings: settings,
-				user: user
-			})
-		}
-		var favorites = senti ? senti.favorites ? senti.favorites : [] : []
-		var dashboards = senti ? senti.dashboards ? senti.dashboards : [] : []
-		moment.updateLocale('en-gb', {
-			week: {
-				dow: 1
-			}
-		})
-		if (user) {
-			/**
-			 * @Andrei
-			 * superUser Perm
-			 */
-			dispatch(await getAllData(true, user.org.id, /* user.privileges.apisuperuser ? true : */ false))
-			if (settings) {
-				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
-				dispatch({
-					type: GetSettings,
-					settings: {
-						...user.aux.senti.settings,
-						language: user.aux.odeum.language
-					},
-					user
-				})
-			}
-			else {
-				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
-				let s = {
-					...getState().settings,
-					language: user.aux.odeum.language
-				}
-				dispatch({
-					type: NOSETTINGS,
-					loading: false,
-					user,
-					settings: s
-				})
-			}
-			if (favorites) {
-				dispatch({
-					type: GETFAVS,
-					payload:
-						[...favorites]
+// 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
+// 		if (userId === 0) {
+// 			cookie.delete('SESSION')
+// 		}
+// 		var user = userId !== 0 ? await getUser(userId) : null
+// 		let senti = user ? user.internal ? user.internal.senti ? user.internal.senti : null : null : null
+// 		var settings = get('settings') ? get('settings') : senti ? senti.settings ? senti.settings : null : null
+// 		if (settings) {
+// 			dispatch({
+// 				type: GetSettings,
+// 				settings: settings,
+// 				user: user
+// 			})
+// 		}
+// 		var favorites = senti ? senti.favorites ? senti.favorites : [] : []
+// 		var dashboards = senti ? senti.dashboards ? senti.dashboards : [] : []
+// 		moment.updateLocale('en-gb', {
+// 			week: {
+// 				dow: 1
+// 			}
+// 		})
+// 		if (user) {
+// 			/**
+// 			 * @Andrei
+// 			 * superUser Perm
+// 			 */
+// 			dispatch(await getAllData(true, user.org.id, /* user.privileges.apisuperuser ? true : */ false))
+// 			if (settings) {
+// 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
+// 				dispatch({
+// 					type: GetSettings,
+// 					settings: {
+// 						...user.aux.senti.settings,
+// 						language: user.aux.odeum.language
+// 					},
+// 					user
+// 				})
+// 			}
+// 			else {
+// 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
+// 				let s = {
+// 					...getState().settings,
+// 					language: user.aux.odeum.language
+// 				}
+// 				dispatch({
+// 					type: NOSETTINGS,
+// 					loading: false,
+// 					user,
+// 					settings: s
+// 				})
+// 			}
+// 			if (favorites) {
+// 				dispatch({
+// 					type: GETFAVS,
+// 					payload:
+// 						[...favorites]
 
-				})
-			}
-			if (dashboards) {
-				dispatch(setDashboards(dashboards))
-			}
-		}
-		else {
-			moment.locale('da')
-			let s = {
-				...getState().settings,
-			}
-			dispatch({
-				type: NOSETTINGS,
-				loading: false,
-				user,
-				settings: s
-			})
-			return false
-		}
-	}
-}
+// 				})
+// 			}
+// 			if (dashboards) {
+// 				dispatch(setDashboards(dashboards))
+// 			}
+// 		}
+// 		else {
+// 			moment.locale('da')
+// 			let s = {
+// 				...getState().settings,
+// 			}
+// 			dispatch({
+// 				type: NOSETTINGS,
+// 				loading: false,
+// 				user,
+// 				settings: s
+// 			})
+// 			return false
+// 		}
+// 	}
+// }
 export const changeGlobalSearch = val => {
 	return async dispatch => {
 		dispatch({
