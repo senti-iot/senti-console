@@ -29,9 +29,10 @@ const OrgDetails = props => {
 
 	const options = () => {
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, dontShow: !hasAccess(org.uuid, 'org.modify') },
 			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
-			{ label: t('menus.delete'), func: handleDeleteOrg, icon: Delete, dontShow: !hasAccess(org.uuid, 'org.delete') },
+			{ isDivider: true },
+			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit, disabled: !hasAccess(org.uuid, 'org.modify') },
+			{ label: t('menus.delete'), func: handleDeleteOrg, icon: Delete, disabled: !hasAccess(org.uuid, 'org.delete') },
 
 		]
 		/**TODO @Andrei */

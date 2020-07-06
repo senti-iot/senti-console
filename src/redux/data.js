@@ -358,6 +358,7 @@ export const getDeviceTypeLS = async (id) => {
 		dispatch({ type: gotDeviceType, payload: false })
 		let deviceType = get('deviceType.' + id)
 		if (deviceType) {
+			await dispatch(await getPrivList([id], ['devicetype.modify', 'devicetype.delete']))
 			dispatch({
 				type: setDeviceType,
 				payload: deviceType
@@ -378,6 +379,7 @@ export const getDeviceTypeLS = async (id) => {
 			})
 		}
 		await getDeviceType(id).then(async rs => {
+			await dispatch(await getPrivList([id], ['devicetype.modify', 'devicetype.delete']))
 			if (!compare(deviceType, rs)) {
 				deviceType = {
 					...rs,
@@ -397,9 +399,13 @@ export const getDeviceTypeLS = async (id) => {
 }
 
 export const getDeviceTypes = (reload, orgId, ua) => {
-	return dispatch => {
-		getAllDeviceTypes(orgId, ua).then(rs => {
+	return async (dispatch, getState) => {
+		getAllDeviceTypes(orgId, ua).then(async rs => {
 			let deviceTypes = handleRequestSort('id', 'asc', rs)
+			let dtUUIDs = rs.map(u => u.uuid)
+			let user = getState().settings.user
+			await dispatch(await getPriv(user.uuid, ['devicetype.create', 'devicetype.list']))
+			await dispatch(await getPrivList(dtUUIDs, ['devicetype.modify', 'devicetype.delete', 'devicetype.changeparent']))
 			set('devicetypes', deviceTypes)
 			if (reload) {
 				dispatch(setDeviceTypes())

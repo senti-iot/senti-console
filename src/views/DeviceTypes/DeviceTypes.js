@@ -12,7 +12,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getDeviceTypes, /* setDeviceTypes, */ sortData } from 'redux/data'
 import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable'
 import { deleteDeviceType } from 'variables/dataDeviceTypes'
-import { useSnackbar, useLocalization, useMatch, useLocation, useHistory } from 'hooks'
+import { useSnackbar, useLocalization, useMatch, useLocation, useHistory, useAuth } from 'hooks'
 
 
 const DeviceTypes = props => {
@@ -24,7 +24,9 @@ const DeviceTypes = props => {
 	const match = useMatch()
 	const location = useLocation()
 	const history = useHistory()
-
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(state => state.data.favorites)
@@ -64,13 +66,14 @@ const DeviceTypes = props => {
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
 			{
 				single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'),
 				icon: isFavorite ? Star : StarBorder,
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
 			},
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ isDivider: true, dontShow: selected.length > 1 },
+			{ disabled: !hasAccess(selected[0], 'devicetype.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !hasAccessList(selected, 'devicetype.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -291,15 +294,15 @@ const DeviceTypes = props => {
 
 
 	const renderTableToolBarContent = () =>
-		<Tooltip title={t('menus.create.devicetype')}>
+		hasAccess(null, 'devicetype.create') ? <Tooltip title={t('menus.create.devicetype')}>
 			<IconButton aria-label='Add new devicetype' onClick={handleAddNew}>
 				<Add />
 			</IconButton>
-		</Tooltip>
+		</Tooltip> : null
 
 
 	const renderTableToolBar = () =>
-		<TableToolbar
+		 <TableToolbar
 			ft={ft}
 			reduxKey={'devicetypes'}
 			numSelected={selected.length}
@@ -307,8 +310,6 @@ const DeviceTypes = props => {
 			t={t}
 			content={renderTableToolBarContent()}
 		/>
-
-
 
 
 	const renderTable = (items, handleClick, key) =>

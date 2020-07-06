@@ -43,11 +43,11 @@ let selectedRender = props => {
 					if (option.isDivider)
 						return <Divider style={{ margin: "3px 1px" }} key={i} />
 					if (option.single)
-						return numSelected === 1 ? <MenuItem key={i} onClick={() => { option.func(); setAnchor(null) }}>
+						return numSelected === 1 ? <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
 							<option.icon className={props.classes.leftIcon} />{option.label}
 						</MenuItem> : null
 					else {
-						return <MenuItem key={i} onClick={() => { option.func(); setAnchor(null) }}>
+						return <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
 							<option.icon className={props.classes.leftIcon} />{option.label}
 						</MenuItem>
 					}

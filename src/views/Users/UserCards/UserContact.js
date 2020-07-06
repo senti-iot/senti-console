@@ -46,15 +46,17 @@ const UserContact = props => {
 	const renderTopAction = () => {
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: Edit, func: handleEdit, dontShow: !hasAccess(user.uuid, 'user.modify') },
-				{ label: t('menus.changePassword'), icon: LockOpen, func: changePass, dontShow: !hasAccess(user.uuid, 'user.modify') },
-				{ label: t('menus.userResendEmail'), icon: Email, func: resendConfirmEmail, dontShow: user.suspended !== 2 || !hasAccess(user.uuid, 'user.modify') },
 				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
+				{ isDivider: true },
+				{ label: t('menus.changePassword'), icon: LockOpen, func: changePass, disabled: !hasAccess(user.uuid, 'user.modify') },
+				{ label: t('menus.userResendEmail'), icon: Email, func: resendConfirmEmail, disabled: user.suspended !== 2 || !hasAccess(user.uuid, 'user.modify') },
+				{ isDivider: true },
+				{ label: t('menus.edit'), icon: Edit, func: handleEdit, disabled: !hasAccess(user.uuid, 'user.modify') },
 				{
 					label: t('menus.delete'),
 					icon: Delete,
 					func: handleDeleteUser,
-					dontShow: !hasAccess(user.uuid, 'user.delete')
+					disabled: !hasAccess(user.uuid, 'user.delete')
 				},
 
 			]

@@ -4,7 +4,7 @@ import Dropdown from 'components/Dropdown/Dropdown'
 import React from 'react'
 import { DataUsage, Edit, Star, StarBorder, Delete } from 'variables/icons'
 import { useSelector } from 'react-redux'
-import { useLocalization } from 'hooks'
+import { useLocalization, useAuth } from 'hooks'
 
 // const mapStateToProps = (state) => ({
 // 	detailsPanel: state.settings.detailsPanel
@@ -14,6 +14,7 @@ import { useLocalization } from 'hooks'
 const DeviceTypeDetails = props => {
 	//Hooks
 	const t = useLocalization()
+	const hasAccess = useAuth().hasAccess
 
 	//Redux
 	const detailsPanel = useSelector(state => state.settings.detailsPanel)
@@ -24,9 +25,10 @@ const DeviceTypeDetails = props => {
 
 	const { handleOpenDeleteDialog, deviceType, isFav, addToFav, removeFromFav, history } = props
 	const deviceTypeMenu = [
-		{ label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
 		{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
-		{ label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
+		{ isDivider: true },
+		{ disabled: !hasAccess(deviceType.uuid, 'devicetype.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
+		{ disabled: !hasAccess(deviceType.uuid, 'devicetype.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
 	]
 	//useCallbacks
 
