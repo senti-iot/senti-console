@@ -72,8 +72,8 @@ const DeviceTypes = props => {
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
 			},
 			{ isDivider: true, dontShow: selected.length > 1 },
-			{ disabled: !hasAccess(selected[0], 'devicetype.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ disabled: !hasAccessList(selected, 'devicetype.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ disabled: !hasAccess(selected[0], 'deviceType.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !hasAccessList(selected, 'deviceType.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -173,7 +173,7 @@ const DeviceTypes = props => {
 		 */
 		if (accessLevel && user) {
 			if (reload)
-				dispatch(getDeviceTypes(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
+				dispatch(getDeviceTypes(true))
 		}
 	}
 	//#endregion
@@ -183,6 +183,7 @@ const DeviceTypes = props => {
 	const handleAddNew = () => history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
 
 	const handleEdit = () => {
+		console.log(selected)
 		history.push({ pathname: `/devicetype/${selected[0]}/edit`, prevURL: `/devicetypes/list` })
 	}
 
@@ -294,7 +295,7 @@ const DeviceTypes = props => {
 
 
 	const renderTableToolBarContent = () =>
-		hasAccess(null, 'devicetype.create') ? <Tooltip title={t('menus.create.devicetype')}>
+		hasAccess(null, 'deviceType.create') ? <Tooltip title={t('menus.create.devicetype')}>
 			<IconButton aria-label='Add new devicetype' onClick={handleAddNew}>
 				<Add />
 			</IconButton>

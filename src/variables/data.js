@@ -219,9 +219,11 @@ setToken()
 export const setWlHost = () => {
 	try {
 		let wlHost = getWL()
-		servicesAPI.setHeader('wlHost', wlHost.host)
-		coreServicesAPI.setHeader('wlHost', wlHost.host)
-		cloudAPI.setHeader('wlHost', wlHost.host)
+		if (wlHost) {
+			servicesAPI.setHeader('wlhost', wlHost.host)
+			coreServicesAPI.setHeader('wlhost', wlHost.host)
+			cloudAPI.setHeader('wlhost', wlHost.host)
+		}
 		return true
 	}
 	catch (error) {

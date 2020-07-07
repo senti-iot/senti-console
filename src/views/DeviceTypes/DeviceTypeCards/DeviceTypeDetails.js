@@ -27,8 +27,8 @@ const DeviceTypeDetails = props => {
 	const deviceTypeMenu = [
 		{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 		{ isDivider: true },
-		{ disabled: !hasAccess(deviceType.uuid, 'devicetype.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
-		{ disabled: !hasAccess(deviceType.uuid, 'devicetype.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
+		{ disabled: !hasAccess(deviceType.uuid, 'deviceType.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
+		{ disabled: !hasAccess(deviceType.uuid, 'deviceType.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
 	]
 	//useCallbacks
 
@@ -36,7 +36,7 @@ const DeviceTypeDetails = props => {
 
 	//Handlers
 
-
+	console.log(deviceType)
 	return (
 		<InfoCard
 			title={deviceType.name ? deviceType.name : deviceType.id}
@@ -45,7 +45,7 @@ const DeviceTypeDetails = props => {
 			expanded={Boolean(detailsPanel)}
 			topAction={<Dropdown menuItems={deviceTypeMenu} />}
 			subheader={<ItemG container alignItems={'center'}>
-				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{deviceType.id}
+				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{deviceType.uuid}
 			</ItemG>}
 
 			content={
@@ -57,8 +57,8 @@ const DeviceTypeDetails = props => {
 					<ItemG>
 						<Caption>{t('orgs.fields.name')}</Caption>
 						<Info>
-							<Link to={{ pathname: `/management/org/${deviceType.orgId}`, prevURL: `/management/user/${deviceType.orgId}` }}>
-								{deviceType.customerName}
+							<Link to={{ pathname: `/management/org/${deviceType.org.uuid}`, prevURL: `/devicetype/${deviceType.uuid}` }}>
+								{deviceType.org.name}
 							</Link>
 						</Info>
 					</ItemG>
