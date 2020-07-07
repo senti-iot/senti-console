@@ -520,7 +520,7 @@ export const getRegistryLS = async (id) => {
 		dispatch({ type: gotRegistry, payload: false })
 		let registry = get('registry.' + id)
 		if (registry) {
-			await dispatch(await getPrivList([id], ['registries.modify', 'registries.changeparent', 'registries.delete']))
+			await dispatch(await getPrivList([id], ['registry.modify', 'registry.changeparent', 'registry.delete']))
 			dispatch({
 				type: setRegistry,
 				payload: registry
