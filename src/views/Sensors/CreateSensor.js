@@ -15,8 +15,6 @@ const CreateSensor = props => {
 	const s = useSnackbar().s
 
 	//Redux
-	const accessLevel = useSelector(state => state.settings.user.privileges)
-	const orgId = useSelector(state => state.settings.user.org.id)
 	const registries = useSelector(state => state.data.registries)
 	const deviceTypes = useSelector(state => state.data.deviceTypes)
 	const cloudfunctions = useSelector(state => state.data.functions)
@@ -27,14 +25,11 @@ const CreateSensor = props => {
 	const [openCF, setOpenCF] = useState({ open: false, where: null })
 	const [select, setSelect] = useState({ dt: { name: "" }, reg: { name: "" } })
 	const [stateSensor, setSensor] = useState({
-		reg_id: 0,
-		type_id: 0,
 		lat: 56.2639,
 		lng: 9.5018,
 		address: '',
 		locType: 0,
 		name: '',
-		customer_id: 1,
 		communication: 1
 	})
 	const [sensorMetadata, setSensorMetadata] = useState({
@@ -104,7 +99,7 @@ const CreateSensor = props => {
 	const handleChangeDT = (dt) => {
 		setSensor({
 			...stateSensor,
-			type_id: dt.id
+			deviceType: dt,
 		})
 		setSensorMetadata({
 			inbound: dt.inbound ? dt.inbound : [],
@@ -119,6 +114,28 @@ const CreateSensor = props => {
 	}
 	//#endregion
 
+	//#region Registry selector
+
+	const handleOpenReg = () => {
+		setOpenReg(true)
+	}
+	const handleCloseReg = () => {
+		setOpenReg(false)
+	}
+	const handleChangeReg = (o) => {
+		console.log('Registry', o)
+		setSensor({
+			...stateSensor,
+			registry: o,
+		})
+		setOpenReg(false)
+		setSelect({
+			...select,
+			reg: o
+		})
+	}
+
+	//#endregion
 	//#region Inbound Function
 
 	const handleRemoveInboundFunction = index => e => {
@@ -267,27 +284,7 @@ const CreateSensor = props => {
 
 	//#endregion
 
-	//#region Registry selector
 
-	const handleOpenReg = () => {
-		setOpenReg(true)
-	}
-	const handleCloseReg = () => {
-		setOpenReg(false)
-	}
-	const handleChangeReg = (o) => {
-		setSensor({
-			...stateSensor,
-			reg_id: o.id
-		})
-		setOpenReg(false)
-		setSelect({
-			...select,
-			reg: o
-		})
-	}
-
-	//#endregion
 
 
 
@@ -313,8 +310,8 @@ const CreateSensor = props => {
 		let rs = await createSensorFunc()
 		if (rs) {
 			s('snackbars.create.device', { device: stateSensor.name })
-			dispatch(getSensors(true, orgId, accessLevel.apisuperuser ? true : false))
-			history.push(`/sensor/${rs}`)
+			dispatch(getSensors(true))
+			history.push(`/sensor/${rs.uuid}`)
 		}
 		else
 			s('snackbars.failed')

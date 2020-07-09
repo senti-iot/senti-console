@@ -16,7 +16,7 @@ const DSelect = props => {
 	const [labelWidth, setLabelWidth] = useState(0)
 
 	//Const
-	const { error, helperText, value, onKeyPress, margin, onChange, simple, menuItems, label, fullWidth, leftIcon } = props
+	const { error, helperText, value, onKeyPress, margin, onChange, simple, menuItems, label, fullWidth, leftIcon, readOnly } = props
 	let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 
 	//useCallbacks
@@ -44,6 +44,7 @@ const DSelect = props => {
 				{label}
 			</InputLabel>
 			<Select
+				readOnly={readOnly}
 				variant={'outlined'}
 				fullWidth={mobile || fullWidth}
 				value={value}

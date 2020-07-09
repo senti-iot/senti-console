@@ -1,5 +1,5 @@
 
-import { servicesAPI } from './data';
+import { servicesAPI, dawaApi } from './data';
 import moment from 'moment';
 
 
@@ -36,7 +36,7 @@ export const getSensor = async (uuid) => {
  * @param {object} sensor
  */
 export const createSensor = async (sensor) => {
-	let response = await servicesAPI.put(`/v2/device`, sensor).then(rs => rs.ok ? rs.data : null)
+	let response = await servicesAPI.post(`/v2/device`, sensor).then(rs => rs.ok ? rs.data : null)
 	return response
 }
 /**
@@ -87,4 +87,10 @@ export const getSensorMessages = async (id, period) => {
 	let endDate = moment(period.to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
 	let response = await servicesAPI.get(`/v1/messages/device/${id}/${startDate}/${endDate} `).then(rs => rs.ok ? rs.data : rs.ok)
 	return response
+}
+
+export const getAddressByLocation = async (lat, long) => {
+	let URL = `adgangsadresser/reverse?x=${long}&y=${lat}&struktur=mini`
+	let response = await dawaApi.get(URL).then(rs => rs)
+	return response.data
 }

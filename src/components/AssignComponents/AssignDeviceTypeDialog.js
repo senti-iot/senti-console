@@ -32,8 +32,8 @@ const AssignDeviceTypeDialog = props => {
 	//Handlers
 
 	const assignDeviceType = sId => e => {
-		let org = deviceTypes[deviceTypes.findIndex(o => o.id === sId)]
-		props.callBack(org)
+		let deviceType = deviceTypes[deviceTypes.findIndex(o => o.uuid === sId)]
+		props.callBack(deviceType)
 	}
 
 	const closeDialog = () => {
@@ -117,7 +117,7 @@ const AssignDeviceTypeDialog = props => {
 			<List>
 				{deviceTypes ? filterItems(deviceTypes, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={assignDeviceType(p.id)} value={p.id}>
+						<ListItem button onClick={assignDeviceType(p.uuid)} value={p.uuid}>
 							<ListItemText primary={p.name} />
 						</ListItem>
 						<Divider />

@@ -27,7 +27,7 @@ const SensorDetails = (props) => {
 	//useEffects
 
 	//Handlers
-	const handleEditSensor = () => history.push({ pathname: `/sensor/${sensor.id}/edit`, prevURL: `/sensor/${sensor.id}` })
+	const handleEditSensor = () => history.push({ pathname: `/sensor/${sensor.uuid}/edit`, prevURL: `/sensor/${sensor.uuid}` })
 
 	const renderProtocol = (id) => {
 		switch (id) {
@@ -57,7 +57,7 @@ const SensorDetails = (props) => {
 
 	return (
 		<InfoCard
-			title={sensor.name ? sensor.name : sensor.id}
+			title={sensor.name ? sensor.name : sensor.uuid}
 			avatar={<DataUsage />}
 			noExpand
 			topAction={<Dropdown menuItems={
@@ -71,7 +71,7 @@ const SensorDetails = (props) => {
 
 			}
 			subheader={<ItemG container alignItems={'center'}>
-				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{sensor.id}
+				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{sensor.uuid}
 			</ItemG>}
 			content={
 				<ItemG container spacing={3}>
@@ -86,7 +86,7 @@ const SensorDetails = (props) => {
 					<ItemG xs={12}>
 						<Caption>{t('registries.fields.registry')}</Caption>
 						<Info>
-							<Link to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.id}` }} >
+							<Link to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.uuid}` }} >
 								{sensor.regName}
 							</Link>
 						</Info>

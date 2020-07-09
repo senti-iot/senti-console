@@ -6,7 +6,7 @@ import { updateSensor } from 'variables/dataSensors'
 import { updateFav, isFav } from 'redux/favorites'
 import { CircularLoader } from 'components'
 import CreateSensorForm from 'components/Sensors/CreateSensorForm'
-import { getAddressByLocation } from 'variables/dataDevices'
+import { getAddressByLocation } from 'variables/dataSensors'
 import { useLocalization, useLocation, useEventListener, useDispatch, useSelector, useSnackbar } from 'hooks'
 import { useParams, useHistory } from 'react-router-dom'
 import { useCallback } from 'react'
@@ -22,8 +22,6 @@ const EditSensor = props => {
 	const history = useHistory()
 
 	//Redux
-	const accessLevel = useSelector(s => s.settings.user.privileges)
-	const orgId = useSelector(s => s.settings.user.org.id)
 	const registries = useSelector(s => s.data.registries)
 	const deviceTypes = useSelector(s => s.data.deviceTypes)
 	const cloudfunctions = useSelector(s => s.data.functions)
@@ -32,8 +30,6 @@ const EditSensor = props => {
 	//State
 	const [loading, setLoading] = useState(true)
 	const [stateSensor, setSensor] = useState({
-		reg_id: 0,
-		type_id: 0,
 		description: '',
 		lat: 56.2639,
 		lng: 9.5018,
@@ -86,29 +82,32 @@ const EditSensor = props => {
 	// 	}
 	// }
 	useEffect(() => {
-		if (sensor) {
+		if (sensor && deviceTypes.length > 0 && registries.length > 0) {
 			setSensor(sensor)
+
+			let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
+			let reg = registries[registries.findIndex(r => r.uuid === sensor.registry.uuid)]
+			let metadata = sensor.metadata
 			setSensorMetadata({
-				metadata: sensor.metadata ? Object.keys(sensor.metadata).map(m => ({ key: m, value: sensor.metadata[m] })) : [],
-				outbound: sensor.dataKeys ? sensor.dataKeys : [],
-				inbound: sensor.inbound ? sensor.inbound : []
+				metadata: metadata?.metadata ? Object.keys(metadata?.metadata).map(m => ({ key: m, value: metadata?.metadata[m] })) : [],
+				outbound: dt ? dt.outbound : [],
+				inbound: dt ? dt.inbound : []
 			})
-			setSelect({
-				dt: {
-					...deviceTypes[deviceTypes.findIndex(dt => dt.id === sensor.type_id)]
-				},
-				reg: {
-					...registries[registries.findIndex(r => r.id === sensor.reg_id)]
-				}
-			})
+			if (dt && reg) {
+
+				setSelect({
+					dt: dt,
+					reg: reg
+				})
+			}
 			setLoading(false)
 		}
-	}, [sensor])
+	}, [sensor, registries, deviceTypes])
 	useEffect(() => {
 		if (sensor) {
 			let prevURL = location.prevURL ? location.prevURL : `/sensor/${params.id}`
 			setHeader('menus.edits.device', true, prevURL, 'manage.sensors')
-			setBC('editsensor', sensor.name, sensor.id)
+			setBC('editsensor', sensor.name, sensor.uuid)
 			// setBC('editsensor')
 			setTabs({
 				id: 'editSensor',
@@ -153,7 +152,7 @@ const EditSensor = props => {
 	const handleChangeDT = (dt) => {
 		setSensor({
 			...stateSensor,
-			type_id: dt.id
+			deviceType: dt
 		})
 		setSensorMetadata({
 			inbound: dt.inbound ? dt.inbound : [],
@@ -315,7 +314,7 @@ const EditSensor = props => {
 	const handleChangeReg = (o) => {
 		setSensor({
 			...stateSensor,
-			reg_id: o.id
+			registry: o
 		})
 		setOpenReg(false)
 		setSelect({
@@ -348,17 +347,17 @@ const EditSensor = props => {
 		let rs = await handleUpdateDevice()
 		if (rs) {
 			let favObj = {
-				id: stateSensor.id,
+				id: stateSensor.uuid,
 				name: stateSensor.name,
 				type: 'sensor',
-				path: `/sensor/${stateSensor.id}`
+				path: `/sensor/${stateSensor.uuid}`
 			}
 			if (isFav(favObj)) {
 				updateFav(favObj)
 			}
 			s('snackbars.edit.device', { device: stateSensor.name })
-			dispatch(await getSensors(true, orgId, accessLevel.apisuperuser ? true : false))
-			history.push(`/sensor/${rs}`)
+			dispatch(await getSensors(true))
+			history.push(`/sensor/${rs.uuid}`)
 		}
 		else
 			s('snackbars.failed')
