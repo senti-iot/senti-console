@@ -27,7 +27,7 @@ const DeviceTypeDetails = props => {
 	const deviceTypeMenu = [
 		{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? Star : StarBorder, func: isFav ? removeFromFav : addToFav },
 		{ isDivider: true },
-		{ disabled: !hasAccess(deviceType.uuid, 'deviceType.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
+		{ disabled: !hasAccess(deviceType.uuid, 'deviceType.modify'), label: t('menus.edit'), icon: Edit, func: () => history.push({ pathname: `/devicetype/${deviceType.uuid}/edit`, prevURL: `/deviceType/${deviceType.uuid}` }) },
 		{ disabled: !hasAccess(deviceType.uuid, 'deviceType.delete'), label: t('menus.delete'), icon: Delete, func: handleOpenDeleteDialog },
 	]
 	//useCallbacks
