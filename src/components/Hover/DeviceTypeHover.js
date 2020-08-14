@@ -34,15 +34,15 @@ const DeviceTypeHover = props => {
 
 	useEffect(() => {
 		if (saved === true) {
-			const { collection } = props
-			if (collection) {
+			const { devicetype } = props
+			if (devicetype) {
 
-				if (dispatch(isFav({ id: collection.id, type: 'collection' }))) {
-					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
+				if (dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
+					s('snackbars.favorite.saved', { name: devicetype.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: collection.id, type: 'collection' }))) {
-					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
+				if (!dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
+					s('snackbars.favorite.removed', { name: devicetype.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 				}
 			}
@@ -50,37 +50,37 @@ const DeviceTypeHover = props => {
 	}, [dispatch, props, s, saved, t])
 	// componentDidUpdate = () => {
 	// 	if (this.props.saved === true) {
-	// 		const { collection } = this.props
-	// 		if (collection) {
+	// 		const { devicetype } = this.props
+	// 		if (devicetype) {
 
-	// 			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
-	// 				this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
+	// 			if (this.props.isFav({ id: devicetype.uuid, type: 'devicetype' })) {
+	// 				this.props.s('snackbars.favorite.saved', { name: devicetype.name, type: this.props.t('favorites.types.devicetype') })
 	// 				this.props.finishedSaving()
 	// 			}
-	// 			if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
-	// 				this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
+	// 			if (!this.props.isFav({ id: devicetype.uuid, type: 'devicetype' })) {
+	// 				this.props.s('snackbars.favorite.removed', { name: devicetype.name, type: this.props.t('favorites.types.devicetype') })
 	// 				this.props.finishedSaving()
 	// 			}
 	// 		}
 	// 	}
 	// }
 	const addToFavorites = () => {
-		const { collection } = props
+		const { devicetype } = props
 		let favObj = {
-			id: collection.id,
-			name: collection.name,
-			type: 'collection',
-			path: `/collection/${collection.id}`
+			id: devicetype.uuid,
+			name: devicetype.name,
+			type: 'devicetype',
+			path: `/devicetype/${devicetype.uuid}`
 		}
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
-		const { collection } = props
+		const { devicetype } = props
 		let favObj = {
-			id: collection.id,
-			name: collection.name,
-			type: 'collection',
-			path: `/collection/${collection.id}`
+			id: devicetype.uuid,
+			name: devicetype.name,
+			type: 'devicetype',
+			path: `/devicetype/${devicetype.uuid}`
 		}
 		dispatch(removeFromFav(favObj))
 
@@ -139,21 +139,21 @@ const DeviceTypeHover = props => {
 									<ItemG xs={12}>
 										<T className={classes.smallText} paragraph={false}>
 											<Business className={classes.smallIcon} />
-											{devicetype.customer_name}
+											{devicetype.org.name}
 										</T>
 									</ItemG>
 								</ItemG>
 								<Divider />
 								<ItemG container style={{ marginTop: '8px' }}>
 									<ItemG>
-										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/devicetype/${devicetype.id}/edit`, prevURL: '/devicetypes' }}>
+										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/devicetype/${devicetype.uuid}/edit`, prevURL: '/devicetypes' }}>
 											{t('menus.edit')}
 										</Button>
 									</ItemG>
 									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-										<Tooltip placement="top" title={dispatch(isFav({ id: devicetype.id, type: 'devicetype' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-											<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: devicetype.id, type: 'devicetype' })) ? removeFromFavorites : addToFavorites}>
-												{dispatch(isFav({ id: devicetype.id, type: 'devicetype' })) ? <Star /> : <StarBorder />}
+										<Tooltip placement="top" title={dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' })) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' })) ? removeFromFavorites : addToFavorites}>
+												{dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' })) ? <Star /> : <StarBorder />}
 											</IconButton>
 										</Tooltip>
 									</ItemG>

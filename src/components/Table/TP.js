@@ -30,7 +30,13 @@ const TP = props => {
 	const handleChangePage = (e, page) => {
 		props.handleChangePage(e, page)
 	}
-
+	const handleGenerateAllOptions = () => {
+		let all = [...rowsPerPageOptions]
+		if (all.findIndex(a => a.value === rowsPerPage) === -1) {
+			all.unshift({ value: rowsPerPage, label: rowsPerPage })
+		}
+		return all
+	}
 	//Classes
 	const selectClasses = cx({
 		[classes.SelectIcon]: disableRowsPerPage,
@@ -39,6 +45,7 @@ const TP = props => {
 	const iconClass = cx({
 		[classes.noRows]: disableRowsPerPage
 	})
+
 	return (
 		<TablePagination
 			component='div'
@@ -60,7 +67,7 @@ const TP = props => {
 			onChangePage={handleChangePage}
 			onChangeRowsPerPage={handleChangeRowsPerPage}
 			labelRowsPerPage={isWidthUp('sm', width) ? disableRowsPerPage ? `` : t('tables.rowsPerPage') : ''}
-			rowsPerPageOptions={rowsPerPageOptions}
+			rowsPerPageOptions={handleGenerateAllOptions()}
 			SelectProps={{
 				renderValue: value => value,
 				classes: {

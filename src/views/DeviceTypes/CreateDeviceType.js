@@ -13,7 +13,6 @@ const CreateDeviceType = props => {
 	const location = useLocation()
 
 	//Redux
-	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const org = useSelector(state => state.settings.user.org)
 	const cloudfunctions = useSelector(state => state.data.functions)
 
@@ -241,9 +240,8 @@ const CreateDeviceType = props => {
 			inbound: sensorMetadata.inbound,
 			outbound: sensorMetadata.outbound,
 			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
-			orgId: stateOrg.aux?.odeumId
+			org: stateOrg
 		}
-		console.log(newDeviceType)
 		return await createDeviceType(newDeviceType)
 	}
 
@@ -251,8 +249,8 @@ const CreateDeviceType = props => {
 		let rs = await createDeviceTypeFunc()
 		if (rs) {
 			s('snackbars.create.devicetype', { dt: deviceType.name })
-			dispatch(getDeviceTypes(true, stateOrg.aux?.odeumId, accessLevel.apisuperuser ? true : false))
-			history.push(`/devicetype/${rs}`)
+			dispatch(getDeviceTypes(true))
+			history.push(`/devicetype/${rs.uuid}`)
 		}
 		else
 			s('snackbars.networkError')

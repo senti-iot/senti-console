@@ -12,7 +12,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getDeviceTypes, /* setDeviceTypes, */ sortData } from 'redux/data'
 import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable'
 import { deleteDeviceType } from 'variables/dataDeviceTypes'
-import { useSnackbar, useLocalization, useMatch, useLocation, useHistory } from 'hooks'
+import { useSnackbar, useLocalization, useMatch, useLocation, useHistory, useAuth } from 'hooks'
 
 
 const DeviceTypes = props => {
@@ -24,7 +24,9 @@ const DeviceTypes = props => {
 	const match = useMatch()
 	const location = useLocation()
 	const history = useHistory()
-
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(state => state.data.favorites)
@@ -55,22 +57,23 @@ const DeviceTypes = props => {
 	]
 
 	const options = () => {
-		let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
+		let devicetype = devicetypes[devicetypes.findIndex(d => d.uuid === selected[0])]
 		let favObj = {
-			id: devicetype.id,
+			id: devicetype.uuid,
 			name: devicetype.name,
 			type: 'devicetype',
-			path: `/devicetype/${devicetype.id}`
+			path: `/devicetype/${devicetype.uuid}`
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
 			{
 				single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'),
 				icon: isFavorite ? Star : StarBorder,
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
 			},
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ isDivider: true, dontShow: selected.length > 1 },
+			{ disabled: !hasAccess(selected[0], 'deviceType.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !hasAccessList(selected, 'deviceType.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -104,14 +107,14 @@ const DeviceTypes = props => {
 	}, [])
 	useEffect(() => {
 		if (saved === true) {
-			let devicetype = devicetypes[devicetypes.findIndex(d => d.id === selected[0])]
+			let devicetype = devicetypes[devicetypes.findIndex(d => d.uuid === selected[0])]
 			if (devicetype) {
-				if (dispatch(isFav({ id: devicetype.id, type: 'devicetype' }))) {
+				if (dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
 					s('snackbars.favorite.saved', { name: devicetype.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 					setSelected([])
 				}
-				if (!dispatch(isFav({ id: devicetype.id, type: 'devicetype' }))) {
+				if (!dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
 					s('snackbars.favorite.removed', { name: devicetype.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 					setSelected([])
@@ -129,7 +132,7 @@ const DeviceTypes = props => {
 		// const { favorites, devicetypes } = this.props
 		let favs = favorites.filter(f => f.type === 'devicetype')
 		let favDeviceTypes = favs.map(f => {
-			return devicetypes[devicetypes.findIndex(d => d.id === f.id)]
+			return devicetypes[devicetypes.findIndex(d => d.uuid === f.uuid)]
 		})
 		favDeviceTypes = handleRequestSort(orderBy, order, favDeviceTypes)
 		return favDeviceTypes
@@ -155,7 +158,7 @@ const DeviceTypes = props => {
 				s('snackbars.assign.deviceToDeviceType', { devicetype: ``, what: 'Device' })
 				break
 			case 6:
-				s('snackbars.assign.deviceToDeviceType', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.id === selected[0])].name}`, device: display })
+				s('snackbars.assign.deviceToDeviceType', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.uuid === selected[0])].name}`, device: display })
 				break
 			default:
 				break
@@ -170,7 +173,7 @@ const DeviceTypes = props => {
 		 */
 		if (accessLevel && user) {
 			if (reload)
-				dispatch(getDeviceTypes(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
+				dispatch(getDeviceTypes(true))
 		}
 	}
 	//#endregion
@@ -180,6 +183,7 @@ const DeviceTypes = props => {
 	const handleAddNew = () => history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
 
 	const handleEdit = () => {
+		console.log(selected)
 		history.push({ pathname: `/devicetype/${selected[0]}/edit`, prevURL: `/devicetypes/list` })
 	}
 
@@ -267,8 +271,8 @@ const DeviceTypes = props => {
 				<List dense={true}>
 					<Divider />
 					{selected.map(s => {
-						let u = devicetypes[devicetypes.findIndex(d => d.id === s)]
-						return u ? <ListItem divider key={u.id}>
+						let u = devicetypes[devicetypes.findIndex(d => d.uuid === s)]
+						return u ? <ListItem divider key={u.uuid}>
 							<ListItemIcon>
 								<Memory />
 							</ListItemIcon>
@@ -291,15 +295,15 @@ const DeviceTypes = props => {
 
 
 	const renderTableToolBarContent = () =>
-		<Tooltip title={t('menus.create.devicetype')}>
+		hasAccess(null, 'deviceType.create') ? <Tooltip title={t('menus.create.devicetype')}>
 			<IconButton aria-label='Add new devicetype' onClick={handleAddNew}>
 				<Add />
 			</IconButton>
-		</Tooltip>
+		</Tooltip> : null
 
 
 	const renderTableToolBar = () =>
-		<TableToolbar
+		 <TableToolbar
 			ft={ft}
 			reduxKey={'devicetypes'}
 			numSelected={selected.length}
@@ -307,8 +311,6 @@ const DeviceTypes = props => {
 			t={t}
 			content={renderTableToolBarContent()}
 		/>
-
-
 
 
 	const renderTable = (items, handleClick, key) =>

@@ -280,39 +280,40 @@ class FilterCard extends Component {
 			[classes.error]: error
 		})
 		return (
-			<Popover
-				anchorEl={anchorEl}
-				open={open ? open : false}
-				onClose={handleClose}
-				PaperProps={{ classes: { root: classes.menu } }}
-			>
-				<Card classes={{ root: errorClassname }}>
-					<ItemG container alignItems={'center'} className={classes.header}>
-						<ItemG xs>
-							<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>
-						</ItemG>
-						<ItemG>
-							<IconButton onClick={handleClose}>
-								<Close className={classes.headerText} />
-							</IconButton>
-						</ItemG>
-					</ItemG>
-					<CardContent className={classes.content}>
-						<ItemG container justify={'center'}>
-							<ItemG xs={12}>
-								{this.renderType()}
+			anchorEl.current ?
+				<Popover
+					anchorEl={anchorEl.current}
+					open={open ? open : false}
+					onClose={handleClose}
+					PaperProps={{ classes: { root: classes.menu } }}
+				>
+					<Card classes={{ root: errorClassname }}>
+						<ItemG container alignItems={'center'} className={classes.header}>
+							<ItemG xs>
+								<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>
+							</ItemG>
+							<ItemG>
+								<IconButton onClick={handleClose}>
+									<Close className={classes.headerText} />
+								</IconButton>
 							</ItemG>
 						</ItemG>
-					</CardContent>
-					<CardActions>
-						<ItemG xs={12} container justify={'center'}>
-							<Button onClick={this.handleButton} onKeyPress={this.handleKeyPress}>
-								{!edit ? t('actions.addFilter') : t('actions.editFilter')}
-							</Button>
-						</ItemG>
-					</CardActions>
-				</Card>
-			</Popover>
+						<CardContent className={classes.content}>
+							<ItemG container justify={'center'}>
+								<ItemG xs={12}>
+									{this.renderType()}
+								</ItemG>
+							</ItemG>
+						</CardContent>
+						<CardActions>
+							<ItemG xs={12} container justify={'center'}>
+								<Button onClick={this.handleButton} onKeyPress={this.handleKeyPress}>
+									{!edit ? t('actions.addFilter') : t('actions.editFilter')}
+								</Button>
+							</ItemG>
+						</CardActions>
+					</Card>
+				</Popover> : null
 		)
 	}
 }

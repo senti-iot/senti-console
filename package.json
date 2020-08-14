@@ -80,6 +80,7 @@
 		"@welldone-software/why-did-you-render": "^3.6.0",
 		"babel-plugin-transform-imports": "^1.5.1",
 		"cra-build-watch": "^1.4.1",
+		"npm-watch": "^0.6.0",
 		"source-map-explorer": "^2.2.2"
 	},
 	"scripts": {
@@ -105,5 +106,13 @@
 		"not dead",
 		"not ie <= 11",
 		"not op_mini all"
-	]
+	],
+	"watch": {
+		"build": {
+			"patterns": [
+				"src"
+			],
+			"extensions": "js,jsx"
+		}
+	}
 }

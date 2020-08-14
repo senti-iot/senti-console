@@ -50,7 +50,7 @@ if [[ "$1" == "merge" ]]; then
 	rsync -r --quiet $2/build/ deploy@rey.webhouse.net:/srv/www/odeumcode/beta2.senti.cloud
 	echo
 	# Senti Workspace
-	curl -X POST -H 'Content-type: application/json' --data '{"text":"Senti App ALPHA updated!"}' $3
+	curl -X POST -H 'Content-type: application/json' --data '{"text":"Senti App MERGE / BETA2 updated!"}' $3
 	echo Deployment to alpha-dev done!
 	exit 0
 fi

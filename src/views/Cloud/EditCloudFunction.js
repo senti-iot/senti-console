@@ -18,14 +18,17 @@ const EditCloudFunction = props => {
 	const history = useHistory()
 
 	//Redux
-	const accessLevel = useSelector(state => state.settings.user.privileges)
-	const orgId = useSelector(state => state.settings.user.org.uuid)
 	const orgs = useSelector(state => state.data.orgs)
 	const cloudfunction = useSelector(state => state.data.cloudfunction)
 
 	//State
 	const [loading, setLoading] = useState(true)
-	const [stateCloudfunction, setStateCloudfunction] = useState(null)
+	const [stateCloudfunction, setStateCloudfunction] = useState({
+		name: "",
+		description: "",
+		js: "",
+		type: 0
+	})
 	const [org, setOrg] = useState({ name: '' })
 
 	//Const
@@ -56,30 +59,34 @@ const EditCloudFunction = props => {
 	}, [])
 
 	useEffect(() => {
-		if (cloudfunction && orgs.length > 0) {
+		if (cloudfunction && !stateCloudfunction.uuid && orgs.length > 0) {
+			console.log(cloudfunction)
 			setStateCloudfunction(cloudfunction)
-			let orgIndex = orgs.findIndex(o => o.aux?.odeumId === cloudfunction.orgId)
-			let fOrg = orgs[orgIndex]
-			if (fOrg) {
-				setOrg(fOrg)
-			}
+			setOrg(cloudfunction.org)
 			setLoading(false)
-			let prevURL = location.prevURL ? location.prevURL : `/function/${cloudfunction.id}`
+
+		}
+
+	}, [cloudfunction, getData, orgs, stateCloudfunction.uuid])
+
+	useEffect(() => {
+		if (cloudfunction) {
+
+			let prevURL = location.prevURL ? location.prevURL : `/function/${cloudfunction.uuid}`
 			setHeader('menus.edits.cloudfunction', true, prevURL, 'manage.cloudfunctions')
-			setBC('editcloudfunction', cloudfunction.name, cloudfunction.id)
+			setBC('editcloudfunction', cloudfunction.name, cloudfunction.uuid)
 			setTabs({
 				id: "editCF",
 				tabs: []
 			})
 		}
-
-	}, [cloudfunction, location.prevURL, orgs, setBC, setHeader, setTabs])
-
+	}, [cloudfunction, location.prevURL, setBC, setHeader, setTabs])
 	//Handlers
 
 	const handleOrgChange = org => {
+		console.log(org)
 		setOrg(org)
-		setStateCloudfunction({ ...stateCloudfunction, orgId: org.id })
+		setStateCloudfunction({ ...stateCloudfunction, org: org })
 
 	}
 	const handleCodeChange = what => value => {
@@ -97,17 +104,17 @@ const EditCloudFunction = props => {
 		let rs = await updateFunctionFunc()
 		if (rs) {
 			let favObj = {
-				id: stateCloudfunction.id,
+				id: stateCloudfunction.uuid,
 				name: stateCloudfunction.name,
 				type: 'cloudfunction',
-				path: `/function/${stateCloudfunction.id}`
+				path: `/function/${stateCloudfunction.uuid}`
 			}
 			if (dispatch(isFav(favObj))) {
 				dispatch(updateFav(favObj))
 			}
 			s('snackbars.edit.cloudfunction', { cf: stateCloudfunction.name })
-			dispatch(await getFunctions(true, orgId, accessLevel.apisuperuser ? true : false))
-			history.push(`/function/${cloudfunction.id}`)
+			dispatch(await getFunctions(true))
+			history.push(`/function/${cloudfunction.uuid}`)
 		}
 		else
 			s('snackbars.failed')

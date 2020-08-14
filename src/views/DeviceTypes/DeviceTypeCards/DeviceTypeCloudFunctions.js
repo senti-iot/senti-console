@@ -93,7 +93,7 @@ const DeviceTypeCloudFunctions = props => {
 										</TableCell>
 										<TableCell>
 											{s.nId > 0 ? <Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
-												{cf[cf.findIndex(f => f.id === s.nId)].name}
+												{cf[cf.findIndex(f => f.id === s.nId)]?.name}
 											</Link> : '-'}
 										</TableCell>
 										<TableCell>

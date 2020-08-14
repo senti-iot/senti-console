@@ -207,7 +207,7 @@ const FilterToolbar = props => {
 			<Fragment>
 				<FilterInput
 					onBlur={handleBlur}
-					inputRef={r => inputRef.current = r}
+					inputRef={r =>	inputRef.current = r}
 					chipRef={r => chipRef.current = r}
 					value={chips[reduxKey]}
 					onBeforeAdd={(chip) => onBeforeAdd(chip)}
@@ -276,7 +276,7 @@ const FilterToolbar = props => {
 						setEditChip(null)
 					}}
 				/> : null}
-				{filters ? filters.map((ft, i) => {
+				{(filters && inputRef.current) ? filters.map((ft, i) => {
 					return <FilterCard
 						resetError={() => setError(false)}
 						error={error}

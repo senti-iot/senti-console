@@ -27,7 +27,6 @@ const DeviceType = props => {
 
 	//Redux
 
-	const accessLevel = useSelector(store => store.settings.user.privileges)
 	const saved = useSelector(store => store.favorites.saved)
 	const deviceType = useSelector(store => store.data.deviceType)
 	const loading = useSelector(store => !store.data.gotDeviceType)
@@ -169,7 +168,6 @@ const DeviceType = props => {
 							history={history}
 							match={match}
 							t={t}
-							accessLevel={accessLevel}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'metadata'}>

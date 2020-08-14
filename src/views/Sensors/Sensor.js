@@ -90,14 +90,14 @@ const Sensor = props => {
 	}, [])
 	useEffect(() => {
 		if (saved === true) {
-			if (dispatch(isFav({ id: sensor.id, type: "sensor" }))) {
+			if (dispatch(isFav({ id: sensor.uuid, type: "sensor" }))) {
 				s("snackbars.favorite.saved", {
 					name: sensor.name,
 					type: t("favorites.types.device")
 				})
 				dispatch(finishedSaving())
 			}
-			if (!dispatch(isFav({ id: sensor.id, type: "sensor" }))) {
+			if (!dispatch(isFav({ id: sensor.uuid, type: "sensor" }))) {
 				s("snackbars.favorite.removed", {
 					name: sensor.name,
 					type: t("favorites.types.device")
@@ -113,7 +113,7 @@ const Sensor = props => {
 
 	const addToFavorites = () => {
 		let favObj = {
-			id: sensor.id,
+			id: sensor.uuid,
 			name: sensor.name,
 			type: "sensor",
 			path: match.url
@@ -122,14 +122,17 @@ const Sensor = props => {
 	}
 	const removeFromFavorites = () => {
 		let favObj = {
-			id: sensor.id,
+			id: sensor.uuid,
 			name: sensor.name,
 			type: "sensor",
 			path: match.url
 		}
 		dispatch(removeFromFav(favObj))
 	}
-
+	/**
+	 * @TODO
+	 * Change ID to UUID
+	 */
 	const getDeviceMessages = async () => {
 		await getSensorMessages(sensor.id, periods[0]).then(rs => {
 			setSensorMessages(rs)
@@ -151,10 +154,10 @@ const Sensor = props => {
 		setopenDelete(false)
 	}
 	const handleDeleteSensor = async () => {
-		if (isFavorite(sensor.id)) {
+		if (isFavorite(sensor.uuid)) {
 			removeFromFavorites()
 		}
-		await deleteSensor(sensor.id).then(() => {
+		await deleteSensor(sensor.uuid).then(() => {
 			handleCloseDeleteDialog()
 			snackBarMessages(1)
 			history.push("/sensors/list")
@@ -185,7 +188,7 @@ const Sensor = props => {
 					<GridContainer justify={"center"} alignContent={"space-between"}>
 						<ItemGrid xs={12} noMargin id="details">
 							<SensorDetails
-								isFav={isFavorite({ id: sensor.id, type: "sensor" })}
+								isFav={isFavorite({ id: sensor.uuid, type: "sensor" })}
 								addToFav={addToFavorites}
 								removeFromFav={removeFromFavorites}
 								sensor={sensor}
@@ -214,7 +217,7 @@ const Sensor = props => {
 									return (
 										<ItemGrid xs={12} key={i} container noMargin id={"charts"}>
 											<SensorChart
-												deviceId={sensor.id}
+												deviceId={sensor.uuid}
 												dataKey={k.key}
 												title={k.key}
 												cfId={k.nId}

@@ -13,7 +13,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getRegistries, sortData } from 'redux/data'
 import RegistryCards from 'components/Registry/RegistryCards'
 import { deleteRegistry } from 'variables/dataRegistry'
-import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector } from 'hooks'
+import { useLocalization, useLocation, useHistory, useDispatch, useSnackbar, useSelector, useAuth  } from 'hooks'
 import registriesStyles from 'assets/jss/components/registries/registriesStyles'
 import { handleRequestSort } from 'variables/functions'
 
@@ -25,6 +25,9 @@ const Registries = props => {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	const classes = registriesStyles()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
@@ -62,23 +65,23 @@ const Registries = props => {
 		{ id: 'name', label: t('registries.fields.name') },
 		{ id: 'region', label: t('registries.fields.region') },
 		{ id: 'protocol', label: t('registries.fields.protocol') },
-		{ id: 'protocol', label: t('registries.fields.created') },
+		{ id: 'created', label: t('registries.fields.created') },
 		{ id: 'customer', label: t('registries.fields.customer') },
 	]
 
 	const options = () => {
-		let registry = registries[registries.findIndex(d => d.id === selected[0])]
+		let registry = registries[registries.findIndex(d => d.uuid === selected[0])]
 		let favObj = {
-			id: registry.id,
+			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
-			path: `/registry/${registry.id}`
+			path: `/registry/${registry.uuid}`
 		}
 		let isFavorited = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ dontShow: !hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
 			{ single: true, label: isFavorited ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorited ? Star : StarBorder, func: isFavorited ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			{ dontShow: !hasAccessList(selected, 'registry.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
 		]
 		return allOptions
 	}
@@ -107,14 +110,14 @@ const Registries = props => {
 	//useEffects
 	useEffect(() => {
 		if (saved === true) {
-			let registry = registries[registries.findIndex(d => d.id === selected[0])]
+			let registry = registries[registries.findIndex(d => d.uuid === selected[0])]
 			if (registry) {
-				if (dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+				if (dispatch(isFav({ id: registry.uuid, type: 'registry' }))) {
 					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
 					finishedSaving()
 					setSelected([])
 				}
-				if (!dispatch(isFav({ id: registry.id, type: 'registry' }))) {
+				if (!dispatch(isFav({ id: registry.uuid, type: 'registry' }))) {
 					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
 					finishedSaving()
 					setSelected([])
@@ -154,7 +157,7 @@ const Registries = props => {
 	const handleGetFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'registry')
 		let favRegistries = favs.map(f => {
-			return registries[registries.findIndex(d => d.id === f.id)]
+			return registries[registries.findIndex(d => d.uuid === f.uuid)]
 		})
 		favRegistries = handleRequestSort(orderBy, order, favRegistries)
 		return favRegistries
@@ -181,7 +184,7 @@ const Registries = props => {
 			// 	s('snackbars.assign.deviceToRegistry', { registry: ``, what: 'Device' })
 			// 	break;
 			// case 6:
-			// 	s('snackbars.assign.deviceToRegistry', { registry: `${registries[registries.findIndex(c => c.id === selected[0])].name}`, device: display })
+			// 	s('snackbars.assign.deviceToRegistry', { registry: `${registries[registries.findIndex(c => c.uuid === selected[0])].name}`, device: display })
 			// 	break
 			default:
 				break
@@ -276,8 +279,8 @@ const Registries = props => {
 				<List dense={true}>
 					<Divider />
 					{selected.map(s => {
-						let u = registries[registries.findIndex(d => d.id === s)]
-						return u ? <ListItem divider key={u.id}>
+						let u = registries[registries.findIndex(d => d.uuid === s)]
+						return u ? <ListItem divider key={u.uuid}>
 							<ListItemIcon>
 								<InputIcon />
 							</ListItemIcon>
@@ -300,13 +303,13 @@ const Registries = props => {
 
 
 	const renderTableToolBarContent = () => {
-		return <Fragment>
-			<Tooltip title={t('menus.create.registry')}>
-				<IconButton aria-label='Add new registry' onClick={handleAddNewRegistry}>
-					<Add />
-				</IconButton>
-			</Tooltip>
-		</Fragment>
+		let access = hasAccess(null, 'registry.create')
+		return access ? <Tooltip title={t('menus.create.registry')}>
+			<IconButton aria-label='Add new registry' onClick={handleAddNewRegistry}>
+				<Add />
+			</IconButton>
+		</Tooltip>
+			: null
 	}
 
 	const renderTableToolBar = () => {

@@ -32,12 +32,11 @@ deploy:
     skip_cleanup: true
     on:
       branch: alpha
-  - domain: https://alphahooks.surge.sh
-    project: "./build"
-    provider: surge
+  - provider: script
+    script: bash scripts/deploy.sh merge $TRAVIS_BUILD_DIR $SLACK_HOOK
     skip_cleanup: true
     on:
-      branch: white-label
+      branch: merge
 language: node_js
 node_js:
   - stable
