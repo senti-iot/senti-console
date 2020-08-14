@@ -136,7 +136,7 @@ const CreateOrgForm = props => {
 
 					id={'website'}
 					label={t('orgs.fields.url')}
-					value={org.url}
+					value={org.website}
 					onChange={handleChange('website')}
 					margin='normal'
 
