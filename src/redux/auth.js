@@ -33,7 +33,7 @@ export const getPrivList = (uuids, pList) => {
 export const auth = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case setPrivs:
-			return Object.assign({}, state, { userPrivilege: payload })
+			return Object.assign({}, state, { userPrivilege: { ...state.userPrivilege, ...payload } })
 		case setRes:
 			return Object.assign({}, state, { resources: { ...state.resources, ...payload } })
 		case setACL:

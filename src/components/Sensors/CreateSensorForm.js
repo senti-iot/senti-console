@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react'
-import { Button, Divider, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
-import { Close, CheckCircle, Block } from 'variables/icons';
+import { Button, Divider } from '@material-ui/core'
+import { CheckCircle, Block } from 'variables/icons'
 import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T } from 'components'
-import OpenStreetMap from 'components/Map/OpenStreetMap';
-import Info from 'components/Typography/Info';
-import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog';
-import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog';
-import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
-import { useLocalization } from 'hooks';
-import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles';
+import OpenStreetMap from 'components/Map/OpenStreetMap'
+import Info from 'components/Typography/Info'
+import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog'
+import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog'
+// import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
+import { useLocalization } from 'hooks'
+import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles'
 
 
 const CreateSensorForm = props => {
@@ -39,31 +39,39 @@ const CreateSensorForm = props => {
 		{ value: 0, label: t('devices.locationTypes.unspecified') }
 	]
 
-	const outboundTypes = [
-		{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
-		// { value: 1, label: t('cloudfunctions.datatypes.average') }
-	]
+
 	//useCallbacks
 
 	//useEffects
 
 	//Handlers
-	const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
-		handleChangeKey, handleOpenFunc, handleChangeType, cfunctions,
-		handleRemoveKey, handleRemoveFunction, handleAddKey, handleOpenReg, openReg, handleCloseReg, handleChangeReg,
+	/* To remove from props
+		const outboundTypes = [
+		{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+		// { value: 1, label: t('cloudfunctions.datatypes.average') }
+	]
+	openCF, handleCloseFunc, handleChangeFunc,
+	handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
+	handleRemoveKey, handleRemoveFunction, handleAddKey,
+	handleChangeKey, handleOpenFunc, handleChangeType,
+	handleAddInboundFunction, handleRemoveInboundFunction
+*/
+	const { sensorMetadata,
+		cfunctions,
+		handleOpenReg, openReg, handleCloseReg, handleChangeReg,
 		handleOpenDT, handleCloseDT, openDT, handleChangeDT,
-		openCF, handleCloseFunc, handleChangeFunc,
+
 		handleChange, sensor, getLatLngFromMap,
-		handleCreate, goToRegistries, select, handleAddInboundFunction, handleRemoveInboundFunction } = props
+		handleCreate, goToRegistries, select, } = props
 
 	const renderMetadata = () => {
 		return <Fragment>
-			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
+			<T style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
 				return <ItemGrid xs={12} container key={'metadata' + i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.key')}
-						onChange={handleChangeMetadataKey(i)}
+						// onChange={handleChangeMetadataKey(i)}
 						value={m.key}
 						readOnly
 						InputProps={{
@@ -72,31 +80,34 @@ const CreateSensorForm = props => {
 					/>
 					<TextF
 						label={t('cloudfunctions.fields.metadata.value')}
-						onChange={handleChangeMetadata(i)}
+						// onChange={handleChangeMetadata(i)}
 						value={m.value}
 						readOnly
 						InputProps={{
 							style: { marginRight: 8 }
 						}}
 					/>
-					<Tooltip title={t('tooltips.devices.removeDataField')}>
+					{/* <Tooltip title={t('tooltips.devices.removeDataField')}>
 						<IconButton
 							style={{ marginTop: 6 }}
 							onClick={handleRemoveMtdKey(i)}>
 							<Close />
 						</IconButton>
-					</Tooltip>
+					</Tooltip> */}
 				</ItemGrid>
 			}) : null}
-			<ItemGrid xs={12}>
+			{/* <ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
-			</ItemGrid>
-			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
+			</ItemGrid> */}
+			<Divider style={{ margin: "16px" }} />
+			{/* <ItemGrid> */}
+			{/* </ItemGrid> */}
+			<T style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
 				return <ItemGrid xs={12} container key={'outbound' + i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
-						onChange={handleChangeKey(p, i)}
+						// onChange={handleChangeKey(p, i)}
 						value={p.key}
 						readOnly
 						InputProps={{
@@ -107,28 +118,29 @@ const CreateSensorForm = props => {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						onClick={handleOpenFunc(i, 'outbound')}
+						// onClick={handleOpenFunc(i, 'outbound')}
 						onChange={() => { }}
 						InputProps={{
-							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
-								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
-									<IconButton
-										className={classes.smallAction}
-										onClick={e => { e.stopPropagation(); handleRemoveFunction(i)() }}
-									>
-										<Close />
-									</IconButton>
-								</Tooltip>
-							</InputAdornment>,
+							// endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+							// 	<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+							// 		<IconButton
+							// 			className={classes.smallAction}
+							// 			onClick={e => { e.stopPropagation(); handleRemoveFunction(i)() }}
+							// 		>
+							// 			<Close />
+							// 		</IconButton>
+							// 	</Tooltip>
+							// </InputAdornment>,
 							style: { marginRight: 8 }
 						}}
 					/>
-					<DSelect
+					{/* <DSelect
+						readOnly
 						onChange={handleChangeType(i)}
 						value={p.type}
 						menuItems={outboundTypes}
-					/>
-					<Tooltip title={t('tooltips.devices.removeDataField')}>
+					/> */}
+					{/* <Tooltip title={t('tooltips.devices.removeDataField')}>
 
 						<IconButton
 							// className={classes.smallAction}
@@ -137,43 +149,45 @@ const CreateSensorForm = props => {
 						>
 							<Close />
 						</IconButton>
-					</Tooltip>
+					</Tooltip> */}
 				</ItemGrid>
 
 			})}
-			<ItemGrid xs={12}>
+			{/* <ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddKey} color={'primary'}>{t('actions.addKey')}</Button>
-			</ItemGrid>
+			</ItemGrid> */}
 		</Fragment>
 	}
 
 	const renderMetadataInbound = () => {
+		// t('actions.addInboundFunc')
 		return <Fragment>
+			<T style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('cloudfunctions.fields.types.inbound')}</T>
 			{sensorMetadata.inbound.map((p, i) => {
 				return <ItemGrid xs={12} key={'inbound' + i} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						onClick={handleOpenFunc(i, 'inbound')}
+						// onClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						InputProps={{
-							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
-								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
-									<IconButton
-										className={classes.smallAction}
-										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(i)() }}
-									>
-										<Close />
-									</IconButton>
-								</Tooltip>
-							</InputAdornment>
-						}}
+					// InputProps={{
+					// 	endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+					// 		<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+					// 			<IconButton
+					// 				className={classes.smallAction}
+					// 				onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(i)() }}
+					// 			>
+					// 				<Close />
+					// 			</IconButton>
+					// 		</Tooltip>
+					// 	</InputAdornment>
+					// }}
 					/>
 				</ItemGrid>
 			})}
-			<ItemGrid xs={12}>
+			{/* <ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddInboundFunction} color={'primary'}>{t('actions.addInboundFunc')}</Button>
-			</ItemGrid>
+			</ItemGrid> */}
 
 		</Fragment>
 
@@ -190,7 +204,7 @@ const CreateSensorForm = props => {
 					noHeader
 					content={
 						<ItemG>
-
+							{/*
 							<AssignCFDialog
 								t={t}
 								open={openCF.open}
@@ -199,7 +213,7 @@ const CreateSensorForm = props => {
 									handleChangeFunc(cf, openCF.where)
 									handleCloseFunc()
 								}}
-							/>
+							/> */}
 							{/* {this.renderSelectFunction()} */}
 							<ItemGrid xs={12}>
 								<TextF
@@ -245,7 +259,6 @@ const CreateSensorForm = props => {
 									}}
 								/>
 							</ItemGrid>
-							<Divider style={{ margin: "16px" }} />
 							<ItemGrid xs={12}>
 								<AssignDeviceTypeDialog
 									t={t}
@@ -269,6 +282,7 @@ const CreateSensorForm = props => {
 									}}
 								/>
 							</ItemGrid>
+							<Divider style={{ margin: "16px" }} />
 							{renderMetadata()}
 							<Divider style={{ margin: "16px" }} />
 							{renderMetadataInbound()}
@@ -305,10 +319,12 @@ const CreateSensorForm = props => {
 									value={sensor.locType}
 									onChange={handleChange('locType')}
 									menuItems={LocationTypes}
+									margin={'normal'}
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<DSelect
+									margin={'normal'}
 									label={t('sensors.fields.communication')}
 									onChange={handleChange('communication')}
 									value={sensor.communication}

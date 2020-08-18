@@ -98,6 +98,7 @@ const EditOrg = props => {
 			})
 		}
 	}, [getCountryID, getCountryLabel, org, rOrg, t])
+
 	useEffect(() => {
 		if (rOrg) {
 			let prevURL = location.prevURL

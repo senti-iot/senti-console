@@ -15,14 +15,15 @@ const CreateRegistry = props => {
 	//Redux
 	const accessLevel = useSelector(state => state.settings.user.privileges)
 	const org = useSelector(state => state.settings.user.org)
-
 	//State
 	const [registry, setRegistry] = useState({
 		name: "",
-		region: "Europe",
+		region: "europe",
 		protocol: 0,
 		ca_certificate: 0,
-		orgId: org.aux?.odeumId
+		org: {
+			uuid: org.uuid
+		}
 	})
 	const [stateOrg, setStateOrg] = useState(org)
 
@@ -60,7 +61,8 @@ const CreateRegistry = props => {
 	}
 	const handleOrgChange = newOrg => {
 		setStateOrg(newOrg)
-		setRegistry({ ...registry, orgId: newOrg.aux.odeumId })
+		setRegistry({
+			...registry, org: newOrg })
 	}
 	const createRegistryFunc = async () => {
 		return await createRegistry(registry)
@@ -70,7 +72,7 @@ const CreateRegistry = props => {
 		if (rs) {
 			s('snackbars.create.registry', { reg: registry.name })
 			dispatch(await getRegistries(true, org.aux?.odeumId, accessLevel.apisuperuser ? true : false))
-			history.push(`/registry/${rs}`)
+			history.push(`/registry/${rs.uuid}`)
 		}
 		else
 			s('snackbars.failed')

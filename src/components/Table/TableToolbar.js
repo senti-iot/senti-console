@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core'
+import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles, Divider } from '@material-ui/core'
 import { MoreVert as MoreVertIcon } from 'variables/icons'
 import { boxShadow } from 'assets/jss/material-dashboard-react'
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle'
@@ -40,12 +40,14 @@ let selectedRender = props => {
 				{props.options().map((option, i) => {
 					if (option.dontShow)
 						return null
+					if (option.isDivider)
+						return <Divider style={{ margin: "3px 1px" }} key={i} />
 					if (option.single)
-						return numSelected === 1 ? <MenuItem key={i} onClick={() => { option.func(); setAnchor(null) }}>
+						return numSelected === 1 ? <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
 							<option.icon className={props.classes.leftIcon} />{option.label}
 						</MenuItem> : null
 					else {
-						return <MenuItem key={i} onClick={() => { option.func(); setAnchor(null) }}>
+						return <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
 							<option.icon className={props.classes.leftIcon} />{option.label}
 						</MenuItem>
 					}

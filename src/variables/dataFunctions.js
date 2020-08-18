@@ -1,32 +1,49 @@
-import { cloudAPI } from './data';
+import { servicesAPI } from './data';
 
-export const getAllFunctions = async (customerID, ua) => {
-	let data = []
-	if (ua) {
-		data = await cloudAPI.get('/v1/fs').then(rs => rs.ok ? rs.data : [])
-	}
-	else {
-		data = await cloudAPI.get(`/v1/fs/${customerID}`).then(rs => rs.ok ? rs.data : [])
-	}
+//#region V2
+
+/**
+ * Get all cloud functions
+ * @func getAllFunctions
+ */
+export const getAllFunctions = async () => {
+	let data = await servicesAPI.get('/v2/cloudfunctions').then(rs => rs.ok ? rs.data : [])
 	return data
 }
-export const getFunction = async (id, customerID, ua) => {
-	let data = await cloudAPI.get(`/v1/f/${id}`).then(rs => rs.ok ? rs.data : null)
+/**
+ * Get Cloud function
+ * @func getFunction
+ * @param {UUIDv4} uuid
+ */
+export const getFunction = async (uuid) => {
+	let data = await servicesAPI.get(`/v2/cloudfunction/${uuid}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
-export const createFunction = async (dt) => {
-	let response = await cloudAPI.put('/v1/f', dt).then(rs => rs.ok ? rs.data : false)
-	return response
-}
-export const updateFunction = async (dt) => {
-	let response = await cloudAPI.post(`/v1/f`, dt).then(rs => rs.ok ? rs.data : false)
+/**
+ * Create Cloud Function
+ * @func createFunction
+ * @param {object} func
+ */
+export const createFunction = async (func) => {
+	let response = await servicesAPI.post('/v2/cloudfunction', func).then(rs => rs.ok ? rs.data : false)
 	return response
 }
 /**
- * Delete a Cloud Function
- * @param {int} fId - Function ID
+ * Update Cloud Function
+ * @func updateFunction
+ * @param {object} func
  */
-export const deleteCFunction = async (fId) => {
-	let response = await cloudAPI.post(`/v1/delete-f/${fId}`).then(rs => rs.ok)
+export const updateFunction = async (func) => {
+	let response = await servicesAPI.put(`/v2/cloudfunction`, func).then(rs => rs.ok ? rs.data : false)
+	return response
+}
+
+/**
+ * Delete a Cloud Function
+ * @func deleteFunction
+ * @param {UUIDv4} uuid - Function ID
+ */
+export const deleteCFunction = async (uuid) => {
+	let response = await servicesAPI.delete(`/v2/cloudfunction/${uuid}`).then(rs => rs.ok)
 	return response
 }

@@ -6,8 +6,10 @@ let composeMiddleware = compose(
 	applyMiddleware(thunk),
 	window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
 )
+let store = null
 const configureStore = () => {
-	const store = createStore(rootReducer, composeMiddleware)
+	if (!store)
+		store = createStore(rootReducer, composeMiddleware)
 	if (process.env.NODE_ENV !== 'production') {
 		if (module.hot) {
 			module.hot.accept('./rootReducer', () => {

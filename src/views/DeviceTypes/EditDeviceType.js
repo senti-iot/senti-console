@@ -39,7 +39,7 @@ const EditDeviceType = props => {
 	//useCallbacks
 	const keyHandler = useCallback((e) => {
 		if (e.key === 'Escape') {
-			let prevURL = location.prevURL ? location.prevURL : `/deviceType/${params.id}`
+			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${params.id}`
 			history.push(prevURL)
 		}
 	}, [history, location, params])
@@ -63,7 +63,7 @@ const EditDeviceType = props => {
 				outbound: devicetype.outbound ? devicetype.outbound : [],
 				inbound: devicetype.inbound ? devicetype.inbound : []
 			})
-			setOrg(orgs[orgs.findIndex(o => o.aux?.odeumId === devicetype.orgId)])
+			setOrg(devicetype.org)
 
 			setLoading(false)
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${params.id}`
@@ -246,26 +246,25 @@ const EditDeviceType = props => {
 			outbound: sensorMetadata.outbound,
 			inbound: sensorMetadata.inbound,
 			metadata: sensorMetadata.metadata,
-			orgId: org.aux?.odeumId
+			org: org
 		}
-		console.log(nDeviceType)
 		return await updateDeviceType(nDeviceType)
 	}
 	const handleCreate = async () => {
 		let rs = await updtDeviceType()
 		if (rs) {
 			let favObj = {
-				id: deviceType.id,
+				id: deviceType.uuid,
 				name: deviceType.name,
 				type: 'devicetype',
-				path: `/devicetype/${deviceType.id}`
+				path: `/devicetype/${deviceType.uuid}`
 			}
 			if (dispatch(isFav(favObj))) {
 				dispatch(updateFav(favObj))
 			}
 			s('snackbars.edit.devicetype', { dt: deviceType.name })
 			dispatch(await getDeviceTypes(true, org.aux?.odeumId, accessLevel.apisuperuser ? true : false))
-			history.push(`/devicetype/${rs}`)
+			history.push(`/devicetype/${rs.uuid}`)
 		}
 		else
 			s('snackbars.failed')

@@ -74,7 +74,16 @@ const CreateRegistryForm = props => {
 								autoFocus
 							/>
 						</ItemGrid>
-
+						<ItemGrid xs={12}>
+							<TextF
+								id={'registryDescription'}
+								label={t('devices.fields.description')}
+								onChange={handleChange('description')}
+								value={registry.description}
+								multiline
+								rows={3}
+							/>
+						</ItemGrid>
 						<ItemGrid xs={12}>
 							{renderRegion()}
 						</ItemGrid>

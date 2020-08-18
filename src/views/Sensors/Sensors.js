@@ -12,7 +12,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getSensors, sortData } from 'redux/data'
 import SensorCards from 'components/Sensors/SensorCards'
 import { deleteSensor } from 'variables/dataSensors'
-import { useLocalization, useSnackbar, useHistory, useDispatch, useSelector } from 'hooks'
+import { useLocalization, useSnackbar, useHistory, useDispatch, useSelector, useAuth } from 'hooks'
 import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 
 const Sensors = props => {
@@ -23,6 +23,9 @@ const Sensors = props => {
 	const location = useLocation()
 	const dispatch = useDispatch()
 	const classes = sensorsStyles()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
@@ -54,7 +57,6 @@ const Sensors = props => {
 	]
 
 	const devicesHeader = [
-		// { id: 'id', label: t('devices.fields.id') },
 		{ id: 'name', label: t('devices.fields.name') },
 		{ id: 'uuid', label: t('sensors.fields.uuid') },
 		{ id: 'communication', label: t('sensors.fields.communication') },
@@ -62,17 +64,17 @@ const Sensors = props => {
 	]
 	const options = () => {
 
-		let device = devices[devices.findIndex(d => d.id === selected[0])]
+		let device = devices[devices.findIndex(d => d.uuid === selected[0])]
 		let favObj = {
-			id: device.id,
+			id: device.uuid,
 			name: device.name,
 			type: 'sensor',
-			path: `/sensor/${device.id}`
+			path: `/sensor/${device.uuid}`
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ dontShow: !hasAccess(device.uuid, 'device.edit'), label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
+			{ dontShow: !hasAccessList(selected, 'device.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 			{
 				single: true,
 				label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'),
@@ -86,9 +88,10 @@ const Sensors = props => {
 	const getData = useCallback(async () => {
 		/**
 		 * @Andrei
+		 * @TODO
 		 */
 		if (user && accessLevel) {
-			dispatch(await getSensors(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
+			dispatch(await getSensors(true, user.org.aux?.odeumId, false))
 		}
 	}, [accessLevel, dispatch, user])
 
@@ -126,14 +129,14 @@ const Sensors = props => {
 				s('snackbars.favorite.updated')
 			}
 			else {
-				let device = devices[devices.findIndex(d => d.id === selected[0])]
+				let device = devices[devices.findIndex(d => d.uuid === selected[0])]
 				if (device) {
-					if (dispatch(isFav({ id: device.id, type: 'sensor' }))) {
+					if (dispatch(isFav({ id: device.uuid, type: 'sensor' }))) {
 						s('snackbars.favorite.saved', { name: device.name, type: t('favorites.types.device') })
 						finishedSaving()
 						setSelected([])
 					}
-					if (!dispatch(isFav({ id: device.id, type: 'sensor' }))) {
+					if (!dispatch(isFav({ id: device.uuid, type: 'sensor' }))) {
 						s('snackbars.favorite.removed', { name: device.name, type: t('favorites.types.device') })
 						finishedSaving()
 						setSelected([])
@@ -158,7 +161,7 @@ const Sensors = props => {
 	const getFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'sensor')
 		let favSensors = favs.map(f => {
-			return devices[devices.findIndex(d => d.id === f.id)]
+			return devices[devices.findIndex(d => d.uuid === f.uuid)]
 		})
 		favSensors = handleRS(orderBy, order, favSensors)
 		return favSensors
@@ -201,14 +204,14 @@ const Sensors = props => {
 		setOrder(direction)
 		setOrderBy(property)
 	}
-	const handleSensorClick = id => e => {
+	const handleSensorClick = uuid => e => {
 		e.stopPropagation()
-		history.push('/sensor/' + id)
+		history.push('/sensor/' + uuid)
 	}
 
-	const handleFavClick = id => e => {
+	const handleFavClick = uuid => e => {
 		e.stopPropagation()
-		history.push({ pathname: '/sensor/' + id, prevURL: '/sensors/favorites' })
+		history.push({ pathname: '/sensor/' + uuid, prevURL: '/sensors/favorites' })
 	}
 
 	const handleDeleteSensors = async () => {
@@ -216,12 +219,12 @@ const Sensors = props => {
 			return deleteSensor(u)
 		})]).then(async (rs) => {
 			selected.forEach(u => {
-				let device = devices[devices.findIndex(d => d.id === u)]
+				let device = devices[devices.findIndex(d => d.uuid === u)]
 				let favObj = {
-					id: device.id,
+					id: device.uuid,
 					name: device.name,
 					type: 'sensor',
-					path: `/sensor/${device.id}`
+					path: `/sensor/${device.uuid}`
 				}
 				removeFromFavorites(favObj)
 			})
@@ -241,13 +244,13 @@ const Sensors = props => {
 		setSelected([])
 	}
 
-	const handleCheckboxClick = (event, id) => {
+	const handleCheckboxClick = (event, uuid) => {
 		event.stopPropagation()
-		const selectedIndex = selected.indexOf(id)
+		const selectedIndex = selected.indexOf(uuid)
 		let newSelected = []
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id)
+			newSelected = newSelected.concat(selected, uuid)
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
@@ -269,7 +272,7 @@ const Sensors = props => {
 	//#endregion
 
 	const renderDeleteDialog = () => {
-		let data = selected.map(s => devices[devices.findIndex(d => d.id === s)])
+		let data = selected.map(s => devices[devices.findIndex(d => d.uuid === s)])
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.devices'}
@@ -284,13 +287,14 @@ const Sensors = props => {
 	}
 
 	const renderTableToolBarContent = () => {
-		return <Fragment>
+		let access = hasAccess(null, 'device.create')
+		return access ?
 			<Tooltip title={t('menus.create.device')}>
 				<IconButton aria-label='Add new device' onClick={handleAddNewSensor}>
 					<Add />
 				</IconButton>
 			</Tooltip>
-		</Fragment>
+			: null
 	}
 
 	const renderTableToolBar = () => {

@@ -46,8 +46,8 @@ const AssignRegistryDialog = props => {
 	//Handlers
 
 	const assignRegistry = sId => e => {
-		let org = registries[registries.findIndex(o => o.id === sId)]
-		props.callBack(org)
+		let registry = registries[registries.findIndex(o => o.uuid === sId)]
+		props.callBack(registry)
 	}
 
 	const closeDialog = () => {
@@ -122,7 +122,7 @@ const AssignRegistryDialog = props => {
 			<List>
 				{registries ? filterItems(registries, filters).slice(page * rows, page * rows + rows).map((p, i) => (
 					<Fragment key={i}>
-						<ListItem button onClick={assignRegistry(p.id)} value={p.id}>
+						<ListItem button onClick={assignRegistry(p.uuid)} value={p.uuid}>
 							<ListItemText primary={p.name} />
 						</ListItem>
 						<Divider />

@@ -131,7 +131,7 @@ const OrgHover = props => {
 							</ItemG>
 							<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
 								<Tooltip placement="top" title={t('actions.visitWebsite')}>
-									<IconButton component={'a'} className={classes.smallAction} href={org.url} rel="noopener noreferrer" target="_blank">
+									<IconButton component={'a'} className={classes.smallAction} href={org.website} rel="noopener noreferrer" target="_blank">
 										<Language />
 									</IconButton>
 								</Tooltip>

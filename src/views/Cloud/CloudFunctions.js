@@ -11,7 +11,7 @@ import { customFilterItems } from 'variables/Filters'
 import { getFunctions, /* setFunctions, */ sortData } from 'redux/data'
 import FunctionTable from 'components/Cloud/FunctionTable'
 import { deleteCFunction } from 'variables/dataFunctions'
-import { useSnackbar, useLocalization } from 'hooks'
+import { useSnackbar, useLocalization, useAuth } from 'hooks'
 import cloudfunctionsStyles from 'assets/jss/components/cloudfunctions/cloudfunctionsStyles'
 
 const Functions = props => {
@@ -23,6 +23,10 @@ const Functions = props => {
 	const match = useRouteMatch()
 	const location = useLocation()
 	const classes = cloudfunctionsStyles()
+	const Auth = useAuth()
+	const hasAccess = Auth.hasAccess
+	const hasAccessList = Auth.hasAccessList
+
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(state => state.data.favorites)
@@ -60,18 +64,19 @@ const Functions = props => {
 
 
 	const options = () => {
-		let func = functions[functions.findIndex(d => d.id === selected[0])]
+		let func = functions[functions.findIndex(d => d.uuid === selected[0])]
 		let favObj = {
-			id: func.id,
+			id: func.uuid,
 			name: func.name,
 			type: 'cloudfunction',
-			path: `/function/${func.id}`
+			path: `/function/${func.uuid}`
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
-			{ label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ isDivider: true, dontShow: selected.length > 1 },
+			{ disabled: !hasAccess(selected[0], 'org.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !hasAccessList(selected, "org.delete"), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -116,14 +121,14 @@ const Functions = props => {
 
 	useEffect(() => {
 		if (saved === true) {
-			let func = functions[functions.findIndex(d => d.id === selected[0])]
+			let func = functions[functions.findIndex(d => d.uuid === selected[0])]
 			if (func) {
-				if (dispatch(isFav({ id: func.id, type: 'cloudfunction' }))) {
+				if (dispatch(isFav({ id: func.uuid, type: 'cloudfunction' }))) {
 					s('snackbars.favorite.saved', { name: func.name, type: t('favorites.types.cloudfunction') })
 					dispatch(finishedSaving())
 					setSelected([])
 				}
-				if (!dispatch(isFav({ id: func.id, type: 'cloudfunction' }))) {
+				if (!dispatch(isFav({ id: func.uuid, type: 'cloudfunction' }))) {
 					s('snackbars.favorite.removed', { name: func.name, type: t('favorites.types.cloudfunction') })
 					dispatch(finishedSaving())
 					setSelected([])
@@ -139,7 +144,7 @@ const Functions = props => {
 	const getFavs = () => {
 		let favs = favorites.filter(f => f.type === 'cloudfunction')
 		let favFunctions = favs.map(f => {
-			return functions[functions.findIndex(d => d.id === f.id)]
+			return functions[functions.findIndex(d => d.uuid === f.uuid)]
 		})
 		favFunctions = handleRequestSort(orderBy, order, favFunctions)
 		return favFunctions
@@ -166,7 +171,7 @@ const Functions = props => {
 				s('snackbars.assign.deviceToFunction', { func: ``, what: 'Device' })
 				break
 			case 6:
-				s('snackbars.assign.deviceToFunction', { func: `${functions[functions.findIndex(c => c.id === selected[0])].name}`, device: display })
+				s('snackbars.assign.deviceToFunction', { func: `${functions[functions.findIndex(c => c.uuid === selected[0])].name}`, device: display })
 				break
 			default:
 				break
@@ -256,7 +261,7 @@ const Functions = props => {
 	}
 
 	const renderDeleteDialog = () => {
-		let data = selected.map(s => functions[functions.findIndex(d => d.id === s)])
+		let data = selected.map(s => functions[functions.findIndex(d => d.uuid === s)])
 		return <DeleteDialog
 			t={t}
 			title={'dialogs.delete.title.cloudfunctions'}

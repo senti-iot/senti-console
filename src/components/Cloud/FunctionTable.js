@@ -49,7 +49,7 @@ const FunctionTable = props => {
 
 	const handleSelectAllClick = (event, checked) => {
 		const { data } = props
-		let selected = data.map(d => d.id)
+		let selected = data.map(d => d.uuid)
 		props.handleSelectAllClick(selected, checked)
 	}
 
@@ -125,22 +125,22 @@ const FunctionTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.id);
+							const isSelected = isSelectedFunc(n.uuid);
 							return (
 								<TableRow
 									// onMouseEnter={e => { this.setHover(e, n) }}
 									// onMouseLeave={this.unsetTimeout}
 									hover
-									onClick={handleClick(n.id)}
+									onClick={handleClick(n.uuid)}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
-									key={n.id}
+									key={n.uuid}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC content={
 											<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -158,7 +158,7 @@ const FunctionTable = props => {
 									</Hidden>
 
 									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.uuid)} />} />
 										<TC FirstC label={n.name} />
 										<TC label={renderProtocol(n.type)} />
 									</Hidden>
