@@ -6,7 +6,7 @@ import Warning from '@material-ui/icons/Warning'
 import amber from '@material-ui/core/colors/amber';
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux';
-import { ItemG } from 'components'
+import { ItemG, Link } from 'components'
 import { closeIsBeta } from 'redux/serviceWorkerRedux'
 import { Close } from 'variables/icons'
 import { lightGreen } from '@material-ui/core/colors'
@@ -88,15 +88,22 @@ function NewContent(props) {
 							<ItemG xs={1} container justify={'center'} alignItems={'center'}>
 								<IconWarn />
 							</ItemG>
-							<ItemG xs container alignItems={'center'} >
-								<Message>
-									{`You are running on the \`beta\` version of Senti!`}
-								</Message>
-								<Message>
-							Please consider switching to the stable version at https://app.senti.cloud
-								</Message>
+							<ItemG xs={8} container alignItems={'center'}>
+								<ItemG xs={12}>
+									<Message>
+										{`You are running on the \`beta\` version of Senti!`}
+									</Message>
+								</ItemG>
+								<ItemG xs={12}>
+									<Message>
+									Please consider switching to the stable version at
+									</Message>
+									<Link href={'https://app.senti.cloud'}>
+									https://app.senti.cloud
+									</Link>
+								</ItemG>
 							</ItemG>
-							<ItemG >
+							<ItemG xs={3} container alignItems={'center'}>
 								<SuccessButton size="small" onClick={handleGoToApp}>
 									Go to App
 								</SuccessButton>
