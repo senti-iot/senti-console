@@ -12,10 +12,10 @@ export function updateServiceworker() {
 		type: UPDATE_SERVICEWORKER
 	}
 }
-console.log(process.env, process.env.isBeta)
+console.log(process.env, process.env.REACT_APP_ISBETA)
 const initialState = {
 	serviceWorkerUpdated: false,
-	isBeta: process.env.isBeta ? process.env.isBeta : false
+	isBeta: process.env.REACT_APP_ISBETA ? process.env.REACT_APP_ISBETA : false
 }
 export const serviceWorkerReducer = (state = initialState, action) => {
 	switch (action.type) {
