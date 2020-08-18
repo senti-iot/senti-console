@@ -12,6 +12,7 @@ export function updateServiceworker() {
 		type: UPDATE_SERVICEWORKER
 	}
 }
+console.log(process.env, process.env.isBeta)
 const initialState = {
 	serviceWorkerUpdated: false,
 	isBeta: process.env.isBeta ? process.env.isBeta : false
