@@ -1,5 +1,5 @@
 import React from 'react'
-import { InfoCard, ItemG, Caption, Info, Link } from 'components'
+import { InfoCard, ItemG, Caption, Info, Link, Muted } from 'components'
 import { Hidden } from '@material-ui/core'
 import { pF, dateFormatter } from 'variables/functions'
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
@@ -67,6 +67,9 @@ const UserContact = props => {
 	return (
 		<InfoCard
 			title={`${user.firstName} ${user.lastName}`}
+			subheader={<Muted>
+				{user.userName}
+			</Muted>}
 			avatar={<Person />}
 			topAction={renderTopActionPriv()}
 			content={

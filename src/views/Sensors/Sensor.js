@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { DataUsage, InsertChart, Wifi } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
-import { getSensorLS } from "redux/data"
+import { getSensorLS, getDeviceTypeLS } from "redux/data"
 import SensorDetails from "./SensorCards/SensorDetails"
 import SensorProtocol from "./SensorCards/SensorProtocol"
 import SensorMessages from "views/Charts/SensorMessages"
@@ -21,6 +21,7 @@ import { deleteSensor } from "variables/dataSensors"
 import SensorChart from "views/Charts/SensorChart"
 import { useLocalization, useSnackbar } from "hooks"
 import { useRouteMatch, useHistory, useLocation, useParams } from "react-router-dom"
+import SensorData from 'views/Sensors/SensorCards/SensorData'
 
 const Sensor = props => {
 	//Hooks
@@ -38,7 +39,8 @@ const Sensor = props => {
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
 	const loading = useSelector(state => !state.data.gotSensor)
-
+	const deviceTypes = useSelector(s => s.data.deviceTypes)
+	const deviceType = sensor ? deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)] : null
 	//State
 	const [openDelete, setopenDelete] = useState(false)
 	const [sensorMessages, setSensorMessages] = useState(null)
@@ -47,10 +49,17 @@ const Sensor = props => {
 	const { setTabs, setBC, setHeader } = props
 
 	//useCallbacks
+	const getDeviceType = useCallback(async () => {
+		// let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
+		if (!deviceType && sensor) {
+			console.log('Sensor', sensor)
+			await dispatch(await getDeviceTypeLS(sensor.deviceType.uuid))
+		}
+	}, [deviceType, dispatch, sensor])
 	const getSensor = useCallback(async id => {
 		await dispatch(await getSensorLS(id))
-	}, [dispatch])
-
+		await getDeviceType()
+	}, [dispatch, getDeviceType])
 	//useEffects
 	useEffect(() => {
 		if (sensor) {
@@ -207,8 +216,8 @@ const Sensor = props => {
 								getData={getDeviceMessages}
 							/>
 						</ItemGrid>
-						{sensor.dataKeys
-							? sensor.dataKeys.map((k, i) => {
+						{deviceType?.outbound
+							? deviceType.outbound.map((k, i) => {
 								if (k.type === 1) {
 									return null
 								}
@@ -246,26 +255,26 @@ const Sensor = props => {
 							}
 							else return null
 						}) : null} */}
-						{/* <ItemGrid xs={12} container noMaring id={'charts'}> */}
-						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
-							if (k.type === 0)
-								return <ItemGrid xs={12} container noMargin key={i + 'charts'}>
-									<SensorData
-										periods={periods}
-										sensor={sensor}
-										history={history}
-										match={match}
-										t={t}
-										v={k.key}
-										nId={k.nId}
-									/>
-								</ItemGrid>
-							else {
-								return null
+						<ItemGrid xs={12} container noMargin id={'charts'}>
+							{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+								if (k.type === 0)
+									return <ItemGrid xs={12} container noMargin key={i + 'charts'}>
+										<SensorData
+											periods={periods}
+											sensor={sensor}
+											history={history}
+											match={match}
+											t={t}
+											v={k.key}
+											nId={k.nId}
+										/>
+									</ItemGrid>
+								else {
+									return null
+								}
 							}
-						}
-						) : null} */}
-						{/* </ItemGrid> */}
+							) : null}
+						</ItemGrid>
 						<ItemGrid xs={12} noMargin id="protocol">
 							<SensorProtocol
 								sensor={sensor}

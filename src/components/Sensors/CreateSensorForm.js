@@ -65,6 +65,7 @@ const CreateSensorForm = props => {
 		handleCreate, goToRegistries, select, } = props
 
 	const renderMetadata = () => {
+		console.log(sensorMetadata)
 		return <Fragment>
 			<T style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
