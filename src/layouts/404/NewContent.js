@@ -49,6 +49,7 @@ function NewContent(props) {
 	const serviceWorkerUpdated = useSelector(s => s.serviceWorkerReducer.serviceWorkerUpdated)
 	const isBeta = useSelector(s => s.serviceWorkerReducer.isBeta)
 	const handleClose = () => {
+		window.localStorage.clear()
 		window.location.reload()
 	};
 	const handleBetaClose = () => {
