@@ -23,6 +23,7 @@ const UpdateSnackbar = styled(SnackbarContent)`
 const SuccessButton = styled(Button)`
 	color: #ffffff;
 	padding: 8px;
+	margin: 0px 8px;
 	background :#4caf50;
 	&:hover {
     	background: ${lightGreen[500]};

@@ -12,7 +12,7 @@ export function updateServiceworker() {
 		type: UPDATE_SERVICEWORKER
 	}
 }
-console.log(process.env, process.env.REACT_APP_ISBETA)
+
 const initialState = {
 	serviceWorkerUpdated: false,
 	isBeta: process.env.REACT_APP_ISBETA ? process.env.REACT_APP_ISBETA : false
