@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { DataUsage, InsertChart, Wifi } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
-import { getSensorLS, getDeviceTypeLS } from "redux/data"
+import { getSensorLS, getDeviceTypes } from "redux/data"
 import SensorDetails from "./SensorCards/SensorDetails"
 import SensorProtocol from "./SensorCards/SensorProtocol"
 import SensorMessages from "views/Charts/SensorMessages"
@@ -41,6 +41,7 @@ const Sensor = props => {
 	const loading = useSelector(state => !state.data.gotSensor)
 	const deviceTypes = useSelector(s => s.data.deviceTypes)
 	const deviceType = sensor ? deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)] : null
+	console.log('Device Type', deviceType)
 	//State
 	const [openDelete, setopenDelete] = useState(false)
 	const [sensorMessages, setSensorMessages] = useState(null)
@@ -53,7 +54,7 @@ const Sensor = props => {
 		// let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
 		if (!deviceType && sensor) {
 			console.log('Sensor', sensor)
-			await dispatch(await getDeviceTypeLS(sensor.deviceType.uuid))
+			await dispatch(await getDeviceTypes())
 		}
 	}, [deviceType, dispatch, sensor])
 	const getSensor = useCallback(async id => {
@@ -218,28 +219,22 @@ const Sensor = props => {
 						</ItemGrid>
 						{deviceType?.outbound
 							? deviceType.outbound.map((k, i) => {
-								if (k.type === 1) {
-									return null
-								}
-								if (k.type === 0) {
-									// return null
-									return (
-										<ItemGrid xs={12} key={i} container noMargin id={"charts"}>
-											<SensorChart
-												deviceId={sensor.uuid}
-												dataKey={k.key}
-												title={k.key}
-												cfId={k.nId}
-												chartColor={"teal"}
-												single={true}
-												t={t}
-											/>
-										</ItemGrid>
-									)
-								}
-								return null
+
+								return (
+									<ItemGrid xs={12} key={i} container noMargin id={"charts"}>
+										<SensorChart
+											deviceId={sensor.uuid}
+											dataKey={k.key}
+											title={k.key}
+											cfId={k.nId}
+											chartColor={"teal"}
+											single={true}
+											t={t}
+										/>
+									</ItemGrid>
+								)
 							})
-							: null}
+							: console.log('No DT')}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return <ItemGrid xs={12} container noMargin key={i + 'gauges'}>

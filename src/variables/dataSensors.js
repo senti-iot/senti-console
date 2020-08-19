@@ -67,7 +67,6 @@ export const deleteSensor = async (uuid) => {
 * @param {Date} to - End date - YYYY-MM-DD HH:mm:ss format
 * @param {Number} cloudfunctionId - ID of the outbound cloud function
 */
-// router.get('/v2/devicedata-clean/:deviceUUID/:field/:from/:to/:cloudfunctionId'
 export const getSensorDataClean = async (uuid, field, from, to, cfId) => {
 	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
 	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
