@@ -22,7 +22,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { handleSetDate as rSetDate, getGraph, getPeriod, /* getGraph, getPeriod */ } from 'redux/dsSystem'
-import { getSensorDataClean } from 'variables/dataSensors'
+import { /* getSensorDataCleanV1, */ getSensorDataClean } from 'variables/dataSensors'
 import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
@@ -88,11 +88,11 @@ const DoubleChart = (props) => {
 	const setData = useCallback((data, timeType) => {
 		switch (timeType) {
 			case 0:
-				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			case 1:
-				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			case 2:
-				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			default:
 				break
 		}
@@ -100,7 +100,9 @@ const DoubleChart = (props) => {
 
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceId) {
-			let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+			console.log('g.dataSource', g.dataSource)
+			let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, period.from, period.to, g.dataSource.cf)
+			// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 
 			let newState = setData(data, period.timeType)
 			if (newState) {
@@ -114,7 +116,7 @@ const DoubleChart = (props) => {
 		else {
 			setLoading(false)
 		}
-	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceId, g.dataSource.deviceType, g.dataSource.type, period.from, period.timeType, period.to, setData])
+	}, [g.dataSource, period.from, period.timeType, period.to, setData])
 
 	useEffect(() => {
 		setLoading(true)
@@ -352,37 +354,37 @@ const DoubleChart = (props) => {
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
 						<div>
-						<DateFilterMenu
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
-
-								</ItemG>
-							}
-							customSetDate={handleSetDate}
-							period={period}
-							t={t} />
+								}
+								customSetDate={handleSetDate}
+								period={period}
+								t={t} />
 						</div>
 					</Tooltip>
 				</ItemG>

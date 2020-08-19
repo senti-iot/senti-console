@@ -77,24 +77,24 @@ export const getSensorDataClean = async (uuid, field, from, to, cfId) => {
 	console.log('getSensorDataClean', response)
 	return response
 }
-// export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chartType, calc) => {
-// 	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
-// 	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
-// 	let url, response;
-// 	if (deviceType) {
-// 		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}/${deviceType}/${chartType}`
-// 		response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
-// 		if (calc === 'total') {
-// 			return response.total
-// 		}
-// 		return response.avrg
-// 	}
-// 	else {
-// 		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}`
-// 		response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
-// 		return response
-// 	}
-// }
+export const getSensorDataCleanV1 = async (id, from, to, v, nId, deviceType, chartType, calc) => {
+	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let url, response;
+	if (deviceType) {
+		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}/${deviceType}/${chartType}`
+		response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
+		if (calc === 'total') {
+			return response.total
+		}
+		return response.avrg
+	}
+	else {
+		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}`
+		response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
+		return response
+	}
+}
 
 export const getSensorData = async (id) => {
 	let response = await servicesAPI.get(`/v1/devicedata/${id}`).then(rs => rs.ok ? rs.data : rs.ok)
