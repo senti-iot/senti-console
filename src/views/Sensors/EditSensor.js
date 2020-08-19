@@ -83,6 +83,7 @@ const EditSensor = props => {
 	// }
 	useEffect(() => {
 		if (sensor && deviceTypes.length > 0 && registries.length > 0) {
+			console.log('EditSensor', sensor)
 			setSensor(sensor)
 
 			let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
@@ -115,6 +116,14 @@ const EditSensor = props => {
 			})
 		}
 	})
+	useEffect(() => {
+		return () => {
+			setSensorMetadata({
+				metadata: [],
+				outbound: [],
+				inbound: []
+			})		}
+	}, [])
 	useEffect(() => {
 		let gData = async () => await getData()
 		gData()
