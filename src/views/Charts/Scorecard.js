@@ -81,7 +81,7 @@ class ScoreCard extends PureComponent {
 		const { g, period } = this.props
 		let data = []
 		await this.asyncForEach(g.dataSources, async d => {
-			let deviceData = await getSensorDataClean(d.deviceId, period.from, period.to, d.dataKey, d.cf, d.deviceType, d.type)
+			let deviceData = await getSensorDataClean(d.deviceUUID, d.dataKey, period.from, period.to,  d.cf/* , d.deviceType, d.type */)
 			data.push({ ...d, data: deviceData })
 		})
 
@@ -298,37 +298,37 @@ class ScoreCard extends PureComponent {
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
 						<div>
-						<DateFilterMenu
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${this.options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
-
-								</ItemG>
-							}
-							customSetDate={this.handleSetDate}
-							period={period}
-							t={t} />
+								}
+								customSetDate={this.handleSetDate}
+								period={period}
+								t={t} />
 						</div>
 					</Tooltip>
 				</ItemG>

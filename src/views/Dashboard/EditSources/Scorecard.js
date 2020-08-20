@@ -94,7 +94,8 @@ const ESScorecard = props => {
 	const handleEditDevice = i => d => {
 		let newG = { ...g }
 		newG.dataSources[i].deviceId = d.id
-		props.getSensor(d.id)
+		newG.dataSources[i].deviceUUID = d.uuid
+		props.getSensor(d.uuid)
 		props.handleEditGraph(newG)
 		handleExpand('openSensor', false, i)()
 	}

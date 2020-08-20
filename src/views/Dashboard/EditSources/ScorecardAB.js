@@ -54,6 +54,7 @@ const ESScorecardAB = props => {
 	const handleEditDeviceAB = (d, s) => () => {
 		let newG = { ...g }
 		newG.dataSources[s].deviceId = d.id
+		newG.dataSources[s].deviceUUID = d.uuid
 		dispatch(editGraph(newG))
 	}
 	const handleEditPeriodG = (menuId, to, from, defaultT) => {

@@ -70,7 +70,8 @@ export class ESMap extends Component {
 	handleEditDevice = d => {
 		let newG = { ...this.props.g }
 		newG.dataSource.deviceId = d.id
-		this.props.getSensor(d.id)
+		newG.dataSource.deviceUUID = d.id
+		this.props.getSensor(d.uuid)
 		this.props.handleEditGraph(newG)
 		this.handleExpand('openSensor', false)()
 	}

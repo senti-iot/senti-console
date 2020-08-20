@@ -236,7 +236,6 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	console.log('dataArr', dataArr)
 	if (dataArr.length > 0) {
 		state = {
 			...extra,
@@ -254,7 +253,7 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: d.data ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
 				}))
 			},
 			barDataSets: {
@@ -269,7 +268,7 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 					// borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
-					data: d.data ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
 				}))
 			},
 			roundDataSets:
@@ -357,7 +356,7 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: d.data ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
 				}))
 			},
 			barDataSets: {
@@ -371,7 +370,7 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 					borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
-					data: d.data ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
 				}))
 			},
 			roundDataSets:
@@ -451,7 +450,7 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: d.data ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
 				})),
 				barDataSets: {
 					labels: labels,
@@ -464,7 +463,7 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 						borderWidth: hoverID === d.id ? 4 : 0,
 						fill: false,
 						label: [d.name],
-						data: d.data ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+						data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
 					}))
 				},
 				roundDataSets:

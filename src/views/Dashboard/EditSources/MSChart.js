@@ -88,6 +88,7 @@ const ESMSChart = (props) => {
 	}
 	const handleEditSensors = selectedSensors => {
 		let newG = { ...props.g }
+		console.log(selectedSensors)
 		newG.dataSource.deviceIds = selectedSensors
 		props.handleEditGraph(newG)
 		setOpenSensors(false)
@@ -104,8 +105,9 @@ const ESMSChart = (props) => {
 	const handleEditDeviceType = d => {
 		let newG = { ...props.g }
 		newG.dataSource.deviceTypeId = d.id
+		newG.dataSource.deviceTypeUUID = d.uuid
 		// props.getSensor(d.id)
-		props.getDeviceType(d.id)
+		props.getDeviceType(d.uuid)
 		props.handleEditGraph(newG)
 		handleExpand('openSensorType', false)()
 	}
@@ -188,13 +190,12 @@ const ESMSChart = (props) => {
 								<TextF
 									id={'sensorChart'}
 									label={t('sensors.fields.deviceType')}
-									value={deviceType ? deviceType.name : t('no.deviceType')}
+									value={deviceType ? deviceType.name ? deviceType.name : '' : ''}
 									onClick={handleExpand('openSensorType', true)}
-									onChange={() => { }}
 								/>
 							</ItemG>
-							<Collapse unmountOnExit in={g.dataSource.deviceTypeId > 0}>
-								{g.dataSource.deviceTypeId > 0 ?
+							<Collapse unmountOnExit in={g.dataSource.deviceTypeUUID}>
+								{g.dataSource.deviceTypeUUID ?
 									<Fragment>
 										<ItemG>
 											<AssignSensorsDialog

@@ -82,8 +82,8 @@ class ScoreCard extends PureComponent {
 			b: { ...g.dataSources.b }
 		}
 		Promise.all([
-			getSensorDataClean(g.dataSources.a.deviceId, period.from, period.to, g.dataSources.a.dataKey, g.dataSources.a.cf, g.dataSources.a.deviceType, g.dataSources.a.type),
-			getSensorDataClean(g.dataSources.b.deviceId, period.from, period.to, g.dataSources.b.dataKey, g.dataSources.b.cf, g.dataSources.b.deviceType, g.dataSources.b.type),
+			getSensorDataClean(g.dataSources.a.deviceUUID, g.dataSources.a.dataKey, period.from, period.to, g.dataSources.a.cf/* , g.dataSources.a.deviceType, g.dataSources.a.type */),
+			getSensorDataClean(g.dataSources.b.deviceUUID, g.dataSources.b.dataKey, period.from, period.to, g.dataSources.b.cf/* , g.dataSources.b.deviceType, g.dataSources.b.type */),
 		]).then(rs => {
 			newState.a.data = parseFloat(rs[0])
 			newState.b.data = parseFloat(rs[1])

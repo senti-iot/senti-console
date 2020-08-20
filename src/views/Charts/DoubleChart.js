@@ -99,24 +99,28 @@ const DoubleChart = (props) => {
 	}, [color, g, title])
 
 	const getData = useCallback(async () => {
-		if (g.dataSource.dataKey && g.dataSource.deviceId) {
-			console.log('g.dataSource', g.dataSource)
-			let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, period.from, period.to, g.dataSource.cf)
-			// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+		if (g) {
+			if (g.dataSource.dataKey && g.dataSource.deviceUUID) {
+				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, period.from, period.to, g.dataSource.cf)
+				// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 
-			let newState = setData(data, period.timeType)
-			if (newState) {
-				setLineDataSets(newState.lineDataSets)
-				setRoundDataSets(newState.roundDataSets)
-				setBarDataSets(newState.barDataSets)
+				let newState = setData(data, period.timeType)
+				if (newState) {
+					setLineDataSets(newState.lineDataSets)
+					setRoundDataSets(newState.roundDataSets)
+					setBarDataSets(newState.barDataSets)
+					setLoading(false)
+				}
+
+			}
+			else {
 				setLoading(false)
 			}
-
 		}
 		else {
 			setLoading(false)
 		}
-	}, [g.dataSource, period.from, period.timeType, period.to, setData])
+	}, [g, period, setData])
 
 	useEffect(() => {
 		setLoading(true)

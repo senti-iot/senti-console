@@ -27,8 +27,8 @@ const ESGauge = props => {
 
 	//useEffects
 	useEffect(() => {
-		if ((!sensor && g.dataSource.deviceId) || (g.dataSource.deviceId && (sensor.id !== g.dataSource.deviceId))) {
-			let id = g.dataSource.deviceId
+		if ((!sensor && g.dataSource.deviceUUID) || (g.dataSource.deviceUUID && (sensor.uuid !== g.dataSource.deviceUUID))) {
+			let id = g.dataSource.deviceUUID
 			getSensor(id)
 		}
 		//eslint-disable-next-line
@@ -79,9 +79,10 @@ const ESGauge = props => {
 		handleExpand('openCF', false)()
 	}
 	const handleEditDevice = d => {
-		let newG = { ...g }
+		let newG = { ...props.g }
 		newG.dataSource.deviceId = d.id
-		props.getSensor(d.id)
+		newG.dataSource.deviceUUID = d.uuid
+		props.getSensor(d.uuid)
 		props.handleEditGraph(newG)
 		handleExpand('openSensor', false)()
 	}
