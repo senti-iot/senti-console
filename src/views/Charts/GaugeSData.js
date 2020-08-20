@@ -50,12 +50,12 @@ const GaugeComponent = props => {
 	//useCallbacks
 	const getData = useCallback(async () => {
 		let data = null
-		if (g.dataSource.deviceId && g.dataSource.dataKey) {
-			data = await getSensorDataClean(g.dataSource.deviceId, moment(period.from).subtract(1, 'day'), period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+		if (g.dataSource.deviceUUID && g.dataSource.dataKey) {
+			data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, moment(period.from).subtract(1, 'day'), period.to, g.dataSource.cf/* , g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc */)
 		}
 		setData(data)
 		setLoading(false)
-	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceId, g.dataSource.deviceType, g.dataSource.type, period.from, period.to])
+	}, [g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceUUID, period.from, period.to])
 
 	//useEffects
 	useEffect(() => {

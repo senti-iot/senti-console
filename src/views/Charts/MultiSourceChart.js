@@ -92,11 +92,11 @@ const MultiSourceChart = (props) => {
 	const setData = useCallback((data, timeType) => {
 		switch (timeType) {
 			case 0:
-				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			case 1:
-				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			case 2:
-				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
+				return setDailyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			default:
 				break
 		}
@@ -105,12 +105,14 @@ const MultiSourceChart = (props) => {
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceIds.length > 0) {
 			//TODO HACK
+			console.log('dataSource', g.dataSource)
 			let data = null
-			if (g.dataSource.deviceIds[selectedDevice].id) {
-				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice].id, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+			console.log(g.dataSource.deviceIds)
+			if (g.dataSource.deviceIds[selectedDevice].uuid) {
+				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice].uuid, g.dataSource.dataKey, period.from, period.to,  g.dataSource.cf/* g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc */)
 			}
 			else {
-				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice], period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
+				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice], g.dataSource.dataKey, period.from, period.to, g.dataSource.cf/* , g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc */)
 			}
 			//END HACK
 			let newState = setData(data, period.timeType)
@@ -125,7 +127,7 @@ const MultiSourceChart = (props) => {
 		else {
 			setLoading(false)
 		}
-	}, [g.dataSource.calc, g.dataSource.cf, g.dataSource.dataKey, g.dataSource.deviceIds, g.dataSource.deviceType, g.dataSource.type, period.from, period.timeType, period.to, selectedDevice, setData])
+	}, [g.dataSource, period.from, period.timeType, period.to, selectedDevice, setData])
 
 	useEffect(() => {
 		setLoading(true)
