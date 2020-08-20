@@ -45,7 +45,6 @@ class DoubleChartData extends PureComponent {
 	}
 
 	displayFormat = 'DD MMMM YYYY HH:mm'
-	image = null
 	options = [
 		{ id: 0, label: this.props.t('filters.dateOptions.today') },
 		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },

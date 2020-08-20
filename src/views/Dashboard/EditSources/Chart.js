@@ -12,6 +12,7 @@ import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles'
 const ESChart = (props) => {
 	const { sensor, g, cfs, getSensor } = props
 	//Hooks
+
 	const t = useLocalization()
 	const classes = editSourceStyles()
 
@@ -33,8 +34,9 @@ const ESChart = (props) => {
 
 	//useEffect
 	useEffect(() => {
-		if ((!sensor && g.dataSource.deviceId) || (g.dataSource.deviceId && (sensor.id !== g.dataSource.deviceId))) {
-			let id = g.dataSource.deviceId
+
+		if ((!sensor && g.dataSource.deviceUUID) || (g.dataSource.deviceUUID && (sensor.uuid !== g.dataSource.deviceUUID))) {
+			let id = g.dataSource.deviceUUID
 			getSensor(id)
 		}
 		//eslint-disable-next-line
@@ -97,7 +99,8 @@ const ESChart = (props) => {
 	const handleEditDevice = d => {
 		let newG = { ...props.g }
 		newG.dataSource.deviceId = d.id
-		props.getSensor(d.id)
+		newG.dataSource.deviceUUID = d.uuid
+		props.getSensor(d.uuid)
 		props.handleEditGraph(newG)
 		handleExpand('openSensor', false)()
 	}
@@ -107,7 +110,6 @@ const ESChart = (props) => {
 		newG.dataSource.dataKey = e.target.value
 		props.handleEditGraph(newG)
 	}
-
 	return (
 		<Fragment>
 			<ItemG xs={12}>
@@ -185,8 +187,8 @@ const ESChart = (props) => {
 									onChange={() => { }}
 								/>
 							</ItemG>
-							<Collapse unmountOnExit in={g.dataSource.deviceId > 0}>
-								{g.dataSource.deviceId > 0 ?
+							<Collapse unmountOnExit in={g.dataSource.deviceUUID}>
+								{g.dataSource.deviceUUID ?
 									<Fragment>
 										<ItemG>
 											<DSelect
