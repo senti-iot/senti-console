@@ -21,7 +21,7 @@ import { deleteSensor } from "variables/dataSensors"
 import SensorChart from "views/Charts/SensorChart"
 import { useLocalization, useSnackbar } from "hooks"
 import { useRouteMatch, useHistory, useLocation, useParams } from "react-router-dom"
-import SensorData from 'views/Sensors/SensorCards/SensorData'
+// import SensorData from 'views/Sensors/SensorCards/SensorData'
 
 const Sensor = props => {
 	//Hooks
@@ -250,7 +250,7 @@ const Sensor = props => {
 							}
 							else return null
 						}) : null} */}
-						<ItemGrid xs={12} container noMargin id={'charts'}>
+						{/* <ItemGrid xs={12} container noMargin id={'charts'}>
 							{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 								if (k.type === 0)
 									return <ItemGrid xs={12} container noMargin key={i + 'charts'}>
@@ -269,7 +269,7 @@ const Sensor = props => {
 								}
 							}
 							) : null}
-						</ItemGrid>
+						</ItemGrid> */}
 						<ItemGrid xs={12} noMargin id="protocol">
 							<SensorProtocol
 								sensor={sensor}
