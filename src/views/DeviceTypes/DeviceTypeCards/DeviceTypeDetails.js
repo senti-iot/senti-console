@@ -36,7 +36,6 @@ const DeviceTypeDetails = props => {
 
 	//Handlers
 
-	console.log(deviceType)
 	return (
 		<InfoCard
 			title={deviceType.name ? deviceType.name : deviceType.id}

@@ -60,7 +60,6 @@ const EditCloudFunction = props => {
 
 	useEffect(() => {
 		if (cloudfunction && !stateCloudfunction.uuid && orgs.length > 0) {
-			console.log(cloudfunction)
 			setStateCloudfunction(cloudfunction)
 			setOrg(cloudfunction.org)
 			setLoading(false)
@@ -84,7 +83,6 @@ const EditCloudFunction = props => {
 	//Handlers
 
 	const handleOrgChange = org => {
-		console.log(org)
 		setOrg(org)
 		setStateCloudfunction({ ...stateCloudfunction, org: org })
 

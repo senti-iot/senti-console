@@ -42,7 +42,6 @@ const AssignSensorsDialog = (props) => {
 	//Handlers
 
 	const selectSensor = (sId, sName, sUuid) => {
-		console.log(sId, sName, sUuid)
 		let sS = [...selectedSensors]
 		if (selectedSensors.findIndex(s => s.id === sId) > -1) {
 			sS.splice(selectedSensors.findIndex(s => s.id === sId), 1)

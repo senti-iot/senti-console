@@ -444,7 +444,6 @@ class LineChart extends PureComponent {
 	render() {
 		const { classes, unit, data } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
-		console.log('data', data)
 		return (
 			<Fragment>
 				<div style={{ /* display: 'block', */ height: '100%', width: '100%', /* maxHeight: 300, */ position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>

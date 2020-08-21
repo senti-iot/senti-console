@@ -86,7 +86,6 @@ class SensorChart extends PureComponent {
 	setData = (data, timeType) => {
 		const { title, chartColor, dataKey } = this.props
 		const { period } = this.state
-		console.log(timeType)
 		switch (timeType) {
 			case 0:
 				return setMinutelyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
@@ -105,7 +104,6 @@ class SensorChart extends PureComponent {
 			let data = await getSensorDataClean(deviceId, dataKey, period.from, period.to, cfId ? cfId : -1)
 			// let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 			let newState = this.setData(data, period.timeType)
-			console.log('newState', newState)
 			this.setState({
 				...newState, loading: false
 			})
