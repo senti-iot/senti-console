@@ -855,6 +855,9 @@
 	},
 	"sensors": {
 		"fields": {
+			"dataKey": "Datafelt",
+			"dataKeys": "Datafelter",
+			"decoder" : "Dekoderfunktioner",
 			"communication": "Kommunikation",
 			"communications": {
 				"allowed": "Tilladt",

@@ -4,8 +4,9 @@ import Dropdown from 'components/Dropdown/Dropdown'
 import React from 'react'
 import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, Block, CheckCircle, Delete } from 'variables/icons'
 // import { connect } from 'react-redux'
-import { useLocalization, useAuth } from 'hooks'
+import { useLocalization, useAuth, useSelector } from 'hooks'
 import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 
 
 const SensorDetails = (props) => {
@@ -16,6 +17,8 @@ const SensorDetails = (props) => {
 	const hasAccess = Auth.hasAccess
 
 	//Redux
+	const cfunctions = useSelector(state => state.data.functions)
+
 
 	//State
 
@@ -53,7 +56,7 @@ const SensorDetails = (props) => {
 				break
 		}
 	}
-
+	console.log(sensor)
 
 	return (
 		<InfoCard
@@ -77,19 +80,133 @@ const SensorDetails = (props) => {
 				<ItemG container spacing={3}>
 					<ItemG>
 						<Caption>{t('registries.fields.protocol')}</Caption>
-						<Info>{renderProtocol(sensor.protocol)}</Info>
+						<Info>{renderProtocol(sensor.registry.protocol)}</Info>
 					</ItemG>
-					<ItemG xs>
+					<ItemG>
 						<Caption>{t('sensors.fields.communication')}</Caption>
 						{renderCommunication(sensor.communication)}
 					</ItemG>
-					<ItemG xs={12}>
-						<Caption>{t('registries.fields.registry')}</Caption>
+					<ItemG>
+						<Caption>{t('sensors.fields.deviceType')}</Caption>
 						<Info>
-							<Link to={{ pathname: `/registry/${sensor.regId}`, prevURL: `/sensor/${sensor.uuid}` }} >
-								{sensor.regName}
+							<Link to={{ pathname: `/devicetype/${sensor.deviceType.uuid}`, prevURL: `/sensor/${sensor.uuid}` }}>
+								{sensor.deviceType.name}
 							</Link>
 						</Info>
+					</ItemG>
+					<ItemG xs>
+						<Caption>{t('registries.fields.registry')}</Caption>
+						<Info>
+							<Link to={{ pathname: `/registry/${sensor.registry.uuid}`, prevURL: `/sensor/${sensor.uuid}` }} >
+								{sensor.registry.name}
+							</Link>
+						</Info>
+					</ItemG>
+					<ItemG xs={12}>
+						{sensor.metadata.length > 0 ? <Table>
+							<TableHead>
+								<TableRow style={{}}>
+									<TableCell style={{}}>
+										{t('sensors.fields.dataKeys')}
+									</TableCell>
+									<TableCell>
+										<ItemG container>
+											{t('sidebar.cloudfunctions')}
+										</ItemG>
+
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{sensor.metadata.map(d => {
+									console.log(d)
+									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
+									return (
+										<TableRow key={d.uuid}>
+											<TableCell style={{}} component="th" scope="row">
+												{d.key}
+											</TableCell>
+											<TableCell component="th" scope="row">
+												{cf ?
+													<Link to={{ pathname: `/function/${cf.uuid}`, prevURL: `/sensor/${sensor.uuid}` }}>
+														{cf.name}
+													</Link>
+													: t('no.cloudfunction')}
+											</TableCell>
+										</TableRow>
+									)
+								})}
+							</TableBody>
+						</Table> : null}
+					</ItemG>
+					<ItemG xs={12}>
+						{/* <Divider style={{ margin: "16px" }} /> */}
+						{/* <Caption style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.dataKeys')}</Caption> */}
+						{sensor.dataKeys.length > 0 ? <Table>
+							<TableHead>
+								<TableRow style={{  }}>
+									<TableCell style={{  }}>
+										{t('sensors.fields.dataKeys')}
+									</TableCell>
+									<TableCell>
+										<ItemG container>
+											{t('sidebar.cloudfunctions')}
+										</ItemG>
+
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{sensor.dataKeys.map(d => {
+									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
+									return (
+										<TableRow key={d.uuid}>
+											<TableCell style={{ }} component="th" scope="row">
+												{d.key}
+											</TableCell>
+											<TableCell component="th" scope="row">
+												{cf ?
+													<Link to={{ pathname: `/function/${cf.uuid}`, prevURL: `/sensor/${sensor.uuid}` }}>
+														{cf.name}
+													</Link>
+											 : t('no.cloudfunction')}
+											</TableCell>
+										</TableRow>
+									)
+								})}
+							</TableBody>
+						</Table> : null}
+					</ItemG>
+					<ItemG xs={12}>
+
+						{/* <Divider style={{ margin: "16px" }} /> */}
+						{sensor.decoder.length > 0 ? <Table>
+							<TableHead>
+								<TableRow>
+									<TableCell>
+										<ItemG container>
+											{t('sensors.fields.decoder')}
+										</ItemG>
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{sensor.decoder.map(d => {
+									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
+									return (
+										<TableRow key={d.uuid}>
+											<TableCell component="th" scope="row">
+												{cf ?
+													<Link to={{ pathname: `/function/${cf.uuid}`, prevURL: `/sensor/${sensor.uuid}` }}>
+														{cf.name}
+													</Link>
+													: t('no.cloudfunction')}
+											</TableCell>
+										</TableRow>
+									)
+								})}
+							</TableBody>
+						</Table> : null}
 					</ItemG>
 				</ItemG>
 			}
