@@ -70,11 +70,8 @@ export const deleteSensor = async (uuid) => {
 export const getSensorDataClean = async (uuid, field, from, to, cfId) => {
 	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
 	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
-	console.log('startDate', startDate)
-	console.log('endDate', endDate)
 	let url = `v2/devicedata-clean/${uuid}/${field}/${startDate}/${endDate}/${cfId}`
 	let response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
-	console.log('getSensorDataClean', response)
 	return response
 }
 export const getSensorDataCleanV1 = async (id, from, to, v, nId, deviceType, chartType, calc) => {

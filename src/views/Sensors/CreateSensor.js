@@ -103,7 +103,6 @@ const CreateSensor = props => {
 		setSensorDataKeys(dt.outbound)
 		setSensorDecoder(dt.inbound)
 
-		console.log('dt', dt)
 		setSelect({
 			...select,
 			dt: dt
@@ -121,7 +120,6 @@ const CreateSensor = props => {
 		setOpenReg(false)
 	}
 	const handleChangeReg = (o) => {
-		console.log('Registry', o)
 		setSensor({
 			...stateSensor,
 			registry: o,

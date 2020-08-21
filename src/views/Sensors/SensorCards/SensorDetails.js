@@ -56,7 +56,6 @@ const SensorDetails = (props) => {
 				break
 		}
 	}
-	console.log(sensor)
 
 	return (
 		<InfoCard
@@ -119,7 +118,6 @@ const SensorDetails = (props) => {
 							</TableHead>
 							<TableBody>
 								{sensor.metadata.map(d => {
-									console.log(d)
 									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
 									return (
 										<TableRow key={d.uuid}>

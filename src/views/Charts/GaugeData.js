@@ -119,7 +119,6 @@ const GaugeComponent = React.memo(props => {
 	// }
 	const getData = async () => {
 		const { sensor, v, nId, period } = props
-		console.log(sensor.uuid, v, period, nId)
 		let value = await getSensorDataClean(sensor.uuid, v, period.from, period.to,  nId)
 		setLoading(false)
 		setValue(value)

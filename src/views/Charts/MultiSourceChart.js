@@ -105,9 +105,7 @@ const MultiSourceChart = (props) => {
 	const getData = useCallback(async () => {
 		if (g.dataSource.dataKey && g.dataSource.deviceIds.length > 0) {
 			//TODO HACK
-			console.log('dataSource', g.dataSource)
 			let data = null
-			console.log(g.dataSource.deviceIds)
 			if (g.dataSource.deviceIds[selectedDevice].uuid) {
 				data = await getSensorDataClean(g.dataSource.deviceIds[selectedDevice].uuid, g.dataSource.dataKey, period.from, period.to,  g.dataSource.cf/* g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc */)
 			}

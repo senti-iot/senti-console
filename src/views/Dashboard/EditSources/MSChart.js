@@ -88,7 +88,6 @@ const ESMSChart = (props) => {
 	}
 	const handleEditSensors = selectedSensors => {
 		let newG = { ...props.g }
-		console.log(selectedSensors)
 		newG.dataSource.deviceIds = selectedSensors
 		props.handleEditGraph(newG)
 		setOpenSensors(false)

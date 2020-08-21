@@ -183,7 +183,6 @@ const DeviceTypes = props => {
 	const handleAddNew = () => history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
 
 	const handleEdit = () => {
-		console.log(selected)
 		history.push({ pathname: `/devicetype/${selected[0]}/edit`, prevURL: `/devicetypes/list` })
 	}
 

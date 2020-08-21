@@ -336,7 +336,6 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	console.log('dataArr', dataArr)
 	if (dataArr.length > 0) {
 		state = {
 			loading: false,
