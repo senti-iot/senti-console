@@ -855,6 +855,9 @@
 	},
 	"sensors": {
 		"fields": {
+			"dataKey": "Data field",
+			"dataKeys": "Data fields",
+			"decoder": "Decoder functions",
 			"communication": "Communication",
 			"communications": {
 				"allowed": "Allowed",

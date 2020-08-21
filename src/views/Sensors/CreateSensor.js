@@ -22,7 +22,7 @@ const CreateSensor = props => {
 	//State
 	const [openReg, setOpenReg] = useState(false)
 	const [openDT, setOpenDT] = useState(false)
-	const [openCF, setOpenCF] = useState({ open: false, where: null })
+	// const [openCF, setOpenCF] = useState({ open: false, where: null })
 	const [select, setSelect] = useState({ dt: { name: "" }, reg: { name: "" } })
 	const [stateSensor, setSensor] = useState({
 		lat: 56.2639,
@@ -32,11 +32,9 @@ const CreateSensor = props => {
 		name: '',
 		communication: 1
 	})
-	const [sensorMetadata, setSensorMetadata] = useState({
-		inbound: [],
-		outbound: [],
-		metadata: []
-	})
+	const [sensorMetadata, setSensorMetadata] = useState([])
+	const [sensorDataKeys, setSensorDataKeys] = useState([])
+	const [sensorDecoder, setSensorDecoder] = useState([])
 
 	//Const
 
@@ -101,11 +99,10 @@ const CreateSensor = props => {
 			...stateSensor,
 			deviceType: dt,
 		})
-		setSensorMetadata({
-			inbound: dt.inbound ? dt.inbound : [],
-			outbound: dt.outbound ? dt.outbound : [],
-			metadata: dt.metadata ? dt.metadata : []
-		})
+		// setSensorMetadata(dt.metadata ? dt.metadata : [])
+		setSensorDataKeys(dt.outbound)
+		setSensorDecoder(dt.inbound)
+
 		setSelect({
 			...select,
 			dt: dt
@@ -123,7 +120,6 @@ const CreateSensor = props => {
 		setOpenReg(false)
 	}
 	const handleChangeReg = (o) => {
-		console.log('Registry', o)
 		setSensor({
 			...stateSensor,
 			registry: o,
@@ -138,80 +134,80 @@ const CreateSensor = props => {
 	//#endregion
 	//#region Inbound Function
 
-	const handleRemoveInboundFunction = index => e => {
+	// const handleRemoveInboundFunction = index => e => {
 
-		let mtd = sensorMetadata.inbound
-		mtd = mtd.filter((v, i) => index !== i)
-		setSensorMetadata({
-			...sensorMetadata,
-			inbound: mtd
-		})
-	}
-	const handleAddInboundFunction = e => {
-		let mtd = sensorMetadata.inbound
-		setSensorMetadata({
-			...sensorMetadata,
-			inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
-		})
-	}
+	// 	let mtd = sensorMetadata.inbound
+	// 	mtd = mtd.filter((v, i) => index !== i)
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		inbound: mtd
+	// 	})
+	// }
+	// const handleAddInboundFunction = e => {
+	// 	let mtd = sensorMetadata.inbound
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
+	// 	})
+	// }
 
 	//#endregion
 
 	//#region Outbound function
 
-	const handleAddKey = e => {
-		let otbd = sensorMetadata.outbound
-		setSensorMetadata({
-			...sensorMetadata,
-			outbound: [...otbd, { key: '', nId: -1, type: 0 }]
-		})
-	}
+	// const handleAddKey = e => {
+	// 	let otbd = sensorMetadata.outbound
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		outbound: [...otbd, { key: '', nId: -1, type: 0 }]
+	// 	})
+	// }
 
-	const handleRemoveKey = (index) => e => {
-		let otbd = sensorMetadata.outbound
-		let newMetadata = otbd.filter((v, i) => i !== index)
+	// const handleRemoveKey = (index) => e => {
+	// 	let otbd = sensorMetadata.outbound
+	// 	let newMetadata = otbd.filter((v, i) => i !== index)
 
-		setSensorMetadata({
-			...sensorMetadata,
-			outbound: newMetadata
-		})
-	}
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		outbound: newMetadata
+	// 	})
+	// }
 
-	const handleRemoveFunction = (i) => e => {
-		let otbd = sensorMetadata.outbound
-		otbd[i].nId = -1
-		setSensorMetadata({
-			...sensorMetadata,
-			outbound: otbd
-		})
-	}
+	// const handleRemoveFunction = (i) => e => {
+	// 	let otbd = sensorMetadata.outbound
+	// 	otbd[i].nId = -1
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		outbound: otbd
+	// 	})
+	// }
 
-	const handleChangeKey = (v, i) => e => {
-		let otbd = sensorMetadata.outbound
-		otbd[i].key = e.target.value
-		setSensorMetadata({
-			...sensorMetadata,
-			outbound: otbd
-		})
-	}
+	// const handleChangeKey = (v, i) => e => {
+	// 	let otbd = sensorMetadata.outbound
+	// 	otbd[i].key = e.target.value
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		outbound: otbd
+	// 	})
+	// }
 
-	const handleChangeType = index => e => {
-		let otbd = sensorMetadata.outbound
-		otbd[index].type = e.target.value
-		setSensorMetadata({
-			...sensorMetadata,
-			outbound: otbd
-		})
-	}
+	// const handleChangeType = index => e => {
+	// 	let otbd = sensorMetadata.outbound
+	// 	otbd[index].type = e.target.value
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		outbound: otbd
+	// 	})
+	// }
 
 	//#endregion
 
 	//#region Metadata
 
 	const handleAddMetadataKey = e => {
-		let mtd = sensorMetadata.metadata
+		let mtd = [...sensorMetadata]
 		mtd.push({ key: "", value: "" })
-		setSensorMetadata({ ...sensorMetadata, metadata: mtd })
+		setSensorMetadata(mtd)
 		// this.setState({
 		// 	sensorMetadata: {
 		// 		...this.state.sensorMetadata,
@@ -221,8 +217,8 @@ const CreateSensor = props => {
 	}
 
 	const handleRemoveMtdKey = index => e => {
-		let newMetadata = sensorMetadata.metadata.filter((v, i) => i !== index)
-		setSensorMetadata({ ...sensorMetadata, metadata: newMetadata })
+		let newMetadata = sensorMetadata.filter((v, i) => i !== index)
+		setSensorMetadata(newMetadata)
 		// this.setState({
 		// 	sensorMetadata: {
 		// 		...this.state.sensorMetadata,
@@ -232,55 +228,49 @@ const CreateSensor = props => {
 	}
 
 	const handleChangeMetadataKey = (i) => e => {
-		let mtd = sensorMetadata.metadata
+		let mtd = [...sensorMetadata]
 		mtd[i].key = e.target.value
-		setSensorMetadata({
-			...sensorMetadata,
-			metadata: mtd
-		})
+		setSensorMetadata(mtd)
 
 	}
 
 	const handleChangeMetadata = (i) => e => {
-		let mtd = sensorMetadata.metadata
+		let mtd = [...sensorMetadata]
 		mtd[i].value = e.target.value
-		setSensorMetadata({
-			...sensorMetadata,
-			metadata: mtd
-		})
+		setSensorMetadata(mtd)
 	}
 
 	//#endregion
 
 	//#region Function selector
 
-	const handleOpenFunc = (p, where) => e => {
-		setSelect({
-			...select,
-			[where]: p
-		})
-		setOpenCF({
-			open: true,
-			where: where
-		})
-	}
+	// const handleOpenFunc = (p, where) => e => {
+	// 	setSelect({
+	// 		...select,
+	// 		[where]: p
+	// 	})
+	// 	setOpenCF({
+	// 		open: true,
+	// 		where: where
+	// 	})
+	// }
 
-	const handleCloseFunc = () => {
-		setOpenCF({
-			open: false,
-			where: null
-		})
-	}
+	// const handleCloseFunc = () => {
+	// 	setOpenCF({
+	// 		open: false,
+	// 		where: null
+	// 	})
+	// }
 
-	const handleChangeFunc = (o, where) => {
-		let metadata = sensorMetadata[where]
-		metadata[select[where]].nId = o.id
-		handleCloseFunc()
-		setSensorMetadata({
-			...sensorMetadata,
-			[where]: metadata
-		})
-	}
+	// const handleChangeFunc = (o, where) => {
+	// 	let metadata = sensorMetadata[where]
+	// 	metadata[select[where]].nId = o.id
+	// 	handleCloseFunc()
+	// 	setSensorMetadata({
+	// 		...sensorMetadata,
+	// 		[where]: metadata
+	// 	})
+	// }
 
 	//#endregion
 
@@ -290,18 +280,16 @@ const CreateSensor = props => {
 
 	//#region Create Sensor
 	const createSensorFunc = async () => {
-		let smtd = sensorMetadata.metadata
+		let smtd = sensorMetadata
 		let mtd = {}
 		smtd.forEach((m) => {
 			mtd[m.key] = m.value
 		})
+
 		let newSensor = {
 			...stateSensor,
 			tags: [],
-			metadata: {
-				...sensorMetadata,
-				metadata: mtd
-			}
+			metadata: mtd
 		}
 		return await createSensor(newSensor)
 	}
@@ -326,23 +314,26 @@ const CreateSensor = props => {
 		<CreateSensorForm
 			sensor={stateSensor}
 			sensorMetadata={sensorMetadata}
+			sensorDataKeys={sensorDataKeys}
+			sensorDecoder={sensorDecoder}
 			cfunctions={cloudfunctions}
-			handleOpenFunc={handleOpenFunc}
-			handleCloseFunc={handleCloseFunc}
-			handleChangeFunc={handleChangeFunc}
-			handleRemoveFunction={handleRemoveFunction}
-			handleRemoveInboundFunction={handleRemoveInboundFunction}
-			handleAddInboundFunction={handleAddInboundFunction}
-			openCF={openCF}
+			// handleOpenFunc={handleOpenFunc}
+			// handleCloseFunc={handleCloseFunc}
+			// handleChangeFunc={handleChangeFunc}
 
-			handleAddKey={handleAddKey}
-			handleRemoveKey={handleRemoveKey}
-			handleChangeKey={handleChangeKey}
+			// handleRemoveFunction={handleRemoveFunction}
+			// handleRemoveInboundFunction={handleRemoveInboundFunction}
+			// handleAddInboundFunction={handleAddInboundFunction}
+			// openCF={openCF}
+
+			// handleAddKey={handleAddKey}
+			// handleRemoveKey={handleRemoveKey}
+			// handleChangeKey={handleChangeKey}
 
 			handleChange={handleChange}
 			handleCreate={handleCreate}
 
-			handleChangeType={handleChangeType}
+			// handleChangeType={handleChangeType}
 
 			handleChangeMetadataKey={handleChangeMetadataKey}
 			handleChangeMetadata={handleChangeMetadata}

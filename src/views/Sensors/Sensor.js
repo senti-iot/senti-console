@@ -41,7 +41,6 @@ const Sensor = props => {
 	const loading = useSelector(state => !state.data.gotSensor)
 	const deviceTypes = useSelector(s => s.data.deviceTypes)
 	const deviceType = sensor ? deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)] : null
-	console.log('Device Type', deviceType)
 	//State
 	const [openDelete, setopenDelete] = useState(false)
 	const [sensorMessages, setSensorMessages] = useState(null)
@@ -53,7 +52,6 @@ const Sensor = props => {
 	const getDeviceType = useCallback(async () => {
 		// let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
 		if (!deviceType && sensor) {
-			console.log('Sensor', sensor)
 			await dispatch(await getDeviceTypes())
 		}
 	}, [deviceType, dispatch, sensor])
@@ -234,7 +232,7 @@ const Sensor = props => {
 									</ItemGrid>
 								)
 							})
-							: console.log('No DT')}
+							: null}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return <ItemGrid xs={12} container noMargin key={i + 'gauges'}>

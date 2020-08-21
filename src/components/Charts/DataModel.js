@@ -336,7 +336,6 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	console.log('dataArr', dataArr)
 	if (dataArr.length > 0) {
 		state = {
 			loading: false,
@@ -494,7 +493,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 	let data, prevData = null
 	await Promise.all(objArr.map(async o => {
 		if (type === 'device') {
-			data = await getSensorDataClean(o.id, startDate, endDate, v, nId)
+			data = await getSensorDataClean(o.id, v, startDate, endDate, nId)
 			if (prevPeriod) {
 				prevEndDate = moment(to).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
 				prevStartDate = moment(from).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
