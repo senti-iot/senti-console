@@ -116,6 +116,7 @@
 	},
 	"cloudfunctions": {
 		"datatypes": {
+			"datatype": "Data type",
 			"average": "Average of values",
 			"timeSeries": "Time Series"
 		},

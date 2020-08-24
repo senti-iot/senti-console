@@ -452,6 +452,7 @@ const DoubleChart = (props) => {
 				case 2:
 					return barDataSets ?
 						<BarChart
+							graphUnit={g.unit}
 							chartYAxis={chartType}
 							single={single}
 							hoverID={hoverID}
@@ -465,6 +466,7 @@ const DoubleChart = (props) => {
 				case 3:
 					return lineDataSets ?
 						<MultiLineChart
+							graphUnit={g.unit}
 							chartYAxis={chartType}
 							single={single}
 							hoverID={hoverID}

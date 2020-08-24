@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react"
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core'
-import { T, ItemG, DSelect, TextF, ITB } from 'components'
+import { T, ItemG, DSelect, TextF, ITB, Muted } from 'components'
 import { ExpandMore, Add, Delete } from 'variables/icons'
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
@@ -103,6 +103,8 @@ const ESScorecard = props => {
 	const handleEditDataKey = i => e => {
 		let newG = { ...g }
 		newG.dataSources[i].dataKey = e.target.value
+		let unit = sensor.dataKeys ? sensor.dataKeys[sensor.dataKeys.findIndex(f => f.key === e.target.value)].unit : ''
+		newG.dataSources[i].unit = unit
 		props.handleEditGraph(newG)
 	}
 	const handleAddDataSource = () => {
@@ -250,7 +252,17 @@ const ESScorecard = props => {
 												simple
 												value={ds.dataKey}
 												onChange={handleEditDataKey(i)}
-												menuItems={sensor ? sensor.dataKeys ? sensor.dataKeys.map(dt => dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
+												menuItems={sensor ?
+													sensor.dataKeys ?
+														sensor.dataKeys.map(dt => ({
+															label:
+																<ItemG>{dt.label ? dt.label : dt.key}
+																	<Muted>
+																		{dt.key}
+																	</Muted>
+																</ItemG>, value: dt.key
+														}))
+													/* .filter((value, index, self) => self.indexOf(value) === index) */ : [] : []}
 											/>
 										</ItemG>
 										<ItemG>

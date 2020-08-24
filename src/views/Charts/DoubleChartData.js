@@ -61,8 +61,8 @@ class DoubleChartData extends PureComponent {
 		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
+		// { id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
+		// { id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
@@ -639,9 +639,9 @@ class DoubleChartData extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader fill /></div> :
+							{loading ? <div style={{ height: 500, width: '100%' }}><CircularLoader fill /></div> :
 
-								<ItemG xs={12}>
+								<ItemG xs={12} style={{ minHeight: 300 }}>
 									{this.renderType()}
 								</ItemG>
 							}

@@ -406,7 +406,7 @@ class BarChart extends PureComponent {
 	}
 
 	render() {
-		const { classes, unit } = this.props
+		const { classes, unit, graphUnit } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 
 		return (
@@ -423,6 +423,7 @@ class BarChart extends PureComponent {
 						/>
 					</div>
 					<Tooltip
+						graphUnit={graphUnit}
 						getRef={this.getTooltipRef}
 						tooltip={tooltip}
 						handleCloseTooltip={this.exitedTooltip}

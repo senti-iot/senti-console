@@ -141,6 +141,7 @@ const Tooltip = props => {
 		let doi = dispatch(todayOfInterest(moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')))
 		let birthdays = doi.birthdays
 		let days = doi.days
+		let graphUnit = props.graphUnit
 		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
 			<Paper className={classes.paper}>
 				<ItemG container>
@@ -155,7 +156,7 @@ const Tooltip = props => {
 								return (
 									<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
 										<DataUsage style={{ color: d.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
-										<Typography variant={'body1'}>{d.count}</Typography>
+										<Typography variant={'body1'}>{d.count} {graphUnit}</Typography>
 									</ItemG>
 								)
 							})}

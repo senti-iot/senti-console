@@ -49,7 +49,7 @@ const Dashboard = (props) => {
 			tabs: []
 		})
 		return () => {
-
+			dispatch(reset())
 		}
 		// eslint-disable-next-line
 	}, [])
@@ -58,6 +58,9 @@ const Dashboard = (props) => {
 		if (saved) {
 			s.s(saved)
 			dispatch(finishedSaving())
+		}
+		return () => {
+			dispatch(reset())
 		}
 	}, [dispatch, s, saved])
 

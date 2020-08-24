@@ -2,12 +2,12 @@ import { Fade } from '@material-ui/core';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { DataUsage, CloudUpload, StorageIcon } from 'variables/icons';
+import { DataUsage, CloudUpload, /* StorageIcon */ } from 'variables/icons';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getDeviceTypeLS } from 'redux/data';
 import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
-import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
+// import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
 import { deleteDeviceType } from 'variables/dataDeviceTypes';
 import { useLocalization, useSnackbar, useHistory } from 'hooks';
@@ -71,8 +71,8 @@ const DeviceType = props => {
 		if (deviceType) {
 			const tabs = [
 				{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-				{ id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
-				{ id: 2, title: t('tabs.cloudfunctions'), label: <CloudUpload />, url: `#cloudfunctions` },
+				// { id: 1, title: t('tabs.metadata'), label: <StorageIcon />, url: `#metadata` },
+				{ id: 1, title: t('tabs.cloudfunctions'), label: <CloudUpload />, url: `#cloudfunctions` },
 			]
 
 			props.setTabs({
@@ -170,12 +170,12 @@ const DeviceType = props => {
 							t={t}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'metadata'}>
+					{/* <ItemGrid xs={12} noMargin id={'metadata'}>
 						<DeviceTypeMetadata
 							deviceType={deviceType}
 							t={t}
 						/>
-					</ItemGrid>
+					</ItemGrid> */}
 					<ItemGrid xs={12} noMargin id={'cloudfunctions'}>
 						<DeviceTypeCloudFunctions
 							deviceType={deviceType}

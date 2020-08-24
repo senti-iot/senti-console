@@ -116,6 +116,7 @@
 	},
 	"cloudfunctions": {
 		"datatypes": {
+			"datatype": "Datatype",
 			"average": "Gennemsnit af værdier",
 			"timeSeries": "Tidsserier"
 		},

@@ -18,8 +18,9 @@ const CreateDeviceTypeForm = props => {
 	//State
 
 	//Const
-	const { sensorMetadata, cfunctions, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction,
-		handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
+	const { sensorMetadata, handleChangeUnit,
+		handleChangeKeyLabel, cfunctions, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction,
+		// handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChangeKey, handleRemoveKey, handleRemoveFunction,
 		handleAddKey, openCF, handleCloseFunc, handleChangeFunc, handleChange, org, handleOrgChange, deviceType,
 		handleCreate, goToDeviceTypes, handleChangeType, handleCloseOrg, handleOpenOrg,
@@ -35,7 +36,7 @@ const CreateDeviceTypeForm = props => {
 
 	const renderMetadata = () => {
 		return <Fragment>
-			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
+			{/* <T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
 			{sensorMetadata.metadata.map((m, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
@@ -66,19 +67,36 @@ const CreateDeviceTypeForm = props => {
 						</IconButton>
 					</Tooltip>
 				</ItemGrid>
-			})}
-			<ItemGrid xs={12}>
+			})} */}
+			{/* <ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
-			</ItemGrid>
+			</ItemGrid> */}
 			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
 				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'}>
+					<TextF
+						id={'outbound-label' + i}
+						label={t('sensors.fields.dataKey')}
+						value={p.label}
+						onChange={handleChangeKeyLabel(p, i)}
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
 					<TextF
 						id={'outbound-key' + i}
 						label={t('cloudfunctions.fields.key')}
 						onChange={handleChangeKey(p, i)}
 						value={p.key}
-						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						id={'outbound-unit' + i}
+						label={t('dashboard.fields.unit')}
+						value={p.unit}
+						onChange={handleChangeUnit(p, i)}
 						InputProps={{
 							style: { marginRight: 8 }
 						}}
@@ -106,10 +124,12 @@ const CreateDeviceTypeForm = props => {
 					/>
 					<DSelect
 						onChange={handleChangeType(i)}
+						label={t('cloudfunctions.datatypes.datatype')}
 						value={p.type}
+						margin={'normal'}
 						menuItems={[
 							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
-							{ value: 1, label: t('cloudfunctions.datatypes.average') }
+							// { value: 1, label: t('cloudfunctions.datatypes.average') }
 						]}
 					/>
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
