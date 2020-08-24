@@ -358,15 +358,28 @@ export const getDeviceTypeLS = async (id) => {
 		dispatch({ type: gotDeviceType, payload: false })
 		let deviceType = get('deviceType.' + id)
 		if (deviceType) {
-			await dispatch(await getPrivList([id], ['deviceType.modify', 'deviceType.delete']))
-			dispatch({
-				type: setDeviceType,
-				payload: deviceType
-			})
-			dispatch({
-				type: gotDeviceType,
-				payload: true
-			})
+			if (deviceType.uuid) {
+
+				await dispatch(await getPrivList([id], ['deviceType.modify', 'deviceType.delete']))
+				dispatch({
+					type: setDeviceType,
+					payload: deviceType
+				})
+				dispatch({
+					type: gotDeviceType,
+					payload: true
+				})
+			}
+			else {
+				dispatch({
+					type: gotDeviceType,
+					payload: false
+				})
+				dispatch({
+					type: setDeviceType,
+					payload: null
+				})
+			}
 		}
 		else {
 			dispatch({
