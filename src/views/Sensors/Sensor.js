@@ -32,7 +32,6 @@ const Sensor = props => {
 	const location = useLocation()
 	const history = useHistory()
 	const theme = useTheme()
-	console.log('theme', theme)
 	//Redux
 	// const accessLevel = useSelector(s => s.settings.user.privileges)
 	const saved = useSelector(state => state.favorites.saved)

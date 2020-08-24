@@ -71,7 +71,6 @@ class DoubleChartData extends PureComponent {
 		const { loading } = this.state
 		if (period && loading) {
 			let newState = await this.props.getData(period)
-			console.log(newState)
 			this.setState({ ...newState, loading: false })
 		}
 	}

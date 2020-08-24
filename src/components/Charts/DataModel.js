@@ -358,7 +358,6 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 					fill: false,
 					label: [d.name],
 					data: Array.isArray(d.data) ? d.data.map(u => {
-						console.log(u, u.datetime, u[d.id], d.id)
 						return ({ x: u.datetime, y: u[d.id] })
 					})
 						: []
@@ -501,7 +500,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 	await Promise.all(objArr.map(async o => {
 		if (type === 'device') {
 			data = await getSensorDataClean(o.uuid, v, startDate, endDate, nId)
-			console.log('data', data)
 			if (prevPeriod) {
 				prevEndDate = moment(to).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
 				prevStartDate = moment(from).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
@@ -544,8 +542,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 			// data: Array.isArray(data) ? data.map(u => ({ x: u.datetime, y: u[v] })) : [],
 			...o,
 		}
-		console.log(dataSet.data)
-		console.log('dataSet', dataSet)
 		return dataArr.push(dataSet, prevDataSet)
 	}))
 	//Filter nulls
@@ -558,7 +554,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 	dataArr = handleRequestSort('name', 'asc', dataArr)
 	let newState = setHourlyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'hour')
-	console.log('dataArr2', dataArr)
 	return { ...newState, exportData, dataArr }
 }
 
