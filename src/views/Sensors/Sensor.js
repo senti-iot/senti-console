@@ -212,6 +212,7 @@ const Sensor = props => {
 							return (
 								<ItemGrid xs={12} key={i} container noMargin id={"charts" + i}>
 									<SensorChart
+										graphUnit={k.unit}
 										deviceId={sensor.uuid}
 										dataKey={k.key}
 										title={k.label ? k.label : k.key}

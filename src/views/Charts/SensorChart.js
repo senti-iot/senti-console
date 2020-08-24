@@ -492,6 +492,7 @@ class SensorChart extends PureComponent {
 				case 2:
 					return barDataSets ?
 						<BarChart
+							graphUnit={this.props.graphUnit}
 							chartYAxis={this.state.chartType}
 							single={single}
 							hoverID={hoverID}
@@ -506,6 +507,7 @@ class SensorChart extends PureComponent {
 
 					return lineDataSets ?
 						<MultiLineChart
+							graphUnit={this.props.graphUnit}
 							chartYAxis={this.state.chartType}
 							single={single}
 							hoverID={this.props.hoverID}
