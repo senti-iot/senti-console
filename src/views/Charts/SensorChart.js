@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -17,6 +17,7 @@ import {
 	PieChart,
 	DateFilterMenu,
 	T,
+	Muted,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -37,7 +38,7 @@ class SensorChart extends PureComponent {
 			period: {
 				from: moment().subtract(7, "days"),
 				to: moment(),
-				timeType: 1,
+				timeType: 2,
 				chartType: 3,
 				menuId: 0
 			},
@@ -88,11 +89,11 @@ class SensorChart extends PureComponent {
 		const { period } = this.state
 		switch (timeType) {
 			case 0:
-				return setMinutelyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
+				return setMinutelyData([{ data: data, name: title, color: chartColor, id: dataKey }], period.from, period.to)
 			case 1:
-				return setHourlyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
+				return setHourlyData([{ data: data, name: title, color: chartColor, id: dataKey }], period.from, period.to)
 			case 2:
-				return setDailyData([{ data: data, name: title, color: colors[chartColor][500], id: dataKey }], period.from, period.to)
+				return setDailyData([{ data: data, name: title, color: chartColor, id: dataKey }], period.from, period.to)
 			default:
 				break;
 		}
@@ -366,7 +367,7 @@ class SensorChart extends PureComponent {
 		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = (small) => {
-		const { title, t } = this.props
+		const { title, t, dataKey } = this.props
 		const { period } = this.state
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -374,11 +375,13 @@ class SensorChart extends PureComponent {
 			{small ? null :
 				<Hidden xsDown>
 					<ItemG xs zeroMinWidth>
-						<Tooltip enterDelay={1000} title={title}>
+						<Tooltip enterDelay={1000} title={dataKey}>
 							<div>
 								{/* <T noWrap variant={'h6'}>{title}</T> */}
 								{title}
+								<Muted>{dataKey}</Muted>
 							</div>
+
 						</Tooltip>
 					</ItemG>
 				</Hidden>
@@ -671,7 +674,10 @@ class SensorChart extends PureComponent {
 								<Hidden smUp>
 									{this.renderSmallTitle()}
 								</Hidden>
-								{this.renderType()}
+								<ItemG xs={12}>
+
+									{this.renderType()}
+								</ItemG>
 							</Fragment>
 						}
 					</Grid>}
