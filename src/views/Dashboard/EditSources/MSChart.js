@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react"
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse, Button } from '@material-ui/core'
-import { T, ItemG, DSelect, TextF, DateFilterMenu } from 'components'
+import { T, ItemG, DSelect, TextF, DateFilterMenu, Muted } from 'components'
 import { ExpandMore } from 'variables/icons'
 import { /* PieChartRounded, DonutLargeRounded,  */BarChart, ShowChart } from 'variables/icons'
 // import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog';
@@ -114,6 +114,8 @@ const ESMSChart = (props) => {
 	const handleEditDataKey = e => {
 		let newG = { ...props.g }
 		newG.dataSource.dataKey = e.target.value
+		let unit = deviceType.outbound ? deviceType.outbound[deviceType.outbound.findIndex(f => f.key === e.target.value)].unit : ''
+		newG.unit = unit
 		props.handleEditGraph(newG)
 	}
 
@@ -213,7 +215,17 @@ const ESMSChart = (props) => {
 												simple
 												value={g.dataSource.dataKey}
 												onChange={handleEditDataKey}
-												menuItems={deviceType ? deviceType.outbound ? deviceType.outbound.map(dt => dt.key).filter((value, index, self) => self.indexOf(value) === index) : [] : []}
+												menuItems={deviceType ?
+													deviceType.outbound ?
+														deviceType.outbound.map(dt => ({
+															label:
+																<ItemG>{dt.label ? dt.label : dt.key}
+																	<Muted>
+																		{dt.key}
+																	</Muted>
+																</ItemG>, value: dt.key
+														}))
+															.filter((value, index, self) => self.indexOf(value) === index) : [] : []}
 											/>
 										</ItemG>
 										<ItemG>
