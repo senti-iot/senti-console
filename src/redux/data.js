@@ -357,29 +357,18 @@ export const getDeviceTypeLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotDeviceType, payload: false })
 		let deviceType = get('deviceType.' + id)
-		if (deviceType) {
-			if (deviceType.uuid) {
+		if (deviceType && deviceType.uuid) {
 
-				await dispatch(await getPrivList([id], ['deviceType.modify', 'deviceType.delete']))
-				dispatch({
-					type: setDeviceType,
-					payload: deviceType
-				})
-				dispatch({
-					type: gotDeviceType,
-					payload: true
-				})
-			}
-			else {
-				dispatch({
-					type: gotDeviceType,
-					payload: false
-				})
-				dispatch({
-					type: setDeviceType,
-					payload: null
-				})
-			}
+			await dispatch(await getPrivList([id], ['deviceType.modify', 'deviceType.delete']))
+			dispatch({
+				type: setDeviceType,
+				payload: deviceType
+			})
+			dispatch({
+				type: gotDeviceType,
+				payload: true
+			})
+
 		}
 		else {
 			dispatch({
@@ -532,7 +521,7 @@ export const getRegistryLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotRegistry, payload: false })
 		let registry = get('registry.' + id)
-		if (registry) {
+		if (registry && registry.uuid) {
 			await dispatch(await getPrivList([id], ['registry.modify', 'registry.changeparent', 'registry.delete']))
 			dispatch({
 				type: setRegistry,
@@ -626,7 +615,7 @@ export const getSensorLS = async (id, customerID, ua) => {
 		})
 		let sensor = get('sensor.' + id)
 		await dispatch(await getPrivList([id], ['device.modify', 'device.delete']))
-		if (sensor.uuid) {
+		if (sensor && sensor.uuid) {
 			dispatch({
 				type: setSensor,
 				payload: sensor
