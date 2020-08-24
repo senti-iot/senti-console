@@ -613,7 +613,7 @@ export const getSensorLS = async (id, customerID, ua) => {
 		})
 		let sensor = get('sensor.' + id)
 		await dispatch(await getPrivList([id], ['device.modify', 'device.delete']))
-		if (sensor) {
+		if (sensor.uuid) {
 			dispatch({
 				type: setSensor,
 				payload: sensor

@@ -79,17 +79,17 @@ const SensorDetails = (props) => {
 				<ItemG container spacing={3}>
 					<ItemG>
 						<Caption>{t('registries.fields.protocol')}</Caption>
-						<Info>{renderProtocol(sensor.registry.protocol)}</Info>
+						<Info>{sensor.registry ? renderProtocol(sensor.registry.protocol) : ""}</Info>
 					</ItemG>
 					<ItemG>
 						<Caption>{t('sensors.fields.communication')}</Caption>
-						{renderCommunication(sensor.communication)}
+						{sensor.communication ? renderCommunication(sensor.communication) : ""}
 					</ItemG>
 					<ItemG>
 						<Caption>{t('sensors.fields.deviceType')}</Caption>
 						<Info>
 							<Link to={{ pathname: `/devicetype/${sensor.deviceType.uuid}`, prevURL: `/sensor/${sensor.uuid}` }}>
-								{sensor.deviceType.name}
+								{sensor.deviceType?.name}
 							</Link>
 						</Info>
 					</ItemG>
@@ -97,12 +97,12 @@ const SensorDetails = (props) => {
 						<Caption>{t('registries.fields.registry')}</Caption>
 						<Info>
 							<Link to={{ pathname: `/registry/${sensor.registry.uuid}`, prevURL: `/sensor/${sensor.uuid}` }} >
-								{sensor.registry.name}
+								{sensor.registry?.name}
 							</Link>
 						</Info>
 					</ItemG>
 					<ItemG xs={12}>
-						{sensor.metadata.length > 0 ? <Table>
+						{sensor.metadata?.length > 0 ? <Table>
 							<TableHead>
 								<TableRow style={{}}>
 									<TableCell style={{}}>
@@ -140,7 +140,7 @@ const SensorDetails = (props) => {
 					<ItemG xs={12}>
 						{/* <Divider style={{ margin: "16px" }} /> */}
 						{/* <Caption style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.dataKeys')}</Caption> */}
-						{sensor.dataKeys.length > 0 ? <Table>
+						{sensor.dataKeys?.length > 0 ? <Table>
 							<TableHead>
 								<TableRow style={{  }}>
 									<TableCell style={{  }}>
@@ -178,7 +178,7 @@ const SensorDetails = (props) => {
 					<ItemG xs={12}>
 
 						{/* <Divider style={{ margin: "16px" }} /> */}
-						{sensor.decoder.length > 0 ? <Table>
+						{sensor.decoder?.length > 0 ? <Table>
 							<TableHead>
 								<TableRow>
 									<TableCell>
