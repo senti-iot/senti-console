@@ -99,7 +99,7 @@ class Tooltip extends Component {
 	}
 	renderTooltip = () => {
 		const { t, classes, tooltip, weather,
-			handleCloseTooltip, todayOfInterest, mobile } = this.props
+			handleCloseTooltip, todayOfInterest, mobile, graphUnit } = this.props
 		let doi = todayOfInterest(tooltip.title[0])
 		let birthdays = doi.birthdays
 		let days = doi.days
@@ -117,7 +117,7 @@ class Tooltip extends Component {
 								return (
 									<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
 										<DataUsage style={{ color: d.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
-										<Typography variant={'body1'}>{d.count}</Typography>
+										<Typography variant={'body1'}>{d.count} {graphUnit}</Typography>
 									</ItemG>
 								)
 							})}

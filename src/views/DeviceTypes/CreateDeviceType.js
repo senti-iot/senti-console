@@ -134,7 +134,28 @@ const CreateDeviceType = props => {
 			outbound: mtd
 		})
 	}
-
+	/**
+	 * Change measure unit from dataKey
+	 */
+	const handleChangeUnit = (v, i) => e => {
+		let mtd = [...sensorMetadata.outbound]
+		mtd[i].unit = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+	/**
+ 	* Change key label from dataKey
+ 	*/
+	const handleChangeKeyLabel = (v, i) => e => {
+		let mtd = [...sensorMetadata.outbound]
+		mtd[i].label = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
 	const handleChangeKey = (v, i) => e => {
 		let mtd = sensorMetadata.outbound
 		mtd[i].key = e.target.value
@@ -282,7 +303,8 @@ const CreateDeviceType = props => {
 			handleAddKey={handleAddKey}
 			handleRemoveKey={handleRemoveKey}
 			handleChangeKey={handleChangeKey}
-
+			handleChangeUnit={handleChangeUnit}
+			handleChangeKeyLabel={handleChangeKeyLabel}
 			handleChangeType={handleChangeType}
 
 			handleChangeMetadataKey={handleChangeMetadataKey}

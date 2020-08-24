@@ -33,7 +33,7 @@ export default function SensorData(props) {
 		// this.setState({ loadingData: true })
 		let newState = await getWMeterDatav2('device', [{
 			name: device.name,
-			id: device.id,
+			uuid: device.uuid,
 			lat: device.lat,
 			long: device.long,
 			org: device.org ? device.org.name : "",
@@ -48,7 +48,8 @@ export default function SensorData(props) {
 
 			return <DoubleChartData
 				single
-				title={t(`sensors.metadata.${v}`)}
+				title={v}
+				// title={t(`sensors.metadata.${v}`)}
 				getData={getWifiHourly}
 				period={period}
 				device={sensor}

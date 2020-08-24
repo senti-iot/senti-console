@@ -118,17 +118,23 @@ const EditDeviceType = props => {
 
 	//#endregion
 
-	//#region Outbound function
+	//#region Outbound DataKeys
 
+	/**
+	 * Add a new dataKey
+	 */
 	const handleAddKey = e => {
 		setSensorMetadata({
 			...sensorMetadata,
 			outbound: [
-				...sensorMetadata.outbound, { key: '', nId: -1, type: 0 }
+				...sensorMetadata.outbound, { key: '', nId: -1, type: 0, label: "", unit: "" }
 			]
 		})
 	}
 
+	/**
+	 * Remove dataKey
+	 */
 	const handleRemoveKey = (index) => e => {
 		let newMetadata = sensorMetadata.outbound.filter((v, i) => i !== index)
 		setSensorMetadata({
@@ -136,28 +142,56 @@ const EditDeviceType = props => {
 			outbound: newMetadata
 		})
 	}
-
+	/**
+	 * Remove Cloud function from dataKey
+	 */
 	const handleRemoveFunction = (i) => e => {
-		let mtd = sensorMetadata.outbound
+		let mtd = [...sensorMetadata.outbound]
 		mtd[i].nId = -1
 		setSensorMetadata({
 			...sensorMetadata,
 			outbound: mtd
 		})
 	}
-
+	/**
+	 * Change measure unit from dataKey
+	 */
+	const handleChangeUnit = (v, i) => e => {
+		let mtd = [...sensorMetadata.outbound]
+		mtd[i].unit = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+	/**
+	 * Change key from dataKey
+	 */
 	const handleChangeKey = (v, i) => e => {
-		let mtd = sensorMetadata.outbound
+		let mtd = [...sensorMetadata.outbound]
 		mtd[i].key = e.target.value
 		setSensorMetadata({
 			...sensorMetadata,
 			outbound: mtd
 		})
 	}
-
+	/**
+	 * Change key label from dataKey
+	 */
+	const handleChangeKeyLabel = (v, i) => e => {
+		let mtd = [...sensorMetadata.outbound]
+		mtd[i].label = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+	/**
+	 * Change type of dataKey
+	 */
 	const handleChangeType = index => e => {
 		e.preventDefault()
-		let mtd = sensorMetadata.outbound
+		let mtd = [...sensorMetadata.outbound]
 		mtd[index].type = e.target.value
 		setSensorMetadata({
 			...sensorMetadata,
@@ -285,6 +319,8 @@ const EditDeviceType = props => {
 			handleOpenOrg={handleOpenOrg}
 			handleCloseOrg={handleCloseOrg}
 
+
+
 			deviceType={deviceType}
 			sensorMetadata={sensorMetadata}
 			cfunctions={cloudfunctions}
@@ -299,7 +335,8 @@ const EditDeviceType = props => {
 			handleAddKey={handleAddKey}
 			handleRemoveKey={handleRemoveKey}
 			handleChangeKey={handleChangeKey}
-
+			handleChangeUnit={handleChangeUnit}
+			handleChangeKeyLabel={handleChangeKeyLabel}
 			handleChangeType={handleChangeType}
 
 			handleChangeMetadataKey={handleChangeMetadataKey}

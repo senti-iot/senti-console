@@ -281,7 +281,9 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 						lat: d.lat,
 						long: d.long,
 						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-						data: Object.entries(d.data).map(d => d[1])
+						// data: Object.entries(d.data).map(d => d[1])
+						//TODO
+						data: []
 					}]
 				}))
 		}
@@ -355,7 +357,10 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					data: Array.isArray(d.data) ? d.data.map(u => {
+						return ({ x: u.datetime, y: u[d.id] })
+					})
+						: []
 				}))
 			},
 			barDataSets: {
@@ -382,7 +387,8 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 						lat: d.lat,
 						long: d.long,
 						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-						data: Object.entries(d.data).map(d => d[1])
+						// data: Object.entries(d.data).map(d => d[1])
+						data: []
 					}]
 				}))
 		}
@@ -493,7 +499,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 	let data, prevData = null
 	await Promise.all(objArr.map(async o => {
 		if (type === 'device') {
-			data = await getSensorDataClean(o.id, v, startDate, endDate, nId)
+			data = await getSensorDataClean(o.uuid, v, startDate, endDate, nId)
 			if (prevPeriod) {
 				prevEndDate = moment(to).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
 				prevStartDate = moment(from).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
@@ -526,12 +532,14 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 			name: o.name,
 			from: from,
 			to: to,
-			id: o.id,
+			id: v,
 			lat: o.lat,
 			long: o.long,
 			org: o.org,
 			fill: false,
-			data: regenerateData(data, 'hour'),
+			// data: regenerateData(data, 'hour'),
+			data: data,
+			// data: Array.isArray(data) ? data.map(u => ({ x: u.datetime, y: u[v] })) : [],
 			...o,
 		}
 		return dataArr.push(dataSet, prevDataSet)
@@ -546,59 +554,6 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, n
 	dataArr = handleRequestSort('name', 'asc', dataArr)
 	let newState = setHourlyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'hour')
-	return { ...newState, exportData, dataArr }
-}
-export const getWMeterData = async (objArr, hoverId, v, nId, prevPeriod) => {
-	// let startDate = moment(from).format(format)
-	// let endDate = moment(to).format(format)
-	let dataArr = []
-	let dataSet, dataSet2 = null
-	let data, data2 = null
-	await Promise.all(objArr.map(async o => {
-		let startDate = moment(o.from).format(format)
-		let endDate = moment(o.to).format(format)
-		let prevStartDate = moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
-		let prevEndDate = moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
-		data = await getSensorDataClean(o.id, startDate, endDate, v, nId)
-		data2 = await getSensorDataClean(o.id, prevStartDate, prevEndDate, false, nId)
-		dataSet = {
-			name: o.name,
-			id: o.id,
-			lat: o.lat,
-			long: o.long,
-			org: o.org,
-			data: data,
-			fill: false,
-			...o,
-		}
-		dataSet2 = {
-			name: o.name,
-			id: o.id,
-			lat: o.lat,
-			long: o.long,
-			org: o.org,
-			data: data2,
-			...o,
-			from: moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')),
-			to: moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')),
-			backgroundColor: '#5c5c5c33',
-			fill: true,
-			color: '#5c5c5c33',
-		}
-		return dataArr.push(dataSet, dataSet2)
-	}))
-	//Filter nulls
-	dataArr = dataArr.reduce((newArr, d) => {
-		if (d.data !== null)
-			newArr.push(d)
-		return newArr
-	}, [])
-	dataArr = handleRequestSort('name', 'asc', dataArr)
-	// if (simple)
-	// return dataArr
-	let newState = setMeterData(dataArr, hoverId)
-	// let exportData = setExportData(dataArr, 'daily')
-	let exportData = []
 	return { ...newState, exportData, dataArr }
 }
 

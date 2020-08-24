@@ -1,4 +1,4 @@
-import { Fade } from "@material-ui/core"
+import { Fade, useTheme } from "@material-ui/core"
 import {
 	CircularLoader,
 	GridContainer,
@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { DataUsage, InsertChart, Wifi } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
-import { getSensorLS, getDeviceTypes } from "redux/data"
+import { getSensorLS } from "redux/data"
 import SensorDetails from "./SensorCards/SensorDetails"
 import SensorProtocol from "./SensorCards/SensorProtocol"
 import SensorMessages from "views/Charts/SensorMessages"
@@ -21,7 +21,6 @@ import { deleteSensor } from "variables/dataSensors"
 import SensorChart from "views/Charts/SensorChart"
 import { useLocalization, useSnackbar } from "hooks"
 import { useRouteMatch, useHistory, useLocation, useParams } from "react-router-dom"
-// import SensorData from 'views/Sensors/SensorCards/SensorData'
 
 const Sensor = props => {
 	//Hooks
@@ -32,15 +31,13 @@ const Sensor = props => {
 	const params = useParams()
 	const location = useLocation()
 	const history = useHistory()
-
+	const theme = useTheme()
 	//Redux
 	// const accessLevel = useSelector(s => s.settings.user.privileges)
 	const saved = useSelector(state => state.favorites.saved)
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
 	const loading = useSelector(state => !state.data.gotSensor)
-	const deviceTypes = useSelector(s => s.data.deviceTypes)
-	const deviceType = sensor ? deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)] : null
 	//State
 	const [openDelete, setopenDelete] = useState(false)
 	const [sensorMessages, setSensorMessages] = useState(null)
@@ -49,16 +46,11 @@ const Sensor = props => {
 	const { setTabs, setBC, setHeader } = props
 
 	//useCallbacks
-	const getDeviceType = useCallback(async () => {
-		// let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
-		if (!deviceType && sensor) {
-			await dispatch(await getDeviceTypes())
-		}
-	}, [deviceType, dispatch, sensor])
+
 	const getSensor = useCallback(async id => {
 		await dispatch(await getSensorLS(id))
-		await getDeviceType()
-	}, [dispatch, getDeviceType])
+	}, [dispatch])
+
 	//useEffects
 	useEffect(() => {
 		if (sensor) {
@@ -215,24 +207,35 @@ const Sensor = props => {
 								getData={getDeviceMessages}
 							/>
 						</ItemGrid>
-						{deviceType?.outbound
-							? deviceType.outbound.map((k, i) => {
+						{sensor.dataKeys.map((k, i) => {
 
-								return (
-									<ItemGrid xs={12} key={i} container noMargin id={"charts"}>
-										<SensorChart
-											deviceId={sensor.uuid}
-											dataKey={k.key}
-											title={k.key}
-											cfId={k.nId}
-											chartColor={"teal"}
-											single={true}
-											t={t}
-										/>
-									</ItemGrid>
-								)
-							})
-							: null}
+							return (
+								<ItemGrid xs={12} key={i} container noMargin id={"charts" + i}>
+									<SensorChart
+										deviceId={sensor.uuid}
+										dataKey={k.key}
+										title={k.label ? k.label : k.key}
+										cfId={k.nId}
+										chartColor={theme.palette.primary.main}
+										single={true}
+										t={t}
+									/>
+								</ItemGrid>
+							)
+						})}
+						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+							return <ItemGrid xs={12} container noMargin key={i + 'charts'}>
+								<SensorData
+									periods={periods}
+									sensor={sensor}
+									history={history}
+									match={match}
+									t={t}
+									v={k.key}
+									nId={k.nId}
+								/>
+							</ItemGrid>
+						}) : null} */}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 1) {
 								return <ItemGrid xs={12} container noMargin key={i + 'gauges'}>
