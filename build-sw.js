@@ -20,9 +20,11 @@ function build() {
 		globIgnores: ['sw-default.js', 'service-worker.js', 'workbox-sw.js', '200.html', 'index.html'],
 		swSrc: './sw-template.js',
 		swDest: './build/sw-default.js',
-	}).then(_ => {
-		console.log('Service worker generated.')
-	})
+	}).then(({ count, size, warnings }) => {
+		// Optionally, log any warnings and details.
+		warnings.forEach(console.warn)
+		console.log(`${count} files will be precached, totaling ${size} bytes.`)
+	});
 }
 try {
 	build();
