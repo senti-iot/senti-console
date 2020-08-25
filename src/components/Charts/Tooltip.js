@@ -136,7 +136,10 @@ const Tooltip = props => {
 		let completeDayStr = `${dayStr} (${hours})`
 		return completeDayStr
 	}
-
+	const handleFormatCount = (c) => {
+		let r = parseFloat(c).toFixed(2).replace('.', ',')
+		return r
+	}
 	const renderTooltip = () => {
 		let doi = dispatch(todayOfInterest(moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')))
 		let birthdays = doi.birthdays
@@ -156,7 +159,7 @@ const Tooltip = props => {
 								return (
 									<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
 										<DataUsage style={{ color: d.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
-										<Typography variant={'body1'}>{d.count} {graphUnit}</Typography>
+										<Typography variant={'body1'}>{handleFormatCount(d.count)} {graphUnit}</Typography>
 									</ItemG>
 								)
 							})}

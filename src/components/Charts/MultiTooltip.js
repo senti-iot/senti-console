@@ -97,6 +97,10 @@ class Tooltip extends Component {
 		const { tooltip } = this.props
 		return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
 	}
+	handleFormatCount = (c) => {
+		let r = parseFloat(c).toFixed(2).replace('.', ',')
+		return r
+	}
 	renderTooltip = () => {
 		const { t, classes, tooltip, weather,
 			handleCloseTooltip, todayOfInterest, mobile, graphUnit } = this.props
@@ -117,7 +121,7 @@ class Tooltip extends Component {
 								return (
 									<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
 										<DataUsage style={{ color: d.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
-										<Typography variant={'body1'}>{d.count} {graphUnit}</Typography>
+										<Typography variant={'body1'}>{this.handleFormatCount(d.count)} {graphUnit}</Typography>
 									</ItemG>
 								)
 							})}
