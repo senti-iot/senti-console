@@ -103,8 +103,8 @@ const OrgDetails = props => {
 							{t('orgs.fields.url')}
 						</Caption>
 						<Info>
-							<Link href={org.url ? org.url : ''} target={'_blank'}>
-								{org.url ? org.url : ''}
+							<Link href={org.website ? org.website : ''} target={'_blank'}>
+								{org.website ? org.website : ''}
 							</Link>
 						</Info>
 					</ItemGrid>

@@ -223,8 +223,8 @@ export const setWlHost = () => {
 			servicesAPI.setHeader('wlhost', wlHost.host)
 			coreServicesAPI.setHeader('wlhost', wlHost.host)
 			cloudAPI.setHeader('wlhost', wlHost.host)
+      return true
 		}
-		return true
 	}
 	catch (error) {
 		console.log(error)
