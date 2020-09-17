@@ -107,7 +107,6 @@ const ESChart = (props) => {
 
 	const handleEditDataKey = e => {
 		let newG = { ...props.g }
-		console.log(e.target)
 		newG.dataSource.dataKey = e.target.value
 		let unit = sensor.dataKeys ? sensor.dataKeys[sensor.dataKeys.findIndex(f => f.key === e.target.value)].unit : ''
 		newG.unit = unit

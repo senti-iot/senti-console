@@ -99,7 +99,7 @@ const TokensTable = props => {
 												</ItemGrid>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 													<Caption noWrap className={classes.noMargin}>
-														{n.created}
+														{dateTimeFormatter(n.created, true)}
 													</Caption>
 												</ItemGrid>
 											</ItemGrid>
@@ -108,9 +108,9 @@ const TokensTable = props => {
 
 									<Hidden mdDown>
 										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-										<TC
+										{/* <TC
 											checkbox
-											label={n.id} />
+											label={n.id} /> */}
 										<TC
 											FirstC
 											label={n.name}
