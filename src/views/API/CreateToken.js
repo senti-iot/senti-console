@@ -25,22 +25,23 @@ const CreateToken = props => {
 	const user = useSelector(state => state.settings.user)
 
 	//State
+
 	const [token, setToken] = useState({
 		name: "",
-		type: "",
-		typeId: null
+		resourceType: "",
+		resourceUuid: null
 	})
 	const [sensor, setSensor] = useState({
 		name: "",
-		id: ""
+		uuid: ""
 	})
 	const [registry, setRegistry] = useState({
 		name: "",
-		id: ""
+		uuid: ""
 	})
 	const [deviceType, setDeviceType] = useState({
 		name: "",
-		id: ""
+		uuid: ""
 	})
 	const [generatedToken, setGeneratedToken] = useState('')
 	const [openSensor, setOpenSensor] = useState(false)
@@ -65,22 +66,22 @@ const CreateToken = props => {
 	const handleGenerateToken = async () => {
 		let newToken = {}
 		newToken = token
-		newToken.userId = user.id
+		newToken.userId = user.uuid
 		let tokenn = await generateToken(newToken)
-		setGeneratedToken(tokenn)
+		setGeneratedToken(tokenn ? tokenn : '')
 	}
 	const handleClose = () => {
-		setToken({ name: '', type: '', typeId: null })
-		setSensor({ name: '', id: '' })
-		setRegistry({ name: '', id: '' })
-		setDeviceType({ name: '', id: '' })
+		setToken({ name: '', resourceType: '', resourceUuid: null })
+		setSensor({ name: '', uuid: '' })
+		setRegistry({ name: '', uuid: '' })
+		setDeviceType({ name: '', uuid: '' })
 		setGeneratedToken('')
 		setOpenSensor(false)
 		setOpenRegistry(false)
 		setOpenDeviceType(false)
 		setOpenConfirmClose(false)
 		setConfirmClose('')
-		dispatch(getTokens(user.internal.odeumId))
+		dispatch(getTokens(user.uuid))
 		props.handleClose()
 	}
 
@@ -108,7 +109,7 @@ const CreateToken = props => {
 						handleClose={() => setOpenSensor(false)}
 						callBack={sensor => {
 							setOpenSensor(false)
-							setToken({ ...token, typeId: sensor.id })
+							setToken({ ...token, resourceUuid: sensor.id })
 							setSensor(sensor)
 						}}
 					/>
@@ -129,7 +130,7 @@ const CreateToken = props => {
 						handleClose={() => setOpenRegistry(false)}
 						callBack={registry => {
 							setOpenRegistry(false)
-							setToken({ ...token, typeId: registry.id })
+							setToken({ ...token, resourceUuid: registry.id })
 							setRegistry(registry)
 						}}
 					/>
@@ -150,7 +151,7 @@ const CreateToken = props => {
 						handleClose={() => setOpenDeviceType(false)}
 						callBack={deviceType => {
 							setOpenDeviceType(false)
-							setToken({ ...token, typeId: deviceType.id })
+							setToken({ ...token, resourceUuid: deviceType.id })
 							setDeviceType(deviceType)
 						}}
 					/>
@@ -264,18 +265,18 @@ const CreateToken = props => {
 							<DSelect
 								fullWidth
 								label={t('tokens.fields.type')}
-								value={token.type}
+								value={token.resourceType}
 								menuItems={[
 									{ value: 0, label: t('tokens.fields.types.device') },
 									{ value: 1, label: t('tokens.fields.types.registry') },
 									{ value: 2, label: t('tokens.fields.types.devicetype') }
 								]}
-								onChange={handleChange('type')}
+								onChange={handleChange('resourceType')}
 							/>
 						</ItemG>
 						<ItemG xs={12}>
-							<Collapse in={token.type > -1}>
-								{renderType(token.type)}
+							<Collapse in={token.resourceType > -1}>
+								{renderType(token.resourceType)}
 							</Collapse>
 						</ItemG>
 						<ItemG xs={12}>
