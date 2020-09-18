@@ -40,6 +40,7 @@ const DateFilterMenu = props => {
 		{ value: 4, label: t('filters.dateOptions.30days') },
 		{ value: 5, label: t('filters.dateOptions.90days') },
 		{ value: 6, label: t('filters.dateOptions.custom') },
+		{ value: 7, label: t('fitlers.dateOptions.minutely') }
 	]
 	let options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
@@ -49,6 +50,7 @@ const DateFilterMenu = props => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
+		{ id: 7, label: t('fitlers.dateOptions.minutely') }
 	]
 
 	//useCallbacks
@@ -96,6 +98,12 @@ const DateFilterMenu = props => {
 				to = moment(to)
 				defaultT = timeType
 				break;
+			case 7:
+				from = moment().subtract(5, 'minute')
+				to = moment()
+				console.log(from, to)
+				defaultT = 0
+				break;
 			default:
 				break;
 		}
@@ -108,6 +116,7 @@ const DateFilterMenu = props => {
 			return dispatch(changeHeatMapDate(menuId, to, from, defaultT))
 		}
 		if (props.customSetDate) {
+			console.log(menuId, to, from, defaultT)
 			return props.customSetDate(menuId, to, from, defaultT)
 		}
 		dispatch(changeDate(menuId, to, from, defaultT, period ? period.id : -1))
@@ -220,6 +229,7 @@ const DateFilterMenu = props => {
 						<MenuItem selected={isSelectedFunc(3)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
 						<MenuItem selected={isSelectedFunc(4)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
 						<MenuItem selected={isSelectedFunc(5)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
+						<MenuItem selected={isSelectedFunc(7)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={7}>{t('filters.dateOptions.last5Minutes')}</MenuItem>
 
 						<Divider />
 						<MenuItem selected={isSelectedFunc(6)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>

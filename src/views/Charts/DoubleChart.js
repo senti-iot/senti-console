@@ -27,6 +27,7 @@ import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
 
+let refresh = null
 const DoubleChart = (props) => {
 
 	//Hooks
@@ -40,6 +41,7 @@ const DoubleChart = (props) => {
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
 
+	console.log(period)
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
 	// const [openDownload, setOpenDownload] = useState(false)
@@ -63,6 +65,8 @@ const DoubleChart = (props) => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
+		{ id: 7, label: t('fitlers.dateOptions.minutely') }
+
 	]
 	const timeTypes = [
 		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
@@ -82,6 +86,10 @@ const DoubleChart = (props) => {
 			const gData = async () => await getData()
 			gData()
 		}
+		return () => {
+			clearInterval(refresh)
+			refresh = null
+		}
 		// eslint-disable-next-line
 	}, [])
 
@@ -98,35 +106,56 @@ const DoubleChart = (props) => {
 		}
 	}, [color, g, title])
 
-	const getData = useCallback(async () => {
+
+	const getData = useCallback(async (to, from) => {
+
 		if (g) {
+
 			if (g.dataSource.dataKey && g.dataSource.deviceUUID) {
-				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, period.from, period.to, g.dataSource.cf)
+				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, from ? from : period.from, to ? to : period.to, g.dataSource.cf)
 				// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 
+				console.log(data, period.timeType)
 				let newState = setData(data, period.timeType)
+				console.log('newState', newState)
 				if (newState) {
 					setLineDataSets(newState.lineDataSets)
 					setRoundDataSets(newState.roundDataSets)
 					setBarDataSets(newState.barDataSets)
 					setLoading(false)
 				}
-
-			}
-			else {
-				setLoading(false)
 			}
 		}
 		else {
 			setLoading(false)
 		}
-	}, [g, period, setData])
+	}, [g, period.from, period.timeType, period.to, setData])
+
+	const handleSetDate = useCallback(async (menuId, to, from, defaultT, chartType) => {
+		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
+		if (g.refresh > 0) {
+			clearInterval(refresh)
+			refresh = null
+			refresh = setInterval(async () => {
+
+				await handleSetDate(menuId, moment(), moment().subtract(5, "minute"), defaultT, period.id)
+				await getData(moment(), moment().subtract(5, "minute"))
+
+			}, g.refresh * 1000)
+		}
+	}, [dId, dispatch, g.refresh, gId, getData, period])
 
 	useEffect(() => {
-		setLoading(true)
-		const gData = async () => await getData()
-		gData()
-	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData])
+		if (g.refresh > 0) {
+
+		}
+		else {
+			setLoading(true)
+			const gData = async () => await getData()
+			gData()
+		}
+		// }
+	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData, g.refresh])
 
 	const handleChangeChartType = () => {
 		setChartType(chartType === 'linear' ? 'logarithmic' : 'linear')
@@ -406,6 +435,7 @@ const DoubleChart = (props) => {
 		</ItemG>
 	}
 	const renderType = () => {
+		console.log('lineDataSets', lineDataSets)
 		if (!loading) {
 			switch (period.chartType) {
 				case 0:
@@ -491,9 +521,7 @@ const DoubleChart = (props) => {
 		}
 		return false
 	}
-	const handleSetDate = async (menuId, to, from, defaultT, chartType) => {
-		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
-	}
+
 	const handleSetVisibility = () => setVisibility(!visibility)
 	const renderMenu = () => {
 		return <ItemG container direction={'column'}>

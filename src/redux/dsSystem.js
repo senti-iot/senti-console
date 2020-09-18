@@ -52,6 +52,11 @@ const menuSelect = (p, c) => {
 			to = moment(p.to)
 			timeType = p.timeType
 			break
+		case 7:
+			from = moment().subtract(5, "minute")
+			to = moment()
+			timeType = 0
+			break
 		default:
 			break
 	}

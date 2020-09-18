@@ -204,8 +204,8 @@ const Dashboard = (props) => {
 							ariaLabel="Create Dashboard"
 							className={classes.speedDial}
 							icon={<SpeedDialIcon />}
-							onBlur={handleCloseSpeed}
-							onClick={handleOpenSpeed}
+							// onBlur={handleCloseSpeed}
+							// onClick={handleOpenSpeed}
 							onClose={handleCloseSpeed}
 							onMouseEnter={handleOpenSpeed}
 							onMouseLeave={handleCloseSpeed}
