@@ -147,8 +147,10 @@ class LineChart extends PureComponent {
 					],
 					yAxes: [{
 						scaleLabel: {
-							display: false,
-							labelString: 'value'
+							display: props.graphUnit ? true : false,
+							labelString: props.graphUnit ? props.graphUnit : "",
+							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+							rotate: false
 						},
 						type: props.chartYAxis,
 						ticks: {
