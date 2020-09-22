@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react"
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Collapse } from '@material-ui/core'
 import { T, ItemG, DSelect, TextF, DateFilterMenu, Muted } from 'components'
 import { ExpandMore } from 'variables/icons'
-import { PieChartRounded, DonutLargeRounded, BarChart, ShowChart } from 'variables/icons'
+import { /* PieChartRounded, DonutLargeRounded, */ BarChart, ShowChart } from 'variables/icons'
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
 import { useLocalization } from 'hooks'
@@ -25,8 +25,8 @@ const ESChart = (props) => {
 	//Constants
 	const chartTypes = () => {
 		return [
-			{ value: 0, icon: <PieChartRounded />, label: t('charts.type.pie') },
-			{ value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut') },
+			// { value: 0, icon: <PieChartRounded />, label: t('charts.type.pie') },
+			// { value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut') },
 			{ value: 2, icon: <BarChart />, label: t('charts.type.bar') },
 			{ value: 3, icon: <ShowChart />, label: t('charts.type.line') },
 		]
@@ -112,6 +112,13 @@ const ESChart = (props) => {
 		newG.unit = unit
 		props.handleEditGraph(newG)
 	}
+
+	const handleEditRefresh = e => {
+		let newG = { ...props.g }
+		newG.refresh = e.target.value
+		props.handleEditGraph(newG)
+	}
+
 	return (
 		<Fragment>
 			<ItemG xs={12}>
@@ -234,6 +241,22 @@ const ESChart = (props) => {
 												label={t('dashboard.fields.unit')}
 												value={g.unit}
 												margin='normal'
+											/>
+										</ItemG>
+										<ItemG xs={12}>
+											<DSelect
+												margin={'normal'}
+												label={t('dashboard.fields.refresh')}
+												value={g.refresh}
+												onChange={handleEditRefresh}
+												menuItems={[
+													{ value: 0, label: t('no.dashboardRefresh') },
+													{ value: 5, label: 5 },
+													{ value: 10, label: 10 },
+													{ value: 30, label: 30 },
+													{ value: 60, label: 60 },
+													// { value: 1, label: t('cloudfunctions.fields.types.external') },
+												]}
 											/>
 										</ItemG>
 									</Fragment>

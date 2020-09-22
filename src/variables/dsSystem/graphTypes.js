@@ -21,7 +21,8 @@ export const graphType = (type) => {
 				name: "Chart",
 				periodType: 3,
 				type: 0,
-				unit: ""
+				unit: "",
+				refresh: 0
 			}
 		case "gauge": // Gauge
 			return {
@@ -43,7 +44,8 @@ export const graphType = (type) => {
 				name: "Gauge",
 				periodType: 3,
 				type: 1,
-				unit: ""
+				unit: "",
+				refresh: 0
 			}
 		case "scorecardAB"://Scorecard AB
 			return {
@@ -77,6 +79,7 @@ export const graphType = (type) => {
 				name: "Difference Card",
 				periodType: 3,
 				type: 2,
+				refresh: 0
 			}
 		case "scorecard": // Score Card
 			return {
@@ -109,7 +112,8 @@ export const graphType = (type) => {
 				id: "",
 				name: "Score Card",
 				periodType: 3,
-				type: 3
+				type: 3,
+				refresh: 0
 			}
 		case "windcard": //Wind Speed card
 			return {
@@ -131,7 +135,8 @@ export const graphType = (type) => {
 				name: "Wind Speed Card",
 				periodType: 0,
 				type: 4,
-				unit: ""
+				unit: "",
+				refresh: 0
 			}
 		case "map":
 			return {
@@ -152,7 +157,8 @@ export const graphType = (type) => {
 				id: "",
 				name: "Score Card",
 				periodType: 3,
-				type: 5
+				type: 5,
+				refresh: 0
 			}
 		case "msChart": //Charts
 			return {
@@ -176,7 +182,8 @@ export const graphType = (type) => {
 				name: "Chart",
 				periodType: 3,
 				type: 6, //DataSource Type
-				unit: ""
+				unit: "",
+				refresh: 0
 			}
 		default:
 			break;

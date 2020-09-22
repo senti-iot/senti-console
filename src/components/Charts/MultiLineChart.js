@@ -219,6 +219,10 @@ class LineChart extends PureComponent {
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
+		if (prevProps.data !== this.props.data) {
+
+			this.setXAxis()
+		}
 
 	}
 

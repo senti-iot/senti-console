@@ -237,6 +237,7 @@
 		},
 		"editGraph": "Edit",
 		"fields": {
+			"refresh": "Refresh time",
 			"cf": "Cloud Function",
 			"chartType": "Chart type",
 			"dataSource": "Data source",
@@ -685,6 +686,7 @@
 		}
 	},
 	"no": {
+		"dashboardRefresh": "No refresh",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"birthdays": "No birthdays today",
