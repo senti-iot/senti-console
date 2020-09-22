@@ -859,7 +859,7 @@
 		"fields": {
 			"dataKey": "Datafelt",
 			"dataKeys": "Datafelter",
-			"decoder" : "Dekoderfunktioner",
+			"decoder": "Dekoderfunktioner",
 			"communication": "Kommunikation",
 			"communications": {
 				"allowed": "Tilladt",
@@ -1178,7 +1178,8 @@
 			"period": "Periode",
 			"previousPeriod": "Forrige Periode",
 			"resetZoom": "Nulstil zoom",
-			"type": "Diagram type"
+			"type": "Diagram type",
+			"autoupdate": "Automatisk opdatering"
 		},
 		"collection": "Datasamling",
 		"device": "Enhed",

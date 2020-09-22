@@ -1180,7 +1180,8 @@
 			"period": "Period",
 			"previousPeriod": "Previous Period",
 			"resetZoom": "Reset Zoom",
-			"type": "Chart type"
+			"type": "Chart type",
+			"autoupdate":"Auto Update"
 		},
 		"collection": "Data collection",
 		"device": "Device",
