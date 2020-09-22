@@ -40,7 +40,12 @@ const DateFilterMenu = props => {
 		{ value: 4, label: t('filters.dateOptions.30days') },
 		{ value: 5, label: t('filters.dateOptions.90days') },
 		{ value: 6, label: t('filters.dateOptions.custom') },
-		{ value: 7, label: t('filters.dateOptions.minutely') }
+		{ value: 7, label: t('filters.dateOptions.lastMinute') },
+		{ value: 8, label: t('filters.dateOptions.last5Minutes') },
+		{ value: 9, label: t('filters.dateOptions.last10Minutes') },
+		{ value: 10, label: t('filters.dateOptions.last30Minutes') },
+		{ value: 11, label: t('filters.dateOptions.lastHour') },
+		{ value: 12, label: t('filters.dateOptions.last6Hours') },
 	]
 	let options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
@@ -50,7 +55,12 @@ const DateFilterMenu = props => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
-		{ id: 7, label: t('filters.dateOptions.minutely') }
+		{ id: 7, label: t('filters.dateOptions.lastMinute'), live: true },
+		{ id: 8, label: t('filters.dateOptions.last5Minutes'), live: true },
+		{ id: 9, label: t('filters.dateOptions.last10Minutes'), live: true },
+		{ id: 10, label: t('filters.dateOptions.last30Minutes'), live: true },
+		{ id: 11, label: t('filters.dateOptions.lastHour'), live: true },
+		{ id: 12, label: t('filters.dateOptions.last6Hours'), live: true },
 	]
 
 	//useCallbacks
@@ -93,17 +103,43 @@ const DateFilterMenu = props => {
 				to = moment()
 				defaultT = 2
 				break;
-			case 6:
+			case 6: // Custom Range
 				from = moment(from)
 				to = moment(to)
 				defaultT = timeType
 				break;
-			case 7:
-				from = moment().subtract(5, 'minute')
+			//#region Live Data
+			case 7: // Last Minute
+				from = moment().subtract(1, 'minute')
 				to = moment()
-				console.log(from, to)
 				defaultT = 0
 				break;
+			case 8: //Last 5 minutes
+				from = moment().subtract(5, 'minute')
+				to = moment()
+				defaultT = 0
+				break;
+			case 9://last 10 minutes
+				from = moment().subtract(10, 'minute')
+				to = moment()
+				defaultT = 0
+				break;
+			case 10:// last 30 minutes
+				from = moment().subtract(30, 'minute')
+				to = moment()
+				defaultT = 0
+				break;
+			case 11:// last hour
+				from = moment().subtract(60, 'minute')
+				to = moment()
+				defaultT = 0
+				break;
+			case 12:// last 6 hours
+				from = moment().subtract(3600, 'minute')
+				to = moment()
+				defaultT = 1
+				break;
+			//#endregion
 			default:
 				break;
 		}
@@ -229,7 +265,17 @@ const DateFilterMenu = props => {
 						<MenuItem selected={isSelectedFunc(3)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
 						<MenuItem selected={isSelectedFunc(4)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
 						<MenuItem selected={isSelectedFunc(5)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
-						<MenuItem selected={isSelectedFunc(7)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={7}>{t('filters.dateOptions.last5Minutes')}</MenuItem>
+						{props.liveData ?
+							<>
+								<Divider />
+								<MenuItem selected={isSelectedFunc(7)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={7}>{t('filters.dateOptions.lastMinute')}</MenuItem>
+								<MenuItem selected={isSelectedFunc(8)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={8}>{t('filters.dateOptions.last5Minutes')}</MenuItem>
+								<MenuItem selected={isSelectedFunc(9)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={9}>{t('filters.dateOptions.last10Minutes')}</MenuItem>
+								<MenuItem selected={isSelectedFunc(10)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={10}>{t('filters.dateOptions.last30Minutes')}</MenuItem>
+								<MenuItem selected={isSelectedFunc(11)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={11}>{t('filters.dateOptions.lastHour')}</MenuItem>
+								<MenuItem selected={isSelectedFunc(12)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={12}>{t('filters.dateOptions.last6Hours')}</MenuItem>
+							</> : null
+						}
 
 						<Divider />
 						<MenuItem selected={isSelectedFunc(6)} classes={{ selected: classes.selected }} onClick={handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>

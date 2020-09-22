@@ -513,9 +513,14 @@
 			"thisWeek": "Denne uge",
 			"today": "I dag",
 			"yesterday": "I går",
-			"last5Minutes": "Sidste 5 minutter"
+			"lastMinute": "Sidste minut",
+			"last5Minutes": "Sidste 5 minutter",
+			"last10Minutes": "Sidste 10 minutter",
+			"last30Minutes": "Sidste 30 minutter",
+			"lastHour": "Sidste time",
+			"last6Hours": "Sidste 6 timer"
 		},
-		"devices": {
+			"devices": {
 			"calibrated": "Kalibreret",
 			"notCalibrated": "Ikke kalibreret"
 		},

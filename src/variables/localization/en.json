@@ -514,7 +514,12 @@
 			"thisWeek": "This week",
 			"today": "Today",
 			"yesterday": "Yesterday",
-			"last5minutes": "Last 5 minutes"
+			"lastMinute":"Last minute",
+			"last5Minutes": "Last 5 minutes",
+			"last10Minutes": "Last 10 minutes",
+			"last30Minutes": "Last 30 minutes",
+			"lastHour": "Last hour",
+			"last6Hours": "Last 6 hours"
 		},
 		"devices": {
 			"calibrated": "Calibrated",

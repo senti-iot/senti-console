@@ -434,20 +434,22 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw, simp
 export const setMinutelyData = (dataArr, from, to, /* hoverID, */ live) => {
 	console.log('dataArr', dataArr)
 	let labels = []
-	if (live) {
-		try {
+	labels = minutesToArray(from, to)
+	// if (live) {
+	// 	try {
 
-			let first = dataArr[0].data[0].datetime
-			let last = dataArr[0].data[dataArr[0].data.length - 1].datetime
-			labels = minutesToArray(first, last)
-		}
-		catch (e) {
-			console.log(e)
-		}
-	}
-	else {
-		labels = minutesToArray(from, to)
-	}
+	// 		let first = dataArr[0].data[0]?.datetime
+	// 		let last = dataArr[0].data[dataArr[0].data.length - 1]?.datetime
+	// 		labels = minutesToArray(first ? first : from, last ? last : to)
+	// 	}
+	// 	catch (e) {
+	// 		labels = minutesToArray(from, to)
+	// 		console.log(e)
+	// 	}
+	// }
+	// else {
+
+	// }
 	let state = {
 		loading: false,
 		timeType: 2,
@@ -471,35 +473,35 @@ export const setMinutelyData = (dataArr, from, to, /* hoverID, */ live) => {
 					fill: false,
 					label: [d.name],
 					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
-				})),
-				barDataSets: {
-					labels: labels,
-					datasets: dataArr.map((d) => ({
-						id: d.id,
-						lat: d.lat,
-						long: d.long,
-						backgroundColor: d.color,
-						borderColor: d.color,
-						// borderWidth: hoverID === d.id ? 4 : 0,
-						fill: false,
-						label: [d.name],
-						data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
-					}))
-				},
-				roundDataSets:
-					dataArr.map(d => ({
-						name: d.name,
-						color: d.color,
-						labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
-						datasets: [{
-							id: d.id,
-							lat: d.lat,
-							long: d.long,
-							backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-							data: Object.entries(d.data).map(d => d[1])
-						}]
-					}))
-			}
+				}))
+			},
+			barDataSets: {
+				labels: labels,
+				datasets: dataArr.map((d) => ({
+					id: d.id,
+					lat: d.lat,
+					long: d.long,
+					backgroundColor: d.color,
+					borderColor: d.color,
+					// borderWidth: hoverID === d.id ? 4 : 0,
+					fill: false,
+					label: [d.name],
+					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+				}))
+			},
+			// roundDataSets:
+			// 	dataArr.map(d => ({
+			// 		name: d.name,
+			// 		color: d.color,
+			// 		labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
+			// 		datasets: [{
+			// 			id: d.id,
+			// 			lat: d.lat,
+			// 			long: d.long,
+			// 			backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+			// 			data: Object.entries(d.data).map(d => d[1])
+			// 		}]
+			// 	}))
 		}
 	}
 	return state

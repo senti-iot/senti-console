@@ -66,7 +66,12 @@ const DoubleChart = (props) => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
-		{ id: 7, label: t('filters.dateOptions.minutely') }
+		{ id: 7, label: t('filters.dateOptions.lastMinute'), live: true },
+		{ id: 8, label: t('filters.dateOptions.last5Minutes'), live: true },
+		{ id: 9, label: t('filters.dateOptions.last10Minutes'), live: true },
+		{ id: 10, label: t('filters.dateOptions.last30Minutes'), live: true },
+		{ id: 11, label: t('filters.dateOptions.lastHour'), live: true },
+		{ id: 12, label: t('filters.dateOptions.last6Hours'), live: true },
 
 	]
 	const timeTypes = [
@@ -109,9 +114,8 @@ const DoubleChart = (props) => {
 
 
 	const getData = useCallback(async (to, from) => {
-
+		console.trace()
 		if (g) {
-
 			if (g.dataSource.dataKey && g.dataSource.deviceUUID) {
 				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, from ? from : period.from, to ? to : period.to, g.dataSource.cf)
 				// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
@@ -135,13 +139,40 @@ const DoubleChart = (props) => {
 
 	}, [dId, dispatch, gId, period])
 	useEffect(() => {
-		if (autoUpdate) {
+		if (autoUpdate && period.menuId >= 7) {
 			refresh = setInterval(async () => {
-
-				await handleSetDate(period.menuId, moment(), moment().subtract(5, "minute"), period.timeType, period.id)
-				await getData(moment(), moment().subtract(5, "minute"))
+				let f, t
+				t = moment()
+				switch (period.menuId) {
+					case 7:
+						f = moment().subtract(1, 'minute')
+						break
+					case 8:
+						f = moment().subtract(5, 'minute')
+						break
+					case 9:
+						f = moment().subtract(10, 'minute')
+						break
+					case 10:
+						f = moment().subtract(30, 'minute')
+						break
+					case 11:
+						f = moment().subtract(60, 'minute')
+						break
+					case 12:
+						f = moment().subtract(3600, 'minute')
+						break
+					default:
+						break
+				}
+				await handleSetDate(period.menuId, t, f, period.timeType, period.id)
+				await getData(t, f)
 
 			}, g.refresh * 1000)
+		}
+		else {
+			clearInterval(refresh)
+			refresh = null
 		}
 		return () => {
 			clearInterval(refresh)
@@ -411,41 +442,40 @@ const DoubleChart = (props) => {
 					</Tooltip>
 				</ItemG>
 				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<div>
-							<DateFilterMenu
-								button
-								buttonProps={{
-									style: {
-										color: undefined,
-										textTransform: 'none',
-										padding: "8px 0px"
-									}
-								}}
-								icon={
-									<ItemG container justify={'center'}>
-										<ItemG>
-											<ItemG container style={{ width: 'min-content' }}>
-												<ItemG xs={12}>
-													<T noWrap component={'span'}>{`${displayFrom}`}</T>
-												</ItemG>
-												<ItemG xs={12}>
-													<T noWrap component={'span'}> {`${displayTo}`}</T>
-												</ItemG>
-												<ItemG xs={12}>
-													<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
-												</ItemG>
+					<div>
+						<DateFilterMenu
+							liveData
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
 											</ItemG>
-
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+											</ItemG>
 										</ItemG>
 
 									</ItemG>
-								}
-								customSetDate={handleSetDate}
-								period={period}
-								t={t} />
-						</div>
-					</Tooltip>
+
+								</ItemG>
+							}
+							customSetDate={handleSetDate}
+							period={period}
+							t={t} />
+					</div>
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.nextPeriod')}>
