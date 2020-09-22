@@ -26,6 +26,8 @@ import { /* getSensorDataCleanV1, */ getSensorDataClean } from 'variables/dataSe
 import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
+import { Update } from '@material-ui/icons'
+import cx from 'classnames'
 
 let refresh = null
 const DoubleChart = (props) => {
@@ -41,7 +43,6 @@ const DoubleChart = (props) => {
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
 
-	console.log(period)
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
 	// const [openDownload, setOpenDownload] = useState(false)
@@ -54,7 +55,7 @@ const DoubleChart = (props) => {
 	const [roundDataSets, setRoundDataSets] = useState(null)
 	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
-
+	const [autoUpdate, setAutoUpdate] = useState(false)
 	//Consts
 
 	const options = [
@@ -65,7 +66,7 @@ const DoubleChart = (props) => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
-		{ id: 7, label: t('fitlers.dateOptions.minutely') }
+		{ id: 7, label: t('filters.dateOptions.minutely') }
 
 	]
 	const timeTypes = [
@@ -96,7 +97,7 @@ const DoubleChart = (props) => {
 	const setData = useCallback((data, timeType) => {
 		switch (timeType) {
 			case 0:
-				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to, autoUpdate)
 			case 1:
 				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			case 2:
@@ -104,7 +105,7 @@ const DoubleChart = (props) => {
 			default:
 				break
 		}
-	}, [color, g, title])
+	}, [autoUpdate, color, g.dataSource.dataKey, g.period.from, g.period.to, title])
 
 
 	const getData = useCallback(async (to, from) => {
@@ -115,9 +116,7 @@ const DoubleChart = (props) => {
 				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, from ? from : period.from, to ? to : period.to, g.dataSource.cf)
 				// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 
-				console.log(data, period.timeType)
 				let newState = setData(data, period.timeType)
-				console.log('newState', newState)
 				if (newState) {
 					setLineDataSets(newState.lineDataSets)
 					setRoundDataSets(newState.roundDataSets)
@@ -133,21 +132,26 @@ const DoubleChart = (props) => {
 
 	const handleSetDate = useCallback(async (menuId, to, from, defaultT, chartType) => {
 		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
-		if (g.refresh > 0) {
-			clearInterval(refresh)
-			refresh = null
+
+	}, [dId, dispatch, gId, period])
+	useEffect(() => {
+		if (autoUpdate) {
 			refresh = setInterval(async () => {
 
-				await handleSetDate(menuId, moment(), moment().subtract(5, "minute"), defaultT, period.id)
+				await handleSetDate(period.menuId, moment(), moment().subtract(5, "minute"), period.timeType, period.id)
 				await getData(moment(), moment().subtract(5, "minute"))
 
 			}, g.refresh * 1000)
 		}
-	}, [dId, dispatch, g.refresh, gId, getData, period])
-
+		return () => {
+			clearInterval(refresh)
+			refresh = null
+		}
+	}, [autoUpdate, g.refresh, getData, handleSetDate, period.id, period.menuId, period.timeType])
 	useEffect(() => {
 		if (g.refresh > 0) {
-
+			const gData = async () => await getData()
+			gData()
 		}
 		else {
 			setLoading(true)
@@ -156,6 +160,15 @@ const DoubleChart = (props) => {
 		}
 		// }
 	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData, g.refresh])
+
+	const disableFuture = () => {
+		if (moment().diff(period.to, 'hour') <= 0) {
+			return true
+		}
+		return false
+	}
+	const handleAutoUpdate = () => setAutoUpdate(!autoUpdate)
+	const handleSetVisibility = () => setVisibility(!visibility)
 
 	const handleChangeChartType = () => {
 		setChartType(chartType === 'linear' ? 'logarithmic' : 'linear')
@@ -365,6 +378,7 @@ const DoubleChart = (props) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
+
 			{small ? null :
 				<Hidden xsDown>
 					<ItemG xs zeroMinWidth>
@@ -377,6 +391,18 @@ const DoubleChart = (props) => {
 				</Hidden>
 			}
 			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+				<ItemG container xs>
+					{/* <Collapse in={!g.refresh}> */}
+					<Tooltip title={t('tooltips.chart.autoupdate')}>
+						<IconButton onClick={handleAutoUpdate}>
+							<Update className={cx({
+								[classes.autoUpdate]: true,
+								[classes.autoUpdateOn]: autoUpdate,
+							})}/>
+						</IconButton>
+					</Tooltip>
+					{/* </Collapse> */}
+				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={() => handlePreviousPeriod(period)}>
@@ -515,14 +541,7 @@ const DoubleChart = (props) => {
 		}
 		else return renderNoData()
 	}
-	const disableFuture = () => {
-		if (moment().diff(period.to, 'hour') <= 0) {
-			return true
-		}
-		return false
-	}
 
-	const handleSetVisibility = () => setVisibility(!visibility)
 	const renderMenu = () => {
 		return <ItemG container direction={'column'}>
 			<ItemG container>

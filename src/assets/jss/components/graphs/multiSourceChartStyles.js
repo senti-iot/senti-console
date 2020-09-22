@@ -1,7 +1,12 @@
 import { makeStyles } from '@material-ui/styles'
 
 const multiSourceChartStyles = makeStyles(theme => ({
-
+	autoUpdate: {
+		fontSize: '1.5rem'
+	},
+	autoUpdateOn: {
+		color: 'green'
+	},
 	smallBody: {
 		paddingTop: 0
 	},

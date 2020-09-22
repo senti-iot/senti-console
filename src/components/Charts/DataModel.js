@@ -431,8 +431,23 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw, simp
 	let exportData = setExportData(dataArr, 'minute')
 	return { ...newState, exportData, dataArr }
 }
-export const setMinutelyData = (dataArr, from, to, hoverID) => {
-	let labels = minutesToArray(from, to)
+export const setMinutelyData = (dataArr, from, to, /* hoverID, */ live) => {
+	console.log('dataArr', dataArr)
+	let labels = []
+	if (live) {
+		try {
+
+			let first = dataArr[0].data[0].datetime
+			let last = dataArr[0].data[dataArr[0].data.length - 1].datetime
+			labels = minutesToArray(first, last)
+		}
+		catch (e) {
+			console.log(e)
+		}
+	}
+	else {
+		labels = minutesToArray(from, to)
+	}
 	let state = {
 		loading: false,
 		timeType: 2,
@@ -452,7 +467,7 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 					backgroundColor: d.color,
 					colors: [d.color],
 					borderColor: d.color,
-					borderWidth: hoverID === d.id ? 8 : 3,
+					// borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
 					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
@@ -465,7 +480,7 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 						long: d.long,
 						backgroundColor: d.color,
 						borderColor: d.color,
-						borderWidth: hoverID === d.id ? 4 : 0,
+						// borderWidth: hoverID === d.id ? 4 : 0,
 						fill: false,
 						label: [d.name],
 						data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []

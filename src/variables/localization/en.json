@@ -513,7 +513,8 @@
 			"summary": "Summary",
 			"thisWeek": "This week",
 			"today": "Today",
-			"yesterday": "Yesterday"
+			"yesterday": "Yesterday",
+			"last5minutes": "Last 5 minutes"
 		},
 		"devices": {
 			"calibrated": "Calibrated",

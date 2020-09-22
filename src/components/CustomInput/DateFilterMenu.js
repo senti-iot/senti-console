@@ -40,7 +40,7 @@ const DateFilterMenu = props => {
 		{ value: 4, label: t('filters.dateOptions.30days') },
 		{ value: 5, label: t('filters.dateOptions.90days') },
 		{ value: 6, label: t('filters.dateOptions.custom') },
-		{ value: 7, label: t('fitlers.dateOptions.minutely') }
+		{ value: 7, label: t('filters.dateOptions.minutely') }
 	]
 	let options = [
 		{ id: 0, label: t('filters.dateOptions.today') },
@@ -50,7 +50,7 @@ const DateFilterMenu = props => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
-		{ id: 7, label: t('fitlers.dateOptions.minutely') }
+		{ id: 7, label: t('filters.dateOptions.minutely') }
 	]
 
 	//useCallbacks
