@@ -423,16 +423,16 @@ const DoubleChart = (props) => {
 			}
 			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
 				<ItemG container xs>
-					{/* <Collapse in={!g.refresh}> */}
-					<Tooltip title={t('tooltips.chart.autoupdate')}>
-						<IconButton onClick={handleAutoUpdate}>
-							<Update className={cx({
-								[classes.autoUpdate]: true,
-								[classes.autoUpdateOn]: autoUpdate,
-							})}/>
-						</IconButton>
-					</Tooltip>
-					{/* </Collapse> */}
+					<Collapse in={g.refresh}>
+						<Tooltip title={t('tooltips.chart.autoupdate')}>
+							<IconButton onClick={handleAutoUpdate}>
+								<Update className={cx({
+									[classes.autoUpdate]: true,
+									[classes.autoUpdateOn]: autoUpdate,
+								})}/>
+							</IconButton>
+						</Tooltip>
+					</Collapse>
 				</ItemG>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
