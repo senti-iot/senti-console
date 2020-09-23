@@ -248,7 +248,8 @@
 			"label": "Overskrift",
 			"name": "Navn",
 			"percDifference": "Percentage Difference:",
-			"unit": "Måleenhed"
+			"unit": "Måleenhed",
+			"refresh":"Automatisk opdatering"
 		},
 		"pageTitle": "Senti",
 		"subtitle": "Senti tilbyder dataopsamling og visualisering fra alle dine IoT enheder."
@@ -709,7 +710,8 @@
 		"org": "Ingen organisation",
 		"orgParent": "Uden tilhørsforhold",
 		"project": "Ingen projekt",
-		"projects": "Ingen projekter"
+		"projects": "Ingen projekter",
+		"dashboardRefresh":"Uden automatisk opdatering"
 	},
 	"orgs": {
 		"create": "Opret",
