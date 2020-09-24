@@ -34,15 +34,15 @@ const DashboardPanel = (props) => {
 	const dispatch = useDispatch()
 	const theme = useTheme()
 	const classes = dashboardStyle()
-
 	//Redux
+	const autoDashboard = useSelector(s => s.settings.autoDashboard)
 	const dsTheme = useSelector(s => s.settings.dsTheme)
 
 	//Props
 	const { d, data, loading, handleOpenEDT } = props
 
 	//State
-	const [openDashboard, setOpenDashboard] = useState(false)
+	const [openDashboard, setOpenDashboard] = useState(autoDashboard ? autoDashboard === d.id ? true : false : false)
 	const [openShare, setOpenShare] = useState(false)
 
 	//Const

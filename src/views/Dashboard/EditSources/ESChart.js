@@ -122,7 +122,13 @@ const ESChart = (props) => {
 		newG.refresh = e.target.value
 		props.handleEditGraph(newG)
 	}
-	console.log('sensor', sensor)
+
+	const handleEditDefaultRefresh = e => {
+		let newG = { ...props.g }
+		newG.defaultRefresh = e.target.value
+		props.handleEditGraph(newG)
+	}
+
 	return (
 		<Fragment>
 			<ItemG xs={12}>
@@ -261,6 +267,20 @@ const ESChart = (props) => {
 													{ value: 60, label: 60 },
 													// { value: 1, label: t('cloudfunctions.fields.types.external') },
 												]}
+											/>
+										</ItemG>
+										<ItemG xs={12}>
+											<DSelect
+												margin={'normal'}
+												label={t('dashboard.fields.refreshDefault')}
+												value={g.defaultRefresh}
+												onChange={handleEditDefaultRefresh}
+												menuItems={
+													[
+														{ value: false, label: t('actions.off') },
+														{ value: true, label: t('actions.on') }
+													]
+												}
 											/>
 										</ItemG>
 									</Fragment>

@@ -55,7 +55,7 @@
 		"react-google-login": "^5.1.0",
 		"react-google-maps": "^9.4.5",
 		"react-gravatar": "^2.6.3",
-		"react-grid-layout": "^0.16.6",
+		"react-grid-layout": "^1.1.1",
 		"react-helmet": "^5.2.1",
 		"react-hot-loader": "^4.12.19",
 		"react-leaflet": "^2.6.1",

@@ -42,7 +42,7 @@ const DoubleChart = (props) => {
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
-
+	console.log(g)
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
 	// const [openDownload, setOpenDownload] = useState(false)
@@ -55,7 +55,7 @@ const DoubleChart = (props) => {
 	const [roundDataSets, setRoundDataSets] = useState(null)
 	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
-	const [autoUpdate, setAutoUpdate] = useState(false)
+	const [autoUpdate, setAutoUpdate] = useState(g.defaultRefresh ? g.defaultRefresh : false)
 	//Consts
 
 	const options = [
@@ -434,13 +434,15 @@ const DoubleChart = (props) => {
 						</Tooltip>
 					</Collapse>
 				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
+				<Collapse in={!Boolean(autoUpdate)}>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.previousPeriod')}>
+							<IconButton onClick={() => handlePreviousPeriod(period)}>
+								<KeyboardArrowLeft />
+							</IconButton>
+						</Tooltip>
+					</ItemG>
+				</Collapse>
 				<ItemG>
 					<div>
 						<DateFilterMenu
@@ -477,15 +479,17 @@ const DoubleChart = (props) => {
 							t={t} />
 					</div>
 				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
+				<Collapse in={!Boolean(autoUpdate)}>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.nextPeriod')}>
+							<div>
+								<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+									<KeyboardArrowRight />
+								</IconButton>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Collapse>
 			</ItemG>
 
 		</ItemG>

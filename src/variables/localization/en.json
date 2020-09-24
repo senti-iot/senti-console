@@ -237,7 +237,7 @@
         },
         "editGraph": "Edit",
         "fields": {
-            "cf": "Cloud Function",
+			"cf": "Cloud Function",
             "chartType": "Chart type",
             "dataSource": "Data source",
             "defaultPeriod": "Default period",
@@ -249,6 +249,7 @@
             "name": "Name",
             "percDifference": "Percentage Difference:",
             "refresh": "Refresh time",
+			"refreshDefault": "Refresh default state",
             "unit": "Measuring Unit"
         },
         "pageTitle": "Senti",

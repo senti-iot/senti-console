@@ -249,7 +249,8 @@
             "name": "Navn",
             "percDifference": "Percentage Difference:",
             "refresh": "Automatisk opdatering",
-            "unit": "Måleenhed"
+			"refreshDefault":"Automatisk opdatering standardtilstand",
+			"unit": "Måleenhed"
         },
         "pageTitle": "Senti",
         "subtitle": "Senti tilbyder dataopsamling og visualisering fra alle dine IoT enheder."
