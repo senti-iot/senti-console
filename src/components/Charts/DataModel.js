@@ -432,7 +432,7 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw, simp
 	return { ...newState, exportData, dataArr }
 }
 export const setMinutelyData = (dataArr, from, to, /* hoverID, */ live) => {
-	console.log('dataArr', dataArr)
+	// console.log('dataArr', dataArr)
 	let labels = []
 	labels = minutesToArray(from, to)
 	// if (live) {

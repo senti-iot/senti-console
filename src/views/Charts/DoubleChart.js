@@ -29,7 +29,7 @@ import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChar
 import { Update } from '@material-ui/icons'
 import cx from 'classnames'
 
-let refresh = null
+// let refresh = null
 const DoubleChart = (props) => {
 
 	//Hooks
@@ -92,10 +92,10 @@ const DoubleChart = (props) => {
 			const gData = async () => await getData()
 			gData()
 		}
-		return () => {
-			clearInterval(refresh)
-			refresh = null
-		}
+		// return () => {
+		// 	clearInterval(refresh)
+		// 	refresh = null
+		// }
 		// eslint-disable-next-line
 	}, [])
 
@@ -114,7 +114,6 @@ const DoubleChart = (props) => {
 
 
 	const getData = useCallback(async (to, from) => {
-		console.trace()
 		if (g) {
 			if (g.dataSource.dataKey && g.dataSource.deviceUUID) {
 				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, from ? from : period.from, to ? to : period.to, g.dataSource.cf)
@@ -139,6 +138,7 @@ const DoubleChart = (props) => {
 
 	}, [dId, dispatch, gId, period])
 	useEffect(() => {
+		let refresh
 		if (autoUpdate && period.menuId >= 7) {
 			refresh = setInterval(async () => {
 				let f, t
@@ -491,7 +491,7 @@ const DoubleChart = (props) => {
 		</ItemG>
 	}
 	const renderType = () => {
-		console.log('lineDataSets', lineDataSets)
+		// console.log('lineDataSets', lineDataSets)
 		if (!loading) {
 			switch (period.chartType) {
 				case 0:

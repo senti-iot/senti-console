@@ -107,12 +107,12 @@ export const allMinutesToArr = (from, to) => {
 export const minutesToArray = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
-	console.log(from, to)
+	// console.log(from, to)
 	let d = startDate
 	let diff = moment.duration(endDate.diff(startDate)).asMinutes()
-	let amount = diff > 30 ? diff > 60 ? diff > 120 ? diff > 240 ? 60 : 45 : 30 : 15 : 1
-	if (window.innerWidth < 426)
-		amount = diff > 30 ? diff > 60 ? diff > 120 ? diff > 240 ? 60 : 45 : 30 : 15 : 1
+	let amount = diff > 15 ? diff > 30 ? diff > 60 ? diff > 120 ? diff > 240 ? 60 : 45 : 30 : 15 : 10 : 1
+	// if (window.innerWidth < 426)
+	// 	amount = diff > 30 ? diff > 60 ? diff > 120 ? diff > 240 ? 60 : 45 : 30 : 15 : 1
 	let arr = []
 	while (d <= endDate) {
 		arr.push(d.toDate())

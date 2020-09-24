@@ -1,9 +1,9 @@
-import React, { } from "react"
+import React, { useEffect } from "react"
 import { ItemG } from 'components'
 import { useSelector } from 'react-redux'
 
 import { editGraph } from 'redux/dsSystem'
-import ESChart from './EditSources/Chart'
+import ESChart from './EditSources/ESChart'
 import ESGauge from './EditSources/Gauge'
 import ESScorecard from './EditSources/Scorecard'
 import ESMap from './EditSources/Map'
@@ -29,7 +29,12 @@ const EditDataSource = props => {
 	//useCallbacks
 
 	//useEffects
+	useEffect(() => {
 
+		return () => {
+			// dispatch(resetSensor())
+		}
+	}, [])
 	//Handlers
 
 	const handleEditGraph = (newG) => {

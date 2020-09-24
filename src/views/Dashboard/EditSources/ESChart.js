@@ -5,8 +5,9 @@ import { ExpandMore } from 'variables/icons'
 import { /* PieChartRounded, DonutLargeRounded, */ BarChart, ShowChart } from 'variables/icons'
 import AssignSensorDialog from 'components/AssignComponents/AssignSensorDialog'
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
-import { useLocalization } from 'hooks'
+import { useDispatch, useLocalization } from 'hooks'
 import editSourceStyles from 'assets/jss/components/dashboards/editSourceStyles'
+import { resetSensor } from 'redux/data'
 
 
 const ESChart = (props) => {
@@ -15,7 +16,7 @@ const ESChart = (props) => {
 
 	const t = useLocalization()
 	const classes = editSourceStyles()
-
+	const dispatch = useDispatch()
 	//State
 	const [dataSourceExp, setDataSourceExp] = useState(false)
 	const [generalExp, setGeneralExp] = useState(false)
@@ -38,6 +39,9 @@ const ESChart = (props) => {
 		if ((!sensor && g.dataSource.deviceUUID) || (g.dataSource.deviceUUID && (sensor.uuid !== g.dataSource.deviceUUID))) {
 			let id = g.dataSource.deviceUUID
 			getSensor(id)
+		}
+		return () => {
+			dispatch(resetSensor())
 		}
 		//eslint-disable-next-line
 	}, [])
@@ -118,7 +122,7 @@ const ESChart = (props) => {
 		newG.refresh = e.target.value
 		props.handleEditGraph(newG)
 	}
-
+	console.log('sensor', sensor)
 	return (
 		<Fragment>
 			<ItemG xs={12}>
