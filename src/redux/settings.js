@@ -35,6 +35,7 @@ const changeDSTheme = 'changeDashboardTheme'
 const changeDR = 'changeDefaultRoute'
 const changeDV = 'changeDefaultView'
 const changeDCON = 'changeDrawerCloseOnNav'
+const changeAD = 'changeAutoDashboard'
 
 //Calibration
 
@@ -88,6 +89,7 @@ export const saveSettingsOnServ = () => {
 		internal.senti = internal.senti || {}
 		internal.senti.settings = {
 			language: s.language,
+			autoDashboard: s.autoDashboard,
 			weekendColor: s.weekendColor,
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
@@ -339,6 +341,15 @@ export const getNSettings = async () => {
 // 		}
 // 	}
 // }
+export const changeAutoDashboard = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeAD,
+			autoDashboard: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeGlobalSearch = val => {
 	return async dispatch => {
 		dispatch({
@@ -672,6 +683,7 @@ export const finishedSavingCookies = () => {
 }
 let autoheight = Math.round((window.innerHeight - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
 let initialState = {
+	autoDashboard: false,
 	weekendColor: 'red',
 	periods: [{
 		id: 0,
@@ -724,6 +736,8 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { rowsPerPageOptions: [...newRowsPerPage] })
 		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeAD:
+			return Object.assign({}, state, { autoDashboard: action.autoDashboard })
 		case changeDSTheme:
 			return Object.assign({}, state, { dsTheme: action.dsTheme })
 		case changeGS:
