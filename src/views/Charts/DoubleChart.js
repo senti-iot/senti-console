@@ -26,7 +26,10 @@ import { /* getSensorDataCleanV1, */ getSensorDataClean } from 'variables/dataSe
 import { setDailyData, setMinutelyData, setHourlyData } from 'components/Charts/DataModel'
 import { useLocalization, useSelector, useDispatch, useState, useEffect } from 'hooks'
 import multiSourceChartStyles from 'assets/jss/components/graphs/multiSourceChartStyles'
+import { Update } from '@material-ui/icons'
+import cx from 'classnames'
 
+// let refresh = null
 const DoubleChart = (props) => {
 
 	//Hooks
@@ -39,7 +42,7 @@ const DoubleChart = (props) => {
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
-
+	console.log(g)
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
 	// const [openDownload, setOpenDownload] = useState(false)
@@ -52,7 +55,7 @@ const DoubleChart = (props) => {
 	const [roundDataSets, setRoundDataSets] = useState(null)
 	const [barDataSets, setBarDataSets] = useState(null)
 	const [initialPeriod, setInitialPeriod] = useState(null)
-
+	const [autoUpdate, setAutoUpdate] = useState(g.defaultRefresh ? g.defaultRefresh : false)
 	//Consts
 
 	const options = [
@@ -63,6 +66,13 @@ const DoubleChart = (props) => {
 		{ id: 4, label: t('filters.dateOptions.30days') },
 		{ id: 5, label: t('filters.dateOptions.90days') },
 		{ id: 6, label: t('filters.dateOptions.custom') },
+		{ id: 7, label: t('filters.dateOptions.lastMinute'), live: true },
+		{ id: 8, label: t('filters.dateOptions.last5Minutes'), live: true },
+		{ id: 9, label: t('filters.dateOptions.last10Minutes'), live: true },
+		{ id: 10, label: t('filters.dateOptions.last30Minutes'), live: true },
+		{ id: 11, label: t('filters.dateOptions.lastHour'), live: true },
+		{ id: 12, label: t('filters.dateOptions.last6Hours'), live: true },
+
 	]
 	const timeTypes = [
 		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
@@ -82,13 +92,17 @@ const DoubleChart = (props) => {
 			const gData = async () => await getData()
 			gData()
 		}
+		// return () => {
+		// 	clearInterval(refresh)
+		// 	refresh = null
+		// }
 		// eslint-disable-next-line
 	}, [])
 
 	const setData = useCallback((data, timeType) => {
 		switch (timeType) {
 			case 0:
-				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
+				return setMinutelyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to, autoUpdate)
 			case 1:
 				return setHourlyData([{ data: data, name: title, color: colors[color][500], id: g.dataSource.dataKey }], g.period.from, g.period.to)
 			case 2:
@@ -96,12 +110,13 @@ const DoubleChart = (props) => {
 			default:
 				break
 		}
-	}, [color, g, title])
+	}, [autoUpdate, color, g.dataSource.dataKey, g.period.from, g.period.to, title])
 
-	const getData = useCallback(async () => {
+
+	const getData = useCallback(async (to, from) => {
 		if (g) {
 			if (g.dataSource.dataKey && g.dataSource.deviceUUID) {
-				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, period.from, period.to, g.dataSource.cf)
+				let data = await getSensorDataClean(g.dataSource.deviceUUID, g.dataSource.dataKey, from ? from : period.from, to ? to : period.to, g.dataSource.cf)
 				// let data = await getSensorDataCleanV1(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type, g.dataSource.calc)
 
 				let newState = setData(data, period.timeType)
@@ -111,22 +126,80 @@ const DoubleChart = (props) => {
 					setBarDataSets(newState.barDataSets)
 					setLoading(false)
 				}
-
-			}
-			else {
-				setLoading(false)
 			}
 		}
 		else {
 			setLoading(false)
 		}
-	}, [g, period, setData])
+	}, [g, period.from, period.timeType, period.to, setData])
 
+	const handleSetDate = useCallback(async (menuId, to, from, defaultT, chartType) => {
+		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
+
+	}, [dId, dispatch, gId, period])
 	useEffect(() => {
-		setLoading(true)
-		const gData = async () => await getData()
-		gData()
-	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData])
+		let refresh
+		if (autoUpdate && period.menuId >= 7) {
+			refresh = setInterval(async () => {
+				let f, t
+				t = moment()
+				switch (period.menuId) {
+					case 7:
+						f = moment().subtract(1, 'minute')
+						break
+					case 8:
+						f = moment().subtract(5, 'minute')
+						break
+					case 9:
+						f = moment().subtract(10, 'minute')
+						break
+					case 10:
+						f = moment().subtract(30, 'minute')
+						break
+					case 11:
+						f = moment().subtract(60, 'minute')
+						break
+					case 12:
+						f = moment().subtract(3600, 'minute')
+						break
+					default:
+						break
+				}
+				await handleSetDate(period.menuId, t, f, period.timeType, period.id)
+				await getData(t, f)
+
+			}, g.refresh * 1000)
+		}
+		else {
+			clearInterval(refresh)
+			refresh = null
+		}
+		return () => {
+			clearInterval(refresh)
+			refresh = null
+		}
+	}, [autoUpdate, g.refresh, getData, handleSetDate, period.id, period.menuId, period.timeType])
+	useEffect(() => {
+		if (g.refresh > 0) {
+			const gData = async () => await getData()
+			gData()
+		}
+		else {
+			setLoading(true)
+			const gData = async () => await getData()
+			gData()
+		}
+		// }
+	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData, g.refresh])
+
+	const disableFuture = () => {
+		if (moment().diff(period.to, 'hour') <= 0) {
+			return true
+		}
+		return false
+	}
+	const handleAutoUpdate = () => setAutoUpdate(!autoUpdate)
+	const handleSetVisibility = () => setVisibility(!visibility)
 
 	const handleChangeChartType = () => {
 		setChartType(chartType === 'linear' ? 'logarithmic' : 'linear')
@@ -336,6 +409,7 @@ const DoubleChart = (props) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
+
 			{small ? null :
 				<Hidden xsDown>
 					<ItemG xs zeroMinWidth>
@@ -348,64 +422,80 @@ const DoubleChart = (props) => {
 				</Hidden>
 			}
 			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.previousPeriod')}>
-						<IconButton onClick={() => handlePreviousPeriod(period)}>
-							<KeyboardArrowLeft />
-						</IconButton>
-					</Tooltip>
+				<ItemG container xs>
+					<Collapse in={g.refresh}>
+						<Tooltip title={t('tooltips.chart.autoupdate')}>
+							<IconButton onClick={handleAutoUpdate}>
+								<Update className={cx({
+									[classes.autoUpdate]: true,
+									[classes.autoUpdateOn]: autoUpdate,
+								})}/>
+							</IconButton>
+						</Tooltip>
+					</Collapse>
 				</ItemG>
+				<Collapse in={!Boolean(autoUpdate)}>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.previousPeriod')}>
+							<IconButton onClick={() => handlePreviousPeriod(period)}>
+								<KeyboardArrowLeft />
+							</IconButton>
+						</Tooltip>
+					</ItemG>
+				</Collapse>
 				<ItemG>
-					<Tooltip title={t('tooltips.chart.period')}>
-						<div>
-							<DateFilterMenu
-								button
-								buttonProps={{
-									style: {
-										color: undefined,
-										textTransform: 'none',
-										padding: "8px 0px"
-									}
-								}}
-								icon={
-									<ItemG container justify={'center'}>
-										<ItemG>
-											<ItemG container style={{ width: 'min-content' }}>
-												<ItemG xs={12}>
-													<T noWrap component={'span'}>{`${displayFrom}`}</T>
-												</ItemG>
-												<ItemG xs={12}>
-													<T noWrap component={'span'}> {`${displayTo}`}</T>
-												</ItemG>
-												<ItemG xs={12}>
-													<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
-												</ItemG>
+					<div>
+						<DateFilterMenu
+							liveData
+							button
+							buttonProps={{
+								style: {
+									color: undefined,
+									textTransform: 'none',
+									padding: "8px 0px"
+								}
+							}}
+							icon={
+								<ItemG container justify={'center'}>
+									<ItemG>
+										<ItemG container style={{ width: 'min-content' }}>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}>{`${displayFrom}`}</T>
 											</ItemG>
-
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${displayTo}`}</T>
+											</ItemG>
+											<ItemG xs={12}>
+												<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+											</ItemG>
 										</ItemG>
 
 									</ItemG>
-								}
-								customSetDate={handleSetDate}
-								period={period}
-								t={t} />
-						</div>
-					</Tooltip>
+
+								</ItemG>
+							}
+							customSetDate={handleSetDate}
+							period={period}
+							t={t} />
+					</div>
 				</ItemG>
-				<ItemG>
-					<Tooltip title={t('tooltips.chart.nextPeriod')}>
-						<div>
-							<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
-								<KeyboardArrowRight />
-							</IconButton>
-						</div>
-					</Tooltip>
-				</ItemG>
+				<Collapse in={!Boolean(autoUpdate)}>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.nextPeriod')}>
+							<div>
+								<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+									<KeyboardArrowRight />
+								</IconButton>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</Collapse>
 			</ItemG>
 
 		</ItemG>
 	}
 	const renderType = () => {
+		// console.log('lineDataSets', lineDataSets)
 		if (!loading) {
 			switch (period.chartType) {
 				case 0:
@@ -485,16 +575,7 @@ const DoubleChart = (props) => {
 		}
 		else return renderNoData()
 	}
-	const disableFuture = () => {
-		if (moment().diff(period.to, 'hour') <= 0) {
-			return true
-		}
-		return false
-	}
-	const handleSetDate = async (menuId, to, from, defaultT, chartType) => {
-		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
-	}
-	const handleSetVisibility = () => setVisibility(!visibility)
+
 	const renderMenu = () => {
 		return <ItemG container direction={'column'}>
 			<ItemG container>

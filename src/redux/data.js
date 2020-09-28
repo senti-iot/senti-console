@@ -604,7 +604,12 @@ export const unassignSensor = () => {
 		dispatch({ type: gotSensor, payload: false })
 	}
 }
-
+export const resetSensor = () => {
+	return async dispatch => dispatch({
+		type: setSensor,
+		payload: null
+	})
+}
 export const getSensorLS = async (id, customerID, ua) => {
 	return async dispatch => {
 

@@ -52,6 +52,36 @@ const menuSelect = (p, c) => {
 			to = moment(p.to)
 			timeType = p.timeType
 			break
+		case 7: // Last Minute
+			from = moment().subtract(1, 'minute')
+			to = moment()
+			timeType = 0
+			break
+		case 8: //Last 5 minutes
+			from = moment().subtract(5, 'minute')
+			to = moment()
+			timeType = 0
+			break
+		case 9://last 10 minutes
+			from = moment().subtract(10, 'minute')
+			to = moment()
+			timeType = 0
+			break
+		case 10:// last 30 minutes
+			from = moment().subtract(30, 'minute')
+			to = moment()
+			timeType = 0
+			break
+		case 11:// last hour
+			from = moment().subtract(60, 'minute')
+			to = moment()
+			timeType = 0
+			break
+		case 12:// last 6 hours
+			from = moment().subtract(3600, 'minute')
+			to = moment()
+			timeType = 1
+			break;
 		default:
 			break
 	}

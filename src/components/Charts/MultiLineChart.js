@@ -147,8 +147,10 @@ class LineChart extends PureComponent {
 					],
 					yAxes: [{
 						scaleLabel: {
-							display: false,
-							labelString: 'value'
+							display: props.graphUnit ? true : false,
+							labelString: props.graphUnit ? props.graphUnit : "",
+							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+							rotate: false
 						},
 						type: props.chartYAxis,
 						ticks: {
@@ -215,6 +217,10 @@ class LineChart extends PureComponent {
 			this.updateHover()
 		}
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
+			this.setXAxis()
+		}
+		if (prevProps.data !== this.props.data) {
+
 			this.setXAxis()
 		}
 
@@ -444,7 +450,6 @@ class LineChart extends PureComponent {
 	render() {
 		const { classes, unit, data, graphUnit } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
-		console.log(this)
 		return (
 			<Fragment>
 				<div style={{ /* display: 'block', */ height: '100%', width: '100%', /* maxHeight: 300, */ position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>

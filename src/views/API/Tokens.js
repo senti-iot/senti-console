@@ -51,7 +51,7 @@ const Tokens = props => {
 	]
 
 	const tokensHeader = [
-		{ id: 'id', label: t('tokens.fields.id') },
+		// { id: 'id', label: t('tokens.fields.id') },
 		{ id: 'name', label: t('tokens.fields.name') },
 		{ id: 'created', label: t('registries.fields.created') }
 	]
@@ -68,7 +68,7 @@ const Tokens = props => {
 		dispatch(setTokens())
 		if (accessLevel || user) {
 			if (reload || tokens.length === 0)
-				dispatch(getTokens(user.internal.odeumId, true, accessLevel.apisuperuser ? true : false))
+				dispatch(getTokens(user.uuid, true, accessLevel.apisuperuser ? true : false))
 		}
 	}, [accessLevel, dispatch, tokens.length, user])
 
