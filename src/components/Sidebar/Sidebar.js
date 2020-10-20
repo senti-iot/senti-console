@@ -14,6 +14,8 @@ import { HeaderLinks } from 'components'
 import sidebarStyles from 'assets/jss/components/sidebar/sidebarStyles'
 import logo from 'logo.svg'
 import { useLocalization } from 'hooks'
+import { getWL } from 'variables/storage'
+import { ReactComponent as PoweredByIcon } from "assets/img/poweredby.svg";
 
 const NavLink = React.forwardRef((props, ref) => <Link {...props} innerRef={ref} />)
 
@@ -23,6 +25,8 @@ const Sidebar = (props) => {
 	const history = useHistory()
 	const t = useLocalization()
 	const theme = useTheme()
+	let wl = getWL()
+
 	//Redux
 	const smallMenu = useSelector(s => s.appState.smallMenu)
 	const drawer = useSelector(s => s.settings.drawer)
@@ -262,6 +266,9 @@ const Sidebar = (props) => {
 					</Tooltip>
 				})}
 			</List>
+			{wl ? <div style={{ position: 'absolute', bottom: 20, height: 100, right: 30 }}>
+				<a href="https://senti.io/" target="_new"><PoweredByIcon /></a>
+			</div> : null}
 		</Drawer>
 	}
 
