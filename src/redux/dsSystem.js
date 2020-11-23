@@ -250,11 +250,13 @@ export const createGraph = (payload) => {
 		let gs = []
 		gs = [...getState().dsSystem.cGraphs]
 		let newG = graphType(payload)
+		console.log('newG', newG)
 		newG.id = generateID(newG.name)
 		newG.grid.i = newG.id
 		newG.period = menuSelect(newG.periodType, newG.chartType)
 		newG.period.menuId = newG.periodType
 		gs.push(newG)
+		console.log('gs', gs)
 		dispatch({ type: cGraph, payload: gs })
 	}
 }

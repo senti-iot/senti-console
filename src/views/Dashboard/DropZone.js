@@ -15,7 +15,7 @@ const style = makeStyles((theme) => ({
 }))
 
 const ItemTypes = [
-	"chart", "gauge", "scorecardAB", "scorecard", "windcard", "map", "msChart"
+	"chart", "gauge", "scorecardAB", "scorecard", "windcard", "map", "msChart", "mapChart"
 ]
 //@Pavel don't touch
 const DropZone = ({ i, children, onDrop, color }) => {

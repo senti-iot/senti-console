@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ItemG } from 'components'
 import { IconButton, Divider, makeStyles } from '@material-ui/core'
 import ToolbarItem from './ToolbarItem'
-import { Menu, InsertChart, MultiLineChart, Looks, TableChart } from 'variables/icons';
+import { Menu, InsertChart, MultiLineChart, Looks, TableChart, Map as MapIcon } from 'variables/icons';
 import cx from 'classnames'
 const styles = makeStyles(theme => ({
 	container: {
@@ -67,6 +67,7 @@ const ToolbarContainer = () => {
 				<ToolbarItem type={"msChart"} name={'Multi Source Chart'} icon={MultiLineChart} />
 				<ToolbarItem type={"gauge"} name={'Gauge'} icon={Looks} />
 				<ToolbarItem type={"scorecard"} name={'Scorecard'} icon={TableChart} />
+				<ToolbarItem type={"mapChart"} name={'Map Component'} icon={MapIcon} />
 			</ItemG>
 			{/* <ToolbarItem type={"map"} name={'Map'} /> */}
 

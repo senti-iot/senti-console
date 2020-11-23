@@ -185,6 +185,31 @@ export const graphType = (type) => {
 				unit: "",
 				refresh: 0
 			}
+		case "mapChart":
+			return {
+				grid: {
+					minW: 4,
+					minH: 12,
+					x: 0,
+					y: 0,
+					h: 12,
+					w: 6
+				},
+				chartType: 3, //Line Graph
+				dataSource: {
+					cf: -1,
+					dataKey: "",
+					deviceTypeId: -1,
+					deviceIds: [],
+					type: 0
+				},
+				id: "",
+				name: "Map Component",
+				periodType: 3,
+				type: 7, //DataSource Type
+				unit: "",
+				refresh: 0
+			}
 		default:
 			break;
 	}

@@ -22,6 +22,7 @@ import { red } from '@material-ui/core/colors';
 import DropZone from './DropZone';
 import { weekendColorsDropdown } from 'variables/functions';
 import ToolbarContainer from './ToolbarContainer';
+import MapChart from 'views/Charts/MapChart'
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -245,6 +246,18 @@ const CreateDashboard = (props) => {
 				return <Paper style={{ background: 'inherid' }} key={g.id} data-grid={g.grid}>
 					<RenderPos l={g.grid} editGraphOpen={editGraphOpen} removeGraph={removeGraph} />
 					<MultiSourceChart
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
+						single={true}
+					/>
+				</Paper>
+			case 7:
+				return <Paper style={{ background: 'inherid' }} key={g.id} data-grid={g.grid}>
+					<RenderPos l={g.grid} editGraphOpen={editGraphOpen} removeGraph={removeGraph} />
+					<MapChart
 						create
 						title={g.name}
 						gId={g.id}
