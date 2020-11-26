@@ -26,7 +26,7 @@ export const MobileContainer = styled.div`
 `
 export const ImgLogo = styled.img`
 	/* height: 100px; */
-	width: 100%;
+	max-width: 100%;
 	max-height:100px;
 	height: auto;
 	margin: 8px;
