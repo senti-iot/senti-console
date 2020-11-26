@@ -24,7 +24,7 @@ class OpenStreetMapWidget extends React.Component {
 		super(props)
 
 		this.state = {
-			zoom: props.markers.length === 1 ? 17 : 13,
+			zoom: props.zoom ? props.zoom : props.markers.length === 1 ? 17 : 13,
 			height: 200,
 		}
 	}
@@ -59,6 +59,7 @@ class OpenStreetMapWidget extends React.Component {
 		})
 	}
 	componentDidMount = () => {
+		console.log(this.props)
 		if (this.props.markers.length > 1)
 			this.centerOnAllMarkers()
 		if (this.props.iRef) {
@@ -67,6 +68,7 @@ class OpenStreetMapWidget extends React.Component {
 		// this.map.leafletElement.on('viewreset', e => {
 		//
 		// })
+		console.log('map', this.map)
 		this.map.leafletElement.on('popupopen', (e) => {
 			var px = this.map.leafletElement.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
 			// px.y -= e.popup._container.clientHeight * 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
@@ -94,6 +96,7 @@ class OpenStreetMapWidget extends React.Component {
 
 	centerOnAllMarkers = () => {
 		let arr = this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)
+		console.log('markers', arr)
 		arr = arr.filter(x => !!x)
 		if (arr.length > 1)
 			this.map.leafletElement.fitBounds([arr])
@@ -124,11 +127,10 @@ class OpenStreetMapWidget extends React.Component {
 		this.props.getLatLng(e)
 	}
 	render() {
-		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
+		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap, CustomPopup } = this.props
 		const { zoom } = this.state
 		return <Fragment>
 			<Map
-
 				attributionControl={heatMap ? false : true}
 				zoomControl={false}
 				ref={r => this.map = r}
@@ -162,11 +164,11 @@ class OpenStreetMapWidget extends React.Component {
 							autoPan={calibrate ? true : false}
 							draggable={calibrate ? true : false}
 							position={[m.lat, m.long]}
-							onClick={calibrate ? undefined : ''}
+							onClick={calibrate ? () => { } : () => {}}
 							key={i}
 							icon={this.returnSvgIcon(m.liveStatus)}>
 							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
-								<OpenPopup dontShow={calibrate} m={m} noSeeMore={markers.length === 1} heatMap={heatMap} />
+								{CustomPopup ? <CustomPopup marker={m}/> : <OpenPopup dontShow={calibrate} m={m} noSeeMore={markers.length === 1} heatMap={heatMap} />}
 							</Popup>}
 						</Marker>
 					}

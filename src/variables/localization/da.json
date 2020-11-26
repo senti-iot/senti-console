@@ -249,7 +249,7 @@
             "name": "Navn",
             "percDifference": "Percentage Difference:",
             "refresh": "Automatisk opdatering",
-			"refreshDefault":"Automatisk opdatering standardtilstand",
+			"refreshDefault":"Aut.Opdatering standardtilstand",
 			"unit": "Måleenhed"
         },
         "pageTitle": "Senti",
@@ -866,6 +866,8 @@
     },
     "sensors": {
         "fields": {
+			"lat": "Breddegrad",
+			"long": "Længdegrad",
             "communication": "Kommunikation",
             "communications": {
                 "allowed": "Tilladt",

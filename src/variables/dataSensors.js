@@ -58,6 +58,23 @@ export const deleteSensor = async (uuid) => {
 }
 
 /**
+* @function GET
+* @memberof module:routers/devicedata
+* @param {String} deviceUUID - Device UUID
+* @param {Date} from - Start date - YYYY-MM-DD HH:mm:ss format
+* @param {Date} to - End date - YYYY-MM-DD HH:mm:ss format
+* @param {Number} cloudfunctionId - ID of the outbound cloud function
+*/
+export const getSensorDataPacket = async (uuid, from, to, cfId) => {
+	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let url = `v2/devicedata-clean/${uuid}/${startDate}/${endDate}/${cfId}`
+	// /v2/devicedata-clean/:deviceUUID/:from/:to/:cloudfunctionId
+	let response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
+	return response
+}
+
+/**
 * Route serving the clean device data packets for selected period and specified field
 * @function GET /v2/devicedata-clean/:deviceUUID/:field/:from/:to/:cloudfunctionId
 * @memberof module:routers/devicedata

@@ -1,19 +1,64 @@
 import { CircularLoader, DateFilterMenu, InfoCard, ItemG, T } from 'components'
 import { useDispatch, useLocalization, useSelector } from 'hooks'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import deviceStyles from 'assets/jss/components/devices/deviceStyles'
 import { Collapse, Grid, Hidden, IconButton, Tooltip } from '@material-ui/core'
 import { handleSetDate as rSetDate, getGraph, getPeriod, } from 'redux/dsSystem'
 import OpenStreetMapWidget from 'components/Map/OpenStreetMapWidget'
-import { KeyboardArrowLeft, KeyboardArrowRight, Map as MapIcon, MoreVert } from 'variables/icons'
+import { KeyboardArrowLeft, KeyboardArrowRight, Map as MapIcon, /* MoreVert */ } from 'variables/icons'
 import moment from 'moment'
 import { Update } from '@material-ui/icons'
 import cx from 'classnames'
 import { dateTimeFormatter } from 'variables/functions'
+import { getSensorDataPacket } from 'variables/dataSensors'
+
+const RenderPopup = (props) => {
+	//Hooks
+	const t = useLocalization()
+	//Redux
+
+	//State
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+	console.log(props)
+	return <ItemG container>
+		<ItemG container xs={6}>
+			<ItemG xs={ 12}>
+				<T>{t('sensors.fields.lat')}</T>
+			</ItemG>
+			<ItemG>
+				{props.marker.lat}
+			</ItemG>
+		</ItemG>
+		<ItemG container xs={6}>
+			<ItemG xs={ 12}>
+				<T>{t('sensors.fields.long')}</T>
+			</ItemG>
+			<ItemG>
+				{props.marker.long}
+			</ItemG>
+		</ItemG>
+		<ItemG xs={12}>
+			<ItemG xs={ 12}>
+				<T>{t('charts.fields.date')}</T>
+			</ItemG>
+			<ItemG>
+				{dateTimeFormatter(props.marker.datetime)}
+			</ItemG>
+		</ItemG>
+	</ItemG>
+}
 
 const MapChart = props => {
 
-	const { gId, create, title, color, dId, hoverID, setHoverID, device, single } = props
+	const { gId, create, title, color, dId } = props
 
 	//Hooks
 	const dispatch = useDispatch()
@@ -22,18 +67,12 @@ const MapChart = props => {
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
-	console.log('period', period, gId, create )
+	// mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme
+	const mapTheme = useSelector(s => s.settings.mapTheme)
 	//State
-	const [actionAnchor, setActionAnchor] = useState(null)
-	// const [openDownload, setOpenDownload] = useState(false)
-	const [visibility, setVisibility] = useState(false)
-	const [resetZoom, setResetZoom] = useState(false)
-	const [zoomDate, setZoomDate] = useState([])
+	const [markers, setMarkers] = useState([])
 	const [loading, setLoading] = useState(true)
-	const [chartType, setChartType] = useState('linear')
-	const [lineDataSets, setLineDataSets] = useState(null)
-	const [roundDataSets, setRoundDataSets] = useState(null)
-	const [barDataSets, setBarDataSets] = useState(null)
+
 	const [initialPeriod, setInitialPeriod] = useState(null)
 	const [autoUpdate, setAutoUpdate] = useState(g ? g.defaultRefresh ? g.defaultRefresh : false : false)
 
@@ -63,7 +102,39 @@ const MapChart = props => {
 		await dispatch(await rSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType }))
 
 	}, [dId, dispatch, gId, period])
+
+	const getData = useCallback(async () => {
+		if (g.dataSource['lat'] && g.dataSource['long'] && g.dataSource.deviceUUID) {
+			let data = await getSensorDataPacket(g.dataSource.deviceUUID, period.from, period.to, g.dataSource.cf)
+			console.log('data', data)
+			/**
+			* Process the data
+			*/
+			let fData = data.map(d => ({
+				lat: d.data[g.dataSource.lat],
+				long: d.data[g.dataSource.long],
+				datetime: d.datetime
+			})).filter(f => f.lat !== undefined || f.long !== undefined)
+
+			fData = fData.sort((a, b) => moment(a.datetime).valueOf() - moment(b.datetime).valueOf())
+
+			console.log('finalData', fData)
+			setMarkers([fData.pop()])
+			setLoading(false)
+
+		}
+		else {
+			setLoading(false)
+		}
+	}, [g.dataSource, period.from, period.to])
+
 	//useEffects
+
+	useEffect(() => {
+		setLoading(true)
+		const gData = async () => await getData()
+		gData()
+	}, [period.menuId, period.timeType, g.dataSource.dataKey, period.from, period.to, getData])
 
 	//Handlers
 	const handleAutoUpdate = () => setAutoUpdate(!autoUpdate)
@@ -199,6 +270,7 @@ const MapChart = props => {
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
+		let dontShow = true
 		return <ItemG container alignItems={'center'} justify={small ? 'center' : undefined}>
 
 			{small ? null :
@@ -212,93 +284,92 @@ const MapChart = props => {
 					</ItemG>
 				</Hidden>
 			}
-			<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
-				<ItemG container xs>
-					<Collapse in={g.refresh}>
-						<Tooltip title={t('tooltips.chart.autoupdate')}>
-							<IconButton onClick={handleAutoUpdate}>
-								<Update className={cx({
-									[classes.autoUpdate]: true,
-									[classes.autoUpdateOn]: autoUpdate,
-								})} />
-							</IconButton>
-						</Tooltip>
-					</Collapse>
-				</ItemG>
-				<Collapse in={!Boolean(autoUpdate)}>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.previousPeriod')}>
-							<IconButton onClick={() => handlePreviousPeriod(period)}>
-								<KeyboardArrowLeft />
-							</IconButton>
-						</Tooltip>
+			{dontShow ? null :
+				<ItemG style={{ width: 'auto' }} container alignItems={'center'}>
+					<ItemG container xs>
+						<Collapse in={g.refresh}>
+							<Tooltip title={t('tooltips.chart.autoupdate')}>
+								<IconButton onClick={handleAutoUpdate}>
+									<Update className={cx({
+										[classes.autoUpdate]: true,
+										[classes.autoUpdateOn]: autoUpdate,
+									})} />
+								</IconButton>
+							</Tooltip>
+						</Collapse>
 					</ItemG>
-				</Collapse>
-				<ItemG>
-					<div>
-						<DateFilterMenu
-							liveData
-							button
-							buttonProps={{
-								style: {
-									color: undefined,
-									textTransform: 'none',
-									padding: "8px 0px"
-								}
-							}}
-							icon={
-								<ItemG container justify={'center'}>
-									<ItemG>
-										<ItemG container style={{ width: 'min-content' }}>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}>{`${displayFrom}`}</T>
+					<Collapse in={!Boolean(autoUpdate)}>
+						<ItemG>
+							<Tooltip title={t('tooltips.chart.previousPeriod')}>
+								<IconButton onClick={() => handlePreviousPeriod(period)}>
+									<KeyboardArrowLeft />
+								</IconButton>
+							</Tooltip>
+						</ItemG>
+					</Collapse>
+					<ItemG>
+						<div>
+							<DateFilterMenu
+								button
+								buttonProps={{
+									style: {
+										color: undefined,
+										textTransform: 'none',
+										padding: "8px 0px"
+									}
+								}}
+								icon={
+									<ItemG container justify={'center'}>
+										<ItemG>
+											<ItemG container style={{ width: 'min-content' }}>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}>{`${displayFrom}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${displayTo}`}</T>
+												</ItemG>
+												<ItemG xs={12}>
+													<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
+												</ItemG>
 											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${displayTo}`}</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T noWrap component={'span'}> {`${options[period.menuId].label}`}</T>
-											</ItemG>
+
 										</ItemG>
 
 									</ItemG>
-
-								</ItemG>
-							}
-							customSetDate={handleSetDate}
-							period={period}
-							t={t} />
-					</div>
-				</ItemG>
-				<Collapse in={!Boolean(autoUpdate)}>
-					<ItemG>
-						<Tooltip title={t('tooltips.chart.nextPeriod')}>
-							<div>
-								<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
-									<KeyboardArrowRight />
-								</IconButton>
-							</div>
-						</Tooltip>
+								}
+								customSetDate={handleSetDate}
+								period={period}
+								t={t} />
+						</div>
 					</ItemG>
-				</Collapse>
-			</ItemG>
-
+					<Collapse in={!Boolean(autoUpdate)}>
+						<ItemG>
+							<Tooltip title={t('tooltips.chart.nextPeriod')}>
+								<div>
+									<IconButton onClick={() => handleNextPeriod(period)} disabled={disableFuture(period)}>
+										<KeyboardArrowRight />
+									</IconButton>
+								</div>
+							</Tooltip>
+						</ItemG>
+					</Collapse>
+				</ItemG>
+			}
 		</ItemG>
 	}
+
 	const renderType = () => {
-		const { t, mapTheme, g } = this.props
-		const { device } = this.state
 		return <ItemG container>
 			<OpenStreetMapWidget
-				calibrate={this.state.openModalEditLocation}
-				getLatLng={this.getLatLngFromMap}
-				iRef={this.getRef}
+				// getLatLng={this.getLatLngFromMap}
+				// iRef={this.getRef}
 				mapTheme={mapTheme}
 				heatMap={false}
-				heatData={[]}
 				g={g}
 				t={t}
-				markers={[{ lat: device.lat, long: device.lng }]}
+				zoom={13}
+				markers={markers}
+				CustomPopup={RenderPopup}
 			/>
 		</ItemG>
 		// return <div>Here will be the map</div>
@@ -327,13 +398,7 @@ const MapChart = props => {
 						{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader fill /></div> :
 
 							<>
-								{/* <Hidden xsDown>
-									{small ? this.renderSmallTitle() : null}
-								</Hidden>
-								<Hidden smUp>
-									{this.renderSmallTitle()}
-								</Hidden> */}
-								{device ? this.renderType() : this.renderNoData()}
+								 {renderType()}
 							</>
 						}
 

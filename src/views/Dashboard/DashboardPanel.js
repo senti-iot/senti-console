@@ -23,6 +23,7 @@ import MultiSourceChart from 'views/Charts/MultiSourceChart';
 import { useSnackbar, useLocalization, useSelector, useDispatch } from 'hooks';
 import { nLightTheme, nDarkTheme } from 'variables/themes'
 import { getWL } from 'variables/storage'
+import MapChart from 'views/Charts/MapChart'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -289,6 +290,16 @@ const DashboardPanel = (props) => {
 											title={g.name}
 											gId={g.id}
 											dId={d.id}
+										/>
+									</Paper>
+								case 7:
+									return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+										<MapChart
+											title={g.name}
+											gId={g.id}
+											dId={d.id}
+											color={d.color}
+											single={true}
 										/>
 									</Paper>
 								default:

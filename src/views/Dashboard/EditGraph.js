@@ -17,6 +17,7 @@ import EditDataSource from './EditDataSource'
 import MapData from 'views/Charts/MapData'
 import MultiSourceChart from 'views/Charts/MultiSourceChart'
 import { useLocalization, useDispatch } from 'hooks'
+import MapChart from 'views/Charts/MapChart'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -146,6 +147,17 @@ const EditGraph = props => {
 							title={g.name}
 							gId={g.id}
 							dId={d.id}
+							single={true}
+						/>
+					</Paper>
+				case 7:
+					return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={getCoords(g.grid)}>
+						<MapChart
+							create
+							title={g.name}
+							gId={g.id}
+							dId={d.id}
+							color={d.color}
 							single={true}
 						/>
 					</Paper>

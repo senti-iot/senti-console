@@ -866,6 +866,8 @@
     },
     "sensors": {
         "fields": {
+			"lat": "Latitude",
+			"long": "Longitude",
             "communication": "Communication",
             "communications": {
                 "allowed": "Allowed",

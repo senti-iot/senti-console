@@ -22,6 +22,7 @@ import MultiSourceChart from 'views/Charts/MultiSourceChart'
 import ToolbarContainer from 'views/Dashboard/ToolbarContainer'
 import { useLocalization } from 'hooks'
 import createDashboardStyle from 'assets/jss/components/dashboards/createDashboardStyles'
+import MapChart from 'views/Charts/MapChart'
 
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
@@ -211,6 +212,17 @@ const EditDashboard = props => {
 						dId={d.id}
 						color={d.color}
 						single={true}
+					/>
+				</Paper>
+			case 7:
+				return <Paper style={{ background: 'inherit' }} key={g.id} data-grid={grid}>
+					{renderPos(g.grid)}
+					<MapChart
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
 					/>
 				</Paper>
 			default:

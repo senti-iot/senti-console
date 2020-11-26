@@ -10,6 +10,7 @@ import ESMap from './EditSources/Map'
 import ESMSChart from './EditSources/MSChart'
 import { useLocalization, useDispatch } from 'hooks'
 import ESScorecardAB from './EditSources/ScorecardAB'
+import MapChartSource from 'views/Dashboard/EditSources/MapChartSource'
 
 
 const EditDataSource = props => {
@@ -93,8 +94,17 @@ const EditDataSource = props => {
 					g={g}
 					cfs={cfs}
 				/>
+			case 7:
+				return <MapChartSource
+					handleEditGraph={handleEditGraph}
+					getSensor={getSensor}
+					sensor={sensor}
+					g={g}
+					cfs={cfs}
+				/>
 			default:
-				break
+				return null
+				// break
 		}
 	}
 	return renderSource()
