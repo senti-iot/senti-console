@@ -42,7 +42,6 @@ const DoubleChart = (props) => {
 	//Redux
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
-	console.log(g)
 	//State
 	const [actionAnchor, setActionAnchor] = useState(null)
 	// const [openDownload, setOpenDownload] = useState(false)

@@ -152,7 +152,6 @@ const DateFilterMenu = props => {
 			return dispatch(changeHeatMapDate(menuId, to, from, defaultT))
 		}
 		if (props.customSetDate) {
-			console.log(menuId, to, from, defaultT)
 			return props.customSetDate(menuId, to, from, defaultT)
 		}
 		dispatch(changeDate(menuId, to, from, defaultT, period ? period.id : -1))

@@ -59,7 +59,6 @@ class OpenStreetMapWidget extends React.Component {
 		})
 	}
 	componentDidMount = () => {
-		console.log(this.props)
 		if (this.props.markers.length > 1)
 			this.centerOnAllMarkers()
 		if (this.props.iRef) {
@@ -68,7 +67,6 @@ class OpenStreetMapWidget extends React.Component {
 		// this.map.leafletElement.on('viewreset', e => {
 		//
 		// })
-		console.log('map', this.map)
 		this.map.leafletElement.on('popupopen', (e) => {
 			var px = this.map.leafletElement.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
 			// px.y -= e.popup._container.clientHeight * 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
@@ -96,7 +94,6 @@ class OpenStreetMapWidget extends React.Component {
 
 	centerOnAllMarkers = () => {
 		let arr = this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)
-		console.log('markers', arr)
 		arr = arr.filter(x => !!x)
 		if (arr.length > 1)
 			this.map.leafletElement.fitBounds([arr])

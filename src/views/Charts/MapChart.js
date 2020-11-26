@@ -27,7 +27,6 @@ const RenderPopup = (props) => {
 
 	//Handlers
 
-	console.log(props)
 	return <ItemG container>
 		<ItemG container xs={6}>
 			<ItemG xs={ 12}>
@@ -106,7 +105,6 @@ const MapChart = props => {
 	const getData = useCallback(async () => {
 		if (g.dataSource['lat'] && g.dataSource['long'] && g.dataSource.deviceUUID) {
 			let data = await getSensorDataPacket(g.dataSource.deviceUUID, period.from, period.to, g.dataSource.cf)
-			console.log('data', data)
 			/**
 			* Process the data
 			*/
@@ -118,7 +116,6 @@ const MapChart = props => {
 
 			fData = fData.sort((a, b) => moment(a.datetime).valueOf() - moment(b.datetime).valueOf())
 
-			console.log('finalData', fData)
 			setMarkers([fData.pop()])
 			setLoading(false)
 
