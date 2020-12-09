@@ -1,10 +1,10 @@
-import { IconButton } from '@material-ui/core';
-import { Caption, ItemG, TextF } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import React from 'react';
-import { Wifi, ContentCopy } from 'variables/icons';
-import { copyToClipboard } from 'variables/functions';
-import { useLocalization, useSnackbar } from 'hooks';
+import { IconButton } from '@material-ui/core'
+import { Caption, ItemG, TextF } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
+import React from 'react'
+import { Wifi, ContentCopy } from 'variables/icons'
+import { copyToClipboard } from 'variables/functions'
+import { useLocalization, useSnackbar } from 'hooks'
 
 
 const SensorProtocol = (props) => {
@@ -30,7 +30,7 @@ const SensorProtocol = (props) => {
 			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
-				break;
+				break
 		}
 	}
 
@@ -46,20 +46,21 @@ const SensorProtocol = (props) => {
 				<ItemG container spacing={3}>
 					<ItemG xs={12}>
 						<Caption>{t('sensors.fields.protocols.publishData')}</Caption>
-						{sensor.protocol === 1 || sensor.protocol === 3 ? <ItemG xs={12}>
+
+						<ItemG xs={12}>
 							<Caption>{t('registries.fields.protocols.mqtt')}</Caption>
 							<TextF
 								id={'mqtt-publish'}
 								fullWidth
 								readOnly
 								label={''}
-								value={`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`}
+								value={`v1/${sensor?.registry?.org?.uuname}/location/europe/registries/${sensor?.registry?.uuname}/devices/${sensor?.uuname}/publish`}
 								InputProps={{
 									endAdornment:
 										<ItemG>
 											<IconButton onClick={() => {
 												s('snackbars.urlCopied')
-												copyToClipboard(`v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`)
+												copyToClipboard(`v1/${sensor?.registry?.org?.uuname}/location/europe/registries/${sensor?.registry?.uuname}/devices/${sensor?.uuname}/publish`)
 											}
 											}>
 												<ContentCopy />
@@ -67,21 +68,21 @@ const SensorProtocol = (props) => {
 										</ItemG>
 								}}
 							/>
-						</ItemG> : null}
-						{sensor.protocol === 2 || sensor.protocol === 3 ? <ItemG xs={12}>
+						</ItemG>
+						<ItemG xs={12}>
 							<Caption>{t('registries.fields.protocols.http')} POST</Caption>
 							<TextF
 								id={'htpp-publish'}
 								fullWidth
 								label={''}
 								readOnly
-								value={`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`}
+								value={`https://iotdevice.senti.cloud/v1/${sensor?.registry?.org?.uuname}/location/europe/registries/${sensor?.registry?.uuname}/devices/${sensor?.uuname}/publish`}
 								InputProps={{
 									endAdornment:
 										<ItemG>
 											<IconButton onClick={() => {
 												s('snackbars.urlCopied')
-												copyToClipboard(`https://iotdevice.senti.cloud/v1/${sensor.customer_uuid}/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`)
+												copyToClipboard(`https://iotdevice.senti.cloud/v1/${sensor?.registry?.org?.uuname}/location/europe/registries/${sensor?.registry?.uuname}/devices/${sensor?.uuname}/publish`)
 											}
 											}>
 												<ContentCopy />
@@ -90,7 +91,7 @@ const SensorProtocol = (props) => {
 								}
 								}
 							/>
-						</ItemG> : null}
+						</ItemG>
 					</ItemG>
 					<ItemG xs={12}>
 						<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
