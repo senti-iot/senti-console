@@ -4,6 +4,8 @@ import { createRegistry } from 'variables/dataRegistry'
 import CreateRegistryForm from 'components/Registry/CreateRegistryForm'
 import { getRegistries } from 'redux/data'
 import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks'
+import { camelCase } from 'lodash'
+import { shortHashGen } from 'variables/functions'
 
 const CreateRegistry = props => {
 	//Hooks
@@ -17,6 +19,7 @@ const CreateRegistry = props => {
 	const org = useSelector(state => state.settings.user.org)
 	//State
 	const [registry, setRegistry] = useState({
+		uuname: "",
 		name: "",
 		region: "europe",
 		protocol: 0,
@@ -57,7 +60,16 @@ const CreateRegistry = props => {
 	//Handlers
 
 	const handleChange = (what) => e => {
-		setRegistry({ ...registry, [what]: e.target.value })
+		if (what === 'name') {
+			setRegistry({
+				...registry,
+				[what]: e.target.value,
+				uuname: camelCase(e.target.value) + '-' + shortHashGen(e.target.value)
+			})
+		}
+		else {
+			setRegistry({ ...registry, [what]: e.target.value })
+		}
 	}
 	const handleOrgChange = newOrg => {
 		setStateOrg(newOrg)

@@ -73,7 +73,12 @@ const SensorDetails = (props) => {
 
 			}
 			subheader={<ItemG container alignItems={'center'}>
-				<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{sensor.uuid}
+				<ItemG xs={12}>
+					<Caption>{t('registries.fields.uuid')}:</Caption>&nbsp;{sensor.uuid}
+				</ItemG>
+				<ItemG xs={12}>
+					<Caption>{t('devices.fields.uuname')}:</Caption>&nbsp;{sensor.uuname}
+				</ItemG>
 			</ItemG>}
 			content={
 				<ItemG container spacing={3}>

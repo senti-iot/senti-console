@@ -2,7 +2,7 @@ import { Fade } from '@material-ui/core';
 import { CircularLoader, GridContainer, ItemGrid, DeleteDialog } from 'components';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { DataUsage, DeviceHub } from 'variables/icons';
+import { DataUsage, DeviceHub, Wifi } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
@@ -11,6 +11,7 @@ import RegistryDetails from './RegistryCards/RegistryDetails';
 import RegistryDevices from './RegistryCards/RegistryDevices';
 import { deleteRegistry } from 'variables/dataRegistry';
 import { useLocalization, useSnackbar, useHistory, useMatch, useLocation } from 'hooks';
+import RegistryProtocol from 'views/Registries/RegistryProtocol'
 
 
 const Registry = props => {
@@ -78,7 +79,8 @@ const Registry = props => {
 			const tabs = () => {
 				return [
 					{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-					{ id: 1, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
+					{ id: 1, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` },
+					{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: `#protocol` }
 				]
 			}
 			setBC('registry', registry.name)
@@ -178,6 +180,11 @@ const Registry = props => {
 							registry={registry}
 							devices={registry.devices}
 							t={t}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'protocol'}>
+						<RegistryProtocol
+							registry={registry}
 						/>
 					</ItemGrid>
 				</GridContainer></Fade>
