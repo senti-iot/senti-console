@@ -59,6 +59,13 @@ const CreateRegistryForm = props => {
 			]}
 		/>
 	}
+	const testUuname = () => {
+		if (registry.uuname.length > 0) {
+			if (registry.uuname.includes(' '))
+				return true
+		}
+		return false
+	}
 
 	return (
 		<GridContainer>
@@ -73,6 +80,17 @@ const CreateRegistryForm = props => {
 								value={registry.name}
 								autoFocus
 							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<TextF
+								error={testUuname()}
+								id={'sensorName'}
+								label={t('devices.fields.uuname')}
+								onChange={handleChange('uuname')}
+								value={registry.uuname}
+								autoFocus
+							/>
+
 						</ItemGrid>
 						<ItemGrid xs={12}>
 							<TextF

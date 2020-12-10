@@ -59,23 +59,35 @@ const RegistryDetails = props => {
 
 			}
 			// subheader={<ItemG container alignItems={'center'}>
-			// 	<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{registry.uuid}
+
 			// </ItemG>}
 			content={
 				<ItemG container >
 
-					<ItemG xs={12} md>
+					{/* <ItemG xs={12} md>
 						<Caption>{t('registries.fields.uuid')}</Caption>
 						<Info>{registry.uuid}</Info>
+					</ItemG> */}
+					<ItemG xs={6}>
+						<Caption>{t('registries.fields.uuid')}:</Caption>
+						<Info>
+							{registry.uuid}
+						</Info>
+					</ItemG>
+					<ItemG xs={6}>
+						<Caption>{t('devices.fields.uuname')}:</Caption>
+						<Info>
+							{registry.uuname}
+						</Info>
 					</ItemG>
 					<ItemG xs={12} md>
 						<Caption>{t('registries.fields.protocol')}</Caption>
 						<Info>{renderProtocol(registry.protocol)}</Info>
 					</ItemG>
-					<ItemG xs={12}>
+					{registry.description ? <ItemG xs={12}>
 						<Caption>{t('registries.fields.description')}</Caption>
 						<Info>{registry.description}</Info>
-					</ItemG>
+					</ItemG> : null}
 					<ItemG xs={12}>
 						<Caption>{t('orgs.fields.name')}</Caption>
 						<Info>

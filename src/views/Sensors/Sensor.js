@@ -40,7 +40,7 @@ const Sensor = props => {
 	const loading = useSelector(state => !state.data.gotSensor)
 	//State
 	const [openDelete, setopenDelete] = useState(false)
-	const [sensorMessages, setSensorMessages] = useState(null)
+	const [sensorMessages, setSensorMessages] = useState([])
 
 	//Const
 	const { setTabs, setBC, setHeader } = props

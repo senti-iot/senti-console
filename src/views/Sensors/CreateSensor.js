@@ -5,6 +5,8 @@ import CreateSensorForm from 'components/Sensors/CreateSensorForm'
 import { getAddressByLocation } from 'variables/dataDevices'
 import { getSensors } from 'redux/data'
 import { useLocalization, useHistory, useLocation, useEventListener, useDispatch, useSnackbar, useSelector } from 'hooks'
+import { camelCase } from 'lodash'
+import { shortHashGen } from 'variables/functions'
 
 const CreateSensor = props => {
 	//Hooks
@@ -25,6 +27,7 @@ const CreateSensor = props => {
 	// const [openCF, setOpenCF] = useState({ open: false, where: null })
 	const [select, setSelect] = useState({ dt: { name: "" }, reg: { name: "" } })
 	const [stateSensor, setSensor] = useState({
+		uuname: '',
 		lat: 56.2639,
 		lng: 9.5018,
 		address: '',
@@ -82,10 +85,20 @@ const CreateSensor = props => {
 		})
 	}
 	const handleChange = (what) => e => {
-		setSensor({
-			...stateSensor,
-			[what]: e.target.value
-		})
+		if (what === 'name') {
+			setSensor({
+				...stateSensor,
+				[what]: e.target.value,
+				uuname: camelCase(e.target.value) + '-' + shortHashGen(e.target.value)
+			})
+		}
+		else {
+
+			setSensor({
+				...stateSensor,
+				[what]: e.target.value
+			})
+		}
 
 	}
 	//#endregion
@@ -132,75 +145,7 @@ const CreateSensor = props => {
 	}
 
 	//#endregion
-	//#region Inbound Function
 
-	// const handleRemoveInboundFunction = index => e => {
-
-	// 	let mtd = sensorMetadata.inbound
-	// 	mtd = mtd.filter((v, i) => index !== i)
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		inbound: mtd
-	// 	})
-	// }
-	// const handleAddInboundFunction = e => {
-	// 	let mtd = sensorMetadata.inbound
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
-	// 	})
-	// }
-
-	//#endregion
-
-	//#region Outbound function
-
-	// const handleAddKey = e => {
-	// 	let otbd = sensorMetadata.outbound
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		outbound: [...otbd, { key: '', nId: -1, type: 0 }]
-	// 	})
-	// }
-
-	// const handleRemoveKey = (index) => e => {
-	// 	let otbd = sensorMetadata.outbound
-	// 	let newMetadata = otbd.filter((v, i) => i !== index)
-
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		outbound: newMetadata
-	// 	})
-	// }
-
-	// const handleRemoveFunction = (i) => e => {
-	// 	let otbd = sensorMetadata.outbound
-	// 	otbd[i].nId = -1
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		outbound: otbd
-	// 	})
-	// }
-
-	// const handleChangeKey = (v, i) => e => {
-	// 	let otbd = sensorMetadata.outbound
-	// 	otbd[i].key = e.target.value
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		outbound: otbd
-	// 	})
-	// }
-
-	// const handleChangeType = index => e => {
-	// 	let otbd = sensorMetadata.outbound
-	// 	otbd[index].type = e.target.value
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		outbound: otbd
-	// 	})
-	// }
-
-	//#endregion
 
 	//#region Metadata
 
@@ -208,23 +153,11 @@ const CreateSensor = props => {
 		let mtd = [...sensorMetadata]
 		mtd.push({ key: "", value: "" })
 		setSensorMetadata(mtd)
-		// this.setState({
-		// 	sensorMetadata: {
-		// 		...this.state.sensorMetadata,
-		// 		metadata: mtd
-		// 	}
-		// })
 	}
 
 	const handleRemoveMtdKey = index => e => {
 		let newMetadata = sensorMetadata.filter((v, i) => i !== index)
 		setSensorMetadata(newMetadata)
-		// this.setState({
-		// 	sensorMetadata: {
-		// 		...this.state.sensorMetadata,
-		// 		metadata: newMetadata
-		// 	}
-		// })
 	}
 
 	const handleChangeMetadataKey = (i) => e => {

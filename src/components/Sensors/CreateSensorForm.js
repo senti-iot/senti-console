@@ -247,7 +247,13 @@ const CreateSensorForm = props => {
 
 	// }
 
-
+	const testUuname = () => {
+		if (sensor.uuname.length > 0) {
+			if (sensor.uuname.includes(' '))
+				return true
+		}
+		return false
+	}
 
 	return (
 		<GridContainer>
@@ -275,6 +281,17 @@ const CreateSensorForm = props => {
 									label={t('devices.fields.name')}
 									onChange={handleChange('name')}
 									value={sensor.name}
+									autoFocus
+								/>
+
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<TextF
+									error={testUuname()}
+									id={'sensorName'}
+									label={t('devices.fields.uuname')}
+									onChange={handleChange('uuname')}
+									value={sensor.uuname}
 									autoFocus
 								/>
 
