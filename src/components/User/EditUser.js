@@ -97,6 +97,7 @@ const EditUser = props => {
 			let gRoles = async () => await getUserRole()
 			gRoles()
 			setSelectedRole(eUser.role.uuid)
+			console.log(eUser)
 			setUser({
 				...eUser,
 			})
@@ -207,7 +208,10 @@ const EditUser = props => {
 			userName: user.email,
 		}
 		if (openExtended) {
+			newUser.aux = newUser.aux ? newUser.aux : { }
+			newUser.aux.senti = newUser.aux.senti ? newUser.aux.senti : {}
 			newUser.aux.senti.extendedProfile = extended
+
 		}
 		if (handleValidation()) {
 			await editUser(newUser).then(rs => {
