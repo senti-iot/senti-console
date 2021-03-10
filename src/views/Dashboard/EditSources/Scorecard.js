@@ -249,7 +249,6 @@ const ESScorecard = props => {
 										</ItemG>
 										<ItemG>
 											<DSelect
-												simple
 												value={ds.dataKey}
 												onChange={handleEditDataKey(i)}
 												menuItems={sensor ?
