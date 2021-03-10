@@ -212,7 +212,6 @@ const ESMSChart = (props) => {
 										</ItemG>
 										<ItemG>
 											<DSelect
-												simple
 												value={g.dataSource.dataKey}
 												onChange={handleEditDataKey}
 												menuItems={deviceType ?

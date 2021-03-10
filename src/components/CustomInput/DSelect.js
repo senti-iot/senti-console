@@ -51,13 +51,14 @@ const DSelect = props => {
 				error={error}
 				onChange={onChange}
 				input={<OutlinedInput labelWidth={getLabelWidth()} variant={'outlined'} />}
+				style={{ width: fullWidth ? null : 230 }}
 				onKeyPress={onKeyPress}
 			>
 				{!simple && menuItems.map((m, i) => {
-					return <MenuItem key={i} value={m.value}>
+					return <MenuItem key={i} value={m.value} >
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
-							<ItemG xs>{m.label}</ItemG>
+							<ItemG xs style={{ overflow: 'hidden', textOverflow: fullWidth ? null : 'ellipsis' }}>{m.label}</ItemG>
 							{!leftIcon ? <ItemG>{m.icon ? m.icon : null}</ItemG> : null}
 						</ItemG>
 					</MenuItem>
