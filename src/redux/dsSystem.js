@@ -178,7 +178,7 @@ export const repairDashboard = (dashboard) => {
 		newD = { ...dashboard }
 		user.internal.senti.dashboards[user.internal.senti.dashboards.findIndex(f => f.id === newD.id)] = newD
 		dispatch(saveSnackbar('snackbars.repairedOldDashboards'))
-		dispatch(saveOnServ(user))
+		dispatch(await saveOnServ(user))
 		dispatch(await getNSettings())
 
 	}
@@ -338,7 +338,7 @@ export const removeDashboard = id => {
 		ds = user.internal.senti.dashboards
 		ds = ds.filter(f => f.id !== id)
 		user.internal.senti.dashboards = ds
-		dispatch(saveOnServ(user))
+		dispatch(await saveOnServ(user))
 		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.deletedSuccess'))
 		dispatch({
@@ -376,7 +376,7 @@ export const importDashboard = (iDash) => {
 			user.internal.senti.dashboards = []
 			user.internal.senti.dashboards.push(newD)
 		}
-		dispatch(saveOnServ(user))
+		dispatch(await saveOnServ(user))
 		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.importedSuccess'))
 	}
@@ -402,7 +402,7 @@ export const saveDashboard = (edit) => {
 			}
 		}
 		// dispatch()
-		dispatch(saveOnServ(user))
+		dispatch(await saveOnServ(user))
 		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.savedSuccess'))
 

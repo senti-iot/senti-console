@@ -202,13 +202,7 @@ const ResetPassword = props => {
 
 							</ItemG>
 							<ItemG xs={12} container justify={'center'}>
-								<T
-									className={
-										classes.loginButton +
-										' ' +
-										classes.needAccount
-									}
-								>
+								<T className={classes.loginButton + ' ' + classes.needAccount}>
 									{params.token
 										? t('users.fields.confirmPass')
 										: t(
@@ -222,14 +216,9 @@ const ResetPassword = props => {
 										{params.token ? (
 											<Success
 												className={
-													classes.loginButton +
-													' ' +
-													classes.needAccount
-												}
+													classes.loginButton + ' ' + classes.needAccount}
 											>
-												{t(
-													'dialogs.login.passwordReseted'
-												)}
+												{t('dialogs.login.passwordReseted')}
 											</Success>
 										) : null}
 									</Collapse>

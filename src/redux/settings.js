@@ -72,7 +72,7 @@ export const resetSettings = () => {
 		dispatch(await getNSettings())
 	}
 }
-export const saveOnServ = (user) => {
+export const saveOnServ = async (user) => {
 	return async (dispatch) => {
 		var saved = await setInternal(user.internal, user.uuid)
 		dispatch({

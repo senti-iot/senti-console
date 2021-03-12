@@ -443,7 +443,7 @@
             "message": "Data details:"
         },
         "login": {
-            "passwordReseted": "Your password resetted!",
+            "passwordReseted": "Your password has been reset!",
             "resetPassRequestMessage": "An E-mail sent with instructions on how to reset your password!",
             "resetPasswordMessage": "Reset your password by entering your E-mail"
         },
