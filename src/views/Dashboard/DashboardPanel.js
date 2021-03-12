@@ -63,6 +63,7 @@ const DashboardPanel = (props) => {
 	const handleCloseDashboard = () => setOpenDashboard(false)
 
 
+
 	const gridCoords = (type) => {
 		switch (type) {
 			case 0:
