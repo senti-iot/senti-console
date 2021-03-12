@@ -110,9 +110,13 @@ const HeaderLinks = props => {
 				id='menu-appbar'
 				anchorEl={anchorProfile}
 				className={classes.dropdownn}
-				transformOrigin={{
+				anchorOrigin={{
 					vertical: 'bottom',
-					horizontal: 'left',
+					horizontal: 'right',
+				}}
+				transformOrigin={{
+					vertical: 'top',
+					horizontal: 'right',
 				}}
 				open={openProfile}
 				onClose={handleProfileClose}
