@@ -32,7 +32,10 @@ const EditDeviceType = props => {
 	const [sensorMetadata, setSensorMetadata] = useState(null)
 	const [select, setSelect] = useState(null)
 	const [openOrg, setOpenOrg] = useState(false)
-
+	const [decoder, setDecoder] = useState({
+		id: null,
+		name: ""
+	})
 	//Const
 	const { setHeader, setBC, setTabs } = props
 
@@ -58,6 +61,7 @@ const EditDeviceType = props => {
 	useEffect(() => {
 		if (devicetype && orgs.length > 0) {
 			setDeviceType(devicetype)
+			setDecoder(devicetype.decoder ? cloudfunctions[cloudfunctions.findIndex(f => f.id === devicetype.decoder)] : { id: null, name: "" })
 			setSensorMetadata({
 				metadata: devicetype.metadata ? devicetype.metadata : [],
 				outbound: devicetype.outbound ? devicetype.outbound : [],
@@ -75,7 +79,7 @@ const EditDeviceType = props => {
 			})
 			setBC('createdevicetype')
 		}
-	}, [devicetype, params.id, location.prevURL, orgs, setBC, setHeader, setTabs])
+	}, [devicetype, params.id, location.prevURL, orgs, setBC, setHeader, setTabs, cloudfunctions])
 
 	//handlers
 
@@ -258,16 +262,28 @@ const EditDeviceType = props => {
 			where: null
 		})
 	}
+	const handleRemoveDecoder = () => {
+		setDecoder({
+			id: null,
+			name: ""
+		})
+	}
 	const handleChangeFunc = (o, where) => {
-		let metadata = sensorMetadata[where]
-		metadata[select[where]].nId = o.id
+		if (where === 'decoder') {
+			console.log(o, where)
+			setDecoder(o)
+		}
+		else {
+			let metadata = sensorMetadata[where]
+			metadata[select[where]].nId = o.id
+			setSensorMetadata({
+				...sensorMetadata,
+				[where]: metadata
+			})
+		}
 		setOpenCF({
 			open: false,
 			where: null
-		})
-		setSensorMetadata({
-			...sensorMetadata,
-			[where]: metadata
 		})
 	}
 	//#endregion
@@ -277,6 +293,7 @@ const EditDeviceType = props => {
 	const updtDeviceType = async () => {
 		let nDeviceType = {
 			...deviceType,
+			decoder: decoder.id,
 			outbound: sensorMetadata.outbound,
 			inbound: sensorMetadata.inbound,
 			metadata: sensorMetadata.metadata,
@@ -284,6 +301,7 @@ const EditDeviceType = props => {
 		}
 		return await updateDeviceType(nDeviceType)
 	}
+
 	const handleCreate = async () => {
 		let rs = await updtDeviceType()
 		if (rs) {
@@ -322,6 +340,7 @@ const EditDeviceType = props => {
 
 
 			deviceType={deviceType}
+			decoder={decoder}
 			sensorMetadata={sensorMetadata}
 			cfunctions={cloudfunctions}
 			handleOpenFunc={handleOpenFunc}
@@ -344,6 +363,7 @@ const EditDeviceType = props => {
 			handleRemoveMtdKey={handleRemoveMtdKey}
 			handleAddMetadataKey={handleAddMetadataKey}
 
+			handleRemoveDecoder={handleRemoveDecoder}
 			handleChange={handleChange}
 			handleCreate={handleCreate}
 

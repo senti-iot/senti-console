@@ -54,8 +54,29 @@ const DeviceTypeCloudFunctions = props => {
 			content={
 				loading ? <CircularLoader /> : <ItemG container spacing={3}>
 					<ItemG xs={12}>
+						<Info>{t('devicetypes.fields.decoder')}</Info>
+						{deviceType.decoder ? <Table>
+							<TableHead>
+								<TableRow>
+									<TableCell>{t('cloudfunctions.fields.types.decoder')}</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								<TableRow >
+									<TableCell>
+										<Link to={{ pathname: `/function/${cf[cf.findIndex(f => f.id === deviceType.decoder)].uuid}`, prevURL: `/devicetype/${deviceType.uuid}` }}>
+											{cf[cf.findIndex(f => f.id === deviceType.decoder)]?.name}
+										</Link>
+									</TableCell>
+
+								</TableRow>
+
+							</TableBody>
+						</Table> : <Info>{t('no.cloudfunction')}</Info>}
+					</ItemG>
+					<ItemG xs={12}>
 						<Info>{t('cloudfunctions.fields.inboundfunc')}</Info>
-						{cfi ? <Table>
+						{cfi.length > 0 ? <Table>
 							<TableHead>
 								<TableRow>
 									<TableCell>{t('cloudfunctions.fields.types.inbound')}</TableCell>
@@ -65,8 +86,8 @@ const DeviceTypeCloudFunctions = props => {
 								{cfi.map((s, i) => {
 									return <TableRow key={i + 'outbound'}>
 										<TableCell>
-											<Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
-												{cf[cf.findIndex(f => f.id === s.nId)] ? cf[cf.findIndex(f => f.id === s.nId)].name : s.nId}
+											<Link to={{ pathname: `/function/${cf[cf.findIndex(f => f.id === s.nId)].uuid}`, prevURL: `/devicetype/${deviceType.uuid}` }}>
+												{cf[cf.findIndex(f => f.id === s.nId)]?.name}
 											</Link>
 										</TableCell>
 
@@ -77,7 +98,7 @@ const DeviceTypeCloudFunctions = props => {
 					</ItemG>
 					<ItemG xs={12}>
 						<Info>{t('cloudfunctions.fields.keys')}</Info>
-						{cfo ? <Table>
+						{cfo.length > 0 ? <Table>
 							<TableHead>
 								<TableRow>
 									<TableCell>{t('cloudfunctions.fields.key')}</TableCell>
@@ -92,7 +113,7 @@ const DeviceTypeCloudFunctions = props => {
 											{s.key}
 										</TableCell>
 										<TableCell>
-											{s.nId > 0 ? <Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>
+											{s.nId > 0 ? <Link to={{ pathname: `/function/${cf[cf.findIndex(f => f.id === s.nId)].uuid}`, prevURL: `/devicetype/${deviceType.id}` }}>
 												{cf[cf.findIndex(f => f.id === s.nId)]?.name}
 											</Link> : '-'}
 										</TableCell>

@@ -34,6 +34,10 @@ const CreateDeviceType = props => {
 	const [select, setSelect] = useState(null)
 	const [stateOrg, setStateOrg] = useState(org)
 	const [openOrg, setOpenOrg] = useState(false)
+	const [decoder, setDecoder] = useState({
+		id: null,
+		name: ""
+	})
 	//Const
 	const { setHeader, setBC, setTabs } = props
 
@@ -234,17 +238,31 @@ const CreateDeviceType = props => {
 			where: null
 		})
 	}
+	const handleRemoveDecoder = () => {
+		setDecoder({
+			id: null,
+			name: ""
+		})
+
+	}
 	const handleChangeFunc = (o, where) => {
-		let metadata = sensorMetadata[where]
-		metadata[select[where]].nId = o.id
+		if (where === 'decoder') {
+			console.log(o, where)
+			setDecoder(o)
+		}
+		else {
+			let metadata = sensorMetadata[where]
+			metadata[select[where]].nId = o.id
+			setSensorMetadata({
+				...sensorMetadata,
+				[where]: metadata
+			})
+		}
 		setOpenCF({
 			open: false,
 			where: null
 		})
-		setSensorMetadata({
-			...sensorMetadata,
-			[where]: metadata
-		})
+
 	}
 	//#endregion
 
@@ -258,6 +276,7 @@ const CreateDeviceType = props => {
 		})
 		let newDeviceType = {
 			...deviceType,
+			decoder: decoder.id,
 			inbound: sensorMetadata.inbound,
 			outbound: sensorMetadata.outbound,
 			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
@@ -283,12 +302,13 @@ const CreateDeviceType = props => {
 	return (
 		<CreateDeviceTypeForm
 			org={stateOrg}
+			decoder={decoder}
 			handleOrgChange={handleOrgChange}
 			openOrg={openOrg}
 			handleOpenOrg={handleOpenOrg}
 			handleCloseOrg={handleCloseOrg}
 
-
+			handleRemoveDecoder={handleRemoveDecoder}
 			deviceType={deviceType}
 			sensorMetadata={sensorMetadata}
 			cfunctions={cloudfunctions}

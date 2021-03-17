@@ -1,5 +1,5 @@
 import React, { Fragment, } from 'react'
-import { Button, Divider, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import { Button, Divider, Fade, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, T, DSelect } from 'components'
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
@@ -23,7 +23,7 @@ const CreateDeviceTypeForm = props => {
 		// handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChangeKey, handleRemoveKey, handleRemoveFunction,
 		handleAddKey, openCF, handleCloseFunc, handleChangeFunc, handleChange, org, handleOrgChange, deviceType,
-		handleCreate, goToDeviceTypes, handleChangeType, handleCloseOrg, handleOpenOrg,
+		handleCreate, goToDeviceTypes, handleChangeType, handleCloseOrg, handleOpenOrg, decoder, handleRemoveDecoder,
 		openOrg } = props
 
 
@@ -33,45 +33,36 @@ const CreateDeviceTypeForm = props => {
 
 	//Handlers
 
-
+	const renderDecoder = () => {
+		console.log('Decoder', decoder)
+		return <Fragment>
+			<ItemGrid xs={12}>
+				<TextF
+					id={'decoder-function'}
+					label={t("devicetypes.fields.decoder")}
+					onClick={handleOpenFunc(0, 'decoder')}
+					value={cfunctions.findIndex(f => f.id === decoder.id) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === decoder.id)].name : ""}
+					readOnly
+					InputProps={{
+						endAdornment: <Fade in={decoder.id ? true : false}>
+							<InputAdornment classes={{ root: classes.IconEndAd }}>
+								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+									<IconButton
+										className={classes.smallAction}
+										onClick={e => { e.stopPropagation(); handleRemoveDecoder() }}
+									>
+										<Close />
+									</IconButton>
+								</Tooltip>
+							</InputAdornment>
+						</Fade>
+					}}
+				/>
+			</ItemGrid>
+		</Fragment>
+	}
 	const renderMetadata = () => {
 		return <Fragment>
-			{/* <T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
-			{sensorMetadata.metadata.map((m, i) => {
-				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
-					<TextF
-						id={'metadata-key' + i}
-						label={t('cloudfunctions.fields.metadata.key')}
-						onChange={handleChangeMetadataKey(i)}
-						value={m.key}
-						readOnly
-						InputProps={{
-							style: { marginRight: 8 }
-						}}
-					/>
-					<TextF
-						id={'metadata-value' + i}
-						label={t('cloudfunctions.fields.metadata.value')}
-						onChange={handleChangeMetadata(i)}
-						value={m.value}
-						readOnly
-						InputProps={{
-							style: { marginRight: 8 }
-						}}
-					/>
-					<Tooltip title={t('tooltips.devices.removeDataField')}>
-						<IconButton
-							style={{ marginTop: 6 }}
-							onClick={handleRemoveMtdKey(i)}						>
-							<Close />
-						</IconButton>
-					</Tooltip>
-				</ItemGrid>
-			})} */}
-			{/* <ItemGrid xs={12}>
-				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
-			</ItemGrid> */}
-			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
 				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'}>
 					<TextF
@@ -218,6 +209,9 @@ const CreateDeviceTypeForm = props => {
 								rows={3}
 							/>
 						</ItemGrid>
+						<Divider style={{ margin: "16px" }} />
+						<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
+						{renderDecoder()}
 						<Divider style={{ margin: "16px" }} />
 						{renderMetadata()}
 						<Divider style={{ margin: "16px" }} />

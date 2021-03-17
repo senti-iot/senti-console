@@ -138,7 +138,8 @@
                 "external": "Udvendig",
                 "function": "JavaScript funktion",
                 "inbound": "Funktion ved modtagelse af data",
-                "outbound": "Cloud funktion"
+                "outbound": "Cloud funktion",
+				"decoder": "Funktion til afkodning af data"
             }
         },
         "pageTitle": "Cloud funktioner"
@@ -348,6 +349,7 @@
         },
         "createDeviceType": "Opret Enhedstype",
         "fields": {
+			"decoder": "Dekoder funktion",
             "name": "Navn",
             "structure": {
                 "key": "Key",

@@ -138,7 +138,8 @@
                 "external": "External call",
                 "function": "JavaScript function",
                 "inbound": "Function on Receiving data",
-                "outbound": "Cloud Function"
+                "outbound": "Cloud Function",
+				"decoder": "Function for decoding data"
             }
         },
         "pageTitle": "Cloud functions"
@@ -348,7 +349,8 @@
         },
         "createDeviceType": "Create device type",
         "fields": {
-            "name": "name",
+			"decoder": "Decoder function",
+            "name": "Name",
             "structure": {
                 "key": "Key",
                 "name": "Structure",
