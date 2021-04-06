@@ -2,8 +2,8 @@ import React, { Fragment, useState } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { Dialog, AppBar, Toolbar, Hidden, IconButton, ButtonBase, Paper, DialogContent, DialogActions, DialogTitle, Button } from '@material-ui/core';
-import { ItemG, T, CircularLoader, SlideT } from 'components';
-import { Close, Edit, ContentCopy } from 'variables/icons';
+import { ItemG, T, CircularLoader, SlideT, DeleteDialog } from 'components';
+import { Close, Edit, ContentCopy, Dashboard } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/components/dashboards/dashboardStyles';
 import GaugeSData from 'views/Charts/GaugeSData';
@@ -45,6 +45,7 @@ const DashboardPanel = (props) => {
 	//State
 	const [openDashboard, setOpenDashboard] = useState(autoDashboard ? autoDashboard === d.id ? true : false : false)
 	const [openShare, setOpenShare] = useState(false)
+	const [deleteDashboard, setDeleteDashboard] = useState(false)
 
 	//Const
 	let wl = getWL()
@@ -92,7 +93,12 @@ const DashboardPanel = (props) => {
 		copyToClipboard(str)
 		s('snackbars.copied')
 	}
-
+	const handleCloseDeleteDialog = () => {
+		setDeleteDashboard(false)
+	}
+	const handleOpenDeleteDialog = () => {
+		setDeleteDashboard(true)
+	}
 	const handleDeleteDashboard = () => {
 		dispatch(removeDashboard(d.id))
 	}
@@ -100,7 +106,21 @@ const DashboardPanel = (props) => {
 	const handleEditDashboard = () => {
 		handleOpenEDT(d)
 	}
-
+	const renderDeleteDashboard = () => {
+		if (d) {
+			return <DeleteDialog
+				t={t}
+				title={'dialogs.delete.title.dashboard'}
+				message={'dialogs.delete.message.dashboard'}
+				open={deleteDashboard}
+				handleCloseDeleteDialog={handleCloseDeleteDialog}
+				icon={<Dashboard />}
+				handleDelete={handleDeleteDashboard}
+				data={[d]}
+				dataKey={'name'}
+			/>
+		}
+	}
 	const renderShareDashboard = () => {
 		if (d) {
 			const encrypted = JSON.stringify(d, null, 4)
@@ -321,9 +341,10 @@ const DashboardPanel = (props) => {
 				{renderDashboard()}
 			</ThemeProvider>
 			{renderShareDashboard()}
+			{renderDeleteDashboard()}
 			<ItemG xs={12} md={4} lg={3} xl={2}>
 				<DashboardCard
-					deleteDashboard={handleDeleteDashboard}
+					deleteDashboard={handleOpenDeleteDialog}
 					handleOpenDashboard={handleOpenDashboard}
 					handleEditDashboard={handleEditDashboard}
 					handleOpenShare={handleOpenShare}

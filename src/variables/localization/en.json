@@ -406,7 +406,8 @@
                 "token": "Are you sure you want to delete this API token?",
                 "tokens": "Are you sure you want to delete these API tokens:",
                 "user": "Are you sure you want to delete this user ( %{user} ) ?",
-                "users": "Are you sure you want to delete these users:"
+                "users": "Are you sure you want to delete these users:",
+				"dashboard": "Are you sure you want to delete this dashboard?"
             },
             "title": {
                 "cloudfunction": "Delete cloud function?",
@@ -427,7 +428,8 @@
                 "token": "Delete API token?",
                 "tokens": "Delete API tokens?",
                 "user": "Delete user?",
-                "users": "Delete users?"
+                "users": "Delete users?",
+				"dashboard":"Delete dashboard?"
             },
             "warning": {
                 "org": "**This cannot be undone**.You will remove this Organisation!",

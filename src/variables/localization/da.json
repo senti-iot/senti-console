@@ -406,7 +406,8 @@
                 "token": "Er du sikker på du ønsker at slette denne API token?",
                 "tokens": "Er du sikker på du ønsker at slette disse API tokens:",
                 "user": "Er du sikker på du ønsker at slette denne bruger ( %{user} ) ?",
-                "users": "Er du sikker på du ønsker at slette disse brugere:"
+                "users": "Er du sikker på du ønsker at slette disse brugere:",
+				"dashboard": "Er du sikker på du ønsker at slette den dashboard ?"
             },
             "title": {
                 "cloudfunction": "Slet cloud funktion?",
@@ -427,7 +428,8 @@
                 "token": "Slet API token?",
                 "tokens": "Slet API tokens?",
                 "user": "Slet bruger?",
-                "users": "Slet brugere?"
+                "users": "Slet brugere?",
+				"dashboard":"Slet dashboard?"
             },
             "warning": {
                 "org": "**Dette kan ikke fortrydes**.",
