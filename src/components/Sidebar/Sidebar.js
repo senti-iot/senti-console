@@ -175,13 +175,13 @@ const Sidebar = (props) => {
 			className={classNames(classes.drawer, {
 				[classes.drawerOpen]: smallMenu,
 				[classes.drawerPersClose]: pers && !smallMenu,
-				[classes.drawerClose]: !pers && !smallMenu,
+				[classes.drawerClose]: (!pers && !smallMenu),
 			})}
 			classes={{
 				paper: classNames({
 					[classes.drawerOpen]: smallMenu,
 					[classes.drawerPersClose]: pers && !smallMenu,
-					[classes.drawerClose]: !pers && !smallMenu,
+					[classes.drawerClose]: (!pers && !smallMenu),
 					[classes.drawerPaper]: true,
 				}),
 			}}
