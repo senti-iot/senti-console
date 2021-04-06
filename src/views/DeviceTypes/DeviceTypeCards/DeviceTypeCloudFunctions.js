@@ -16,7 +16,7 @@ const DeviceTypeCloudFunctions = props => {
 	const t = useLocalization()
 
 	//Redux
-	const cloudfunctions = useSelector(state => state.data.functions)
+	const cf = useSelector(state => state.data.functions)
 	const loading = useSelector(state => !state.data.gotfunctions)
 
 	//State
@@ -25,7 +25,6 @@ const DeviceTypeCloudFunctions = props => {
 	const { deviceType } = props
 	let cfi = deviceType.inbound
 	let cfo = deviceType.outbound
-	let cf = cloudfunctions
 
 	//useCallbacks
 
@@ -84,6 +83,7 @@ const DeviceTypeCloudFunctions = props => {
 							</TableHead>
 							<TableBody>
 								{cfi.map((s, i) => {
+									console.log('s', cf)
 									return <TableRow key={i + 'outbound'}>
 										<TableCell>
 											<Link to={{ pathname: `/function/${cf[cf.findIndex(f => f.id === s.nId)].uuid}`, prevURL: `/devicetype/${deviceType.uuid}` }}>

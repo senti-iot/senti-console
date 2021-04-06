@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DataUsage, CloudUpload, /* StorageIcon */ } from 'variables/icons';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
-import { getDeviceTypeLS } from 'redux/data';
+import { getDeviceTypeLS, getFunctions } from 'redux/data';
 import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
 // import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
@@ -58,6 +58,7 @@ const DeviceType = props => {
 		const getDT = async () => {
 			if (match) {
 				let id = match.params.id
+				await dispatch(await getFunctions(true))
 				await dispatch(await getDeviceTypeLS(id))
 			}
 		}
