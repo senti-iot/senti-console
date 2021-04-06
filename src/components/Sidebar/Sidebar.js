@@ -264,7 +264,10 @@ const Sidebar = (props) => {
 					</Tooltip>
 				})}
 			</List>
-			<div style={{ position: 'absolute', bottom: 20, height: 100, right: 30 }}>
+			<div className={classNames({
+				[classes.footerIconClosed]: !smallMenu,
+				[classes.footerIcon]: true,
+			})}>
 				<a href="https://senti.io/" target="_new"><PoweredByIcon /></a>
 			</div>
 		</Drawer>

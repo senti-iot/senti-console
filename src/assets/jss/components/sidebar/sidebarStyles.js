@@ -12,6 +12,19 @@ import { getContrast } from 'variables/functions'
 import { makeStyles } from '@material-ui/styles'
 
 const sidebarStyle = makeStyles(theme => ({
+	footerIcon: {
+		// marginTop: 'auto',
+		// marginLeft: 'auto',
+		// marginRight: 10,
+		position: 'absolute',
+		bottom: 20,
+		height: 100,
+		right: 30,
+		transition: "all 0.22s cubic-bezier(0.685, 0.0473, 0.346, 1)"
+	},
+	footerIconClosed: {
+		right: 10
+	},
 	nested: {
 		paddingLeft: `${theme.spacing(2)}px !important`,
 	},
@@ -40,6 +53,7 @@ const sidebarStyle = makeStyles(theme => ({
 		border: 'none',
 	},
 	drawer: {
+		height: '100%',
 		top: 70,
 		width: drawerWidth,
 		[theme.breakpoints.down('sm')]: {
@@ -54,7 +68,7 @@ const sidebarStyle = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			width: 275
 		},
-		overflowX: "auto",
+		overflowX: "hidden",
 		...transition
 	},
 	drawerClose: {
