@@ -130,7 +130,7 @@ export const saveSettingsOnServ = () => {
 		})
 	}
 }
-export const getNSettings = async () => {
+export const getNSettings = async (withData) => {
 	return async (dispatch, getState) => {
 		// let userUUID = uuid
 		let user = await getLoginUser()
@@ -215,8 +215,9 @@ export const getNSettings = async () => {
 			/**
 			 * @Andrei
 			*/
-			dispatch(await getAllData(true, user.org.aux?.odeumId, false))
-
+			if (withData) {
+				dispatch(await getAllData(true, user.org.aux?.odeumId, false))
+			}
 			return true
 		}
 		else {

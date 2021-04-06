@@ -76,7 +76,7 @@ function LoginPage(props) {
 				if (rs) {
 					cookie.save('SESSION', rs.token, { path: '/', expires: new Date(rs.expires) })
 					if (setToken()) {
-						await dispatch(await getNSettings())
+						await dispatch(await getNSettings(true))
 						var prevURL = location.prevURL ? location.prevURL : null
 						history.push(prevURL ? prevURL : defaultRoute)
 					}
@@ -104,7 +104,7 @@ function LoginPage(props) {
 			if (rs) {
 				cookie.save('SESSION', rs.token, { path: '/', expires: new Date(rs.expires) })
 				if (setToken()) {
-					await dispatch(await getNSettings(rs.uuid))
+					await dispatch(await getNSettings(true))
 					var prevURL = location.state ? location.state.prevURL : null
 					setLoggingIn(false)
 					history.push(prevURL ? prevURL : /* defaultRoute */ '/')

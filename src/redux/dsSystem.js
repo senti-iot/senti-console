@@ -338,7 +338,7 @@ export const removeDashboard = id => {
 		ds = user.internal.senti.dashboards
 		ds = ds.filter(f => f.id !== id)
 		user.internal.senti.dashboards = ds
-		dispatch(await saveOnServ(user))
+		await dispatch(await saveOnServ(user))
 		dispatch(await getNSettings())
 		dispatch(saveSnackbar('snackbars.deletedSuccess'))
 		dispatch({
