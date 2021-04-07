@@ -244,7 +244,7 @@ export const getUsers = (reload) => {
 			let userUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
 			await dispatch(await getPriv(user.uuid, ['user.create', 'user.list']))
-			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete, user.changeparent']))
+			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete', 'user.changeparent']))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -488,7 +488,7 @@ export const getFunctions = (reload, orgId, su) => {
 			let funcUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
 			await dispatch(await getPriv(user.uuid, ['cloudfunction.create', 'cloudfunction.list']))
-			await dispatch(await getPrivList(funcUUIDs, ['cloudfunction.modify', 'cloudfunction.delete, cloudfunction.changeparent']))
+			await dispatch(await getPrivList(funcUUIDs, ['cloudfunction.modify', 'cloudfunction.delete', 'cloudfunction.changeparent']))
 			set('functions', functions)
 			if (reload) {
 				dispatch(setFunctions())
