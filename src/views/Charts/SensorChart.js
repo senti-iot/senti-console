@@ -40,7 +40,7 @@ class SensorChart extends PureComponent {
 				to: moment(),
 				timeType: 2,
 				chartType: 3,
-				menuId: 0
+				menuId: 3
 			},
 			raw: props.raw ? props.raw : false,
 			actionAnchor: null,
