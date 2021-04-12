@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import config from './config.svg'
 import data from './data.svg'
 import devices from './devices.svg'

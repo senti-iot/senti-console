@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import en from './en.json'
 import da from './da.json'
 import christmasEn from './christmas.en.json'
@@ -9,12 +10,12 @@ let combinedEn = {
 
 }
 let combinedDa = {
-	...da, 
+	...da,
 	christmas: christmasDa
 }
-export default 
-{		
+export default
+{
 	en: combinedEn,
 	da: combinedDa
-} 
+}
 
