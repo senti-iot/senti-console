@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getRegistryLS, getRegistries } from 'redux/data'
+import { getRegistryLS, getRegistries, getOrgs } from 'redux/data'
 import { updateRegistry } from 'variables/dataRegistry'
 import UpdateRegistryForm from 'components/Registry/CreateRegistryForm'
 import { updateFav, isFav } from 'redux/favorites'
@@ -38,7 +38,8 @@ const UpdateRegistry = props => {
 	}, [goToRegistries])
 
 	const getData = useCallback(async () => {
-		await dispatch(await getRegistryLS(match.params.id))
+		dispatch(await getOrgs(true))
+		dispatch(await getRegistryLS(match.params.id))
 	}, [dispatch, match.params.id])
 
 	//useEventListener
