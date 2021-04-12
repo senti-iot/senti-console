@@ -288,7 +288,7 @@ const CreateSensorForm = props => {
 							<ItemGrid xs={12}>
 								<TextF
 									error={testUuname()}
-									id={'sensorName'}
+									id={'sensorUuname'}
 									label={t('devices.fields.uuname')}
 									onChange={handleChange('uuname')}
 									value={sensor.uuname}

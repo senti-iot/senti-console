@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 // import EditSensorForm from 'components/Collections/EditSensorForm';
-import { getSensorLS, getSensors } from 'redux/data'
+import { getDeviceTypes, getRegistries, getSensorLS, getSensors } from 'redux/data'
 import { updateSensor } from 'variables/dataSensors'
 import { updateFav, isFav } from 'redux/favorites'
 import { CircularLoader } from 'components'
@@ -60,6 +60,8 @@ const EditSensor = props => {
 
 	const getData = async () => {
 		let id = params.id
+		dispatch(await getRegistries(true))
+		dispatch(await getDeviceTypes(true))
 		dispatch(await getSensorLS(id))
 	}
 
