@@ -20,6 +20,8 @@ function build() {
 		globIgnores: ['sw-default.js', 'service-worker.js', 'workbox-sw.js', '200.html', 'index.html'],
 		swSrc: './sw-template.js',
 		swDest: './build/sw-default.js',
+		maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4Mb
+
 	}).then(({ count, size, warnings }) => {
 		// Optionally, log any warnings and details.
 		warnings.forEach(console.warn)
