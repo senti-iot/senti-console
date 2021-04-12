@@ -85,7 +85,6 @@ const EditSensor = props => {
 	useEffect(() => {
 		if (sensor?.uuid && deviceTypes.length > 0 && registries.length > 0) {
 			setSensor(sensor)
-			console.log(sensor, deviceTypes, registries)
 			let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
 			let reg = registries[registries.findIndex(r => r.uuid === sensor.registry.uuid)]
 			if (sensor.metadata) {

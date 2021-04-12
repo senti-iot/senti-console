@@ -247,7 +247,6 @@ const CreateDeviceType = props => {
 	}
 	const handleChangeFunc = (o, where) => {
 		if (where === 'decoder') {
-			console.log(o, where)
 			setDecoder(o)
 		}
 		else {

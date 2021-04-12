@@ -31,7 +31,7 @@ workbox.routing.registerRoute(
 	new workbox.strategies.CacheFirst({
 		cacheName: 'images',
 		plugins: [
-			new workbox.expiration.Plugin({
+			new workbox.expiration.ExpirationPlugin({
 				maxEntries: 60,
 				maxAgeSeconds: 30 * 24 * 60 * 60 * 12, // 12 months
 			}),
@@ -44,8 +44,8 @@ const webFontHandler = new workbox.strategies.CacheFirst({
 	cacheName: 'webfont-cache',
 	networkTimeoutSeconds: 5,
 	plugins: [
-		new workbox.expiration.Plugin({ maxEntries: 50 }),
-		new workbox.cacheableResponse.Plugin({ statuses: [0, 200] }),
+		new workbox.expiration.ExpirationPlugin({ maxEntries: 50 }),
+		new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [0, 200] }),
 	],
 })
 workbox.routing.registerRoute(/https:\/\/fonts.googleapis.com\/.*/, webFontHandler)

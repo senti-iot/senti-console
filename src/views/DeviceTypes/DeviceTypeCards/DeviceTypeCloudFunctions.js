@@ -83,7 +83,6 @@ const DeviceTypeCloudFunctions = props => {
 							</TableHead>
 							<TableBody>
 								{cfi.map((s, i) => {
-									console.log('s', cf)
 									return <TableRow key={i + 'outbound'}>
 										<TableCell>
 											<Link to={{ pathname: `/function/${cf[cf.findIndex(f => f.id === s.nId)].uuid}`, prevURL: `/devicetype/${deviceType.uuid}` }}>

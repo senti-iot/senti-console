@@ -97,7 +97,6 @@ const EditUser = props => {
 			let gRoles = async () => await getUserRole()
 			gRoles()
 			setSelectedRole(eUser.role.uuid)
-			console.log(eUser)
 			setUser({
 				...eUser,
 			})
