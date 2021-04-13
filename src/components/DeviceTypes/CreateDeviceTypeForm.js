@@ -34,7 +34,6 @@ const CreateDeviceTypeForm = props => {
 	//Handlers
 
 	const renderDecoder = () => {
-		console.log('Decoder', decoder)
 		return <Fragment>
 			<ItemGrid xs={12}>
 				<TextF
