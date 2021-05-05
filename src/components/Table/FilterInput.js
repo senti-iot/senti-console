@@ -315,7 +315,7 @@ class FilterInput extends Component {
 
 			if (this.props.allowDuplicates || !chips.some((c) => c[this.props.dataSourceConfig.value] === chip[this.props.dataSourceConfig.value])) {
 				if (this.props.value && this.props.onAdd) {
-					this.props.onAdd(chip.value, chip.value, chip.key)
+					this.props.onAdd(chip.value, chip.value, chip.key, null, 'AND')
 				} else {
 					this.setState({ chips: [...this.state.chips, chip] })
 					if (this.props.onChange) {

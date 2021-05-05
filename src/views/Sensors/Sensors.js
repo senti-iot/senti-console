@@ -41,7 +41,7 @@ const Sensors = props => {
 	const [selected, setSelected] = useState([])
 	const [order, setOrder] = useState('asc')
 	const [orderBy, setOrderBy] = useState('id')
-
+	const [filteredItems, setFilteredItems] = useState([])
 	//Const
 	const dCommunication = [
 		{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} /> },
@@ -151,8 +151,15 @@ const Sensors = props => {
 		const getSens = async () => await getData()
 		getSens()
 	}, [getData])
-
-
+	const filterItems = useCallback((data) => {
+		const rFilters = filters
+		return customFilterItems(data, rFilters)
+	}, [filters])
+	useEffect(() => {
+		console.log(filters)
+		setFilteredItems(filterItems(devices, filters))
+		// console.log(filteredItems)
+	}, [devices, filterItems, filters])
 	//Handlers
 
 	const handleAddNewSensor = () => history.push({ pathname: `/sensors/new`, prevURL: '/sensors/list' })
@@ -173,10 +180,7 @@ const Sensors = props => {
 		dispatch(removeFromFav(favObj))
 	}
 
-	const filterItems = (data) => {
-		const rFilters = filters
-		return customFilterItems(data, rFilters)
-	}
+
 	const snackBarMessages = (msg) => {
 		switch (msg) {
 			case 1:
@@ -310,7 +314,7 @@ const Sensors = props => {
 
 	const renderTable = (items, handleClick, key) => {
 		return <SensorTable
-			data={filterItems(items)}
+			data={filteredItems}
 			handleCheckboxClick={handleCheckboxClick}
 			handleClick={handleClick}
 			handleRequestSort={handleRequestSort(key)}

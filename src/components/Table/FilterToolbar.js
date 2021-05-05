@@ -127,7 +127,8 @@ const FilterToolbar = props => {
 	const handleMenuNav = e => {
 		if (actionAnchor !== null) {
 			switch (e.keyCode) {
-				case 13:
+				case 13: {
+
 					const ft = filters[focusedMenu]
 					if (ft) {
 						setActionAnchor(null)
@@ -139,6 +140,7 @@ const FilterToolbar = props => {
 						[ft.name]: true
 					})
 					break;
+				}
 				case 40: //keyboard down
 					setFocusedMenu(focusedMenu === filters.length - 1 ? 0 : focusedMenu + 1)
 					break;
@@ -168,7 +170,7 @@ const FilterToolbar = props => {
 		}
 	}
 
-	const handleAdd = (displayValue, value, key, type, icon, name) => {
+	const handleAdd = (displayValue, value, key, type, icon, name, filterType) => {
 		if (onBeforeAdd(value)) {
 			setOpenFilterCard(false)
 			setActionAnchor(null)
@@ -176,12 +178,12 @@ const FilterToolbar = props => {
 				...state,
 				[name]: false
 			})
-			dispatch(addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey))
+			dispatch(addFilter({ value, key, type: type ? type : "", icon, displayValue: displayValue, filterType }, reduxKey))
 		}
 	}
 
-	const handleEdit = (displayValue, value, key, type, icon, id) => {
-		dispatch(reduxEditFilter({ id, value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey))
+	const handleEdit = (displayValue, value, key, type, icon, id, filterType) => {
+		dispatch(reduxEditFilter({ id, value, key, type: type, icon, displayValue: displayValue, filterType: filterType }, reduxKey))
 		setEditFilter(false)
 		setEditChip(null)
 		dispatch(changeEH(false))
@@ -214,7 +216,7 @@ const FilterToolbar = props => {
 					onBeforeDelete={handleClose}
 					handleDoubleClick={handleDoubleClick}
 					onFocus={handleFocus}
-					onAdd={(displayValue, value, key) => handleAdd(displayValue, value, key)}
+					onAdd={(displayValue, value, key, filterType) => handleAdd(displayValue, value, key, filterType)}
 					onDelete={(deletedChip, i) => handleDelete(deletedChip, i)}
 					handleClick={handleClick}
 					dataSourceConfig={{ id: 'id', text: 'displayValue', value: 'displayValue' }}
@@ -270,7 +272,7 @@ const FilterToolbar = props => {
 					hidden={editFilter.hidden}
 					edit
 					value={editChip.value}
-					handleButton={(displayValue, value, icon) => { handleEdit(displayValue, value, editFilter.key, editFilter.type, icon, editChip.id) }}
+					handleButton={(displayValue, value, icon, filterType) => { handleEdit(displayValue, value, editFilter.key, editFilter.type, icon, editChip.id, filterType) }}
 					handleClose={() => {
 						setEditFilter(false)
 						setEditChip(null)
@@ -288,7 +290,7 @@ const FilterToolbar = props => {
 						type={ft.type}
 						options={ft.options}
 						content={ft.content}
-						handleButton={(displayValue, value, icon) => { handleAdd(displayValue, value, ft.key, ft.type, icon, ft.name) }}
+						handleButton={(displayValue, value, icon, filterType) => { console.log('filterTypeHandleButton', filterType); handleAdd(displayValue, value, ft.key, ft.type, icon, ft.name, filterType) }}
 						handleClose={() => {
 							setState({
 								...state,

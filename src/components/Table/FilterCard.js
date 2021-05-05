@@ -67,7 +67,8 @@ class FilterCard extends Component {
 				value: -1,
 				icon: '',
 				label: ''
-			}
+			},
+			filterType: "AND"
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -153,23 +154,24 @@ class FilterCard extends Component {
 			}
 	}
 	handleButton = () => {
-		const { value, date, after, dropdown, diff } = this.state
+		const { value, date, after, dropdown, diff, filterType } = this.state
 		const { type, handleButton, title, t, options, hidden } = this.props
 		if (type === 'dropDown') {
-			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
+			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon, filterType)
 		}
 		if (type === 'string') {
+			console.log('handleButton', filterType)
 			if (hidden) {
-				handleButton(`${value}`, value)
+				handleButton(`${value}`, value, null, filterType)
 			}
 			else {
-				handleButton(`${title}: '${value}'`, value)
+				handleButton(`${title}: '${value}'`, value, null, filterType)
 			}
 		}
 		if (type === 'date')
-			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
+			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after }, filterType)
 		if (type === 'diff')
-			handleButton(`${title}: ${diff.label}`, { diff: diff.value, values: options.values })
+			handleButton(`${title}: ${diff.label}`, { diff: diff.value, values: options.values }, null, filterType)
 		this.setState({
 			value: '',
 			date: moment(),
@@ -181,7 +183,8 @@ class FilterCard extends Component {
 			dropdown: {
 				value: 0,
 				label: ""
-			}
+			},
+			filterType: "AND"
 		})
 	}
 	handleInput = e => {
@@ -274,13 +277,25 @@ class FilterCard extends Component {
 				break;
 		}
 	}
+	filterTypeOptions = [{
+		value: "OR",
+		label: "OR",
+	}, {
+		value: "AND",
+		label: "AND"
+	}]
+	handleChangeFilterType = (e) => {
+		this.setState({
+			filterType: e.target.value
+		})
+	}
 	render() {
 		const { title, open, handleClose, classes, anchorEl, t, edit, error } = this.props
 		const errorClassname = cx({
 			[classes.error]: error
 		})
 		return (
-			anchorEl.current ?
+			anchorEl ?
 				<Popover
 					anchorEl={anchorEl.current}
 					open={open ? open : false}
@@ -302,6 +317,15 @@ class FilterCard extends Component {
 							<ItemG container justify={'center'}>
 								<ItemG xs={12}>
 									{this.renderType()}
+								</ItemG>
+								<ItemG xs={12}>
+									<DSelect
+										fullWidth
+										label={title}
+										value={this.state.filterType}
+										onChange={this.handleChangeFilterType}
+										menuItems={this.filterTypeOptions}
+									/>
 								</ItemG>
 							</ItemG>
 						</CardContent>

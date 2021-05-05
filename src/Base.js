@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom';
 import indexRoutes from 'routes';
+import { hot } from 'react-hot-loader/root';
 
 const Base = () => {
 	return (
@@ -14,4 +15,4 @@ const Base = () => {
 	)
 }
 
-export default Base
+export default hot(Base)
