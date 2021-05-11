@@ -19,7 +19,13 @@ const styles = makeStyles((theme) => {
 
 	return {
 		andOrSwitch: {
-			background: '#cecece', borderRadius: 50, padding: 4, marginLeft: 0, minWidth: 30, textAlign: 'center'
+			background: '#cecece',
+			borderRadius: 50,
+			padding: 4,
+			marginLeft: 0,
+			minWidth: 30,
+			textAlign: 'center',
+			// color: '#fff'
 		},
 		formControl: {
 		},
