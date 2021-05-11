@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import FilterInput from 'components/Table/FilterInput'
 import FilterCard from 'components/Table/FilterCard'
 import { useSelector, useDispatch } from 'react-redux'
@@ -64,7 +64,7 @@ const FilterToolbar = props => {
 		window.removeEventListener('keydown', handleWindowKeyPress, false)
 		if (actionAnchor === null) {
 
-			setActionAnchor(chipRef.current)
+			setActionAnchor(chipRef)
 			window.addEventListener('keydown', handleMenuNav, false)
 		}
 		else {
@@ -84,6 +84,7 @@ const FilterToolbar = props => {
 	}
 
 	const handleClose = () => {
+		console.log('Did this')
 		window.addEventListener('keydown', handleWindowKeyPress, false)
 		setActionAnchor(null)
 	}
@@ -117,8 +118,12 @@ const FilterToolbar = props => {
 		let allChips = chips[reduxKey]
 		let findChip = allChips[allChips.findIndex(c => c.id === chip.id)]
 		let editFilterr = filters[filters.findIndex(f => {
+			console.log(f.key, findChip.key, f.key === findChip.key)
+			console.log(f.type, findChip.type, f.type === findChip.type)
 			return f.key === findChip.key && f.type === findChip.type
 		})]
+		console.log(findChip)
+		console.log(editFilterr)
 		setEditFilter(editFilterr)
 		setEditChip(findChip)
 		dispatch(changeEH(false))
@@ -164,7 +169,7 @@ const FilterToolbar = props => {
 			if (e.keyCode === 40)
 				handleClick()
 			if (e.keyCode === 27) {
-				inputRef.current.blur()
+				inputRef.blur()
 				handleBlur()
 			}
 		}
@@ -189,6 +194,10 @@ const FilterToolbar = props => {
 		dispatch(changeEH(false))
 	}
 
+	const handleChangeFilterType = (chip, filterType) => {
+		dispatch(reduxEditFilter({ ...chip, filterType: filterType }, reduxKey))
+		dispatch(changeEH(false))
+	}
 	const handleDelete = (deletedChip) => {
 		dispatch(removeFilter(deletedChip, reduxKey))
 	}
@@ -206,27 +215,34 @@ const FilterToolbar = props => {
 
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
-			<Fragment>
+			<div style={{ width: '100%' }}>
 				<FilterInput
 					onBlur={handleBlur}
-					inputRef={r =>	inputRef.current = r}
-					chipRef={r => chipRef.current = r}
+					inputRef={r =>	inputRef = r}
+					chipRef={r => chipRef = r}
 					value={chips[reduxKey]}
 					onBeforeAdd={(chip) => onBeforeAdd(chip)}
 					onBeforeDelete={handleClose}
 					handleDoubleClick={handleDoubleClick}
 					onFocus={handleFocus}
-					onAdd={(displayValue, value, key, filterType) => handleAdd(displayValue, value, key, filterType)}
+					onAdd={(displayValue, value, key, type, filterType) => {
+						console.log(displayValue, value, key, type, filterType)
+						handleAdd(displayValue, value, key, type, null, null, filterType)
+					}
+					}
 					onDelete={(deletedChip, i) => handleDelete(deletedChip, i)}
 					handleClick={handleClick}
 					dataSourceConfig={{ id: 'id', text: 'displayValue', value: 'displayValue' }}
+					handleChangeFilterType={handleChangeFilterType}
 					placeholder={t('actions.search')}
 					fullWidth
 					t={t}
 				/>
+
 				<Popper
 					open={actionAnchor ? true : false}
 					anchorEl={actionAnchor}
+
 					placement="bottom-start"
 					transition
 					disablePortal
@@ -241,6 +257,9 @@ const FilterToolbar = props => {
 							enabled: false,
 							boundariesElement: 'scrollParent',
 						}
+					}}
+					popperOptions={{
+						closeOnClickOutside: true
 					}}
 					onClose={() => setActionAnchor(null)}
 					style={{ zIndex: 1028, marginTop: 8 }}
@@ -264,7 +283,7 @@ const FilterToolbar = props => {
 				</Popper>
 				{editFilter ? <FilterCard
 					open={editFilter ? true : false}
-					anchorEl={inputRef.current}
+					anchorEl={inputRef}
 					title={editFilter.name}
 					type={editFilter.type}
 					options={editFilter.options}
@@ -278,13 +297,13 @@ const FilterToolbar = props => {
 						setEditChip(null)
 					}}
 				/> : null}
-				{(filters && inputRef.current) ? filters.map((ft, i) => {
+				{(filters && inputRef) ? filters.map((ft, i) => {
 					return <FilterCard
 						resetError={() => setError(false)}
 						error={error}
 						key={i}
 						open={state[ft.name]}
-						anchorEl={inputRef.current}
+						anchorEl={inputRef}
 						title={ft.name}
 						hidden={ft.hidden}
 						type={ft.type}
@@ -300,7 +319,7 @@ const FilterToolbar = props => {
 						}}
 					/>
 				}) : null}
-			</Fragment>
+			</div>
 		</ClickAwayListener>
 	)
 }
