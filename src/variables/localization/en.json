@@ -135,11 +135,11 @@
             "org": "Organisation",
             "type": "Type",
             "types": {
+                "decoder": "Function for decoding data",
                 "external": "External call",
                 "function": "JavaScript function",
                 "inbound": "Function on Receiving data",
-                "outbound": "Cloud Function",
-				"decoder": "Function for decoding data"
+                "outbound": "Cloud Function"
             }
         },
         "pageTitle": "Cloud functions"
@@ -238,7 +238,7 @@
         },
         "editGraph": "Edit",
         "fields": {
-			"cf": "Cloud Function",
+            "cf": "Cloud Function",
             "chartType": "Chart type",
             "dataSource": "Data source",
             "defaultPeriod": "Default period",
@@ -250,7 +250,7 @@
             "name": "Name",
             "percDifference": "Percentage Difference:",
             "refresh": "Refresh time",
-			"refreshDefault": "Refresh default state",
+            "refreshDefault": "Refresh default state",
             "unit": "Measuring Unit"
         },
         "pageTitle": "Senti",
@@ -268,7 +268,6 @@
         "editDetailsTitle": "Edit %{deviceId}",
         "editHardwareTitle": "Edit hardware for device %{deviceId}",
         "fields": {
-			"uuname":"Unique name",
             "RPImodel": "Device model",
             "SIMID": "SIM-card ID",
             "SIMProvider": "SIM-card provider",
@@ -296,6 +295,7 @@
             "project": "Project",
             "status": "Status",
             "temp": "CPU temperature",
+            "uuname": "Unique name",
             "weather": "Weather",
             "wifiModule": "Wi-Fi module"
         },
@@ -349,7 +349,7 @@
         },
         "createDeviceType": "Create device type",
         "fields": {
-			"decoder": "Decoder function",
+            "decoder": "Decoder function",
             "name": "Name",
             "structure": {
                 "key": "Key",
@@ -392,6 +392,7 @@
                 "cloudfunctions": "Are you sure you want to delete these cloud functions:",
                 "collection": "Are you sure you want to delete this data collection ( %{collection} ) ?",
                 "collections": "Are you sure you want to delete these data collections:",
+                "dashboard": "Are you sure you want to delete this dashboard?",
                 "device": "Are you sure you want to delete this device ( %{sensor} ) ?",
                 "deviceImage": "Are you sure you want to delete this picture?",
                 "deviceType": "Are you sure you want to delete this device type ( %{deviceType} ) ?",
@@ -406,14 +407,14 @@
                 "token": "Are you sure you want to delete this API token?",
                 "tokens": "Are you sure you want to delete these API tokens:",
                 "user": "Are you sure you want to delete this user ( %{user} ) ?",
-                "users": "Are you sure you want to delete these users:",
-				"dashboard": "Are you sure you want to delete this dashboard?"
+                "users": "Are you sure you want to delete these users:"
             },
             "title": {
                 "cloudfunction": "Delete cloud function?",
                 "cloudfunctions": "Delete cloud functions?",
                 "collection": "Delete data collection?",
                 "collections": "Delete data collections?",
+                "dashboard": "Delete dashboard?",
                 "device": "Delete device?",
                 "deviceImage": "Delete this picture?",
                 "deviceType": "Delete device type?",
@@ -428,8 +429,7 @@
                 "token": "Delete API token?",
                 "tokens": "Delete API tokens?",
                 "user": "Delete user?",
-                "users": "Delete users?",
-				"dashboard":"Delete dashboard?"
+                "users": "Delete users?"
             },
             "warning": {
                 "org": "**This cannot be undone**.You will remove this Organisation!",
@@ -445,6 +445,12 @@
         },
         "export": {
             "message": "Data details:"
+        },
+        "filterToolbar": {
+            "title": "Filter Toolbar help",
+            "titleAndOr": "AND/OR difference",
+            "titleFieldSearch": "Search by device field",
+            "titleFreeSearch": "Free Search"
         },
         "login": {
             "passwordReseted": "Your password has been reset!",
@@ -871,8 +877,6 @@
     },
     "sensors": {
         "fields": {
-			"lat": "Latitude",
-			"long": "Longitude",
             "communication": "Communication",
             "communications": {
                 "allowed": "Allowed",
@@ -882,6 +886,8 @@
             "dataKeys": "Data fields",
             "decoder": "Decoder functions",
             "deviceType": "Device Type",
+            "lat": "Latitude",
+            "long": "Longitude",
             "metadata": "Device Metadata",
             "protocols": {
                 "externalAPI": "External API",

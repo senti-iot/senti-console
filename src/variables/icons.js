@@ -117,7 +117,10 @@ import Palette from '@material-ui/icons/Palette'
 import ImportExport from '@material-ui/icons/ImportExport'
 import Looks from '@material-ui/icons/Looks'
 import TableChart from "@material-ui/icons/TableChart";
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+
 export {
+	HelpOutlineIcon,
 	TableChart,
 	Looks,
 	MultiLineChart,

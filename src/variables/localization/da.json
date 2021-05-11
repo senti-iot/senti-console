@@ -135,11 +135,11 @@
             "org": "Organisation",
             "type": "Type",
             "types": {
+                "decoder": "Funktion til afkodning af data",
                 "external": "Udvendig",
                 "function": "JavaScript funktion",
                 "inbound": "Funktion ved modtagelse af data",
-                "outbound": "Cloud funktion",
-				"decoder": "Funktion til afkodning af data"
+                "outbound": "Cloud funktion"
             }
         },
         "pageTitle": "Cloud funktioner"
@@ -250,8 +250,8 @@
             "name": "Navn",
             "percDifference": "Percentage Difference:",
             "refresh": "Automatisk opdatering",
-			"refreshDefault":"Aut.Opdatering standardtilstand",
-			"unit": "Måleenhed"
+            "refreshDefault": "Aut.Opdatering standardtilstand",
+            "unit": "Måleenhed"
         },
         "pageTitle": "Senti",
         "subtitle": "Senti tilbyder dataopsamling og visualisering fra alle dine IoT enheder."
@@ -268,8 +268,7 @@
         "editDetailsTitle": "Rediger %{deviceId}",
         "editHardwareTitle": "Rediger hardware for enhed %{deviceId}",
         "fields": {
-			"uuname": "Unik navn",
-			"RPImodel": "Enhedsmodel",
+            "RPImodel": "Enhedsmodel",
             "SIMID": "SIM-kort ID",
             "SIMProvider": "SIM-kort leverandør",
             "adapter": "Strømforsyning",
@@ -296,6 +295,7 @@
             "project": "Projekt",
             "status": "Status",
             "temp": "CPU temperatur",
+            "uuname": "Unik navn",
             "weather": "Vejr",
             "wifiModule": "Wi-Fi model"
         },
@@ -349,7 +349,7 @@
         },
         "createDeviceType": "Opret Enhedstype",
         "fields": {
-			"decoder": "Dekoder funktion",
+            "decoder": "Dekoder funktion",
             "name": "Navn",
             "structure": {
                 "key": "Key",
@@ -392,6 +392,7 @@
                 "cloudfunctions": "Er du sikker på du ønsker at slette disse cloud funktioner:",
                 "collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} ) ?",
                 "collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
+                "dashboard": "Er du sikker på du ønsker at slette den dashboard ?",
                 "device": "Er du sikker på du ønsker at slette denne enhed ( %{sensor} ) ?",
                 "deviceImage": "Er du sikker på du ønsker at slette dette billede?",
                 "deviceType": "Er du sikker på du ønsker at slette denne enhedstype ( %{deviceType} ) ?",
@@ -406,14 +407,14 @@
                 "token": "Er du sikker på du ønsker at slette denne API token?",
                 "tokens": "Er du sikker på du ønsker at slette disse API tokens:",
                 "user": "Er du sikker på du ønsker at slette denne bruger ( %{user} ) ?",
-                "users": "Er du sikker på du ønsker at slette disse brugere:",
-				"dashboard": "Er du sikker på du ønsker at slette den dashboard ?"
+                "users": "Er du sikker på du ønsker at slette disse brugere:"
             },
             "title": {
                 "cloudfunction": "Slet cloud funktion?",
                 "cloudfunctions": "Slet cloud funktioner?",
                 "collection": "Slet datasamling?",
                 "collections": "Slet datasamlinger?",
+                "dashboard": "Slet dashboard?",
                 "device": "Slet enhed?",
                 "deviceImage": "Slet dette billede?",
                 "deviceType": "Slet enhedstype?",
@@ -428,8 +429,7 @@
                 "token": "Slet API token?",
                 "tokens": "Slet API tokens?",
                 "user": "Slet bruger?",
-                "users": "Slet brugere?",
-				"dashboard":"Slet dashboard?"
+                "users": "Slet brugere?"
             },
             "warning": {
                 "org": "**Dette kan ikke fortrydes**.",
@@ -445,6 +445,12 @@
         },
         "export": {
             "message": "Data detaljer:"
+        },
+        "filterToolbar": {
+            "title": "Filter Toolbar help",
+            "titleAndOr": "AND/OR difference",
+            "titleFieldSearch": "Search by device field",
+            "titleFreeSearch": "Free Search"
         },
         "login": {
             "passwordReseted": "Din adgangskode er blevet ændret!",
@@ -871,8 +877,6 @@
     },
     "sensors": {
         "fields": {
-			"lat": "Breddegrad",
-			"long": "Længdegrad",
             "communication": "Kommunikation",
             "communications": {
                 "allowed": "Tilladt",
@@ -882,6 +886,8 @@
             "dataKeys": "Datafelter",
             "decoder": "Dekoderfunktioner",
             "deviceType": "Enhedstype",
+            "lat": "Breddegrad",
+            "long": "Længdegrad",
             "metadata": "Enhedsmetadata",
             "protocols": {
                 "externalAPI": "External API",

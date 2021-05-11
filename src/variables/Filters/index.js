@@ -97,6 +97,7 @@ export const customFilterItems = (itm, keyValues) => {
 			ORItems = items
 			let filtered = filterItem(k, itm)
 			items = [...ORItems, ...filtered]
+			items = items.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i)
 		}
 		if (k.filterType === 'AND') {
 			items = filterItem(k, items)

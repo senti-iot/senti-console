@@ -51,7 +51,7 @@ const Sensors = props => {
 		{ key: 'name', name: t('devices.fields.name'), type: 'string' },
 		{ key: 'uuid', name: t('sensors.fields.uuid'), type: 'string' },
 		{ key: 'communication', name: t('sensors.fields.communication'), type: 'dropDown', options: dCommunication },
-		{ key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
+		// { key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
 		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 	]
 
@@ -59,7 +59,7 @@ const Sensors = props => {
 		{ id: 'name', label: t('devices.fields.name') },
 		{ id: 'uuid', label: t('sensors.fields.uuid') },
 		{ id: 'communication', label: t('sensors.fields.communication') },
-		{ id: 'reg_name', label: t('sensors.fields.registry') },
+		// { id: 'reg_name', label: t('sensors.fields.registry') },
 	]
 	const options = () => {
 

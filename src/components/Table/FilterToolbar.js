@@ -216,7 +216,7 @@ const FilterToolbar = props => {
 			<div style={{ width: '100%' }}>
 				<FilterInput
 					onBlur={handleBlur}
-					inputRef={r =>	inputRef = r}
+					inputRef={r => inputRef = r}
 					chipRef={r => chipRef = r}
 					value={chips[reduxKey]}
 					onBeforeAdd={(chip) => onBeforeAdd(chip)}

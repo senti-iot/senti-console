@@ -319,8 +319,9 @@ class FilterCard extends Component {
 								</ItemG>
 								<ItemG xs={12}>
 									<DSelect
+										margin={'normal'}
 										fullWidth
-										label={title}
+										// label={title}
 										value={this.state.filterType}
 										onChange={this.handleChangeFilterType}
 										menuItems={this.filterTypeOptions}
