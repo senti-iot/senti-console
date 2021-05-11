@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles, Divider } from '@material-ui/core'
+import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, Divider } from '@material-ui/core'
 import { MoreVert as MoreVertIcon } from 'variables/icons'
 import { boxShadow } from 'assets/jss/material-dashboard-react'
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { ItemGrid } from 'components'
 import { ItemG } from 'components/index'
@@ -59,21 +59,33 @@ let selectedRender = props => {
 }
 let defaultRender = props => {
 	const { content } = props
-	return <Fragment>
-		<ItemG xs container alignItems={'center'}>
-			{props.ft ? <FilterToolbar
-				reduxKey={props.reduxKey}
-				filters={props.ft}
-				t={props.t}
-			/> : null}
-		</ItemG>
-		{content ? <ItemG xs={2} container justify={'flex-end'} alignItems={'center'}>
-			{content}
-		</ItemG> : null}
-	</Fragment>
+	return <ItemG style={{ width: '100%', flexWrap: 'nowrap' }} container alignItems={'center'}>
+		{props.ft ? <FilterToolbar
+			reduxKey={props.reduxKey}
+			filters={props.ft}
+			t={props.t}
+		/> : null}
+		{content ? content : null}
+
+	</ItemG>
+
 }
 let TableToolbar = props => {
-	const { numSelected, classes } = props
+	//Hooks
+	const classes = toolbarStyles()
+	//Redux
+
+	//State
+
+	//Const
+
+	//useCallbacks
+
+	//useEffects
+
+	//Handlers
+
+	const { numSelected } = props
 	return (
 		<Toolbar
 			className={classNames(classes.root, {
@@ -98,4 +110,4 @@ TableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 }
 
-export default withRouter(withStyles(toolbarStyles)(TableToolbar))
+export default withRouter(TableToolbar)

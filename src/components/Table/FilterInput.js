@@ -160,48 +160,47 @@ const FilterInput = props => {
 	const [preventChipCreation, setPreventChipCreation] = useState(false)
 	//Const
 	const {
-		allowDuplicates,
-		blurBehavior,
-		children,
+		// allowDuplicates,
+		// blurBehavior,
+		// children,
 		chipRenderer = defaultChipRenderer,
 		// classes,
 		className,
-		clearInputValueOnChange,
-		defaultValue,
-		dataSource,
+		// clearInputValueOnChange,
+		// defaultValue,
+		// dataSource,
 		dataSourceConfig,
 		disabled,
 		disableUnderline,
 		error,
-		filter,
+		// filter,
 		FormHelperTextProps,
 		fullWidth,
 		fullWidthInput,
-		onBeforeDelete,
+		// onBeforeDelete,
 		helperText,
 		id,
 		InputProps,
 		InputLabelProps = {},
 		label,
-		newChipKeyCodes,
-		onBeforeAdd,
-		onAdd,
-		onBlur,
-		onDelete,
-		onChange,
-		onFocus,
-		onKeyDown,
-		onKeyPress,
-		onKeyUp,
-		onUpdateInput,
+		// newChipKeyCodes,
+		// onBeforeAdd,
+		// onAdd,
+		// onBlur,
+		// onDelete,
+		// onChange,
+		// onFocus,
+		// onKeyDown,
+		// onKeyPress,
+		// onKeyUp,
+		// onUpdateInput,
 		placeholder,
 		required,
 		rootRef,
-		value,
+		// value,
 		t,
 		handleClick,
 		chipRef,
-		...other
 	} = props
 
 	const nchips = props.value || chips
@@ -422,7 +421,6 @@ const FilterInput = props => {
 		setInputValue('')
 		// setState({ inputValue: '' })
 		const nchips = props.value || chips
-		console.log('Adaug Chip')
 		if (props.dataSourceConfig) {
 			if (typeof chip === 'string') {
 				chip = {
@@ -433,7 +431,6 @@ const FilterInput = props => {
 
 			if (props.allowDuplicates || !nchips.some((c) => c[props.dataSourceConfig.value] === chip[props.dataSourceConfig.value])) {
 				if (props.value && props.onAdd) {
-					console.log('Aici')
 					props.onAdd(chip.value, chip.value, '', 'string', 'AND')//displayValue, value, key, type, filterType
 				} else {
 					setChips([...nchips, chip])
@@ -446,10 +443,8 @@ const FilterInput = props => {
 		} else if (chip.trim().length > 0) {
 			if (props.allowDuplicates || nchips.indexOf(chip) === -1) {
 				if (props.value && props.onAdd) {
-					console.log('Aici')
 					props.onAdd(chip)
 				} else {
-					console.log('Aici3')
 					setChips([...nchips, chip])
 					if (props.onChange) {
 						props.onChange([...nchips, chip])
@@ -509,7 +504,7 @@ const FilterInput = props => {
 			required={required}
 			onClick={focus}
 			disabled={disabled}
-			{...other}
+			// {...other}
 		>
 			{label && (
 				<InputLabel

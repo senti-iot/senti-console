@@ -160,7 +160,6 @@ class FilterCard extends Component {
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon, filterType)
 		}
 		if (type === 'string') {
-			console.log('handleButton', filterType)
 			if (hidden) {
 				handleButton(`${value}`, value, null, filterType)
 			}

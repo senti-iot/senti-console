@@ -85,6 +85,7 @@ const FilterToolbar = props => {
 
 	const handleClose = () => {
 		console.log('Did this')
+		console.trace()
 		window.addEventListener('keydown', handleWindowKeyPress, false)
 		setActionAnchor(null)
 	}
@@ -118,12 +119,8 @@ const FilterToolbar = props => {
 		let allChips = chips[reduxKey]
 		let findChip = allChips[allChips.findIndex(c => c.id === chip.id)]
 		let editFilterr = filters[filters.findIndex(f => {
-			console.log(f.key, findChip.key, f.key === findChip.key)
-			console.log(f.type, findChip.type, f.type === findChip.type)
 			return f.key === findChip.key && f.type === findChip.type
 		})]
-		console.log(findChip)
-		console.log(editFilterr)
 		setEditFilter(editFilterr)
 		setEditChip(findChip)
 		dispatch(changeEH(false))
@@ -133,21 +130,22 @@ const FilterToolbar = props => {
 		if (actionAnchor !== null) {
 			switch (e.keyCode) {
 				case 13: {
-
 					const ft = filters[focusedMenu]
 					if (ft) {
 						setActionAnchor(null)
 						setFocusedMenu(-1)
 						setOpenFilterCard(true)
+						setState({
+							...state,
+							[ft.name]: true
+						})
 					}
-					setState({
-						...state,
-						[ft.name]: true
-					})
 					break;
 				}
 				case 40: //keyboard down
+					console.log('Key Down')
 					setFocusedMenu(focusedMenu === filters.length - 1 ? 0 : focusedMenu + 1)
+					console.log(focusedMenu)
 					break;
 				case 38: //keyboard up
 					setFocusedMenu(focusedMenu === 0 ? filters.length - 1 : focusedMenu - 1)
@@ -166,12 +164,12 @@ const FilterToolbar = props => {
 			e.stopPropagation()
 		}
 		else {
-			if (e.keyCode === 40)
-				handleClick()
-			if (e.keyCode === 27) {
-				inputRef.blur()
-				handleBlur()
-			}
+			// if (e.keyCode === 40)
+			// 	handleClick()
+			// if (e.keyCode === 27) {
+			// 	inputRef.blur()
+			// 	handleBlur()
+			// }
 		}
 	}
 
@@ -222,7 +220,7 @@ const FilterToolbar = props => {
 					chipRef={r => chipRef = r}
 					value={chips[reduxKey]}
 					onBeforeAdd={(chip) => onBeforeAdd(chip)}
-					onBeforeDelete={handleClose}
+					// onBeforeDelete={handleClose}
 					handleDoubleClick={handleDoubleClick}
 					onFocus={handleFocus}
 					onAdd={(displayValue, value, key, type, filterType) => {
@@ -309,7 +307,7 @@ const FilterToolbar = props => {
 						type={ft.type}
 						options={ft.options}
 						content={ft.content}
-						handleButton={(displayValue, value, icon, filterType) => { console.log('filterTypeHandleButton', filterType); handleAdd(displayValue, value, ft.key, ft.type, icon, ft.name, filterType) }}
+						handleButton={(displayValue, value, icon, filterType) =>  handleAdd(displayValue, value, ft.key, ft.type, icon, ft.name, filterType)}
 						handleClose={() => {
 							setState({
 								...state,

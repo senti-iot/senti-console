@@ -156,8 +156,9 @@ const Sensors = props => {
 		return customFilterItems(data, rFilters)
 	}, [filters])
 	useEffect(() => {
-		console.log(filters)
-		setFilteredItems(filterItems(devices, filters))
+		if (filterItems !== filterItems(devices, filters)) {
+			setFilteredItems(filterItems(devices, filters))
+		}
 		// console.log(filteredItems)
 	}, [devices, filterItems, filters])
 	//Handlers

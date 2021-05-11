@@ -1,8 +1,9 @@
+import { makeStyles } from '@material-ui/core'
 import teal from '@material-ui/core/colors/teal'
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor } from '../material-dashboard-react';
 
-const toolbarStyles = theme => ({
+const toolbarStyles = makeStyles(theme => ({
 	leftIcon: {
 		marginRight: theme.spacing(1)
 	},
@@ -60,6 +61,6 @@ const toolbarStyles = theme => ({
 			borderBottomColor: teal[500],
 		},
 	},
-});
+}));
 
 export default toolbarStyles
