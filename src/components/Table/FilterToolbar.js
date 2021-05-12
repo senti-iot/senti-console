@@ -66,6 +66,7 @@ const FilterToolbar = props => {
 	}
 
 	const handleFocus = () => {
+		handleClose()
 		// window.addEventListener('keydown', handleMenuNav, false)
 		// window.removeEventListener('keydown', handleWindowKeyPress, false)
 	}
@@ -74,7 +75,11 @@ const FilterToolbar = props => {
 		// console.log('Did this')
 		// console.trace()
 		// window.addEventListener('keydown', handleWindowKeyPress, false)
-		setActionAnchor(null)
+		if (actionAnchor) {
+			console.log('Closing', actionAnchor)
+			console.trace()
+			setActionAnchor(null)
+		}
 	}
 
 	const onBeforeAdd = (chip) => {
@@ -262,6 +267,7 @@ const FilterToolbar = props => {
 							</Paper>
 						</Grow>)}
 				</Popper>
+
 				{editFilter ? <FilterCard
 					open={editFilter ? true : false}
 					anchorEl={inputRef.current}
