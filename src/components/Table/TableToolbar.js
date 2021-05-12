@@ -10,56 +10,13 @@ import { withRouter } from 'react-router-dom'
 import { ItemGrid, /* T */ } from 'components'
 import { ItemG } from 'components/index'
 import FilterToolbar from './FilterToolbar'
+import { useLocalization } from 'hooks'
 // import { useLocalization } from 'hooks'
 // import deviceAdeviceB from 'assets/img/help/deviceAORdeviceB.png'
 
-let selectedRender = props => {
-	const { numSelected, t } = props
-	const [anchor, setAnchor] = useState(null)
-	return <Grid container justify={'space-between'} alignItems={'center'}>
-		<ItemGrid>
-			<Typography variant='subtitle1'>
-				{numSelected + ' ' + t('tables.selected')}
-			</Typography>
-		</ItemGrid>
-		<ItemGrid>
-			<IconButton
-				aria-label={t('menus.more')}
-				aria-owns={anchor ? 'long-menu' : null}
-				aria-haspopup='true'
-				onClick={e => setAnchor(e.target)}>
-				<MoreVertIcon />
-			</IconButton>
-			<Menu
-				disableEnforceFocus
-				id='long-menu'
-				anchorEl={anchor}
-				disablePortal
-				open={Boolean(anchor)}
-				onClose={e => setAnchor(null)}
-				PaperProps={{ style: { boxShadow: boxShadow } }}
-			>
-				{props.options().map((option, i) => {
-					if (option.dontShow)
-						return null
-					if (option.isDivider)
-						return <Divider style={{ margin: "3px 1px" }} key={i} />
-					if (option.single)
-						return numSelected === 1 ? <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
-							<option.icon className={props.classes.leftIcon} />{option.label}
-						</MenuItem> : null
-					else {
-						return <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
-							<option.icon className={props.classes.leftIcon} />{option.label}
-						</MenuItem>
-					}
-				}
-				)}
-			</Menu>
-		</ItemGrid>
-	</Grid>
-}
+
 let defaultRender = props => {
+
 	//Hooks
 	// const t = useLocalization()
 
@@ -139,9 +96,12 @@ let defaultRender = props => {
 let TableToolbar = props => {
 	//Hooks
 	const classes = toolbarStyles()
+	const t = useLocalization()
+
 	//Redux
 
 	//State
+	const [anchor, setAnchor] = useState(null)
 
 	//Const
 
@@ -152,6 +112,50 @@ let TableToolbar = props => {
 	//Handlers
 
 	const { numSelected } = props
+	let selectedRender = () => {
+		return <Grid container justify={'space-between'} alignItems={'center'}>
+			<ItemGrid>
+				<Typography variant='subtitle1'>
+					{numSelected + ' ' + t('tables.selected')}
+				</Typography>
+			</ItemGrid>
+			<ItemGrid>
+				<IconButton
+					aria-label={t('menus.more')}
+					aria-owns={anchor ? 'long-menu' : null}
+					aria-haspopup='true'
+					onClick={e => setAnchor(e.target)}>
+					<MoreVertIcon />
+				</IconButton>
+				<Menu
+					disableEnforceFocus
+					id='long-menu'
+					anchorEl={anchor}
+					disablePortal
+					open={Boolean(anchor)}
+					onClose={e => setAnchor(null)}
+					PaperProps={{ style: { boxShadow: boxShadow } }}
+				>
+					{props.options().map((option, i) => {
+						if (option.dontShow)
+							return null
+						if (option.isDivider)
+							return <Divider style={{ margin: "3px 1px" }} key={i} />
+						if (option.single)
+							return numSelected === 1 ? <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
+								<option.icon className={classes.leftIcon} />{option.label}
+							</MenuItem> : null
+						else {
+							return <MenuItem disabled={option.disabled} key={i} onClick={() => { option.func(); setAnchor(null) }}>
+								<option.icon className={classes.leftIcon} />{option.label}
+							</MenuItem>
+						}
+					}
+					)}
+				</Menu>
+			</ItemGrid>
+		</Grid>
+	}
 	return (
 		<Toolbar
 			className={classNames(classes.root, {

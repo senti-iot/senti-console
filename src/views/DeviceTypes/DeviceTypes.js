@@ -132,7 +132,7 @@ const DeviceTypes = props => {
 		// const { favorites, devicetypes } = this.props
 		let favs = favorites.filter(f => f.type === 'devicetype')
 		let favDeviceTypes = favs.map(f => {
-			return devicetypes[devicetypes.findIndex(d => d.uuid === f.uuid)]
+			return devicetypes[devicetypes.findIndex(d => d.uuid === f.id)]
 		})
 		favDeviceTypes = handleRequestSort(orderBy, order, favDeviceTypes)
 		return favDeviceTypes

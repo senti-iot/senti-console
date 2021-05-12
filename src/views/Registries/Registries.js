@@ -79,8 +79,15 @@ const Registries = props => {
 		}
 		let isFavorited = dispatch(isFav(favObj))
 		let allOptions = [
+			{
+				single: true, label: isFavorited ? t('menus.favorites.remove') : t('menus.favorites.add'),
+				icon: isFavorited ? Star : StarBorder,
+				func: isFavorited ? () => { removeFromFavorites(favObj); console.trace() } : () => {
+					console.trace(); addToFavorites(favObj)
+				}
+			},
+			{ isDivider: true, dontShow: selected.length > 1 },
 			{ dontShow: !hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ single: true, label: isFavorited ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorited ? Star : StarBorder, func: isFavorited ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
 			{ dontShow: !hasAccessList(selected, 'registry.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
 		]
 		return allOptions
@@ -114,12 +121,12 @@ const Registries = props => {
 			if (registry) {
 				if (dispatch(isFav({ id: registry.uuid, type: 'registry' }))) {
 					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
-					finishedSaving()
+					dispatch(finishedSaving())
 					setSelected([])
 				}
 				if (!dispatch(isFav({ id: registry.uuid, type: 'registry' }))) {
 					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
-					finishedSaving()
+					dispatch(finishedSaving())
 					setSelected([])
 				}
 			}
@@ -157,7 +164,7 @@ const Registries = props => {
 	const handleGetFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'registry')
 		let favRegistries = favs.map(f => {
-			return registries[registries.findIndex(d => d.uuid === f.uuid)]
+			return registries[registries.findIndex(d => d.uuid === f.id)]
 		})
 		favRegistries = handleRequestSort(orderBy, order, favRegistries)
 		return favRegistries

@@ -69,14 +69,14 @@ const User = props => {
 		if (saved === true) {
 			if (isFavorite()) {
 				s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
-				finishedSaving()
+				dispatch(finishedSaving())
 			}
 			if (!isFavorite()) {
 				s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: t('favorites.types.user') })
-				finishedSaving()
+				dispatch(finishedSaving())
 			}
 		}
-	}, [isFavorite, s, saved, t, user])
+	}, [dispatch, isFavorite, s, saved, t, user])
 
 	useEffect(() => {
 		if (user) {

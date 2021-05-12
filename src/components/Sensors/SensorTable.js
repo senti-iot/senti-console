@@ -151,6 +151,7 @@ const SensorTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							console.log(n)
 							const isSelected = isSelectedFunc(n.uuid);
 							return (
 								<TableRow
@@ -191,7 +192,8 @@ const SensorTable = props => {
 											FirstC label={n.name} />
 										<TC label={n.uuid} />
 										<TC content={renderCommunication(n.communication)} />
-										<TC label={n.reg_name} />
+										<TC label={n.registry.name} />
+										<TC label={n.deviceType.name} />
 									</Hidden>
 								</TableRow>
 							)
