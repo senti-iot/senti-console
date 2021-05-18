@@ -8,7 +8,7 @@ import { servicesAPI } from './data';
  */
 export const getAllFunctions = async () => {
 	let data = await servicesAPI.get('/v2/cloudfunctions').then(rs => rs.ok ? rs.data : [])
-	return data
+	return data ? data : []
 }
 /**
  * Get Cloud function

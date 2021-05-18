@@ -161,7 +161,6 @@ const Sensors = props => {
 	// 	if (filterItems !== filterItems(devices, filters)) {
 	// 		setFilteredItems(filterItems(devices, filters))
 	// 	}
-	// 	// console.log(filteredItems)
 	// }, [devices, filterItems, filters])
 	//Handlers
 
@@ -170,11 +169,9 @@ const Sensors = props => {
 
 	const getFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'sensor')
-		console.log(favs)
 		let favSensors = favs.map(f => {
 			return devices[devices.findIndex(d => d.uuid === f.id)]
 		})
-		console.log("favSensors", favSensors)
 		favSensors = handleRS(orderBy, order, favSensors)
 		return favSensors
 	}
@@ -339,7 +336,6 @@ const Sensors = props => {
 
 	const renderFavorites = () => {
 		let items = getFavorites()
-		console.log(items)
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{renderTableToolBar()}

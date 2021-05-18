@@ -125,7 +125,7 @@ const FunctionTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							const isSelected = isSelectedFunc(n.uuid);
+							let isSelected = n.uuid ? isSelectedFunc(n.uuid) : false;
 							return (
 								<TableRow
 									// onMouseEnter={e => { this.setHover(e, n) }}

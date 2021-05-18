@@ -76,8 +76,6 @@ const FilterToolbar = props => {
 		// console.trace()
 		// window.addEventListener('keydown', handleWindowKeyPress, false)
 		if (actionAnchor) {
-			console.log('Closing', actionAnchor)
-			console.trace()
 			setActionAnchor(null)
 		}
 	}
@@ -100,10 +98,8 @@ const FilterToolbar = props => {
 
 
 	const handleDoubleClick = chip => {
-		console.log(chip)
 		let allChips = chips[reduxKey]
 		let findChip = allChips[allChips.findIndex(c => c.id === chip.id)]
-		console.log('findChip', findChip)
 		let editFilterr = filters[filters.findIndex(f => {
 			return f.key === findChip.key && f.type === findChip.type
 		})]

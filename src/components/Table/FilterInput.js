@@ -398,7 +398,6 @@ const FilterInput = ({ allowDuplicates = false, blurBehavior = 'clear', clearInp
 		}
 	}
 	const handleIconOnClick = (chip) => e => {
-		console.log('e', e)
 		e.preventDefault()
 		e.stopPropagation()
 		let fType = chip.filterType === 'AND' ? 'OR' : 'AND'

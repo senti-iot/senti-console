@@ -151,7 +151,6 @@ const SensorTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							console.log(n)
 							const isSelected = isSelectedFunc(n.uuid);
 							return (
 								<TableRow

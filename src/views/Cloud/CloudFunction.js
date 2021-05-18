@@ -101,7 +101,7 @@ const CloudFunction = props => {
 	}
 	const removeFromFavorites = () => {
 		let favObj = {
-			id: cloudfunction.id,
+			id: cloudfunction.uuid,
 			name: cloudfunction.name,
 			type: 'cloudfunction',
 			path: match.url

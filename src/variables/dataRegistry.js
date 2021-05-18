@@ -59,7 +59,6 @@ export const getAllMessages = async cId => {
  */
 export const getAllRegistries = async () => {
 	let response = await servicesAPI.get('/v2/registries').then(rs => rs.ok ? rs.data : [])
-	console.log(response)
 	return response
 }
 /**
