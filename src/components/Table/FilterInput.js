@@ -468,7 +468,7 @@ const FilterInput = ({ allowDuplicates = false, blurBehavior = 'clear', clearInp
 						value,
 						text: dataSourceConfig ? tag[dataSourceConfig.text] : tag,
 						chip: tag,
-						icon: tag.icon || <T onClick={handleIconOnClick(tag)} className={classes.andOrSwitch}>{tag.filterType}</T>,
+						icon: tag.icon || <T onClick={handleIconOnClick(tag)} className={classes.andOrSwitch}>{t('filterToolbar.' + tag.filterType)}</T>,
 						isDisabled: !!disabled,
 						isFocused: focusedChip === value,
 						handleClick: () => setFocusedChip(value),

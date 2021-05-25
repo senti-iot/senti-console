@@ -1282,5 +1282,43 @@
             "noOrg": "Organisation is missing",
             "userAlreadyExists": "E-mail is already assigned to a user account!"
         }
-    }
+    },
+	"filterToolbar": {
+		"AND": "AND",
+		"OR": "OR"
+	},
+	"help": {
+		"filterToolbar": {
+			"titles": {
+				"freeSearch": "Free Search",
+				"searchByField": "Search by field",
+				"andOrFilters": "AND / OR Filter types"
+			},
+			"subtitles": {
+				"ANDfilter": "AND Filter",
+				"ORfilter": "OR Filter"
+			},
+			"content": {
+				"freeSearch1":"Free search can be used directly by typing the desired search string to the right of the “Add filter” button. This searches for the entered text string in all available fields/columns in the items on the list.",
+				"filterSearch1": "\"Search by field\" is a more refined search compared to \"Free search\" where you can select which data field to be searched in.",
+				"filterSearch2": "By pressing on the \"Add Filter\" button on the left side of the search toolbar, a dropdown with the searchable fields will be shown.",
+				"filterSearch3": "Upon selecting a field a dialogue will be shown asking for the desired text to be searched and the type of filter.",
+				"filterSearch4": "By pressing the \"Add Filter\", the new filter will be added and the items in the list will be updated with the results of the filter.",
+				"and1":"**AND** is used to filter the current list of items.",
+				"and2":"Adding multiple **AND** will filter the list in the order of the filters being added, each time returning an updated list.",
+				"or1":"**OR** is used to filter the \"previous\" list of items filtered by an **AND** filter.",
+				"or2":"Note: Having just an **OR** filter will return all items."
+			},
+			"img": {
+				"freeSearch1":"_Typing the desired text to be searched in the free search input_",
+				"freeSearch2": "_**AND** Filter Free search result_",
+				"filterSearch1": "_Field Search Menu for Senti devices_",
+				"filterSearch2": "_**AND** Field Search Card for Device Name empty_",
+				"filterSearch3": "_**AND** Field Search Card for Device Name Completed_",
+				"filterSearch4": "_**AND** Field Search Result_",
+				"and1": " _**AND** filter for Device Type and **AND** filter for device name_",
+				"or1": "_Filtering after 2 specific devices using **OR** Filter_"
+			}
+		}
+	}
 }
