@@ -81,7 +81,7 @@ class ScoreCard extends PureComponent {
 		const { g, period } = this.props
 		let data = []
 		await this.asyncForEach(g.dataSources, async d => {
-			let deviceData = await getSensorDataClean(d.deviceUUID, d.dataKey, period.from, period.to,  d.cf/* , d.deviceType, d.type */)
+			let deviceData = await getSensorDataClean(d.deviceUUID, d.dataKey, period.from, period.to,  d.cf)
 			data.push({ ...d, data: deviceData })
 		})
 

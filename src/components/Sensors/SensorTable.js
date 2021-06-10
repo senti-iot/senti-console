@@ -191,7 +191,8 @@ const SensorTable = props => {
 											FirstC label={n.name} />
 										<TC label={n.uuid} />
 										<TC content={renderCommunication(n.communication)} />
-										<TC label={n.reg_name} />
+										<TC label={n.registry.name} />
+										<TC label={n.deviceType.name} />
 									</Hidden>
 								</TableRow>
 							)

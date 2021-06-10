@@ -18,6 +18,7 @@ import {
 	DateFilterMenu,
 	T,
 	Muted,
+	ExportModal,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -646,6 +647,27 @@ class SensorChart extends PureComponent {
 			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
 		</ItemG>
 	}
+	exportData = () => {
+		const { period, roundDataSets, lineDataSets, barDataSets } = this.state
+		switch (period.chartType) {
+			case 0:
+				return roundDataSets
+			case 1:
+				return roundDataSets
+			case 2:
+				return barDataSets
+			case 3:
+				return lineDataSets
+
+			default:
+				break;
+		}
+	}
+	closeExportModal = () => {
+		this.setState({
+			openDownload: false
+		})
+	}
 	render() {
 		const { color, classes, g } = this.props
 		const { loading } = this.state
@@ -680,6 +702,12 @@ class SensorChart extends PureComponent {
 
 									{this.renderType()}
 								</ItemG>
+								<ExportModal
+									handleClose={this.closeExportModal}
+									dataField={this.props.dataKey}
+									open={this.state.openDownload}
+									data={this.exportData()}
+								/>
 							</Fragment>
 						}
 					</Grid>}

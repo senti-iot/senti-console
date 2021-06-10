@@ -58,7 +58,7 @@ export const getAllMessages = async cId => {
  * GET All Registries
  */
 export const getAllRegistries = async () => {
-	let response = await servicesAPI.get('/v2/registries').then(rs => rs.ok ? rs.data : null)
+	let response = await servicesAPI.get('/v2/registries').then(rs => rs.ok ? rs.data : [])
 	return response
 }
 /**

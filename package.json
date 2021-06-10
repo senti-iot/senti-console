@@ -71,7 +71,7 @@
 		"senti-apicore": "0.0.55",
 		"store": "^2.0.12",
 		"styled-components": "^4.4.1",
-		"workbox-build": "^6.1.2",
+		"workbox-build": "^6.1.5",
 		"zipcelx": "^1.6.2"
 	},
 	"devDependencies": {

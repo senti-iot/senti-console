@@ -1,20 +1,32 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
-import withStyles from '@material-ui/core/styles/withStyles'
 import teal from '@material-ui/core/colors/teal'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import cx from 'classnames'
-import { Add } from 'variables/icons';
+import { Add } from 'variables/icons'
+import { makeStyles } from '@material-ui/core'
+import { T } from 'components'
+import { useLocalization, usePrevious } from 'hooks'
+import { useEffect } from 'react'
 
-const styles = (theme) => {
+const styles = makeStyles((theme) => {
 	const light = theme.palette.type === 'light'
 	const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)'
 
 	return {
+		andOrSwitch: {
+			background: '#cecece',
+			borderRadius: 50,
+			padding: 4,
+			marginLeft: 0,
+			minWidth: 30,
+			textAlign: 'center',
+			// color: '#fff'
+		},
 		formControl: {
 		},
 		chips: {},
@@ -124,171 +136,188 @@ const styles = (theme) => {
 			}
 		}
 	}
-}
+})
 
-class FilterInput extends Component {
-	state = {
-		isFocused: false,
-		errorText: undefined,
-		isClean: true,
-		chips: [],
-		focusedChip: null,
-		inputValue: ''
-	}
+const FilterInput = ({ allowDuplicates = false, blurBehavior = 'clear', clearInputValueOnChange = false, newChipKeyCodes = [13], ...props }) => {
+	//Hooks
+	const classes = styles()
+	const t = useLocalization()
+	//Redux
 
-	constructor(props) {
-		super(props)
-		if (props.defaultValue) {
-			this.state.chips = props.defaultValue
+	//State
+	const [isFocused, setIsFocused] = useState(false)
+	const [focusedChip, setFocusedChip] = useState(null)
+	const [inputValue, setInputValue] = useState('')
+	const [keyPressed, setKeyPressed] = useState(false)
+	const [preventChipCreation, setPreventChipCreation] = useState(false)
+	//Const
+	const {
+		disabled, chips, children, chipRenderer = defaultChipRenderer, className, dataSource,
+		disableUnderline, error, filter, FormHelperTextProps, fullWidth, fullWidthInput, helperText, id,
+		InputProps, InputLabelProps = {}, label, onBeforeAdd, onKeyPress, placeholder, required,
+		rootRef, handleClick, chipRef, dataSourceConfig, onAdd, onChange, handleDoubleClick,
+		onDelete, inputRef, onBeforeDelete, onKeyDown, onBlur, onFocus, onUpdateInput, onKeyUp,
+		...other
+	} = props
+	const hasInput = chips.length > 0 || inputValue.length > 0
+	const shrinkFloatingLabel = InputLabelProps.shrink != null
+		? InputLabelProps.shrink
+		: (label != null && (hasInput || isFocused))
+
+	let inputBlurTimeout = null
+
+	//useCallbacks
+	const prevChips = usePrevious(chips)
+
+	//useEffects
+	useEffect(() => {
+		return () => {
+			clearTimeout(inputBlurTimeout)
 		}
-	}
+	})
+	useEffect(() => {
+		if (disabled) {
+			setFocusedChip(null)
+		}
+		if (chips && clearInputValueOnChange && chips.length !== prevChips.length) {
+			setInputValue('')
+		}
+	}, [chips, clearInputValueOnChange, disabled, prevChips])
 
-	componentWillUnmount() {
-		clearTimeout(this.inputBlurTimeout)
-	}
+	//Handlers
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.disabled) {
-	// 		this.setState({ focusedChip: null })
-	// 	}
-	// 	if (nextProps.value && this.props.clearInputValueOnChange && nextProps.value.length !== this.props.value.length) {
-	// 		this.setState({ inputValue: '' })
-	// 	}
-	// }
 
 	/**
 	 * Blurs this component.
 	 * @public
 	 */
-	blur() {
-		if (this.input) this.actualInput.blur()
-	}
+	// const blur = () => {
+	// 	if (input) actualInput.blur()
+	// }
 
 	/**
 	 * Focuses this component.
 	 * @public
 	 */
-	focus = () => {
-		if (this.state.focusedChip != null) {
-			this.setState({ focusedChip: null })
+	const focus = () => {
+		if (focusedChip != null) {
+			setFocusedChip(null)
 		}
 	}
 
-	handleInputBlur = (event) => {
-		if (this.props.onBlur) {
-			this.props.onBlur(event)
+
+	const handleInputBlur = (event) => {
+		if (onBlur) {
+			onBlur(event)
 		}
-		this.setState({ isFocused: false })
-		if (this.state.focusedChip != null) {
-			this.setState({ focusedChip: null })
+		setIsFocused(false)
+		if (focusedChip != null) {
+			setFocusedChip(null)
 		}
-		if (this.props.blurBehavior === 'add') {
-			let numChipsBefore = (this.props.value || this.state.chips).length
-			let value = event.target.value
-			this.inputBlurTimeout = setTimeout(() => {
-				let numChipsAfter = (this.props.value || this.state.chips).length
+		if (blurBehavior === 'add') {
+			let numChipsBefore = chips.length
+			let nValue = event.target.value
+			//TODO
+			inputBlurTimeout = setTimeout(() => {
+				let numChipsAfter = chips.length
 				if (numChipsBefore === numChipsAfter) {
-					this.handleAddChip(value)
+					handleAddChip(nValue)
 				} else {
-					this.clearInput()
+					clearInput()
 				}
 			}, 150)
-		} else if (this.props.blurBehavior === 'clear') {
-			this.clearInput()
+		} else if (blurBehavior === 'clear') {
+			clearInput()
+		}
+	}
+	const handleInputFocus = (event) => {
+		setIsFocused(true)
+		if (onFocus) {
+			onFocus(event)
 		}
 	}
 
-	handleInputFocus = (event) => {
-		this.setState({ isFocused: true })
-		if (this.props.onFocus) {
-			this.props.onFocus(event)
-		}
-	}
 
-	handleKeyDown = (event) => {
-		const { focusedChip } = this.state
-		this.setState({ keyPressed: false, preventChipCreation: false })
-		if (this.props.onKeyDown) {
-			this.props.onKeyDown(event)
+	const handleKeyDown = (event) => {
+		const nChips = chips
+
+		setKeyPressed(false)
+		setPreventChipCreation(false)
+		if (onKeyDown) {
+			onKeyDown(event)
 			if (event.isDefaultPrevented()) {
 				return
 			}
 		}
 		if (event.keyCode === 37) {
-			if (this.props.onBeforeDelete)
-				this.props.onBeforeDelete()
+			if (onBeforeDelete)
+				onBeforeDelete()
 		}
-		if (this.props.newChipKeyCodes.indexOf(event.keyCode) >= 0) {
+		if (newChipKeyCodes.indexOf(event.keyCode) >= 0) {
 			if (focusedChip !== null) {
-				this.handleDoubleClick({ id: focusedChip })
+				handleDoubleClick({ id: focusedChip })
 			}
 			else {
 				if (event.target.value) {
-					let result = this.handleAddChip({ key: "", value: event.target.value })
+					let result = handleAddChip({ key: "", value: event.target.value })
 					if (result !== false) {
 						event.preventDefault()
 					}
 				}
 			}
 		} else if (event.keyCode === 8 || event.keyCode === 46) {
-			if (this.props.onBeforeDelete) {
-				this.props.onBeforeDelete()
+			if (onBeforeDelete) {
+				onBeforeDelete()
 			}
 			if (event.target.value === '') {
-				const chips = this.props.value || this.state.chips
 				if (focusedChip === null && event.keyCode === 8) {
-					this.setState({ focusedChip: chips.length - 1 })
+					setFocusedChip(nChips.length - 1)
 				} else if (focusedChip != null) {
-					const chips = this.props.value || this.state.chips
-					const chip = chips[focusedChip]
-					this.handleDeleteChip(chip)
+					const chip = nChips[focusedChip]
+					handleDeleteChip(chip)
 					if (event.keyCode === 8 && focusedChip > 0) {
-						this.setState({ focusedChip: focusedChip - 1 })
-					} else if (event.keyCode === 46 && focusedChip <= chips.length - 1) {
-						this.setState({ focusedChip })
+						setFocusedChip(focusedChip - 1)
+					} else if (event.keyCode === 46 && focusedChip <= nChips.length - 1) {
+						setFocusedChip(focusedChip)
 					}
 				}
 			}
 		} else if (event.keyCode === 37) {
-			const chips = this.props.value || this.state.chips
-			if (focusedChip == null && event.target.value === '' && chips.length) {
-				return this.setState({ focusedChip: chips.length - 1 })
+			if (focusedChip == null && event.target.value === '' && nChips.length) {
+				return setFocusedChip(nChips.length - 1)
 			}
 			if (focusedChip != null && focusedChip > 0) {
-				this.setState({ focusedChip: focusedChip - 1 })
+				setFocusedChip(focusedChip - 1)
 			}
 		} else if (event.keyCode === 39) {
-			const chips = this.props.value || this.state.chips
-			if (focusedChip != null && focusedChip < chips.length - 1) {
-				this.setState({ focusedChip: focusedChip + 1 })
+			if (focusedChip != null && focusedChip < nChips.length - 1) {
+				setFocusedChip(focusedChip + 1)
 			} else {
-				this.setState({ focusedChip: null })
+				setFocusedChip(null)
 			}
 		} else {
-			this.setState({ focusedChip: null })
+			setFocusedChip(null)
 		}
 	}
 
-	handleKeyUp = (event) => {
-		if (!this.state.preventChipCreation && this.props.newChipKeyCodes.indexOf(event.keyCode) > 0 && this.state.keyPressed) {
-			this.clearInput()
+	const handleKeyUp = (event) => {
+		if (!preventChipCreation && newChipKeyCodes.indexOf(event.keyCode) > 0 && keyPressed) {
+			clearInput()
 		} else {
-			this.setState({ inputValue: event.target.value })
+			setInputValue(event.target.value)
 		}
-		if (this.props.onKeyUp) { this.props.onKeyUp(event) }
+		if (onKeyUp) {
+			onKeyUp(event)
+		}
 	}
 
-	handleKeyPress = (event) => {
-		this.setState({ keyPressed: true })
-		if (this.props.onBeforeDelete) { this.props.onBeforeDelete() }
-		if (this.props.onKeyPress) { this.props.onKeyPress(event, { key: '', value: this.state.inputValue }) }
-	}
 
-	handleUpdateInput = (e) => {
-		this.setState({ inputValue: e.target.value })
+	const handleUpdateInput = (e) => {
+		setInputValue(e.target.value)
+		// this.setState({ inputValue: e.target.value })
 
-		if (this.props.onUpdateInput) {
-			this.props.onUpdateInput(e)
+		if (onUpdateInput) {
+			onUpdateInput(e)
 		}
 	}
 
@@ -297,40 +326,44 @@ class FilterInput extends Component {
 	 * @param {string|object} chip Value of the chip, either a string or an object (if dataSourceConfig is set)
 	 * @returns True if the chip was added (or at least `onAdd` was called), false if adding the chip was prevented
 	 */
-	handleAddChip(chip) {
-		if (this.props.onBeforeAdd && !this.props.onBeforeAdd(chip.value)) {
-			this.setState({ preventChipCreation: true })
+	const handleAddChip = chip => {
+		if (onBeforeAdd && !onBeforeAdd(chip.value)) {
+			setPreventChipCreation(true)
+			// setState({ preventChipCreation: true })
 			return false
 		}
-		this.setState({ inputValue: '' })
-		const chips = this.props.value || this.state.chips
+		setInputValue('')
+		// this.setState({ inputValue: '' })
+		const pChips = chips
 
-		if (this.props.dataSourceConfig) {
+		if (dataSourceConfig) {
 			if (typeof chip === 'string') {
 				chip = {
-					[this.props.dataSourceConfig.text]: chip,
-					[this.props.dataSourceConfig.value]: chip
+					[dataSourceConfig.text]: chip,
+					[dataSourceConfig.value]: chip
 				}
 			}
 
-			if (this.props.allowDuplicates || !chips.some((c) => c[this.props.dataSourceConfig.value] === chip[this.props.dataSourceConfig.value])) {
-				if (this.props.value && this.props.onAdd) {
-					this.props.onAdd(chip.value, chip.value, chip.key)
+			if (allowDuplicates || !pChips.some((c) => c[dataSourceConfig.value] === chip[dataSourceConfig.value])) {
+				if (chips && onAdd) {
+					onAdd(chip.value, chip.value, chip.key, 'string', 'AND')
 				} else {
-					this.setState({ chips: [...this.state.chips, chip] })
-					if (this.props.onChange) {
-						this.props.onChange([...this.state.chips, chip])
+					// setChips([...pChips, chip])
+
+					// this.setState({ chips: [...this.state.chips, chip] })
+					if (onChange) {
+						onChange([...pChips, chip])
 					}
 				}
 			}
 		} else if (chip.trim().length > 0) {
-			if (this.props.allowDuplicates || chips.indexOf(chip) === -1) {
-				if (this.props.value && this.props.onAdd) {
-					this.props.onAdd(chip)
+			if (allowDuplicates || pChips.indexOf(chip) === -1) {
+				if (chips && onAdd) {
+					onAdd(chip.value, chip.value, chip.key, 'string', 'AND')
 				} else {
-					this.setState({ chips: [...this.state.chips, chip] })
-					if (this.props.onChange) {
-						this.props.onChange([...this.state.chips, chip])
+
+					if (onChange) {
+						onChange([...pChips, chip])
 					}
 				}
 			}
@@ -339,177 +372,115 @@ class FilterInput extends Component {
 		}
 		return true
 	}
-
-	handleDeleteChip(chip, i) {
-		if (this.props.value && chip) {
-			if (this.props.onDelete) {
-				this.props.onDelete({ ...chip })
-				this.setState({ focusedChip: null })
+	const handleDeleteChip = (chip, i) => {
+		if (chips && chip) {
+			if (onDelete) {
+				onDelete({ ...chip })
+				setFocusedChip(null)
 			}
 		} else {
-			const chips = this.state.chips.slice()
-			const changed = chips.splice(i, 1)
+			const nchips = chips.slice()
+			const changed = nchips.splice(i, 1)
+			let fChip = focusedChip
 			if (changed) {
-				let focusedChip = this.state.focusedChip
-				if (this.state.focusedChip === i) {
-					focusedChip = null
-				} else if (this.state.focusedChip > i) {
-					focusedChip = this.state.focusedChip - 1
+				if (fChip === i) {
+					fChip = null
+				} else if (fChip > i) {
+					fChip = focusedChip - 1
 				}
-				this.setState({ chips, focusedChip })
-				if (this.props.onChange) {
-					this.props.onChange(chips)
+				// setChips(nchips)
+				setFocusedChip(fChip)
+				// this.setState({ chips, focusedChip })
+				if (onChange) {
+					onChange(nchips)
 				}
 			}
 		}
 	}
-
+	const handleIconOnClick = (chip) => e => {
+		e.preventDefault()
+		e.stopPropagation()
+		let fType = chip.filterType === 'AND' ? 'OR' : 'AND'
+		props.handleChangeFilterType(chip, fType)
+	}
 	/**
 	 * Clears the text field for adding new chips.
 	 * @public
 	 */
-	clearInput() {
-		this.setState({ inputValue: '' })
+	const clearInput = () => {
+		setInputValue('')
 	}
 
-	/**
-	 * Sets a reference to the Material-UI Input component.
-	 * @param {object} input - The Input reference
-	 */
-	setInputRef = (input) => {
-		this.input = input
+	const onDoubleClick = (chip) => {
+		if (handleDoubleClick)
+			handleDoubleClick(chip)
 	}
 
-	/**
-	 * Set the reference to the actual input, that is the input of the Input.
-	 * @param {object} ref - The reference
-	 */
-	setActualInputRef = (ref) => {
-		this.actualInput = ref
-		if (this.props.inputRef) {
-			this.props.inputRef(ref)
-		}
-	}
-	handleDoubleClick = (chip) => {
-		if (this.props.handleDoubleClick)
-			this.props.handleDoubleClick(chip)
-	}
-	render() {
-		const {
-			allowDuplicates,
-			blurBehavior,
-			children,
-			chipRenderer = defaultChipRenderer,
-			classes,
-			className,
-			clearInputValueOnChange,
-			defaultValue,
-			dataSource,
-			dataSourceConfig,
-			disabled,
-			disableUnderline,
-			error,
-			filter,
-			FormHelperTextProps,
-			fullWidth,
-			fullWidthInput,
-			onBeforeDelete,
-			helperText,
-			id,
-			InputProps,
-			inputRef,
-			InputLabelProps = {},
-			label,
-			newChipKeyCodes,
-			onBeforeAdd,
-			onAdd,
-			onBlur,
-			onDelete,
-			onChange,
-			onFocus,
-			onKeyDown,
-			onKeyPress,
-			onKeyUp,
-			onUpdateInput,
-			placeholder,
-			required,
-			rootRef,
-			value,
-			t,
-			handleDoubleClick,
-			handleClick,
-			chipRef,
-			...other
-		} = this.props
 
-		const chips = this.props.value || this.state.chips
 
-		const hasInput = (this.props.value || this.state.chips).length > 0 || this.state.inputValue.length > 0
-		const shrinkFloatingLabel = InputLabelProps.shrink != null
-			? InputLabelProps.shrink
-			: (label != null && (hasInput || this.state.isFocused))
-		return (
-			<FormControl
-				ref={rootRef}
-				fullWidth={fullWidth}
-				className={cx(className, classes.root, classes.formControl)}
-				error={error}
-				required={required}
-				onClick={this.focus}
-				disabled={disabled}
-				{...other}
-			>
-				{label && (
-					<InputLabel
-						htmlFor={id}
-						classes={{ root: classes.label, shrink: classes.labelShrink }}
-						shrink={shrinkFloatingLabel}
-						focused={this.state.isFocused}
-						{...InputLabelProps}
-					>
-						{label}
-					</InputLabel>
-				)}
-				<div className={cx(
-					classes.chipContainer,
-					{
-						[classes.inkbar]: !disableUnderline,
-						[classes.focused]: this.state.isFocused,
-						[classes.underline]: !disableUnderline,
-						[classes.disabled]: disabled,
-						[classes.labeled]: label != null,
-						[classes.error]: error
-					})}
+	return (
+		<FormControl
+			ref={rootRef} //TODO
+			fullWidth={fullWidth}
+			className={cx(className, classes.root, classes.formControl)}
+			error={error}
+			required={required}
+			onClick={focus} //TODO
+			disabled={disabled}
+			{...other}
+		>
+			{label && (
+				<InputLabel
+					htmlFor={id}
+					classes={{ root: classes.label, shrink: classes.labelShrink }}
+					shrink={shrinkFloatingLabel}
+					focused={isFocused}
+					{...InputLabelProps}
 				>
-					{chipRenderer({
-						value: t('actions.addFilter'),
-						text: t('actions.addFilter'),
-						chip: t('actions.addFilter'),
-						icon: <Add />,
+					{label}
+				</InputLabel>
+			)}
+			<div className={cx(
+				classes.chipContainer,
+				{
+					[classes.inkbar]: !disableUnderline,
+					[classes.focused]: isFocused,
+					[classes.underline]: !disableUnderline,
+					[classes.disabled]: disabled,
+					[classes.labeled]: label != null,
+					[classes.error]: error
+				})}
+			>
+				{chipRenderer({
+					value: t('actions.addFilter'),
+					text: t('actions.addFilter'),
+					chip: t('actions.addFilter'),
+					icon: <Add />,
+					isDisabled: !!disabled,
+					isFocused: false,
+					className: classes.chip,
+					iRef: chipRef,
+					handleClick: handleClick
+				})}
+				{chips.length > 0 ? chips.map((tag, i) => {
+					const value = dataSourceConfig ? tag[dataSourceConfig.id] : tag
+					return chipRenderer({
+						value,
+						text: dataSourceConfig ? tag[dataSourceConfig.text] : tag,
+						chip: tag,
+						icon: tag.icon || <T onClick={handleIconOnClick(tag)} className={classes.andOrSwitch}>{t('filterToolbar.' + tag.filterType)}</T>,
 						isDisabled: !!disabled,
-						isFocused: false,
+						isFocused: focusedChip === value,
+						handleClick: () => setFocusedChip(value),
+						handleDelete: () => handleDeleteChip({ id: value }),
+						handleDoubleClick: () => onDoubleClick({ id: value }),
 						className: classes.chip,
-						iRef: chipRef,
-						handleClick: handleClick
-					})}
-					{chips.length > 0 ? chips.map((tag, i) => {
-						const value = dataSourceConfig ? tag[dataSourceConfig.id] : tag
-						return chipRenderer({
-							value,
-							text: dataSourceConfig ? tag[dataSourceConfig.text] : tag,
-							chip: tag,
-							icon: tag.icon,
-							isDisabled: !!disabled,
-							isFocused: this.state.focusedChip === value,
-							handleClick: () => this.setState({ focusedChip: value }),
-							handleDelete: () => this.handleDeleteChip({ id: value }),
-							handleDoubleClick: () => this.handleDoubleClick({ id: value }),
-							className: classes.chip,
-							classes: {
+						classNameSelected: classes.chipSelected,
+						classes: {
 
-							}
-						}, i)
-					}) : null}{/* : chipRenderer({
+						}
+					}, i)
+				}) : null}{/* : chipRenderer({
 						value: t('actions.addFilter'),
 						text: t('actions.addFilter'),
 						chip: t('actions.addFilter'),
@@ -519,39 +490,37 @@ class FilterInput extends Component {
 						className: classes.chip
 					})} */}
 
-					<Input
-						ref={this.setInputRef}
-						classes={{ input: classes.input, root: classes.inputRoot }}
-						id={id}
-						value={this.state.inputValue}
-						onChange={this.handleUpdateInput}
-						onKeyDown={this.handleKeyDown}
-						// onKeyPress={this.handleKeyPress}
-						onKeyUp={this.handleKeyUp}
-						onFocus={this.handleInputFocus}
-						onBlur={this.handleInputBlur}
-						inputRef={this.setActualInputRef}
-						disabled={disabled}
-						disableUnderline
-						fullWidth={fullWidthInput}
-						placeholder={!hasInput && (shrinkFloatingLabel || label == null) ? placeholder : null}
-						onClick={undefined}
-						{...InputProps}
-					/>
-				</div>
-				{helperText && (
-					<FormHelperText
-						{...FormHelperTextProps}
-						className={FormHelperTextProps ? cx(FormHelperTextProps.className, classes.helperText) : classes.helperText}
-					>
-						{helperText}
-					</FormHelperText>
-				)}
-			</FormControl>
-		)
-	}
+				<Input
+					// ref={setInputRef}
+					classes={{ input: classes.input, root: classes.inputRoot }}
+					id={id}
+					value={inputValue}
+					onChange={handleUpdateInput}
+					onKeyDown={handleKeyDown}
+					// onKeyPress={handleKeyPress}
+					onKeyUp={handleKeyUp}
+					onFocus={handleInputFocus}
+					onBlur={handleInputBlur}
+					// inputRef={setActualInputRef}
+					disabled={disabled}
+					disableUnderline
+					fullWidth={fullWidthInput}
+					placeholder={!hasInput && (shrinkFloatingLabel || label == null) ? placeholder : null}
+					onClick={undefined}
+					{...InputProps}
+				/>
+			</div>
+			{helperText && (
+				<FormHelperText
+					{...FormHelperTextProps}
+					className={FormHelperTextProps ? cx(FormHelperTextProps.className, classes.helperText) : classes.helperText}
+				>
+					{helperText}
+				</FormHelperText>
+			)}
+		</FormControl>
+	)
 }
-
 FilterInput.propTypes = {
 	/** Allows duplicate chips if set to true. */
 	allowDuplicates: PropTypes.bool,
@@ -613,7 +582,7 @@ FilterInput.defaultProps = {
 	newChipKeyCodes: [13]
 }
 
-export default withStyles(styles)(FilterInput)
+export default FilterInput
 
 export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused, isDisabled, handleClick, handleDelete, className, icon, iRef }, key) => (
 	<Chip
@@ -621,10 +590,11 @@ export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused,
 		key={key}
 		className={className}
 		icon={icon}
-		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '', color: isFocused ? '#fff' : undefined }}
+		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '', color: isFocused ? '#fff' : undefined, paddingLeft: 0, marginLeft: 0 }}
 		onClick={handleClick}
 		onDoubleClick={handleDoubleClick}
 		onDelete={handleDelete}
 		label={text}
+
 	/>
 )

@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 
-import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
-import withLocalization from 'components/Localization/T';
+import { Card, IconButton, CardContent, Button, Popover, Typography, CardActions, Checkbox, makeStyles } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 import { dateTimeFormatter } from 'variables/functions';
@@ -9,8 +8,11 @@ import { TextF, DSelect } from 'components';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
 import cx from 'classnames'
+import { useLocalization, usePrevious } from 'hooks'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
-const style = theme => ({
+const styles = makeStyles(theme => ({
 	error: {
 		animation: "shake 0.82s cubic-bezier(.36,.07,.19,.97) both",
 		transform: "translate3d(0, 0, 0)",
@@ -50,181 +52,183 @@ const style = theme => ({
 	content: {
 		height: '100%'
 	}
-})
-class FilterCard extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			value: '',
-			date: moment(),
-			after: false,
-			diff: {
-				value: -1,
-				icon: '',
-				label: ''
-			},
-			dropdown: {
-				value: -1,
-				icon: '',
-				label: ''
-			}
-		}
-	}
-	componentDidUpdate = (prevProps, prevState) => {
-		const { type, options } = this.props
-		if (this.props.open && prevProps.open !== this.props.open) {
+}))
+const FilterCard = (props) => {
+	const [value, setValue] = useState()
+	const [filterType, setFilterType] = useState('AND')
+	const [date, setDate] = useState(moment())
+	const [after, setAfter] = useState(false)
+	const [diff, setDiff] = useState({ value: -1, icon: '', label: '' })
+	const [dropdown, setDropdown] = useState({ value: -1, icon: '', label: '' })
+	const { open, type, options, edit, pValue, pFilterType, handleButton, title, hidden, error, resetError, handleClose, anchorEl } = props
+	const t = useLocalization()
+	const prevOpen = usePrevious(open)
+	const color = useSelector(s => s.settings.colorTheme)
+	const classes = styles({ color })
+
+	useEffect(() => {
+		if (open && prevOpen !== open) {
 			let obj = null
 			if (type === 'diff') {
 				obj = options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)]
+				if (obj)
+					setDiff({
+						value: obj.value !== undefined || null ? obj.value : null,
+						icon: obj.icon ? obj.icon : null,
+						label: obj.label ? obj.label : null
+					})
+				else {
+					setDiff({
+						value: -1,
+						icon: '',
+						label: ''
+					})
+				}
 			}
 			if (type === 'dropDown') {
 				obj = options[options.findIndex(d => d.value === 0 || d.value === false)]
-			}
-			this.setState({
-				diff: {
-					value: type === 'diff' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
-					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null,
-					label: type === 'diff' ? obj ? obj.label ? obj.label : null : null : null
-				},
-				dropdown: {
-					value: type === 'dropDown' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
-					icon: type === 'dropDown' ? obj ? obj.icon ? obj.icon : null : null : null,
-					label: type === 'dropDown' ? obj ? obj.label ? obj.label : null : null : null
+				if (obj)
+					setDropdown({
+						value: obj.value !== undefined || null ? obj.value : null,
+						icon: obj.icon ? obj.icon : null,
+						label: obj.label ? obj.label : null
+					})
+				else {
+					setDropdown({
+						value: -1,
+						icon: '',
+						label: ''
+					})
 				}
-			})
-		}
-	}
+			}
 
-	componentDidMount = (prevProps, prevState) => {
-		const { edit, type, value } = this.props
-		if (edit)
+		}
+	}, [open, options, prevOpen, type])
+
+	useEffect(() => {
+		if (edit) {
 			switch (type) {
 				case 'dropDown':
-					this.setState({
-						dropdown: {
-							value: value
-						}
-					})
-					break;
+					setDropdown({ value: pValue })
+					break
 				case 'diff':
-					this.setState({
-						diff: { value: value }
-					})
-					break;
+					setDiff({ value: pValue })
+					break
 				case 'date':
-					this.setState({
-						date: moment(value.date, 'lll'),
-						after: value.after
-					})
-					break;
+					setDate({ date: moment(pValue.date, 'lll') })
+					setAfter(pValue.after)
+					break
 				case 'string':
 				case undefined:
 				case '':
 				case null:
-					this.setState({
-						value: value,
-					})
-					break;
+					setValue(pValue)
+					setFilterType(pFilterType)
+					break
 				default:
-					break;
+					break
 			}
-	}
+		}
+	}, [edit, pFilterType, pValue, type])
 
-	handleKeyDown = (key) => {
-		if (this.props.open)
+	const handleKeyDown = (key) => {
+		if (open)
 			switch (key.keyCode) {
 				case 13:
-					this.handleButton()
-					break;
-
+					_handleButton()
+					break
 				default:
-					break;
+					break
 			}
 	}
-	handleKeyPress = (key) => {
-		if (this.props.open)
+	const handleKeyPress = (key) => {
+		if (open)
 			switch (key.keyCode) {
 				case 13:
-					this.handleButton()
-					break;
+					_handleButton()
+					break
 
 				default:
-					break;
+					break
 			}
 	}
-	handleButton = () => {
-		const { value, date, after, dropdown, diff } = this.state
-		const { type, handleButton, title, t, options, hidden } = this.props
+	const _handleButton = () => {
 		if (type === 'dropDown') {
-			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
+			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon, filterType)
 		}
 		if (type === 'string') {
 			if (hidden) {
-				handleButton(`${value}`, value)
+				handleButton(`${value}`, value, null, filterType)
 			}
 			else {
-				handleButton(`${title}: '${value}'`, value)
+				handleButton(`${title}: '${value}'`, value, null, filterType)
 			}
 		}
 		if (type === 'date')
-			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
+			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after }, filterType)
 		if (type === 'diff')
-			handleButton(`${title}: ${diff.label}`, { diff: diff.value, values: options.values })
-		this.setState({
-			value: '',
-			date: moment(),
-			endDate: moment(),
-			diff: {
-				value: 0,
-				label: ""
-			},
-			dropdown: {
-				value: 0,
-				label: ""
-			}
+			handleButton(`${title}: ${diff.label}`, { diff: diff.value, values: options.values }, null, filterType)
+
+		setValue('')
+		setDate(moment())
+		setDiff({ value: -1, label: '', icon: '' })
+		setDropdown({ value: -1, label: '', icon: '' })
+		// this.setState({
+		// 	value: '',
+		// 	date: moment(),
+		// 	endDate: moment(),
+		// 	diff: {
+		// 		value: 0,
+		// 		label: ""
+		// 	},
+		// 	dropdown: {
+		// 		value: 0,
+		// 		label: ""
+		// 	}
+		// })
+	}
+	const handleInput = e => {
+		setValue(e.target.value)
+		if (error) {
+			resetError()
+		}
+		// this.setState({
+		// 	value: e,
+		// }, () => this.props.error ? this.props.resetError() : {})
+	}
+	const handleCustomDate = (e) => {
+
+		setDate(e)
+
+		// this.setState({
+		// 	[key]: e
+		// })
+	}
+	const handleChangeDropDown = e => {
+		setDropdown({
+			value: e.target.value,
+			icon: options[options.findIndex(o => o.value === e.target.value)].icon,
+			label: options[options.findIndex(o => o.value === e.target.value)].label
 		})
 	}
-	handleInput = e => {
-		this.setState({
-			value: e,
-		}, () => this.props.error ? this.props.resetError() : {})
-	}
-	handleCustomDate = (e, key) => {
-		this.setState({
-			[key]: e
+	const handleChangeDiff = e => {
+		setDiff({
+			value: e.target.value,
+			icon: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].icon,
+			label: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].label
 		})
 	}
-	handleChangeDropDown = (o) => e => {
-		const { options } = this.props
-		this.setState({
-			[o]: {
-				value: e.target.value,
-				icon: options[options.findIndex(o => o.value === e.target.value)].icon,
-				label: options[options.findIndex(o => o.value === e.target.value)].label
-			}
-		})
-	}
-	handleChangeDiff = e => {
-		const { options } = this.props
-		this.setState({
-			diff: {
-				value: e.target.value,
-				icon: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].icon,
-				label: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].label
-			}
-		})
-	}
-	renderType = () => {
-		const { t, classes, title, options } = this.props
-		const { date, value, after, dropdown, diff } = this.state
-		switch (this.props.type) {
+	const renderType = () => {
+		// const { t, classes, title, options } = this.props
+		// const { date, value, after, dropdown, diff } = this.state
+		switch (type) {
 			case 'diff':
 				return <DSelect
 					fullWidth
 					label={title}
 					value={diff.value}
-					onChange={this.handleChangeDiff}
-					onKeyDown={this.handleKeyDown}
+					onChange={handleChangeDiff}
+					onKeyDown={handleKeyDown}
 					menuItems={
 						options.dropdown.map(o => ({ value: o.value, label: o.label, icon: o.icon }))
 					} />
@@ -233,8 +237,8 @@ class FilterCard extends Component {
 					fullWidth
 					label={title}
 					value={dropdown.value}
-					onKeyDown={this.handleKeyDown}
-					onChange={this.handleChangeDropDown('dropdown')}
+					onKeyDown={handleKeyDown}
+					onChange={handleChangeDropDown}
 					menuItems={
 						options.map(o => ({ value: o.value, label: o.label, icon: o.icon }
 						))
@@ -242,10 +246,11 @@ class FilterCard extends Component {
 			case 'date':
 				return <Fragment>
 					<ItemG xs={12} container alignItems={'center'}>
-						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} style={{ padding: "12px 12px 12px 0px" }} />
+						<Checkbox checked={after} onClick={() => setAfter(!after)} style={{ padding: "12px 12px 12px 0px" }} />
 						<Typography>{t('filters.afterDate')}</Typography>
 					</ItemG>
 					<ItemG>
+						{/* <MuiPickersUtilsProvider utils={MomentUtils}> */}
 						<DateTimePicker
 							id={'date'}
 							autoOk
@@ -256,7 +261,7 @@ class FilterCard extends Component {
 							format='LLL'
 							value={date}
 							autoFocus
-							onChange={val => this.handleCustomDate(val, 'date')}
+							onChange={handleCustomDate}
 							animateYearScrolling={false}
 							color='primary'
 							dateRangeIcon={<DateRange />}
@@ -266,56 +271,83 @@ class FilterCard extends Component {
 							InputLabelProps={{/*  FormLabelClasses: { root: classes.label, focused: classes.focused } */ }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
+						{/* </MuiPickersUtilsProvider> */}
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF fullWidth id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} onChange={e => this.handleInput(e.target.value)} />
+				return <TextF
+					fullWidth
+					id={'filter-text'}
+					autoFocus
+					onKeyDown={handleKeyDown}
+					label={t('filters.contains')}
+					value={value ? value : ""}
+					onChange={handleInput} />
 			default:
-				break;
+				break
 		}
 	}
-	render() {
-		const { title, open, handleClose, classes, anchorEl, t, edit, error } = this.props
-		const errorClassname = cx({
-			[classes.error]: error
-		})
-		return (
-			anchorEl.current ?
-				<Popover
-					anchorEl={anchorEl.current}
-					open={open ? open : false}
-					onClose={handleClose}
-					PaperProps={{ classes: { root: classes.menu } }}
-				>
-					<Card classes={{ root: errorClassname }}>
-						<ItemG container alignItems={'center'} className={classes.header}>
-							<ItemG xs>
-								<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>
-							</ItemG>
-							<ItemG>
-								<IconButton onClick={handleClose}>
-									<Close className={classes.headerText} />
-								</IconButton>
-							</ItemG>
-						</ItemG>
-						<CardContent className={classes.content}>
-							<ItemG container justify={'center'}>
-								<ItemG xs={12}>
-									{this.renderType()}
-								</ItemG>
-							</ItemG>
-						</CardContent>
-						<CardActions>
-							<ItemG xs={12} container justify={'center'}>
-								<Button onClick={this.handleButton} onKeyPress={this.handleKeyPress}>
-									{!edit ? t('actions.addFilter') : t('actions.editFilter')}
-								</Button>
-							</ItemG>
-						</CardActions>
-					</Card>
-				</Popover> : null
-		)
+
+	const errorClassname = cx({
+		[classes.error]: error
+	})
+	const filterTypeOptions = [{
+		value: "OR",
+		label: "OR",
+	}, {
+		value: "AND",
+		label: "AND"
+	}]
+	const handleChangeFilterType = (e) => {
+		setFilterType(e.target.value)
+
 	}
+	return (
+		<Popover
+			anchorEl={anchorEl}
+			open={open ? open : false}
+			onClose={handleClose}
+			PaperProps={{ classes: { root: classes.menu } }}
+		>
+			<Card classes={{ root: errorClassname }}>
+				<ItemG container alignItems={'center'} className={classes.header}>
+					<ItemG xs>
+						<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>
+					</ItemG>
+					<ItemG>
+						<IconButton onClick={handleClose}>
+							<Close className={classes.headerText} />
+						</IconButton>
+					</ItemG>
+				</ItemG>
+				<CardContent className={classes.content}>
+					<ItemG container justify={'center'}>
+						<ItemG xs={12}>
+							{renderType()}
+						</ItemG>
+						<ItemG xs={12}>
+							<DSelect
+								margin={'normal'}
+								fullWidth
+								// label={title}
+								value={filterType}
+								onChange={handleChangeFilterType}
+								menuItems={filterTypeOptions}
+							/>
+						</ItemG>
+					</ItemG>
+				</CardContent>
+				<CardActions>
+					<ItemG xs={12} container justify={'center'}>
+						<Button onClick={_handleButton} onKeyPress={handleKeyPress}>
+							{!edit ? t('actions.addFilter') : t('actions.editFilter')}
+						</Button>
+					</ItemG>
+				</CardActions>
+			</Card>
+		</Popover>
+	)
 }
 
-export default withLocalization()(withStyles(style)(FilterCard))
+
+export default FilterCard

@@ -41,7 +41,6 @@ const Sensors = props => {
 	const [selected, setSelected] = useState([])
 	const [order, setOrder] = useState('asc')
 	const [orderBy, setOrderBy] = useState('id')
-
 	//Const
 	const dCommunication = [
 		{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} /> },
@@ -52,7 +51,7 @@ const Sensors = props => {
 		{ key: 'name', name: t('devices.fields.name'), type: 'string' },
 		{ key: 'uuid', name: t('sensors.fields.uuid'), type: 'string' },
 		{ key: 'communication', name: t('sensors.fields.communication'), type: 'dropDown', options: dCommunication },
-		{ key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
+		// { key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
 		{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 	]
 
@@ -60,7 +59,9 @@ const Sensors = props => {
 		{ id: 'name', label: t('devices.fields.name') },
 		{ id: 'uuid', label: t('sensors.fields.uuid') },
 		{ id: 'communication', label: t('sensors.fields.communication') },
-		{ id: 'reg_name', label: t('sensors.fields.registry') },
+		{ id: 'registry', label: t('sensors.fields.registry') },
+		{ id: 'deviceType', label: t('sensors.fields.deviceType') },
+		// { id: 'reg_name', label: t('sensors.fields.registry') },
 	]
 	const options = () => {
 
@@ -73,14 +74,15 @@ const Sensors = props => {
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
-			{ dontShow: !hasAccess(device.uuid, 'device.edit'), label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
-			{ dontShow: !hasAccessList(selected, 'device.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 			{
 				single: true,
 				label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'),
 				icon: isFavorite ? Star : StarBorder,
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
-			}
+			},
+			{ isDivider: true, dontSow: selected.length > 1 },
+			{ dontShow: !hasAccess(device.uuid, 'device.edit'), label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
+			{ dontShow: !hasAccessList(selected, 'device.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -133,12 +135,12 @@ const Sensors = props => {
 				if (device) {
 					if (dispatch(isFav({ id: device.uuid, type: 'sensor' }))) {
 						s('snackbars.favorite.saved', { name: device.name, type: t('favorites.types.device') })
-						finishedSaving()
+						dispatch(finishedSaving())
 						setSelected([])
 					}
 					if (!dispatch(isFav({ id: device.uuid, type: 'sensor' }))) {
 						s('snackbars.favorite.removed', { name: device.name, type: t('favorites.types.device') })
-						finishedSaving()
+						dispatch(finishedSaving())
 						setSelected([])
 					}
 				}
@@ -151,8 +153,15 @@ const Sensors = props => {
 		const getSens = async () => await getData()
 		getSens()
 	}, [getData])
-
-
+	// const filterItems = useCallback((data) => {
+	// 	const rFilters = filters
+	// 	return customFilterItems(data, rFilters)
+	// }, [filters])
+	// useEffect(() => {
+	// 	if (filterItems !== filterItems(devices, filters)) {
+	// 		setFilteredItems(filterItems(devices, filters))
+	// 	}
+	// }, [devices, filterItems, filters])
 	//Handlers
 
 	const handleAddNewSensor = () => history.push({ pathname: `/sensors/new`, prevURL: '/sensors/list' })
@@ -161,7 +170,7 @@ const Sensors = props => {
 	const getFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'sensor')
 		let favSensors = favs.map(f => {
-			return devices[devices.findIndex(d => d.uuid === f.uuid)]
+			return devices[devices.findIndex(d => d.uuid === f.id)]
 		})
 		favSensors = handleRS(orderBy, order, favSensors)
 		return favSensors
@@ -173,10 +182,7 @@ const Sensors = props => {
 		dispatch(removeFromFav(favObj))
 	}
 
-	const filterItems = (data) => {
-		const rFilters = filters
-		return customFilterItems(data, rFilters)
-	}
+
 	const snackBarMessages = (msg) => {
 		switch (msg) {
 			case 1:
@@ -310,7 +316,7 @@ const Sensors = props => {
 
 	const renderTable = (items, handleClick, key) => {
 		return <SensorTable
-			data={filterItems(items)}
+			data={customFilterItems(items, filters)}
 			handleCheckboxClick={handleCheckboxClick}
 			handleClick={handleClick}
 			handleRequestSort={handleRequestSort(key)}
@@ -324,7 +330,7 @@ const Sensors = props => {
 
 	const renderCards = () => {
 		return loading ? <CircularLoader /> :
-			<SensorCards sensors={filterItems(devices)} t={t} history={history} />
+			<SensorCards sensors={customFilterItems(devices, filters)} t={t} history={history} />
 		// null
 	}
 

@@ -75,8 +75,8 @@ const Functions = props => {
 		let allOptions = [
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
 			{ isDivider: true, dontShow: selected.length > 1 },
-			{ disabled: !hasAccess(selected[0], 'org.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ disabled: !hasAccessList(selected, "org.delete"), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ disabled: !hasAccess(selected[0], 'cloudfunction.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !hasAccessList(selected, "cloudfunction.delete"), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -144,7 +144,7 @@ const Functions = props => {
 	const getFavs = () => {
 		let favs = favorites.filter(f => f.type === 'cloudfunction')
 		let favFunctions = favs.map(f => {
-			return functions[functions.findIndex(d => d.uuid === f.uuid)]
+			return functions[functions.findIndex(d => d.uuid === f.id)]
 		})
 		favFunctions = handleRequestSort(orderBy, order, favFunctions)
 		return favFunctions
