@@ -1,11 +1,12 @@
 /* eslint-disable indent */
 import React, { Fragment } from 'react'
-import { Dialog, Button } from '@material-ui/core'
-import { GridContainer, ItemG, Info } from 'components'
+import { Dialog, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import { ItemG, T } from 'components'
 import { CSVLink } from 'react-csv'
 import moment from 'moment'
-import zipcelx from 'zipcelx'
+// import zipcelx from 'zipcelx'
 import { useLocalization } from 'hooks'
+import { Close } from 'variables/icons'
 
 // import DevicePDF from './DevicePDF';
 
@@ -24,80 +25,68 @@ const ExportModal = props => {
 	// 	{ label: 'Organization', key: 'org' }
 	// ]
 	let CSVHeaders = [
-		{ label: 'Device ID', key: 'id' },
-		{ label: 'Start Date', key: 'startDate' },
-		{ label: 'End Date', key: 'endDate' },
-		{ label: 'Count', key: 'count' }
+		{ label: props.dataField, key: 'x' },
+		{ label: 'Date', key: 'y' },
 	]
 	const exportToJson = () => {
-		var data = props.data
-		var json = JSON.stringify(data);
-		var blob = new Blob([json], { type: "application/json" });
-		var url = URL.createObjectURL(blob);
+		var data = props.data.datasets[0].data.map(o => ({
+			[props.dataField]: o.y, date: o.x
+		}))
+
+		var json = JSON.stringify(data)
+		var blob = new Blob([json], { type: "application/json" })
+		var url = URL.createObjectURL(blob)
 		return url
 	}
-	const exportToXLSX = () => {
-		var data = props.data
-		let config = {
-			filename: `senti.cloud-data-${moment().format('DD-MM-YYYY')}`,
-			sheet: {
-				data: [
-					[
-						{ type: 'string', value: 'Device ID' },
-						{ type: 'string', value: 'Start Date' },
-						{ type: 'string', value: 'End Date' },
-						{ type: 'string', value: 'Count' },
-					], ...data.map(d => [
-						{ type: 'string', value: d.id },
-						{ type: 'date', value: d.startDate },
-						{ type: 'date', value: d.endDate },
-						{ type: 'number', value: d.count },
-					])]
-			}
-		}
-		zipcelx(config)
-	}
-	const { open, handleClose, data, to, from, raw } = props
+	// const exportToXLSX = () => {
+	// 	let config = {
+	// 		filename: `senti.cloud-data-${moment().format('DD-MM-YYYY')}`,
+	// 		sheet: {
+	// 			data: props.data.datasets[0].data
+	// 		}
+	// 	}
+	// 	zipcelx(config)
+	// }
+	const { open, handleClose, data, dataField } = props
 	return (
 		<Dialog
 			open={open}
 			onClose={handleClose}
 		>
-			<GridContainer>
-				{data &&
-					<Fragment>
+			<DialogTitle>{t('menus.export')} - {dataField}</DialogTitle>
+			<DialogContent>
 
-						<ItemG xs={12}>
-							<Info>{t('dialogs.export.message')}</Info>
-						</ItemG>
-						<ItemG xs={12}>
-							<Info paragraph={false}>
-								{raw ? t('collections.rawData') : t('collections.calibratedData')}
-							</Info>
-							<Info>
-								{`${from} - ${to}`}
-							</Info>
-						</ItemG>
+				<T style={{ padding: 8 }}>{t('dialogs.export.message')}</T>
+
+				{data ?
+					<Fragment>
 						<ItemG container spacing={2} justify={'center'} >
 							<ItemG>
-								<Button filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={CSVHeaders} component={CSVLink} color={'primary'} variant={'outlined'}>
+							<Button filename={`senti.cloud-data-${props.dataField}-${moment().format('DD-MM-YYYY')}.csv`}
+								data={data.datasets[0].data}
+								headers={CSVHeaders}
+								component={CSVLink}
+									color={'primary'}
+									variant={'contained'}
+								>
 									CSV
-									</Button>
+				</Button>
+
 							</ItemG>
 							<ItemG>
-								<Button component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={exportToJson()} target={'_blank'} color={'primary'} variant={'outlined'}>
+								<Button component={'a'} download={`senti.cloud-data-${props.dataField}-${moment().format('DD-MM-YYYY')}.json`} href={exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}
+>
 									JSON
-									</Button>
-							</ItemG>
-							<ItemG>
-								<Button color={'primary'} variant={'outlined'} onClick={exportToXLSX}>
-									XLSX
-									</Button>
+				</Button>
 							</ItemG>
 						</ItemG>
-					</Fragment>
+					</Fragment> : null
 				}
-			</GridContainer>
+			</DialogContent>
+			<DialogActions>
+
+				<Button icon={<Close />} color={'primary'} variant={'outlined'} onClick={handleClose}> {t('actions.cancel')}</Button>
+			</DialogActions>
 		</Dialog>
 	)
 }

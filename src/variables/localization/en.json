@@ -444,7 +444,7 @@
             "welcome": "Welcome to Senti!"
         },
         "export": {
-            "message": "Data details:"
+            "message": "Select a file type:"
         },
         "filterToolbar": {
             "title": "Filter Toolbar help",
