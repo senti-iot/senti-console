@@ -109,8 +109,9 @@ class OpenStreetMapWidget extends React.Component {
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
 
-		if (this.props.markers.length === 1)
-			center = [this.props.markers[0].lat, this.props.markers[0].long]
+		console.log(this.props.markers[0])
+		if (this.props.markers.length === 1 && this.props.markers[0])
+			center = [this.props.markers[0]?.lat, this.props.markers[0]?.long]
 		else {
 			center = [defaultLat, defaultLng]
 
@@ -155,7 +156,7 @@ class OpenStreetMapWidget extends React.Component {
 					<TileLayer url={l} />
 				)) : null}
 				{markers.map((m, i) => {
-					if (m.lat && m.long) {
+					if (m && (m.lat && m.long)) {
 						return <Marker
 							onDragend={calibrate ? this.onDragEnd : null}
 							autoPan={calibrate ? true : false}
