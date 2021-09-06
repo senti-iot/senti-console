@@ -1,12 +1,12 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody, Menu, ListItem, ListItemIcon, ListItemText,
+	Grid, IconButton, withStyles, Hidden, Tooltip, TableRow, Table, TableBody, /*  Menu, ListItem, ListItemIcon, ListItemText, */
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment, MoreVert, CloudDownload,
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment, MoreVert, /*  CloudDownload, */
 } from 'variables/icons'
 import { CircularLoader, Caption, ItemG, InfoCard, DateFilterMenu, T } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -380,12 +380,12 @@ class ScoreCard extends PureComponent {
 		return false
 	}
 	renderMenu = () => {
-		const { t } = this.props
-		const { actionAnchor } = this.state
+		// const { t } = this.props
+		// const { actionAnchor } = this.state
 		// let displayTo = dateTimeFormatter(period.to)
 		// let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container>
-			<Tooltip title={t('menus.menu')}>
+			{/* <Tooltip title={t('menus.menu')}>
 				<IconButton
 					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
@@ -393,8 +393,8 @@ class ScoreCard extends PureComponent {
 					onClick={this.handleOpenActionsDetails}>
 					<MoreVert />
 				</IconButton>
-			</Tooltip>
-			<Menu
+			</Tooltip> */}
+			{/* <Menu
 				marginThreshold={24}
 				id='long-menu'
 				anchorEl={actionAnchor}
@@ -409,7 +409,7 @@ class ScoreCard extends PureComponent {
 				</ListItem>
 
 
-			</Menu>
+			</Menu> */}
 		</ItemG>
 	}
 	renderNoData = () => {
