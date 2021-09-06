@@ -6,7 +6,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment, MoreVert, /*  CloudDownload, */
+	ShowChart, KeyboardArrowLeft, KeyboardArrowRight, Assignment, /* MoreVert,  CloudDownload, */
 } from 'variables/icons'
 import { CircularLoader, Caption, ItemG, InfoCard, DateFilterMenu, T } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';

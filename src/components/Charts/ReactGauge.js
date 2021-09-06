@@ -4,8 +4,8 @@ import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = (theme) => ({
 	gauge: {
-		width: '300px',
-		height: '150px',
+		width: '500px',
+		height: '250px',
 		/* margin: 100px auto   */
 	},
 	label: {
