@@ -36,7 +36,7 @@ const EditCloudFunction = props => {
 
 	//useCallbacks
 	const getData = useCallback(async () => {
-		await dispatch(await getOrgs())
+		await dispatch(await getOrgs(true))
 		await dispatch(await getFunctionLS(params.id))
 	}, [dispatch, params.id])
 
