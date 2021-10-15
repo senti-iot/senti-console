@@ -30,8 +30,8 @@ const Tokens = props => {
 	const filters = useSelector(state => state.appState.filters.tokens)
 	const user = useSelector(state => state.settings.user)
 	const devices = useSelector(state => state.data.sensors)
-	const registries = useSelector(state => state.data.registries)
-	const deviceTypes = useSelector(state => state.data.deviceTypes)
+	// const registries = useSelector(state => state.data.registries)
+	// const deviceTypes = useSelector(state => state.data.deviceTypes)
 
 	//State
 	const [selected, setSelected] = useState([])
@@ -307,13 +307,13 @@ const Tokens = props => {
 			case 1:
 				return <Link to={{ pathname: `/registry/${tId}`, prevURL: '/api/list' }}>
 					<Info>
-						{registries[registries.findIndex(d => d.id === tId)].name}
+						{/* {registries[registries.findIndex(d => d.id === tId)].name} */}
 					</Info>
 				</Link>
 			case 2:
 				return <Link to={{ pathname: `/devicetype/${tId}`, prevURL: '/api/list' }}>
 					<Info>
-						{deviceTypes[deviceTypes.findIndex(d => d.id === tId)].name}
+						{/* {deviceTypes[deviceTypes.findIndex(d => d.id === tId)].name} */}
 					</Info>
 				</Link>
 
