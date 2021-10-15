@@ -1,10 +1,8 @@
 import { makeStyles } from '@material-ui/core'
-import { red } from '@material-ui/core/colors'
 
 const tokensStyles = makeStyles(theme => ({
 	closeButton: {
-		marginLeft: 'auto',
-		color: red[500],
+		color: '#fff',
 		"&:hover": {
 			// borderColor: red[700],
 			// color: red[500],
