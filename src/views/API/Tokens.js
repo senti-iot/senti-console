@@ -8,7 +8,7 @@ import { dateTimeFormatter } from 'variables/functions'
 import { Delete, ViewList, Close, Add, Code } from 'variables/icons'
 import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, /* AssignProject */ } from 'components'
 import { customFilterItems } from 'variables/Filters'
-import { getTokens, setTokens, sortData } from 'redux/data'
+import { getTokens, setTokens, sortData, getSensors, getRegistries, getDeviceTypes } from 'redux/data'
 import CreateToken from './CreateToken'
 import { deleteTokens } from 'variables/dataTokens'
 import { useLocalization, useMatch, useSnackbar } from 'hooks'
@@ -67,8 +67,13 @@ const Tokens = props => {
 	const getData = useCallback(async (reload) => {
 		dispatch(setTokens())
 		if (accessLevel || user) {
-			if (reload || tokens.length === 0)
-				dispatch(getTokens(user.uuid, true, accessLevel.apisuperuser ? true : false))
+			if (reload || tokens.length === 0) {
+				dispatch(await getTokens(user.uuid, true, accessLevel.apisuperuser ? true : false))
+				dispatch(await getSensors(true, user.org.aux?.odeumId, false))
+				dispatch(await getRegistries(true, user.org.aux?.odeumId, false))
+				dispatch(await getDeviceTypes(true, user.org.aux?.odeumId, false))
+			}
+
 		}
 	}, [accessLevel, dispatch, tokens.length, user])
 
@@ -205,8 +210,22 @@ const Tokens = props => {
 		setOpenToken(false)
 		setToken(null)
 	}
+	const handleGetDeviceTypeName = tId => {
+		let dtExists = deviceTypes.findIndex(f => f.uuid === tId)
+		if (dtExists > -1) {
+			return deviceTypes[dtExists].name
+		}
+		else return tId
+	 }
+	const handleGetRegistryName = tId => {
+		let rExists = registries.findIndex(f => f.uuid === tId)
+		if (rExists > -1) {
+			return registries[rExists].name
+		}
+		else return tId
+	}
 	const handleGetDeviceName = tId => {
-		let dExists = devices.findIndex(d => d.id === tId)
+		let dExists = devices.findIndex(d => d.uuid === tId)
 		if (dExists > -1) {
 			return devices[dExists].name
 		}
@@ -224,13 +243,13 @@ const Tokens = props => {
 			case 1:
 				return <Link to={{ pathname: `/registry/${tId}`, prevURL: '/api/list' }}>
 					<Info>
-						{registries[registries.findIndex(d => d.id === tId)].name}
+						{handleGetRegistryName(tId)}
 					</Info>
 				</Link>
 			case 2:
 				return <Link to={{ pathname: `/devicetype/${tId}`, prevURL: '/api/list' }}>
 					<Info>
-						{deviceTypes[deviceTypes.findIndex(d => d.id === tId)].name}
+						{handleGetDeviceTypeName(tId)}
 					</Info>
 				</Link>
 
