@@ -4,9 +4,9 @@ import TableToolbar from 'components/Table/TableToolbar'
 import React, { useState, Fragment, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { dateTimeFormatter } from 'variables/functions'
-import { Delete, ViewList, Close, Add, Code } from 'variables/icons'
-import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, /* AssignProject */ } from 'components'
+import { copyToClipboard, dateTimeFormatter } from 'variables/functions'
+import { Delete, ViewList, Close, Add, Code, ContentCopy } from 'variables/icons'
+import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, TextF, /* AssignProject */ } from 'components'
 import { customFilterItems } from 'variables/Filters'
 import { getTokens, setTokens, sortData, getSensors, getRegistries, getDeviceTypes } from 'redux/data'
 import CreateToken from './CreateToken'
@@ -232,6 +232,89 @@ const Tokens = props => {
 		else return tId
 
 	}
+	const renderDeviceEndpoints = id => {
+		return <ItemG xs={12}>
+			<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
+			<ItemG xs={12}>
+				<Caption>{t('registries.fields.protocols.http')} - {t('api.latest')}</Caption>
+				<TextF
+					id={'mqtt-state'}
+					fullWidth
+					label={''}
+					readOnly
+					value={`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/latest`}
+					InputProps={{
+						endAdornment:
+							<ItemG>
+								<IconButton onClick={() => {
+									s('snackbars.urlCopied')
+									copyToClipboard(`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/latest`)
+								}
+								}>
+									<ContentCopy />
+								</IconButton>
+							</ItemG>
+					}
+					}
+				/>
+			</ItemG>
+			<ItemG xs={12}>
+				<Caption>{t('registries.fields.protocols.http')} - {t('api.period')}</Caption>
+				<TextF
+					id={'mqtt-state'}
+					fullWidth
+					label={''}
+					readOnly
+					value={`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}`}
+					InputProps={{
+						endAdornment:
+							<ItemG>
+								<IconButton onClick={() => {
+									s('snackbars.urlCopied')
+									copyToClipboard(`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}`)
+								}
+								}>
+									<ContentCopy />
+								</IconButton>
+							</ItemG>
+					}
+					}
+				/>
+			</ItemG>
+			<ItemG xs={12}>
+				<Caption>{t('registries.fields.protocols.http')} - {t('api.periodField')}</Caption>
+				<TextF
+					id={'mqtt-state'}
+					fullWidth
+					label={''}
+					readOnly
+					value={`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_FIELD}}/?{{CLOUD_FUNCTION_ID}}`}
+					InputProps={{
+						endAdornment:
+							<ItemG>
+								<IconButton onClick={() => {
+									s('snackbars.urlCopied')
+									copyToClipboard(`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_FIELD}}/?{{CLOUD_FUNCTION_ID}}`)
+								}
+								}>
+									<ContentCopy />
+								</IconButton>
+							</ItemG>
+					}
+					}
+				/>
+			</ItemG>
+		</ItemG>
+	}
+	const renderApiEndpoints = (type, id) => {
+		switch (type) {
+			case 0:
+				return renderDeviceEndpoints(id)
+
+			default:
+				break;
+		}
+	}
 	const renderReference = (type, tId) => {
 		switch (type) {
 			case 0:
@@ -288,16 +371,19 @@ const Tokens = props => {
 					<DialogTitle disableTypography >
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{token.name}
-							<Tooltip title={t('actions.delete')}>
-								<IconButton className={classes.closeButton} onClick={handleOpenDeleteDialogS}>
-									<Delete />
-								</IconButton>
-							</Tooltip>
-							<Tooltip title={t('actions.close')}>
-								<IconButton aria-label="Close" onClick={handleCloseToken}>
-									<Close />
-								</IconButton>
-							</Tooltip>
+							<ItemG container xs alignItems={'center'} justify={'flex-end'}>
+
+								<Tooltip title={t('actions.delete')}>
+									<IconButton className={classes.closeButton} onClick={handleOpenDeleteDialogS}>
+										<Delete />
+									</IconButton>
+								</Tooltip>
+								<Tooltip title={t('actions.close')}>
+									<IconButton className={classes.closeButton} aria-label="Close" onClick={handleCloseToken}>
+										<Close />
+									</IconButton>
+								</Tooltip>
+							</ItemG>
 						</ItemG>
 					</DialogTitle>
 					<DialogContent>
@@ -318,7 +404,11 @@ const Tokens = props => {
 								<Caption>{t('tokens.fields.reference')}</Caption>
 								{renderReference(token.type, token.type_id)}
 							</ItemG>
+							<ItemG xs={12}>
+								{renderApiEndpoints(token.type, token.type_id)}
+							</ItemG>
 						</ItemG>
+
 					</DialogContent>
 					<DialogActions>
 

@@ -7,6 +7,11 @@
 		"title": "Siden ikke fundet!"
 	},
 	"": "",
+	"api": {
+		"latest": "Seneste",
+		"period": "Periode",
+		"periodField": "Periode med et specifikt datafelt"
+	},
 	"Senti": "Senti",
 	"actions": {
 		"accept": "Godkend",
@@ -1283,10 +1288,10 @@
 			"userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
 		}
 	},
-		"filterToolbar": {
-			"AND": "OG",
-			"OR": "ELLER"
-		},
+	"filterToolbar": {
+		"AND": "OG",
+		"OR": "ELLER"
+	},
 	"help": {
 		"filterToolbar": {
 			"titles": {

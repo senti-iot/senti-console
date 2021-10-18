@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import React, { Fragment } from 'react'
-import { Dialog, Button, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
+import { Dialog, Button, DialogTitle, DialogContent, DialogActions, IconButton } from '@material-ui/core'
 import { ItemG, T } from 'components'
 import { CSVLink } from 'react-csv'
 import moment from 'moment'
@@ -52,8 +52,21 @@ const ExportModal = props => {
 		<Dialog
 			open={open}
 			onClose={handleClose}
+			maxWidth={'sm'}
+			fullWidth
 		>
-			<DialogTitle>{t('menus.export')} - {dataField}</DialogTitle>
+			<DialogTitle disableTypography>
+				<ItemG container justify="center" alignItems="center">
+					<ItemG xs>
+						{t('menus.export')} - {dataField}
+					</ItemG>
+					<ItemG>
+						<IconButton style={{ color: '#fff' }} aria-label="close" onClick={handleClose}>
+							<Close />
+						</IconButton>
+					</ItemG>
+				</ItemG>
+			</DialogTitle>
 			<DialogContent>
 
 				<T style={{ padding: 8 }}>{t('dialogs.export.message')}</T>
@@ -62,10 +75,10 @@ const ExportModal = props => {
 					<Fragment>
 						<ItemG container spacing={2} justify={'center'} >
 							<ItemG>
-							<Button filename={`senti.cloud-data-${props.dataField}-${moment().format('DD-MM-YYYY')}.csv`}
-								data={data.datasets[0].data}
-								headers={CSVHeaders}
-								component={CSVLink}
+								<Button filename={`senti.cloud-data-${props.dataField}-${moment().format('DD-MM-YYYY')}.csv`}
+									data={data.datasets[0].data}
+									headers={CSVHeaders}
+									component={CSVLink}
 									color={'primary'}
 									variant={'contained'}
 								>
@@ -75,7 +88,7 @@ const ExportModal = props => {
 							</ItemG>
 							<ItemG>
 								<Button component={'a'} download={`senti.cloud-data-${props.dataField}-${moment().format('DD-MM-YYYY')}.json`} href={exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}
->
+								>
 									JSON
 				</Button>
 							</ItemG>
@@ -85,7 +98,7 @@ const ExportModal = props => {
 			</DialogContent>
 			<DialogActions>
 
-				<Button icon={<Close />} color={'primary'} variant={'outlined'} onClick={handleClose}> {t('actions.cancel')}</Button>
+				<Button icon={<Close />} color={'primary'} variant={'outlined'} onClick={handleClose}> {t('actions.close')}</Button>
 			</DialogActions>
 		</Dialog>
 	)

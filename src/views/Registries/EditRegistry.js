@@ -38,8 +38,8 @@ const UpdateRegistry = props => {
 	}, [goToRegistries])
 
 	const getData = useCallback(async () => {
-		dispatch(await getOrgs(true))
-		dispatch(await getRegistryLS(match.params.id))
+		await dispatch(await getOrgs(true))
+		await dispatch(await getRegistryLS(match.params.id))
 	}, [dispatch, match.params.id])
 
 	//useEventListener

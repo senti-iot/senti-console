@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getDeviceTypeLS, getDeviceTypes } from 'redux/data'
+import { getDeviceTypeLS, getDeviceTypes, getOrgs } from 'redux/data'
 import { updateDeviceType } from 'variables/dataDeviceTypes'
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm'
 import { updateFav, isFav } from 'redux/favorites'
@@ -53,12 +53,19 @@ const EditDeviceType = props => {
 
 	//useEffects
 	useEffect(() => {
-		let getDT = async () => dispatch(await getDeviceTypeLS(params.id))
+		let getDT = async () => {
+			await dispatch(await getDeviceTypeLS(params.id))
+			if (orgs.length === 0) {
+				await dispatch(await getOrgs(true))
+			}
+		}
 		getDT()
-	}, [dispatch, params])
+		console.log('Getting DT')
+	}, [dispatch, orgs.length, params])
 
 
 	useEffect(() => {
+		console.log(devicetype, orgs)
 		if (devicetype && orgs.length > 0) {
 			setDeviceType(devicetype)
 			setDecoder(devicetype.decoder ? cloudfunctions[cloudfunctions.findIndex(f => f.id === devicetype.decoder)] : { id: null, name: "" })

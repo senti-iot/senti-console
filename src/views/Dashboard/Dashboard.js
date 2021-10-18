@@ -14,6 +14,7 @@ import { TextF } from 'components/index.js'
 import { nLightTheme, nDarkTheme } from 'variables/themes'
 import { getWL } from 'variables/storage'
 import { useLocalization, useSnackbar, useDispatch, useSelector } from 'hooks/index.js'
+import { getAllData } from 'redux/data.js'
 
 
 const Dashboard = (props) => {
@@ -48,6 +49,8 @@ const Dashboard = (props) => {
 			dontShow: true,
 			tabs: []
 		})
+		const getData = async () => dispatch(await getAllData(true))
+		getData()
 		return () => {
 			dispatch(reset())
 		}

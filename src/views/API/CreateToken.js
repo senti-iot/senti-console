@@ -109,7 +109,7 @@ const CreateToken = props => {
 						handleClose={() => setOpenSensor(false)}
 						callBack={sensor => {
 							setOpenSensor(false)
-							setToken({ ...token, resourceUuid: sensor.id })
+							setToken({ ...token, resourceUuid: sensor.uuid })
 							setSensor(sensor)
 						}}
 					/>
@@ -130,7 +130,7 @@ const CreateToken = props => {
 						handleClose={() => setOpenRegistry(false)}
 						callBack={registry => {
 							setOpenRegistry(false)
-							setToken({ ...token, resourceUuid: registry.id })
+							setToken({ ...token, resourceUuid: registry.uuid })
 							setRegistry(registry)
 						}}
 					/>
@@ -151,7 +151,7 @@ const CreateToken = props => {
 						handleClose={() => setOpenDeviceType(false)}
 						callBack={deviceType => {
 							setOpenDeviceType(false)
-							setToken({ ...token, resourceUuid: deviceType.id })
+							setToken({ ...token, resourceUuid: deviceType.uuid })
 							setDeviceType(deviceType)
 						}}
 					/>

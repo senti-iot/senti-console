@@ -8,7 +8,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, /* CloudDownload, */ LinearScale, KeyboardArrowLeft, KeyboardArrowRight,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, /* CloudDownload, */ LinearScale, KeyboardArrowLeft, KeyboardArrowRight, CloudDownload,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -18,6 +18,7 @@ import {
 	DateFilterMenu,
 	T,
 	DSelect,
+	ExportModal,
 } from 'components'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -46,6 +47,8 @@ const MultiSourceChart = (props) => {
 	// const sensors = useSelector(s => s.data.sensors)
 
 	//State
+	const [openExport, setOpenExport] = useState(false)
+
 	const [actionAnchor, setActionAnchor] = useState(null)
 	const [visibility, setVisibility] = useState(false)
 	const [resetZoom, setResetZoom] = useState(false)
@@ -352,6 +355,16 @@ const MultiSourceChart = (props) => {
 		setSelectedDevice(e.target.value)
 	}
 	const handleMenuItems = () => g ? g.dataSource ? g.dataSource.deviceIds ? g.dataSource.deviceIds.map((d, i) => ({ label: handleGetDeviceName(d), value: i })) : [] : [] : []
+
+
+	const handleOpenExportModal = () => {
+		setOpenExport(true)
+	}
+	const handleCloseExportModal = () => {
+		setOpenExport(false)
+	}
+
+
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -690,10 +703,10 @@ const MultiSourceChart = (props) => {
 									</ItemG>
 								</ItemG>
 							</ListItem></Hidden>}
-					{/* <ListItem button onClick={handleOpenDownloadModal}>
+					<ListItem button onClick={handleOpenExportModal}>
 						<ListItemIcon><CloudDownload /></ListItemIcon>
 						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem> */}
+					</ListItem>
 
 				</Menu>
 			</ItemG>
@@ -724,6 +737,29 @@ const MultiSourceChart = (props) => {
 			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
 		</ItemG>
 	}
+	const exportData = () => {
+		switch (period.chartType) {
+			case 0:
+				return roundDataSets
+			case 1:
+				return roundDataSets
+			case 2:
+				return barDataSets
+			case 3:
+				return lineDataSets
+
+			default:
+				break
+		}
+	}
+	const renderExportModal = () => {
+		return <ExportModal
+			handleClose={handleCloseExportModal}
+			dataField={g.dataSource.dataKey}
+			open={openExport}
+			data={exportData()}
+		/>
+	}
 
 	return (
 		<InfoCard
@@ -750,6 +786,7 @@ const MultiSourceChart = (props) => {
 								{small ? renderSmallTitle() : null}
 							</Hidden>
 							{renderType()}
+							{renderExportModal()}
 						</Fragment>
 					}
 				</Grid>}

@@ -8,7 +8,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, /* CloudDownload, */ LinearScale, KeyboardArrowLeft, KeyboardArrowRight,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, /* CloudDownload, */ LinearScale, KeyboardArrowLeft, KeyboardArrowRight, CloudDownload,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -17,6 +17,7 @@ import {
 	PieChart,
 	DateFilterMenu,
 	T,
+	ExportModal,
 } from 'components'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -43,8 +44,9 @@ const DoubleChart = (props) => {
 	const g = useSelector(s => getGraph(s, gId, create))
 	const period = useSelector(s => getPeriod(s, gId, create))
 	//State
+
 	const [actionAnchor, setActionAnchor] = useState(null)
-	// const [openDownload, setOpenDownload] = useState(false)
+	const [openExport, setOpenExport] = useState(false)
 	const [visibility, setVisibility] = useState(false)
 	const [resetZoom, setResetZoom] = useState(false)
 	const [zoomDate, setZoomDate] = useState([])
@@ -404,6 +406,14 @@ const DoubleChart = (props) => {
 		}
 		handleSetDate(6, to, from, period.timeType, period.id)
 	}
+
+	const handleOpenExportModal = () => {
+		setOpenExport(true)
+	}
+	const handleCloseExportModal = () => {
+		setOpenExport(false)
+	}
+
 	const renderTitle = (small) => {
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -637,10 +647,10 @@ const DoubleChart = (props) => {
 							{t(chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 						</ListItemText>
 					</ListItem>
-					{/* <ListItem button onClick={handleOpenDownloadModal}>
+					<ListItem button onClick={handleOpenExportModal}>
 						<ListItemIcon><CloudDownload /></ListItemIcon>
 						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem> */}
+					</ListItem>
 
 				</Menu>
 			</ItemG>
@@ -666,12 +676,35 @@ const DoubleChart = (props) => {
 				break
 		}
 	}
+	const exportData = () => {
+		switch (period.chartType) {
+			case 0:
+				return roundDataSets
+			case 1:
+				return roundDataSets
+			case 2:
+				return barDataSets
+			case 3:
+				return lineDataSets
+
+			default:
+				break
+		}
+	}
+	const renderExportModal = () => {
+		return <ExportModal
+			handleClose={handleCloseExportModal}
+			dataField={g.dataSource.dataKey}
+			open={openExport}
+			data={exportData()}
+		/>
+	}
+
 	const renderSmallTitle = () => {
 		return <ItemG xs={12} container justify={'center'}>
 			<T className={classes.smallTitle} variant={'h6'}>{title}</T>
 		</ItemG>
 	}
-
 
 	let small = g ? g.grid ? g.grid.w <= 4 ? true : false : false : false
 
@@ -700,6 +733,7 @@ const DoubleChart = (props) => {
 								{renderSmallTitle()}
 							</Hidden>
 							{renderType()}
+							{renderExportModal()}
 						</Fragment>
 					}
 				</Grid>}
