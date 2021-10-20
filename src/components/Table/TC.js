@@ -1,6 +1,7 @@
 import React from 'react'
 import { TableCell, Typography, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
+import { Link } from 'components'
 
 const styles = makeStyles(theme => ({
 	tablecellPadding: {
@@ -28,7 +29,7 @@ const styles = makeStyles(theme => ({
 
 const TC = (props) => {
 	const classes = styles()
-	const { checkbox, noCheckbox, label, content, className, center, FirstC, ...rest } = props
+	const { checkbox, noCheckbox, label, content, className, center, FirstC, href, ...rest } = props
 	let tcClasses = classNames({
 		[className]: className,
 		[classes.tableCellCheckbox]: checkbox,
@@ -40,7 +41,7 @@ const TC = (props) => {
 			{...rest}
 		>
 			{(label !== null || label !== undefined) ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
-				{label}
+				{href ? <Link to={href}>{label}</Link> : label}
 			</Typography> : null}
 			{content ? content : null}
 		</TableCell>

@@ -10,7 +10,12 @@
 	"api": {
 		"latest": "Seneste",
 		"period": "Periode",
-		"periodField": "Periode med et specifikt datafelt"
+		"periodField": "Periode med et specifikt datafelt",
+		"fields": {
+			"lastCall": "Sidste api-opkald",
+			"counter": "Api-opkalder",
+			"createdBy": "Oprettet af"
+		}
 	},
 	"Senti": "Senti",
 	"actions": {

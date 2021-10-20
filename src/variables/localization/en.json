@@ -10,7 +10,12 @@
 	"api":{
 		"latest": "Latest",
 		"period": "Period",
-		"periodField": "Period with specific data field"
+		"periodField": "Period with specific data field",
+		"fields": {
+			"lastCall": "Last call",
+			"counter": "Api Calls",
+			"createdBy": "Created by"
+		}
 	},
     "Senti": "Senti",
     "actions": {

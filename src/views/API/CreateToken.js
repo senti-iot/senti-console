@@ -268,8 +268,8 @@ const CreateToken = props => {
 								value={token.resourceType}
 								menuItems={[
 									{ value: 0, label: t('tokens.fields.types.device') },
-									{ value: 1, label: t('tokens.fields.types.registry') },
-									{ value: 2, label: t('tokens.fields.types.devicetype') }
+									{ value: 1, label: t('tokens.fields.types.registry') }
+									// { value: 2, label: t('tokens.fields.types.devicetype') }
 								]}
 								onChange={handleChange('resourceType')}
 							/>

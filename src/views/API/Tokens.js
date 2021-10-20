@@ -8,7 +8,7 @@ import { copyToClipboard, dateTimeFormatter } from 'variables/functions'
 import { Delete, ViewList, Close, Add, Code, ContentCopy } from 'variables/icons'
 import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, TextF, /* AssignProject */ } from 'components'
 import { customFilterItems } from 'variables/Filters'
-import { getTokens, setTokens, sortData, getSensors, getRegistries, getDeviceTypes } from 'redux/data'
+import { getTokens, setTokens, sortData, getSensors, getRegistries, /* getDeviceTypes */ } from 'redux/data'
 import CreateToken from './CreateToken'
 import { deleteTokens } from 'variables/dataTokens'
 import { useLocalization, useMatch, useSnackbar } from 'hooks'
@@ -53,7 +53,10 @@ const Tokens = props => {
 	const tokensHeader = [
 		// { id: 'id', label: t('tokens.fields.id') },
 		{ id: 'name', label: t('tokens.fields.name') },
-		{ id: 'created', label: t('registries.fields.created') }
+		{ id: 'counter', label: t('api.fields.counter') },
+		{ id: 'lastCall', label: t('api.fields.lastCall') },
+		{ id: 'created', label: t('registries.fields.created') },
+		{ id: 'createdBy', label: t('api.fields.createdBy') }
 	]
 
 	const options = () => {
@@ -71,7 +74,7 @@ const Tokens = props => {
 				dispatch(await getTokens(user.uuid, true, accessLevel.apisuperuser ? true : false))
 				dispatch(await getSensors(true, user.org.aux?.odeumId, false))
 				dispatch(await getRegistries(true, user.org.aux?.odeumId, false))
-				dispatch(await getDeviceTypes(true, user.org.aux?.odeumId, false))
+				// dispatch(await getDeviceTypes(true, user.org.aux?.odeumId, false))
 			}
 
 		}
@@ -230,9 +233,11 @@ const Tokens = props => {
 			return devices[dExists].name
 		}
 		else return tId
-
 	}
-	const renderDeviceEndpoints = id => {
+	// /:token/registry/:regID/:from/:to/
+	// /:token/registry/:regID/latest
+	const renderRegistryEndpoints = tId => {
+		let reg = registries[registries.findIndex(f => f.uuid === tId)]?.uuname
 		return <ItemG xs={12}>
 			<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
 			<ItemG xs={12}>
@@ -242,13 +247,13 @@ const Tokens = props => {
 					fullWidth
 					label={''}
 					readOnly
-					value={`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/latest`}
+					value={`https://api.senti.cloud/{{API_TOKEN}}/registry/${reg}/latest`}
 					InputProps={{
 						endAdornment:
 							<ItemG>
 								<IconButton onClick={() => {
 									s('snackbars.urlCopied')
-									copyToClipboard(`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/latest`)
+									copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/registry/${reg}/latest`)
 								}
 								}>
 									<ContentCopy />
@@ -265,13 +270,64 @@ const Tokens = props => {
 					fullWidth
 					label={''}
 					readOnly
-					value={`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}`}
+					value={`https://api.senti.cloud/{{API_TOKEN}}/registry/${reg}/{{FROM_DATE}}/{{TO_DATE}}`}
 					InputProps={{
 						endAdornment:
 							<ItemG>
 								<IconButton onClick={() => {
 									s('snackbars.urlCopied')
-									copyToClipboard(`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}`)
+									copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/registry/${reg}/{{FROM_DATE}}/{{TO_DATE}}`)
+								}
+								}>
+									<ContentCopy />
+								</IconButton>
+							</ItemG>
+					}
+					}
+				/>
+			</ItemG>
+		</ItemG>
+	}
+	const renderDeviceEndpoints = id => {
+		return <ItemG xs={12}>
+			<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
+			<ItemG xs={12}>
+				<Caption>{t('registries.fields.protocols.http')} - {t('api.latest')}</Caption>
+				<TextF
+					id={'mqtt-state'}
+					fullWidth
+					label={''}
+					readOnly
+					value={`https://api.senti.cloud/{{API_TOKEN}}/devicedata/${id}/latest`}
+					InputProps={{
+						endAdornment:
+							<ItemG>
+								<IconButton onClick={() => {
+									s('snackbars.urlCopied')
+									copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/devicedata/${id}/latest`)
+								}
+								}>
+									<ContentCopy />
+								</IconButton>
+							</ItemG>
+					}
+					}
+				/>
+			</ItemG>
+			<ItemG xs={12}>
+				<Caption>{t('registries.fields.protocols.http')} - {t('api.period')}</Caption>
+				<TextF
+					id={'mqtt-state'}
+					fullWidth
+					label={''}
+					readOnly
+					value={`https://api.senti.cloud/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}`}
+					InputProps={{
+						endAdornment:
+							<ItemG>
+								<IconButton onClick={() => {
+									s('snackbars.urlCopied')
+									copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}`)
 								}
 								}>
 									<ContentCopy />
@@ -288,13 +344,13 @@ const Tokens = props => {
 					fullWidth
 					label={''}
 					readOnly
-					value={`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_FIELD}}/?{{CLOUD_FUNCTION_ID}}`}
+					value={`https://api.senti.cloud/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_FIELD}}/?{{CLOUD_FUNCTION_ID}}`}
 					InputProps={{
 						endAdornment:
 							<ItemG>
 								<IconButton onClick={() => {
 									s('snackbars.urlCopied')
-									copyToClipboard(`https://services.senti.cloud/databroker/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_FIELD}}/?{{CLOUD_FUNCTION_ID}}`)
+									copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/devicedata/${id}/{{FROM_DATE}}/{{TO_DATE}}/{{DATA_FIELD}}/?{{CLOUD_FUNCTION_ID}}`)
 								}
 								}>
 									<ContentCopy />
@@ -310,7 +366,8 @@ const Tokens = props => {
 		switch (type) {
 			case 0:
 				return renderDeviceEndpoints(id)
-
+			case 1:
+				return renderRegistryEndpoints(id)
 			default:
 				break;
 		}

@@ -27,45 +27,44 @@ const RegistryProtocol = (props) => {
 			content={
 				<ItemG container spacing={3}>
 					<ItemG xs={12}>
-						<Caption>{t('sensors.fields.protocols.publishData')}</Caption>
-
+						<Caption>{t('sensors.fields.protocols.externalAPI')}</Caption>
 						<ItemG xs={12}>
-							<Caption>{t('registries.fields.protocols.mqtt')}</Caption>
+							<Caption>{t('registries.fields.protocols.http')} - {t('api.latest')}</Caption>
 							<TextF
-								id={'mqtt-publish'}
+								id={'mqtt-state'}
 								fullWidth
-								readOnly
 								label={''}
-								//v1/climaid-9143be4c/location/europe/registries/climaid-413ee13f/publish
-								value={`v1/${registry?.org?.uuname}/location/europe/registries/${registry?.uuname}/publish`}
+								readOnly
+								value={`https://api.senti.cloud/{{API_TOKEN}}/registry/${registry.uuname}/latest`}
 								InputProps={{
 									endAdornment:
 										<ItemG>
 											<IconButton onClick={() => {
 												s('snackbars.urlCopied')
-												copyToClipboard(`v1/${registry?.org?.uuname}/location/europe/registries/${registry?.uuname}/publish`)
+												copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/registry/${registry.uuname}/latest`)
 											}
 											}>
 												<ContentCopy />
 											</IconButton>
 										</ItemG>
-								}}
+								}
+								}
 							/>
 						</ItemG>
 						<ItemG xs={12}>
-							<Caption>{t('registries.fields.protocols.http')} POST</Caption>
+							<Caption>{t('registries.fields.protocols.http')} - {t('api.period')}</Caption>
 							<TextF
-								id={'htpp-publish'}
+								id={'mqtt-state'}
 								fullWidth
 								label={''}
 								readOnly
-								value={`https://iotdevice.senti.cloud/v1/${registry?.org?.uuname}/location/europe/registries/${registry?.uuname}/publish`}
+								value={`https://api.senti.cloud/{{API_TOKEN}}/registry/${registry.uuname}/{{FROM_DATE}}/{{TO_DATE}}`}
 								InputProps={{
 									endAdornment:
 										<ItemG>
 											<IconButton onClick={() => {
 												s('snackbars.urlCopied')
-												copyToClipboard(`https://iotdevice.senti.cloud/v1/${registry?.org?.uuname}/location/europe/registries/${registry?.uuname}/publish`)
+												copyToClipboard(`https://api.senti.cloud/{{API_TOKEN}}/registry/${registry.uuname}/{{FROM_DATE}}/{{TO_DATE}}`)
 											}
 											}>
 												<ContentCopy />

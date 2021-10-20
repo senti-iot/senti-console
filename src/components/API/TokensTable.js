@@ -17,9 +17,10 @@ const TokensTable = props => {
 	//Hooks
 	const classes = tokentableStyles() // newly created file for styles
 	const t = useLocalization()
-	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
 
 	//Redux
+	const rowsPerPage = useSelector(state => state.appState.trp > 0 ? state.appState.trp : state.settings.trp)
+	const users = useSelector(state => state.data.users)
 
 	//State
 	const [page, setPage] = useState(0)
@@ -49,6 +50,14 @@ const TokensTable = props => {
 		const { data } = props
 		let selected = data.map(d => d.id)
 		props.handleSelectAllClick(selected, checked)
+	}
+
+	const findUserName = (uuid) => {
+		let u = users[users.findIndex(f => f.uuid === uuid)]
+		if (u) {
+			return u.firstName + " " + u.lastName
+		}
+		else return uuid
 	}
 
 	return (
@@ -115,7 +124,10 @@ const TokensTable = props => {
 											FirstC
 											label={n.name}
 										/>
+										<TC label={n.count}/>
+										<TC label={dateTimeFormatter(n.lastCall, true)} />
 										<TC label={dateTimeFormatter(n.created, true)} />
+										<TC label={findUserName(n.createdBy)} href={{ pathname: `/management/user/${n.createdBy}`, prevURL: '/api/list' }}/>
 									</Hidden>
 								</TableRow>
 							)
