@@ -8,7 +8,7 @@ import { copyToClipboard, dateTimeFormatter } from 'variables/functions'
 import { Delete, ViewList, Close, Add, Code, ContentCopy } from 'variables/icons'
 import { GridContainer, CircularLoader, ItemG, Caption, Info, DeleteDialog, Link, TextF, /* AssignProject */ } from 'components'
 import { customFilterItems } from 'variables/Filters'
-import { getTokens, setTokens, sortData, getSensors, getRegistries, /* getDeviceTypes */ } from 'redux/data'
+import { getTokens, setTokens, sortData, getSensors, getRegistries, getUsers, /* getDeviceTypes */ } from 'redux/data'
 import CreateToken from './CreateToken'
 import { deleteTokens } from 'variables/dataTokens'
 import { useLocalization, useMatch, useSnackbar } from 'hooks'
@@ -71,9 +71,10 @@ const Tokens = props => {
 		dispatch(setTokens())
 		if (accessLevel || user) {
 			if (reload || tokens.length === 0) {
-				dispatch(await getTokens(user.uuid, true, accessLevel.apisuperuser ? true : false))
+				await dispatch(await getUsers(true, user.org.aux?.odeumId, false))
 				dispatch(await getSensors(true, user.org.aux?.odeumId, false))
 				dispatch(await getRegistries(true, user.org.aux?.odeumId, false))
+				await dispatch(await getTokens(user.uuid, true, accessLevel.apisuperuser ? true : false))
 				// dispatch(await getDeviceTypes(true, user.org.aux?.odeumId, false))
 			}
 
