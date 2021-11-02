@@ -108,7 +108,7 @@ const TokensTable = props => {
 												</ItemGrid>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 													<Caption noWrap className={classes.noMargin}>
-														{dateTimeFormatter(n.created, true)}
+														{dateTimeFormatter(n.created, false)}
 													</Caption>
 												</ItemGrid>
 											</ItemGrid>
@@ -125,8 +125,8 @@ const TokensTable = props => {
 											label={n.name}
 										/>
 										<TC label={n.count}/>
-										<TC label={dateTimeFormatter(n.lastCall, true)} />
-										<TC label={dateTimeFormatter(n.created, true)} />
+										<TC label={dateTimeFormatter(n.lastCall, false)} />
+										<TC label={dateTimeFormatter(n.created, false)} />
 										<TC label={findUserName(n.createdBy)} href={{ pathname: `/management/user/${n.createdBy}`, prevURL: '/api/list' }}/>
 									</Hidden>
 								</TableRow>
