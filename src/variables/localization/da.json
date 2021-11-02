@@ -12,8 +12,8 @@
 		"period": "Periode",
 		"periodField": "Periode med et specifikt datafelt",
 		"fields": {
-			"lastCall": "Sidste api-opkald",
-			"counter": "Api-opkalder",
+			"lastCall": "Seneste kald",
+			"counter": "Antal kald",
 			"createdBy": "Oprettet af"
 		}
 	},
