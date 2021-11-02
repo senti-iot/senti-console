@@ -125,7 +125,7 @@ const TokensTable = props => {
 											label={n.name}
 										/>
 										<TC label={n.count}/>
-										<TC label={dateTimeFormatter(n.lastCall, false)} />
+										<TC label={dateTimeFormatter(n.lastCall, false) ? dateTimeFormatter(n.lastCall, false) : t('api.fields.neverCalled')}  />
 										<TC label={dateTimeFormatter(n.created, false)} />
 										<TC label={findUserName(n.createdBy)} href={{ pathname: `/management/user/${n.createdBy}`, prevURL: '/api/list' }}/>
 									</Hidden>

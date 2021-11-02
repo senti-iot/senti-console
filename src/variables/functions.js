@@ -376,6 +376,9 @@ export const dateTimeFormatter = (date, withSeconds) => {
 		dt = moment(date).format('DD MMMM YYYY HH:mm:ss')
 	else
 		dt = moment(date).format('lll')
+	if (dt === 'Invalid date') {
+		return false
+	}
 	return dt
 }
 /**

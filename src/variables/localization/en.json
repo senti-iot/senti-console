@@ -13,6 +13,7 @@
 		"periodField": "Period with specific data field",
 		"fields": {
 			"lastCall": "Last call",
+			"neverCalled":"Never called",
 			"counter": "Api Calls",
 			"createdBy": "Created by"
 		}

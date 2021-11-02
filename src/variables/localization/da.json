@@ -13,6 +13,7 @@
 		"periodField": "Periode med et specifikt datafelt",
 		"fields": {
 			"lastCall": "Seneste kald",
+			"neverCalled": "Aldrig kaldt",
 			"counter": "Antal kald",
 			"createdBy": "Oprettet af"
 		}
