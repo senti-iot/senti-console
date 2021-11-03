@@ -214,12 +214,13 @@ export const weekendColors = (id, colorStr) => {
 			break
 	}
 }
-export const dateFormat = (date) => {
+const upperCaseFirstChar = str => str.charAt(0).toUpperCase() + str.substr(1)
+export const dateFormat = (date, upc) => {
 	let newDate = moment(date)
 	if (newDate.isBetween(moment().subtract(7, 'day'), moment().add(7, 'day')))
-		return moment(date).calendar()
+		return upc ? upperCaseFirstChar(moment(date).calendar()) : moment(date).calendar()
 	else
-		return moment(date).fromNow()
+		return upc ? upperCaseFirstChar(moment(date).fromNow()) : moment(date).fromNow()
 }
 
 const isObject = (obj) => {
