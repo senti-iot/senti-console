@@ -7,7 +7,7 @@ export const getAddress = async (q) => {
 	let response = await dawaApi.get(URL).then(rs => rs)
 	return response.ok ? response.data[0] : null
 }
-export const getGeoByAddress = async (id) => { 
+export const getGeoByAddress = async (id) => {
 	let URL = `/adresser/${id}`
 	let response = await dawaApi.get(URL).then(rs => rs)
 	return response.ok ? response.data : null
@@ -18,8 +18,8 @@ export const getAddressByLocation = async (lat, long) => {
 	return response.data
 }
 /**
- * 
- * @param {String} q Adress query  
+ *
+ * @param {String} q Adress query
  */
 export const getAdresses = async (q) => {
 	let URL = `/autocomplete?q=${q}`
@@ -28,17 +28,20 @@ export const getAdresses = async (q) => {
 }
 //#region getWeather
 /**
- * 
- * @param {int} device 
- * @param {Date} date 
- * @param {String} lang 
+ *
+ * @param {int} device
+ * @param {Date} date
+ * @param {String} lang
  */
 export const getWeather = async (device, date, lang) => {
 	let URL = `/${moment(date).format('YYYY-MM-DDTHH:mm:ss')}/${device.lat}/${device.long}/${lang}`
 	let response = await weatherApi.get(URL).then(rs => rs)
 	if (response.data === 403)
 		return null
-	return response.data
+	if (response.ok)
+		return response.data
+	else
+		return null
 }
 
 //#endregion
@@ -58,12 +61,12 @@ export const getDataDaily = async (id, from, to, raw) => {
 	return response.ok ? response.data : null
 }
 /**
- * Get Hourly Data 
+ * Get Hourly Data
  * @function
  * @param {int} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {bool} raw
  */
 export const getDataHourly = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/device/hourly/raw/${id}/${from}/${to}` : `/senti/sentiwi/device/hourly/${id}/${from}/${to}`
@@ -72,12 +75,12 @@ export const getDataHourly = async (id, from, to, raw) => {
 }
 
 /**
- * Get Minutely Data 
+ * Get Minutely Data
  * @function
  * @param {int} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {bool} raw
  */
 export const getDataMinutely = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/device/minutely/raw/${id}/${from}/${to}` : `/senti/sentiwi/device/minutely/${id}/${from}/${to}`
@@ -86,12 +89,12 @@ export const getDataMinutely = async (id, from, to, raw) => {
 }
 
 /**
- * Get Summary Data 
+ * Get Summary Data
  * @function
  * @param {int} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {bool} raw
  */
 export const getDataSummary = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/device/summary/raw/${id}/${from}/${to}` : `/senti/sentiwi/device/summary/${id}/${from}/${to}`
@@ -103,7 +106,7 @@ export const getDataSummary = async (id, from, to, raw) => {
 
 /**
  * Get All Pictures
- * @param {int} deviceId 
+ * @param {int} deviceId
  */
 export const getAllPictures = async (deviceId) => {
 	var base64Flag = 'data:image/jpeg;base64,';
@@ -145,7 +148,7 @@ export const deletePicture = async (dId, img) => {
 }
 /**
  * Get all available devices for a specific org
- * @param {int} orgId 
+ * @param {int} orgId
  */
 export const getAvailableDevices = async (orgId) => {
 	let response = await api.get(`senti/datacollection/availabledevices/${orgId}`)
@@ -161,7 +164,7 @@ export const getAllDevices = async () => {
 }
 /**
  * Get device
- * @param {int} id 
+ * @param {int} id
  */
 export const getDevice = async (id) => {
 	var data = await api.get('senti/device/' + id).then(rs => rs.data)
@@ -170,19 +173,19 @@ export const getDevice = async (id) => {
 
 /**
  * Calibrate device
- * @param {object} device 
+ * @param {object} device
  */
 export const calibrateDevice = async (device) => {
-	var data = await api.post('senti/device/calibrate', device).then(rs => { 
+	var data = await api.post('senti/device/calibrate', device).then(rs => {
 		return rs.ok
 	})
 	return data
 }
 
 /**
- * Update device 
+ * Update device
  * @param {object} device
- * @param {int} device.id 
+ * @param {int} device.id
  */
 export const updateDevice = async (device) => {
 	var data = await api.put(`senti/device/${device.id}`, device).then(rs => {return rs.data })
@@ -191,7 +194,7 @@ export const updateDevice = async (device) => {
 
 /**
  * Reset Device
- * @param {int} id 
+ * @param {int} id
  */
 export const resetDevice = async (id) => {
 	var data = await api.post('/senti/resetdevice', id).then(rs => { return rs.data})

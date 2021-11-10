@@ -412,7 +412,7 @@ const renderUserGroup = (user) => {
 	return ''
 }
 export const getAllData = async () => {
-	return async dispatch => { 
+	return async dispatch => {
 		dispatch(await getUsers(true))
 		dispatch(await getProjects(true))
 		dispatch(await getCollections(true))
@@ -502,9 +502,9 @@ export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case sData:
 			return Object.assign({}, state, { [payload.key]: payload.sortedData })
-		case getFavorites: 
+		case getFavorites:
 			return Object.assign({}, state, { favorites: payload })
-		case setFavorites: 
+		case setFavorites:
 			return Object.assign({}, state, { favorites: payload })
 		case setCollection:
 			return Object.assign({}, state, { collection: payload })

@@ -1,4 +1,4 @@
-import { withStyles, CircularProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
 import { Caption, Info, ItemG, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -66,7 +66,7 @@ class DeviceDetails extends Component {
 									</Info>
 								</ItemG>
 							</Fragment>
-								: <CircularProgress size={20} />}
+								: null}
 						</ItemG>
 						<ItemG xs={12}>
 							<Caption>{t('collections.fields.description')}:</Caption>
