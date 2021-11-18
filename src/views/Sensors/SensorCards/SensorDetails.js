@@ -82,6 +82,10 @@ const SensorDetails = (props) => {
 			</ItemG>}
 			content={
 				<ItemG container spacing={3}>
+					<ItemG xs={12}>
+						<Caption>{t('devices.fields.description')}</Caption>
+						<Info>{sensor.description}</Info>
+					</ItemG>
 					<ItemG>
 						<Caption>{t('registries.fields.protocol')}</Caption>
 						<Info>{sensor.registry ? renderProtocol(sensor.registry.protocol) : ""}</Info>
