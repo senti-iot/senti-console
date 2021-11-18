@@ -13,13 +13,13 @@ const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={
 
 const styles = makeStyles(theme => ({
 	appBarDrawerOpen: {
-		[theme.breakpoints.up('lg')]: {
+		[theme.breakpoints.up('xl')]: {
 			left: 260,
 			width: "calc(100vw - 260px)",
 		}
 	},
 	appBarDrawerPermClosed: {
-		[theme.breakpoints.up('lg')]: {
+		[theme.breakpoints.up('xl')]: {
 
 			width: 'calc(100vw - 60px)',
 			left: 60

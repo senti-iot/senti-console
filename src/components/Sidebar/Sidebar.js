@@ -276,10 +276,10 @@ const Sidebar = (props) => {
 
 	return (
 		<Fragment>
-			<Hidden mdDown>
+			<Hidden lgDown>
 				{renderDrawer(drawer)}
 			</Hidden>
-			<Hidden lgUp>
+			<Hidden xlUp>
 				{renderMobileDrawer()}
 			</Hidden>
 		</Fragment>

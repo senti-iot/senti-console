@@ -57,7 +57,7 @@ function Header({ ...props }) {
 		<AppBar className={classes.appBar} >
 
 			<Toolbar className={classes.container}>
-				{!menuPos ? <Hidden lgUp>
+				{!menuPos ? <Hidden xlUp>
 					<IconButton
 						className={classes.appResponsive}
 						color='primary'
@@ -68,7 +68,7 @@ function Header({ ...props }) {
 					</IconButton>
 				</Hidden> : null
 				}
-				<Hidden mdDown>
+				<Hidden lgDown>
 					<IconButton onClick={changeMenu} className={classes.drawerButton}>
 						<Menu />
 					</IconButton>
@@ -85,10 +85,10 @@ function Header({ ...props }) {
 						{props.headerTitle ? t(props.headerTitle, props.headerOptions) ? t(props.headerTitle, props.headerOptions) : props.headerTitle : ''}
 					</Button>
 				</div>
-				<Hidden mdDown implementation='css'>
+				<Hidden lgDown implementation='css'>
 					<HeaderLinks t={t} />
 				</Hidden>
-				<Hidden lgUp>
+				<Hidden xlUp>
 					{menuPos ?
 						<Fragment>
 							{renderSearch()}

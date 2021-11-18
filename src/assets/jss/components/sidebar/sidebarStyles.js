@@ -46,7 +46,7 @@ const sidebarStyle = makeStyles(theme => ({
 		backgroundColor: theme.sidebar,
 		overflowY: 'inherit',
 		top: 70,
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('lg')]: {
 			top: 0
 		},
 		width: drawerWidth,

@@ -34,7 +34,7 @@ const appStyle = theme => ({
 		width: 'calc(100% - 260px)'
 	},
 	mainPanel: {
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('lg')]: {
 			width: '100%'
 		},
 		padding: 0,
