@@ -16,14 +16,18 @@ const sidebarStyle = makeStyles(theme => ({
 		// marginTop: 'auto',
 		// marginLeft: 'auto',
 		// marginRight: 10,
-		position: 'absolute',
-		bottom: 20,
-		height: 100,
-		right: 30,
+		// position: 'absolute',
+		// bottom: 20,
+		// height: 100,
+		// right: 30,
+		marginRight: 30,
+		marginLeft: 180,
+		marginBottom: 20,
 		transition: "all 0.22s cubic-bezier(0.685, 0.0473, 0.346, 1)"
 	},
 	footerIconClosed: {
-		right: 10
+		marginRight: 10,
+		marginLeft: 10,
 	},
 	nested: {
 		paddingLeft: `${theme.spacing(2)}px !important`,
@@ -47,10 +51,13 @@ const sidebarStyle = makeStyles(theme => ({
 		overflowY: 'inherit',
 		top: 70,
 		[theme.breakpoints.down('md')]: {
-			top: 0
+			top: 0,
+			height: '100vh'
 		},
 		width: drawerWidth,
 		border: 'none',
+		height: 'calc(100vh - 70px)',
+
 	},
 	drawer: {
 		height: '100%',
