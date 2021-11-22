@@ -24,6 +24,7 @@ const Sidebar = (props) => {
 	const history = useHistory()
 	const t = useLocalization()
 	const theme = useTheme()
+	const classes = sidebarStyles()
 
 	//Redux
 	const smallMenu = useSelector(s => s.appState.smallMenu)
@@ -37,7 +38,6 @@ const Sidebar = (props) => {
 
 	//Const
 	const { defaultRoute, defaultView, routes, handleDrawerToggle, open, menuRoute } = props
-	const classes = sidebarStyles()
 	//Handlers
 
 	const isActiveRoute = (routeName) => menuRoute === routeName ? true : false

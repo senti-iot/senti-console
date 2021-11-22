@@ -21,6 +21,7 @@ const sidebarStyle = makeStyles(theme => ({
 		// height: 100,
 		// right: 30,
 		marginRight: 30,
+		marginTop: 'auto',
 		marginLeft: 180,
 		marginBottom: 20,
 		transition: "all 0.22s cubic-bezier(0.685, 0.0473, 0.346, 1)"
