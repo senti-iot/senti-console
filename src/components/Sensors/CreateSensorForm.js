@@ -366,7 +366,7 @@ const CreateSensorForm = props => {
 										calibrate
 										height={400}
 										width={400}
-										markers={[{ lat: sensor.lat ? sensor.lat : 56, long: sensor.lng ? sensor.lng : 9 }]}
+										markers={[{ lat: sensor.lat ? sensor.lat : 56, long: sensor.lon ? sensor.lon : 9 }]}
 										getLatLng={getLatLngFromMap}
 									/>
 								</div>
@@ -374,7 +374,7 @@ const CreateSensorForm = props => {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Info>
-									{`${sensor.lat ? sensor.lat : ""} ${sensor.lng ? sensor.lng : ""}`}
+									{`${sensor.lat ? sensor.lat : ""} ${sensor.lon ? sensor.lon : ""}`}
 								</Info>
 								<TextF
 									id={'address'}
