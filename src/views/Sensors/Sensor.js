@@ -216,7 +216,8 @@ const Sensor = props => {
 										deviceId={sensor.uuid}
 										dataKey={k.key}
 										title={k.label ? k.label : k.key}
-										cfId={k.nId}
+										// cfId={k.nId}
+										cfId={-1}
 										chartColor={theme.palette.primary.main}
 										single={true}
 										t={t}
