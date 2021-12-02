@@ -1,7 +1,7 @@
 import { ItemG, CircularLoader, Info, Link } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import React from 'react'
-import { CloudUpload } from 'variables/icons'
+import { Check, CloudUpload } from 'variables/icons'
 import { useSelector } from 'react-redux'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -103,6 +103,7 @@ const DeviceTypeCloudFunctions = props => {
 									<TableCell>{t('cloudfunctions.fields.key')}</TableCell>
 									<TableCell>{t('cloudfunctions.fields.types.outbound')}</TableCell>
 									<TableCell>{t('cloudfunctions.fields.type')}</TableCell>
+									<TableCell>{t('cloudfunctions.fields.synthetic')}</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
@@ -118,6 +119,9 @@ const DeviceTypeCloudFunctions = props => {
 										</TableCell>
 										<TableCell>
 											{renderType(s.type)}
+										</TableCell>
+										<TableCell>
+											{s.originalKey ? <Check style={{ fontSize: 14 }}/> : ''}
 										</TableCell>
 									</TableRow>
 								})}

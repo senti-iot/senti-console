@@ -122,6 +122,18 @@ const CreateDeviceType = props => {
 		})
 	}
 
+	/**
+		 * Add synthetic dataKey
+		 */
+	const handleAddSyntheticKey = e => {
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: [
+				...sensorMetadata.outbound, { key: '', nId: -1, type: 0, label: "", unit: "", originalKey: "" }
+			]
+		})
+	}
+
 	const handleRemoveKey = (index) => e => {
 		let newMetadata = sensorMetadata.outbound.filter((v, i) => i !== index)
 		setSensorMetadata({
@@ -173,6 +185,16 @@ const CreateDeviceType = props => {
 		e.preventDefault()
 		let mtd = sensorMetadata.outbound
 		mtd[index].type = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
+
+	const handleChangeOriginKey = index => e => {
+		e.preventDefault()
+		let mtd = [...sensorMetadata.outbound]
+		mtd[index].originalKey = e.target.value
 		setSensorMetadata({
 			...sensorMetadata,
 			outbound: mtd
@@ -325,6 +347,8 @@ const CreateDeviceType = props => {
 			handleChangeUnit={handleChangeUnit}
 			handleChangeKeyLabel={handleChangeKeyLabel}
 			handleChangeType={handleChangeType}
+			handleAddSyntheticKey={handleAddSyntheticKey}
+			handleChangeOriginKey={handleChangeOriginKey}
 
 			handleChangeMetadataKey={handleChangeMetadataKey}
 			handleChangeMetadata={handleChangeMetadata}

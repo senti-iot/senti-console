@@ -23,8 +23,8 @@ const CreateDeviceTypeForm = props => {
 		// handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChangeKey, handleRemoveKey, handleRemoveFunction,
 		handleAddKey, openCF, handleCloseFunc, handleChangeFunc, handleChange, org, handleOrgChange, deviceType,
-		handleCreate, goToDeviceTypes, handleChangeType, handleCloseOrg, handleOpenOrg, decoder, handleRemoveDecoder,
-		openOrg } = props
+		handleCreate, goToDeviceTypes, handleChangeType, handleCloseOrg, handleOpenOrg, decoder, handleRemoveDecoder, handleChangeOriginKey,
+		openOrg, handleAddSyntheticKey } = props
 
 
 	//useCallbacks
@@ -63,7 +63,9 @@ const CreateDeviceTypeForm = props => {
 	const renderMetadata = () => {
 		return <Fragment>
 			{sensorMetadata.outbound.map((p, i) => {
-				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'}>
+				// console.log(p)
+				console.log(sensorMetadata.outbound.map((p, i) => p.originalKey === undefined ? ({ value: p.key, label: p.key }) : ({ dontShow: true })))
+				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'} justifyContent={'center'}>
 					<TextF
 						id={'outbound-label' + i}
 						label={t('sensors.fields.dataKey')}
@@ -117,11 +119,26 @@ const CreateDeviceTypeForm = props => {
 						label={t('cloudfunctions.datatypes.datatype')}
 						value={p.type}
 						margin={'normal'}
+						style={{ marginRight: 8 }}
 						menuItems={[
 							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
 							// { value: 1, label: t('cloudfunctions.datatypes.average') }
 						]}
 					/>
+					{p.originalKey !== undefined ?
+						<DSelect
+							onChange={handleChangeOriginKey(i)}
+							label={t('cloudfunctions.fields.key')}
+							value={p.originalKey}
+							margin={'normal'}
+							style={{ marginRight: 8 }}
+							// menuItems={[
+							// 	{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+							// 	// { value: 1, label: t('cloudfunctions.datatypes.average') }
+							// ]}
+							menuItems={sensorMetadata.outbound.map((p, i) => p.originalKey === undefined ? ({ value: p.key, label: p.key }) : ({ dontShow: true }))}
+						/> : null
+					}
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 
 						<IconButton
@@ -135,9 +152,14 @@ const CreateDeviceTypeForm = props => {
 				</ItemGrid>
 
 			})}
-			<ItemGrid xs={12}>
-				<Button variant={'outlined'} onClick={handleAddKey} color={'primary'}>{t('actions.addKey')}</Button>
-			</ItemGrid>
+			<ItemG xs={12} container>
+				<ItemGrid xs={12}>
+					<Button variant={'outlined'} onClick={handleAddKey} color={'primary'}>{t('actions.addKey')}</Button>
+				</ItemGrid>
+				<ItemGrid>
+					<Button variant={'outlined'} disabled={sensorMetadata.outbound.length === 0} onClick={handleAddSyntheticKey} color={'primary'}>{t('actions.addSyntheticKey')}</Button>
+				</ItemGrid>
+			</ItemG>
 		</Fragment>
 	}
 	const renderMetadataInbound = () => {

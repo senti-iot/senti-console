@@ -26,6 +26,7 @@
         "addInboundFunc": "Add function on receiving data",
         "addKey": "Add device data field",
         "addMtdKey": "Add device metadata field",
+		"addSyntheticKey":"Add synthetic data field",
         "apply": "Apply",
         "back": "Previous",
         "call": "Ring",
@@ -132,6 +133,7 @@
             "timeSeries": "Time Series"
         },
         "fields": {
+			"synthetic": "Synthetic data field",
             "code": "Source Code",
             "description": "Description",
             "inboundfunc": "Cloud Function",

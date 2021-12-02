@@ -38,7 +38,7 @@ const DSelect = props => {
 	}
 
 	return (
-		<FormControl variant="outlined" margin={margin} fullWidth={mobile || fullWidth}>
+		<FormControl variant="outlined" margin={margin} fullWidth={mobile || fullWidth} style={props.style}>
 			<InputLabel ref={inputRef}
 				color={'primary'} htmlFor='select-multiple-chip'>
 				{label}
@@ -55,6 +55,8 @@ const DSelect = props => {
 				onKeyPress={onKeyPress}
 			>
 				{!simple && menuItems.map((m, i) => {
+					if (m.dontShow)
+						return null
 					return <MenuItem key={i} value={m.value} >
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
@@ -64,6 +66,8 @@ const DSelect = props => {
 					</MenuItem>
 				})}
 				{simple && menuItems.map((m, i) => {
+					if (m.dontShow)
+						return null
 					return <MenuItem key={i} value={m}>
 						<ItemG container justify={'space-between'} alignItems={'center'}>
 							<ItemG xs>{m}</ItemG>

@@ -26,6 +26,7 @@
 		"addInboundFunc": "Tilføj funktion ved modtagelse af data",
 		"addKey": "Tilføj enhed datafelt",
 		"addMtdKey": "Tilføj enhed metadata felt",
+		"addSyntheticKey": "Tilføj syntetisk datafelt",
 		"apply": "Anvend",
 		"back": "Forrige",
 		"call": "Ring",
@@ -132,6 +133,7 @@
 			"timeSeries": "Tidsserier"
 		},
 		"fields": {
+			"synthetic": "Syntetisk datafelt",
 			"code": "Kildekode",
 			"description": "Beskrivelse",
 			"inboundfunc": "Cloud Funktion",

@@ -142,7 +142,17 @@ const EditDeviceType = props => {
 			]
 		})
 	}
-
+	/**
+	 * Add synthetic dataKey
+	 */
+	const handleAddSyntheticKey = e => {
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: [
+				...sensorMetadata.outbound, { key: '', nId: -1, type: 0, label: "", unit: "", originalKey: "" }
+			]
+		})
+	}
 	/**
 	 * Remove dataKey
 	 */
@@ -209,7 +219,15 @@ const EditDeviceType = props => {
 			outbound: mtd
 		})
 	}
-
+	const handleChangeOriginKey = index => e => {
+		e.preventDefault()
+		let mtd = [...sensorMetadata.outbound]
+		mtd[index].originalKey = e.target.value
+		setSensorMetadata({
+			...sensorMetadata,
+			outbound: mtd
+		})
+	}
 	//#endregion
 
 	//#region Metadata
@@ -358,11 +376,13 @@ const EditDeviceType = props => {
 			openCF={openCF}
 
 			handleAddKey={handleAddKey}
+			handleAddSyntheticKey={handleAddSyntheticKey}
 			handleRemoveKey={handleRemoveKey}
 			handleChangeKey={handleChangeKey}
 			handleChangeUnit={handleChangeUnit}
 			handleChangeKeyLabel={handleChangeKeyLabel}
 			handleChangeType={handleChangeType}
+			handleChangeOriginKey={handleChangeOriginKey}
 
 			handleChangeMetadataKey={handleChangeMetadataKey}
 			handleChangeMetadata={handleChangeMetadata}
