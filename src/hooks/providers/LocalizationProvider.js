@@ -35,9 +35,11 @@ const LocalizationProvider = ({ children }) => {
 				}
 				return replace.call(options[argument], dollarRegex, dollarBillsYall)
 			})
-		if (substitutions.type === 'markdown')
+		if (substitutions.type === 'markdown') {
+			console.log("result", result)
 			// return null
-			return <ReactMarkdown source={result} />
+			return <ReactMarkdown  children={result} />
+		}
 		else {
 			return result
 		}
