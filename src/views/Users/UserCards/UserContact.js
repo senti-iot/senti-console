@@ -63,7 +63,7 @@ const UserContact = props => {
 		} />
 	}
 
-	const extended = user.aux ? user.aux.senti ? user.aux.senti.extendedProfile : {} : {}
+	const extended = user.aux ? user.aux.senti ? user.aux.senti.extendedProfile ? user.aux.senti.extendedProfile : {} : {} : {}
 	return (
 		<InfoCard
 			title={`${user.firstName} ${user.lastName}`}

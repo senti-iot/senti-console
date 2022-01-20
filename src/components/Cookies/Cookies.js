@@ -12,7 +12,6 @@ const Cookies = props => {
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const s = useSnackbar().s
-	console.log("s", s)
 
 	//Redux
 	const cookies = useSelector(state => state.settings.cookies)
