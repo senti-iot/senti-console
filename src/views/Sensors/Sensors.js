@@ -66,6 +66,7 @@ const Sensors = props => {
 	const options = () => {
 
 		let device = devices[devices.findIndex(d => d.uuid === selected[0])]
+		console.log('selected', selected)
 		let favObj = {
 			id: device.uuid,
 			name: device.name,
@@ -80,7 +81,7 @@ const Sensors = props => {
 				icon: isFavorite ? Star : StarBorder,
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
 			},
-			{ isDivider: true, dontSow: selected.length > 1 },
+			{ isDivider: true, dontShow: selected.length > 1 },
 			{ dontShow: !hasAccess(device.uuid, 'device.edit'), label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
 			{ dontShow: !hasAccessList(selected, 'device.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
