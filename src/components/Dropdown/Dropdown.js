@@ -85,8 +85,8 @@ const Dropdown = props => {
 					return <MenuItem disabled={m.disabled} selected={m.selected} key={i}
 						onClick={handleMenuItemClick(m)}>
 						<ItemG container justify={'space-between'} alignItems={'center'}>
-							{m.icon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{cIcon ? m.icon : <m.icon className={classes.leftIcon} />}</ItemG> : null}
-							<ItemG xs>{m.label}</ItemG>
+							{m.icon ? <ItemG xs={2} style={{ display: 'flex' }}>{cIcon ? m.icon : <m.icon className={classes.leftIcon} />}</ItemG> : null}
+							<ItemG xs={10}>{m.label}</ItemG>
 						</ItemG>
 					</MenuItem>
 				})}
