@@ -164,6 +164,7 @@ const UserTable = props => {
 											onMouseLeave={unsetTimeout}
 											FirstC label={`${n.firstName} ${n.lastName}`} />
 										<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, language) : n.phone}</Link>} />
+										<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`tel:${n.mobile}`}>{n.mobile ? pF(n.mobile, language) : n.mobile}</Link>} />
 										<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`mailto:${n.email}`}>{n.email}</Link>} />
 										<TC label={n.org ? n.org.name : t('users.noOrg')} />
 										<TC label={t(n.group)} />

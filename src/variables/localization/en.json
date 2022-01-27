@@ -1256,6 +1256,7 @@
             "linkedInURL": "LinkedIn",
             "location": "Location",
             "loginSuspended": "Login suspended",
+			"mobile": "Mobile",
             "name": "Name",
             "neverLoggedIn": "Never signed in",
             "newPass": "New password",

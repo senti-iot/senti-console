@@ -192,6 +192,16 @@ const CreateUserForm = props => {
 			</ItemGrid>
 			<ItemGrid container xs={12} >
 				<TextF
+					id={'mobile'}
+					label={t('users.fields.mobile')}
+					value={user.mobile}
+					// className={classes.textField}
+					onChange={handleChange('mobile')}
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} >
+				<TextF
 					id={'phone'}
 					label={t('users.fields.phone')}
 					value={user.phone}
