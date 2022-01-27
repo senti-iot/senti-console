@@ -62,7 +62,7 @@ const CreateSensorForm = props => {
 		handleOpenDT, handleCloseDT, openDT, handleChangeDT,
 		handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChange, sensor, getLatLngFromMap,
-		handleCreate, goToRegistries, select, } = props
+		handleCreate, goToSensors, select, } = props
 
 	const renderMetadata = () => {
 		return <Fragment>
@@ -406,7 +406,7 @@ const CreateSensorForm = props => {
 								<div className={classes.wrapper}>
 									<Button
 										variant='outlined'
-										onClick={goToRegistries}
+										onClick={goToSensors}
 										className={classes.redButton}
 									>
 										{t('actions.cancel')}
