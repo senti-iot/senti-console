@@ -89,6 +89,14 @@ const UserContact = props => {
 							</Info>
 						</ItemG>
 						<ItemG>
+							<Caption>{t('users.fields.mobile')}</Caption>
+							<Info>
+								<Link title={t('links.phoneTo')} href={`tel:${user.phone}`}>
+									{user.mobile ? pF(user.mobile) : user.mobile}
+								</Link>
+							</Info>
+						</ItemG>
+						<ItemG>
 							<Caption>{t('users.fields.phone')}</Caption>
 							<Info>
 								<Link title={t('links.phoneTo')} href={`tel:${user.phone}`}>
