@@ -173,7 +173,7 @@ const RegistryTable = props => {
 										<TC label={n.region} />
 										<TC label={renderProtocol(n.protocol)} />
 										<TC label={dateFormatter(n.created)} />
-										<TC label={n.customer_name} />
+										<TC label={n.org ? n.org.name : "-"} />
 										{/* <TC label={dateFormatter(n.endDate)}/> */}
 										{/* <TC label={dateFormatter(n.created)}/> */}
 										{/* <TC label={dateFormatter(n.modified)}/> */}

@@ -145,7 +145,7 @@ const DeviceTypeTable = props => {
 											onMouseLeave={unsetTimeout}
 											FirstC label={n.name} />
 										<TC
-											label={n.customer_name}
+											label={n.org ? n.org.name : "-"}
 										/>
 									</Hidden>
 								</TableRow>
