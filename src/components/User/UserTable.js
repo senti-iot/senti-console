@@ -124,6 +124,7 @@ const UserTable = props => {
 					/>
 					<TableBody >
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							console.log(n)
 							const isSelected = isSelectedFunc(n.uuid)
 							const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn, true) : t('users.fields.neverLoggedIn')
 							return (
@@ -167,7 +168,7 @@ const UserTable = props => {
 										<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`tel:${n.mobile}`}>{n.mobile ? pF(n.mobile, language) : n.mobile}</Link>} />
 										<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`mailto:${n.email}`}>{n.email}</Link>} />
 										<TC label={n.org ? n.org.name : t('users.noOrg')} />
-										<TC label={t(n.group)} />
+										{/* <TC label={t(n.group)} /> */}
 										<TC label={lastLoggedIn} />
 									</Hidden>
 								</TableRow>

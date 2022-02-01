@@ -37,11 +37,11 @@ const Users = props => {
 	//Const
 	const { users, setHeader, setBC, reload, setTabs } = props
 
-	const dUserGroup = [
-		{ value: 136550100000143, label: t("users.groups.superUser") },
-		{ value: 136550100000211, label: t("users.groups.accountManager") },
-		{ value: 136550100000225, label: t("users.groups.user") },
-	]
+	// const dUserGroup = [
+	// 	{ value: 136550100000143, label: t("users.groups.superUser") },
+	// 	{ value: 136550100000211, label: t("users.groups.accountManager") },
+	// 	{ value: 136550100000225, label: t("users.groups.user") },
+	// ]
 
 	const dSuspended = [
 		{ value: 0, label: t('users.fields.active') },
@@ -69,7 +69,7 @@ const Users = props => {
 		{ key: 'email', name: t('users.fields.email'), type: 'string' },
 		{ key: 'mobile', name: t('users.fields.phone'), type: 'string' },
 		{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-		{ key: 'groups', name: t('users.fields.group'), type: 'dropDown', options: dUserGroup },
+		// { key: 'groups', name: t('users.fields.group'), type: 'dropDown', options: dUserGroup },
 		{ key: 'lastLoggedIn', name: t('users.fields.lastSignIn'), type: 'date' },
 		{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: dSuspended },
 		{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: dHasLoggedIn, values: { false: [null] } } },
@@ -125,7 +125,7 @@ const Users = props => {
 		{ id: 'mobile', label: t('users.fields.mobile') },
 		{ id: 'email', label: t('users.fields.email') },
 		{ id: 'org.name', label: t('users.fields.organisation') },
-		{ id: 'group', label: t('users.fields.group') },
+		// { id: 'group', label: t('users.fields.group') },
 		{ id: 'lastLoggedIn', label: t('users.fields.lastSignIn') }
 	]
 
