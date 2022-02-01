@@ -124,7 +124,6 @@ const UserTable = props => {
 					/>
 					<TableBody >
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							console.log(n)
 							const isSelected = isSelectedFunc(n.uuid)
 							const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn, true) : t('users.fields.neverLoggedIn')
 							return (

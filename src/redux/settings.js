@@ -193,7 +193,7 @@ export const getNSettings = async (withData) => {
 			 * Moment Localization
 			 */
 			moment.updateLocale('en-gb', { week: { dow: 1 } })
-			moment.locale(settings.language === 'en' ? 'en-gb' : 'da-dk')
+			moment.locale(senti.settings.language === 'en' ? 'en-gb' : 'da-dk')
 
 			/**
 			 * Favorites
