@@ -5,7 +5,7 @@ import {
 import TC from 'components/Table/TC'
 import React, { Fragment, useState } from 'react'
 import TableHeader from 'components/Table/TableHeader'
-import { Info, ItemG, Caption } from 'components'
+import { Info, ItemG, Caption, Link } from 'components'
 import { useSelector } from 'react-redux'
 import TP from 'components/Table/TP'
 import OrgHover from 'components/Hover/OrgHover'
@@ -107,6 +107,7 @@ const OrgTable = props => {
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 							const isSelected = isSelectedFunc(n.uuid)
+							console.log(n)
 							return (
 								<TableRow
 									hover
@@ -146,7 +147,7 @@ const OrgTable = props => {
 											label={n.name} />
 										<TC label={n.address} />
 										<TC label={`${n.zip} ${n.city}`} />
-										<TC label={n.url} />
+										<TC label={<Link onClick={e => e.stopPropagation()} component={'a'} target={'_blank'} href={`${n.website}`}>{n.website}</Link>} />
 									</Hidden>
 								</TableRow>
 							)
