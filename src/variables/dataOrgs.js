@@ -1,4 +1,4 @@
-import { coreServicesAPI } from './data'
+import { servicesAPI, coreServicesAPI } from './data'
 import { del } from './storage'
 
 /**
@@ -9,7 +9,13 @@ export const getAllOrgs = async () => {
 	var data = await coreServicesAPI.get('/entity/organisations').then(rs => rs.data)
 	return data ? data : []
 }
-
+/**
+ * @function getTotalDevices get all devices belonging to an Org
+ */
+export const getTotalDevices = async (orgUUID) => {
+	var data = await servicesAPI.get(`/v2/total-devices/${orgUUID}`).then(rs => rs.data)
+	return data ? data : "-"
+}
 /**
  * @function getOrg Get an organization based on ID
  * @param {uuid} orgId Organization ID

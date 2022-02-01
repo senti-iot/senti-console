@@ -55,6 +55,14 @@ const OrgDetails = props => {
 			topAction={options().length > 0 ? <Dropdown menuItems={options()} /> : null}
 			content={
 				<Grid container>
+					<ItemGrid xs={12}>
+						<Caption>
+							{t('orgs.fields.totaldevices')}
+						</Caption>
+						<Info >
+							{org.totalDevices?.total}
+						</Info>
+					</ItemGrid>
 					<ItemGrid>
 						<Caption>
 							{t('orgs.fields.address')}

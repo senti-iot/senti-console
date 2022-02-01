@@ -743,6 +743,7 @@
         "create": "Create",
         "createOrg": "Create organisation",
         "fields": {
+			"totaldevices": "Number of devices",
             "CVR": "Tax Registration Number",
             "EAN": "EAN Number",
             "address": "Address",

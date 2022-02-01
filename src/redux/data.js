@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import { set, get } from 'variables/storage'
 import { getAllUsers, getUser } from 'variables/dataUsers'
-import { getAllOrgs, getOrg } from 'variables/dataOrgs'
+import { getAllOrgs, getOrg, getTotalDevices } from 'variables/dataOrgs'
 
 import { handleRequestSort } from 'variables/functions'
 import { getSuggestions } from './globalSearch'
@@ -303,8 +303,10 @@ export const getOrgLS = async (id) => {
 		}
 		await getOrg(id).then(async rs => {
 			await dispatch(await getPrivList([id], ['org.modify', 'org.delete']))
+			let totalDevices = await getTotalDevices(rs.uuid)
+			console.log(totalDevices)
 			if (!compare(org, rs)) {
-				org = { ...rs }
+				org = { ...rs, totalDevices }
 				dispatch({
 					type: setOrg,
 					payload: org
