@@ -1,7 +1,7 @@
 import { Paper, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip, Divider } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
 import TableToolbar from 'components/Table/TableToolbar'
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { handleRequestSort } from 'variables/functions'
@@ -25,14 +25,14 @@ const DeviceTypes = props => {
 	const location = useLocation()
 	const history = useHistory()
 	const Auth = useAuth()
-	const hasAccess = Auth.hasAccess
-	const hasAccessList = Auth.hasAccessList
+
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
 	const favorites = useSelector(state => state.data.favorites)
 	const saved = useSelector(state => state.favorites.saved)
 	const devicetypes = useSelector(state => state.data.deviceTypes)
-	const loading = false
+	const dataLoading = useSelector(s => !s.data.getDeviceTypes)
+	const loading = useSelector(s => !s.data.gotdeviceTypes)
 	const filters = useSelector(state => state.appState.filters.devicetypes)
 	const user = useSelector(state => state.settings.user)
 
@@ -72,8 +72,8 @@ const DeviceTypes = props => {
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
 			},
 			{ isDivider: true, dontShow: selected.length > 1 },
-			{ disabled: !hasAccess(selected[0], 'deviceType.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ disabled: !hasAccessList(selected, 'deviceType.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ disabled: !Auth.hasAccess(null, 'deviceType.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !Auth.hasAccess(null, 'deviceType.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -102,9 +102,9 @@ const DeviceTypes = props => {
 			route: handleTabs()
 		})
 
-		getData(true)
-		//eslint-disable-next-line
-	}, [])
+		// getData(true)
+	}, [location.pathname, setBC, setHeader, setTabs, t])
+
 	useEffect(() => {
 		if (saved === true) {
 			let devicetype = devicetypes[devicetypes.findIndex(d => d.uuid === selected[0])]
@@ -122,6 +122,23 @@ const DeviceTypes = props => {
 			}
 		}
 	}, [devicetypes, dispatch, s, saved, selected, t])
+
+	const getData = useCallback(async () => {
+		/**
+		 * @Andrei
+		 * this also needs normalization
+		 * Check Registries or Sensors
+		 */
+		if (accessLevel && user && dataLoading && loading) {
+			dispatch(await getDeviceTypes(true))
+		}
+	}, [accessLevel, dataLoading, dispatch, loading, user])
+
+	useEffect(() => {
+		const getRegs = async () => await getData()
+		getRegs()
+
+	}, [getData])
 
 	//Handlers
 
@@ -165,17 +182,7 @@ const DeviceTypes = props => {
 		}
 	}
 
-	const getData = async (reload) => {
-		/**
-		 * @Andrei
-		 * this also needs normalization
-		 * Check Registries or Sensors
-		 */
-		if (accessLevel && user) {
-			if (reload)
-				dispatch(getDeviceTypes(true))
-		}
-	}
+
 	//#endregion
 
 	//#region Handlers
@@ -294,7 +301,7 @@ const DeviceTypes = props => {
 
 
 	const renderTableToolBarContent = () =>
-		hasAccess(null, 'deviceType.create') ? <Tooltip title={t('menus.create.devicetype')}>
+		Auth.hasAccess(null, 'deviceType.create') ? <Tooltip title={t('menus.create.devicetype')}>
 			<IconButton aria-label='Add new devicetype' onClick={handleAddNew}>
 				<Add />
 			</IconButton>

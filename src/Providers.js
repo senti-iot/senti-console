@@ -21,14 +21,14 @@ import { StylesProvider } from "@material-ui/styles"
 
 import TouchBackend from 'react-dnd-touch-backend'
 import HTML5Backend from 'react-dnd-html5-backend'
-import LocalizationProvider from 'hooks/providers/LocalizationProvider'
+// import LocalizationProvider from 'hooks/providers/LocalizationProvider'
 import SnackbarProvider from 'hooks/providers/SnackbarProvider'
 import { getWhiteLabel, setWlHost } from 'variables/data'
 import { setWL } from 'variables/storage'
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader'
 import { ThemeProvider } from 'ThemeProvider'
 import { hot } from 'react-hot-loader/root'
-import AuthProvider from 'hooks/providers/AuthProvider'
+// import AuthProvider from 'hooks/providers/AuthProvider'
 // import Base from './Base'
 
 var countries = require('i18n-iso-countries')
@@ -59,17 +59,17 @@ const Providers = props => {
 				<ThemeProvider>
 					<DndProvider backend={width < 1280 ? TouchBackend : HTML5Backend}>
 						<MuiPickersUtilsProvider utils={MomentUtils}>
-							<LocalizationProvider>
-								<SnackbarProvider>
-									<TProvider>
-										<AuthProvider>
-											<Router history={hist} key={Math.random()}>
-												{props.children}
-											</Router>
-										</AuthProvider>
-									</TProvider>
-								</SnackbarProvider>
-							</LocalizationProvider>
+							{/* <LocalizationProvider> */}
+							<SnackbarProvider>
+								<TProvider>
+									{/* <AuthProvider> */}
+									<Router history={hist} key={Math.random()}>
+										{props.children}
+									</Router>
+									{/* </AuthProvider> */}
+								</TProvider>
+							</SnackbarProvider>
+							{/* </LocalizationProvider> */}
 						</MuiPickersUtilsProvider>
 					</DndProvider>
 				</ThemeProvider>

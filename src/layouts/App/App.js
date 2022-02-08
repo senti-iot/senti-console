@@ -75,8 +75,8 @@ function App(props) {
 					setGoBackButton(gBB)
 					setUrl(URL)
 					setMenuRoute(mR)
-					if (mainPanel.current)
-						mainPanel.current.scrollTop = 0
+					// if (mainPanel.current)
+					// 	mainPanel.current.scrollTop = 0
 				}
 			}
 			else {
@@ -86,8 +86,8 @@ function App(props) {
 					setGoBackButton(gBB)
 					setUrl(URL)
 					setMenuRoute(mR)
-					if (mainPanel.current)
-						mainPanel.current.scrollTop = 0
+					// if (mainPanel.current)
+					// 	mainPanel.current.scrollTop = 0
 				}
 			}
 
@@ -117,7 +117,7 @@ function App(props) {
 		if (defaultRoute === '/')
 			handleSetHeaderTitle('', false, '', 'dashboard')
 		const getS = async () => {
-			dispatch(await getNSettings()).then(async rs => {
+			await dispatch(await getNSettings()).then(async rs => {
 
 			})
 		}

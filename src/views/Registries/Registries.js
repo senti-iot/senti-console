@@ -26,8 +26,6 @@ const Registries = props => {
 	const dispatch = useDispatch()
 	const classes = registriesStyles()
 	const Auth = useAuth()
-	const hasAccess = Auth.hasAccess
-	const hasAccessList = Auth.hasAccessList
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
@@ -35,6 +33,7 @@ const Registries = props => {
 	const saved = useSelector(s => s.favorites.saved)
 	const registries = useSelector(s => s.data.registries)
 	const loading = useSelector(s => !s.data.gotregistries)
+	const dataLoading = useSelector(s => !s.data.getRegistries)
 	const filters = useSelector(s => s.appState.filters.registries)
 	const user = useSelector(s => s.settings.user)
 
@@ -87,8 +86,8 @@ const Registries = props => {
 				}
 			},
 			{ isDivider: true, dontShow: selected.length > 1 },
-			{ dontShow: !hasAccess(registry.uuid, 'registry.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ dontShow: !hasAccessList(selected, 'registry.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
+			{ dontShow: !Auth.hasAccess(null, 'registry.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ dontShow: !Auth.hasAccess(null, 'registry.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete }
 		]
 		return allOptions
 	}
@@ -109,10 +108,10 @@ const Registries = props => {
 		/**
 		 * @Andrei
 		 */
-		if (user && accessLevel) {
-			dispatch(await getRegistries(true, user.org.aux?.odeumId, /* accessLevel.name === 'Super User' ? true : */ false))
+		if (user && accessLevel && dataLoading && loading) {
+			dispatch(await getRegistries(true))
 		}
-	}, [accessLevel, dispatch, user])
+	}, [accessLevel, dispatch, loading, user, dataLoading])
 
 	//useEffects
 	useEffect(() => {
@@ -310,7 +309,7 @@ const Registries = props => {
 
 
 	const renderTableToolBarContent = () => {
-		let access = hasAccess(null, 'registry.create')
+		let access = Auth.hasAccess(null, 'registry.create')
 		return access ? <Tooltip title={t('menus.create.registry')}>
 			<IconButton aria-label='Add new registry' onClick={handleAddNewRegistry}>
 				<Add />

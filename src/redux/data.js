@@ -90,7 +90,7 @@ const setOrg = 'SetOrganisation'
 
 //#endregion
 
-//#region Devices
+//#region Devices /sensors
 const gotdevices = 'GotDevices'
 const gotDevice = 'GotDevice'
 const setdevices = 'SetDevices'
@@ -119,6 +119,7 @@ const gotregistries = 'GotRegistries'
 const gotRegistry = 'gotRegistry'
 const setregistries = 'SetRegistries'
 const setRegistry = 'setRegistry'
+const getRegistriesAction = 'getRegistries'
 
 //#endregion
 
@@ -127,10 +128,11 @@ const setdeviceTypes = 'setdeviceTypes'
 const gotDeviceType = 'gotDeviceType'
 const gotdeviceTypes = 'gotdeviceTypes'
 const setDeviceType = 'setDeviceType'
-
+const getDeviceTypesAction = 'getDeviceTypes'
 //#endregion
 
 //#region Sensors
+const getSensorsAction = 'getSensors'
 const setsensors = 'setsensors'
 const gotSensor = 'gotSensor'
 const gotsensors = 'gotsensors'
@@ -157,14 +159,15 @@ const setFavorites = 'setFavorites'
 
 //#region Dispatches
 
-export const getAllData = async (reload, orgId, su) => {
+export const getAllData = async (reload) => {
 	return async dispatch => {
-		await dispatch(await getUsers(true))
+		console.trace()
+		dispatch(await getUsers(true))
 		dispatch(await getOrgs(true))
-		dispatch(await getRegistries(true, orgId, su))
-		dispatch(await getDeviceTypes(true, orgId, su))
-		dispatch(await getSensors(true, orgId, su))
-		dispatch(await getFunctions(true, orgId, su))
+		dispatch(await getRegistries(true))
+		dispatch(await getDeviceTypes(true))
+		dispatch(await getSensors(true))
+		dispatch(await getFunctions(true))
 		// dispatch(await getTokens(true, orgId, su))
 		// dispatch(await getMessages(orgId, true))
 	}
@@ -241,10 +244,10 @@ export const getUsers = (reload) => {
 		await getAllUsers().then(async rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
 			users = handleRequestSort('firstName', 'asc', users)
-			let userUUIDs = rs.map(u => u.uuid)
+			// let userUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
-			await dispatch(await getPriv(user.uuid, ['user.create', 'user.list']))
-			await dispatch(await getPrivList(userUUIDs, ['user.modify', 'user.delete', 'user.changeparent']))
+			await dispatch(await getPriv(user.uuid, ['user.create', 'user.list', 'user.modify', 'user.delete', 'user.changeparent']))
+			// await dispatch(await getPrivList(userUUIDs, []))
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -324,10 +327,10 @@ export const getOrgs = (reload) => {
 	return async (dispatch, getState) => {
 		await getAllOrgs().then(async rs => {
 			let orgs = handleRequestSort('name', 'asc', rs)
-			let orgUUIDs = rs.map(u => u.uuid)
+			// let orgUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
-			await dispatch(await getPriv(user.uuid, ['org.create', 'org.list']))
-			await dispatch(await getPrivList(orgUUIDs, ['org.modify', 'org.delete']))
+			await dispatch(await getPriv(user.uuid, ['org.create', 'org.list', 'org.modify', 'org.delete']))
+			// await dispatch(await getPrivList(orgUUIDs, []))
 			set('orgs', orgs)
 			if (reload) {
 				dispatch(setOrgs())
@@ -402,18 +405,23 @@ export const getDeviceTypeLS = async (id) => {
 	}
 }
 
-export const getDeviceTypes = (reload, orgId, ua) => {
+export const getDeviceTypes = (reload,) => {
 	return async (dispatch, getState) => {
-		getAllDeviceTypes(orgId, ua).then(async rs => {
+		dispatch({
+			type: getDeviceTypesAction,
+			payload: true
+		})
+		getAllDeviceTypes().then(async rs => {
 			let deviceTypes = handleRequestSort('id', 'asc', rs)
-			let dtUUIDs = rs.map(u => u.uuid)
+			// let dtUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
-			await dispatch(await getPriv(user.uuid, ['deviceType.create', 'deviceType.list']))
-			await dispatch(await getPrivList(dtUUIDs, ['deviceType.modify', 'deviceType.delete', 'deviceType.changeparent']))
+			await dispatch(await getPriv(user.uuid, ['deviceType.create', 'deviceType.list', 'deviceType.modify', 'deviceType.delete', 'deviceType.changeparent']))
+			// await dispatch(await getPrivList(dtUUIDs, ['deviceType.modify', 'deviceType.delete', 'deviceType.changeparent']))
 			set('devicetypes', deviceTypes)
 			if (reload) {
 				dispatch(setDeviceTypes())
 			}
+			dispatch({ type: getDeviceTypesAction, payload: false })
 			dispatch({ type: gotdeviceTypes, payload: true })
 		})
 	}
@@ -483,14 +491,14 @@ export const getFunctionLS = async (id) => {
 		})
 	}
 }
-export const getFunctions = (reload, orgId, su) => {
+export const getFunctions = (reload) => {
 	return async (dispatch, getState) => {
-		getAllFunctions(orgId, su).then(async rs => {
+		getAllFunctions().then(async rs => {
 			let functions = handleRequestSort('id', 'asc', rs)
-			let funcUUIDs = rs.map(u => u.uuid)
+			// let funcUUIDs = rs.map(u => u.uuid)
 			let user = getState().settings.user
-			await dispatch(await getPriv(user.uuid, ['cloudfunction.create', 'cloudfunction.list']))
-			await dispatch(await getPrivList(funcUUIDs, ['cloudfunction.modify', 'cloudfunction.delete', 'cloudfunction.changeparent']))
+			await dispatch(await getPriv(user.uuid, ['cloudfunction.create', 'cloudfunction.list', 'cloudfunction.modify', 'cloudfunction.delete', 'cloudfunction.changeparent' ]))
+			// await dispatch(await getPrivList(funcUUIDs, ['cloudfunction.modify', 'cloudfunction.delete', 'cloudfunction.changeparent']))
 			set('functions', functions)
 			if (reload) {
 				dispatch(setFunctions())
@@ -564,18 +572,21 @@ export const getRegistryLS = async (id) => {
 		})
 	}
 }
-export const getRegistries = (reload, orgId, su) => {
+export const getRegistries = (reload) => {
 	return async (dispatch, getState) => {
-		await getAllRegistries(orgId, su).then(async rs => {
+		dispatch({
+			type: getRegistriesAction,
+			payload: true
+		})
+		await getAllRegistries().then(async rs => {
 			let registries = handleRequestSort('id', 'asc', rs)
-			let regUUIDs = registries.map(r => r.uuid)
 			let user = getState().settings.user
-			await dispatch(await getPriv(user.uuid, ['registry.create', 'registry.list']))
-			await dispatch(await getPrivList(regUUIDs, ['registry.modify', 'registry.delete']))
+			await dispatch(await getPriv(user.uuid, ['registry.create', 'registry.list', 'registry.modify', 'registry.delete']))
 			set('registries', registries)
 			if (reload) {
 				dispatch(setRegistries())
 			}
+			dispatch({ type: getRegistriesAction, payload: false })
 			dispatch({ type: gotregistries, payload: true })
 		})
 	}
@@ -663,18 +674,24 @@ export const getSensorLS = async (id, customerID, ua) => {
 	}
 }
 
-export const getSensors = (reload, customerID, ua) => {
+export const getSensors = (reload) => {
+	// console.trace()
 	return async (dispatch, getState) => {
-		await getAllSensors(customerID, ua).then(async rs => {
+		dispatch({
+			type: getSensorsAction,
+			payload: true
+		})
+		await getAllSensors().then(async rs => {
 			let sensors = handleRequestSort('id', 'asc', rs)
 			set('sensors', sensors)
 			let user = getState().settings.user
-			let deviceUUIDs = rs.map(r => r.uuid)
-			await dispatch(await getPriv(user.uuid, ['device.create', 'device.list']))
-			await dispatch(await getPrivList(deviceUUIDs, ['device.modify', 'device.delete']))
+			// let deviceUUIDs = rs.map(r => r.uuid)
+			await dispatch(await getPriv(user.uuid, ['device.create', 'device.list', 'device.modify', 'device.delete']))
+			// await dispatch(await getPrivList(deviceUUIDs, ['device.modify', 'device.delete']))
 			if (reload) {
 				dispatch(setSensors())
 			}
+			dispatch({ type: getSensorsAction, payload: false })
 			dispatch({ type: gotsensors, payload: true })
 		})
 	}
@@ -688,7 +705,7 @@ export const setSensors = () => {
 				type: setsensors,
 				payload: sensors
 			})
-			dispatch(getSuggestions())
+			// dispatch(getSuggestions())
 			// dispatch(sortData('collections', 'id', 'asc'))
 		}
 		else {
@@ -781,6 +798,10 @@ const initialState = {
 	functions: [],
 	gotusers: false,
 	gotorgs: false,
+	getSensors: false,
+	gotSensors: false,
+	getDeviceTypes: false,
+	getRegistries: false,
 	gotdevices: false,
 	gotprojects: false,
 	gotcollections: false,
@@ -810,6 +831,8 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { gotmessages: payload })
 		//#endregion
 		//#region Device Types
+		case getDeviceTypesAction:
+			return Object.assign({}, state, { getDeviceTypes: payload })
 		case setDeviceType:
 			return Object.assign({}, state, { deviceType: payload })
 		case gotDeviceType:
@@ -820,6 +843,8 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { deviceTypes: payload })
 		//#endregion
 		//#region Registries
+		case getRegistriesAction:
+			return Object.assign({}, state, { getRegistries: payload })
 		case gotregistries:
 			return Object.assign({}, state, { gotregistries: payload })
 		case setRegistry:
@@ -831,6 +856,8 @@ export const data = (state = initialState, { type, payload }) => {
 
 		//#endregion
 		//#region Sensors
+		case getSensorsAction:
+			return Object.assign({}, state, { getSensors: payload })
 		case setSensor:
 			return Object.assign({}, state, { sensor: payload })
 		case gotSensor:

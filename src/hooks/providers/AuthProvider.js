@@ -42,12 +42,13 @@ const AuthProvider = ({ children }) => {
 			return false
 		}
 	}
-	return (
-		<AuthProv.Provider value={{ hasAccess, hasAccessList }}>
-			{children}
-		</AuthProv.Provider>
+	return [hasAccessList, hasAccess]
+	// return (
+	// 	<AuthProv.Provider value={{ hasAccess, hasAccessList }}>
+	// 		{children}
+	// 	</AuthProv.Provider>
 
-	)
+	// )
 }
 
-export default React.memo(AuthProvider)
+export default AuthProvider

@@ -24,8 +24,7 @@ const Sensors = props => {
 	const dispatch = useDispatch()
 	const classes = sensorsStyles()
 	const Auth = useAuth()
-	const hasAccess = Auth.hasAccess
-	const hasAccessList = Auth.hasAccessList
+
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
@@ -33,6 +32,7 @@ const Sensors = props => {
 	const saved = useSelector(s => s.favorites.saved)
 	const devices = useSelector(s => s.data.sensors)
 	const loading = useSelector(s => !s.data.gotsensors)
+	const dataLoading = useSelector(s => !s.data.getSensors)
 	const filters = useSelector(s => s.appState.filters.sensors)
 	const user = useSelector(s => s.settings.user)
 
@@ -66,7 +66,6 @@ const Sensors = props => {
 	const options = () => {
 
 		let device = devices[devices.findIndex(d => d.uuid === selected[0])]
-		console.log('selected', selected)
 		let favObj = {
 			id: device.uuid,
 			name: device.name,
@@ -82,8 +81,8 @@ const Sensors = props => {
 				func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj)
 			},
 			{ isDivider: true, dontShow: selected.length > 1 },
-			{ dontShow: !hasAccess(device.uuid, 'device.edit'), label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
-			{ dontShow: !hasAccessList(selected, 'device.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ dontShow: !Auth.hasAccess(null, 'device.modify'), label: t('menus.edit'), func: handleEditSensor, single: true, icon: Edit },
+			{ dontShow: !Auth.hasAccess(null, 'device.delete'), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}
@@ -92,11 +91,11 @@ const Sensors = props => {
 		/**
 		 * @Andrei
 		 * @TODO
-		 */
-		if (user && accessLevel) {
-			dispatch(await getSensors(true, user.org.aux?.odeumId, false))
+		*/
+		if (user && accessLevel && dataLoading && loading) {
+			dispatch(await getSensors(true))
 		}
-	}, [accessLevel, dispatch, user])
+	}, [accessLevel, dispatch, user, loading, dataLoading])
 
 	//useEffects
 	useEffect(() => {
@@ -294,7 +293,7 @@ const Sensors = props => {
 	}
 
 	const renderTableToolBarContent = () => {
-		let access = hasAccess(null, 'device.create')
+		let access = Auth.hasAccess(null, 'device.create')
 		return access ?
 			<Tooltip title={t('menus.create.device')}>
 				<IconButton aria-label='Add new device' onClick={handleAddNewSensor}>
@@ -372,5 +371,6 @@ const Sensors = props => {
 	)
 }
 
+Sensors.whyDidYouRender = true
 
 export default Sensors
