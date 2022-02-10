@@ -175,7 +175,7 @@ const SensorTable = props => {
 												</ItemGrid>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 													<Caption noWrap className={classes.noMargin}>
-														{`${n.reg_name} - ${dateFormatter(n.created)}`}
+														{`${n.deviceType.name} - ${dateFormatter(n.created)}`}
 													</Caption>
 												</ItemGrid>
 											</ItemGrid>
