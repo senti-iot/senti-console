@@ -87,6 +87,7 @@ const EditSensor = props => {
 			setSensor(sensor)
 			let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
 			let reg = registries[registries.findIndex(r => r.uuid === sensor.registry.uuid)]
+			console.log('sensor', sensor)
 			if (sensor.metadata) {
 				let metadata = sensor.metadata
 				let arrMtd = Object.entries(metadata).map(o => ({ "key": o[0], "value": o[1] }))

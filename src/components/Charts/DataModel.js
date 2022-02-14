@@ -14,14 +14,17 @@ import { store } from 'Providers'
 const format = 'YYYY-MM-DD+HH:mm'
 
 const linecolors = (data, defaultColor, id) => {
+	// console.log(Object.entries(data))
 	let colors = []
-	data.map(d => {
-		if (isWeekend(d[0])) {
-			return colors.push(weekendColors(id, store.getState().settings.weekendColor))
-		} else {
-			return colors.push(defaultColor)
-		}
-	})
+	if (data) {
+		Object.entries(data).map(d => {
+			if (isWeekend(d[0])) {
+				return colors.push(weekendColors(id, store.getState().settings.weekendColor))
+			} else {
+				return colors.push(defaultColor)
+			}
+		})
+	}
 	return colors
 }
 
@@ -243,18 +246,21 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 			timeType: 2,
 			lineDataSets: {
 				labels: labels,
-				datasets: dataArr.map((d, index) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					colors: linecolors(Object.entries(d.data), d.color, index),
-					borderWidth: hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
-				}))
+				datasets: dataArr.map((d, index) => {
+					console.log(d)
+					return ({
+						id: d.id,
+						lat: d.lat,
+						long: d.long,
+						backgroundColor: d.color,
+						borderColor: d.color,
+						colors: linecolors(d.data, d.color, index),
+						borderWidth: hoverID === d.id ? 8 : 3,
+						fill: false,
+						label: [d.name],
+						data: Array.isArray(d.data) ? d.data.map(u => ({ x: u.datetime, y: u[d.id] })) : []
+					})
+				})
 			},
 			barDataSets: {
 				labels: labels,
@@ -263,7 +269,7 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 					lat: d.lat,
 					long: d.long,
 					color: d.color,
-					backgroundColor: linecolors(Object.entries(d.data), d.color, index),
+					backgroundColor: linecolors(d.data, d.color, index),
 					borderColor: d.color,
 					// borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
@@ -272,20 +278,22 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 				}))
 			},
 			roundDataSets:
-				dataArr.map(d => ({
-					name: d.name,
-					color: d.color,
-					labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
-					datasets: [{
-						id: d.id,
-						lat: d.lat,
-						long: d.long,
-						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-						// data: Object.entries(d.data).map(d => d[1])
-						//TODO
-						data: []
-					}]
-				}))
+				dataArr.map(d => {
+					return ({
+						name: d.name,
+						color: d.color,
+						labels: d.data ? Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]) : [],
+						datasets: [{
+							id: d.id,
+							lat: d.lat,
+							long: d.long,
+							backgroundColor: d.data ? Object.entries(d.data).map((d, i) => colors[i]) : [],
+							// data: Object.entries(d.data).map(d => d[1])
+							//TODO
+							data: []
+						}]
+					})
+				})
 		}
 	}
 

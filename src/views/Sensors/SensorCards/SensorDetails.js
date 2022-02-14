@@ -166,6 +166,7 @@ const SensorDetails = (props) => {
 							<TableBody>
 								{sensor.dataKeys.map(d => {
 									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
+									console.log(d, cf)
 									return (
 										<TableRow key={d.uuid}>
 											<TableCell style={{ }} component="th" scope="row">

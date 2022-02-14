@@ -64,7 +64,7 @@ const CreateDeviceTypeForm = props => {
 		return <Fragment>
 			{sensorMetadata.outbound.map((p, i) => {
 				// console.log(p)
-				console.log(sensorMetadata.outbound.map((p, i) => p.originalKey === undefined ? ({ value: p.key, label: p.key }) : ({ dontShow: true })))
+				console.log(sensorMetadata.outbound.map((p, i) => p))
 				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'} justifyContent={'center'}>
 					<TextF
 						id={'outbound-label' + i}
