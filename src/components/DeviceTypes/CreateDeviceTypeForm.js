@@ -20,7 +20,7 @@ const CreateDeviceTypeForm = props => {
 	//Const
 	const { sensorMetadata, handleChangeUnit,
 		handleChangeKeyLabel, cfunctions, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction,
-		// handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
+		handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChangeKey, handleRemoveKey, handleRemoveFunction,
 		handleAddKey, openCF, handleCloseFunc, handleChangeFunc, handleChange, org, handleOrgChange, deviceType,
 		handleCreate, goToDeviceTypes, handleChangeType, handleCloseOrg, handleOpenOrg, decoder, handleRemoveDecoder, handleChangeOriginKey,
@@ -61,6 +61,45 @@ const CreateDeviceTypeForm = props => {
 		</Fragment>
 	}
 	const renderMetadata = () => {
+		return <Fragment>
+			<T style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('devicetypes.fields.metadata')}</T>
+			{sensorMetadata.metadata.length > 0 ? sensorMetadata.metadata.map((m, i) => {
+				return <ItemGrid xs={12} container key={'metadata' + i} alignItems={'center'}>
+					<TextF
+						label={t('cloudfunctions.fields.metadata.key')}
+						onChange={handleChangeMetadataKey(i)}
+						value={m.key}
+						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						label={t('cloudfunctions.fields.metadata.value')}
+						onChange={handleChangeMetadata(i)}
+						value={m.value}
+						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<Tooltip title={t('tooltips.devices.removeDataField')}>
+						<IconButton
+							style={{ marginTop: 6 }}
+							onClick={handleRemoveMtdKey(i)}>
+							<Close />
+						</IconButton>
+					</Tooltip>
+				</ItemGrid>
+			}) : null}
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
+			</ItemGrid>
+
+		</Fragment>
+	}
+
+	const renderDataFields = () => {
 		return <Fragment>
 			{sensorMetadata.outbound.map((p, i) => {
 				// console.log(p)
@@ -234,9 +273,11 @@ const CreateDeviceTypeForm = props => {
 						<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 						{renderDecoder()}
 						<Divider style={{ margin: "16px" }} />
-						{renderMetadata()}
+						{renderDataFields()}
 						<Divider style={{ margin: "16px" }} />
 						{renderMetadataInbound()}
+						<Divider style={{ margin: "16px" }} />
+						{renderMetadata()}
 						<Divider style={{ margin: "16px" }} />
 						<ItemGrid xs={12}>
 							<TextF

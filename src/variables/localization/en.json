@@ -362,9 +362,11 @@
         },
         "createDeviceType": "Create device type",
         "fields": {
+			"metadata": "Device type metadata",
             "decoder": "Decoder function",
             "name": "Name",
             "structure": {
+				"datafield": "Data field",
                 "key": "Key",
                 "name": "Structure",
                 "type": "Type",

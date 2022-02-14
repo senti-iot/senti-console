@@ -362,9 +362,11 @@
 		},
 		"createDeviceType": "Opret Enhedstype",
 		"fields": {
+			"metadata": "Enhedstype metadata",
 			"decoder": "Dekoder funktion",
 			"name": "Navn",
 			"structure": {
+				"datafield": "Datafeld",
 				"key": "Key",
 				"name": "Struktur",
 				"type": "Type",
@@ -374,7 +376,7 @@
 					"int": "Integer",
 					"string": "String"
 				},
-				"value": "Value"
+				"value": "Værdi"
 			}
 		},
 		"pageTitle": "Enhedstype"
