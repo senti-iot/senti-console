@@ -7,6 +7,7 @@ import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, Star
 import { useLocalization, useAuth, useSelector } from 'hooks'
 import sensorsStyles from 'assets/jss/components/sensors/sensorsStyles'
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { Check } from '@material-ui/icons'
 
 
 const SensorDetails = (props) => {
@@ -24,7 +25,7 @@ const SensorDetails = (props) => {
 
 	//Const
 	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
-
+	let allKeys = [...sensor.dataKeys?.map(k => ({ ...k, dt: true })), ...sensor.syntheticKeys?.map(k => k)]
 	//useCallbacks
 
 	//useEffects
@@ -149,7 +150,7 @@ const SensorDetails = (props) => {
 					<ItemG xs={12}>
 						{/* <Divider style={{ margin: "16px" }} /> */}
 						{/* <Caption style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.dataKeys')}</Caption> */}
-						{sensor.dataKeys?.length > 0 ? <Table>
+						{allKeys?.length > 0 ? <Table>
 							<TableHead>
 								<TableRow style={{  }}>
 									<TableCell style={{  }}>
@@ -159,14 +160,18 @@ const SensorDetails = (props) => {
 										<ItemG container>
 											{t('sidebar.cloudfunctions')}
 										</ItemG>
-
+									</TableCell>
+									<TableCell>
+										{t('sensors.fields.dataKeysInherited')}
+									</TableCell>
+									<TableCell>
+										{t('cloudfunctions.fields.synthetic')}
 									</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{sensor.dataKeys.map(d => {
+								{allKeys.map(d => {
 									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
-									console.log(d, cf)
 									return (
 										<TableRow key={d.uuid}>
 											<TableCell style={{ }} component="th" scope="row">
@@ -178,6 +183,12 @@ const SensorDetails = (props) => {
 														{cf.name}
 													</Link>
 											 : t('no.cloudfunction')}
+											</TableCell>
+											<TableCell>
+												{d.dt ? <Check style={{ fontSize: 14 }} /> : '-'}
+											</TableCell>
+											<TableCell>
+												{d.originalKey ? <Check style={{ fontSize: 14 }} /> : ''}
 											</TableCell>
 										</TableRow>
 									)

@@ -109,7 +109,6 @@ class OpenStreetMapWidget extends React.Component {
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
 
-		console.log(this.props.markers[0])
 		if (this.props.markers.length === 1 && this.props.markers[0])
 			center = [this.props.markers[0]?.lat, this.props.markers[0]?.long]
 		else {

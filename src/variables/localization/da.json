@@ -898,7 +898,10 @@
 				"allowed": "Tilladt",
 				"blocked": "Blokeret"
 			},
+			"dataKeysInherited": "Nedarvet fra enhedstype",
 			"dataKey": "Datafelt",
+			"dataKeyName": "Datafelt navn",
+			"dataSynthetic": "Synthetisk datafelt",
 			"dataKeys": "Datafelter",
 			"decoder": "Dekoderfunktioner",
 			"deviceType": "Enhedstype",

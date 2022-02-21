@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
-import { Button, Divider, Tooltip, IconButton, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { Button, Divider, Tooltip, IconButton, Table, TableHead, TableRow, TableCell, TableBody, InputAdornment } from '@material-ui/core'
 import { CheckCircle, Block, Close } from 'variables/icons'
 import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T } from 'components'
 import OpenStreetMap from 'components/Map/OpenStreetMap'
 import Info from 'components/Typography/Info'
 import AssignDeviceTypeDialog from 'components/AssignComponents/AssignDeviceTypeDialog'
 import AssignRegistryDialog from 'components/AssignComponents/AssignRegistryDialog'
-// import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
+import AssignCFDialog from 'components/AssignComponents/AssignCFDialog'
 import { useLocalization } from 'hooks'
 import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles'
 
@@ -63,7 +63,123 @@ const CreateSensorForm = props => {
 		handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChange, sensor, getLatLngFromMap,
 		handleCreate, goToSensors, select, } = props
+	/**
+	 * Syntehtic Fields
+	 */
+	const { sensorSyntheticKeys,
+		handleAddSyntheticKey,
+		handleRemoveSyntheticKey,
+		handleChangeSyntheticKeyUnit,
+		handleChangeSyntheticKeyLabel,
+		handleChangeSyntheticKey,
+		handleChangeSyntheticKeyType,
+		handleChangeSyntheticKeyOrigin
+	} = props
 
+	const { openCF, handleCloseFunc, handleChangeFunc,
+		 handleRemoveFunction,
+		 handleOpenFunc,
+		 } = props
+
+	const renderSyntheticKeys = () => {
+		return <Fragment>
+			{sensorSyntheticKeys.map((p, i) => {
+				// console.log(p)
+				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'} justifyContent={'center'}>
+					<TextF
+						id={'outbound-label' + i}
+						label={t('sensors.fields.dataKeyName')}
+						value={p.label}
+						onChange={handleChangeSyntheticKeyLabel(p, i)}
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						id={'outbound-key' + i}
+						label={t('sensors.fields.dataSynthetic')}
+						onChange={handleChangeSyntheticKey(p, i)}
+						value={p.key}
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						id={'outbound-unit' + i}
+						label={t('dashboard.fields.unit')}
+						value={p.unit}
+						onChange={handleChangeSyntheticKeyUnit(p, i)}
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						id={'outbound-value' + i}
+						label={t('sidebar.cloudfunction')}
+						value={cfunctions.findIndex(f => f.id === p.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
+						readOnly
+						onClick={handleOpenFunc(i, 'synthetic')}
+						onChange={() => { }}
+						InputProps={{
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+									<IconButton
+										className={classes.smallAction}
+										onClick={e => { e.stopPropagation(); handleRemoveFunction(i)() }}
+									>
+										<Close />
+									</IconButton>
+								</Tooltip>
+							</InputAdornment>,
+							style: { marginRight: 8 }
+						}}
+					/>
+					<DSelect
+						onChange={handleChangeSyntheticKeyType(i)}
+						label={t('cloudfunctions.datatypes.datatype')}
+						value={p.type}
+						margin={'normal'}
+						style={{ marginRight: 8 }}
+						menuItems={[
+							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+							// { value: 1, label: t('cloudfunctions.datatypes.average') }
+						]}
+					/>
+					{p.originalKey !== undefined ?
+						<DSelect
+							onChange={handleChangeSyntheticKeyOrigin(i)}
+							label={t('cloudfunctions.fields.key')}
+							value={p.originalKey}
+							margin={'normal'}
+							style={{ marginRight: 8 }}
+							// menuItems={[
+							// 	{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+							// 	// { value: 1, label: t('cloudfunctions.datatypes.average') }
+							// ]}
+							menuItems={sensorDataKeys.map((p, i) => p.originalKey === undefined ? ({ value: p.key, label: p.key }) : ({ dontShow: true }))}
+						/> : null
+					}
+					<Tooltip title={t('tooltips.devices.removeDataField')}>
+
+						<IconButton
+							// className={classes.smallAction}
+							style={{ marginTop: 6 }}
+							onClick={handleRemoveSyntheticKey(i)}
+						>
+							<Close />
+						</IconButton>
+					</Tooltip>
+				</ItemGrid>
+
+			})}
+			<ItemG xs={12} container>
+
+				<ItemGrid>
+					<Button variant={'outlined'} disabled={sensorDataKeys.length === 0} onClick={handleAddSyntheticKey} color={'primary'}>{t('actions.addSyntheticKey')}</Button>
+				</ItemGrid>
+			</ItemG>
+		</Fragment>
+	}
 	const renderMetadata = () => {
 		return <Fragment>
 			<T style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
@@ -264,7 +380,7 @@ const CreateSensorForm = props => {
 					noHeader
 					content={
 						<ItemG>
-							{/*
+
 							<AssignCFDialog
 								t={t}
 								open={openCF.open}
@@ -273,7 +389,7 @@ const CreateSensorForm = props => {
 									handleChangeFunc(cf, openCF.where)
 									handleCloseFunc()
 								}}
-							/> */}
+							/>
 							{/* {this.renderSelectFunction()} */}
 							<ItemGrid xs={12}>
 								<TextF
@@ -355,8 +471,8 @@ const CreateSensorForm = props => {
 							</ItemGrid>
 							<Divider style={{ margin: "16px" }} />
 							{renderMetadata()}
-							{/* <Divider style={{ margin: "16px" }} />
-							{renderMetadataInbound()} */}
+							<Divider style={{ margin: "16px" }} />
+							{renderSyntheticKeys()}
 							<Divider style={{ margin: "16px" }} />
 							<ItemGrid xs={12}>
 								{/* <ItemG xs={12}> */}

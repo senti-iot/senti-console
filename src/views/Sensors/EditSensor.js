@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 // import EditSensorForm from 'components/Collections/EditSensorForm';
-import { getDeviceTypes, getRegistries, getSensorLS, getSensors } from 'redux/data'
+import { getDeviceTypes, getRegistries, getSensorLS, getSensors, getFunctions } from 'redux/data'
 import { updateSensor } from 'variables/dataSensors'
 import { updateFav, isFav } from 'redux/favorites'
 import { CircularLoader } from 'components'
@@ -39,10 +39,12 @@ const EditSensor = props => {
 		customer_id: 1,
 		communication: 1
 	})
-	// const [openCF, setOpenCF] = useState({
-	// 	open: false,
-	// 	where: null
-	// })
+
+	const [openCF, setOpenCF] = useState({
+		open: false,
+		where: null
+	})
+
 	const [openReg, setOpenReg] = useState(false)
 	const [openDT, setOpenDT] = useState(false)
 	const [select, setSelect] = useState({
@@ -52,6 +54,7 @@ const EditSensor = props => {
 	const [sensorMetadata, setSensorMetadata] = useState([])
 	const [sensorDataKeys, setSensorDataKeys] = useState([])
 	const [sensorDecoder, setSensorDecoder] = useState([])
+	const [sensorSyntheticKeys, setSensorSyntheticKeys] = useState([])
 
 	//Const
 	const { setHeader, setBC, setTabs } = props
@@ -62,6 +65,7 @@ const EditSensor = props => {
 		let id = params.id
 		dispatch(await getRegistries(true))
 		dispatch(await getDeviceTypes(true))
+		dispatch(await getFunctions(true))
 		dispatch(await getSensorLS(id))
 	}
 
@@ -87,14 +91,15 @@ const EditSensor = props => {
 			setSensor(sensor)
 			let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
 			let reg = registries[registries.findIndex(r => r.uuid === sensor.registry.uuid)]
-			console.log('sensor', sensor)
 			if (sensor.metadata) {
 				let metadata = sensor.metadata
 				let arrMtd = Object.entries(metadata).map(o => ({ "key": o[0], "value": o[1] }))
 				setSensorMetadata(arrMtd)
 
 			}
-
+			if (sensor.syntheticKeys) {
+				setSensorSyntheticKeys(sensor.syntheticKeys)
+			}
 			if (dt && reg) {
 				setSensorDataKeys(dt.outbound)
 				setSensorDecoder(dt.inbound)
@@ -279,35 +284,79 @@ const EditSensor = props => {
 	}
 
 	//#endregion
+	//#region Synthetic dataKeys
+
+	const handleAddSyntheticKey = e => {
+		setSensorSyntheticKeys([...sensorSyntheticKeys, { key: '', nId: -1, type: 0, label: "", unit: "", originalKey: "" }])
+	}
+	const handleRemoveSyntheticKey = (index) => e => {
+		let mtd = sensorSyntheticKeys.filter((v, i) => i !== index)
+		setSensorSyntheticKeys(mtd)
+	}
+	/**
+ * Change measure unit from dataKey
+ */
+	const handleChangeSyntheticKeyUnit = (v, i) => e => {
+		let mtd = [...sensorSyntheticKeys]
+		mtd[i].unit = e.target.value
+		setSensorSyntheticKeys(mtd)
+	}
+	/**
+	  * Change key label from dataKey
+	  */
+	const handleChangeSyntheticKeyLabel = (v, i) => e => {
+		let mtd = [...sensorSyntheticKeys]
+		mtd[i].label = e.target.value
+		setSensorSyntheticKeys(mtd)
+	}
+	const handleChangeSyntheticKey = (v, i) => e => {
+		let mtd = [...sensorSyntheticKeys]
+		mtd[i].key = e.target.value
+		setSensorSyntheticKeys(mtd)
+	}
+
+	const handleChangeSyntheticKeyType = i => e => {
+		e.preventDefault()
+		let mtd = [...sensorSyntheticKeys]
+		mtd[i].type = e.target.value
+		setSensorSyntheticKeys(mtd)
+	}
+
+	const handleChangeSyntheticKeyOrigin = i => e => {
+		e.preventDefault()
+		let mtd = [...sensorSyntheticKeys]
+		mtd[i].originalKey = e.target.value
+		setSensorSyntheticKeys(mtd)
+	}
+	//#endregion
+
 	//#region Function selector
 
-	// const handleOpenFunc = (p, where) => e => {
-	// 	setSelect({
-	// 		...select,
-	// 		[where]: p
-	// 	})
-	// 	setOpenCF({
-	// 		open: true,
-	// 		where: where
-	// 	})
-	// }
+	const handleOpenFunc = (p, where) => e => {
+		setSelect({
+			...select,
+			[where]: p
+		})
+		setOpenCF({
+			open: true,
+			where: where
+		})
+	}
 
-	// const handleCloseFunc = () => {
-	// 	setOpenCF({
-	// 		open: false,
-	// 		where: null
-	// 	})
-	// }
+	const handleCloseFunc = () => {
+		setOpenCF({
+			open: false,
+			where: null
+		})
+	}
 
-	// const handleChangeFunc = (o, where) => {
-	// 	let metadata = sensorMetadata[where]
-	// 	metadata[select[where]].nId = o.id
-	// 	handleCloseFunc()
-	// 	setSensorMetadata({
-	// 		...sensorMetadata,
-	// 		[where]: metadata
-	// 	})
-	// }
+	const handleChangeFunc = (o, where) => {
+		let metadata = [...sensorSyntheticKeys]
+		metadata[select[where]].nId = o.id
+		handleCloseFunc()
+		setSensorSyntheticKeys(metadata)
+	}
+
 
 	//#endregion
 
@@ -338,6 +387,7 @@ const EditSensor = props => {
 	const handleUpdateDevice = async () => {
 		let smtd = sensorMetadata
 		let mtd = {}
+		let sData = sensorSyntheticKeys
 		smtd.forEach((m) => {
 			mtd[m.key] = m.value
 		})
@@ -345,7 +395,8 @@ const EditSensor = props => {
 		let newSensor = {
 			...stateSensor,
 			tags: [],
-			metadata: mtd
+			metadata: mtd,
+			dataKeys: sData
 		}
 		return await updateSensor(newSensor)
 	}
@@ -378,6 +429,7 @@ const EditSensor = props => {
 			sensorMetadata={sensorMetadata}
 			sensorDataKeys={sensorDataKeys}
 			sensorDecoder={sensorDecoder}
+			sensorSyntheticKeys={sensorSyntheticKeys}
 
 			cfunctions={cloudfunctions}
 
@@ -394,6 +446,20 @@ const EditSensor = props => {
 			// handleChangeKey={handleChangeKey}
 
 			// handleChangeType={handleChangeType}
+
+			handleAddSyntheticKey={handleAddSyntheticKey}
+			handleRemoveSyntheticKey={handleRemoveSyntheticKey}
+			handleChangeSyntheticKeyUnit={handleChangeSyntheticKeyUnit}
+			handleChangeSyntheticKeyLabel={handleChangeSyntheticKeyLabel}
+			handleChangeSyntheticKey={handleChangeSyntheticKey}
+			handleChangeSyntheticKeyType={handleChangeSyntheticKeyType}
+			handleChangeSyntheticKeyOrigin={handleChangeSyntheticKeyOrigin}
+
+			handleOpenFunc={handleOpenFunc}
+			handleCloseFunc={handleCloseFunc}
+			handleChangeFunc={handleChangeFunc}
+
+			openCF={openCF}
 
 			handleChange={handleChange}
 			handleCreate={handleUpdate}

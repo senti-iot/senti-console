@@ -60,12 +60,10 @@ const EditDeviceType = props => {
 			}
 		}
 		getDT()
-		console.log('Getting DT')
 	}, [dispatch, orgs.length, params])
 
 
 	useEffect(() => {
-		console.log(devicetype, orgs)
 		if (devicetype && orgs.length > 0) {
 			setDeviceType(devicetype)
 			setDecoder(devicetype.decoder ? cloudfunctions[cloudfunctions.findIndex(f => f.id === devicetype.decoder)] : { id: null, name: "" })

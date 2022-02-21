@@ -898,7 +898,10 @@
                 "allowed": "Allowed",
                 "blocked": "Blocked"
             },
+			"dataKeysInherited": "Inherited from Device Type",
             "dataKey": "Data field",
+			"dataKeyName": "Data field name",
+			"dataSynthetic": "Synthetic field",
             "dataKeys": "Data fields",
             "decoder": "Decoder functions",
             "deviceType": "Device Type",

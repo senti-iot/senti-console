@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { DataUsage, InsertChart, Wifi } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
-import { getSensorLS } from "redux/data"
+import { getFunctions, getSensorLS } from "redux/data"
 import SensorDetails from "./SensorCards/SensorDetails"
 import SensorProtocol from "./SensorCards/SensorProtocol"
 import SensorMessages from "views/Charts/SensorMessages"
@@ -48,6 +48,7 @@ const Sensor = props => {
 	//useCallbacks
 
 	const getSensor = useCallback(async id => {
+		await dispatch(await getFunctions(true))
 		await dispatch(await getSensorLS(id))
 	}, [dispatch])
 
@@ -209,6 +210,23 @@ const Sensor = props => {
 						</ItemGrid>
 						{sensor.dataKeys?.map((k, i) => {
 
+							return (
+								<ItemGrid xs={12} key={i} container noMargin id={"charts" + i}>
+									<SensorChart
+										graphUnit={k.unit}
+										deviceId={sensor.uuid}
+										dataKey={k.key}
+										title={k.label ? k.label : k.key}
+										cfId={k.nId}
+										// cfId={-1}
+										chartColor={theme.palette.primary.main}
+										single={true}
+										t={t}
+									/>
+								</ItemGrid>
+							)
+						})}
+						{sensor.syntheticKeys?.map((k, i) => {
 							return (
 								<ItemGrid xs={12} key={i} container noMargin id={"charts" + i}>
 									<SensorChart
