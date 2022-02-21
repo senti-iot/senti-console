@@ -25,7 +25,9 @@ const SensorDetails = (props) => {
 
 	//Const
 	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
-	let allKeys = [...sensor.dataKeys?.map(k => ({ ...k, dt: true })), ...sensor.syntheticKeys?.map(k => k)]
+	let dataKeys = sensor.dataKeys ? sensor.dataKeys.map(k => ({ ...k, dt: true })) : []
+	let syntheticKeys = sensor.syntheticKeys ? sensor.syntheticKeys.map(k => k) : []
+	let allKeys = [...syntheticKeys, ...dataKeys]
 	//useCallbacks
 
 	//useEffects
