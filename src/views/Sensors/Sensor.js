@@ -207,7 +207,7 @@ const Sensor = props => {
 								getData={getDeviceMessages}
 							/>
 						</ItemGrid>
-						{sensor.dataKeys.map((k, i) => {
+						{sensor.dataKeys?.map((k, i) => {
 
 							return (
 								<ItemGrid xs={12} key={i} container noMargin id={"charts" + i}>
