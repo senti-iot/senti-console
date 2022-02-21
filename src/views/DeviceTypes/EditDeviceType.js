@@ -69,11 +69,18 @@ const EditDeviceType = props => {
 		if (devicetype && orgs.length > 0) {
 			setDeviceType(devicetype)
 			setDecoder(devicetype.decoder ? cloudfunctions[cloudfunctions.findIndex(f => f.id === devicetype.decoder)] : { id: null, name: "" })
-			setSensorMetadata({
-				metadata: devicetype.metadata ? devicetype.metadata : [],
-				outbound: devicetype.outbound ? devicetype.outbound : [],
-				inbound: devicetype.inbound ? devicetype.inbound : []
-			})
+			if (devicetype.metadata) {
+				let metadata = devicetype.metadata
+				let arrMtd = Object.entries(metadata).map(o => ({ "key": o[0], "value": o[1] }))
+				setSensorMetadata({
+					metadata: arrMtd ? arrMtd : [],
+					outbound: devicetype.outbound ? devicetype.outbound : [],
+					inbound: devicetype.inbound ? devicetype.inbound : []
+				})
+
+			}
+
+
 			setOrg(devicetype.org)
 
 			setLoading(false)
@@ -315,12 +322,17 @@ const EditDeviceType = props => {
 	//#region Update Device Type
 
 	const updtDeviceType = async () => {
+		let smtd = sensorMetadata.metadata
+		let mtd = {}
+		smtd.forEach((m) => {
+			mtd[m.key] = m.value
+		})
 		let nDeviceType = {
 			...deviceType,
 			decoder: decoder.id,
 			outbound: sensorMetadata.outbound,
 			inbound: sensorMetadata.inbound,
-			metadata: sensorMetadata.metadata,
+			metadata: mtd,
 			org: org
 		}
 		return await updateDeviceType(nDeviceType)

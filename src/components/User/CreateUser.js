@@ -31,6 +31,7 @@ const CreateUser = props => {
 		firstName: '',
 		lastName: '',
 		phone: '',
+		mobile: '',
 		email: '',
 		internal: {},
 		aux: {

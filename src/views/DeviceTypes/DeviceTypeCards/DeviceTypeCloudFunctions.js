@@ -25,7 +25,7 @@ const DeviceTypeCloudFunctions = props => {
 	const { deviceType } = props
 	let cfi = deviceType.inbound
 	let cfo = deviceType.outbound
-	let cfm = deviceType.metadata
+	let cfm = Object.entries(deviceType.metadata).map(o => ({ "key": o[0], "value": o[1] }))
 	console.log('cfm', cfm)
 	//useCallbacks
 
