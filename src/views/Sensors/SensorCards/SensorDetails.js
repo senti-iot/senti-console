@@ -25,9 +25,8 @@ const SensorDetails = (props) => {
 
 	//Const
 	const { sensor, isFav, addToFav, removeFromFav, handleOpenDeleteDialog, history } = props
-	let dataKeys = sensor.dataKeys ? sensor.dataKeys.map(k => ({ ...k, dt: true })) : []
-	let syntheticKeys = sensor.syntheticKeys ? sensor.syntheticKeys.map(k => k) : []
-	let allKeys = [...syntheticKeys, ...dataKeys]
+	let dataKeys = sensor.dataKeys ? sensor.dataKeys.map(k => ({ ...k })) : []
+
 	//useCallbacks
 
 	//useEffects
@@ -152,7 +151,7 @@ const SensorDetails = (props) => {
 					<ItemG xs={12}>
 						{/* <Divider style={{ margin: "16px" }} /> */}
 						{/* <Caption style={{ marginLeft: 16 }} variant={'subtitle1'}>{t('sensors.fields.dataKeys')}</Caption> */}
-						{allKeys?.length > 0 ? <Table>
+						{dataKeys?.length > 0 ? <Table>
 							<TableHead>
 								<TableRow style={{  }}>
 									<TableCell style={{  }}>
@@ -172,7 +171,7 @@ const SensorDetails = (props) => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{allKeys.map(d => {
+								{dataKeys.map(d => {
 									let cf = cfunctions.findIndex(f => f.id === d.nId) > -1 ? cfunctions[cfunctions.findIndex(f => f.id === d.nId)] : null
 									return (
 										<TableRow key={d.uuid}>
@@ -187,7 +186,7 @@ const SensorDetails = (props) => {
 											 : t('no.cloudfunction')}
 											</TableCell>
 											<TableCell>
-												{d.dt ? <Check style={{ fontSize: 14 }} /> : '-'}
+												{d.origin === 'devicetype' ? <Check style={{ fontSize: 14 }} /> : '-'}
 											</TableCell>
 											<TableCell>
 												{d.originalKey ? <Check style={{ fontSize: 14 }} /> : ''}
