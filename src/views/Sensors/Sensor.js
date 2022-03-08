@@ -182,6 +182,7 @@ const Sensor = props => {
 	const renderLoader = () => {
 		return <CircularLoader />
 	}
+	console.log(sensor)
 	return (
 		<Fragment>
 			{!loading ? (
@@ -226,7 +227,7 @@ const Sensor = props => {
 								</ItemGrid>
 							)
 						})}
-						{sensor.syntheticKeys?.map((k, i) => {
+						{/* {sensor.syntheticKeys?.map((k, i) => {
 							return (
 								<ItemGrid xs={12} key={i} container noMargin id={"charts" + i}>
 									<SensorChart
@@ -242,7 +243,7 @@ const Sensor = props => {
 									/>
 								</ItemGrid>
 							)
-						})}
+						})} */}
 						{/* {sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							return <ItemGrid xs={12} container noMargin key={i + 'charts'}>
 								<SensorData
