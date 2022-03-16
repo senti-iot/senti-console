@@ -55,12 +55,28 @@ const OrgDetails = props => {
 			topAction={options().length > 0 ? <Dropdown menuItems={options()} /> : null}
 			content={
 				<Grid container>
-					<ItemGrid xs={12}>
+					<ItemGrid xs={4}>
 						<Caption>
-							{t('orgs.fields.totaldevices')}
+							{t('orgs.fields.orgDevices')}
 						</Caption>
 						<Info >
-							{org.totalDevices?.total}
+							{org.totalDevices?.orgDevices}
+						</Info>
+					</ItemGrid>
+					<ItemGrid xs={4}>
+						<Caption>
+							{t('orgs.fields.subOrgDevices')}
+						</Caption>
+						<Info >
+							{org.totalDevices?.subOrgDevices.reduce((a, b) => (a = a + b.total), 0)}
+						</Info>
+					</ItemGrid>
+					<ItemGrid xs={4}>
+						<Caption>
+							{t('orgs.fields.totalDevices')}
+						</Caption>
+						<Info >
+							{org.totalDevices?.subOrgDevices.reduce((a, b) => (a = a + b.total), 0) + org.totalDevices?.orgDevices}
 						</Info>
 					</ItemGrid>
 					<ItemGrid>

@@ -745,7 +745,9 @@
 		"create": "Opret",
 		"createOrg": "Opret organisation",
 		"fields": {
-			"totaldevices": "Antal enheder",
+			"orgDevices": "Organisation enheder",
+			"subOrgDevices": "Suborganisation enheder",
+			"totalDevices": "Samlede antal enheder",
 			"CVR": "CVR nummer",
 			"EAN": "EAN nummer",
 			"address": "Adresse",

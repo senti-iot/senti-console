@@ -745,7 +745,9 @@
         "create": "Create",
         "createOrg": "Create organisation",
         "fields": {
-			"totaldevices": "Number of devices",
+			"orgDevices": "Organisation devices",
+			"subOrgDevices": "Suborganisation devices",
+			"totalDevices": "Total number of devices",
             "CVR": "Tax Registration Number",
             "EAN": "EAN Number",
             "address": "Address",
