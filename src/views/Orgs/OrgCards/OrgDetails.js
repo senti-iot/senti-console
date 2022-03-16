@@ -71,7 +71,7 @@ const OrgDetails = props => {
 							{org.totalDevices?.subOrgDevices.reduce((a, b) => (a = a + b.total), 0)}
 						</Info>
 					</ItemGrid>
-					<ItemGrid xs={4}>
+					<ItemGrid xs={12}>
 						<Caption>
 							{t('orgs.fields.totalDevices')}
 						</Caption>
