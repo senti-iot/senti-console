@@ -174,6 +174,7 @@ const RegistryTable = props => {
 										<TC label={renderProtocol(n.protocol)} />
 										<TC label={dateFormatter(n.created)} />
 										<TC label={n.org ? n.org.name : "-"} />
+										<TC label={n.deviceCount} />
 										{/* <TC label={dateFormatter(n.endDate)}/> */}
 										{/* <TC label={dateFormatter(n.created)}/> */}
 										{/* <TC label={dateFormatter(n.modified)}/> */}

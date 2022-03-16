@@ -66,6 +66,7 @@ const Registries = props => {
 		{ id: 'protocol', label: t('registries.fields.protocol') },
 		{ id: 'created', label: t('registries.fields.created') },
 		{ id: 'customer', label: t('registries.fields.customer') },
+		{ id: 'devices', label: t('sidebar.devices') }
 	]
 
 	const options = () => {
