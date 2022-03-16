@@ -157,7 +157,7 @@ const RegistryTable = props => {
 												</ItemGrid>
 												<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 													<Caption noWrap className={classes.noMargin}>
-														{`${n.customer_name ? n.customer_name : t('users.fields.noOrg')}`}
+														{`${n.org ? n.org.name : "-"}`}
 													</Caption>
 												</ItemGrid>
 											</ItemGrid>
@@ -170,7 +170,6 @@ const RegistryTable = props => {
 											onMouseEnter={e => { setHover(e, n) }}
 											onMouseLeave={unsetTimeout}
 											FirstC label={n.name} />
-										<TC label={n.region} />
 										<TC label={renderProtocol(n.protocol)} />
 										<TC label={dateFormatter(n.created)} />
 										<TC label={n.org ? n.org.name : "-"} />
