@@ -1210,6 +1210,7 @@
 			"reference": "Reference",
 			"type": "Type",
 			"types": {
+				"general": "Generel",
 				"device": "Enhed",
 				"devicetype": "Enhedstype",
 				"registry": "Register"

@@ -67,6 +67,9 @@ const CreateToken = props => {
 		let newToken = {}
 		newToken = token
 		newToken.userId = user.uuid
+		if (token.resourceType === 3) {
+			token.resourceUuid = user.uuid
+		}
 		let tokenn = await generateToken(newToken)
 		setGeneratedToken(tokenn ? tokenn : '')
 	}
@@ -156,7 +159,8 @@ const CreateToken = props => {
 						}}
 					/>
 				</Fragment>
-
+			case 3:
+				return null
 			default:
 				break
 		}
@@ -267,8 +271,9 @@ const CreateToken = props => {
 								label={t('tokens.fields.type')}
 								value={token.resourceType}
 								menuItems={[
+									{ value: 3, label: t('tokens.fields.types.general') },
 									{ value: 0, label: t('tokens.fields.types.device') },
-									{ value: 1, label: t('tokens.fields.types.registry') }
+									{ value: 1, label: t('tokens.fields.types.registry') },
 									// { value: 2, label: t('tokens.fields.types.devicetype') }
 								]}
 								onChange={handleChange('resourceType')}

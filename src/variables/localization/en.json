@@ -1210,6 +1210,7 @@
             "reference": "Reference",
             "type": "Type",
             "types": {
+				"general": "General",
                 "device": "Device",
                 "devicetype": "Device type",
                 "registry": "Registry"
