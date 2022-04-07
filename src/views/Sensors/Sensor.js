@@ -182,7 +182,6 @@ const Sensor = props => {
 	const renderLoader = () => {
 		return <CircularLoader />
 	}
-	console.log(sensor)
 	return (
 		<Fragment>
 			{!loading ? (

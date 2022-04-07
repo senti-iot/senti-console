@@ -1,11 +1,13 @@
 import React, { Fragment, } from 'react'
-import { Button, Divider, Fade, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import { Button, Collapse, Divider, Fade, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, T, DSelect } from 'components'
 import AssignOrgDialog from 'components/AssignComponents/AssignOrgDialog';
 import { useLocalization } from 'hooks'
 import AssignCFDialog from 'components/AssignComponents/AssignCFDialog';
 import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles';
+import Warning from 'components/Typography/Warning'
+import Danger from 'components/Typography/Danger'
 
 
 const CreateDeviceTypeForm = props => {
@@ -102,8 +104,6 @@ const CreateDeviceTypeForm = props => {
 	const renderDataFields = () => {
 		return <Fragment>
 			{sensorMetadata.outbound.map((p, i) => {
-				// console.log(p)
-				console.log(sensorMetadata.outbound.map((p, i) => p))
 				return <ItemGrid xs={12} container key={i + 'outbound'} alignItems={'center'} justifyContent={'center'}>
 					<TextF
 						id={'outbound-label' + i}
@@ -233,7 +233,7 @@ const CreateDeviceTypeForm = props => {
 	}
 
 
-
+	console.log(props.errorMessage)
 	return (
 		<GridContainer>
 			<ItemGrid xs={12}>
@@ -241,6 +241,15 @@ const CreateDeviceTypeForm = props => {
 					noHeader
 					noExpand
 					content={<ItemG>
+						<ItemGrid xs={12}>
+							<Collapse in={props.error}>
+								<Warning>
+									<Danger>
+										{props.errorMessage}
+									</Danger>
+								</Warning>
+							</Collapse>
+						</ItemGrid>
 						<AssignCFDialog
 							t={t}
 							open={openCF.open}

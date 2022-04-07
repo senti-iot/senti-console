@@ -72,8 +72,6 @@ const FilterToolbar = props => {
 	}
 
 	const handleClose = () => {
-		// console.log('Did this')
-		// console.trace()
 		// window.addEventListener('keydown', handleWindowKeyPress, false)
 		if (actionAnchor) {
 			setActionAnchor(null)

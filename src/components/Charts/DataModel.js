@@ -247,7 +247,6 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 			lineDataSets: {
 				labels: labels,
 				datasets: dataArr.map((d, index) => {
-					console.log(d)
 					return ({
 						id: d.id,
 						lat: d.lat,
@@ -452,7 +451,6 @@ export const setMinutelyData = (dataArr, from, to, /* hoverID, */ live) => {
 	// 	}
 	// 	catch (e) {
 	// 		labels = minutesToArray(from, to)
-	// 		console.log(e)
 	// 	}
 	// }
 	// else {

@@ -24,7 +24,6 @@ const DeviceTypeCloudFunctions = props => {
 	//Const
 	const { deviceType } = props
 	let cfi = deviceType.inbound
-	console.log(cfi)
 	let cfo = deviceType.outbound
 	let cfm = Array.isArray(deviceType.metadata) ? deviceType.metadata : Object.entries(deviceType.metadata).map(o => ({ "key": o[0], "value": o[1] }))
 

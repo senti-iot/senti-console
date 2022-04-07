@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createDeviceType } from 'variables/dataDeviceTypes'
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm'
 import { getDeviceTypes } from 'redux/data'
-import { useSnackbar, useLocation, useHistory, useEventListener } from 'hooks'
+import { useSnackbar, useLocation, useHistory, useEventListener, useLocalization } from 'hooks'
+import { Danger } from 'components'
 
 const CreateDeviceType = props => {
 	//Hooks
@@ -11,10 +12,15 @@ const CreateDeviceType = props => {
 	const s = useSnackbar().s
 	const history = useHistory()
 	const location = useLocation()
+	const t = useLocalization()
 
 	//Redux
 	const org = useSelector(state => state.settings.user.org)
 	const cloudfunctions = useSelector(state => state.data.functions)
+	const [errorMessage, setErrorMessage] = useState(null) // added
+	const [error, setError] = useState(null) // added
+
+
 
 	const [deviceType, setDeviceType] = useState({
 		name: "",
@@ -69,9 +75,60 @@ const CreateDeviceType = props => {
 		//eslint-disable-next-line
 	}, [])
 	//Handlers
+	const handleValidation = () => {
+		let errorCode = []
+		const { name } = deviceType
+		if (name === '') {
+			errorCode.push(0)
+		}
+		// if (address === '') {
+		// 	errorCode.push(1)
+		// }
+		// if (city === '') {
+		// 	errorCode.push(2)
+		// }
+		// if (zip === '') {
+		// 	errorCode.push(3)
+		// }
+		// if (country === '') {
+		// 	errorCode.push(4)
+		// }
+		// if (selectedOrg === null) {
+		// 	errorCode.push(5)
+		// }
+		setErrorMessage(errorCode.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))
 
+		if (errorCode.length === 0) {
+			setError(false)
+			return true
+		}
+		else {
+			setError(true)
+			return false
+		}
+	}
 
-
+	const errorMessages = code => {
+		// const { t } = this.props
+		switch (code) {
+			case 0:
+				return t('orgs.validation.noName')
+			case 1:
+				return t('orgs.validation.noAddress')
+			case 2:
+				return t('orgs.validation.noCity')
+			case 3:
+				return t('orgs.validation.noZip')
+			case 4:
+				return t('orgs.validation.noCountry')
+			case 5:
+				return t('orgs.validation.noParent')
+			case 6:
+				return t('orgs.validation.notWebsite')
+			default:
+				return ''
+		}
+	}
 	const handleChange = (what) => e => {
 		setDeviceType({
 			...deviceType,
@@ -307,14 +364,20 @@ const CreateDeviceType = props => {
 	}
 
 	const handleCreate = async () => {
-		let rs = await createDeviceTypeFunc()
-		if (rs) {
-			s('snackbars.create.devicetype', { dt: deviceType.name })
-			dispatch(getDeviceTypes(true))
-			history.push(`/devicetype/${rs.uuid}`)
+		if (handleValidation()) {
+			// let rs = null
+			let rs = await createDeviceTypeFunc()
+			if (rs) {
+				s('snackbars.create.devicetype', { dt: deviceType.name })
+				dispatch(getDeviceTypes(true))
+				history.push(`/devicetype/${rs.uuid}`)
+			}
+			else
+				s('snackbars.createdFail')
 		}
-		else
-			s('snackbars.networkError')
+		else {
+			s('snackbars.createdFail')
+		}
 	}
 
 
@@ -322,6 +385,10 @@ const CreateDeviceType = props => {
 
 	return (
 		<CreateDeviceTypeForm
+
+			error={error}
+			errorMessage={errorMessage}
+
 			org={stateOrg}
 			decoder={decoder}
 			handleOrgChange={handleOrgChange}
