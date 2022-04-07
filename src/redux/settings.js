@@ -1,5 +1,5 @@
 import cookie from 'react-cookies'
-import { getLoginUser, setInternal, editUser } from 'variables/dataUsers'
+import { getLoginUser, setInternal } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { setDates } from './dateTime'
@@ -148,18 +148,18 @@ export const getNSettings = async (withData) => {
 			user.internal.senti = user.internal.senti || {}
 			let senti = user.internal ? user.internal.senti ? user.internal.senti : null : null
 
-			/**
-			 * TEMP FIX MUST REMOVE
-			 * @Andrei
-			 */
-			user.aux = user.aux || {}
-			user.aux.senti = user.aux.senti || {}
-			if (senti.extendedProfile && !user.aux.senti.extendedProfile) {
-				user.aux = user.aux || {}
-				user.aux.senti = user.aux.senti || {}
-				user.aux.senti.extendedProfile = user.internal.senti.extendedProfile
-				await editUser(user)
-			}
+			// /**
+			//  * TEMP FIX MUST REMOVE
+			//  * @Andrei
+			//  */
+			// user.aux = user.aux || {}
+			// user.aux.senti = user.aux.senti || {}
+			// if (senti.extendedProfile && !user.aux.senti.extendedProfile) {
+			// 	user.aux = user.aux || {}
+			// 	user.aux.senti = user.aux.senti || {}
+			// 	user.aux.senti.extendedProfile = user.internal.senti.extendedProfile
+			// 	await editUser(user)
+			// }
 
 			/**
 			 * Settings
