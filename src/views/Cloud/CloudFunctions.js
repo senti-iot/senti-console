@@ -25,7 +25,6 @@ const Functions = props => {
 	const classes = cloudfunctionsStyles()
 	const Auth = useAuth()
 	const hasAccess = Auth.hasAccess
-	const hasAccessList = Auth.hasAccessList
 
 	//Redux
 	const accessLevel = useSelector(s => s.auth.accessLevel.role)
@@ -69,14 +68,17 @@ const Functions = props => {
 			id: func.uuid,
 			name: func.name,
 			type: 'cloudfunction',
-			path: `/function/${func.uuid}`
+			path: `/function/${func.uuid}`,
+			orgName: func.org.name,
+			orgUUID: func.org.uuid
 		}
+		console.log('hasAccess', hasAccess(selected[0], 'cloudfunction.modify'))
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => removeFromFavorites(favObj) : () => addToFavorites(favObj) },
 			{ isDivider: true, dontShow: selected.length > 1 },
-			{ disabled: !hasAccess(selected[0], 'cloudfunction.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
-			{ disabled: !hasAccessList(selected, "cloudfunction.delete"), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
+			{ disabled: !hasAccess(null, 'cloudfunction.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },
+			{ disabled: !hasAccess(null, "cloudfunction.delete"), label: t('menus.delete'), func: handleOpenDeleteDialog, icon: Delete },
 		]
 		return allOptions
 	}

@@ -38,11 +38,11 @@ const CloudFunction = props => {
 
 	useEffect(() => {
 		if (saved === true) {
-			if (dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))) {
+			if (dispatch(isFav({ id: cloudfunction.uuid, type: 'cloudfunction' }))) {
 				s('snackbars.favorite.saved', { name: cloudfunction.name, type: t('favorites.types.cloudfunction') })
 				dispatch(finishedSaving())
 			}
-			if (!dispatch(isFav({ id: cloudfunction.id, type: 'cloudfunction' }))) {
+			if (!dispatch(isFav({ id: cloudfunction.uuid, type: 'cloudfunction' }))) {
 				s('snackbars.favorite.removed', { name: cloudfunction.name, type: t('favorites.types.cloudfunction') })
 				dispatch(finishedSaving())
 			}
@@ -92,10 +92,12 @@ const CloudFunction = props => {
 
 	const addToFavorites = () => {
 		let favObj = {
-			id: cloudfunction.id,
+			id: cloudfunction.uuid,
 			name: cloudfunction.name,
 			type: 'cloudfunction',
-			path: match.url
+			path: match.url,
+			orgName: cloudfunction.org.name,
+			orgUUID: cloudfunction.org.uuid
 		}
 		dispatch(addToFav(favObj))
 	}
@@ -126,7 +128,7 @@ const CloudFunction = props => {
 	}
 
 	const handleDeleteSensor = async () => {
-		if (dispatch(isFav(cloudfunction.id)))
+		if (dispatch(isFav(cloudfunction.uuid)))
 			removeFromFavorites()
 		await deleteCFunction(cloudfunction.id).then(() => {
 			handleCloseDeleteDialog()
@@ -161,7 +163,7 @@ const CloudFunction = props => {
 						<FunctionDetails
 							cloudfunction={cloudfunction}
 							handleOpenDeleteDialog={handleOpenDeleteDialog}
-							isFav={isFavorite(cloudfunction.id)}
+							isFav={isFavorite(cloudfunction.uuid)}
 							addToFav={addToFavorites}
 							removeFromFav={removeFromFavorites}
 							accessLevel={accessLevel}
