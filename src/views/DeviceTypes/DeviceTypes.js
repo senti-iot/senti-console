@@ -62,7 +62,9 @@ const DeviceTypes = props => {
 			id: devicetype.uuid,
 			name: devicetype.name,
 			type: 'devicetype',
-			path: `/devicetype/${devicetype.uuid}`
+			path: `/devicetype/${devicetype.uuid}`,
+			orgName: devicetype.org.name,
+			orgUUID: devicetype.org.uuid
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [

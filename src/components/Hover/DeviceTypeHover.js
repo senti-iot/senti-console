@@ -2,28 +2,15 @@ import React, { useEffect, Fragment } from 'react'
 import { Popper, Paper, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core';
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
-// import Gravatar from 'react-gravatar'
 import { Star, StarBorder, /* SignalWifi2Bar, */ Memory, Business, /* LibraryBooks, DataUsage, Business */ } from 'variables/icons'
-// import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
-// import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
 import { CircularLoader } from 'components';
 import { useLocalization, useSnackbar } from 'hooks';
 
-// const mapStateToProps = (state) => ({
-// 	saved: state.favorites.saved
-// })
-
-// const mapDispatchToProps = dispatch => ({
-// 	isFav: (favObj) => dispatch(isFav(favObj)),
-// 	addToFav: (favObj) => dispatch(addToFav(favObj)),
-// 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-// 	finishedSaving: () => dispatch(finishedSaving())
-// })
 
 const DeviceTypeHover = props => {
 	const classes = hoverStyles()
@@ -32,9 +19,10 @@ const DeviceTypeHover = props => {
 	const dispatch = useDispatch()
 	const saved = useSelector(state => state.favorites.saved)
 
+	const { anchorEl, devicetype } = props
+
 	useEffect(() => {
 		if (saved === true) {
-			const { devicetype } = props
 			if (devicetype) {
 
 				if (dispatch(isFav({ id: devicetype.uuid, type: 'devicetype' }))) {
@@ -47,30 +35,17 @@ const DeviceTypeHover = props => {
 				}
 			}
 		}
-	}, [dispatch, props, s, saved, t])
-	// componentDidUpdate = () => {
-	// 	if (this.props.saved === true) {
-	// 		const { devicetype } = this.props
-	// 		if (devicetype) {
+	}, [dispatch, devicetype, s, saved, t])
 
-	// 			if (this.props.isFav({ id: devicetype.uuid, type: 'devicetype' })) {
-	// 				this.props.s('snackbars.favorite.saved', { name: devicetype.name, type: this.props.t('favorites.types.devicetype') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 			if (!this.props.isFav({ id: devicetype.uuid, type: 'devicetype' })) {
-	// 				this.props.s('snackbars.favorite.removed', { name: devicetype.name, type: this.props.t('favorites.types.devicetype') })
-	// 				this.props.finishedSaving()
-	// 			}
-	// 		}
-	// 	}
-	// }
 	const addToFavorites = () => {
 		const { devicetype } = props
 		let favObj = {
 			id: devicetype.uuid,
 			name: devicetype.name,
 			type: 'devicetype',
-			path: `/devicetype/${devicetype.uuid}`
+			path: `/devicetype/${devicetype.uuid}`,
+			orgName: devicetype.org.name,
+			orgUUID: devicetype.org.uuid
 		}
 		dispatch(addToFav(favObj))
 	}
@@ -80,7 +55,9 @@ const DeviceTypeHover = props => {
 			id: devicetype.uuid,
 			name: devicetype.name,
 			type: 'devicetype',
-			path: `/devicetype/${devicetype.uuid}`
+			path: `/devicetype/${devicetype.uuid}`,
+			orgName: devicetype.org.name,
+			orgUUID: devicetype.org.uuid
 		}
 		dispatch(removeFromFav(favObj))
 
@@ -89,23 +66,7 @@ const DeviceTypeHover = props => {
 		props.handleClose()
 	};
 
-	// const renderIcon = (status) => {
-	// 	const { classes } = props
-	// 	switch (status) {
-	// 		case 1:
-	// 			return <SignalWifi2Bar className={classes.yellowSignal + ' ' + classes.smallIcon} />
-	// 		case 2:
-	// 			return <SignalWifi2Bar className={classes.greenSignal + ' ' + classes.smallIcon} />
-	// 		case 0:
-	// 			return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
-	// 		case null:
-	// 			return <SignalWifi2Bar className={classes.smallIcon} />
-	// 		default:
-	// 			break;
-	// 	}
-	// }
 
-	const { anchorEl, devicetype } = props
 	return (
 		<Popper
 			style={{ zIndex: 1040 }}

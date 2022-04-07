@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DataUsage, CloudUpload, /* StorageIcon */ } from 'variables/icons';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
-import { getDeviceTypeLS, getFunctions } from 'redux/data';
+import { getDeviceTypeLS, getDeviceTypes, getFunctions } from 'redux/data';
 import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
 // import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
 import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
@@ -41,11 +41,11 @@ const DeviceType = props => {
 	useEffect(() => {
 		const asyncFunc = async () => {
 			if (saved === true) {
-				if (dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
+				if (dispatch(isFav(({ id: deviceType.uuid, type: 'deviceType' })))) {
 					s('snackbars.favorite.saved', { name: deviceType.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav(({ id: deviceType.id, type: 'deviceType' })))) {
+				if (!dispatch(isFav(({ id: deviceType.uuid, type: 'deviceType' })))) {
 					s('snackbars.favorite.removed', { name: deviceType.name, type: t('favorites.types.devicetype') })
 					dispatch(finishedSaving())
 				}
@@ -91,23 +91,27 @@ const DeviceType = props => {
 	//handlers
 
 	//#region Favorites
-	const isFavorite = (id) => dispatch(isFav({ id: id, type: 'devicetype' }))
+	const isFavorite = (uuid) => dispatch(isFav({ id: uuid, type: 'devicetype' }))
 	const addToFavFunc = () => {
 		let favObj = {
-			id: deviceType.id,
+			id: deviceType.uuid,
 			name: deviceType.name,
 			type: 'devicetype',
-			path: match.url
+			path: match.url,
+			orgName: deviceType.org.name,
+			orgUUID: deviceType.org.uuid
 		}
 		dispatch(addToFav(favObj))
 	}
 
 	const removeFromFavFunc = () => {
 		let favObj = {
-			id: deviceType.id,
+			id: deviceType.uuid,
 			name: deviceType.name,
 			type: 'devicetype',
-			path: match.url
+			path: match.url,
+			orgName: deviceType.org.name,
+			orgUUID: deviceType.org.uuid
 		}
 		dispatch(removeFromFav(favObj))
 	}
@@ -127,9 +131,10 @@ const DeviceType = props => {
 		setOpenDelete(false)
 	}
 	const handleDeleteDT = async () => {
-		if (isFavorite(deviceType.id))
+		if (isFavorite(deviceType.uuid))
 			removeFromFavFunc()
-		await deleteDeviceType(deviceType.id).then(() => {
+		await deleteDeviceType(deviceType.uuid).then(async () => {
+			dispatch(await getDeviceTypes(true))
 			handleCloseDeleteDialog()
 			snackBarMessages(1)
 			history.push('/devicetypes/list')
@@ -161,7 +166,7 @@ const DeviceType = props => {
 					{renderDeleteDialog()}
 					<ItemGrid xs={12} noMargin id='details'>
 						<DeviceTypeDetails
-							isFav={isFavorite(deviceType.id)}
+							isFav={isFavorite(deviceType.uuid)}
 							addToFav={addToFavFunc}
 							removeFromFav={removeFromFavFunc}
 							handleOpenDeleteDialog={handleOpenDeleteDialog}
