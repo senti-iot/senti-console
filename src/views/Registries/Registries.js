@@ -74,16 +74,16 @@ const Registries = props => {
 			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
-			path: `/registry/${registry.uuid}`
+			path: `/registry/${registry.uuid}`,
+			orgName: registry.org.name,
+			orgUUID: registry.org.uuid,
 		}
 		let isFavorited = dispatch(isFav(favObj))
 		let allOptions = [
 			{
 				single: true, label: isFavorited ? t('menus.favorites.remove') : t('menus.favorites.add'),
 				icon: isFavorited ? Star : StarBorder,
-				func: isFavorited ? () => { removeFromFavorites(favObj); console.trace() } : () => {
-					console.trace(); addToFavorites(favObj)
-				}
+				func: isFavorited ? () => { removeFromFavorites(favObj) } : () => { addToFavorites(favObj) }
 			},
 			{ isDivider: true, dontShow: selected.length > 1 },
 			{ dontShow: !Auth.hasAccess(null, 'registry.modify'), label: t('menus.edit'), func: handleEdit, single: true, icon: Edit },

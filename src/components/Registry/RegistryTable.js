@@ -83,6 +83,7 @@ const RegistryTable = props => {
 		setRowHover(null)
 	}
 	const renderHover = () => {
+		console.log(rowHover, hoverRegistry)
 		return <RegistryHover anchorEl={rowHover} handleClose={unsetHover} registry={hoverRegistry} />
 	}
 	const renderProtocol = (id) => {

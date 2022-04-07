@@ -150,7 +150,7 @@ const FavoriteTable = props => {
 										<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
 										<TC label={n.name ? n.name : t('devices.noName')} />
 										<TC label={t(`favorites.types.${n.type}`)} />
-										{/* <TC label={n.orgName ? n.orgName : ''}/> */}
+										<TC label={n.orgName ? n.orgName : ''}/>
 									</Hidden>
 								</TableRow>
 							);

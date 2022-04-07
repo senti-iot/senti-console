@@ -44,7 +44,7 @@ const Favorites = props => {
 		{ id: 'type', label: '' },
 		{ id: 'name', label: t('favorites.fields.name') },
 		{ id: 'type', label: t('favorites.fields.type') },
-		// { id: 'org', label: t('favorites.fields.org') }
+		{ id: 'org', label: t('favorites.fields.org') }
 	]
 
 	const dTypes = [
