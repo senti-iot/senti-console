@@ -508,7 +508,8 @@
 	"favorites": {
 		"fields": {
 			"name": "Navn",
-			"type": "Type"
+			"type": "Type",
+			"org": "Organisation"
 		},
 		"pageTitle": "Favoritter",
 		"types": {

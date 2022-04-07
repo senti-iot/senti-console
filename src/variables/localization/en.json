@@ -508,7 +508,8 @@
     "favorites": {
         "fields": {
             "name": "Name",
-            "type": "Type"
+            "type": "Type",
+			"org": "Organisation"
         },
         "pageTitle": "Favorites",
         "types": {
