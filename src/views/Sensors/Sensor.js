@@ -118,8 +118,8 @@ const Sensor = props => {
 			name: sensor.name,
 			type: "sensor",
 			path: match.url,
-			// orgId: sensor.registry.org.uuid,
-			// orgName: sensor.registry.org.name,
+			orgName: sensor.org.name,
+			orgUUID: sensor.org.uuid
 		}
 		dispatch(addToFav(favObj))
 	}
@@ -128,7 +128,9 @@ const Sensor = props => {
 			id: sensor.uuid,
 			name: sensor.name,
 			type: "sensor",
-			path: match.url
+			path: match.url,
+			orgName: sensor.org.name,
+			orgUUID: sensor.org.uuid
 		}
 		dispatch(removeFromFav(favObj))
 	}

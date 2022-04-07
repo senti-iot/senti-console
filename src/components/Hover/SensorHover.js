@@ -28,11 +28,11 @@ const SensorHover = props => {
 		if (saved === true) {
 			if (device) {
 
-				if (dispatch(isFav({ id: device.id, type: 'sensor' }))) {
+				if (dispatch(isFav({ id: device.uuid, type: 'sensor' }))) {
 					s('snackbars.favorite.saved', { name: device.name, type: t('favorites.types.sensor') })
 					dispatch(finishedSaving())
 				}
-				if (!dispatch(isFav({ id: device.id, type: 'sensor' }))) {
+				if (!dispatch(isFav({ id: device.uuid, type: 'sensor' }))) {
 					s('snackbars.favorite.removed', { name: device.name, type: t('favorites.types.sensor') })
 					dispatch(finishedSaving())
 				}
@@ -57,24 +57,28 @@ const SensorHover = props => {
 	// }
 	const addToFavorites = () => {
 		let favObj = {
-			id: device.id,
+			id: device.uuid,
 			name: device.name,
 			type: 'sensor',
-			path: `/sensor/${device.id}`
+			path: `/sensor/${device.uuid}`,
+			orgName: device.org.name,
+			orgUUID: device.org.uuid
 		}
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
 		let favObj = {
-			id: device.id,
+			id: device.uuid,
 			name: device.name,
 			type: 'sensor',
-			path: `/sensor/${device.id}`
+			path: `/sensor/${device.uuid}`,
+			orgName: device.org.name,
+			orgUUID: device.org.uuid
 		}
 		dispatch(removeFromFav(favObj))
 	}
 	const isFavorite = () => {
-		return dispatch(isFav({ id: device.id, type: 'sensor' }))
+		return dispatch(isFav({ id: device.uuid, type: 'sensor' }))
 	}
 	const handleClose = () => {
 		props.handleClose()
