@@ -66,11 +66,14 @@ const Sensors = props => {
 	const options = () => {
 
 		let device = devices[devices.findIndex(d => d.uuid === selected[0])]
+		// console.log(device)
 		let favObj = {
 			id: device.uuid,
 			name: device.name,
 			type: 'sensor',
-			path: `/sensor/${device.uuid}`
+			path: `/sensor/${device.uuid}`,
+			// orgId: device.registry.org.uuid,
+			// orgName: device.registry.org.name,
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [

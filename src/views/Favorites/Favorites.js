@@ -10,7 +10,7 @@ import { Paper, Fade } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
 import { handleRequestSort } from 'variables/functions'
 import { finishedSaving, removeFromFav, /* addToFav, */ /* isFav */ } from 'redux/favorites'
-import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons'
+import { /* LibraryBooks, */ DeviceHub, Person, Business, /* DataUsage */ } from 'variables/icons'
 import { customFilterItems } from 'variables/Filters'
 import { useSnackbar, useLocalization, useMatch } from 'hooks'
 
@@ -43,12 +43,13 @@ const Favorites = props => {
 	const favoritesHeaders = [
 		{ id: 'type', label: '' },
 		{ id: 'name', label: t('favorites.fields.name') },
-		{ id: 'type', label: t('favorites.fields.type') }
+		{ id: 'type', label: t('favorites.fields.type') },
+		// { id: 'org', label: t('favorites.fields.org') }
 	]
 
 	const dTypes = [
-		{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks /> },
-		{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage /> },
+		// { value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks /> },
+		// { value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage /> },
 		{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub /> },
 		{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
 		{ value: 'org', label: t('favorites.types.org'), icon: <Business /> }
