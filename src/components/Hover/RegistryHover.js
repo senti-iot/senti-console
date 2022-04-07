@@ -28,46 +28,47 @@ const RegistryHover = props => {
 	const { anchorEl, registry } = props
 
 	//useCallbacks
-	const isFavorite = useCallback(id => dispatch(isFav({ id: id, type: 'registry' })), [dispatch])
+	const isFavorite = useCallback(uuid => dispatch(isFav({ id: uuid, type: 'registry' })), [dispatch])
 
 	//useEffects
 
 	useEffect(() => {
 		if (saved === true) {
-			const { registry } = props
 			if (registry) {
 
-				if (isFavorite(registry.id)) {
+				if (isFavorite(registry.uuid)) {
 					s('snackbars.favorite.saved', { name: registry.name, type: t('favorites.types.registry') })
 					dispatch(finishedSaving())
 				}
-				if (!isFavorite(registry.id)) {
+				if (!isFavorite(registry.uuid)) {
 					s('snackbars.favorite.removed', { name: registry.name, type: t('favorites.types.registry') })
 					dispatch(finishedSaving())
 				}
 			}
 		}
-	}, [dispatch, props, s, saved, t, isFavorite])
+	}, [dispatch, registry, s, saved, t, isFavorite])
 
 	//Handlers
 
 	const addToFavorites = () => {
 		const { registry } = props
 		let favObj = {
-			id: registry.id,
+			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
-			path: `/registry/${registry.id}`
+			path: `/registry/${registry.uuid}`,
+			orgName: registry.org.name,
+			orgUUID: registry.org.uuid,
 		}
 		dispatch(addToFav(favObj))
 	}
 	const removeFromFavorites = () => {
 		const { registry } = props
 		let favObj = {
-			id: registry.id,
+			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
-			path: `/registry/${registry.id}`
+			path: `/registry/${registry.uuid}`
 		}
 		dispatch(removeFromFav(favObj))
 
@@ -118,14 +119,14 @@ const RegistryHover = props => {
 								<Divider />
 								<ItemG container style={{ marginTop: '8px' }}>
 									<ItemG>
-										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.id}/edit`, prevURL: '/registries' }}>
+										<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.uuid}/edit`, prevURL: '/registries' }}>
 											{t('menus.edit')}
 										</Button>
 									</ItemG>
 									<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-										<Tooltip placement="top" title={isFavorite(registry.id) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-											<IconButton className={classes.smallAction} onClick={isFavorite(registry.id) ? removeFromFavorites : addToFavorites}>
-												{isFavorite(registry.id) ? <Star /> : <StarBorder />}
+										<Tooltip placement="top" title={isFavorite(registry.uuid) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+											<IconButton className={classes.smallAction} onClick={isFavorite(registry.uuid) ? removeFromFavorites : addToFavorites}>
+												{isFavorite(registry.uuid) ? <Star /> : <StarBorder />}
 											</IconButton>
 										</Tooltip>
 									</ItemG>

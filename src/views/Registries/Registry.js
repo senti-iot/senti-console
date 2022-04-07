@@ -106,7 +106,9 @@ const Registry = props => {
 			id: registry.uuid,
 			name: registry.name,
 			type: 'registry',
-			path: match.url
+			path: match.url,
+			orgName: registry.org.name,
+			orgUUID: registry.org.uuid,
 		}
 		dispatch(addToFav(favObj))
 	}
