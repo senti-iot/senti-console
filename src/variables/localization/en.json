@@ -508,6 +508,7 @@
     "favorites": {
         "fields": {
             "name": "Name",
+			"description": "Description",
             "type": "Type",
 			"org": "Organisation"
         },

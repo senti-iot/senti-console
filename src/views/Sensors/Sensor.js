@@ -116,6 +116,7 @@ const Sensor = props => {
 		let favObj = {
 			id: sensor.uuid,
 			name: sensor.name,
+			description: sensor.description,
 			type: "sensor",
 			path: match.url,
 			orgName: sensor.org.name,

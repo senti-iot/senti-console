@@ -508,6 +508,7 @@
 	"favorites": {
 		"fields": {
 			"name": "Navn",
+			"description":	"Beskrivelse",
 			"type": "Type",
 			"org": "Organisation"
 		},

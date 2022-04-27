@@ -73,7 +73,8 @@ const Sensors = props => {
 			type: 'sensor',
 			path: `/sensor/${device.uuid}`,
 			orgName: device.org.name,
-			orgUUID: device.org.uuid
+			orgUUID: device.org.uuid,
+			description: device.description
 		}
 		let isFavorite = dispatch(isFav(favObj))
 		let allOptions = [

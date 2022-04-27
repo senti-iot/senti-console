@@ -61,6 +61,7 @@ const DeviceTypes = props => {
 		let favObj = {
 			id: devicetype.uuid,
 			name: devicetype.name,
+			description: devicetype.description,
 			type: 'devicetype',
 			path: `/devicetype/${devicetype.uuid}`,
 			orgName: devicetype.org.name,

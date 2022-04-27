@@ -149,6 +149,7 @@ const FavoriteTable = props => {
 										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 										<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
 										<TC label={n.name ? n.name : t('devices.noName')} />
+										<TC label={n.description ? n.description : '-'} />
 										<TC label={t(`favorites.types.${n.type}`)} />
 										<TC label={n.orgName ? n.orgName : ''}/>
 									</Hidden>

@@ -73,6 +73,7 @@ const Registries = props => {
 		let favObj = {
 			id: registry.uuid,
 			name: registry.name,
+			description: registry.description,
 			type: 'registry',
 			path: `/registry/${registry.uuid}`,
 			orgName: registry.org.name,
