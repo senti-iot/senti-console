@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab, makeStyles, Toolbar as ToolBar, Tooltip, /*  Grow */ } from '@material-ui/core'
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
-import { NavHashLink } from 'react-router-hash-link'
+// import { NavHashLink } from 'react-router-hash-link'
 import { useSelector } from 'react-redux'
 import { transition } from 'assets/jss/material-dashboard-react'
 import cx from 'classnames'
 import { useWidth } from 'hooks'
+import { Link as NavLink } from 'react-router-dom'
 // import inView from 'in-view'
 
-const Link = React.forwardRef((props, ref) => <NavHashLink {...props} innerRef={ref} />)
+const Link = React.forwardRef((props, ref) => <NavLink {...props} innerRef={ref} />)
 
 const styles = makeStyles(theme => ({
 	appBarDrawerOpen: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GridContainer, ItemGrid, CircularLoader, Warning, Danger, TextF, ItemG } from 'components'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Collapse } from '@material-ui/core'
-import { getOrgUsers } from 'variables/dataOrgs'
+import { getOrgUsers, getSubOrgs } from 'variables/dataOrgs'
 import { getOrgRegistries } from 'variables/dataRegistry'
 import OrgDetails from './OrgCards/OrgDetails'
 import { useSelector, useDispatch } from 'react-redux'
@@ -12,7 +12,7 @@ import OrgRegistries from 'views/Orgs/OrgCards/OrgRegistries'
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 // import { getAllDevices } from 'variables/dataDevices'
 // import Toolbar from 'components/Toolbar/Toolbar';
-import { Business, People } from 'variables/icons'
+import { Business, InputIcon, People } from 'variables/icons'
 // import { getAllProjects } from 'variables/dataProjects'
 // import { getAllCollections } from 'variables/dataCollections'
 // import OrgProjects from './OrgCards/OrgProjects'
@@ -23,6 +23,8 @@ import { getOrgLS } from 'redux/data'
 import { useLocalization, useSnackbar, useMatch, useLocation, useHistory } from 'hooks'
 import { red } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/styles'
+import OrgSubOrgs from 'views/Orgs/OrgCards/OrgSubOrgs'
+import { AccountTree } from '@material-ui/icons'
 
 const styles = makeStyles(theme => ({
 	closeButton: {
@@ -53,10 +55,12 @@ const Org = props => {
 	// const [projects, setProjects] = useState([]) // added
 	// const [collections, setCollections] = useState([]) // added
 	const [users, setUsers] = useState([])
+	const [subOrgs, setSubOrgs] = useState([]) // added
 	const [registries, setRegistries] = useState([])
 	// const [devices, setDevices] = useState([]) // added
 	const [loadingUsers, setLoadingUsers] = useState(true)
 	const [loadingRegistries, setLoadingRegistries] = useState(true)
+	const [loadingSuborgs, setLoadingSubOrgs] = useState(true)
 	// const [loadingDevices, setLoadingDevices] = useState(true) // added
 	const [openDelete, setOpenDelete] = useState(false)
 	// const [loadingCollections, setLoadingCollections] = useState(true) // added
@@ -88,6 +92,10 @@ const Org = props => {
 			setRegistries(rs)
 			setLoadingRegistries(false)
 		})
+		await getSubOrgs(match.params.id).then(rs => {
+			setSubOrgs(rs)
+			setLoadingSubOrgs(false)
+		})
 	}, [dispatch, match.params.id, org])
 
 	//useEffects
@@ -115,7 +123,9 @@ const Org = props => {
 		if (org) {
 			const tabs = [
 				{ id: 0, title: t('tabs.details'), label: <Business />, url: `#details` },
-				{ id: 1, title: t('tabs.users'), label: <People />, url: `#users` },
+				{ id: 1, title: t('sidebar.orgs'), label: <AccountTree />, url: `#suborgs` },
+				{ id: 2, title: t('tabs.users'), label: <People />, url: `#users` },
+				{ id: 3, title: t('sidebar.registries'), label: <InputIcon />, url: '#registries' },
 				// { id: 2, title: t('tabs.projects'), label: <LibraryBooks />, url: `#projects` },
 				// { id: 3, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
 				// { id: 4, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
@@ -259,7 +269,7 @@ const Org = props => {
 				break
 		}
 	}
-
+	console.log(org)
 	return (
 		loading ? <CircularLoader /> : <Fade in={true}>
 			<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -278,6 +288,14 @@ const Org = props => {
 					// devices={devices ? devices.length : 0}
 					/>
 				</ItemGrid>
+				<ItemGrid xs={12} noMargin id={'suborgs'}>
+					{!loadingSuborgs ? <OrgSubOrgs
+						t={t}
+						org={org}
+						subOrgs={subOrgs ? subOrgs : []}
+						history={history}
+					/> :
+						<CircularLoader fill />}				</ItemGrid>
 				<ItemGrid xs={12} noMargin id={'users'}>
 					{!loadingUsers ? <OrgUsers
 						t={t}

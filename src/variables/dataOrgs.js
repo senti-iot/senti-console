@@ -25,7 +25,14 @@ export const getOrg = async (orgId) => {
 	return data
 }
 
-
+/**
+ * Get suborgs
+ */
+export const getSubOrgs = async (orgId) => {
+	let data = await coreServicesAPI.get(`/entity/organisation/${orgId}/suborgs`).then(rs => rs.ok ? rs.data : rs.ok)
+	console.log(data)
+	return data
+}
 /**
  * @function getOrgUsers Get Organization's users
  * @param {UUID} orgUuid Organization ID
