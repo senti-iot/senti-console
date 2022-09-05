@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Dialog, Button, DialogTitle, DialogContent, DialogActions, IconButton } from '@material-ui/core'
 import { ItemG, T } from 'components'
 import { CSVLink } from 'react-csv'
@@ -12,6 +12,17 @@ import { Close } from 'variables/icons'
 
 const ExportModal = props => {
 	const t = useLocalization()
+	const [dataConverted, setDataConverted] = useState(null);
+
+	useEffect(() => {
+		let newData = [];
+		props.data.datasets[0].data.forEach(d => {
+			newData.push({ x: moment(d.x).local().format('YYYY-MM-DD HH:mm:ss'), y: d.y })
+		})
+		setDataConverted(newData)
+	}, [props.data]);
+
+
 	// let newHeaders = [
 	// 	{ label: 'Data Collection ID', key: 'id' },
 	// 	{ label: 'Data Collection Name', key: 'dcName' },
@@ -29,7 +40,7 @@ const ExportModal = props => {
 		{ label: 'Date', key: 'y' },
 	]
 	const exportToJson = () => {
-		var data = props.data.datasets[0].data.map(o => ({
+		var data = dataConverted.map(o => ({
 			[props.dataField]: o.y, date: o.x
 		}))
 
@@ -47,7 +58,7 @@ const ExportModal = props => {
 	// 	}
 	// 	zipcelx(config)
 	// }
-	const { open, handleClose, data, dataField } = props
+	const { open, handleClose, dataField } = props
 	return (
 		<Dialog
 			open={open}
@@ -71,12 +82,12 @@ const ExportModal = props => {
 
 				<T style={{ padding: 8 }}>{t('dialogs.export.message')}</T>
 
-				{data ?
+				{dataConverted ?
 					<Fragment>
 						<ItemG container spacing={2} justify={'center'} >
 							<ItemG>
 								<Button filename={`senti.cloud-data-${props.dataField}-${moment().format('DD-MM-YYYY')}.csv`}
-									data={data.datasets[0].data}
+									data={dataConverted}
 									headers={CSVHeaders}
 									component={CSVLink}
 									color={'primary'}
