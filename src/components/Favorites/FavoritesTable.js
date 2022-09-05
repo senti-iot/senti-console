@@ -20,6 +20,7 @@ const FavoriteTable = props => {
 
 	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
+	const devices = useSelector(s => s.data.sensors)
 
 	//State
 	const [page, setPage] = useState(0)
@@ -116,6 +117,19 @@ const FavoriteTable = props => {
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							let name = n.name ? n.name : t('devices.noName')
+							let description = n.description
+							let orgName = n.orgName
+							if (n.type === 'sensor') {						
+								const device = devices.find(d => d.uuid === n.id)
+
+								if (device !== undefined) {
+									name = device.name
+									description = device.description
+									orgName = device.org?.name
+								}
+							}
+
 							const isSelected = isSelectedFunc(n.id);
 							return (
 								<TableRow
@@ -148,10 +162,10 @@ const FavoriteTable = props => {
 									<Hidden mdDown>
 										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 										<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
-										<TC label={n.name ? n.name : t('devices.noName')} />
-										<TC label={n.description ? n.description : '-'} />
+										<TC label={name} />
+										<TC label={description} />
 										<TC label={t(`favorites.types.${n.type}`)} />
-										<TC label={n.orgName ? n.orgName : ''}/>
+										<TC label={orgName}/>
 									</Hidden>
 								</TableRow>
 							);
