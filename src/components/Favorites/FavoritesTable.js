@@ -11,6 +11,7 @@ import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
 import { LibraryBooks, DeviceHub, Person, Business, DataUsage, Memory, InputIcon, CloudDownload } from 'variables/icons';
 import { useLocalization } from 'hooks';
+import { CircularLoader } from 'components';
 
 
 const FavoriteTable = props => {
@@ -21,6 +22,7 @@ const FavoriteTable = props => {
 	//Redux
 	const rowsPerPage = useSelector(state => state.appState.trp ? state.appState.trp : state.settings.trp)
 	const devices = useSelector(s => s.data.sensors)
+	const loading = useSelector(s => !s.data.gotsensors)
 
 	//State
 	const [page, setPage] = useState(0)
@@ -90,100 +92,103 @@ const FavoriteTable = props => {
 
 	return (
 		<Fragment>
-			<div className={classes.tableWrapper}>
-				<Table className={classes.table} aria-labelledby='tableTitle'>
-					<FavoriteTableHead
-						numSelected={selected.length}
-						order={order}
-						orderBy={orderBy}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={data ? data.length : 0}
-						columnData={props.tableHead}
-						classes={classes}
-						customColumn={[
-							{
-								id: 'type',
-								label: <div style={{ width: 40 }} />
-							},
-							{
-								id: 'id',
-								label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-									{t("sidebar.favorites")}
-								</Typography>
-							}
+			{!loading ?
+				<>
+					<div className={classes.tableWrapper}>
+						<Table className={classes.table} aria-labelledby='tableTitle'>
+							<FavoriteTableHead
+								numSelected={selected.length}
+								order={order}
+								orderBy={orderBy}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={data ? data.length : 0}
+								columnData={props.tableHead}
+								classes={classes}
+								customColumn={[
+									{
+										id: 'type',
+										label: <div style={{ width: 40 }} />
+									},
+									{
+										id: 'id',
+										label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+											{t("sidebar.favorites")}
+										</Typography>
+									}
 
-						]}
+								]}
+							/>
+							<TableBody>
+								{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+									let name = n.name ? n.name : t('devices.noName')
+									let description = n.description
+									let orgName = n.orgName
+									if (n.type === 'sensor') {						
+										const device = devices.find(d => d.uuid === n.id)
+
+										if (device !== undefined) {
+											name = device.name
+											description = device.description
+											orgName = device.org?.name
+										}
+									}
+
+									const isSelected = isSelectedFunc(n.id);
+									return (
+										<TableRow
+											hover
+											onClick={handleClick(n.path)}
+											role='checkbox'
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={n.id}
+											selected={isSelected}
+											style={{ cursor: 'pointer' }}
+										>
+											<Hidden lgUp>
+												<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+												<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
+												<TC content={
+													<ItemG container alignItems={'center'}>
+														<ItemG xs={12}>
+															<Info noWrap paragraphCell={classes.noMargin}>
+																{n.name}
+															</Info>
+														</ItemG>
+														<ItemG xs={12}>
+															<Caption noWrap className={classes.noMargin}>
+																{`${t(`favorites.types.${n.type}`)}`}
+															</Caption>
+														</ItemG>
+													</ItemG>} />
+											</Hidden>
+											<Hidden mdDown>
+												<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+												<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
+												<TC label={name} />
+												<TC label={description} />
+												<TC label={t(`favorites.types.${n.type}`)} />
+												<TC label={orgName}/>
+											</Hidden>
+										</TableRow>
+									);
+								}) : null}
+								{emptyRows > 0 && (
+									<TableRow style={{ height: 49/*  * emptyRows */ }}>
+										<TableCell colSpan={8} />
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+					</div>
+					<TP
+						count={data ? data.length : 0}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						handleChangePage={handleChangePage}
 					/>
-					<TableBody>
-						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-							let name = n.name ? n.name : t('devices.noName')
-							let description = n.description
-							let orgName = n.orgName
-							if (n.type === 'sensor') {						
-								const device = devices.find(d => d.uuid === n.id)
-
-								if (device !== undefined) {
-									name = device.name
-									description = device.description
-									orgName = device.org?.name
-								}
-							}
-
-							const isSelected = isSelectedFunc(n.id);
-							return (
-								<TableRow
-									hover
-									onClick={handleClick(n.path)}
-									role='checkbox'
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-									style={{ cursor: 'pointer' }}
-								>
-									<Hidden lgUp>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-										<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
-										<TC content={
-											<ItemG container alignItems={'center'}>
-												<ItemG xs={12}>
-													<Info noWrap paragraphCell={classes.noMargin}>
-														{n.name}
-													</Info>
-												</ItemG>
-												<ItemG xs={12}>
-													<Caption noWrap className={classes.noMargin}>
-														{`${t(`favorites.types.${n.type}`)}`}
-													</Caption>
-												</ItemG>
-											</ItemG>} />
-									</Hidden>
-									<Hidden mdDown>
-										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-										<TC checkbox content={<ItemG container>{renderIcon(n.type)}</ItemG>} />
-										<TC label={name} />
-										<TC label={description} />
-										<TC label={t(`favorites.types.${n.type}`)} />
-										<TC label={orgName}/>
-									</Hidden>
-								</TableRow>
-							);
-						}) : null}
-						{emptyRows > 0 && (
-							<TableRow style={{ height: 49/*  * emptyRows */ }}>
-								<TableCell colSpan={8} />
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
-			</div>
-			<TP
-				count={data ? data.length : 0}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				handleChangePage={handleChangePage}
-			/>
+				</> : <CircularLoader />}
 		</Fragment>
 	);
 }

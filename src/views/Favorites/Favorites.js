@@ -9,6 +9,7 @@ import { GridContainer } from 'components'
 import { Paper, Fade } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
 import { handleRequestSort } from 'variables/functions'
+import { getSensors } from 'redux/data';
 import { finishedSaving, removeFromFav, /* addToFav, */ /* isFav */ } from 'redux/favorites'
 import { /* LibraryBooks, */ DeviceHub, Person, Business, /* DataUsage */ } from 'variables/icons'
 import { customFilterItems } from 'variables/Filters'
@@ -98,6 +99,14 @@ const Favorites = props => {
 
 	}, [setBC, setHeader, setTabs, t])
 	//Handlers
+
+	useEffect(() => {
+		async function fetchSensors() {
+			await dispatch(getSensors(true))
+		}
+
+		fetchSensors()
+	}, [dispatch]);
 
 	const addFilter = (f) => {
 		let cFilters = stateFilters.custom
