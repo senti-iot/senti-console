@@ -503,7 +503,7 @@ const CreateSensorForm = props => {
 							<ItemGrid xs={12}>
 								<DSelect
 									label={t('devices.fields.locType')}
-									value={sensor.locType}
+									value={parseInt(sensor.locType)}
 									onChange={handleChange('locType')}
 									menuItems={LocationTypes}
 									margin={'normal'}
