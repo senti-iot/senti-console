@@ -46,6 +46,21 @@ const ConfirmUser = (props) => {
 		//eslint-disable-next-line
 	}, [])
 
+	const errorMessages = useCallback(code => {
+		switch (code) {
+			case 0:
+				return t('confirmUser.validation.passwordEmpty')
+			case 1:
+				return t('confirmUser.validation.passwordUnder8')
+			case 2:
+				return t('confirmUser.validation.passwordMismatch')
+			case 404:
+				return t('confirmUser.validation.userDoesntExistAnymore')
+			default:
+				return ''
+		}
+	}, [t])
+
 	const handleValidation = useCallback(() => {
 		let errorCode = []
 		if (password === '' && confirmPassword === '') {
@@ -62,26 +77,10 @@ const ConfirmUser = (props) => {
 		}
 		else {
 			setError(true)
-			setErrorMessage(error.code.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))
+			setErrorMessage(errorCode.map(c => <Danger key={c}>{errorMessages(c)}</Danger>))
 			return false
 		}
-	}, [confirmPassword, error.code, password])
-
-	const errorMessages = code => {
-		const { t } = this.props
-		switch (code) {
-			case 0:
-				return t('confirmUser.validation.passwordEmpty')
-			case 1:
-				return t('confirmUser.validation.passwordUnder8')
-			case 2:
-				return t('confirmUser.validation.passwordMismatch')
-			case 404:
-				return t('confirmUser.validation.userDoesntExistAnymore')
-			default:
-				return ''
-		}
-	}
+	}, [confirmPassword, errorMessages, password])
 
 	const confirmUser = useCallback(async () => {
 		if (handleValidation()) {
@@ -93,7 +92,7 @@ const ConfirmUser = (props) => {
 				setErrorMessage([<Danger >{errorMessages(session)}</Danger>])
 			}
 		}
-	}, [handleValidation, history, params.token, password])
+	}, [errorMessages, handleValidation, history, params.token, password])
 	const handleKeyPress = useCallback((event) => {
 		if (event.key === 'Enter') {
 			confirmUser()
