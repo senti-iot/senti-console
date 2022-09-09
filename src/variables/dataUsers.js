@@ -3,10 +3,10 @@ import { del } from './storage'
 
 //#region GET USERS Senti
 
-// export const resendConfirmEmail = async (user) => {
-// 	let data = await api.post('core/user/resendconfirmmail', user).then(rs => rs.data)
-// 	return data
-// }
+export const resendConfirmEmail = async (uuid) => {
+	let status = await coreServicesAPI.post('entity/user/' + uuid + '/resendconfirmmail', { uuid: uuid }).then(rs => rs.status)
+	return status
+}
 
 //#region Senti Core API
 export const createUser = async (user) => {

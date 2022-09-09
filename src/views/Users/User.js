@@ -11,7 +11,7 @@ import {
 	Button,
 	Fade
 } from '@material-ui/core'
-import { deleteUser, /*  resendConfirmEmail, confirmUser */ } from 'variables/dataUsers'
+import { deleteUser, resendConfirmEmail /*confirmUser */ } from 'variables/dataUsers'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPassword } from 'variables/dataLogin'
 import userStyles from 'assets/jss/components/users/userStyles'
@@ -145,11 +145,9 @@ const User = props => {
 		dispatch(removeFromFav(favObj))
 	}
 
-	const resendConfirmEmail = async () => {
-		let userId = {
-			id: user.uuid
-		}
-		await resendConfirmEmail(userId).then(rs => rs)
+	const _resendConfirmEmail = async () => {
+		await resendConfirmEmail(user.uuid)
+
 		handleCloseResend()
 	}
 	const handleOpenResend = () => setOpenResend(true)
@@ -336,7 +334,7 @@ const User = props => {
 				<Button onClick={handleCloseResend} color='primary'>
 					{t('actions.cancel')}
 				</Button>
-				<Button onClick={resendConfirmEmail} color='primary' autoFocus>
+				<Button onClick={_resendConfirmEmail} color='primary' autoFocus>
 					{t('actions.yes')}
 				</Button>
 			</DialogActions>

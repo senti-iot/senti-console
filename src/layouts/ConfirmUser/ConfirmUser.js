@@ -85,11 +85,11 @@ const ConfirmUser = (props) => {
 	const confirmUser = useCallback(async () => {
 		if (handleValidation()) {
 			let session = await confirmSUser({ newPassword: password, token: params.token })
-			if (session !== 404 && session)
+			if (session !== 404 && session) {
 				history.push('/login')
-			else {
+			} else {
 				setError(true)
-				setErrorMessage([<Danger >{errorMessages(session)}</Danger>])
+				setErrorMessage([<Danger key={404}>{errorMessages(404)}</Danger>])
 			}
 		}
 	}, [errorMessages, handleValidation, history, params.token, password])

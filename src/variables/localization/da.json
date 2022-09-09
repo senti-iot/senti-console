@@ -202,7 +202,7 @@
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
 		"validation": {
-			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!",
+			"emailDoesntExist": "Den indtastede e-mail er ikke tilknyttet en eksisterende konto!",
 			"passwordEmpty": "Kodeord må ikke være blankt!",
 			"passwordMismatch": "De indtastede kodeord er ikke ens!",
 			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
@@ -469,8 +469,8 @@
 		},
 		"login": {
 			"passwordReseted": "Din adgangskode er blevet ændret!",
-			"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
-			"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
+			"resetPassRequestMessage": "En e-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
+			"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din e-mail adresse"
 		},
 		"tokens": {
 			"createToken": {
@@ -583,7 +583,7 @@
 	},
 	"links": {
 		"googleMaps": "Vis på Google Maps",
-		"mailTo": "Send E-mail til",
+		"mailTo": "Send e-mail til",
 		"phoneTo": "Ring til"
 	},
 	"login": {
@@ -650,7 +650,7 @@
 			"resetToDefault": "Nulstil til standard",
 			"showHidePeriods": "Vis / Skjul periode"
 		},
-		"copyEmails": "Kopier E-mail adresser",
+		"copyEmails": "Kopier e-mail adresser",
 		"create": {
 			"cloudfunction": "Opret cloud funktion",
 			"collection": "Opret datasamling",
@@ -709,7 +709,7 @@
 			"profile": "Min profil",
 			"signout": "Log ud"
 		},
-		"userResendEmail": "Send bekræftelses E-mail igen"
+		"userResendEmail": "Send bekræftelses e-mail igen"
 	},
 	"messages": {
 		"fields": {
@@ -789,7 +789,7 @@
 		"b4": "Dataportabilitet",
 		"b5": "Vores rolle som databehandler",
 		"b6": "Ændring af vores persondatapolitik",
-		"contactEmail": "Kontakt E-mail: ",
+		"contactEmail": "Kontakt e-mail: ",
 		"note": "NB: ",
 		"p0": "Vi indsamler personoplysninger om dig og dine ansatte for at kunne opfylde vores aftale med dig.",
 		"p1": "Du kan ikke anvende Senti, såfremt du ikke giver os de minimale oplysninger, vi beder om.",
@@ -846,7 +846,7 @@
 			"assignDevices": "Tilknyt enheder",
 			"created": "Oprettet",
 			"description": "Beskrivelse",
-			"email": "Kontakt E-mail",
+			"email": "Kontakt e-mail",
 			"endDate": "Slutdato",
 			"firstName": "Kontakt Navn",
 			"lastName": "Kontakt Navn",
@@ -1277,7 +1277,7 @@
 			"phone": "Telefon",
 			"position": "Stilling",
 			"profileImage": "Profilbillede",
-			"recoveryEmail": "Gendannelses E-mail",
+			"recoveryEmail": "Gendannelses e-mail",
 			"tags": "Tags",
 			"twitterURL": "Twitter",
 			"userName": "Brugernavn"
@@ -1300,8 +1300,8 @@
 			"users": "Brugere"
 		},
 		"user": "Bruger",
-		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail",
-		"userResendEmail": "Gensend bekræftelses E-mail",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses e-mail",
+		"userResendEmail": "Gensend bekræftelses e-mail",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
