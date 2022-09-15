@@ -255,8 +255,8 @@ export const filterItems = (data, filters) => {
 	if (arr) {
 		if (arr[0] === undefined)
 			return []
-		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
+			var keys = Object.keys(c)
 			var contains = keys.map(key => {
 				if (c)
 					return keyTester(c[key], keyword ? keyword : '')
