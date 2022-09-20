@@ -475,7 +475,7 @@
 		"tokens": {
 			"createToken": {
 				"closeConfirm": "Indsæt tokenet i det tomme felt som bekræftelse!",
-				"closeWarning": "NÅR DU LUKKER DETTE VINDU, DER VIL IKKE være i stand til at se token igen!",
+				"closeWarning": "Når du lukker dette vindue, vil du ikke være i stand til at se token igen!",
 				"title": "Bekræft at du har gemt tokenet."
 			}
 		},
