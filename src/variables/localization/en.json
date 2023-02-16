@@ -264,7 +264,8 @@
             "percDifference": "Percentage Difference:",
             "refresh": "Refresh time",
             "refreshDefault": "Refresh default state",
-            "unit": "Measuring Unit"
+            "unit": "Measuring Unit",
+            "conversionFactor": "Conversion factor"
         },
         "pageTitle": "Senti",
         "subtitle": "Senti lets you control and manage all your Senti-in-a-Box Devices."

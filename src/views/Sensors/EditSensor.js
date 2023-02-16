@@ -328,6 +328,12 @@ const EditSensor = props => {
 		mtd[i].originalKey = e.target.value
 		setSensorSyntheticKeys(mtd)
 	}
+	const handleChangeSyntheticKeyConversionFactor = (v, i) => e => {
+		e.preventDefault()
+		let mtd = [...sensorSyntheticKeys]
+		mtd[i].conversionFactor = e.target.value
+		setSensorSyntheticKeys(mtd)
+	}
 	//#endregion
 
 	//#region Function selector
@@ -455,6 +461,7 @@ const EditSensor = props => {
 			handleChangeSyntheticKey={handleChangeSyntheticKey}
 			handleChangeSyntheticKeyType={handleChangeSyntheticKeyType}
 			handleChangeSyntheticKeyOrigin={handleChangeSyntheticKeyOrigin}
+			handleChangeSyntheticKeyConversionFactor={handleChangeSyntheticKeyConversionFactor}
 
 			handleOpenFunc={handleOpenFunc}
 			handleCloseFunc={handleCloseFunc}

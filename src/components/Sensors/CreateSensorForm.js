@@ -62,7 +62,7 @@ const CreateSensorForm = props => {
 		handleOpenDT, handleCloseDT, openDT, handleChangeDT,
 		handleRemoveMtdKey, handleAddMetadataKey, handleChangeMetadata, handleChangeMetadataKey,
 		handleChange, sensor, getLatLngFromMap,
-		handleCreate, goToSensors, select, } = props
+		handleCreate, goToSensors, select, handleChangeSyntheticKeyConversionFactor } = props
 	/**
 	 * Syntehtic Fields
 	 */
@@ -109,6 +109,15 @@ const CreateSensorForm = props => {
 						label={t('dashboard.fields.unit')}
 						value={p.unit}
 						onChange={handleChangeSyntheticKeyUnit(p, i)}
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						id={'outbound-conversionFactor' + i}
+						label={t('dashboard.fields.conversionFactor')}
+						value={p.conversionFactor}
+						onChange={handleChangeSyntheticKeyConversionFactor(p, i)}
 						InputProps={{
 							style: { marginRight: 8 }
 						}}
