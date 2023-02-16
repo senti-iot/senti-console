@@ -396,7 +396,8 @@ const EditSensor = props => {
 			...stateSensor,
 			tags: [],
 			metadata: mtd,
-			dataKeys: sData
+			dataKeys: sData,
+			syntheticKeys: sData
 		}
 		return await updateSensor(newSensor)
 	}
