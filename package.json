@@ -61,7 +61,7 @@
 		"react-redux": "^7.2.3",
 		"react-router-dom": "^5.1.2",
 		"react-router-hash-link": "^1.2.1",
-		"react-scripts": "^4.0.3",
+		"react-scripts": "^5.0.1",
 		"react-sound": "^1.2.0",
 		"react-svg-gauge": "^1.0.10",
 		"recompose": "^0.30.0",
