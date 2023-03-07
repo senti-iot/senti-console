@@ -63,11 +63,13 @@ const DeviceType = props => {
 			}
 		}
 		getDT()
+		//eslint-disable-next-line
+	}, [])
+	useEffect(() => {
 		if (location.hash !== '') {
 			scrollToAnchor(location.hash)
 		}
-		//eslint-disable-next-line
-	}, [])
+	}, [location.hash])
 	useEffect(() => {
 		if (deviceType) {
 			const tabs = [
