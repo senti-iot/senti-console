@@ -1,5 +1,5 @@
 import { Grid, Menu, MenuItem, Divider, Tooltip, Button, Hidden } from '@material-ui/core'
-import { AccountBox, Business, PowerSettingsNew, /* SettingsRounded, */ ExpandMore, /* Notifications */ } from 'variables/icons'
+import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, /* Notifications */ } from 'variables/icons'
 import headerLinksStyles from 'assets/jss/components/header/headerLinksStyles'
 import React, { useState } from 'react'
 import cookie from 'react-cookies'
@@ -69,11 +69,11 @@ const HeaderLinks = props => {
 			dispatch({ type: "RESET_APP" })
 		}
 	}
-	// const handleSettingsOpen = () => {
-	// 	handleProfileClose()
-	// 	if (user)
-	// 		history.push(`/settings`)
-	// }
+	const handleSettingsOpen = () => {
+		handleProfileClose()
+		if (user)
+			history.push(`/settings`)
+	}
 	const renderSearch = () => {
 		// const { globalSearch } = this.props
 		// return globalSearch ? <GlobalSearch /> : null
@@ -136,9 +136,9 @@ const HeaderLinks = props => {
 				<MenuItem onClick={handleRedirectToOwnOrg}>
 					<Business className={classes.leftIcon} />{t('menus.user.account')}
 				</MenuItem> {/* : null : null} */}
-				{/* <MenuItem onClick={handleSettingsOpen}>
+				<MenuItem onClick={handleSettingsOpen}>
 					<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
-				</MenuItem> */}
+				</MenuItem>
 				<GoogleLogout
 					// onLogoutSuccess={() => this.logOut()}
 					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
