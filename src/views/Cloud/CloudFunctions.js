@@ -145,8 +145,11 @@ const Functions = props => {
 
 	const getFavs = () => {
 		let favs = favorites.filter(f => f.type === 'cloudfunction')
-		let favFunctions = favs.map(f => {
-			return functions[functions.findIndex(d => d.uuid === f.id)]
+		let favFunctions = []
+		favs.forEach(f => {
+			let func = functions[functions.findIndex(d => d.uuid === f.id)]
+			if (func)
+				favFunctions.push(func)
 		})
 		favFunctions = handleRequestSort(orderBy, order, favFunctions)
 		return favFunctions

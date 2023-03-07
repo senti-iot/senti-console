@@ -196,7 +196,7 @@ const appRoutes = [
 		path: '/settings',
 		sidebarName: 'sidebar.settings',
 		icon: SettingsRounded,
-		// hideFromSideBar: true,
+		hideFromSideBar: true,
 		component: AsyncSettings,
 		menuRoute: 'settings'
 	},

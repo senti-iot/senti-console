@@ -173,8 +173,12 @@ const Sensors = props => {
 
 	const getFavorites = () => {
 		let favs = favorites.filter(f => f.type === 'sensor')
-		let favSensors = favs.map(f => {
-			return devices[devices.findIndex(d => d.uuid === f.id)]
+		let favSensors = []
+		favs.forEach(f => {
+			let device = devices[devices.findIndex(d => d.uuid === f.id)]
+			if (device !== undefined) {
+				favSensors.push(device)
+			}
 		})
 		favSensors = handleRS(orderBy, order, favSensors)
 		return favSensors
