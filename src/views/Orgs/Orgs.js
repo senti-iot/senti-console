@@ -11,6 +11,7 @@ import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import orgsStyles from 'assets/jss/components/orgs/orgsStyles'
 import { Warning, Danger, TextF, ItemG, /* TextF */ } from 'components'
 import { asyncForEach } from 'variables/functions'
+import { sortData } from 'redux/data'
 
 const Orgs = props => {
 	//Hooks
@@ -216,7 +217,7 @@ const Orgs = props => {
 		if (property !== orderBy) {
 			nOrder = 'asc'
 		}
-		handleRequestSort(property, nOrder, orgs)
+		dispatch(sortData('orgs', property, nOrder))
 		setOrder(nOrder)
 		setOrderBy(property)
 	}
