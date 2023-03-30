@@ -87,9 +87,12 @@ const EditSensor = props => {
 	// 	}
 	// }
 	useEffect(() => {
-		if (sensor?.uuid && deviceTypes.length > 0 && registries.length > 0) {
+		if (sensor?.uuid && registries.length > 0) { // deviceTypes.length > 0 && 
 			setSensor(sensor)
-			let dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
+			let dt = sensor.deviceType
+			if (deviceTypes.length > 0) {
+				dt = deviceTypes[deviceTypes.findIndex(dt => dt.uuid === sensor.deviceType.uuid)]
+			}
 			let reg = registries[registries.findIndex(r => r.uuid === sensor.registry.uuid)]
 			if (sensor.metadata) {
 				let metadata = sensor.metadata
@@ -101,8 +104,8 @@ const EditSensor = props => {
 				setSensorSyntheticKeys(sensor.syntheticKeys)
 			}
 			if (dt && reg) {
-				setSensorDataKeys(dt.outbound)
-				setSensorDecoder(dt.inbound)
+				setSensorDataKeys(sensor.dataKeys.filter(dk => dk.origin === 'devicetype'))
+				setSensorDecoder(dt.inbound !== undefined ? dt.inbound : [])
 				setSelect({
 					dt: dt,
 					reg: reg
