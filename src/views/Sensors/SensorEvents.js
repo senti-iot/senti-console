@@ -43,11 +43,11 @@ const SensorEvents = props => {
 		newMqttAction.config[what] = e.target.value
 		setMqttAction(newMqttAction)
 	}
-	const handleChangeHost = () => e => {
-		let newMqttAction = { ...mqttAction }
-		newMqttAction.host = e.target.value
-		setMqttAction(newMqttAction)
-	}
+	// const handleChangeHost = () => e => {
+	// 	let newMqttAction = { ...mqttAction }
+	// 	newMqttAction.host = e.target.value
+	// 	setMqttAction(newMqttAction)
+	// }
 
 	const handleSave = async () => {
 		let action = null
@@ -173,14 +173,14 @@ const SensorEvents = props => {
 											autoFocus
 										/>
 									</ItemGrid>
-									<ItemGrid xs={12}>
+									{/* <ItemGrid xs={12}>
 										<TextF
 											id={'deviceId'}
 											label={t('devices.fields.mqttDeviceId')}
 											onChange={handleChange('deviceId')}
 											value={mqttAction.config.deviceId}
 										/>
-									</ItemGrid>
+									</ItemGrid> */}
 									<ItemGrid xs={12}>
 										<TextF
 											id={'mqtthost'}
@@ -205,14 +205,14 @@ const SensorEvents = props => {
 											value={mqttAction.config.mqttpass}
 										/>
 									</ItemGrid>
-									<ItemGrid xs={12}>
+									{/* <ItemGrid xs={12}>
 										<TextF
 											id={'host'}
 											label={t('devices.fields.mqttWL')}
 											onChange={handleChangeHost()}
 											value={mqttAction.host}
 										/>
-									</ItemGrid>
+									</ItemGrid> */}
 									<ItemGrid container>
 										{/* <div className={classes.wrapper}>
 											<Button
