@@ -179,7 +179,6 @@ const SensorEvents = props => {
 											label={t('devices.fields.mqttDeviceId')}
 											onChange={handleChange('deviceId')}
 											value={mqttAction.config.deviceId}
-											autoFocus
 										/>
 									</ItemGrid>
 									<ItemGrid xs={12}>
@@ -188,7 +187,6 @@ const SensorEvents = props => {
 											label={t('devices.fields.mqttHost')}
 											onChange={handleChange('mqtthost')}
 											value={mqttAction.config.mqtthost}
-											autoFocus
 										/>
 									</ItemGrid>
 									<ItemGrid xs={12}>
@@ -197,7 +195,6 @@ const SensorEvents = props => {
 											label={t('devices.fields.mqttUser')}
 											onChange={handleChange('mqttuser')}
 											value={mqttAction.config.mqttuser}
-											autoFocus
 										/>
 									</ItemGrid>
 									<ItemGrid xs={12}>
@@ -206,7 +203,6 @@ const SensorEvents = props => {
 											label={t('devices.fields.mqttPass')}
 											onChange={handleChange('mqttpass')}
 											value={mqttAction.config.mqttpass}
-											autoFocus
 										/>
 									</ItemGrid>
 									<ItemGrid xs={12}>
@@ -215,7 +211,6 @@ const SensorEvents = props => {
 											label={t('devices.fields.mqttWL')}
 											onChange={handleChangeHost()}
 											value={mqttAction.host}
-											autoFocus
 										/>
 									</ItemGrid>
 									<ItemGrid container>
