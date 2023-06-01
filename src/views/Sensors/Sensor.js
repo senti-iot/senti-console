@@ -9,7 +9,7 @@ import React, { Fragment, useState, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // import { getWeather } from "variables/dataDevices"
 // import moment from "moment"
-import { DataUsage, InsertChart, Wifi, SystemUpdate, Backup } from "variables/icons"
+import { DataUsage, InsertChart, Wifi, Backup } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
 import { getFunctions, getSensorLS } from "redux/data"
@@ -34,7 +34,7 @@ const Sensor = props => {
 	const theme = useTheme()
 	//Redux
 	// const accessLevel = useSelector(s => s.settings.user.privileges)
-	const user = useSelector(state => state.settings.user)
+	const accessLevel = useSelector(state => state.settings.user.role.type)
 	const saved = useSelector(state => state.favorites.saved)
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
@@ -61,7 +61,7 @@ const Sensor = props => {
 				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: '/sensor/' + sensor.uuid + `#messages` },
 				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: '/sensor/' + sensor.uuid + `#protocol` },
 			]
-			if (user.role.type < 4) {
+			if (accessLevel < 4) {
 				tabs.push({ id: 3, title: t("tabs.mqttForward"), label: <Backup />, url: '/sensor/' + sensor.uuid + '/events' })
 			}
 			setTabs({
@@ -75,7 +75,7 @@ const Sensor = props => {
 			let prevURL = location.prevURL ? location.prevURL : `/sensors/list`
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
-	}, [location, sensor, setBC, setHeader, setTabs, t])
+	}, [location, sensor, accessLevel, setBC, setHeader, setTabs, t])
 	useEffect(() => {
 		if (location.hash !== '') {
 			scrollToAnchor(location.hash)

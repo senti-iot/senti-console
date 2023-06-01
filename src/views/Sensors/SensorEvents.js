@@ -1,24 +1,24 @@
 import { Fade, Button } from '@material-ui/core';
-import { CircularLoader, GridContainer, InfoCard, ItemGrid, TextF, T } from 'components';
+import { CircularLoader, GridContainer, InfoCard, ItemGrid, TextF } from 'components';
 import React, { Fragment, useState, useEffect, useCallback } from "react"
 import { useSelector, useDispatch } from 'react-redux';
-import { DataUsage, SystemUpdate, InsertChart, Wifi, Backup /* StorageIcon */ } from 'variables/icons';
+import { DataUsage, InsertChart, Wifi, Backup /* StorageIcon */ } from 'variables/icons';
 import { getFunctions, getSensorLS } from "redux/data"
 import { scrollToAnchor } from 'variables/functions';
-import { useLocalization, useSnackbar, useHistory } from 'hooks';
-import { useRouteMatch, useLocation, useParams } from "react-router-dom"
+import { useLocalization, useSnackbar } from 'hooks'; // useHistory
+import { useLocation, useParams } from "react-router-dom"
 import { eventServicesAPI } from 'variables/data';
-import m from 'ace-builds/src-noconflict/mode-json';
+// import m from 'ace-builds/src-noconflict/mode-json';
 import createSensorStyles from 'assets/jss/components/sensors/createSensorStyles'
-import { set } from 'store';
+// import { set } from 'store';
 
 const SensorEvents = props => {
 	//Hooks
 	const dispatch = useDispatch()
 	const t = useLocalization()
 	const s = useSnackbar().s
-	const history = useHistory()
-	const match = useRouteMatch()
+	// const history = useHistory()
+	// const match = useRouteMatch()
 	const location = useLocation()
 	const params = useParams()
 	const classes = createSensorStyles()
@@ -30,8 +30,8 @@ const SensorEvents = props => {
 
 	// Redux
 	// const senso = useSelector(store => store.data.deviceType)
-	const accessLevel = useSelector(state => state.settings.user.privileges)
-	const user = useSelector(state => state.settings.user)
+	//const accessLevel = useSelector(state => state.settings.user.privileges)
+	const accessLevel = useSelector(state => state.settings.user.role.type)
 	const sensor = useSelector(state => state.data.sensor)
 	const loading = useSelector(state => !state.data.gotSensor) || !mqttAction
 
@@ -64,7 +64,7 @@ const SensorEvents = props => {
 			setMqttAction(action.data.result)
 		}
 	}
-	const goToSensor = useCallback(() => history.push('/sensor/' + sensor.uuid + '#details'), [history])
+	// const goToSensor = useCallback(() => history.push('/sensor/' + sensor.uuid + '#details'), [history])
 	
 	const getSensorMqtt = useCallback(async id => {
 		let action = await eventServicesAPI.get('/mqtt/device/' + id)
@@ -85,7 +85,7 @@ const SensorEvents = props => {
 				"host": ""
 			})
 		}
-	}, [dispatch])
+	}, [])
 
 	const getSensor = useCallback(async id => {
 		await dispatch(await getFunctions(true))
@@ -100,7 +100,7 @@ const SensorEvents = props => {
 				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: '/sensor/' + sensor.uuid + `#messages` },
 				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: '/sensor/' + sensor.uuid + `#protocol` },
 			]
-			if (user.role.type < 4) {
+			if (accessLevel < 4) {
 				tabs.push({ id: 3, title: t("tabs.mqttForward"), label: <Backup />, url: '/sensor/' + sensor.uuid + '/events' })
 			}
 			setTabs({
@@ -114,9 +114,8 @@ const SensorEvents = props => {
 			let prevURL = location.prevURL ? location.prevURL : `/sensors/list`
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 			// console.log('mqtt', mqttAction)
-			console.log('user', user.role)
 		}
-	}, [location, sensor, setBC, setHeader, setTabs, t])
+	}, [location, sensor, accessLevel, setBC, setHeader, setTabs, t])
 	useEffect(() => {
 		if (location.hash !== '') {
 			scrollToAnchor(location.hash)
