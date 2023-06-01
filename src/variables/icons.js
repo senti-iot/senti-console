@@ -12,6 +12,8 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import InsertChart from '@material-ui/icons/InsertChart'
 import Wifi from '@material-ui/icons/Wifi'
 import MultiLineChart from '@material-ui/icons/MultilineChart'
+import SystemUpdate from '@material-ui/icons/SystemUpdate'
+import Backup from '@material-ui/icons/Backup'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -120,6 +122,8 @@ import TableChart from "@material-ui/icons/TableChart";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 export {
+	Backup,
+	SystemUpdate,
 	HelpOutlineIcon,
 	TableChart,
 	Looks,

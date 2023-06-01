@@ -311,7 +311,13 @@
             "temp": "CPU temperature",
             "uuname": "Unique name",
             "weather": "Weather",
-            "wifiModule": "Wi-Fi module"
+            "wifiModule": "Wi-Fi module",
+            "mqttDeviceId": "Device ID field",
+            "mqttTopic": "MQTT topic",
+            "mqttHost": "MQTT host",
+            "mqttUser": "MQTT user",
+            "mqttPass": "MQTT password",
+            "mqttWL": "MQTT white label host"
         },
         "liveCount": "Live count (last 10 minutes)",
         "locationTypes": {
@@ -355,6 +361,13 @@
             "redShort": "Disconnected",
             "yellow": "Device is connected, but no data is received",
             "yellowShort": "Receives no data"
+        },
+        "mqttAlerts": {
+            "saved": "MQTT settings saved",
+            "error": "MQTT settings could not be saved"
+        },
+        "mqttText": {
+            "intro": "Udfyld nedenstående formular for at forwarde data fra denne enhed til en MQTT broker. Emne kan eks. være: FIRMA/deviceid/DATA. Husk dette er CASE sensetivt."
         }
     },
     "devicetypes": {
@@ -1203,7 +1216,9 @@
         "metadata": "Metadata",
         "projects": "Projects",
         "userHistory": "User log",
-        "users": "Users"
+        "users": "Users",
+        "mqttForward": "MQTT Forward",
+        "firmware": "Firmware"
     },
     "tokens": {
         "fields": {

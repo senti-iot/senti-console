@@ -164,6 +164,18 @@ export const coreServicesAPI = create({
 		'Content-Type': 'application/json'
 	}
 })
+
+export const eventServicesAPI = create({
+	baseURL: `${sentiServicesURL}/eventbroker/v2`,
+	// baseURL: `http://localhost:3068/`,
+	timeout: 30000,
+	headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
+
+
 // export const servicesAPI = create({
 // 	baseURL: 'https://services.senti.cloud/databroker',
 // 	timeout: 30000,
@@ -203,6 +215,7 @@ export const setToken = () => {
 		servicesAPI.setHeader('Authorization', `Bearer ${token}`)
 		coreServicesAPI.setHeader('Authorization', `Bearer ${token}`)
 		cloudAPI.setHeader('Authorization', `Bearer ${token}`)
+		eventServicesAPI.setHeader('Authorization', `Bearer ${token}`)
 		// var OAToken = cookie.load('SESSION').sessionID
 		// api.setHeader('ODEUMAuthToken', OAToken)
 		// imageApi.setHeader('ODEUMAuthToken', OAToken)
@@ -223,6 +236,7 @@ export const setWlHost = () => {
 			servicesAPI.setHeader('wlhost', wlHost.host)
 			coreServicesAPI.setHeader('wlhost', wlHost.host)
 			cloudAPI.setHeader('wlhost', wlHost.host)
+			eventServicesAPI.setHeader('wlhost', wlHost.host)
 			return true
 		}
 	}

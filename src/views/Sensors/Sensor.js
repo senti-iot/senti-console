@@ -9,7 +9,7 @@ import React, { Fragment, useState, useEffect, useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // import { getWeather } from "variables/dataDevices"
 // import moment from "moment"
-import { DataUsage, InsertChart, Wifi } from "variables/icons"
+import { DataUsage, InsertChart, Wifi, SystemUpdate, Backup } from "variables/icons"
 import { isFav, addToFav, removeFromFav, finishedSaving } from "redux/favorites"
 import { scrollToAnchor } from "variables/functions"
 import { getFunctions, getSensorLS } from "redux/data"
@@ -34,6 +34,7 @@ const Sensor = props => {
 	const theme = useTheme()
 	//Redux
 	// const accessLevel = useSelector(s => s.settings.user.privileges)
+	const user = useSelector(state => state.settings.user)
 	const saved = useSelector(state => state.favorites.saved)
 	const periods = useSelector(state => state.dateTime.periods)
 	const sensor = useSelector(state => state.data.sensor)
@@ -56,10 +57,13 @@ const Sensor = props => {
 	useEffect(() => {
 		if (sensor) {
 			const tabs = [
-				{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: `#details` },
-				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: `#messages` },
-				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: `#protocol` }
+				{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: '/sensor/' + sensor.uuid + `#details` },
+				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: '/sensor/' + sensor.uuid + `#messages` },
+				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: '/sensor/' + sensor.uuid + `#protocol` },
 			]
+			if (user.role.type < 4) {
+				tabs.push({ id: 3, title: t("tabs.mqttForward"), label: <Backup />, url: '/sensor/' + sensor.uuid + '/events' })
+			}
 			setTabs({
 				route: 0,
 				id: "sensor",
@@ -72,7 +76,11 @@ const Sensor = props => {
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
 	}, [location, sensor, setBC, setHeader, setTabs, t])
-
+	useEffect(() => {
+		if (location.hash !== '') {
+			scrollToAnchor(location.hash)
+		}
+	}, [location.hash])
 	useEffect(() => {
 		const gSensor = async () => {
 			if (params) {
