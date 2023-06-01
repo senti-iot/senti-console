@@ -57,12 +57,12 @@ const Sensor = props => {
 	useEffect(() => {
 		if (sensor) {
 			const tabs = [
-				{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: '/sensor/' + sensor.uuid + `#details` },
-				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: '/sensor/' + sensor.uuid + `#messages` },
-				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: '/sensor/' + sensor.uuid + `#protocol` },
+				{ id: 0, title: t("tabs.details"), label: <DataUsage />, url: '/sensor/' + params.id + `#details` },
+				{ id: 1, title: t("sidebar.messages"), label: <InsertChart />, url: '/sensor/' + params.id + `#messages` },
+				{ id: 2, title: t("registries.fields.protocol"), label: <Wifi />, url: '/sensor/' + params.id + `#protocol` },
 			]
 			if (accessLevel < 4) {
-				tabs.push({ id: 3, title: t("tabs.mqttForward"), label: <Backup />, url: '/sensor/' + sensor.uuid + '/events' })
+				tabs.push({ id: 3, title: t("tabs.mqttForward"), label: <Backup />, url: '/sensor/' + params.id + '/events' })
 			}
 			setTabs({
 				route: 0,
