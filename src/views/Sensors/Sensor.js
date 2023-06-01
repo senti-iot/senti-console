@@ -75,7 +75,7 @@ const Sensor = props => {
 			let prevURL = location.prevURL ? location.prevURL : `/sensors/list`
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 		}
-	}, [location, sensor, accessLevel, setBC, setHeader, setTabs, t])
+	}, [location, sensor, accessLevel, params, setBC, setHeader, setTabs, t])
 	useEffect(() => {
 		if (location.hash !== '') {
 			scrollToAnchor(location.hash)

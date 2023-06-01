@@ -115,7 +115,7 @@ const SensorEvents = props => {
 			setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 			// console.log('mqtt', mqttAction)
 		}
-	}, [location, sensor, accessLevel, setBC, setHeader, setTabs, t])
+	}, [location, sensor, accessLevel, params, setBC, setHeader, setTabs, t])
 	useEffect(() => {
 		if (location.hash !== '') {
 			scrollToAnchor(location.hash)
