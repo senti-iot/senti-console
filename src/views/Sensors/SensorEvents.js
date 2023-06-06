@@ -200,6 +200,7 @@ const SensorEvents = props => {
 									<ItemGrid xs={12}>
 										<TextF
 											id={'mqttpass'}
+											type={'password'}
 											label={t('devices.fields.mqttPass')}
 											onChange={handleChange('mqttpass')}
 											value={mqttAction.config.mqttpass}
